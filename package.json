@@ -5,9 +5,11 @@
   "scripts": {
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "fix": "eslint . --fix"
   },
   "dependencies": {
+    "eslint-plugin-jest": "^22.13.6",
     "react": "16.8.6",
     "react-native": "0.60.4",
     "react-native-gesture-handler": "^1.3.0"
