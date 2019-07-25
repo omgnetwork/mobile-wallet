@@ -3,15 +3,7 @@
  */
 
 import { AppRegistry } from 'react-native'
-import App from './App'
+import App from './src'
 import { name as appName } from './app.json'
-
-console.YellowBox.ignoreWarnings([
-  'Warning: componentWillMount',
-  'Warning: componentWillReceiveProps',
-  'Module RCTImageLoader',
-  'Class RCTCxxModule was not exported',
-  'Remote debugger'
-])
 
 AppRegistry.registerComponent(appName, () => App)
