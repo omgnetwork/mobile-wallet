@@ -6,18 +6,18 @@ import { walletActions } from '../../../common/actions'
 
 const CreateWalletComponent = ({
   loadingStatus,
-  clear,
   wallets,
-  newWallet
+  createWallet,
+  deleteAllWallet
 }) => {
   const create = async () => {
     requestAnimationFrame(() => {
-      newWallet()
+      createWallet()
     })
   }
 
   const deleteAll = async () => {
-    clear()
+    deleteAllWallet()
   }
 
   const walletsView = wallets.map((wallet, id) => (
@@ -44,8 +44,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  newWallet: () => dispatch(walletActions.actionCreateWallet()),
-  clear: () => dispatch(walletActions.clear())
+  createWallet: () => dispatch(walletActions.createWallet()),
+  deleteAllWallet: () => dispatch(walletActions.deleteAll())
 })
 
 export const CreateWallet = connect(

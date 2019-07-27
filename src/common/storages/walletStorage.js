@@ -11,8 +11,6 @@ export const addWalletInfo = async wallet => {
     }
   ]
 
-  console.log(JSON.stringify(newWalletsInfo))
-
   return storageUtils.set('wallets_info', JSON.stringify(newWalletsInfo))
 }
 
