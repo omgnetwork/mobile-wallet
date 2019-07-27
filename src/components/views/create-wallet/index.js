@@ -20,12 +20,12 @@ const CreateWalletComponent = ({
 
   return (
     <View>
-      <Button mode='outlined' onPress={createWallet}>
+      <Button mode='outlined' onPress={createWallet} disabled={showLoading}>
         Create Wallet
       </Button>
       {walletsView}
       {showLoading && <ActivityIndicator animating={true} size={'small'} />}
-      <Button mode='outlined' onPress={deleteAllWallet}>
+      <Button mode='outlined' onPress={deleteAllWallet} disabled={showLoading}>
         Clear
       </Button>
     </View>
