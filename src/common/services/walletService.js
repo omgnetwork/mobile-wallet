@@ -1,9 +1,11 @@
+import { ethersUtils } from '../utils'
+
 export const create = () => {
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({
-        address: 'addr1234'
-      })
-    }, 3000)
+    try {
+      resolve(ethersUtils.createWallet())
+    } catch (err) {
+      reject(err)
+    }
   })
 }
