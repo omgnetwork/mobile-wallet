@@ -1,12 +1,23 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View } from 'react-native'
+import { View, ActivityIndicator } from 'react-native'
 import { Button, Text } from 'react-native-paper'
 import { walletActions } from '../../../common/actions'
 
-const CreateWalletComponent = ({ loadingStatus, wallets, newWallet }) => {
-  const create = () => {
-    newWallet()
+const CreateWalletComponent = ({
+  loadingStatus,
+  clear,
+  wallets,
+  newWallet
+}) => {
+  const create = async () => {
+    requestAnimationFrame(() => {
+      newWallet()
+    })
+  }
+
+  const deleteAll = async () => {
+    clear()
   }
 
   const walletsView = wallets.map((wallet, id) => (
@@ -19,6 +30,10 @@ const CreateWalletComponent = ({ loadingStatus, wallets, newWallet }) => {
         Create Wallet
       </Button>
       {walletsView}
+      <ActivityIndicator animating={loadingStatus === 'INITIATED'} />
+      <Button mode='outlined' onPress={() => deleteAll()}>
+        Clear
+      </Button>
     </View>
   )
 }
@@ -29,7 +44,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  newWallet: () => dispatch(walletActions.actionCreateWallet())
+  newWallet: () => dispatch(walletActions.actionCreateWallet()),
+  clear: () => dispatch(walletActions.clear())
 })
 
 export const CreateWallet = connect(

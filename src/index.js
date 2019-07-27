@@ -1,10 +1,22 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { SafeAreaView, StatusBar, StyleSheet } from 'react-native'
 import { Provider } from 'react-redux'
 import Router from './router'
-import store from './common/stores'
+import createStore from './common/stores'
+import { walletStorage } from './common/storages'
 
 const App = () => {
+  const [store, setStore] = useState(createStore({ wallets: [] }))
+
+  const syncStoreWallets = async () => {
+    const storedWallets = await walletStorage.getWalletInfos()
+    setStore(createStore({ wallets: storedWallets }))
+  }
+
+  useEffect(() => {
+    syncStoreWallets()
+  }, [])
+
   return (
     <Fragment>
       <StatusBar barStyle='dark-content' />
