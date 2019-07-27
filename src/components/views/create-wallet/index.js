@@ -10,28 +10,22 @@ const CreateWalletComponent = ({
   createWallet,
   deleteAllWallet
 }) => {
-  const create = async () => {
-    requestAnimationFrame(() => {
-      createWallet()
-    })
-  }
-
-  const deleteAll = async () => {
-    deleteAllWallet()
-  }
+  const showLoading = loadingStatus === 'INITIATED'
 
   const walletsView = wallets.map((wallet, id) => (
     <Text key={id}>{wallet.address}</Text>
   ))
 
+  console.log('loading', showLoading)
+
   return (
     <View>
-      <Button mode='outlined' onPress={() => create()}>
+      <Button mode='outlined' onPress={createWallet}>
         Create Wallet
       </Button>
       {walletsView}
-      <ActivityIndicator animating={loadingStatus === 'INITIATED'} />
-      <Button mode='outlined' onPress={() => deleteAll()}>
+      {showLoading && <ActivityIndicator animating={true} size={'small'} />}
+      <Button mode='outlined' onPress={deleteAllWallet}>
         Clear
       </Button>
     </View>

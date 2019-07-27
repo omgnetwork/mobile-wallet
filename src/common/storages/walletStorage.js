@@ -16,7 +16,7 @@ export const addWalletInfo = async wallet => {
 
 export const getWalletInfos = async () => {
   try {
-    const result = (await storageUtils.get('wallets_info')) || []
+    const result = (await storageUtils.get('wallets_info')) || '[]'
     return JSON.parse(result)
   } catch (err) {
     console.log(err)
