@@ -42,7 +42,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   deleteAllWallet: () => dispatch(walletActions.deleteAll())
 })
 
-export const CreateWallet = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(CreateWalletComponent)
