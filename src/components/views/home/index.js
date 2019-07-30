@@ -2,7 +2,7 @@ import React from 'react'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { Button } from 'react-native-paper'
 
-export const Home = ({ navigation }) => {
+const Home = ({ navigation }) => {
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -54,6 +54,12 @@ export const Home = ({ navigation }) => {
           onPress={() => navigation.navigate('Send')}>
           Send
         </Button>
+        <Button
+          mode='outlined'
+          style={styles.button}
+          onPress={() => navigation.navigate('Preview')}>
+          Preview
+        </Button>
       </View>
     </ScrollView>
   )
@@ -71,3 +77,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 16
   }
 })
+
+export default Home
