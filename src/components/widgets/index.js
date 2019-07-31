@@ -5,6 +5,8 @@ import OMGTextInput from './omg-text-input'
 import OMGTitle from './omg-title'
 import OMGText from './omg-text'
 import OMGIcon from './omg-icon'
+import OMGBackground from './omg-background'
+import OMGRadioButton from './omg-radio-button'
 
 export {
   OMGAppBar,
@@ -13,5 +15,7 @@ export {
   OMGTextInput,
   OMGTitle,
   OMGText,
-  OMGIcon
+  OMGIcon,
+  OMGBackground,
+  OMGRadioButton
 }
