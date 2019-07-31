@@ -68,7 +68,8 @@ const navigator = createStackNavigator(
     defaultNavigationOptions: {
       headerStyle: {
         elevation: 0, // remove shadow on Android
-        shadowOpacity: 0 // remove shadow on iOS
+        shadowOpacity: 0, // remove shadow on iOS
+        backgroundColor: '#f0f4f8'
       },
       headerTintColor: '#000',
       headerTitleStyle: {
