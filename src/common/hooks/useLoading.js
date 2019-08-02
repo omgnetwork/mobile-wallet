@@ -4,8 +4,10 @@ function getLoading(loadingStatus) {
   switch (loadingStatus) {
     case 'INITIATED':
       return true
-    default:
+    case 'DEFAULT':
       return false
+    default:
+      return null
   }
 }
 
@@ -13,8 +15,9 @@ const useLoading = loadingStatus => {
   const [loading, setLoading] = useState(getLoading(loadingStatus))
 
   useEffect(() => {
-    setLoading(getLoading(loadingStatus))
-  }, [loadingStatus])
+    const latestLoading = getLoading(loadingStatus)
+    setLoading(latestLoading === null ? loading : latestLoading)
+  }, [loading, loadingStatus])
 
   return [loading, setLoading]
 }

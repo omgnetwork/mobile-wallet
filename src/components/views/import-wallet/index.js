@@ -2,7 +2,7 @@ import React, { useState, Fragment, useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
 import { walletActions } from '../../../common/actions'
-import { useAlert, useTextInput } from '../../../common/hooks'
+import { useAlert, useTextInput, useLoading } from '../../../common/hooks'
 import { random } from '../../../common/utils'
 import { OMGRadioButton, OMGTextInput, OMGBackground } from '../../widgets'
 import { Text, Button, withTheme, Snackbar } from 'react-native-paper'
@@ -62,27 +62,14 @@ const ImportWalletComponent = props => {
 }
 
 const Mnemonic = ({ importWalletByMnemonic, loadingStatus }) => {
-  const [password, setPassword] = useState('')
   const [actionId, setActionId] = useState()
   const [mnemonic, mnemonicCallback] = useTextInput(actionId)
-  const [loading, setLoading] = useState(false)
+  const [loading] = useLoading(loadingStatus)
   const snackbarProps = useAlert({
     loadingStatus,
     msgSuccess: 'Import wallet successful',
     msgFailed: 'Failed to import a wallet. Make sure the mnemonic is correct.'
   })
-
-  const loadingCallback = useCallback(() => {
-    if (loadingStatus === 'INITIATED') {
-      setLoading(true)
-    } else if (loadingStatus === 'DEFAULT') {
-      setLoading(false)
-    }
-  }, [loadingStatus])
-
-  useEffect(() => {
-    loadingCallback()
-  }, [loadingCallback])
 
   useEffect(() => {
     if (mnemonic) {
