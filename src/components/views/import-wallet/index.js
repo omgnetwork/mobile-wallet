@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect, useCallback } from 'react'
+import React, { useState, Fragment, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
 import { walletActions } from '../../../common/actions'

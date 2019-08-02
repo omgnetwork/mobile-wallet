@@ -67,7 +67,7 @@ const Box = ({
   const textInput = useRef(null)
 
   useEffect(() => {
-    callback(textInput.current._lastNativeText)
+    callback && callback(textInput.current._lastNativeText)
   }, [callback])
 
   const numberOfLines = lines ? lines : 1
