@@ -38,17 +38,13 @@ const App = () => {
   return (
     <Fragment>
       <StatusBar barStyle='dark-content' backgroundColor='#f0f4f8' />
-      <SafeAreaView
-        style={styles.safeAreaView}
-        forceInset={{ top: 'never', bottom: 'never' }}>
-        <Provider store={store}>
-          <PaperProvider theme={theme}>
-            <OMGBackground style={styles.safeAreaView}>
-              <Router />
-            </OMGBackground>
-          </PaperProvider>
-        </Provider>
-      </SafeAreaView>
+      <Provider store={store}>
+        <PaperProvider theme={theme}>
+          <OMGBackground style={styles.safeAreaView}>
+            <Router />
+          </OMGBackground>
+        </PaperProvider>
+      </Provider>
     </Fragment>
   )
 }

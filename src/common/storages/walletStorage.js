@@ -4,6 +4,10 @@ export const addWalletInfo = async wallet => {
   const address = await wallet.address
   const walletsInfo = (await getWalletInfos()) || []
 
+  if (walletsInfo.filter(w => w.address === address).length > 0) {
+    throw 'The wallet has been already added.'
+  }
+
   const newWalletsInfo = [
     ...walletsInfo,
     {

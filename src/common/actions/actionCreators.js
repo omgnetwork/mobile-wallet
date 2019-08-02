@@ -3,16 +3,17 @@ export const createAsyncAction = ({
   type: actionType
 }) => {
   return async dispatch => {
-    try {
-      dispatch({ type: `${actionType}/INITIATED` })
-      requestAnimationFrame(async () => {
+    dispatch({ type: `${actionType}/INITIATED` })
+    requestAnimationFrame(async () => {
+      try {
         const result = await doAsyncAction()
         dispatch({ type: `${actionType}/SUCCESS`, data: result })
-      })
-    } catch (err) {
-      console.log(err)
-      dispatch({ type: `${actionType}/FAILED`, data: err })
-    }
+      } catch (err) {
+        console.log(err)
+        dispatch({ type: `${actionType}/FAILED`, data: err })
+      }
+      dispatch({ type: `LOADING/STATUS/DEFAULT` })
+    })
   }
 }
 
