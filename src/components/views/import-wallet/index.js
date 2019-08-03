@@ -9,9 +9,10 @@ import {
   OMGTextInput,
   OMGBackground,
   OMGBox,
-  OMGPasswordTextInput
+  OMGPasswordTextInput,
+  OMGButton
 } from '../../widgets'
-import { Text, Button, Title, Snackbar, withTheme } from 'react-native-paper'
+import { Text, Title, Snackbar, withTheme } from 'react-native-paper'
 import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-navigation'
 
@@ -110,12 +111,11 @@ const Mnemonic = ({ importWalletByMnemonic, loadingStatus }) => {
         />
       </OMGBox>
       <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 16 }}>
-        <Button
-          mode='contained'
+        <OMGButton
           loading={loading}
           onPress={() => setActionId(random.fastRandomId())}>
           Import
-        </Button>
+        </OMGButton>
       </View>
       <Snackbar
         style={{ marginBottom: 56 }}

@@ -1,10 +1,26 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View } from 'react-native'
 import { withNavigation } from 'react-navigation'
-import { withTheme } from 'react-native-paper'
-import { OMGRadioButton, OMGTextInput, OMGButton } from '../../widgets'
+import { withTheme, Title } from 'react-native-paper'
+import {
+  OMGRadioButton,
+  OMGTextInput,
+  OMGButton,
+  OMGBox,
+  OMGPasswordTextInput
+} from '../../widgets'
 
 const Preview = ({ navigation, theme }) => {
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLoading(false)
+    }, 3000)
+
+    return () => clearTimeout(timeout)
+  }, [loading])
+
   return (
     <View
       style={{
@@ -18,16 +34,25 @@ const Preview = ({ navigation, theme }) => {
           console.log(`selected: ${selectedIndex}`)
         }}
       />
-      <OMGTextInput
-        title='Name'
-        inputs={[
-          { placeholder: 'Wallet', secured: false },
-          { placeholder: 'Password', secured: true },
-          { placeholder: 'Confirm Password', secured: true }
-        ]}
-      />
-      <OMGButton style={{ marginTop: 16 }} onPress={() => {}} mode='contained'>
-        Hello world
+      <OMGBox>
+        <Title style={{ fontWeight: 'bold', fontSize: 16 }}>Name</Title>
+        <OMGTextInput placeholder='Wallet' />
+        <OMGPasswordTextInput placeholder='Password' />
+        <OMGPasswordTextInput placeholder='Confirm Password' />
+      </OMGBox>
+      <OMGButton
+        style={{ marginTop: 16 }}
+        mode='contained'
+        loading={loading}
+        onPress={() => setLoading(true)}>
+        Enabled
+      </OMGButton>
+      <OMGButton
+        disabled={true}
+        style={{ marginTop: 16 }}
+        onPress={() => {}}
+        mode='contained'>
+        Disabled
       </OMGButton>
     </View>
   )
