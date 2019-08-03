@@ -29,7 +29,7 @@ const OMGTextInput = ({
       onFocus={() => setUnderlineTextcolor('#627D98')}
       importantForAutofill='no'
       numberOfLines={numberOfLines}
-      editable={disabled ? disabled : false}
+      editable={disabled ? disabled : true}
       multiline={numberOfLines > 1}
       textAlignVertical='top'
       style={{

@@ -43,7 +43,7 @@ const OMGPasswordTextInput = ({
         onBlur={() => setUnderlineTextcolor('#D9E2EC')}
         onFocus={() => setUnderlineTextcolor('#627D98')}
         importantForAutofill='no'
-        editable={disabled ? disabled : false}
+        editable={disabled ? disabled : true}
         style={{
           ...styles.textInput,
           ...style
