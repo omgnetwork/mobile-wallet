@@ -18,8 +18,6 @@ const OMGTextInput = ({
     callback && callback(textInput.current._lastNativeText)
   }, [callback])
 
-  console.log('Rerender box')
-
   const numberOfLines = lines ? lines : 1
   return (
     <TextInput
@@ -45,7 +43,8 @@ const OMGTextInput = ({
 const styles = StyleSheet.create({
   textInput: {
     backgroundColor: '#FFFFFF',
-    paddingTop: 12
+    paddingTop: 12,
+    marginLeft: -4
   }
 })
 

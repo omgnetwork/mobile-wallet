@@ -62,7 +62,8 @@ const OMGPasswordTextInput = ({
 
 const styles = StyleSheet.create({
   secureTextInputBackground: {
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#FFFFFF',
+    marginLeft: -4
   },
   icon: { top: 8, right: 10, position: 'absolute' }
 })
