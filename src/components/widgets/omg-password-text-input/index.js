@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { View, TextInput, StyleSheet } from 'react-native'
+import { View, TextInput, StyleSheet, Platform } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import PropTypes from 'prop-types'
 
@@ -45,7 +45,6 @@ const OMGPasswordTextInput = ({
         importantForAutofill='no'
         editable={disabled ? disabled : true}
         style={{
-          ...styles.textInput,
           ...style
         }}
         secureTextEntry={hide}
@@ -63,9 +62,10 @@ const OMGPasswordTextInput = ({
 const styles = StyleSheet.create({
   secureTextInputBackground: {
     backgroundColor: '#FFFFFF',
-    marginLeft: -4
+    marginLeft: Platform.OS === 'ios' ? 0 : -4,
+    marginTop: Platform.OS === 'ios' ? 12 : 0
   },
-  icon: { top: 8, right: 10, position: 'absolute' }
+  icon: { top: Platform.OS === 'ios' ? -4 : 8, right: 10, position: 'absolute' }
 })
 
 OMGPasswordTextInput.propTypes = {

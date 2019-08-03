@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { TextInput, StyleSheet } from 'react-native'
+import { TextInput, StyleSheet, Platform } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import PropTypes from 'prop-types'
 
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   textInput: {
     backgroundColor: '#FFFFFF',
     paddingTop: 12,
-    marginLeft: -4
+    marginLeft: Platform.OS === 'ios' ? 0 : -4
   }
 })
 
