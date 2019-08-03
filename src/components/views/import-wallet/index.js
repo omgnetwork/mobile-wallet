@@ -95,7 +95,6 @@ const Mnemonic = ({ importWalletByMnemonic, loadingStatus }) => {
         <Title style={{ fontSize: 16, fontWeight: 'bold' }}>Mnemonic</Title>
         <OMGTextInput
           placeholder='Enter mnemonic...'
-          secured={false}
           lines={4}
           hideUnderline={true}
           callback={mnemonicCallback}
@@ -106,8 +105,6 @@ const Mnemonic = ({ importWalletByMnemonic, loadingStatus }) => {
         <Title style={{ fontSize: 16, fontWeight: 'bold' }}>Confirmation</Title>
         <OMGPasswordTextInput
           placeholder='Enter password...'
-          secured={true}
-          lines={1}
           hideUnderline={false}
           disabled={!loading}
         />
