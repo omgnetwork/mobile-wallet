@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { Button } from 'react-native-paper'
+import { OMGBackground } from '../../widgets'
 
 const Home = ({ navigation }) => {
   return (
-    <ScrollView>
-      <View style={styles.container}>
+    <ScrollView style={{ flex: 1, backgroundColor: '#f0f4f8' }}>
+      <OMGBackground style={styles.container}>
         <Button
           mode='outlined'
           style={styles.button}
@@ -60,7 +61,7 @@ const Home = ({ navigation }) => {
           onPress={() => navigation.navigate('Preview')}>
           Preview
         </Button>
-      </View>
+      </OMGBackground>
     </ScrollView>
   )
 }
