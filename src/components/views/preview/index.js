@@ -1,8 +1,8 @@
 import React from 'react'
 import { View } from 'react-native'
 import { withNavigation } from 'react-navigation'
-import { Surface, withTheme } from 'react-native-paper'
-import { OMGRadioButton, OMGTextInput } from '../../widgets'
+import { withTheme } from 'react-native-paper'
+import { OMGRadioButton, OMGTextInput, OMGButton } from '../../widgets'
 
 const Preview = ({ navigation, theme }) => {
   return (
@@ -26,6 +26,9 @@ const Preview = ({ navigation, theme }) => {
           { placeholder: 'Confirm Password', secured: true }
         ]}
       />
+      <OMGButton style={{ marginTop: 16 }} onPress={() => {}} mode='contained'>
+        Hello world
+      </OMGButton>
     </View>
   )
 }

@@ -4,8 +4,14 @@ import { View } from 'react-native'
 import { walletActions } from '../../../common/actions'
 import { useAlert, useTextInput, useLoading } from '../../../common/hooks'
 import { random } from '../../../common/utils'
-import { OMGRadioButton, OMGTextInput, OMGBackground } from '../../widgets'
-import { Text, Button, withTheme, Snackbar } from 'react-native-paper'
+import {
+  OMGRadioButton,
+  OMGTextInput,
+  OMGBackground,
+  OMGBox,
+  OMGPasswordTextInput
+} from '../../widgets'
+import { Text, Button, Title, Snackbar, withTheme } from 'react-native-paper'
 import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-navigation'
 
@@ -77,39 +83,35 @@ const Mnemonic = ({ importWalletByMnemonic, loadingStatus }) => {
     }
   }, [importWalletByMnemonic, mnemonic])
 
+  console.log('Rerender import mnemonic')
+
   return (
     <Fragment>
       <Text>
         Copy and paste Ethereum official wallet's Mnemonic to the input field to
         import.
       </Text>
-      <OMGTextInput
-        title='Mnemonic'
-        style={{ marginTop: 16 }}
-        inputs={[
-          {
-            placeholder: 'Enter mnemonic...',
-            secured: false,
-            lines: 4,
-            hideUnderline: true,
-            callback: mnemonicCallback,
-            disabled: !loading
-          }
-        ]}
-      />
-      <OMGTextInput
-        title='Confirmation'
-        style={{ marginTop: 16 }}
-        inputs={[
-          {
-            placeholder: 'Enter password...',
-            secured: true,
-            lines: 1,
-            hideUnderline: false,
-            disabled: !loading
-          }
-        ]}
-      />
+      <OMGBox style={{ marginTop: 16 }}>
+        <Title style={{ fontSize: 16, fontWeight: 'bold' }}>Mnemonic</Title>
+        <OMGTextInput
+          placeholder='Enter mnemonic...'
+          secured={false}
+          lines={4}
+          hideUnderline={true}
+          callback={mnemonicCallback}
+          disabled={!loading}
+        />
+      </OMGBox>
+      <OMGBox style={{ marginTop: 16 }}>
+        <Title style={{ fontSize: 16, fontWeight: 'bold' }}>Confirmation</Title>
+        <OMGPasswordTextInput
+          placeholder='Enter password...'
+          secured={true}
+          lines={1}
+          hideUnderline={false}
+          disabled={!loading}
+        />
+      </OMGBox>
       <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 16 }}>
         <Button
           mode='contained'
