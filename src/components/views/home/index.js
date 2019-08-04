@@ -61,6 +61,12 @@ const Home = ({ navigation }) => {
           onPress={() => navigation.navigate('Preview')}>
           Preview
         </Button>
+        <Button
+          mode='outlined'
+          style={styles.button}
+          onPress={() => navigation.navigate('Wallets')}>
+          Wallet list
+        </Button>
       </OMGBackground>
     </ScrollView>
   )

@@ -49,6 +49,10 @@ const navigator = createStackNavigator(
       screen: Views.Deposit,
       navigationOptions: () => ({ title: 'Deposit' })
     },
+    Wallets: {
+      screen: Views.Wallets,
+      navigationOptions: () => ({ title: 'Wallets' })
+    },
     Preview: {
       screen: Views.Preview,
       navigationOptions: ({ navigation }) => ({
