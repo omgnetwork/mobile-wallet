@@ -5,7 +5,6 @@ import { Title, Text } from 'react-native-paper'
 import { ethersUtils } from '../../../common/utils'
 
 const OMGItemWallet = ({ name, wallet, selected, style }) => {
-  console.log(name)
   return (
     <OMGBox style={{ ...styles.container, ...style }}>
       <Image

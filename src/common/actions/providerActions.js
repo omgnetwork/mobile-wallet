@@ -1,20 +1,17 @@
-import { settingStorage } from '../storages'
-import { createAction, createAsyncAction } from './actionCreators'
-import { createProvider } from '../utils/ethers'
+import { createAsyncAction } from './actionCreators'
+import { providerService } from '../services'
 
-export const setProvider = (dispatch, providerName) => {
-  const action = () => {
-    const provider = createProvider(providerName)
-    settingStorage.setProviderName(providerName)
-    return provider
+export const setProvider = providerName => {
+  const asyncAction = async () => {
+    return await providerService.create(providerName)
   }
-  return createAction(dispatch, { operation: action, type: 'PROVIDER/SET' })
+  return createAsyncAction({ operation: asyncAction, type: 'PROVIDER/SET' })
 }
 
-export const syncProviderToStore = providerName => {
-  const action = async () => {
-    const name = providerName || (await settingStorage.getProviderName())
-    return createProvider(name)
+export const syncProviderToStore = defaultProviderName => {
+  const asyncAction = async () => {
+    const name = await providerService.getName(defaultProviderName)
+    return await providerService.create(name)
   }
-  return createAsyncAction({ operation: action, type: 'PROVIDER/SYNC' })
+  return createAsyncAction({ operation: asyncAction, type: 'PROVIDER/SYNC' })
 }

@@ -1,7 +1,6 @@
 import { Animated, Easing } from 'react-native'
 
 export const In = fade => {
-  console.log('fadein')
   Animated.spring(fade, {
     toValue: 1.0,
     easing: Easing.back(),
@@ -11,7 +10,6 @@ export const In = fade => {
 }
 
 export const Out = fade => {
-  console.log('fadeout')
   Animated.spring(fade, {
     toValue: 0.0,
     easing: Easing.back(),

@@ -5,10 +5,6 @@ import { colors } from './common/styles'
 import * as Views from './components/views'
 import { OMGIcon } from './components/widgets'
 
-const myIcon = (
-  <OMGIcon name='rocket' onPress={() => console.log('click rocket')} />
-)
-
 const navigator = createStackNavigator(
   {
     Home: {

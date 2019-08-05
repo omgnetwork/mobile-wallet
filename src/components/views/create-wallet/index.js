@@ -17,8 +17,6 @@ const CreateWalletComponent = ({
     <Text key={id}>{wallet.address}</Text>
   ))
 
-  console.log('provider', provider)
-
   return (
     <View>
       <Button
@@ -43,8 +41,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  createWallet: provider => dispatch(walletActions.createWallet(provider)),
-  deleteAllWallet: () => dispatch(walletActions.deleteAll())
+  createWallet: provider => dispatch(walletActions.create(provider)),
+  deleteAllWallet: () => dispatch(walletActions.clear())
 })
 
 export default connect(

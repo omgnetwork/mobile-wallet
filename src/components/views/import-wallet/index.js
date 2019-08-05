@@ -84,8 +84,6 @@ const Mnemonic = ({ importWalletByMnemonic, loadingStatus, provider }) => {
     }
   }, [importWalletByMnemonic, mnemonic, provider])
 
-  console.log('Rerender import mnemonic')
-
   return (
     <Fragment>
       <Text>
@@ -136,7 +134,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   importWalletByMnemonic: (mnemonic, provider) =>
-    dispatch(walletActions.importWalletByMnemonic(mnemonic, provider))
+    dispatch(walletActions.importByMnemonic(mnemonic, provider))
 })
 
 export default connect(

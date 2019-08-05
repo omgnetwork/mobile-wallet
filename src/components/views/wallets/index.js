@@ -6,7 +6,6 @@ import { OMGBackground, OMGItemWallet } from '../../widgets'
 import { walletActions } from '../../../common/actions'
 
 const Wallets = ({ loadingStatus, wallets }) => {
-  console.log(wallets)
   return (
     <OMGBackground style={styles.container}>
       <FlatList
@@ -14,7 +13,6 @@ const Wallets = ({ loadingStatus, wallets }) => {
         data={wallets}
         keyExtractor={wallet => wallet.address}
         renderItem={({ item, index }) => {
-          console.log(item)
           return (
             <OMGItemWallet
               style={styles.item}
@@ -47,7 +45,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  deleteAllWallet: () => dispatch(walletActions.deleteAll())
+  deleteAllWallet: () => dispatch(walletActions.clear())
 })
 
 export default connect(

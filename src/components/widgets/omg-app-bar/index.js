@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
 import { Appbar } from 'react-native-paper'
-import { IconSource } from 'react-native-paper'
 
 const OMGAppBar = ({
   iconLeft,
@@ -27,9 +26,6 @@ const OMGAppBar = ({
       styles={styles.iconRight}
     />
   )
-
-  console.log(appBarIconLeft)
-  console.log(appBarIconRight)
 
   return (
     <Appbar.Header style={styles.header} dark={false}>
