@@ -5,23 +5,22 @@ import { Provider } from 'react-redux'
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import Router from 'router'
 import createStore from 'common/stores'
-import { walletActions, providerActions } from 'common/actions'
+import { walletActions, settingActions } from 'common/actions'
 import { OMGBackground } from 'components/widgets'
 
 const App = () => {
-  const [store, setStore] = useState(
-    createStore({ wallets: [], provider: null })
-  )
+  const [store, setStore] = useState(createStore({ wallets: [], setting: {} }))
 
   useEffect(() => {
     function sync() {
       store.dispatch(walletActions.syncAllToStore())
-      store.dispatch(providerActions.syncProviderToStore('rinkeby'))
+      store.dispatch(settingActions.syncProviderToStore('rinkeby'))
+      store.dispatch(settingActions.syncPrimaryWalletAddressToStore(null))
     }
 
     sync()
 
-    return () => setStore(createStore({ wallets: [], provider: null }))
+    return () => setStore(createStore({ wallets: [], setting: {} }))
   }, [store])
 
   const theme = {

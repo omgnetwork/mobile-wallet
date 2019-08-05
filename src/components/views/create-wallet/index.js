@@ -37,7 +37,7 @@ const CreateWalletComponent = ({
 const mapStateToProps = (state, ownProps) => ({
   loadingStatus: state.loadingStatus,
   wallets: state.wallets,
-  provider: state.provider
+  provider: state.setting.provider
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

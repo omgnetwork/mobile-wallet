@@ -1,11 +1,22 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, FlatList } from 'react-native'
 import { withTheme, Text } from 'react-native-paper'
 import { OMGBackground, OMGItemWallet } from 'components/widgets'
-import { walletActions } from 'common/actions'
+import { walletActions, settingActions } from 'common/actions'
 
-const Wallets = ({ loadingStatus, wallets }) => {
+const Wallets = ({
+  loadingStatus,
+  wallets,
+  primaryWalletAddress,
+  savePrimaryWalletAddress
+}) => {
+  const [primaryAddress, setPrimaryAddress] = useState(primaryWalletAddress)
+
+  useEffect(() => {
+    savePrimaryWalletAddress(primaryAddress)
+  }, [primaryAddress, savePrimaryWalletAddress])
+
   return (
     <OMGBackground style={styles.container}>
       <FlatList
@@ -17,7 +28,8 @@ const Wallets = ({ loadingStatus, wallets }) => {
             <OMGItemWallet
               style={styles.item}
               key={item.address}
-              selected={index === 1}
+              onPress={() => setPrimaryAddress(item.address)}
+              selected={item.address === primaryAddress}
               name={`Wallet ${index + 1}`}
               wallet={item}
             />
@@ -41,11 +53,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => ({
   loadingStatus: state.loadingStatus,
-  wallets: state.wallets
+  wallets: state.wallets,
+  primaryWalletAddress: state.setting.primaryWalletAddress
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  deleteAllWallet: () => dispatch(walletActions.clear())
+  deleteAllWallet: () => dispatch(walletActions.clear()),
+  savePrimaryWalletAddress: address =>
+    dispatch(settingActions.setPrimaryAddress(address))
 })
 
 export default connect(

@@ -1,5 +1,5 @@
 import { ethersUtils } from '../utils'
-import { walletStorage } from '../storages'
+import { walletStorage, settingStorage } from '../storages'
 
 export const create = provider => {
   return new Promise(async (resolve, reject) => {
@@ -74,6 +74,28 @@ export const all = () => {
     try {
       const wallets = await walletStorage.all()
       resolve(wallets)
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
+export const setPrimaryAddress = address => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await settingStorage.setPrimaryAddress(address)
+      resolve(address)
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
+export const getPrimaryAddress = defaultAddress => {
+  return new Promise((resolve, reject) => {
+    try {
+      const primaryAddress = settingStorage.getPrimaryAddress(defaultAddress)
+      resolve(primaryAddress)
     } catch (err) {
       reject(err)
     }

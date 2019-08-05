@@ -4,11 +4,13 @@ import OMGBox from '../omg-box'
 import { Title, Text } from 'react-native-paper'
 import { ethersUtils } from 'common/utils'
 
-const OMGItemWallet = ({ name, wallet, selected, style }) => {
+const OMGItemWallet = ({ name, wallet, selected, style, onPress }) => {
   return (
-    <OMGBox style={{ ...styles.container, ...style }}>
+    <OMGBox
+      style={{ ...styles.container(selected), ...style }}
+      onPress={onPress}>
       <Image
-        style={styles.logo(selected || false)}
+        style={styles.logo}
         source={{
           uri: `https://api.adorable.io/avatars/285/${wallet.address}.png`
         }}
@@ -28,21 +30,21 @@ const OMGItemWallet = ({ name, wallet, selected, style }) => {
 }
 
 const styles = StyleSheet.create({
-  logo: selected => ({
+  logo: {
     width: 64,
     height: 64,
-    borderRadius: 12,
-    tintColor: selected ? 'gray' : null,
-    opacity: selected ? 0.7 : 1.0
-  }),
-  container: {
+    borderRadius: 12
+  },
+  container: selected => ({
     flex: 1,
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     padding: 12,
-    borderColor: 12
-  },
+    borderRadius: 12,
+    borderColor: '#334e68',
+    borderWidth: selected ? 0.5 : 0
+  }),
   sectionName: {
     flex: 1,
     flexDirection: 'column',
