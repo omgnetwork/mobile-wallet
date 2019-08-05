@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { Button } from 'react-native-paper'
-import { OMGBackground } from '../../widgets'
+import { OMGBackground } from 'components/widgets'
 
 const Home = ({ navigation }) => {
   return (

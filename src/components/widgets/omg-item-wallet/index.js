@@ -2,7 +2,7 @@ import React from 'react'
 import { Image, StyleSheet, View } from 'react-native'
 import OMGBox from '../omg-box'
 import { Title, Text } from 'react-native-paper'
-import { ethersUtils } from '../../../common/utils'
+import { ethersUtils } from 'common/utils'
 
 const OMGItemWallet = ({ name, wallet, selected, style }) => {
   return (

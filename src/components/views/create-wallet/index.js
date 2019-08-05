@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { View, ActivityIndicator } from 'react-native'
 import { Button, Text } from 'react-native-paper'
-import { walletActions } from '../../../common/actions'
+import { walletActions } from 'common/actions'
 
 const CreateWalletComponent = ({
   loadingStatus,

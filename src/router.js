@@ -1,9 +1,9 @@
 import React from 'react'
 import { createAppContainer, createStackNavigator } from 'react-navigation'
-import { colors } from './common/styles'
+import { colors } from 'common/styles'
 
-import * as Views from './components/views'
-import { OMGIcon } from './components/widgets'
+import * as Views from 'components/views'
+import { OMGIcon } from 'components/widgets'
 
 const navigator = createStackNavigator(
   {

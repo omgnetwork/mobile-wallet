@@ -2,8 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, FlatList } from 'react-native'
 import { withTheme, Text } from 'react-native-paper'
-import { OMGBackground, OMGItemWallet } from '../../widgets'
-import { walletActions } from '../../../common/actions'
+import { OMGBackground, OMGItemWallet } from 'components/widgets'
+import { walletActions } from 'common/actions'
 
 const Wallets = ({ loadingStatus, wallets }) => {
   return (

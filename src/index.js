@@ -3,10 +3,10 @@ import { StatusBar, StyleSheet, View } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { Provider } from 'react-redux'
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
-import Router from './router'
-import createStore from './common/stores'
-import { walletActions, providerActions } from './common/actions'
-import { OMGBackground } from './components/widgets'
+import Router from 'router'
+import createStore from 'common/stores'
+import { walletActions, providerActions } from 'common/actions'
+import { OMGBackground } from 'components/widgets'
 
 const App = () => {
   const [store, setStore] = useState(

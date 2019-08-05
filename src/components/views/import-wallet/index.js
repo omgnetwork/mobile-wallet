@@ -1,9 +1,9 @@
 import React, { useState, Fragment, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
-import { walletActions } from '../../../common/actions'
-import { useAlert, useTextInput, useLoading } from '../../../common/hooks'
-import { random } from '../../../common/utils'
+import { walletActions } from 'common/actions'
+import { useAlert, useTextInput, useLoading } from 'common/hooks'
+import { random } from 'common/utils'
 import {
   OMGRadioButton,
   OMGTextInput,
@@ -11,7 +11,7 @@ import {
   OMGBox,
   OMGPasswordTextInput,
   OMGButton
-} from '../../widgets'
+} from 'components/widgets'
 import { Text, Title, Snackbar, withTheme } from 'react-native-paper'
 import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-navigation'

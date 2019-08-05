@@ -1,3 +1,4 @@
+import 'ethers/dist/shims.js'
 import { ethers } from 'ethers'
 
 // Returns a wallet
