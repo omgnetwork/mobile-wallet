@@ -2,20 +2,21 @@ import { storageUtils } from '../utils'
 
 export const addWalletInfo = async wallet => {
   const address = await wallet.address
+  const balance = await wallet.getBalance()
   const walletsInfo = (await getWalletInfos()) || []
 
   if (walletsInfo.filter(w => w.address === address).length > 0) {
     throw 'The wallet has been already added.'
   }
 
-  const newWalletsInfo = [
-    ...walletsInfo,
-    {
-      address: address
-    }
-  ]
+  const newWallet = {
+    address: address,
+    balance: balance
+  }
+  const newWalletsInfo = [...walletsInfo, newWallet]
 
-  return storageUtils.set('wallets_info', JSON.stringify(newWalletsInfo))
+  await storageUtils.set('wallets_info', JSON.stringify(newWalletsInfo))
+  return newWallet
 }
 
 export const getWalletInfos = async () => {

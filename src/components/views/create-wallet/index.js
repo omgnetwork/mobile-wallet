@@ -7,6 +7,7 @@ import { walletActions } from '../../../common/actions'
 const CreateWalletComponent = ({
   loadingStatus,
   wallets,
+  provider,
   createWallet,
   deleteAllWallet
 }) => {
@@ -16,11 +17,14 @@ const CreateWalletComponent = ({
     <Text key={id}>{wallet.address}</Text>
   ))
 
-  console.log('loading', showLoading)
+  console.log('provider', provider)
 
   return (
     <View>
-      <Button mode='outlined' onPress={createWallet} disabled={showLoading}>
+      <Button
+        mode='outlined'
+        onPress={() => createWallet(provider)}
+        disabled={showLoading}>
         Create Wallet
       </Button>
       {walletsView}
@@ -34,11 +38,12 @@ const CreateWalletComponent = ({
 
 const mapStateToProps = (state, ownProps) => ({
   loadingStatus: state.loadingStatus,
-  wallets: state.wallets
+  wallets: state.wallets,
+  provider: state.provider
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  createWallet: () => dispatch(walletActions.createWallet()),
+  createWallet: provider => dispatch(walletActions.createWallet(provider)),
   deleteAllWallet: () => dispatch(walletActions.deleteAll())
 })
 

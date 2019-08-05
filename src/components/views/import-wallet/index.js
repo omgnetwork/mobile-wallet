@@ -68,7 +68,7 @@ const ImportWalletComponent = props => {
   )
 }
 
-const Mnemonic = ({ importWalletByMnemonic, loadingStatus }) => {
+const Mnemonic = ({ importWalletByMnemonic, loadingStatus, provider }) => {
   const [actionId, setActionId] = useState()
   const [mnemonic, mnemonicCallback] = useTextInput(actionId)
   const [loading] = useLoading(loadingStatus)
@@ -80,9 +80,9 @@ const Mnemonic = ({ importWalletByMnemonic, loadingStatus }) => {
 
   useEffect(() => {
     if (mnemonic) {
-      importWalletByMnemonic(mnemonic)
+      importWalletByMnemonic(mnemonic, provider)
     }
-  }, [importWalletByMnemonic, mnemonic])
+  }, [importWalletByMnemonic, mnemonic, provider])
 
   console.log('Rerender import mnemonic')
 
@@ -130,12 +130,13 @@ ImportWalletComponent.Mnemonic = Mnemonic
 
 const mapStateToProps = (state, ownProps) => ({
   loadingStatus: state.loadingStatus,
-  wallets: state.wallets
+  wallets: state.wallets,
+  provider: state.provider
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  importWalletByMnemonic: mnemonic =>
-    dispatch(walletActions.importWalletByMnemonic(mnemonic))
+  importWalletByMnemonic: (mnemonic, provider) =>
+    dispatch(walletActions.importWalletByMnemonic(mnemonic, provider))
 })
 
 export default connect(

@@ -2,14 +2,14 @@ import { walletService } from '../services'
 import { walletStorage } from '../storages'
 import { createAsyncAction } from './actionCreators'
 
-export const createWallet = () => {
+export const createWallet = provider => {
   const asyncActions = async () => {
-    const wallet = await walletService.create()
+    const wallet = await walletService.create(provider)
 
     await walletStorage.setWalletPrivateKey(wallet)
-    await walletStorage.addWalletInfo(wallet)
+    const data = await walletStorage.addWalletInfo(wallet)
 
-    return { wallet }
+    return data
   }
 
   return createAsyncAction({
@@ -30,18 +30,32 @@ export const deleteAll = () => {
   })
 }
 
-export const importWalletByMnemonic = mnemonic => {
+export const syncWalletsToStore = () => {
+  const asyncActions = async () => {
+    const wallets = await walletStorage.getWalletInfos()
+    return { wallets }
+  }
+
+  return createAsyncAction({
+    operation: asyncActions,
+    type: 'WALLET/SYNC'
+  })
+}
+
+export const importWalletByMnemonic = (mnemonic, provider) => {
   const asyncActions = async () => {
     if (mnemonic.split(' ').length !== 12) {
       console.log('invalid mnemonic')
       throw 'Invalid mnemonic'
     }
-    const wallet = await walletService.importWalletByMnemonic(mnemonic)
+    const wallet = await walletService.importWalletByMnemonic(
+      mnemonic,
+      provider
+    )
 
     await walletStorage.setWalletPrivateKey(wallet)
-    await walletStorage.addWalletInfo(wallet)
-
-    return { wallet }
+    const data = await walletStorage.addWalletInfo(wallet)
+    return data
   }
 
   return createAsyncAction({

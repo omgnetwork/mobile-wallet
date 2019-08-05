@@ -2,10 +2,9 @@ import React from 'react'
 import { Image, StyleSheet, View } from 'react-native'
 import OMGBox from '../omg-box'
 import { Title, Text } from 'react-native-paper'
+import { ethersUtils } from '../../../common/utils'
 
 const OMGItemWallet = ({ name, wallet, selected, style }) => {
-  const balance = 10000
-  const currency = 'USD'
   console.log(name)
   return (
     <OMGBox style={{ ...styles.container, ...style }}>
@@ -20,8 +19,10 @@ const OMGItemWallet = ({ name, wallet, selected, style }) => {
         <Text style={styles.address}>{wallet.address}</Text>
       </View>
       <View style={styles.sectionAmount}>
-        <Title style={styles.balance}>{balance}</Title>
-        <Text style={styles.currency}>{currency}</Text>
+        <Title style={styles.balance} ellipsizeMode='tail' numberOfLines={1}>
+          {ethersUtils.formatEther(wallet.balance)}
+        </Title>
+        <Text style={styles.currency}>ETH</Text>
       </View>
     </OMGBox>
   )
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   balance: {
+    maxWidth: 48,
     fontSize: 16
   },
   address: {
