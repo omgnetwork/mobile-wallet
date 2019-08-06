@@ -1,4 +1,5 @@
 import React, { useState, Fragment, useEffect } from 'react'
+import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
 import { walletActions } from 'common/actions'
@@ -68,7 +69,12 @@ const ImportWalletComponent = props => {
   )
 }
 
-const Mnemonic = ({ importWalletByMnemonic, loadingStatus, provider }) => {
+const Mnemonic = ({
+  importWalletByMnemonic,
+  loadingStatus,
+  provider,
+  navigation
+}) => {
   const [actionId, setActionId] = useState()
   const [mnemonic, mnemonicCallback] = useTextInput(actionId)
   const [loading] = useLoading(loadingStatus)
@@ -83,6 +89,12 @@ const Mnemonic = ({ importWalletByMnemonic, loadingStatus, provider }) => {
       importWalletByMnemonic(mnemonic, provider)
     }
   }, [importWalletByMnemonic, mnemonic, provider])
+
+  useEffect(() => {
+    if (loadingStatus === 'SUCCESS') {
+      navigation.goBack()
+    }
+  }, [loadingStatus, navigation])
 
   return (
     <Fragment>
@@ -140,4 +152,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTheme(ImportWalletComponent))
+)(withNavigation(withTheme(ImportWalletComponent)))

@@ -1,17 +1,29 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, FlatList } from 'react-native'
+import { withNavigation } from 'react-navigation'
+import { StyleSheet, FlatList, View } from 'react-native'
 import { withTheme, Text } from 'react-native-paper'
-import { OMGBackground, OMGItemWallet } from 'components/widgets'
+import { OMGBackground, OMGItemWallet, OMGButton } from 'components/widgets'
 import { walletActions, settingActions } from 'common/actions'
+import { OMGMenu } from 'components/widgets'
 
 const Wallets = ({
   loadingStatus,
   wallets,
   primaryWalletAddress,
-  savePrimaryWalletAddress
+  savePrimaryWalletAddress,
+  navigation
 }) => {
   const [primaryAddress, setPrimaryAddress] = useState(primaryWalletAddress)
+  const [menuVisible, setMenuVisible] = useState(false)
+
+  const showMenuCallback = useCallback(() => {
+    setMenuVisible(true)
+  }, [])
+
+  const dismissMenuCallback = useCallback(() => {
+    setMenuVisible(false)
+  }, [])
 
   useEffect(() => {
     savePrimaryWalletAddress(primaryAddress)
@@ -36,6 +48,32 @@ const Wallets = ({
           )
         }}
       />
+      <View style={styles.button}>
+        <OMGMenu
+          style={{ marginBottom: 16 }}
+          anchorComponent={
+            <OMGButton onPress={showMenuCallback}>Add Wallet</OMGButton>
+          }
+          items={[
+            {
+              title: 'Create Wallet',
+              onPress: () => {
+                dismissMenuCallback()
+                navigation.navigate('CreateWallet')
+              }
+            },
+            {
+              title: 'Import Wallet',
+              onPress: () => {
+                dismissMenuCallback()
+                navigation.navigate('ImportWallet')
+              }
+            }
+          ]}
+          visible={menuVisible}
+          onDismiss={dismissMenuCallback}
+        />
+      </View>
     </OMGBackground>
   )
 }
@@ -48,6 +86,12 @@ const styles = StyleSheet.create({
   },
   item: {
     marginTop: 12
+  },
+  button: {
+    marginTop: 16,
+    justifyContent: 'flex-end',
+    marginBottom: 16,
+    flexDirection: 'row'
   }
 })
 
@@ -66,4 +110,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTheme(Wallets))
+)(withNavigation(withTheme(Wallets)))

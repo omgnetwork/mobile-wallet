@@ -10,18 +10,6 @@ const Home = ({ navigation }) => {
         <Button
           mode='outlined'
           style={styles.button}
-          onPress={() => navigation.navigate('CreateWallet')}>
-          Create a Wallet
-        </Button>
-        <Button
-          mode='outlined'
-          style={styles.button}
-          onPress={() => navigation.navigate('ImportWallet')}>
-          Import a Wallet
-        </Button>
-        <Button
-          mode='outlined'
-          style={styles.button}
           onPress={() => navigation.navigate('Scan')}>
           Scan
         </Button>

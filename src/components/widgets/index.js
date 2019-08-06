@@ -2,6 +2,7 @@ import OMGAppBar from './omg-app-bar'
 import OMGBackground from './omg-background'
 import OMGBox from './omg-box'
 import OMGButton from './omg-button'
+import OMGMenu from './omg-menu'
 import OMGIcon from './omg-icon'
 import OMGItemWallet from './omg-item-wallet'
 import OMGPasswordTextInput from './omg-password-text-input'
@@ -21,5 +22,6 @@ export {
   OMGRadioButton,
   OMGTextInput,
   OMGTitle,
-  OMGText
+  OMGText,
+  OMGMenu
 }
