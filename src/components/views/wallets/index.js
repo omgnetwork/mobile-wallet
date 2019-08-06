@@ -9,6 +9,7 @@ import { OMGMenu } from 'components/widgets'
 
 const Wallets = ({
   loadingStatus,
+  deleteAllWallet,
   wallets,
   primaryWalletAddress,
   savePrimaryWalletAddress,
@@ -42,7 +43,7 @@ const Wallets = ({
               key={item.address}
               onPress={() => setPrimaryAddress(item.address)}
               selected={item.address === primaryAddress}
-              name={`Wallet ${index + 1}`}
+              name={item.name}
               wallet={item}
             />
           )
@@ -73,6 +74,9 @@ const Wallets = ({
           visible={menuVisible}
           onDismiss={dismissMenuCallback}
         />
+        <OMGButton onPress={deleteAllWallet} style={{ marginTop: 16 }}>
+          Clear
+        </OMGButton>
       </View>
     </OMGBackground>
   )
@@ -91,7 +95,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     justifyContent: 'flex-end',
     marginBottom: 16,
-    flexDirection: 'row'
+    flexDirection: 'column'
   }
 })
 
