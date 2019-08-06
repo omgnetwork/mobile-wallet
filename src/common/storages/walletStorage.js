@@ -1,6 +1,6 @@
 import { storageUtils } from '../utils'
 
-export const add = async ({ address, balance }) => {
+export const add = async ({ address, balance, name }) => {
   const wallets = (await all()) || []
 
   if (wallets.filter(w => w.address === address).length > 0) {
@@ -9,7 +9,8 @@ export const add = async ({ address, balance }) => {
 
   const wallet = {
     address: address,
-    balance: balance
+    balance: balance,
+    name: name
   }
 
   await storageUtils.set('wallets', JSON.stringify([...wallets, wallet]))

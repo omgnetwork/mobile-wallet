@@ -1,36 +1,55 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
-import { View, ActivityIndicator } from 'react-native'
-import { Button, Text } from 'react-native-paper'
+import { View } from 'react-native'
+import { Title } from 'react-native-paper'
+import { useTextInput } from 'common/hooks'
+import { random } from 'common/utils'
+import {
+  OMGButton,
+  OMGBox,
+  OMGTextInput,
+  OMGBackground
+} from 'components/widgets'
 import { walletActions } from 'common/actions'
 
 const CreateWalletComponent = ({
   loadingStatus,
-  wallets,
   provider,
   createWallet,
-  deleteAllWallet
+  navigation
 }) => {
   const showLoading = loadingStatus === 'INITIATED'
+  const [actionId, setActionId] = useState()
+  const [name, setName] = useTextInput(actionId)
 
-  const walletsView = wallets.map((wallet, id) => (
-    <Text key={id}>{wallet.address}</Text>
-  ))
+  useEffect(() => {
+    if (name) {
+      createWallet(provider, name)
+    }
+  }, [createWallet, name, provider])
+
+  useEffect(() => {
+    if (loadingStatus === 'SUCCESS') {
+      navigation.goBack()
+    }
+  }, [loadingStatus, navigation])
 
   return (
-    <View>
-      <Button
-        mode='outlined'
-        onPress={() => createWallet(provider)}
-        disabled={showLoading}>
-        Create Wallet
-      </Button>
-      {walletsView}
-      {showLoading && <ActivityIndicator animating={true} size={'small'} />}
-      <Button mode='outlined' onPress={deleteAllWallet} disabled={showLoading}>
-        Clear
-      </Button>
-    </View>
+    <OMGBackground style={{ flex: 1, flexDirection: 'column', padding: 16 }}>
+      <OMGBox>
+        <Title style={{ fontSize: 14 }}>Name</Title>
+        <OMGTextInput placeholder='Name' callback={setName} />
+      </OMGBox>
+      <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 16 }}>
+        <OMGButton
+          onPress={() => setActionId(random.fastRandomId())}
+          style={{ marginTop: 16 }}
+          disabled={showLoading}>
+          Create Wallet
+        </OMGButton>
+      </View>
+    </OMGBackground>
   )
 }
 
@@ -41,11 +60,12 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  createWallet: provider => dispatch(walletActions.create(provider)),
+  createWallet: (provider, name) =>
+    dispatch(walletActions.create(provider, name)),
   deleteAllWallet: () => dispatch(walletActions.clear())
 })
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreateWalletComponent)
+)(withNavigation(CreateWalletComponent))

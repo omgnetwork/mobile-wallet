@@ -1,7 +1,7 @@
 import { ethersUtils } from '../utils'
 import { walletStorage, settingStorage } from '../storages'
 
-export const create = provider => {
+export const create = (provider, name) => {
   return new Promise(async (resolve, reject) => {
     try {
       const wallet = ethersUtils.createWallet()
@@ -11,10 +11,12 @@ export const create = provider => {
       const address = await connectedProviderWallet.address
       const balance = await connectedProviderWallet.getBalance()
 
-      await walletStorage.setPrivateKey({ address, privateKey })
-      await walletStorage.add({ address, balance })
+      console.log(name)
 
-      resolve({ address, balance })
+      await walletStorage.setPrivateKey({ address, privateKey })
+      await walletStorage.add({ address, balance, name })
+
+      resolve({ address, balance, name })
     } catch (err) {
       reject(err)
     }
@@ -49,9 +51,9 @@ export const importByMnemonic = (mnemonic, provider) => {
       const balance = await connectedProviderWallet.getBalance()
 
       await walletStorage.setPrivateKey({ address, privateKey })
-      await walletStorage.add({ address, balance })
+      await walletStorage.add({ address, balance, name: 'Import Wallet' })
 
-      resolve({ address, balance })
+      resolve({ address, balance, name: 'Import Wallet' })
     } catch (err) {
       reject(err)
     }
