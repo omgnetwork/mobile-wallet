@@ -29,12 +29,17 @@ const App = () => {
     roundness: 4,
     colors: {
       ...DefaultTheme.colors,
-      primary: '#334e68',
+      primary: '#3c414d',
+      primaryLight: '#5b626f',
+      primaryDarker: '#262a31',
       accent: '#f1c40f',
-      background: '#f0f4f8',
+      background: '#f0f2f5',
       surface: '#D9E2EC',
       placeholder: '#BCCCDC',
-      input: '#FFFFFF'
+      darkText1: '#d0d6e2',
+      darkText2: '#858b9a',
+      input: '#FFFFFF',
+      white: '#FFFFFF'
     }
   }
 

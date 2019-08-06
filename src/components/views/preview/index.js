@@ -7,7 +7,8 @@ import {
   OMGTextInput,
   OMGButton,
   OMGBox,
-  OMGPasswordTextInput
+  OMGPasswordTextInput,
+  OMGCardBalance
 } from 'components/widgets'
 
 const Preview = ({ navigation, theme }) => {
@@ -54,6 +55,14 @@ const Preview = ({ navigation, theme }) => {
         mode='contained'>
         Disabled
       </OMGButton>
+      <OMGCardBalance
+        theme={theme}
+        amount='2,090.00'
+        currency='USD'
+        blockchain='Ethereum'
+        network='Mainnet'
+        style={{ marginTop: 16 }}
+      />
     </View>
   )
 }

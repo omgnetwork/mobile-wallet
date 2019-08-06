@@ -7,7 +7,7 @@ const OMGBackground = ({ theme, children, style }) => {
   const { colors } = theme
 
   return (
-    <Surface style={{ ...style, backgroundColor: colors.background }}>
+    <Surface style={{ backgroundColor: colors.background, ...style }}>
       {children}
     </Surface>
   )

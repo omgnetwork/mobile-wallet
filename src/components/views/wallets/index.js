@@ -5,7 +5,7 @@ import { StyleSheet, FlatList, View } from 'react-native'
 import { withTheme, Text } from 'react-native-paper'
 import { OMGBackground, OMGItemWallet, OMGButton } from 'components/widgets'
 import { walletActions, settingActions } from 'common/actions'
-import { OMGMenu } from 'components/widgets'
+import { OMGMenu, OMGEmpty } from 'components/widgets'
 
 const Wallets = ({
   loadingStatus,
@@ -35,8 +35,13 @@ const Wallets = ({
       <FlatList
         style={{ flex: 1 }}
         data={wallets}
+        emptyText='Empty wallets'
         keyExtractor={wallet => wallet.address}
-        renderItem={({ item, index }) => {
+        ListEmptyComponent={<OMGEmpty text='Empty wallets' />}
+        contentContainerStyle={
+          wallets.length ? {} : { flexGrow: 1, justifyContent: 'center' }
+        }
+        renderItem={({ item }) => {
           return (
             <OMGItemWallet
               style={styles.item}

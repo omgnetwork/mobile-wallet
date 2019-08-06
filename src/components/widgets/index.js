@@ -2,6 +2,8 @@ import OMGAppBar from './omg-app-bar'
 import OMGBackground from './omg-background'
 import OMGBox from './omg-box'
 import OMGButton from './omg-button'
+import OMGCardBalance from './omg-card-balance'
+import OMGEmpty from './omg-empty'
 import OMGMenu from './omg-menu'
 import OMGIcon from './omg-icon'
 import OMGItemWallet from './omg-item-wallet'
@@ -16,6 +18,8 @@ export {
   OMGBackground,
   OMGBox,
   OMGButton,
+  OMGCardBalance,
+  OMGEmpty,
   OMGIcon,
   OMGItemWallet,
   OMGPasswordTextInput,

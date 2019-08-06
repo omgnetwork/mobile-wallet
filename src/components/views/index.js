@@ -1,4 +1,5 @@
 import CreateWallet from './create-wallet'
+import Balance from './balance'
 import ImportWallet from './import-wallet'
 import Wallets from './wallets'
 import Deposit from './deposit'
@@ -11,6 +12,7 @@ import Setting from './setting'
 import Preview from './preview'
 
 export {
+  Balance,
   CreateWallet,
   ImportWallet,
   Wallets,

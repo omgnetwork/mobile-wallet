@@ -13,6 +13,10 @@ const navigator = createStackNavigator(
         title: 'Home'
       }
     },
+    Balance: {
+      screen: Views.Balance,
+      navigationOptions: () => ({ title: 'Balance' })
+    },
     CreateWallet: {
       screen: Views.CreateWallet,
       navigationOptions: () => ({ title: 'Create Wallet' })
