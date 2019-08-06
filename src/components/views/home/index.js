@@ -1,24 +1,12 @@
 import React, { Fragment } from 'react'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { Button } from 'react-native-paper'
-import { OMGBackground } from '../../widgets'
+import { OMGBackground } from 'components/widgets'
 
 const Home = ({ navigation }) => {
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#f0f4f8' }}>
       <OMGBackground style={styles.container}>
-        <Button
-          mode='outlined'
-          style={styles.button}
-          onPress={() => navigation.navigate('CreateWallet')}>
-          Create a Wallet
-        </Button>
-        <Button
-          mode='outlined'
-          style={styles.button}
-          onPress={() => navigation.navigate('ImportWallet')}>
-          Import a Wallet
-        </Button>
         <Button
           mode='outlined'
           style={styles.button}
@@ -60,6 +48,12 @@ const Home = ({ navigation }) => {
           style={styles.button}
           onPress={() => navigation.navigate('Preview')}>
           Preview
+        </Button>
+        <Button
+          mode='outlined'
+          style={styles.button}
+          onPress={() => navigation.navigate('Wallets')}>
+          Wallet list
         </Button>
       </OMGBackground>
     </ScrollView>

@@ -8,7 +8,7 @@ import {
   OMGButton,
   OMGBox,
   OMGPasswordTextInput
-} from '../../widgets'
+} from 'components/widgets'
 
 const Preview = ({ navigation, theme }) => {
   const [loading, setLoading] = useState(false)

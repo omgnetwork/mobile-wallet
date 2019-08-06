@@ -5,7 +5,7 @@ import { Text } from 'react-native-paper'
 const Setting = () => {
   return (
     <View>
-      <Text>Setting</Text>
+      <Text>Set default provider</Text>
     </View>
   )
 }

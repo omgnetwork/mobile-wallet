@@ -1,9 +1,10 @@
 import React, { useState, Fragment, useEffect } from 'react'
+import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
-import { walletActions } from '../../../common/actions'
-import { useAlert, useTextInput, useLoading } from '../../../common/hooks'
-import { random } from '../../../common/utils'
+import { walletActions } from 'common/actions'
+import { useAlert, useTextInput, useLoading } from 'common/hooks'
+import { random } from 'common/utils'
 import {
   OMGRadioButton,
   OMGTextInput,
@@ -11,7 +12,7 @@ import {
   OMGBox,
   OMGPasswordTextInput,
   OMGButton
-} from '../../widgets'
+} from 'components/widgets'
 import { Text, Title, Snackbar, withTheme } from 'react-native-paper'
 import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-navigation'
@@ -68,7 +69,12 @@ const ImportWalletComponent = props => {
   )
 }
 
-const Mnemonic = ({ importWalletByMnemonic, loadingStatus }) => {
+const Mnemonic = ({
+  importWalletByMnemonic,
+  loadingStatus,
+  provider,
+  navigation
+}) => {
   const [actionId, setActionId] = useState()
   const [mnemonic, mnemonicCallback] = useTextInput(actionId)
   const [loading] = useLoading(loadingStatus)
@@ -80,11 +86,15 @@ const Mnemonic = ({ importWalletByMnemonic, loadingStatus }) => {
 
   useEffect(() => {
     if (mnemonic) {
-      importWalletByMnemonic(mnemonic)
+      importWalletByMnemonic(mnemonic, provider)
     }
-  }, [importWalletByMnemonic, mnemonic])
+  }, [importWalletByMnemonic, mnemonic, provider])
 
-  console.log('Rerender import mnemonic')
+  useEffect(() => {
+    if (loadingStatus === 'SUCCESS') {
+      navigation.goBack()
+    }
+  }, [loadingStatus, navigation])
 
   return (
     <Fragment>
@@ -130,15 +140,16 @@ ImportWalletComponent.Mnemonic = Mnemonic
 
 const mapStateToProps = (state, ownProps) => ({
   loadingStatus: state.loadingStatus,
-  wallets: state.wallets
+  wallets: state.wallets,
+  provider: state.setting.provider
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  importWalletByMnemonic: mnemonic =>
-    dispatch(walletActions.importWalletByMnemonic(mnemonic))
+  importWalletByMnemonic: (mnemonic, provider) =>
+    dispatch(walletActions.importByMnemonic(mnemonic, provider))
 })
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTheme(ImportWalletComponent))
+)(withNavigation(withTheme(ImportWalletComponent)))

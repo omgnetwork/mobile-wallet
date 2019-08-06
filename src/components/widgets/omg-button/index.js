@@ -1,7 +1,12 @@
 import React, { useRef, Fragment, useEffect } from 'react'
-import { TouchableOpacity, StyleSheet, Animated } from 'react-native'
-import { Text, ActivityIndicator } from 'react-native-paper'
-import { Push, Fade } from '../../../common/anims'
+import {
+  TouchableOpacity,
+  StyleSheet,
+  Animated,
+  ActivityIndicator
+} from 'react-native'
+import { Text } from 'react-native-paper'
+import { Push, Fade } from 'common/anims'
 
 const OMGButton = ({ disabled, style, children, onPress, loading }) => {
   const opacity = disabled || loading ? styles.inactive : styles.active
@@ -49,7 +54,9 @@ const OMGButton = ({ disabled, style, children, onPress, loading }) => {
 
 const styles = StyleSheet.create({
   icon: {
-    marginRight: 8
+    marginRight: 8,
+    width: 16,
+    height: 16
   },
   text: {
     color: '#FFFFFF',

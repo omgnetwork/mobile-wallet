@@ -1,17 +1,20 @@
 import React from 'react'
-import { StyleSheet } from 'react-native'
-import { Surface, withTheme } from 'react-native-paper'
+import { StyleSheet, TouchableOpacity } from 'react-native'
+import { withTheme } from 'react-native-paper'
 
-const OMGBox = ({ children, theme, style }) => {
+const OMGBox = ({ children, theme, onPress, style }) => {
   const { colors } = theme
   return (
-    <Surface
+    <TouchableOpacity
+      onPress={onPress}
+      disabled={!onPress}
+      activeOpacity={0.6}
       style={{
         ...styles.container(colors.input),
         ...style
       }}>
       {children}
-    </Surface>
+    </TouchableOpacity>
   )
 }
 

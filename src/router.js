@@ -1,13 +1,9 @@
 import React from 'react'
 import { createAppContainer, createStackNavigator } from 'react-navigation'
-import { colors } from './common/styles'
+import { colors } from 'common/styles'
 
-import * as Views from './components/views'
-import { OMGIcon } from './components/widgets'
-
-const myIcon = (
-  <OMGIcon name='rocket' onPress={() => console.log('click rocket')} />
-)
+import * as Views from 'components/views'
+import { OMGIcon } from 'components/widgets'
 
 const navigator = createStackNavigator(
   {
@@ -48,6 +44,10 @@ const navigator = createStackNavigator(
     Deposit: {
       screen: Views.Deposit,
       navigationOptions: () => ({ title: 'Deposit' })
+    },
+    Wallets: {
+      screen: Views.Wallets,
+      navigationOptions: () => ({ title: 'Wallets' })
     },
     Preview: {
       screen: Views.Preview,

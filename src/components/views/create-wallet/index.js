@@ -2,11 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { View, ActivityIndicator } from 'react-native'
 import { Button, Text } from 'react-native-paper'
-import { walletActions } from '../../../common/actions'
+import { walletActions } from 'common/actions'
 
 const CreateWalletComponent = ({
   loadingStatus,
   wallets,
+  provider,
   createWallet,
   deleteAllWallet
 }) => {
@@ -16,11 +17,12 @@ const CreateWalletComponent = ({
     <Text key={id}>{wallet.address}</Text>
   ))
 
-  console.log('loading', showLoading)
-
   return (
     <View>
-      <Button mode='outlined' onPress={createWallet} disabled={showLoading}>
+      <Button
+        mode='outlined'
+        onPress={() => createWallet(provider)}
+        disabled={showLoading}>
         Create Wallet
       </Button>
       {walletsView}
@@ -34,12 +36,13 @@ const CreateWalletComponent = ({
 
 const mapStateToProps = (state, ownProps) => ({
   loadingStatus: state.loadingStatus,
-  wallets: state.wallets
+  wallets: state.wallets,
+  provider: state.setting.provider
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  createWallet: () => dispatch(walletActions.createWallet()),
-  deleteAllWallet: () => dispatch(walletActions.deleteAll())
+  createWallet: provider => dispatch(walletActions.create(provider)),
+  deleteAllWallet: () => dispatch(walletActions.clear())
 })
 
 export default connect(

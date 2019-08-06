@@ -29,8 +29,6 @@ const OMGPasswordTextInput = ({
     callback && callback(textInput.current._lastNativeText)
   }, [callback])
 
-  console.log('Rerender securebox')
-
   return (
     <View style={styles.secureTextInputBackground}>
       <TextInput
