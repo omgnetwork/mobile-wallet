@@ -2,8 +2,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-const OMGIcon = ({ name, color, size, onPress }) => {
-  return <Icon name={name} color={color} size={size} onPress={onPress} />
+const OMGIcon = ({ name, color, size, onPress, style }) => {
+  return (
+    <Icon
+      name={name}
+      color={color}
+      size={size}
+      onPress={onPress}
+      style={style}
+    />
+  )
 }
 
 OMGIcon.propTypes = {
