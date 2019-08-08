@@ -39,6 +39,7 @@ const App = () => {
       darkText1: '#d0d6e2',
       darkText2: '#858b9a',
       darkText3: '#3c414d',
+      darkText4: '#e4e7ed',
       icon: '#04070D',
       input: '#FFFFFF',
       white: '#FFFFFF'

@@ -1,4 +1,5 @@
 import OMGAppBar from './omg-app-bar'
+import OMGAssetFooter from './omg-asset-footer'
 import OMGBackground from './omg-background'
 import OMGBox from './omg-box'
 import OMGButton from './omg-button'
@@ -17,6 +18,7 @@ import OMGTitle from './omg-title'
 
 export {
   OMGAppBar,
+  OMGAssetFooter,
   OMGBackground,
   OMGBox,
   OMGButton,
