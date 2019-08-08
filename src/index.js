@@ -38,6 +38,8 @@ const App = () => {
       placeholder: '#BCCCDC',
       darkText1: '#d0d6e2',
       darkText2: '#858b9a',
+      darkText3: '#3c414d',
+      icon: '#04070D',
       input: '#FFFFFF',
       white: '#FFFFFF'
     }
