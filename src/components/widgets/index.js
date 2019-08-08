@@ -1,10 +1,10 @@
 import OMGAppBar from './omg-app-bar'
+import OMGAssetHeader from './omg-asset-header'
+import OMGAssetList from './omg-asset-list'
 import OMGAssetFooter from './omg-asset-footer'
 import OMGBackground from './omg-background'
 import OMGBox from './omg-box'
 import OMGButton from './omg-button'
-import OMGCardAssets from './omg-card-assets'
-import OMGCardBalance from './omg-card-balance'
 import OMGEmpty from './omg-empty'
 import OMGMenu from './omg-menu'
 import OMGIcon from './omg-icon'
@@ -18,11 +18,12 @@ import OMGTitle from './omg-title'
 
 export {
   OMGAppBar,
+  OMGAssetHeader,
+  OMGAssetList,
   OMGAssetFooter,
   OMGBackground,
   OMGBox,
   OMGButton,
-  OMGCardBalance,
   OMGEmpty,
   OMGIcon,
   OMGItemWallet,
@@ -32,6 +33,5 @@ export {
   OMGTextInput,
   OMGTitle,
   OMGText,
-  OMGMenu,
-  OMGCardAssets
+  OMGMenu
 }

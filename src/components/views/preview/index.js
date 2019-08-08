@@ -8,8 +8,8 @@ import {
   OMGButton,
   OMGBox,
   OMGPasswordTextInput,
-  OMGCardBalance,
-  OMGCardAssets,
+  OMGAssetList,
+  OMGAssetHeader,
   OMGAssetFooter
 } from 'components/widgets'
 import OMGItemToken from 'components/widgets/omg-item-token'
@@ -59,7 +59,7 @@ const Preview = ({ navigation, theme }) => {
           mode='contained'>
           Disabled
         </OMGButton>
-        <OMGCardBalance
+        <OMGAssetHeader
           theme={theme}
           amount='2,090.00'
           currency='USD'
@@ -67,7 +67,7 @@ const Preview = ({ navigation, theme }) => {
           network='Mainnet'
           style={{ marginTop: 16 }}
         />
-        <OMGCardAssets theme={theme} />
+        <OMGAssetList theme={theme} />
         <OMGItemToken symbol='OMG' balance={3.0} />
         <OMGAssetFooter theme={theme} />
       </ScrollView>

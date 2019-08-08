@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native'
 import { withTheme, Text } from 'react-native-paper'
 import { OMGBackground } from 'components/widgets'
 
-const OMGCardBalance = ({
+const OMGAssetHeader = ({
   theme,
   amount,
   currency,
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
   })
 })
 
-export default withTheme(OMGCardBalance)
+export default withTheme(OMGAssetHeader)

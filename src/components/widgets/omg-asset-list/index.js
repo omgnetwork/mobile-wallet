@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { Text, withTheme, Divider } from 'react-native-paper'
 import { OMGBackground, OMGIcon } from 'components/widgets'
 
-const OMGCardAssets = ({ theme, style, children }) => {
+const OMGAssetList = ({ theme, style, children }) => {
   return (
     <OMGBackground style={{ ...styles.container, ...style }}>
       <View style={styles.header}>
@@ -39,4 +39,4 @@ const styles = StyleSheet.create({
   })
 })
 
-export default withTheme(OMGCardAssets)
+export default withTheme(OMGAssetList)
