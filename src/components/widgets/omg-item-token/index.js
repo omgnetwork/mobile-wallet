@@ -1,0 +1,69 @@
+import React from 'react'
+import { Image, StyleSheet, View } from 'react-native'
+import OMGBox from '../omg-box'
+import { Title, Text, withTheme } from 'react-native-paper'
+
+const OMGItemToken = ({ symbol, balance, style, onPress, theme }) => {
+  return (
+    <OMGBox style={{ ...styles.container, ...style }} onPress={onPress}>
+      <Image
+        style={styles.logo(theme)}
+        source={{
+          uri: `https://api.adorable.io/avatars/285/${symbol}.png`
+        }}
+      />
+      <View style={styles.sectionName}>
+        <Title style={styles.symbol(theme)}>{symbol}</Title>
+      </View>
+      <View style={styles.sectionAmount}>
+        <Text
+          style={styles.balance(theme)}
+          ellipsizeMode='tail'
+          numberOfLines={1}>
+          {balance}
+        </Text>
+        <Text style={styles.fiatValue(theme)}>0.00 USD</Text>
+      </View>
+    </OMGBox>
+  )
+}
+
+const styles = StyleSheet.create({
+  logo: theme => ({
+    width: 40,
+    height: 40,
+    borderRadius: theme.roundness,
+    borderWidth: 0.5
+  }),
+  container: {
+    flexDirection: 'row',
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    padding: 10
+  },
+  sectionName: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    marginLeft: 16
+  },
+  sectionAmount: {
+    flexDirection: 'column'
+  },
+  symbol: theme => ({
+    fontSize: 14,
+    color: theme.colors.primary
+  }),
+  balance: theme => ({
+    textAlign: 'right',
+    maxWidth: 48,
+    fontSize: 14,
+    color: theme.colors.primary
+  }),
+  fiatValue: theme => ({
+    color: theme.colors.darkText2,
+    fontSize: 8
+  })
+})
+
+export default withTheme(OMGItemToken)
