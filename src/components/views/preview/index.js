@@ -8,8 +8,10 @@ import {
   OMGButton,
   OMGBox,
   OMGPasswordTextInput,
-  OMGCardBalance
+  OMGCardBalance,
+  OMGCardAssets
 } from 'components/widgets'
+import OMGItemToken from 'components/widgets/omg-item-token'
 
 const Preview = ({ navigation, theme }) => {
   const [loading, setLoading] = useState(false)
@@ -63,6 +65,8 @@ const Preview = ({ navigation, theme }) => {
         network='Mainnet'
         style={{ marginTop: 16 }}
       />
+      <OMGItemToken symbol='OMG' balance={3.0} style={{ marginTop: 16 }} />
+      <OMGCardAssets theme={theme} style={{ marginTop: 16 }} />
     </View>
   )
 }
