@@ -1,9 +1,17 @@
 import React, { useRef, Fragment, useEffect } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, ActivityIndicator } from 'react-native'
 import { Text, withTheme, Divider } from 'react-native-paper'
-import { OMGBackground, OMGIcon } from 'components/widgets'
+import { OMGBackground, OMGIcon, OMGEmpty } from 'components/widgets'
+import { FlatList } from 'react-native-gesture-handler'
 
-const OMGAssetList = ({ theme, style, children }) => {
+const OMGAssetList = ({
+  theme,
+  style,
+  data,
+  renderItem,
+  keyExtractor,
+  loading
+}) => {
   return (
     <OMGBackground style={{ ...styles.container, ...style }}>
       <View style={styles.header}>
@@ -11,24 +19,38 @@ const OMGAssetList = ({ theme, style, children }) => {
         <OMGIcon name='plus' color={theme.colors.icon} style={styles.add} />
       </View>
       <Divider inset={false} />
-      <View>{children}</View>
+      <View style={styles.assetContainer}>
+        <FlatList
+          style={styles.assetList}
+          data={data}
+          keyExtractor={keyExtractor}
+          ListEmptyComponent={
+            <OMGEmpty text='Empty assets' loading={loading} />
+          }
+          contentContainerStyle={
+            data && data.length ? {} : { flexGrow: 1, justifyContent: 'center' }
+          }
+          renderItem={renderItem}
+        />
+      </View>
     </OMGBackground>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#FFFFFF'
+    flexDirection: 'column'
   },
   header: {
     flexDirection: 'row',
-    padding: 16
+    padding: 16,
+    alignItems: 'center'
   },
   add: {
     justifyContent: 'flex-end'
   },
+  assetContainer: {},
+  assetList: {},
   title: theme => ({
     flex: 1,
     textAlign: 'left',

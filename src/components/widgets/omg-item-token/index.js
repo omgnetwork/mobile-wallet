@@ -5,7 +5,7 @@ import { Title, Text, withTheme } from 'react-native-paper'
 
 const OMGItemToken = ({ symbol, balance, style, onPress, theme }) => {
   return (
-    <OMGBox style={{ ...styles.container, ...style }} onPress={onPress}>
+    <OMGBox style={{ ...styles.container(theme), ...style }} onPress={onPress}>
       <Image
         style={styles.logo(theme)}
         source={{
@@ -35,12 +35,12 @@ const styles = StyleSheet.create({
     borderRadius: theme.roundness,
     borderWidth: 0.5
   }),
-  container: {
+  container: theme => ({
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.background,
     alignItems: 'center',
     padding: 10
-  },
+  }),
   sectionName: {
     flex: 1,
     flexDirection: 'column',
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   }),
   balance: theme => ({
     textAlign: 'right',
-    maxWidth: 48,
+    maxWidth: 64,
     fontSize: 14,
     color: theme.colors.primary
   }),
