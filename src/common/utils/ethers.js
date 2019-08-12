@@ -1,15 +1,19 @@
 import 'ethers/dist/shims.js'
 import { ethers } from 'ethers'
 import axios from 'axios'
+import Config from 'react-native-config'
 
 // Returns a wallet
 export const createWallet = () => {
   return ethers.Wallet.createRandom()
 }
 
+// Create etherscan provider
 export const createProvider = providerName => {
-  const API_KEY = 'VCKWHFAA6M5AR8SFVXC43DEMEA8JN2H3WZ'
-  return new ethers.providers.EtherscanProvider(providerName, API_KEY)
+  return new ethers.providers.EtherscanProvider(
+    providerName,
+    Config.ETHERSCAN_API_KEY
+  )
 }
 
 // Returns  a wallet
@@ -32,11 +36,11 @@ export const getTransactionHistory = (etherscanProvider, address) => {
 }
 
 export const fetchTransactionDetail = address => {
-  return axios.get('http://api-rinkeby.etherscan.io/api/', {
+  return axios.get(Config.ETHERSCAN_API_URL, {
     params: {
       module: 'account',
       sort: 'asc',
-      apikey: 'VCKWHFAA6M5AR8SFVXC43DEMEA8JN2H3WZ',
+      apikey: Config.ETHERSCAN_API_KEY,
       address: address,
       action: 'tokentx'
     }
