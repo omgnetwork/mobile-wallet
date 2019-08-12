@@ -57,6 +57,8 @@ PODS:
     - React-cxxreact (= 0.60.4)
     - React-jsi (= 0.60.4)
   - React-jsinspector (0.60.4)
+  - react-native-config (0.11.7):
+    - React
   - react-native-sensitive-info (5.4.2):
     - React
   - React-RCTActionSheet (0.60.4):
@@ -103,6 +105,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-config (from `../node_modules/react-native-config`)
   - react-native-sensitive-info (from `../node_modules/react-native-sensitive-info`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -146,6 +149,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-config:
+    :path: "../node_modules/react-native-config"
   react-native-sensitive-info:
     :path: "../node_modules/react-native-sensitive-info"
   React-RCTActionSheet:
@@ -190,6 +195,7 @@ SPEC CHECKSUMS:
   React-jsi: 40f467ff088c811c6630acccb4aea57ea7ccb1b5
   React-jsiexecutor: e4b4717060a0cd8d0270323b5655a68c95432efd
   React-jsinspector: 044105eea064aec81adc5e4d777a8f6589e7d094
+  react-native-config: 8c2a92aa66a6cec1a23d9eda7ba6fcf31a63ace5
   react-native-sensitive-info: f78f6471a8ee7de67e11ffccc7060eb93b969ef5
   React-RCTActionSheet: 08864c609d9f959abf3d51fdd93f8bc6e91f21eb
   React-RCTAnimation: a4547e9fac2627ded3df9d302f5558b475faf819
@@ -206,6 +212,6 @@ SPEC CHECKSUMS:
   RNVectorIcons: 66af4d5c8ff4f584c7b7cd9c4b0780920f27fce2
   yoga: 88c514f310aff89b94a14c5fbf44b95735af0cb7
 
-PODFILE CHECKSUM: 06d1dbc2d5f0d09f528cb105f135dc5aad6d6060
+PODFILE CHECKSUM: 808c70b62c065190a2e4a62ceea87fb61631b136
 
 COCOAPODS: 1.5.3

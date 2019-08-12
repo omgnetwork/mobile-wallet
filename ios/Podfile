@@ -32,6 +32,8 @@ target 'wallet' do
 
   pod 'react-native-sensitive-info', :path => '../node_modules/react-native-sensitive-info'
 
+  pod 'react-native-config', :path => '../node_modules/react-native-config'
+
   target 'walletTests' do
     inherit! :search_paths
     # Pods for testing
