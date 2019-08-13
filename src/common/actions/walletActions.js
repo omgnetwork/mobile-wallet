@@ -47,12 +47,9 @@ export const syncAllToStore = () => {
   })
 }
 
-export const getTransactionHistory = (provider, address) => {
+export const getTransactionHistory = address => {
   const asyncAction = async () => {
-    const txHistory = await providerService.getTransactionHistory(
-      provider,
-      address
-    )
+    const txHistory = await providerService.getTransactionHistory(address)
 
     return { address, txHistory }
   }
@@ -69,59 +66,54 @@ export const initAssets = (provider, address, txHistory) => {
       new Set(txHistory.map(tx => tx.contractAddress))
     )
 
-    const unresolvedEth = async () => {
-      const unresolvedBalance = walletService.getEthBalance(address)
-      const unresolvedPrice = priceService.fetchPriceUsd(
+    const fetchEth = async () => {
+      const pendingBalance = walletService.getEthBalance(address)
+      const pendingPrice = priceService.fetchPriceUsd(
         '0x',
         Config.ETHERSCAN_NETWORK
       )
 
-      const [balance, price] = await Promise.all([
-        unresolvedBalance,
-        unresolvedPrice
-      ])
+      const [balance, price] = await Promise.all([pendingBalance, pendingPrice])
 
       return {
         tokenName: 'Ether',
         tokenSymbol: 'ETH',
         tokenDecimal: 18,
         contractAddress: '0x',
-        value: balance,
+        balance: balance,
         price: price
       }
     }
 
+    const unresolvedEth = fetchEth()
     const unresolvedErc20 = distinctTx.map(async contractAddress => {
       const tx = txHistory.find(t => t.contractAddress === contractAddress)
 
-      const unresolvedBalance = providerService.getTokenBalance(
+      const pendingBalance = providerService.getTokenBalance(
         provider,
         tx.contractAddress,
         tx.tokenDecimal,
         address
       )
 
-      const unresolvedPrice = priceService.fetchPriceUsd(
+      const pendingPrice = priceService.fetchPriceUsd(
         tx.contractAddress,
         Config.ETHERSCAN_NETWORK
       )
 
-      const [balance, price] = await Promise.all([
-        unresolvedBalance,
-        unresolvedPrice
-      ])
+      const [balance, price] = await Promise.all([pendingBalance, pendingPrice])
 
       return {
         tokenName: tx.tokenName,
         tokenSymbol: tx.tokenSymbol,
         tokenDecimal: tx.tokenDecimal,
         contractAddress: tx.contractAddress,
-        value: balance,
+        balance: balance,
         price: price
       }
     })
 
-    const assets = await Promise.all([unresolvedEth(), ...unresolvedErc20])
+    const assets = await Promise.all([unresolvedEth, ...unresolvedErc20])
 
     return {
       address,

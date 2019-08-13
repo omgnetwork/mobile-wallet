@@ -3,6 +3,9 @@ import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
+import { walletActions } from 'common/actions'
+import { useLoading } from 'common/hooks'
+import { formatter } from 'common/utils'
 import {
   OMGItemToken,
   OMGAssetFooter,
@@ -11,10 +14,6 @@ import {
   OMGBackground,
   OMGEmpty
 } from 'components/widgets'
-import { walletActions } from 'common/actions'
-import { useLoading } from 'common/hooks'
-import { ethersUtils } from 'common/utils'
-import { formatter } from 'common/utils'
 
 const Balance = ({
   theme,
@@ -25,7 +24,6 @@ const Balance = ({
   wallets,
   loadingStatus
 }) => {
-  //const totalAmount = '1,024.00'
   const currency = 'USD'
   const blockchain = 'Plasma'
   const network = 'Lumpini'
@@ -37,10 +35,10 @@ const Balance = ({
   const [loading] = useLoading(loadingStatus)
 
   useEffect(() => {
-    if (provider && primaryWalletAddress) {
-      getTxHistory(provider, primaryWalletAddress)
+    if (primaryWalletAddress && !primaryWallet.txHistory) {
+      getTxHistory(primaryWalletAddress)
     }
-  }, [provider, primaryWalletAddress, getTxHistory])
+  }, [primaryWalletAddress, getTxHistory, primaryWallet.txHistory])
 
   useEffect(() => {
     if (primaryWallet && primaryWallet.txHistory && !primaryWallet.assets) {
@@ -49,10 +47,9 @@ const Balance = ({
   }, [initAssets, primaryWalletAddress, provider, primaryWallet])
 
   useEffect(() => {
-    // Done load assets
     if (primaryWallet.assets) {
       const totalPrices = primaryWallet.assets.reduce((acc, asset) => {
-        const parsedAmount = parseFloat(asset.value)
+        const parsedAmount = parseFloat(asset.balance)
         const tokenPrice = parsedAmount * asset.price
         return tokenPrice + acc
       }, 0)
@@ -81,13 +78,12 @@ const Balance = ({
             <OMGItemToken
               key={item.contractAddress}
               symbol={item.tokenSymbol}
-              balance={formatTokenBalance(item.value)}
-              price={formatTokenPrice(item.value, item.price)}
+              balance={formatTokenBalance(item.balance)}
+              price={formatTokenPrice(item.balance, item.price)}
             />
           )}
         />
       )}
-
       <OMGAssetFooter />
     </OMGBackground>
   )
@@ -138,8 +134,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   createWallet: (provider, name) =>
     dispatch(walletActions.create(provider, name)),
   deleteAllWallet: () => dispatch(walletActions.clear()),
-  getTxHistory: (provider, address) =>
-    dispatch(walletActions.getTransactionHistory(provider, address)),
+  getTxHistory: address =>
+    dispatch(walletActions.getTransactionHistory(address)),
   initAssets: (provider, address, txHistory) =>
     dispatch(walletActions.initAssets(provider, address, txHistory))
 })

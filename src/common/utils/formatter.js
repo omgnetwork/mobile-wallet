@@ -1,4 +1,4 @@
-import { ethersUtils } from 'common/utils'
+import * as ethersUtils from './ethers'
 
 export const format = (number, { commify, maxDecimal, ellipsize }) => {
   const stringNumber = number.toString()

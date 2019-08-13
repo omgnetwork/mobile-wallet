@@ -18,7 +18,7 @@ export const getName = async defaultProviderName => {
   return providerName || defaultProviderName
 }
 
-export const getTransactionHistory = (provider, address) => {
+export const getTransactionHistory = address => {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await ethersUtils.fetchTransactionDetail(address)
