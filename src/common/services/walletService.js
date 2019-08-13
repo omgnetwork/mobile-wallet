@@ -39,8 +39,8 @@ export const getEthBalance = address => {
     try {
       const response = await ethersUtils.getEthBalance(address)
       const balance = response.data.result
-      console.log(balance)
-      resolve(balance)
+      const formattedBalance = ethersUtils.formatUnits(balance, 18)
+      resolve(formattedBalance)
     } catch (err) {
       reject(err)
     }

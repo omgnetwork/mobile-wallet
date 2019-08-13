@@ -3,7 +3,7 @@ import { Image, StyleSheet, View } from 'react-native'
 import OMGBox from '../omg-box'
 import { Title, Text, withTheme } from 'react-native-paper'
 
-const OMGItemToken = ({ symbol, balance, style, onPress, theme }) => {
+const OMGItemToken = ({ symbol, price, balance, style, onPress, theme }) => {
   return (
     <OMGBox style={{ ...styles.container(theme), ...style }} onPress={onPress}>
       <Image
@@ -22,7 +22,7 @@ const OMGItemToken = ({ symbol, balance, style, onPress, theme }) => {
           numberOfLines={1}>
           {balance}
         </Text>
-        <Text style={styles.fiatValue(theme)}>0.00 USD</Text>
+        <Text style={styles.fiatValue(theme)}>{price} USD</Text>
       </View>
     </OMGBox>
   )

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
@@ -14,6 +14,7 @@ import {
 import { walletActions } from 'common/actions'
 import { useLoading } from 'common/hooks'
 import { ethersUtils } from 'common/utils'
+import { formatter } from 'common/utils'
 
 const Balance = ({
   theme,
@@ -24,7 +25,7 @@ const Balance = ({
   wallets,
   loadingStatus
 }) => {
-  const totalAmount = '1,024.00'
+  //const totalAmount = '1,024.00'
   const currency = 'USD'
   const blockchain = 'Plasma'
   const network = 'Lumpini'
@@ -32,6 +33,7 @@ const Balance = ({
     wallet => wallet.address === primaryWalletAddress
   )
 
+  const [totalBalance, setTotalBalance] = useState(0.0)
   const [loading] = useLoading(loadingStatus)
 
   useEffect(() => {
@@ -46,11 +48,25 @@ const Balance = ({
     }
   }, [initAssets, primaryWalletAddress, provider, primaryWallet])
 
+  useEffect(() => {
+    // Done load assets
+    if (primaryWallet.assets) {
+      const totalPrices = primaryWallet.assets.reduce((acc, asset) => {
+        const parsedAmount = parseFloat(asset.value)
+        const tokenPrice = parsedAmount * asset.price
+        return tokenPrice + acc
+      }, 0)
+
+      setTotalBalance(totalPrices)
+    }
+  }, [primaryWallet.assets])
+
   return (
     <OMGBackground style={styles.container(theme)}>
       <OMGAssetHeader
-        amount={totalAmount}
+        amount={formatTotalBalance(totalBalance)}
         currency={currency}
+        loading={loading}
         blockchain={blockchain}
         network={network}
       />
@@ -65,11 +81,8 @@ const Balance = ({
             <OMGItemToken
               key={item.contractAddress}
               symbol={item.tokenSymbol}
-              balance={ethersUtils.formatUnits(
-                item.value,
-                parseInt(item.tokenDecimal, 10),
-                2
-              )}
+              balance={formatTokenBalance(item.value)}
+              price={formatTokenPrice(item.value, item.price)}
             />
           )}
         />
@@ -78,6 +91,32 @@ const Balance = ({
       <OMGAssetFooter />
     </OMGBackground>
   )
+}
+
+const formatTotalBalance = balance => {
+  return formatter.format(balance, {
+    commify: true,
+    maxDecimal: 2,
+    ellipsize: false
+  })
+}
+
+const formatTokenBalance = amount => {
+  return formatter.format(amount, {
+    commify: true,
+    maxDecimal: 3,
+    ellipsize: true
+  })
+}
+
+const formatTokenPrice = (amount, price) => {
+  const parsedAmount = parseFloat(amount)
+  const tokenPrice = parsedAmount * price
+  return formatter.format(tokenPrice, {
+    commify: true,
+    maxDecimal: 2,
+    ellipsize: false
+  })
 }
 
 const styles = StyleSheet.create({

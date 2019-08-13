@@ -84,20 +84,48 @@ export const getTokenBalance = (provider, contractAddress, accountAddress) => {
   return contract.balanceOf(accountAddress)
 }
 
-export const formatUnits = (amount, numberOfDecimals, maxDecimal) => {
-  const formattedUnitAmount = ethers.utils.formatUnits(amount, numberOfDecimals)
-  const commifiedAmount = ethers.utils.commify(formattedUnitAmount)
-  return formatDecimal(commifiedAmount, maxDecimal)
+// export const formatUnits = (amount, numberOfDecimals, maxDecimal, ellisize) => {
+//   const formattedUnitAmount = ethers.utils.formatUnits(amount, numberOfDecimals)
+//   const commifiedAmount = commify(formattedUnitAmount)
+//   return formatDecimal(commifiedAmount, maxDecimal, ellisize)
+// }
+
+export const formatUnits = (amount, numberOfDecimals) => {
+  return ethers.utils.formatUnits(amount, numberOfDecimals)
 }
 
-function formatDecimal(amount, maxDecimal) {
+export const commify = amount => {
+  return ethers.utils.commify(amount)
+}
+
+export const calculatePrice = (subunitAmount, numberOfDecimals, price) => {
+  const divider = ethers.utils.bigNumberify(getDecimalDivider(numberOfDecimals))
+  const bdUnitAmounts = ethers.utils.bigNumberify(subunitAmount).div(divider)
+  const bdPrice = ethers.utils.bigNumberify(price)
+  return bdUnitAmounts.mul(bdPrice)
+}
+
+const getDecimalDivider = numberOfDecimals => {
+  return '1' + '0'.repeat(numberOfDecimals)
+}
+
+export const formatDecimal = (amount, maxDecimal, ellipsize) => {
   const [integer, decimal] = amount.split('.')
   if (decimal && decimal.length > maxDecimal) {
-    return [integer, '.', decimal.substring(0, maxDecimal), '...'].join('')
+    return [
+      integer,
+      '.',
+      decimal.substring(0, maxDecimal),
+      ellipsize ? '...' : ''
+    ].join('')
   }
   return amount
 }
 
-export const bignumberToString = bignumber => {
-  return ethers.utils.bigNumberify(bignumber).toString()
+export const bigNumberify = amount => {
+  return ethers.utils.bigNumberify(amount)
+}
+
+export const bignumberToString = number => {
+  return bigNumberify(number).toString()
 }

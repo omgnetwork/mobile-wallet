@@ -44,7 +44,12 @@ export const getTransactionHistory = (provider, address) => {
   })
 }
 
-export const getTokenBalance = (provider, contractAddress, accountAddress) => {
+export const getTokenBalance = (
+  provider,
+  contractAddress,
+  tokenDecimal,
+  accountAddress
+) => {
   return new Promise(async (resolve, reject) => {
     try {
       const balance = await ethersUtils.getTokenBalance(
@@ -53,7 +58,7 @@ export const getTokenBalance = (provider, contractAddress, accountAddress) => {
         accountAddress
       )
 
-      resolve(ethersUtils.bignumberToString(balance))
+      resolve(ethersUtils.formatUnits(balance, tokenDecimal))
     } catch (err) {
       reject(err)
     }

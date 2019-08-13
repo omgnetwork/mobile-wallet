@@ -1,10 +1,11 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme, Text } from 'react-native-paper'
-import { OMGBackground } from 'components/widgets'
+import { OMGBackground, OMGEmpty } from 'components/widgets'
 
 const OMGAssetHeader = ({
   theme,
+  loading,
   amount,
   currency,
   blockchain,
@@ -14,7 +15,11 @@ const OMGAssetHeader = ({
   return (
     <OMGBackground style={{ ...styles.container(theme), ...style }}>
       <View style={styles.balance}>
-        <Text style={styles.balanceAmount(theme)}>{amount}</Text>
+        {loading ? (
+          <OMGEmpty style={styles.loading} loading={loading} />
+        ) : (
+          <Text style={styles.balanceAmount(theme)}>{amount}</Text>
+        )}
         <Text style={styles.balanceCurrency(theme)}>{currency}</Text>
       </View>
       <View style={styles.footer(theme)}>
@@ -42,6 +47,12 @@ const styles = StyleSheet.create({
   balance: {
     flexDirection: 'row',
     padding: 20
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingVertical: 0,
+    alignItems: 'flex-start'
   },
   balanceAmount: theme => ({
     flex: 1,
