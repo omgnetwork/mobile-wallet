@@ -56,11 +56,12 @@ const styles = StyleSheet.create({
   }),
   balance: theme => ({
     textAlign: 'right',
-    maxWidth: 64,
+    maxWidth: 100,
     fontSize: 14,
     color: theme.colors.primary
   }),
   fiatValue: theme => ({
+    textAlign: 'right',
     color: theme.colors.darkText2,
     fontSize: 8
   })

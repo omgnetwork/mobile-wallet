@@ -67,7 +67,8 @@ const Balance = ({
               symbol={item.tokenSymbol}
               balance={ethersUtils.formatUnits(
                 item.value,
-                parseInt(item.tokenDecimal, 10)
+                parseInt(item.tokenDecimal, 10),
+                2
               )}
             />
           )}

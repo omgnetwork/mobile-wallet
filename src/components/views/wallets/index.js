@@ -13,6 +13,8 @@ const Wallets = ({
   wallets,
   primaryWalletAddress,
   savePrimaryWalletAddress,
+  setPrimaryWallet,
+  provider,
   navigation
 }) => {
   const [primaryAddress, setPrimaryAddress] = useState(primaryWalletAddress)
@@ -28,7 +30,8 @@ const Wallets = ({
 
   useEffect(() => {
     savePrimaryWalletAddress(primaryAddress)
-  }, [primaryAddress, savePrimaryWalletAddress])
+    setPrimaryWallet(primaryAddress, provider)
+  }, [primaryAddress, provider, savePrimaryWalletAddress, setPrimaryWallet])
 
   return (
     <OMGBackground style={styles.container}>
@@ -107,13 +110,16 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, ownProps) => ({
   loadingStatus: state.loadingStatus,
   wallets: state.wallets,
+  provider: state.setting.provider,
   primaryWalletAddress: state.setting.primaryWalletAddress
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   deleteAllWallet: () => dispatch(walletActions.clear()),
   savePrimaryWalletAddress: address =>
-    dispatch(settingActions.setPrimaryAddress(address))
+    dispatch(settingActions.setPrimaryAddress(address)),
+  setPrimaryWallet: (address, provider) =>
+    dispatch(settingActions.setPrimaryWallet(address, provider))
 })
 
 export default connect(

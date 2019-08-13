@@ -1,5 +1,5 @@
 import { walletService, providerService } from '../services'
-import { createAsyncAction, createAction } from './actionCreators'
+import { createAsyncAction } from './actionCreators'
 
 export const create = (provider, name) => {
   const asyncAction = async () => {
@@ -68,6 +68,8 @@ export const initAssets = (provider, address, txHistory) => {
       new Set(txHistory.map(tx => tx.contractAddress))
     )
 
+    const ethBalance = await walletService.getEthBalance(address, provider)
+
     const unresolvedAssets = distinctTx.map(async contractAddress => {
       const tx = txHistory.find(t => t.contractAddress === contractAddress)
 
@@ -88,7 +90,19 @@ export const initAssets = (provider, address, txHistory) => {
 
     const assets = await Promise.all(unresolvedAssets)
 
-    return { address, assets }
+    return {
+      address,
+      assets: [
+        {
+          tokenName: 'Ether',
+          tokenSymbol: 'ETH',
+          tokenDecimal: 18,
+          contractAddress: '0x',
+          value: ethBalance
+        },
+        ...assets
+      ]
+    }
   }
 
   return createAsyncAction({

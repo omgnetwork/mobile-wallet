@@ -11,8 +11,6 @@ export const create = (provider, name) => {
       const address = await connectedProviderWallet.address
       const balance = await connectedProviderWallet.getBalance()
 
-      console.log(name)
-
       await walletStorage.setPrivateKey({ address, privateKey })
       await walletStorage.add({ address, balance, name })
 
@@ -26,10 +24,23 @@ export const create = (provider, name) => {
 export const get = async (address, provider) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const privateKey = await walletStorage.getWalletPrivateKey(address)
+      const privateKey = await walletStorage.getPrivateKey(address)
       const wallet = ethersUtils.importWalletByPrivateKey(privateKey)
       const connectedProviderWallet = wallet.connect(provider)
       resolve(connectedProviderWallet)
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
+export const getEthBalance = address => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await ethersUtils.getEthBalance(address)
+      const balance = response.data.result
+      console.log(balance)
+      resolve(balance)
     } catch (err) {
       reject(err)
     }

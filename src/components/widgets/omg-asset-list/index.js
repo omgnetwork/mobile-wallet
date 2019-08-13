@@ -12,11 +12,12 @@ const OMGAssetList = ({
   keyExtractor,
   loading
 }) => {
+  1
   return (
     <OMGBackground style={{ ...styles.container, ...style }}>
       <View style={styles.header}>
         <Text style={styles.title(theme)}>Assets</Text>
-        <OMGIcon name='plus' color={theme.colors.icon} style={styles.add} />
+        {/* <OMGIcon name='plus' color={theme.colors.icon} style={styles.add} /> */}
       </View>
       <Divider inset={false} />
       <View style={styles.assetContainer}>
@@ -43,7 +44,8 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 10,
     alignItems: 'center'
   },
   add: {

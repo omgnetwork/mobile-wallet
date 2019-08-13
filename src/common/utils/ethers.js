@@ -47,6 +47,17 @@ export const fetchTransactionDetail = address => {
   })
 }
 
+export const getEthBalance = address => {
+  return axios.get(Config.ETHERSCAN_API_URL, {
+    params: {
+      module: 'account',
+      sort: 'asc',
+      apikey: Config.ETHERSCAN_API_KEY,
+      address: address,
+      action: 'balance'
+    }
+  })
+}
 export const getTokenBalance = (provider, contractAddress, accountAddress) => {
   const abi = [
     {
@@ -73,12 +84,18 @@ export const getTokenBalance = (provider, contractAddress, accountAddress) => {
   return contract.balanceOf(accountAddress)
 }
 
-export const formatUnits = (amount, numberOfDecimals) => {
-  return ethers.utils.formatUnits(amount, numberOfDecimals)
+export const formatUnits = (amount, numberOfDecimals, maxDecimal) => {
+  const formattedUnitAmount = ethers.utils.formatUnits(amount, numberOfDecimals)
+  const commifiedAmount = ethers.utils.commify(formattedUnitAmount)
+  return formatDecimal(commifiedAmount, maxDecimal)
 }
 
-export const getTransactionReceipt = (provider, tx) => {
-  return provider.getTransactionReceipt(tx.hash)
+function formatDecimal(amount, maxDecimal) {
+  const [integer, decimal] = amount.split('.')
+  if (decimal && decimal.length > maxDecimal) {
+    return [integer, '.', decimal.substring(0, maxDecimal), '...'].join('')
+  }
+  return amount
 }
 
 export const bignumberToString = bignumber => {
