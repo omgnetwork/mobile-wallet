@@ -7,14 +7,16 @@ import Router from 'router'
 import createStore from 'common/stores'
 import { walletActions, settingActions } from 'common/actions'
 import { OMGBackground } from 'components/widgets'
-
+import Config from 'react-native-config'
 const App = () => {
   const [store, setStore] = useState(createStore({ wallets: [], setting: {} }))
 
   useEffect(() => {
     function sync() {
       store.dispatch(walletActions.syncAllToStore())
-      store.dispatch(settingActions.syncProviderToStore('rinkeby'))
+      store.dispatch(
+        settingActions.syncProviderToStore(Config.ETHERSCAN_NETWORK)
+      )
       store.dispatch(settingActions.syncPrimaryWalletAddressToStore(null))
     }
 
