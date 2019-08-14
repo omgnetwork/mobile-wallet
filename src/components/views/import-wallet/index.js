@@ -2,7 +2,7 @@ import React, { useState, Fragment, useEffect } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
-import { walletActions } from 'common/actions'
+import { walletActions, settingActions } from 'common/actions'
 import { useAlert, useTextInput, useLoading } from 'common/hooks'
 import { random } from 'common/utils'
 import {
@@ -10,7 +10,6 @@ import {
   OMGTextInput,
   OMGBackground,
   OMGBox,
-  OMGPasswordTextInput,
   OMGButton
 } from 'components/widgets'
 import { Text, Title, Snackbar, withTheme } from 'react-native-paper'
@@ -73,10 +72,12 @@ const Mnemonic = ({
   importWalletByMnemonic,
   loadingStatus,
   provider,
+  wallets,
   navigation
 }) => {
   const [actionId, setActionId] = useState()
   const [mnemonic, mnemonicCallback] = useTextInput(actionId)
+  const [walletName, walletNameCallback] = useTextInput(actionId)
   const [loading] = useLoading(loadingStatus)
   const snackbarProps = useAlert({
     loadingStatus,
@@ -86,15 +87,15 @@ const Mnemonic = ({
 
   useEffect(() => {
     if (mnemonic) {
-      importWalletByMnemonic(mnemonic, provider)
+      importWalletByMnemonic(mnemonic, provider, walletName)
     }
-  }, [importWalletByMnemonic, mnemonic, provider])
+  }, [importWalletByMnemonic, mnemonic, provider, walletName])
 
   useEffect(() => {
     if (loadingStatus === 'SUCCESS') {
       navigation.goBack()
     }
-  }, [loadingStatus, navigation])
+  }, [loadingStatus, navigation, wallets])
 
   return (
     <Fragment>
@@ -113,10 +114,11 @@ const Mnemonic = ({
         />
       </OMGBox>
       <OMGBox style={{ marginTop: 16 }}>
-        <Title style={{ fontSize: 16, fontWeight: 'bold' }}>Confirmation</Title>
-        <OMGPasswordTextInput
-          placeholder='Enter password...'
-          hideUnderline={false}
+        <Title style={{ fontSize: 16, fontWeight: 'bold' }}>Wallet Name</Title>
+        <OMGTextInput
+          placeholder='Your wallet name'
+          hideUnderline={true}
+          callback={walletNameCallback}
           disabled={!loading}
         />
       </OMGBox>
@@ -145,8 +147,10 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  importWalletByMnemonic: (mnemonic, provider) =>
-    dispatch(walletActions.importByMnemonic(mnemonic, provider))
+  importWalletByMnemonic: (mnemonic, provider, name) =>
+    dispatch(walletActions.importByMnemonic(mnemonic, provider, name)),
+  setPrimaryAddress: address =>
+    dispatch(settingActions.setPrimaryAddress(address))
 })
 
 export default connect(

@@ -47,11 +47,15 @@ export const getEthBalance = address => {
   })
 }
 
-export const importByMnemonic = (mnemonic, provider) => {
+export const importByMnemonic = (mnemonic, provider, name) => {
   return new Promise(async (resolve, reject) => {
     try {
       if (mnemonic.split(' ').length !== 12) {
         throw 'Invalid mnemonic'
+      }
+
+      if (!name) {
+        throw 'Wallet name is empty'
       }
 
       const wallet = ethersUtils.importWalletByMnemonic(mnemonic)
@@ -62,9 +66,11 @@ export const importByMnemonic = (mnemonic, provider) => {
       const balance = await connectedProviderWallet.getBalance()
 
       await walletStorage.setPrivateKey({ address, privateKey })
-      await walletStorage.add({ address, balance, name: 'Import Wallet' })
 
-      resolve({ address, balance, name: 'Import Wallet' })
+      const newWallet = { address, balance, name: name }
+      await walletStorage.add(newWallet)
+
+      resolve(newWallet)
     } catch (err) {
       reject(err)
     }

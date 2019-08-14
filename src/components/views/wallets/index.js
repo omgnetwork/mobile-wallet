@@ -31,7 +31,17 @@ const Wallets = ({
   useEffect(() => {
     savePrimaryWalletAddress(primaryAddress)
     setPrimaryWallet(primaryAddress, provider)
-  }, [primaryAddress, provider, savePrimaryWalletAddress, setPrimaryWallet])
+
+    if (!primaryAddress) {
+      setPrimaryAddress(wallets[0].address)
+    }
+  }, [
+    primaryAddress,
+    provider,
+    savePrimaryWalletAddress,
+    setPrimaryWallet,
+    wallets
+  ])
 
   return (
     <OMGBackground style={styles.container}>

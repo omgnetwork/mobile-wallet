@@ -13,9 +13,9 @@ export const create = (provider, name) => {
   })
 }
 
-export const importByMnemonic = (mnemonic, provider) => {
+export const importByMnemonic = (mnemonic, provider, name) => {
   const asyncAction = async () => {
-    return await walletService.importByMnemonic(mnemonic, provider)
+    return await walletService.importByMnemonic(mnemonic, provider, name)
   }
 
   return createAsyncAction({

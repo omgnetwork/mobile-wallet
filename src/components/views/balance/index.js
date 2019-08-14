@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
-import { withTheme } from 'react-native-paper'
+import { withTheme, Text } from 'react-native-paper'
 import { walletActions } from 'common/actions'
 import { useLoading } from 'common/hooks'
 import Config from 'react-native-config'
@@ -61,6 +61,7 @@ const Balance = ({
 
   return (
     <OMGBackground style={styles.container(theme)}>
+      <Text style={styles.title(theme)}>{primaryWallet.name}</Text>
       <OMGAssetHeader
         amount={formatTotalBalance(totalBalance)}
         currency={currency}
@@ -76,6 +77,7 @@ const Balance = ({
           data={(primaryWallet && primaryWallet.assets) || []}
           keyExtractor={item => item.contractAddress}
           loading={loading}
+          style={styles.list}
           renderItem={({ item }) => (
             <OMGItemToken
               key={item.contractAddress}
@@ -86,7 +88,7 @@ const Balance = ({
           )}
         />
       )}
-      <OMGAssetFooter />
+      {rootChain ? null : <OMGAssetFooter />}
     </OMGBackground>
   )
 }
@@ -122,7 +124,19 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: theme.colors.white
-  })
+  }),
+  title: theme => ({
+    fontSize: 18,
+    marginBottom: 16,
+    textTransform: 'uppercase',
+    color: theme.colors.primary
+  }),
+  list: {
+    flex: 1,
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+    marginBottom: 32
+  }
 })
 
 const mapStateToProps = (state, ownProps) => ({
