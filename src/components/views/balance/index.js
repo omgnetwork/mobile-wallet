@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View, Dimensions } from 'react-native'
 import { withTheme, Text } from 'react-native-paper'
 import { walletActions } from 'common/actions'
 import { useLoading } from 'common/hooks'
@@ -13,8 +13,12 @@ import {
   OMGAssetHeader,
   OMGAssetList,
   OMGBackground,
-  OMGEmpty
+  OMGEmpty,
+  OMGViewPager
 } from 'components/widgets'
+
+// 48 = marginRight (8) + marginLeft (8) + paddingLeft (16) + paddingRight (16)
+const pageWidth = Dimensions.get('window').width - 48
 
 const Balance = ({
   theme,
@@ -62,31 +66,89 @@ const Balance = ({
   return (
     <OMGBackground style={styles.container(theme)}>
       <Text style={styles.title(theme)}>{primaryWallet.name}</Text>
-      <OMGAssetHeader
-        amount={formatTotalBalance(totalBalance)}
-        currency={currency}
-        loading={loading}
-        rootChain={rootChain}
-        blockchain={blockchain}
-        network={rootChain ? Config.ETHERSCAN_NETWORK : Config.OMISEGO_NETWORK}
-      />
       {!wallets ? (
         <OMGEmpty />
       ) : (
-        <OMGAssetList
-          data={(primaryWallet && primaryWallet.assets) || []}
-          keyExtractor={item => item.contractAddress}
-          loading={loading}
-          style={styles.list}
-          renderItem={({ item }) => (
-            <OMGItemToken
-              key={item.contractAddress}
-              symbol={item.tokenSymbol}
-              balance={formatTokenBalance(item.balance)}
-              price={formatTokenPrice(item.balance, item.price)}
+        <OMGViewPager pageWidth={pageWidth}>
+          <View style={styles.firstPage}>
+            <OMGAssetHeader
+              amount={formatTotalBalance(totalBalance)}
+              currency={currency}
+              loading={loading}
+              rootChain={rootChain}
+              blockchain={blockchain}
+              network={
+                rootChain ? Config.ETHERSCAN_NETWORK : Config.OMISEGO_NETWORK
+              }
             />
-          )}
-        />
+            <OMGAssetList
+              data={(primaryWallet && primaryWallet.assets) || []}
+              keyExtractor={item => item.contractAddress}
+              loading={loading}
+              style={styles.list}
+              renderItem={({ item }) => (
+                <OMGItemToken
+                  key={item.contractAddress}
+                  symbol={item.tokenSymbol}
+                  balance={formatTokenBalance(item.balance)}
+                  price={formatTokenPrice(item.balance, item.price)}
+                />
+              )}
+            />
+          </View>
+          <View style={styles.secondPage}>
+            <OMGAssetHeader
+              amount={formatTotalBalance(totalBalance)}
+              currency={currency}
+              loading={loading}
+              rootChain={rootChain}
+              blockchain={blockchain}
+              network={
+                rootChain ? Config.ETHERSCAN_NETWORK : Config.OMISEGO_NETWORK
+              }
+            />
+            <OMGAssetList
+              data={(primaryWallet && primaryWallet.assets) || []}
+              keyExtractor={item => item.contractAddress}
+              loading={loading}
+              style={styles.list}
+              renderItem={({ item }) => (
+                <OMGItemToken
+                  key={item.contractAddress}
+                  symbol={item.tokenSymbol}
+                  balance={formatTokenBalance(item.balance)}
+                  price={formatTokenPrice(item.balance, item.price)}
+                />
+              )}
+            />
+          </View>
+          <View style={styles.thirdPage}>
+            <OMGAssetHeader
+              amount={formatTotalBalance(totalBalance)}
+              currency={currency}
+              loading={loading}
+              rootChain={rootChain}
+              blockchain={blockchain}
+              network={
+                rootChain ? Config.ETHERSCAN_NETWORK : Config.OMISEGO_NETWORK
+              }
+            />
+            <OMGAssetList
+              data={(primaryWallet && primaryWallet.assets) || []}
+              keyExtractor={item => item.contractAddress}
+              loading={loading}
+              style={styles.list}
+              renderItem={({ item }) => (
+                <OMGItemToken
+                  key={item.contractAddress}
+                  symbol={item.tokenSymbol}
+                  balance={formatTokenBalance(item.balance)}
+                  price={formatTokenPrice(item.balance, item.price)}
+                />
+              )}
+            />
+          </View>
+        </OMGViewPager>
       )}
       {rootChain ? null : <OMGAssetFooter />}
     </OMGBackground>
@@ -125,6 +187,17 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: theme.colors.white
   }),
+  firstPage: {
+    width: pageWidth,
+    marginRight: 8
+  },
+  secondPage: {
+    width: pageWidth - 16
+  },
+  thirdPage: {
+    width: pageWidth,
+    marginLeft: 8
+  },
   title: theme => ({
     fontSize: 18,
     marginBottom: 16,

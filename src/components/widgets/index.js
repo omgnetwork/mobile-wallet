@@ -15,6 +15,7 @@ import OMGRadioButton from './omg-radio-button'
 import OMGText from './omg-text'
 import OMGTextInput from './omg-text-input'
 import OMGTitle from './omg-title'
+import OMGViewPager from './omg-view-pager'
 
 export {
   OMGAppBar,
@@ -28,10 +29,11 @@ export {
   OMGIcon,
   OMGItemWallet,
   OMGItemToken,
+  OMGMenu,
   OMGPasswordTextInput,
   OMGRadioButton,
   OMGTextInput,
   OMGTitle,
   OMGText,
-  OMGMenu
+  OMGViewPager
 }
