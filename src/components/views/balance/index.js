@@ -9,7 +9,7 @@ import PlasmaBalance from './PlasmaBalance'
 import ShowQR from './ShowQR'
 import { OMGBackground, OMGEmpty, OMGViewPager } from 'components/widgets'
 
-// 48 = marginRight (8) + marginLeft (8) + paddingLeft (16) + paddingRight (16)
+// 48 = marginRight (8) + marginLeft (8) + paddingLeft (16) + paddingRight (16) + overlapContentWidth (16)
 const pageWidth = Dimensions.get('window').width - 56
 
 const Balance = ({ theme, primaryWalletAddress, wallets }) => {
@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     padding: 16,
-    backgroundColor: theme.colors.white
+    backgroundColor: theme.colors.white,
+    marginBottom: 32
   }),
   firstPage: {
     width: pageWidth,

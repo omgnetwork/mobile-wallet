@@ -1,5 +1,4 @@
 import React, { useEffect, useState, Fragment } from 'react'
-import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
 import { walletActions } from 'common/actions'
@@ -81,8 +80,7 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
     borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 4,
-    marginBottom: 32
+    borderBottomRightRadius: 4
   }
 })
 
@@ -132,4 +130,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNavigation(withTheme(EthereumBalance)))
+)(withTheme(EthereumBalance))
