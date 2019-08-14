@@ -5,6 +5,7 @@ import { StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { walletActions } from 'common/actions'
 import { useLoading } from 'common/hooks'
+import Config from 'react-native-config'
 import { formatter } from 'common/utils'
 import {
   OMGItemToken,
@@ -24,9 +25,9 @@ const Balance = ({
   wallets,
   loadingStatus
 }) => {
+  const rootChain = true
   const currency = 'USD'
-  const blockchain = 'Plasma'
-  const network = 'Lumpini'
+  const blockchain = 'Ethereum'
   const primaryWallet = wallets.find(
     wallet => wallet.address === primaryWalletAddress
   )
@@ -64,8 +65,9 @@ const Balance = ({
         amount={formatTotalBalance(totalBalance)}
         currency={currency}
         loading={loading}
+        rootChain={rootChain}
         blockchain={blockchain}
-        network={network}
+        network={rootChain ? Config.ETHERSCAN_NETWORK : Config.OMISEGO_NETWORK}
       />
       {!wallets ? (
         <OMGEmpty />

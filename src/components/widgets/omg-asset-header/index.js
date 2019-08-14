@@ -10,6 +10,7 @@ const OMGAssetHeader = ({
   currency,
   blockchain,
   network,
+  rootChain,
   style
 }) => {
   return (
@@ -25,7 +26,9 @@ const OMGAssetHeader = ({
       <View style={styles.footer(theme)}>
         <View style={styles.subfooter}>
           <Text style={styles.subfooterText1(theme)}>{blockchain}</Text>
-          <Text style={styles.subfooterText2(theme)}>Blockchain</Text>
+          <Text style={styles.subfooterText2(theme)}>
+            {rootChain ? 'Rootchain' : 'Childchain'}
+          </Text>
         </View>
         <View style={styles.divider(theme)} />
         <View style={styles.subfooter}>
@@ -77,11 +80,13 @@ const styles = StyleSheet.create({
   },
   subfooterText1: theme => ({
     fontSize: 12,
+    textTransform: 'capitalize',
     color: theme.colors.darkText1,
     marginRight: 4
   }),
   subfooterText2: theme => ({
     fontSize: 12,
+    textTransform: 'capitalize',
     color: theme.colors.darkText2
   }),
   divider: theme => ({
