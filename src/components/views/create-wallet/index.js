@@ -3,7 +3,7 @@ import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
 import { Title } from 'react-native-paper'
-import { useTextInput } from 'common/hooks'
+import { useTextInput, useLoading } from 'common/hooks'
 import { random } from 'common/utils'
 import {
   OMGButton,
@@ -19,7 +19,7 @@ const CreateWalletComponent = ({
   createWallet,
   navigation
 }) => {
-  const showLoading = loadingStatus === 'INITIATED'
+  const [loading] = useLoading(loadingStatus)
   const [actionId, setActionId] = useState()
   const [name, setName] = useTextInput(actionId)
 
@@ -45,7 +45,8 @@ const CreateWalletComponent = ({
         <OMGButton
           onPress={() => setActionId(random.fastRandomId())}
           style={{ marginTop: 16 }}
-          disabled={showLoading}>
+          loading={loading}
+          disabled={loading}>
           Create Wallet
         </OMGButton>
       </View>

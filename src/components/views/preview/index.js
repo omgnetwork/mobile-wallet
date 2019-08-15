@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import { withNavigation } from 'react-navigation'
 import { withTheme, Title } from 'react-native-paper'
 import {
@@ -7,8 +7,12 @@ import {
   OMGTextInput,
   OMGButton,
   OMGBox,
-  OMGPasswordTextInput
+  OMGPasswordTextInput,
+  OMGAssetList,
+  OMGAssetHeader,
+  OMGAssetFooter
 } from 'components/widgets'
+import OMGItemToken from 'components/widgets/omg-item-token'
 
 const Preview = ({ navigation, theme }) => {
   const [loading, setLoading] = useState(false)
@@ -28,32 +32,45 @@ const Preview = ({ navigation, theme }) => {
         paddingHorizontal: 16,
         backgroundColor: theme.colors.background
       }}>
-      <OMGRadioButton
-        choices={['Keystore', 'Mnemonic', 'Private Key', 'Just 4th Button']}
-        onSelected={selectedIndex => {
-          console.log(`selected: ${selectedIndex}`)
-        }}
-      />
-      <OMGBox>
-        <Title style={{ fontWeight: 'bold', fontSize: 16 }}>Name</Title>
-        <OMGTextInput placeholder='Wallet' />
-        <OMGPasswordTextInput placeholder='Password' />
-        <OMGPasswordTextInput placeholder='Confirm Password' />
-      </OMGBox>
-      <OMGButton
-        style={{ marginTop: 16 }}
-        mode='contained'
-        loading={loading}
-        onPress={() => setLoading(true)}>
-        Enabled
-      </OMGButton>
-      <OMGButton
-        disabled={true}
-        style={{ marginTop: 16 }}
-        onPress={() => {}}
-        mode='contained'>
-        Disabled
-      </OMGButton>
+      <ScrollView>
+        <OMGRadioButton
+          choices={['Keystore', 'Mnemonic', 'Private Key', 'Just 4th Button']}
+          onSelected={selectedIndex => {
+            console.log(`selected: ${selectedIndex}`)
+          }}
+        />
+        <OMGBox>
+          <Title style={{ fontWeight: 'bold', fontSize: 16 }}>Name</Title>
+          <OMGTextInput placeholder='Wallet' />
+          <OMGPasswordTextInput placeholder='Password' />
+          <OMGPasswordTextInput placeholder='Confirm Password' />
+        </OMGBox>
+        <OMGButton
+          style={{ marginTop: 16 }}
+          mode='contained'
+          loading={loading}
+          onPress={() => setLoading(true)}>
+          Enabled
+        </OMGButton>
+        <OMGButton
+          disabled={true}
+          style={{ marginTop: 16 }}
+          onPress={() => {}}
+          mode='contained'>
+          Disabled
+        </OMGButton>
+        <OMGAssetHeader
+          theme={theme}
+          amount='2,090.00'
+          currency='USD'
+          blockchain='Ethereum'
+          network='Mainnet'
+          style={{ marginTop: 16 }}
+        />
+        <OMGAssetList theme={theme} />
+        <OMGItemToken symbol='OMG' balance={3.0} />
+        <OMGAssetFooter theme={theme} />
+      </ScrollView>
     </View>
   )
 }

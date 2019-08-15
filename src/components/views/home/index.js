@@ -46,6 +46,12 @@ const Home = ({ navigation }) => {
         <Button
           mode='outlined'
           style={styles.button}
+          onPress={() => navigation.navigate('Balance')}>
+          Balance
+        </Button>
+        <Button
+          mode='outlined'
+          style={styles.button}
           onPress={() => navigation.navigate('Preview')}>
           Preview
         </Button>

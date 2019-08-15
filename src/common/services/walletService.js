@@ -11,8 +11,6 @@ export const create = (provider, name) => {
       const address = await connectedProviderWallet.address
       const balance = await connectedProviderWallet.getBalance()
 
-      console.log(name)
-
       await walletStorage.setPrivateKey({ address, privateKey })
       await walletStorage.add({ address, balance, name })
 
@@ -26,7 +24,7 @@ export const create = (provider, name) => {
 export const get = async (address, provider) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const privateKey = await walletStorage.getWalletPrivateKey(address)
+      const privateKey = await walletStorage.getPrivateKey(address)
       const wallet = ethersUtils.importWalletByPrivateKey(privateKey)
       const connectedProviderWallet = wallet.connect(provider)
       resolve(connectedProviderWallet)
@@ -36,11 +34,28 @@ export const get = async (address, provider) => {
   })
 }
 
-export const importByMnemonic = (mnemonic, provider) => {
+export const getEthBalance = address => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await ethersUtils.getEthBalance(address)
+      const balance = response.data.result
+      const formattedBalance = ethersUtils.formatUnits(balance, 18)
+      resolve(formattedBalance)
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
+export const importByMnemonic = (mnemonic, provider, name) => {
   return new Promise(async (resolve, reject) => {
     try {
       if (mnemonic.split(' ').length !== 12) {
         throw 'Invalid mnemonic'
+      }
+
+      if (!name) {
+        throw 'Wallet name is empty'
       }
 
       const wallet = ethersUtils.importWalletByMnemonic(mnemonic)
@@ -51,9 +66,11 @@ export const importByMnemonic = (mnemonic, provider) => {
       const balance = await connectedProviderWallet.getBalance()
 
       await walletStorage.setPrivateKey({ address, privateKey })
-      await walletStorage.add({ address, balance, name: 'Import Wallet' })
 
-      resolve({ address, balance, name: 'Import Wallet' })
+      const newWallet = { address, balance, name: name }
+      await walletStorage.add(newWallet)
+
+      resolve(newWallet)
     } catch (err) {
       reject(err)
     }

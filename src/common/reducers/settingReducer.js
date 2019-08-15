@@ -9,6 +9,11 @@ export const settingReducer = (state = {}, action) => {
         ...state,
         primaryWalletAddress: action.data.primaryWalletAddress
       }
+    case 'SETTING/SET_PRIMARY_WALLET':
+      return {
+        ...state,
+        primaryWallet: action.data.wallet
+      }
     default:
       return state
   }

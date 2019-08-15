@@ -36,6 +36,18 @@ export const setPrimaryAddress = address => {
   })
 }
 
+export const setPrimaryWallet = (address, provider) => {
+  const asyncAction = async () => {
+    const wallet = await walletService.get(address, provider)
+    return { wallet }
+  }
+
+  return createAsyncAction({
+    operation: 'SETTING/SET_PRIMARY_WALLET',
+    action: asyncAction
+  })
+}
+
 export const syncPrimaryWalletAddressToStore = defaultPrimaryAddress => {
   const asyncAction = async () => {
     const primaryWalletAddress = await walletService.getPrimaryAddress(
