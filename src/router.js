@@ -1,17 +1,104 @@
 import React from 'react'
 import { createAppContainer, createStackNavigator } from 'react-navigation'
-import { colors } from 'common/styles'
-
+import { createBottomTabNavigator } from 'react-navigation-tabs'
 import * as Views from 'components/views'
-import { OMGIcon } from 'components/widgets'
+import { Text } from 'react-native-paper'
+import { OMGIcon, OMGBox } from 'components/widgets'
+
+const BottomTabNavigator = createBottomTabNavigator(
+  {
+    Balance: {
+      screen: Views.Balance,
+      navigationOptions: {
+        tabBarLabel: ({ focused, tintColor }) => (
+          <Text
+            style={{
+              opacity: focused ? 1.0 : 0.7,
+              color: tintColor,
+              fontSize: 12,
+              alignSelf: 'center'
+            }}>
+            Balance
+          </Text>
+        ),
+        tabBarIcon: ({ focused, tintColor }) => (
+          <OMGIcon
+            name='token'
+            size={24}
+            color={tintColor}
+            style={{
+              opacity: focused ? 1.0 : 0.7
+            }}
+          />
+        )
+      }
+    },
+    Transfer: {
+      screen: Views.Send,
+      navigationOptions: {
+        tabBarLabel: 'Transfer',
+        tabBarVisible: false,
+        tabBarIcon: () => (
+          <OMGBox
+            style={{
+              padding: 8,
+              borderRadius: 20,
+              backgroundColor: '#FFFFFF'
+            }}>
+            <OMGIcon name='qr' size={24} color='#04070d' />
+          </OMGBox>
+        )
+      }
+    },
+    Transaction: {
+      screen: Views.Transaction,
+      navigationOptions: {
+        tabBarLabel: ({ focused, tintColor }) => (
+          <Text
+            style={{
+              opacity: focused ? 1.0 : 0.7,
+              color: tintColor,
+              fontSize: 12,
+              alignSelf: 'center'
+            }}>
+            History
+          </Text>
+        ),
+        tabBarIcon: ({ focused, tintColor }) => (
+          <OMGIcon
+            name='time'
+            size={24}
+            color={tintColor}
+            style={{
+              opacity: focused ? 1.0 : 0.7
+            }}
+          />
+        )
+      }
+    }
+  },
+  {
+    initialRouteName: 'Balance',
+    headerMode: 'none',
+    tabBarOptions: {
+      activeTintColor: '#f7f8fa',
+      inactiveTintColor: '#d0d6e2',
+      labelStyle: {
+        fontSize: 12,
+        opacity: 0.7
+      },
+      style: {
+        backgroundColor: '#04070d',
+        height: 80
+      }
+    }
+  }
+)
 
 const navigator = createStackNavigator(
   {
     Home: {
-      screen: Views.Home,
-      navigationOptions: {
-        title: 'Home'
-      }
+      screen: Views.Home
     },
     Balance: {
       screen: Views.Balance,
@@ -59,7 +146,7 @@ const navigator = createStackNavigator(
         title: 'Preview',
         headerRight: (
           <OMGIcon
-            name='rocket'
+            name='ic-plus'
             onPress={() => navigation.navigate('Deposit')}
           />
         )
@@ -67,29 +154,11 @@ const navigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: 'Home',
-    headerLayoutPreset: 'center',
-    defaultNavigationOptions: {
-      headerStyle: {
-        elevation: 0, // remove shadow on Android
-        shadowOpacity: 0, // remove shadow on iOS
-        backgroundColor: '#f0f4f8'
-      },
-      headerTintColor: '#000',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-        alignSelf: 'center'
-      },
-      // headerLeftContainerStyle: {
-      //   marginLeft: 16
-      // },
-      headerRightContainerStyle: {
-        marginRight: 16
-      }
-    }
+    initialRouteName: 'Main',
+    headerMode: 'none'
   }
 )
 
-const AppContainer = createAppContainer(navigator)
+const AppContainer = createAppContainer(BottomTabNavigator)
 
 export default AppContainer

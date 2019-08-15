@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { StyleSheet, View, Dimensions } from 'react-native'
 import { withTheme, Text } from 'react-native-paper'
@@ -7,32 +6,40 @@ import { walletActions } from 'common/actions'
 import EthereumBalance from './EthereumBalance'
 import PlasmaBalance from './PlasmaBalance'
 import ShowQR from './ShowQR'
+import { useLoading } from 'common/hooks'
 import { OMGBackground, OMGEmpty, OMGViewPager } from 'components/widgets'
 
 // 48 = marginRight (8) + marginLeft (8) + paddingLeft (16) + paddingRight (16) + overlapContentWidth (16)
 const pageWidth = Dimensions.get('window').width - 56
 
-const Balance = ({ theme, primaryWalletAddress, wallets }) => {
-  const rootChain = true
-  const primaryWallet = wallets.find(
-    wallet => wallet.address === primaryWalletAddress
-  )
+const Balance = ({ theme, primaryWalletAddress, loadingStatus, wallets }) => {
+  const [primaryWallet, setPrimaryWallet] = useState(null)
+  const [loading] = useLoading(loadingStatus)
+
+  useEffect(() => {
+    if (primaryWalletAddress) {
+      const wallet = wallets.find(w => w.address === primaryWalletAddress)
+      setPrimaryWallet(wallet)
+    }
+  }, [primaryWalletAddress, wallets])
 
   return (
     <OMGBackground style={styles.container(theme)}>
-      <Text style={styles.title(theme)}>{primaryWallet.name}</Text>
-      {!wallets ? (
-        <OMGEmpty />
+      <Text style={styles.title(theme)}>
+        {primaryWallet ? primaryWallet.name : 'Initializing...'}
+      </Text>
+      {!wallets || !primaryWallet ? (
+        <OMGEmpty loading={loading} />
       ) : (
         <OMGViewPager pageWidth={pageWidth}>
           <View style={styles.firstPage}>
-            <PlasmaBalance />
+            <PlasmaBalance primaryWallet={primaryWallet} />
           </View>
           <View style={styles.secondPage}>
-            <EthereumBalance />
+            <EthereumBalance primaryWallet={primaryWallet} />
           </View>
           <View style={styles.thirdPage}>
-            <ShowQR />
+            <ShowQR primaryWallet={primaryWallet} />
           </View>
         </OMGViewPager>
       )}
@@ -93,4 +100,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNavigation(withTheme(Balance)))
+)(withTheme(Balance))

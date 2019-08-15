@@ -1,12 +1,14 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import { StatusBar, StyleSheet } from 'react-native'
+import { StatusBar, StyleSheet, YellowBox } from 'react-native'
+import { SafeAreaView } from 'react-navigation'
 import { Provider } from 'react-redux'
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import Router from 'router'
 import createStore from 'common/stores'
 import { walletActions, settingActions } from 'common/actions'
-import { OMGBackground } from 'components/widgets'
 import Config from 'react-native-config'
+
+YellowBox.ignoreWarnings(['Warning:', 'Setting'])
 
 const App = () => {
   const [store, setStore] = useState(createStore({ wallets: [], setting: {} }))
@@ -42,6 +44,8 @@ const App = () => {
       darkText2: '#858b9a',
       darkText3: '#3c414d',
       darkText4: '#e4e7ed',
+      darkText5: '#000000',
+      grey1: '#d8d8d8',
       icon: '#04070D',
       input: '#FFFFFF',
       white: '#FFFFFF'
@@ -53,9 +57,9 @@ const App = () => {
       <StatusBar barStyle='dark-content' backgroundColor='#f0f4f8' />
       <Provider store={store}>
         <PaperProvider theme={theme}>
-          <OMGBackground style={styles.safeAreaView}>
+          <SafeAreaView style={styles.safeAreaView}>
             <Router />
-          </OMGBackground>
+          </SafeAreaView>
         </PaperProvider>
       </Provider>
     </Fragment>

@@ -10,28 +10,25 @@ import { OMGItemToken, OMGAssetHeader, OMGAssetList } from 'components/widgets'
 
 const EthereumBalance = ({
   theme,
+  primaryWallet,
   primaryWalletAddress,
   provider,
   getTxHistory,
   initAssets,
-  wallets,
   loadingStatus
 }) => {
-  const primaryWallet = wallets.find(
-    wallet => wallet.address === primaryWalletAddress
-  )
   const [totalBalance, setTotalBalance] = useState(0.0)
   const [loading] = useLoading(loadingStatus)
   const currency = 'USD'
 
   useEffect(() => {
-    if (primaryWalletAddress && !primaryWallet.txHistory) {
+    if (!primaryWallet.txHistory) {
       getTxHistory(primaryWalletAddress)
     }
-  }, [primaryWalletAddress, getTxHistory, primaryWallet.txHistory])
+  }, [primaryWalletAddress, getTxHistory, primaryWallet])
 
   useEffect(() => {
-    if (primaryWallet && primaryWallet.txHistory && !primaryWallet.assets) {
+    if (primaryWallet.txHistory && !primaryWallet.assets) {
       initAssets(provider, primaryWalletAddress, primaryWallet.txHistory)
     }
   }, [initAssets, primaryWalletAddress, provider, primaryWallet])
@@ -46,7 +43,7 @@ const EthereumBalance = ({
 
       setTotalBalance(totalPrices)
     }
-  }, [primaryWallet.assets])
+  }, [primaryWallet])
 
   return (
     <Fragment>
@@ -59,7 +56,7 @@ const EthereumBalance = ({
         network={Config.ETHERSCAN_NETWORK}
       />
       <OMGAssetList
-        data={(primaryWallet && primaryWallet.assets) || []}
+        data={primaryWallet.assets || []}
         keyExtractor={item => item.contractAddress}
         loading={loading}
         style={styles.list}
@@ -112,7 +109,6 @@ const formatTokenPrice = (amount, price) => {
 
 const mapStateToProps = (state, ownProps) => ({
   loadingStatus: state.loadingStatus,
-  wallets: state.wallets,
   provider: state.setting.provider,
   primaryWalletAddress: state.setting.primaryWalletAddress
 })
