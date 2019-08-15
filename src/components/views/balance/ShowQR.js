@@ -4,10 +4,7 @@ import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
 import { OMGQRCode, OMGBackground } from 'components/widgets'
 
-const ShowQR = ({ theme, wallets, primaryWalletAddress }) => {
-  const primaryWallet = wallets.find(
-    wallet => wallet.address == primaryWalletAddress
-  )
+const ShowQR = ({ theme, primaryWallet, primaryWalletAddress }) => {
   return (
     <OMGBackground style={styles.container(theme)}>
       <View style={styles.titleContainer}>

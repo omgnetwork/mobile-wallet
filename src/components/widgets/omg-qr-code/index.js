@@ -3,6 +3,7 @@ import { View, StyleSheet, Clipboard } from 'react-native'
 import { Text, withTheme } from 'react-native-paper'
 import QRCode from 'react-native-qrcode-svg'
 import OMGIcon from '../omg-icon'
+import OMGBox from '../omg-box'
 
 const OMGQRCode = ({ payload, displayText, size, theme, style }) => {
   return (
@@ -10,13 +11,11 @@ const OMGQRCode = ({ payload, displayText, size, theme, style }) => {
       <QRCode value={payload} size={size || 200} style={styles.qrcode} />
       <View style={styles.displayTextContainer}>
         <Text style={styles.text(theme)}>{displayText}</Text>
-        <OMGIcon
-          name='copy'
-          size={14}
-          color={theme.colors.icon}
+        <OMGBox
           style={styles.icon(theme)}
-          onPress={() => Clipboard.setString(displayText)}
-        />
+          onPress={() => Clipboard.setString(displayText)}>
+          <OMGIcon name='copy' size={14} color={theme.colors.icon} />
+        </OMGBox>
       </View>
     </View>
   )
@@ -32,7 +31,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     padding: 8,
     borderRadius: 15,
-    backgroundColor: theme.colors.background
+    backgroundColor: theme.colors.placeholder
   }),
   qrcode: {},
   text: theme => ({
