@@ -52,8 +52,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     padding: 16,
-    backgroundColor: theme.colors.white,
-    marginBottom: 32
+    backgroundColor: theme.colors.white
   }),
   firstPage: {
     width: pageWidth,

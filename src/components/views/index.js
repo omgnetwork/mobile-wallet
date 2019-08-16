@@ -9,6 +9,7 @@ import Main from './main'
 import Receive from './receive'
 import Scan from './scan'
 import Transfer from './transfer'
+import Send from './send'
 import Setting from './setting'
 import Preview from './preview'
 
@@ -24,6 +25,7 @@ export {
   Receive,
   Scan,
   Transfer,
+  Send,
   Setting,
   Preview
 }

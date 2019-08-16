@@ -53,7 +53,7 @@ const BottomTabNavigator = createBottomTabNavigator(
       }
     },
     Transfer: {
-      screen: TransferTabNavigator,
+      screen: Views.Transfer,
       navigationOptions: {
         tabBarLabel: 'Transfer',
         tabBarVisible: false,
