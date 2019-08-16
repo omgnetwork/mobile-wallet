@@ -1,9 +1,28 @@
 import React from 'react'
 import { createAppContainer, createStackNavigator } from 'react-navigation'
-import { createBottomTabNavigator } from 'react-navigation-tabs'
+import {
+  createBottomTabNavigator,
+  createMaterialTopTabNavigator
+} from 'react-navigation-tabs'
+import { View } from 'react-native'
 import * as Views from 'components/views'
 import { Text } from 'react-native-paper'
-import { OMGIcon, OMGBox } from 'components/widgets'
+import { OMGIcon, OMGBox, OMGTab } from 'components/widgets'
+
+const TransferTabNavigator = createMaterialTopTabNavigator(
+  {
+    Send: {
+      screen: Views.Transfer
+    },
+    Receive: {
+      screen: Views.Receive
+    }
+  },
+  {
+    tabBarComponent: OMGTab,
+    tabBarOptions: {}
+  }
+)
 
 const BottomTabNavigator = createBottomTabNavigator(
   {
@@ -34,7 +53,7 @@ const BottomTabNavigator = createBottomTabNavigator(
       }
     },
     Transfer: {
-      screen: Views.Send,
+      screen: TransferTabNavigator,
       navigationOptions: {
         tabBarLabel: 'Transfer',
         tabBarVisible: false,
@@ -128,9 +147,9 @@ const navigator = createStackNavigator(
       screen: Views.Transaction,
       navigationOptions: () => ({ title: 'Transaction' })
     },
-    Send: {
-      screen: Views.Send,
-      navigationOptions: () => ({ title: 'Send' })
+    Transfer: {
+      screen: Views.Transfer,
+      navigationOptions: () => ({ title: 'Transfer' })
     },
     Deposit: {
       screen: Views.Deposit,

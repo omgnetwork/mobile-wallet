@@ -8,7 +8,7 @@ import Home from './home'
 import Main from './main'
 import Receive from './receive'
 import Scan from './scan'
-import Send from './send'
+import Transfer from './transfer'
 import Setting from './setting'
 import Preview from './preview'
 
@@ -23,7 +23,7 @@ export {
   Home,
   Receive,
   Scan,
-  Send,
+  Transfer,
   Setting,
   Preview
 }

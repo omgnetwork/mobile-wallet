@@ -13,6 +13,7 @@ import OMGItemToken from './omg-item-token'
 import OMGQRCode from './omg-qr-code'
 import OMGPasswordTextInput from './omg-password-text-input'
 import OMGRadioButton from './omg-radio-button'
+import OMGTab from './omg-tab'
 import OMGText from './omg-text'
 import OMGTextInput from './omg-text-input'
 import OMGTitle from './omg-title'
@@ -34,6 +35,7 @@ export {
   OMGQRCode,
   OMGPasswordTextInput,
   OMGRadioButton,
+  OMGTab,
   OMGTextInput,
   OMGTitle,
   OMGText,

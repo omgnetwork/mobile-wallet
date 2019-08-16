@@ -2,12 +2,12 @@ import React from 'react'
 import { View } from 'react-native'
 import { Text } from 'react-native-paper'
 
-const Send = () => {
+const Transfer = () => {
   return (
     <View>
-      <Text>Send</Text>
+      <Text>Transfer</Text>
     </View>
   )
 }
 
-export default Send
+export default Transfer

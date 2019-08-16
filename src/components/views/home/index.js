@@ -40,8 +40,8 @@ const Home = ({ navigation }) => {
         <Button
           mode='outlined'
           style={styles.button}
-          onPress={() => navigation.navigate('Send')}>
-          Send
+          onPress={() => navigation.navigate('Transfer')}>
+          Transfer
         </Button>
         <Button
           mode='outlined'
