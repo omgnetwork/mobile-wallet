@@ -1,28 +1,9 @@
 import React from 'react'
 import { createAppContainer, createStackNavigator } from 'react-navigation'
-import {
-  createBottomTabNavigator,
-  createMaterialTopTabNavigator
-} from 'react-navigation-tabs'
-import { View } from 'react-native'
+import { createBottomTabNavigator } from 'react-navigation-tabs'
 import * as Views from 'components/views'
 import { Text } from 'react-native-paper'
-import { OMGIcon, OMGBox, OMGTab } from 'components/widgets'
-
-const TransferTabNavigator = createMaterialTopTabNavigator(
-  {
-    Send: {
-      screen: Views.Transfer
-    },
-    Receive: {
-      screen: Views.Receive
-    }
-  },
-  {
-    tabBarComponent: OMGTab,
-    tabBarOptions: {}
-  }
-)
+import { OMGIcon, OMGBox } from 'components/widgets'
 
 const BottomTabNavigator = createBottomTabNavigator(
   {
@@ -35,6 +16,7 @@ const BottomTabNavigator = createBottomTabNavigator(
               opacity: focused ? 1.0 : 0.7,
               color: tintColor,
               fontSize: 12,
+              paddingBottom: 8,
               alignSelf: 'center'
             }}>
             Balance
@@ -55,7 +37,18 @@ const BottomTabNavigator = createBottomTabNavigator(
     Transfer: {
       screen: Views.Transfer,
       navigationOptions: {
-        tabBarLabel: 'Transfer',
+        tabBarLabel: ({ focused, tintColor }) => (
+          <Text
+            style={{
+              opacity: focused ? 1.0 : 0.7,
+              color: tintColor,
+              fontSize: 12,
+              paddingBottom: 8,
+              alignSelf: 'center'
+            }}>
+            Transfer
+          </Text>
+        ),
         tabBarVisible: false,
         tabBarIcon: () => (
           <OMGBox
@@ -78,6 +71,7 @@ const BottomTabNavigator = createBottomTabNavigator(
               opacity: focused ? 1.0 : 0.7,
               color: tintColor,
               fontSize: 12,
+              paddingBottom: 8,
               alignSelf: 'center'
             }}>
             History
@@ -108,7 +102,8 @@ const BottomTabNavigator = createBottomTabNavigator(
       },
       style: {
         backgroundColor: '#04070d',
-        height: 80
+        height: 88,
+        paddingBottom: 8
       }
     }
   }
@@ -173,7 +168,7 @@ const navigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: 'Main',
+    initialRouteName: 'Home',
     headerMode: 'none'
   }
 )

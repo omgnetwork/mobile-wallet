@@ -32,7 +32,7 @@ const Wallets = ({
     savePrimaryWalletAddress(primaryAddress)
     setPrimaryWallet(primaryAddress, provider)
 
-    if (!primaryAddress) {
+    if (!primaryAddress && wallets.length > 0) {
       setPrimaryAddress(wallets[0].address)
     }
   }, [

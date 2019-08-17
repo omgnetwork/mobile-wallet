@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Text, withTheme } from 'react-native-paper'
-import { SafeAreaView } from 'react-navigation'
-import { OMGIcon } from 'components/widgets'
+import { SafeAreaView, withNavigation } from 'react-navigation'
+import { OMGIcon, OMGQRScanner, OMGButton } from 'components/widgets'
 
-const Send = ({ theme }) => {
-  return (
-    <SafeAreaView style={styles.contentContainer(theme)}>
-      <View style={styles.headerContainer}>
+const Send = ({ theme, navigation }) => {
+  const TopView = () => {
+    return (
+      <Fragment>
         <View style={styles.titleContainer(theme)}>
           <OMGIcon color={theme.colors.white} size={40} name='on-chain' />
           <Text style={styles.title(theme)}>
@@ -18,7 +18,25 @@ const Send = ({ theme }) => {
         <Text style={styles.normalText(theme)}>
           Switch to Plasma Childchain
         </Text>
-      </View>
+      </Fragment>
+    )
+  }
+
+  return (
+    <SafeAreaView style={styles.contentContainer(theme)}>
+      <OMGQRScanner
+        showMarker={true}
+        cameraStyle={styles.cameraContainer}
+        notAuthorizedView={
+          <Text style={styles.notAuthorizedView}>
+            Enable the camera permission to scan a QR code.
+          </Text>
+        }
+        renderTop={<TopView />}
+        renderBottom={
+          <OMGButton style={styles.button}>Or, Send Manually</OMGButton>
+        }
+      />
     </SafeAreaView>
   )
 }
@@ -28,8 +46,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-around',
-    alignContent: 'center',
-    backgroundColor: 'rgba(60, 65, 77, 0.45)'
+    alignContent: 'center'
   }),
   titleContainer: theme => ({
     flexDirection: 'row',
@@ -47,13 +64,28 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white
   }),
   headerContainer: {
-    flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 16
+  },
+  footerContainer: {
+    alignItems: 'center',
+    alignContent: 'center',
+    paddingVertical: 8
+  },
+  button: {
+    width: 300
+  },
+  cameraContainer: {
+    alignSelf: 'center',
+    flex: 1
   },
   normalText: theme => ({
     color: theme.colors.white,
     marginTop: 16
-  })
+  }),
+  notAuthorizedView: {
+    textAlign: 'center'
+  }
 })
 
-export default withTheme(Send)
+export default withNavigation(withTheme(Send))

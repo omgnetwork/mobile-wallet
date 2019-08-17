@@ -11,6 +11,7 @@ import OMGIcon from './omg-icon'
 import OMGItemWallet from './omg-item-wallet'
 import OMGItemToken from './omg-item-token'
 import OMGQRCode from './omg-qr-code'
+import OMGQRScanner from './omg-qr-scanner'
 import OMGPasswordTextInput from './omg-password-text-input'
 import OMGRadioButton from './omg-radio-button'
 import OMGTab from './omg-tab'
@@ -33,6 +34,7 @@ export {
   OMGItemToken,
   OMGMenu,
   OMGQRCode,
+  OMGQRScanner,
   OMGPasswordTextInput,
   OMGRadioButton,
   OMGTab,

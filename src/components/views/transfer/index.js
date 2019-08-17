@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Text, withTheme } from 'react-native-paper'
 import { OMGTab, OMGIcon, OMGBox, OMGBackground } from 'components/widgets'
@@ -22,15 +22,38 @@ const TransferTabNavigator = createMaterialTopTabNavigator(
 )
 
 const Transfer = ({ navigation, theme }) => {
+  const [rendering, setRendering] = useState(true)
+
+  useEffect(() => {
+    function willFocus() {
+      setRendering(true)
+    }
+    function willBlur() {
+      setRendering(false)
+    }
+
+    const willFocusSubscription = navigation.addListener('willFocus', willFocus)
+    const willBlurSubscription = navigation.addListener('willBlur', willBlur)
+
+    return () => {
+      willBlurSubscription.remove()
+      willFocusSubscription.remove()
+    }
+  }, [navigation])
+
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title(theme)}>Transfer</Text>
-        <OMGBox onPress={() => navigation.goBack()} style={styles.icon}>
+        <OMGBox
+          onPress={() => {
+            navigation.goBack()
+          }}
+          style={styles.icon}>
           <OMGIcon name='x-mark' size={18} color={theme.colors.icon} />
         </OMGBox>
       </View>
-      <TransferTabNavigator navigation={navigation} />
+      {rendering && <TransferTabNavigator navigation={navigation} />}
     </View>
   )
 }

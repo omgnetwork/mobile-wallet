@@ -50,7 +50,6 @@ const OMGTab = props => {
         alignItems: 'center'
       }}>
       {navigationState.routes.map((route, index) => {
-        console.log(navigationState.routes)
         const focusAnim = position.interpolate({
           inputRange: [index - 1, index, index + 1],
           outputRange: [0, 1, 0]
@@ -61,6 +60,7 @@ const OMGTab = props => {
         })
         return (
           <Tab
+            key={index}
             focusAnim={focusAnim}
             title={route.routeName}
             onPress={() => navigation.navigate(route.routeName)}
