@@ -14,7 +14,8 @@ import {
   OMGTokenInput,
   OMGWalletAddress,
   OMGAddressInput,
-  OMGAmountInput
+  OMGAmountInput,
+  OMGFeeInput
 } from 'components/widgets'
 import OMGItemToken from 'components/widgets/omg-item-token'
 
@@ -30,6 +31,12 @@ const mockToken = {
 const mockWallet = {
   address: '0x4522fb44C2aB359e76eCc75C22C9409690F12241',
   name: 'Give away'
+}
+
+const mockFee = {
+  name: 'Fast',
+  amount: '10',
+  symbol: 'Gwei'
 }
 
 const Preview = ({ navigation, theme }) => {
@@ -65,6 +72,7 @@ const Preview = ({ navigation, theme }) => {
             style={{ marginTop: 16 }}
           />
           <OMGAmountInput token={mockToken} style={{ marginTop: 16 }} />
+          <OMGFeeInput fee={mockFee} style={{ marginTop: 16 }} />
         </OMGBox>
         <OMGBox>
           <Title style={{ fontWeight: 'bold', fontSize: 16 }}>Name</Title>

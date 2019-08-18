@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
     color: theme.colors.primary,
     fontSize: 14,
     paddingTop: 16,
-    textTransform: 'uppercase',
     flex: 1
   }),
   rightContainer: theme => ({

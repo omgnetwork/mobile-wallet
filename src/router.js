@@ -173,6 +173,6 @@ const navigator = createStackNavigator(
   }
 )
 
-const AppContainer = createAppContainer(BottomTabNavigator)
+const AppContainer = createAppContainer(navigator)
 
 export default AppContainer

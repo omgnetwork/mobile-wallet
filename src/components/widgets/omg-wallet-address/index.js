@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
   text: theme => ({
     color: theme.colors.primary,
     fontSize: 14,
-    textTransform: 'uppercase',
     flex: 1
   }),
   rightContainer: {
