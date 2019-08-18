@@ -2,12 +2,12 @@ import React from 'react'
 import { View } from 'react-native'
 import { Text } from 'react-native-paper'
 
-const Transaction = () => {
+const History = () => {
   return (
     <View>
-      <Text>Transaction</Text>
+      <Text>History</Text>
     </View>
   )
 }
 
-export default Transaction
+export default History

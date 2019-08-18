@@ -61,8 +61,8 @@ const BottomTabNavigator = createBottomTabNavigator(
         )
       }
     },
-    Transaction: {
-      screen: Views.Transaction,
+    History: {
+      screen: Views.History,
       navigationOptions: {
         tabBarLabel: ({ focused, tintColor }) => (
           <OMGText
@@ -108,7 +108,7 @@ const BottomTabNavigator = createBottomTabNavigator(
   }
 )
 
-const navigator = createStackNavigator(
+const debugNavigator = createStackNavigator(
   {
     Home: {
       screen: Views.Home
@@ -133,9 +133,9 @@ const navigator = createStackNavigator(
       screen: Views.Setting,
       navigationOptions: () => ({ title: 'Setting' })
     },
-    Transaction: {
-      screen: Views.Transaction,
-      navigationOptions: () => ({ title: 'Transaction' })
+    TransactionForm: {
+      screen: Views.TransactionForm,
+      navigationOptions: () => ({ title: 'TransactionForm' })
     },
     Transfer: {
       screen: Views.Transfer,
@@ -165,6 +165,6 @@ const navigator = createStackNavigator(
   }
 )
 
-const AppContainer = createAppContainer(navigator)
+const AppContainer = createAppContainer(debugNavigator)
 
 export default AppContainer
