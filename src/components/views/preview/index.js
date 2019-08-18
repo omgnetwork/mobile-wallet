@@ -10,9 +10,27 @@ import {
   OMGPasswordTextInput,
   OMGAssetList,
   OMGAssetHeader,
-  OMGAssetFooter
+  OMGAssetFooter,
+  OMGTokenInput,
+  OMGWalletAddress,
+  OMGAddressInput,
+  OMGAmountInput
 } from 'components/widgets'
 import OMGItemToken from 'components/widgets/omg-item-token'
+
+const mockToken = {
+  tokenName: 'Ether',
+  tokenSymbol: 'ETH',
+  tokenDecimal: 18,
+  contractAddress: '0x',
+  balance: '21.633139948168146707',
+  price: 1
+}
+
+const mockWallet = {
+  address: '0x4522fb44C2aB359e76eCc75C22C9409690F12241',
+  name: 'Give away'
+}
 
 const Preview = ({ navigation, theme }) => {
   const [loading, setLoading] = useState(false)
@@ -39,6 +57,15 @@ const Preview = ({ navigation, theme }) => {
             console.log(`selected: ${selectedIndex}`)
           }}
         />
+        <OMGBox style={{ marginVertical: 16 }}>
+          <OMGTokenInput token={mockToken} theme={theme} />
+          <OMGWalletAddress wallet={mockWallet} style={{ marginTop: 16 }} />
+          <OMGAddressInput
+            address={mockWallet.address}
+            style={{ marginTop: 16 }}
+          />
+          <OMGAmountInput token={mockToken} style={{ marginTop: 16 }} />
+        </OMGBox>
         <OMGBox>
           <Title style={{ fontWeight: 'bold', fontSize: 16 }}>Name</Title>
           <OMGTextInput placeholder='Wallet' />

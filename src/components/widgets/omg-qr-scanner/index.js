@@ -36,7 +36,7 @@ const OMGQRScanner = props => {
 }
 
 const QRMarker = ({ borderColor, borderStrokeWidth }) => {
-  const width = Math.round(SCREEN_WIDTH * 0.5)
+  const width = Math.round(SCREEN_WIDTH * 0.75)
   const height = width
   const strokeColor = borderColor || 'white'
   const strokeWidth = borderStrokeWidth || 4
