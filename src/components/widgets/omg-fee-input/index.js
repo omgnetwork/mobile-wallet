@@ -1,17 +1,18 @@
 import React from 'react'
 import { TouchableOpacity, View, StyleSheet } from 'react-native'
-import { withTheme, Text } from 'react-native-paper'
+import { withTheme } from 'react-native-paper'
 import OMGIcon from '../omg-icon'
+import OMGText from '../omg-text'
 
 const OMGFeeInput = ({ theme, fee, style }) => {
   return (
     <TouchableOpacity style={{ ...styles.container(theme), ...style }}>
-      <Text style={styles.text(theme)}>{fee.name}</Text>
+      <OMGText style={styles.text(theme)}>{fee.name}</OMGText>
       <View style={styles.rightContainer}>
-        <Text style={styles.amount(theme)}>
+        <OMGText style={styles.amount(theme)}>
           {fee.amount} {fee.symbol}
-        </Text>
-        <OMGIcon name='chevron-right' size={14} color={theme.colors.icon} />
+        </OMGText>
+        <OMGIcon name='chevron-right' size={14} color={theme.colors.gray3} />
       </View>
     </TouchableOpacity>
   )
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }),
   amount: theme => ({
-    color: theme.colors.grey2,
+    color: theme.colors.gray2,
     marginRight: 10
   }),
   text: theme => ({

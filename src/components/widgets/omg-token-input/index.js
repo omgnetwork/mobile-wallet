@@ -1,8 +1,9 @@
 import React from 'react'
 import { TouchableOpacity, View, StyleSheet } from 'react-native'
-import { withTheme, Text } from 'react-native-paper'
+import { withTheme } from 'react-native-paper'
 import OMGImage from '../omg-image'
 import OMGIcon from '../omg-icon'
+import OMGText from '../omg-text'
 import { formatter } from 'common/utils'
 
 const OMGTokenInput = ({ theme, token, style }) => {
@@ -14,12 +15,12 @@ const OMGTokenInput = ({ theme, token, style }) => {
           uri: `https://api.adorable.io/avatars/285/${token.symbol}.png`
         }}
       />
-      <Text style={styles.text(theme)}>{token.tokenSymbol}</Text>
+      <OMGText style={styles.text(theme)}>{token.tokenSymbol}</OMGText>
       <View style={styles.rightContainer}>
-        <Text style={styles.amount(theme)}>
+        <OMGText style={styles.amount(theme)}>
           {formatTokenBalance(token.balance)} {token.tokenSymbol}
-        </Text>
-        <OMGIcon name='chevron-right' size={14} color={theme.colors.icon} />
+        </OMGText>
+        <OMGIcon name='chevron-right' size={14} color={theme.colors.gray3} />
       </View>
     </TouchableOpacity>
   )
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     marginRight: 16
   },
   amount: theme => ({
-    color: theme.colors.grey2,
+    color: theme.colors.gray2,
     marginRight: 10
   }),
   text: theme => ({

@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Text, withTheme } from 'react-native-paper'
+import { withTheme } from 'react-native-paper'
 import { SafeAreaView, withNavigation } from 'react-navigation'
-import { OMGIcon, OMGQRScanner, OMGButton } from 'components/widgets'
+import { OMGText, OMGIcon, OMGQRScanner, OMGButton } from 'components/widgets'
 
 const Send = ({ theme, navigation }) => {
   const TopView = () => {
@@ -10,14 +10,14 @@ const Send = ({ theme, navigation }) => {
       <Fragment>
         <View style={styles.titleContainer(theme)}>
           <OMGIcon color={theme.colors.white} size={40} name='on-chain' />
-          <Text style={styles.title(theme)}>
+          <OMGText style={styles.title(theme)}>
             Sending on {'\n'}Ethereum Rootchain
-          </Text>
+          </OMGText>
         </View>
         <View style={styles.line(theme)} />
-        <Text style={styles.normalText(theme)}>
+        <OMGText style={styles.normalText(theme)}>
           Switch to Plasma Childchain
-        </Text>
+        </OMGText>
       </Fragment>
     )
   }
@@ -28,9 +28,9 @@ const Send = ({ theme, navigation }) => {
         showMarker={true}
         cameraStyle={styles.cameraContainer}
         notAuthorizedView={
-          <Text style={styles.notAuthorizedView}>
+          <OMGText style={styles.notAuthorizedView}>
             Enable the camera permission to scan a QR code.
-          </Text>
+          </OMGText>
         }
         renderTop={<TopView />}
         renderBottom={

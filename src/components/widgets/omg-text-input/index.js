@@ -46,6 +46,7 @@ const OMGTextInput = ({
 }
 const styles = StyleSheet.create({
   textInput: {
+    fontFamily: 'Circular-Book',
     backgroundColor: '#FFFFFF',
     paddingTop: 12,
     marginLeft: Platform.OS === 'ios' ? 0 : -4

@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { withTheme, Text } from 'react-native-paper'
+import { withTheme } from 'react-native-paper'
 import OMGImage from '../omg-image'
+import OMGText from '../omg-text'
 
 const OMGWalletAddress = ({ theme, wallet, style }) => {
   return (
@@ -12,14 +13,14 @@ const OMGWalletAddress = ({ theme, wallet, style }) => {
           uri: `https://api.adorable.io/avatars/285/${wallet.address}.png`
         }}
       />
-      <Text style={styles.text(theme)}>{wallet.name}</Text>
+      <OMGText style={styles.text(theme)}>{wallet.name}</OMGText>
       <View style={styles.rightContainer}>
-        <Text
+        <OMGText
           style={styles.address(theme)}
           ellipsizeMode='tail'
           numberOfLines={1}>
           {wallet.address}
-        </Text>
+        </OMGText>
       </View>
     </View>
   )
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
     marginRight: 16
   },
   address: theme => ({
-    color: theme.colors.grey2,
+    color: theme.colors.gray2,
     maxWidth: 128,
     marginRight: 10
   }),

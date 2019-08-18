@@ -5,8 +5,8 @@ import {
   Animated,
   ActivityIndicator
 } from 'react-native'
-import { Text } from 'react-native-paper'
 import { Push, Fade } from 'common/anims'
+import OMGText from '../omg-text'
 
 const OMGButton = ({ disabled, style, children, onPress, loading }) => {
   const opacity = disabled || loading ? styles.inactive : styles.active
@@ -20,10 +20,10 @@ const OMGButton = ({ disabled, style, children, onPress, loading }) => {
         color='#ffffff'
         style={{ ...styles.icon }}
       />
-      <Text style={styles.text}>{children}</Text>
+      <OMGText style={styles.text}>{children}</OMGText>
     </Fragment>
   ) : (
-    <Text style={styles.text}>{children}</Text>
+    <OMGText style={styles.text}>{children}</OMGText>
   )
 
   useEffect(() => {

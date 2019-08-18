@@ -7,7 +7,6 @@ import Transaction from './transaction'
 import Home from './home'
 import Main from './main'
 import Receive from './receive'
-import Scan from './scan'
 import Transfer from './transfer'
 import Send from './send'
 import Setting from './setting'
@@ -23,7 +22,6 @@ export {
   Transaction,
   Home,
   Receive,
-  Scan,
   Transfer,
   Send,
   Setting,

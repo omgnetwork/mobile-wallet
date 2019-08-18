@@ -3,6 +3,8 @@ import { Text } from 'react-native-paper'
 import QRCodeScanner from 'react-native-qrcode-scanner'
 import { View, StyleSheet, Dimensions } from 'react-native'
 import Svg, { Rect, Path } from 'react-native-svg'
+import OMGText from '../omg-text'
+
 const SCREEN_WIDTH = Dimensions.get('window').width
 
 const OMGQRScanner = props => {
@@ -14,7 +16,7 @@ const OMGQRScanner = props => {
         {...props}
         onRead={props.onReceiveQR || (e => console.log(e.data))}
         pendingAuthorizationView={
-          <Text style={styles.loadingText}>Loading...</Text>
+          <OMGText style={styles.loadingText}>Loading...</OMGText>
         }
         customMarker={
           <View style={styles.contentContainer}>

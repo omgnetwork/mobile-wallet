@@ -1,17 +1,17 @@
 import React from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
-import { withTheme, Text } from 'react-native-paper'
-import { OMGBackground } from 'components/widgets'
+import { withTheme } from 'react-native-paper'
+import { OMGBackground, OMGText } from 'components/widgets'
 
 const OMGAssetFooter = ({ theme, style }) => {
   return (
     <OMGBackground style={{ ...styles.container(theme), ...style }}>
       <TouchableOpacity style={styles.subfooter}>
-        <Text style={styles.subfooterText(theme)}>DEPOSIT</Text>
+        <OMGText style={styles.subfooterText(theme)}>DEPOSIT</OMGText>
       </TouchableOpacity>
       <View style={styles.divider(theme)} />
       <TouchableOpacity style={styles.subfooter}>
-        <Text style={styles.subfooterText(theme)}>EXIT</Text>
+        <OMGText style={styles.subfooterText(theme)}>EXIT</OMGText>
       </TouchableOpacity>
     </OMGBackground>
   )
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   subfooterText: theme => ({
     fontSize: 14,
-    color: theme.colors.darkText4,
+    color: theme.colors.black4,
     marginRight: 4
   }),
   divider: theme => ({

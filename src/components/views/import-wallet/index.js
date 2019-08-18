@@ -9,6 +9,7 @@ import {
   OMGRadioButton,
   OMGTextInput,
   OMGBackground,
+  OMGText,
   OMGBox,
   OMGButton
 } from 'components/widgets'
@@ -99,10 +100,10 @@ const Mnemonic = ({
 
   return (
     <Fragment>
-      <Text>
+      <OMGText>
         Copy and paste Ethereum official wallet's Mnemonic to the input field to
         import.
-      </Text>
+      </OMGText>
       <OMGBox style={{ marginTop: 16 }}>
         <Title style={{ fontSize: 16, fontWeight: 'bold' }}>Mnemonic</Title>
         <OMGTextInput
@@ -114,7 +115,9 @@ const Mnemonic = ({
         />
       </OMGBox>
       <OMGBox style={{ marginTop: 16 }}>
-        <Title style={{ fontSize: 16, fontWeight: 'bold' }}>Wallet Name</Title>
+        <OMGText style={{ fontSize: 16 }} weight='bold'>
+          Wallet Name
+        </OMGText>
         <OMGTextInput
           placeholder='Your wallet name'
           hideUnderline={true}

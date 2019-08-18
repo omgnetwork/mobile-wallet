@@ -36,21 +36,18 @@ const App = () => {
       primary: '#3c414d',
       primaryLight: '#5b626f',
       primaryDarker: '#262a31',
-      accent: '#f1c40f',
       background: '#f0f2f5',
       backgroundDisabled: '#f7f8fa',
-      surface: '#D9E2EC',
-      placeholder: '#BCCCDC',
-      darkText1: '#d0d6e2',
-      darkText2: '#858b9a',
-      darkText3: '#3c414d',
-      darkText4: '#e4e7ed',
-      darkText5: '#000000',
-      grey1: '#d8d8d8',
-      grey2: '#abb2c2',
-      icon: '#04070D',
-      input: '#FFFFFF',
-      white: '#FFFFFF'
+      black1: '#d0d6e2',
+      black2: '#858b9a',
+      black3: '#3c414d',
+      black4: '#e4e7ed',
+      black5: '#000000',
+      gray1: '#d8d8d8',
+      gray2: '#abb2c2',
+      gray3: '#04070D',
+      white: '#FFFFFF',
+      white2: '#BCCCDC'
     }
   }
 

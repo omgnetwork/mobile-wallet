@@ -10,7 +10,7 @@ const OMGBox = ({ children, theme, onPress, style }) => {
       disabled={!onPress}
       activeOpacity={0.6}
       style={{
-        ...styles.container(colors.input),
+        ...styles.container(colors.white),
         ...style
       }}>
       {children}

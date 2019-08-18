@@ -1,7 +1,7 @@
 import React, { useRef, Fragment, useEffect } from 'react'
 import { StyleSheet, View, ActivityIndicator } from 'react-native'
 import { Text, withTheme, Divider } from 'react-native-paper'
-import { OMGBackground, OMGIcon, OMGEmpty } from 'components/widgets'
+import { OMGBackground, OMGText, OMGEmpty } from 'components/widgets'
 import { FlatList } from 'react-native-gesture-handler'
 
 const OMGAssetList = ({
@@ -16,8 +16,10 @@ const OMGAssetList = ({
   return (
     <OMGBackground style={{ ...styles.container, ...style }}>
       <View style={styles.header}>
-        <Text style={styles.title(theme)}>Assets</Text>
-        {/* <OMGIcon name='plus' color={theme.colors.icon} style={styles.add} /> */}
+        <OMGText style={styles.title(theme)} weight='bold'>
+          ASSETS
+        </OMGText>
+        {/* <OMGIcon name='plus' color={theme.colors.gray3} style={styles.add} /> */}
       </View>
       <Divider inset={false} />
       <View style={styles.assetContainer}>
@@ -57,8 +59,7 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'left',
     justifyContent: 'flex-start',
-    fontWeight: 'bold',
-    color: theme.colors.darkText3,
+    color: theme.colors.black3,
     fontSize: 14
   })
 })

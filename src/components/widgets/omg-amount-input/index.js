@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { withTheme, Text } from 'react-native-paper'
+import { withTheme } from 'react-native-paper'
 import OMGImage from '../omg-image'
+import OMGText from '../omg-text'
 import OMGTextInput from '../omg-text-input'
 
 const OMGAmountInput = ({ theme, token, style }) => {
@@ -21,7 +22,7 @@ const OMGAmountInput = ({ theme, token, style }) => {
         lines={1}
       />
       <View style={styles.rightContainer}>
-        <Text style={styles.symbol(theme)}>{token.tokenSymbol}</Text>
+        <OMGText style={styles.symbol(theme)}>{token.tokenSymbol}</OMGText>
       </View>
     </View>
   )
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
     marginLeft: 16
   },
   symbol: theme => ({
-    color: theme.colors.grey2
+    color: theme.colors.gray2
   })
 })
 

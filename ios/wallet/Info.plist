@@ -58,6 +58,10 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 		<string>omgwallet.ttf</string>
+		<string>Circular-Black.otf</string>
+		<string>Circular-Bold.otf</string>
+		<string>Circular-Book.otf</string>
+		<string>Circular-Medium.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

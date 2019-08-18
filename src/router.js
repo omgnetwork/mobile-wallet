@@ -2,8 +2,7 @@ import React from 'react'
 import { createAppContainer, createStackNavigator } from 'react-navigation'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import * as Views from 'components/views'
-import { Text } from 'react-native-paper'
-import { OMGIcon, OMGBox } from 'components/widgets'
+import { OMGIcon, OMGBox, OMGText } from 'components/widgets'
 
 const BottomTabNavigator = createBottomTabNavigator(
   {
@@ -11,7 +10,7 @@ const BottomTabNavigator = createBottomTabNavigator(
       screen: Views.Balance,
       navigationOptions: {
         tabBarLabel: ({ focused, tintColor }) => (
-          <Text
+          <OMGText
             style={{
               opacity: focused ? 1.0 : 0.7,
               color: tintColor,
@@ -20,7 +19,7 @@ const BottomTabNavigator = createBottomTabNavigator(
               alignSelf: 'center'
             }}>
             Balance
-          </Text>
+          </OMGText>
         ),
         tabBarIcon: ({ focused, tintColor }) => (
           <OMGIcon
@@ -38,7 +37,7 @@ const BottomTabNavigator = createBottomTabNavigator(
       screen: Views.Transfer,
       navigationOptions: {
         tabBarLabel: ({ focused, tintColor }) => (
-          <Text
+          <OMGText
             style={{
               opacity: focused ? 1.0 : 0.7,
               color: tintColor,
@@ -47,7 +46,7 @@ const BottomTabNavigator = createBottomTabNavigator(
               alignSelf: 'center'
             }}>
             Transfer
-          </Text>
+          </OMGText>
         ),
         tabBarVisible: false,
         tabBarIcon: () => (
@@ -66,7 +65,7 @@ const BottomTabNavigator = createBottomTabNavigator(
       screen: Views.Transaction,
       navigationOptions: {
         tabBarLabel: ({ focused, tintColor }) => (
-          <Text
+          <OMGText
             style={{
               opacity: focused ? 1.0 : 0.7,
               color: tintColor,
@@ -75,7 +74,7 @@ const BottomTabNavigator = createBottomTabNavigator(
               alignSelf: 'center'
             }}>
             History
-          </Text>
+          </OMGText>
         ),
         tabBarIcon: ({ focused, tintColor }) => (
           <OMGIcon
@@ -130,10 +129,6 @@ const navigator = createStackNavigator(
       screen: Views.Receive,
       navigationOptions: () => ({ title: 'Receive' })
     },
-    Scan: {
-      screen: Views.Scan,
-      navigationOptions: () => ({ title: 'Scan' })
-    },
     Setting: {
       screen: Views.Setting,
       navigationOptions: () => ({ title: 'Setting' })
@@ -159,10 +154,7 @@ const navigator = createStackNavigator(
       navigationOptions: ({ navigation }) => ({
         title: 'Preview',
         headerRight: (
-          <OMGIcon
-            name='ic-plus'
-            onPress={() => navigation.navigate('Deposit')}
-          />
+          <OMGIcon name='plus' onPress={() => navigation.navigate('Deposit')} />
         )
       })
     }

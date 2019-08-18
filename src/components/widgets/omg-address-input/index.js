@@ -1,6 +1,6 @@
 import React from 'react'
 import { TouchableOpacity, View, StyleSheet } from 'react-native'
-import { withTheme, Text } from 'react-native-paper'
+import { withTheme } from 'react-native-paper'
 import OMGImage from '../omg-image'
 import OMGIcon from '../omg-icon'
 import OMGTextInput from '../omg-text-input'
@@ -23,7 +23,7 @@ const OMGAddressInput = ({ theme, address, style }) => {
         lines={1}
       />
       <TouchableOpacity style={styles.rightContainer(theme)}>
-        <OMGIcon name='qr' size={24} color={theme.colors.icon} />
+        <OMGIcon name='qr' size={24} color={theme.colors.gray3} />
       </TouchableOpacity>
     </View>
   )

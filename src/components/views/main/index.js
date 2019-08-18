@@ -7,7 +7,7 @@ import LinearGradient from 'react-native-linear-gradient'
 const Main = ({ navigation, theme }) => {
   return (
     <LinearGradient
-      colors={[theme.colors.darkText5, theme.colors.grey1]}
+      colors={[theme.colors.black5, theme.colors.gray1]}
       style={styles.container}>
       <SafeAreaView>{/* <BottomTabContainer /> */}</SafeAreaView>
     </LinearGradient>

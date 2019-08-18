@@ -36,6 +36,14 @@
 		E9656AD1CC3949C392FF63C3 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1AD6669148F449E7A6472E92 /* FontAwesome5_Solid.ttf */; };
 		EFF24E400BEE425591C9B290 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C11DBCE866F4431D9E86B747 /* FontAwesome.ttf */; };
 		26B581CA473E484FA264CAAE /* omgwallet.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76FF737E1E8C4AD9A2524175 /* omgwallet.ttf */; };
+		45A6BCC00A144289B2D8F8CB /* Circular-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0913F27CDCEF45638DCEE32A /* Circular-Black.otf */; };
+		D605B3E05B7E4DDC89EC14B3 /* Circular-BlackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = EF839C6BE1AE4E5C8F199764 /* Circular-BlackItalic.otf */; };
+		45A2DAA1ACFA4FB5A4C6FF0F /* Circular-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A759D0148D1F49D9B44C5440 /* Circular-Bold.otf */; };
+		26AD203BE36041A485D35BB4 /* Circular-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5E537A3064D4461E8B3F5340 /* Circular-BoldItalic.otf */; };
+		82E87900CCAA488EBD9EAACA /* Circular-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6EDE4A1B34D641B7A4829640 /* Circular-Book.otf */; };
+		42716AA009FA4BB291E3317B /* Circular-BookItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3A8B39A5C679493C813D3F8F /* Circular-BookItalic.otf */; };
+		615C3EB0B70E479E9DA82298 /* Circular-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = BB4D76258E7E4F69BD50DABA /* Circular-Medium.otf */; };
+		81BD9715E17948B197E30B89 /* Circular-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FF41E431E2D74BE8B69644D8 /* Circular-MediumItalic.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,6 +108,14 @@
 		EE8E1B055C045282D5783EFA /* Pods-wallet-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-wallet-tvOS/Pods-wallet-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		F565AE7DCA93424289230246 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		76FF737E1E8C4AD9A2524175 /* omgwallet.ttf */ = {isa = PBXFileReference; name = "omgwallet.ttf"; path = "../assets/fonts/omgwallet.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0913F27CDCEF45638DCEE32A /* Circular-Black.otf */ = {isa = PBXFileReference; name = "Circular-Black.otf"; path = "../assets/fonts/Circular-Black.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EF839C6BE1AE4E5C8F199764 /* Circular-BlackItalic.otf */ = {isa = PBXFileReference; name = "Circular-BlackItalic.otf"; path = "../assets/fonts/Circular-BlackItalic.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A759D0148D1F49D9B44C5440 /* Circular-Bold.otf */ = {isa = PBXFileReference; name = "Circular-Bold.otf"; path = "../assets/fonts/Circular-Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5E537A3064D4461E8B3F5340 /* Circular-BoldItalic.otf */ = {isa = PBXFileReference; name = "Circular-BoldItalic.otf"; path = "../assets/fonts/Circular-BoldItalic.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6EDE4A1B34D641B7A4829640 /* Circular-Book.otf */ = {isa = PBXFileReference; name = "Circular-Book.otf"; path = "../assets/fonts/Circular-Book.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3A8B39A5C679493C813D3F8F /* Circular-BookItalic.otf */ = {isa = PBXFileReference; name = "Circular-BookItalic.otf"; path = "../assets/fonts/Circular-BookItalic.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BB4D76258E7E4F69BD50DABA /* Circular-Medium.otf */ = {isa = PBXFileReference; name = "Circular-Medium.otf"; path = "../assets/fonts/Circular-Medium.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FF41E431E2D74BE8B69644D8 /* Circular-MediumItalic.otf */ = {isa = PBXFileReference; name = "Circular-MediumItalic.otf"; path = "../assets/fonts/Circular-MediumItalic.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -251,6 +267,14 @@
 				94A4D1468C7A406B95799C34 /* SimpleLineIcons.ttf */,
 				C749D77E6D0F40D49422BC2E /* Zocial.ttf */,
 				76FF737E1E8C4AD9A2524175 /* omgwallet.ttf */,
+				0913F27CDCEF45638DCEE32A /* Circular-Black.otf */,
+				EF839C6BE1AE4E5C8F199764 /* Circular-BlackItalic.otf */,
+				A759D0148D1F49D9B44C5440 /* Circular-Bold.otf */,
+				5E537A3064D4461E8B3F5340 /* Circular-BoldItalic.otf */,
+				6EDE4A1B34D641B7A4829640 /* Circular-Book.otf */,
+				3A8B39A5C679493C813D3F8F /* Circular-BookItalic.otf */,
+				BB4D76258E7E4F69BD50DABA /* Circular-Medium.otf */,
+				FF41E431E2D74BE8B69644D8 /* Circular-MediumItalic.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -418,6 +442,14 @@
 				71893F86C912443A8544855E /* SimpleLineIcons.ttf in Resources */,
 				BE7C39482E2D40AC8094093A /* Zocial.ttf in Resources */,
 				26B581CA473E484FA264CAAE /* omgwallet.ttf in Resources */,
+				45A6BCC00A144289B2D8F8CB /* Circular-Black.otf in Resources */,
+				D605B3E05B7E4DDC89EC14B3 /* Circular-BlackItalic.otf in Resources */,
+				45A2DAA1ACFA4FB5A4C6FF0F /* Circular-Bold.otf in Resources */,
+				26AD203BE36041A485D35BB4 /* Circular-BoldItalic.otf in Resources */,
+				82E87900CCAA488EBD9EAACA /* Circular-Book.otf in Resources */,
+				42716AA009FA4BB291E3317B /* Circular-BookItalic.otf in Resources */,
+				615C3EB0B70E479E9DA82298 /* Circular-Medium.otf in Resources */,
+				81BD9715E17948B197E30B89 /* Circular-MediumItalic.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

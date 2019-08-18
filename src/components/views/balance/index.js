@@ -7,7 +7,12 @@ import EthereumBalance from './EthereumBalance'
 import PlasmaBalance from './PlasmaBalance'
 import ShowQR from './ShowQR'
 import { useLoading } from 'common/hooks'
-import { OMGBackground, OMGEmpty, OMGViewPager } from 'components/widgets'
+import {
+  OMGBackground,
+  OMGEmpty,
+  OMGViewPager,
+  OMGText
+} from 'components/widgets'
 
 // 48 = marginRight (8) + marginLeft (8) + paddingLeft (16) + paddingRight (16) + overlapContentWidth (16)
 const pageWidth = Dimensions.get('window').width - 56
@@ -25,9 +30,9 @@ const Balance = ({ theme, primaryWalletAddress, loadingStatus, wallets }) => {
 
   return (
     <OMGBackground style={styles.container(theme)}>
-      <Text style={styles.title(theme)}>
+      <OMGText style={styles.title(theme)}>
         {primaryWallet ? primaryWallet.name : 'Initializing...'}
-      </Text>
+      </OMGText>
       {!wallets || !primaryWallet ? (
         <OMGEmpty loading={loading} />
       ) : (

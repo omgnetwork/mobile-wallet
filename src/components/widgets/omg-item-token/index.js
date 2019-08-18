@@ -1,7 +1,8 @@
 import React from 'react'
 import { Image, StyleSheet, View } from 'react-native'
 import OMGBox from '../omg-box'
-import { Title, Text, withTheme } from 'react-native-paper'
+import OMGText from '../omg-text'
+import { withTheme } from 'react-native-paper'
 
 const OMGItemToken = ({ symbol, price, balance, style, onPress, theme }) => {
   return (
@@ -13,16 +14,16 @@ const OMGItemToken = ({ symbol, price, balance, style, onPress, theme }) => {
         }}
       />
       <View style={styles.sectionName}>
-        <Title style={styles.symbol(theme)}>{symbol}</Title>
+        <OMGText style={styles.symbol(theme)}>{symbol}</OMGText>
       </View>
       <View style={styles.sectionAmount}>
-        <Text
+        <OMGText
           style={styles.balance(theme)}
           ellipsizeMode='tail'
           numberOfLines={1}>
           {balance}
-        </Text>
-        <Text style={styles.fiatValue(theme)}>{price} USD</Text>
+        </OMGText>
+        <OMGText style={styles.fiatValue(theme)}>{price} USD</OMGText>
       </View>
     </OMGBox>
   )
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
   }),
   fiatValue: theme => ({
     textAlign: 'right',
-    color: theme.colors.darkText2,
+    color: theme.colors.black2,
     fontSize: 8
   })
 })

@@ -10,12 +10,6 @@ const Home = ({ navigation }) => {
         <Button
           mode='outlined'
           style={styles.button}
-          onPress={() => navigation.navigate('Scan')}>
-          Scan
-        </Button>
-        <Button
-          mode='outlined'
-          style={styles.button}
           onPress={() => navigation.navigate('Receive')}>
           Receive
         </Button>

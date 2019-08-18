@@ -1,11 +1,11 @@
 import React from 'react'
 import { View, ActivityIndicator, StyleSheet } from 'react-native'
-import { Text } from 'react-native-paper'
+import OMGText from '../omg-text'
 
 const OMGEmpty = ({ text, loading, style }) => {
   return (
     <View style={{ ...styles.container, ...style }}>
-      {loading ? <ActivityIndicator /> : <Text>{text}</Text>}
+      {loading ? <ActivityIndicator /> : <OMGText>{text}</OMGText>}
     </View>
   )
 }

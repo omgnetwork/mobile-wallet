@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Text, withTheme } from 'react-native-paper'
-import { OMGTab, OMGIcon, OMGBox, OMGBackground } from 'components/widgets'
+import { withTheme } from 'react-native-paper'
+import { OMGTab, OMGIcon, OMGBox, OMGText } from 'components/widgets'
 import Send from '../send'
 import Receive from '../receive'
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs'
@@ -44,13 +44,13 @@ const Transfer = ({ navigation, theme }) => {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title(theme)}>Transfer</Text>
+        <OMGText style={styles.title(theme)}>Transfer</OMGText>
         <OMGBox
           onPress={() => {
             navigation.goBack()
           }}
           style={styles.icon}>
-          <OMGIcon name='x-mark' size={18} color={theme.colors.icon} />
+          <OMGIcon name='x-mark' size={18} color={theme.colors.gray3} />
         </OMGBox>
       </View>
       {rendering && <TransferTabNavigator navigation={navigation} />}
