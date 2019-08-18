@@ -38,6 +38,7 @@ const App = () => {
       primaryDarker: '#262a31',
       accent: '#f1c40f',
       background: '#f0f2f5',
+      backgroundDisabled: '#f7f8fa',
       surface: '#D9E2EC',
       placeholder: '#BCCCDC',
       darkText1: '#d0d6e2',
@@ -46,6 +47,7 @@ const App = () => {
       darkText4: '#e4e7ed',
       darkText5: '#000000',
       grey1: '#d8d8d8',
+      grey2: '#abb2c2',
       icon: '#04070D',
       input: '#FFFFFF',
       white: '#FFFFFF'
