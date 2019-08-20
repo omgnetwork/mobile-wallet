@@ -22,6 +22,7 @@ import OMGTab from './omg-tab'
 import OMGText from './omg-text'
 import OMGTextInput from './omg-text-input'
 import OMGTokenInput from './omg-token-input'
+import OMGTokenSelect from './omg-token-select'
 import OMGTitle from './omg-title'
 import OMGViewPager from './omg-view-pager'
 import OMGWalletAddress from './omg-wallet-address'
@@ -50,6 +51,7 @@ export {
   OMGTab,
   OMGTextInput,
   OMGTokenInput,
+  OMGTokenSelect,
   OMGTitle,
   OMGText,
   OMGViewPager,

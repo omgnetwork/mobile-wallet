@@ -93,7 +93,7 @@ const formatTokenBalance = amount => {
   return formatter.format(amount, {
     commify: true,
     maxDecimal: 3,
-    ellipsize: true
+    ellipsize: false
   })
 }
 

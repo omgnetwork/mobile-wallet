@@ -1,28 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { OMGTab, OMGIcon, OMGBox, OMGText } from 'components/widgets'
-import Send from '../send'
-import Receive from '../receive'
-import { createMaterialTopTabNavigator } from 'react-navigation-tabs'
-
-const TransferTabNavigator = createMaterialTopTabNavigator(
-  {
-    Send: {
-      screen: Send
-    },
-    Receive: {
-      screen: Receive
-    }
-  },
-  {
-    tabBarComponent: OMGTab,
-    tabBarOptions: {}
-  }
-)
+import { StackActions, NavigationActions } from 'react-navigation'
+import { OMGIcon, OMGBox, OMGText } from 'components/widgets'
 
 const Transfer = ({ navigation, theme }) => {
   const [rendering, setRendering] = useState(true)
+  const SendTabNavigator = navigation.getParam('navigator')
 
   useEffect(() => {
     function willFocus() {
@@ -53,7 +37,7 @@ const Transfer = ({ navigation, theme }) => {
           <OMGIcon name='x-mark' size={18} color={theme.colors.gray3} />
         </OMGBox>
       </View>
-      {rendering && <TransferTabNavigator navigation={navigation} />}
+      {rendering && <SendTabNavigator navigation={navigation} />}
     </View>
   )
 }
@@ -77,7 +61,5 @@ const styles = StyleSheet.create({
     padding: 16
   }
 })
-
-Transfer.router = TransferTabNavigator.router
 
 export default withTheme(Transfer)

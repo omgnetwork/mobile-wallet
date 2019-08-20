@@ -191,7 +191,12 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-camera')
+    implementation (project(':react-native-camera')) {
+        exclude group: "com.google.android.gms"
+    }
+    implementation ("com.google.android.gms:play-services-vision:10.2.0") {
+        force = true;
+    }
     implementation project(':react-native-linear-gradient')
     implementation project(':react-native-svg')
     implementation project(':react-native-config')
@@ -217,3 +222,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+// apply plugin: 'com.google.gms.google-services'

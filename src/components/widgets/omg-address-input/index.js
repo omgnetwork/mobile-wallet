@@ -5,7 +5,7 @@ import OMGImage from '../omg-image'
 import OMGIcon from '../omg-icon'
 import OMGTextInput from '../omg-text-input'
 
-const OMGAddressInput = ({ theme, address, style }) => {
+const OMGAddressInput = ({ theme, address, style, onPress }) => {
   return (
     <View style={{ ...styles.container(theme), ...style }}>
       <OMGImage
@@ -22,7 +22,7 @@ const OMGAddressInput = ({ theme, address, style }) => {
         hideUnderline={true}
         lines={1}
       />
-      <TouchableOpacity style={styles.rightContainer(theme)}>
+      <TouchableOpacity style={styles.rightContainer(theme)} onPress={onPress}>
         <OMGIcon name='qr' size={24} color={theme.colors.gray3} />
       </TouchableOpacity>
     </View>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   text: theme => ({
     color: theme.colors.primary,
     fontSize: 14,
-    paddingTop: 16,
+    paddingTop: -8,
     flex: 1
   }),
   rightContainer: theme => ({

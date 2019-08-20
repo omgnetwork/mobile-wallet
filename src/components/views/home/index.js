@@ -28,6 +28,12 @@ const Home = ({ navigation }) => {
         <Button
           mode='outlined'
           style={styles.button}
+          onPress={() => navigation.navigate('SelectBalance')}>
+          SelectBalance
+        </Button>
+        <Button
+          mode='outlined'
+          style={styles.button}
           onPress={() => navigation.navigate('Deposit')}>
           Deposit
         </Button>

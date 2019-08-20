@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   text: theme => ({
     color: theme.colors.primary,
     fontSize: 14,
-    paddingTop: 16,
+    paddingTop: -8,
     flex: 1
   }),
   rightContainer: {

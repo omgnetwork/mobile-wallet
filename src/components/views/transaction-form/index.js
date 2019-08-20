@@ -1,5 +1,7 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { View, StyleSheet, ScrollView } from 'react-native'
+import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import {
   OMGBox,
@@ -12,19 +14,19 @@ import {
   OMGFeeInput
 } from 'components/widgets'
 
-const mockToken = {
-  tokenName: 'Ether',
-  tokenSymbol: 'ETH',
-  tokenDecimal: 18,
-  contractAddress: '0x',
-  balance: '21.633139948168146707',
-  price: 1
-}
+// const mockToken = {
+//   tokenName: 'Ether',
+//   tokenSymbol: 'ETH',
+//   tokenDecimal: 18,
+//   contractAddress: '0x',
+//   balance: '21.633139948168146707',
+//   price: 1
+// }
 
-const mockWallet = {
-  address: '0x4522fb44C2aB359e76eCc75C22C9409690F12241',
-  name: 'Give away'
-}
+// const mockWallet = {
+//   address: '0x4522fb44C2aB359e76eCc75C22C9409690F12241',
+//   name: 'Give away'
+// }
 
 const mockFee = {
   name: 'Fast',
@@ -32,29 +34,37 @@ const mockFee = {
   symbol: 'Gwei'
 }
 
-const TransactionForm = ({ token, wallet, theme }) => {
+const TransactionForm = ({ token, wallet, theme, navigation }) => {
+  const selectedToken = navigation.getParam('selectedToken', wallet.assets[0])
   return (
     <View style={styles.container(theme)}>
       <ScrollView>
         <View style={styles.formContainer}>
           <OMGBox style={styles.fromContainer}>
             <OMGText weight='bold'>From</OMGText>
-            <OMGTokenInput token={mockToken} style={styles.tokenInput} />
-            <OMGWalletAddress
-              wallet={mockWallet}
-              style={styles.walletAddress}
+            <OMGTokenInput
+              token={selectedToken}
+              style={styles.tokenInput}
+              onPress={() =>
+                navigation.navigate('SelectBalance', {
+                  currentToken: selectedToken,
+                  assets: wallet.assets
+                })
+              }
             />
+            <OMGWalletAddress wallet={wallet} style={styles.walletAddress} />
           </OMGBox>
           <OMGBox style={styles.toContainer}>
             <OMGText weight='bold'>To</OMGText>
             <OMGAddressInput
-              address={mockWallet.address}
+              address={wallet.address}
               style={styles.addressInput}
+              onPress={() => navigation.goBack()}
             />
           </OMGBox>
           <OMGBox style={styles.amountContainer}>
             <OMGText weight='bold'>Amount</OMGText>
-            <OMGAmountInput token={mockToken} style={styles.amountInput} />
+            <OMGAmountInput token={selectedToken} style={styles.amountInput} />
           </OMGBox>
           <OMGBox style={styles.feeContainer}>
             <OMGText weight='bold'>Transaction Fee</OMGText>
@@ -115,4 +125,13 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withTheme(TransactionForm)
+const mapStateToProps = (state, ownProps) => ({
+  wallet: state.wallets.find(
+    wallet => wallet.address === state.setting.primaryWalletAddress
+  )
+})
+
+export default connect(
+  mapStateToProps,
+  null
+)(withNavigation(withTheme(TransactionForm)))

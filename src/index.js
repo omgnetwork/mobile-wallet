@@ -38,6 +38,7 @@ const App = () => {
       primaryDarker: '#262a31',
       background: '#f0f2f5',
       backgroundDisabled: '#f7f8fa',
+      blue1: '#ebf3ff',
       black1: '#d0d6e2',
       black2: '#858b9a',
       black3: '#3c414d',

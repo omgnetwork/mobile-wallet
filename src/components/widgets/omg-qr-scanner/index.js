@@ -1,7 +1,6 @@
 import React from 'react'
-import { Text } from 'react-native-paper'
 import QRCodeScanner from 'react-native-qrcode-scanner'
-import { View, StyleSheet, Dimensions } from 'react-native'
+import { View, StyleSheet, Dimensions, Platform } from 'react-native'
 import Svg, { Rect, Path } from 'react-native-svg'
 import OMGText from '../omg-text'
 
@@ -14,7 +13,12 @@ const OMGQRScanner = props => {
     <View style={styles.container}>
       <QRCodeScanner
         {...props}
-        onRead={props.onReceiveQR || (e => console.log(e.data))}
+        cameraProps={{
+          useCamera2Api: true,
+          androidCameraPermissionOptions: null
+        }}
+        reactivateTimeout={300}
+        // onRead={props.onReceiveQR || (e => console.log(e.data))}
         pendingAuthorizationView={
           <OMGText style={styles.loadingText}>Loading...</OMGText>
         }
@@ -84,6 +88,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingBottom: Platform.OS === 'ios' ? 0 : 0.5,
     backgroundColor: 'rgba(60, 65, 77, 0.45)'
   },
   bottomContainer: {
@@ -98,7 +103,7 @@ const styles = StyleSheet.create({
   },
   sideOverlay: {
     flex: 1,
-    marginTop: 0.5,
+    marginTop: Platform.OS === 'ios' ? 0.5 : 0,
     backgroundColor: 'rgba(60, 65, 77, 0.45)'
   },
   loadingText: {

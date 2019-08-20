@@ -59,13 +59,13 @@ PODS:
     - React-cxxreact (= 0.60.4)
     - React-jsi (= 0.60.4)
   - React-jsinspector (0.60.4)
-  - react-native-camera (3.1.1):
+  - react-native-camera (3.1.2):
     - React
-    - react-native-camera/RCT (= 3.1.1)
-    - react-native-camera/RN (= 3.1.1)
-  - react-native-camera/RCT (3.1.1):
+    - react-native-camera/RCT (= 3.1.2)
+    - react-native-camera/RN (= 3.1.2)
+  - react-native-camera/RCT (3.1.2):
     - React
-  - react-native-camera/RN (3.1.1):
+  - react-native-camera/RN (3.1.2):
     - React
   - react-native-config (0.11.7):
     - React

@@ -1,9 +1,55 @@
 import React from 'react'
-import { createAppContainer, createStackNavigator } from 'react-navigation'
-import { createBottomTabNavigator } from 'react-navigation-tabs'
+import {
+  createAppContainer,
+  createStackNavigator,
+  NavigationActions
+} from 'react-navigation'
+import {
+  createBottomTabNavigator,
+  createMaterialTopTabNavigator
+} from 'react-navigation-tabs'
 import * as Views from 'components/views'
-import { OMGIcon, OMGBox, OMGText } from 'components/widgets'
+import { OMGIcon, OMGBox, OMGText, OMGTab } from 'components/widgets'
 
+// Navigation tree in [root -> transfer -> send]
+const SendTransactionNavigator = createStackNavigator(
+  {
+    Scan: {
+      screen: Views.Scan
+    },
+    TransactionForm: {
+      screen: Views.TransactionForm
+    },
+    SelectBalance: {
+      screen: Views.SelectBalance
+    }
+  },
+  {
+    initialRouteName: 'Scan',
+    initialRouteKey: 'Scan',
+    headerMode: 'none'
+  }
+)
+
+// Navigation tree in [root -> transfer]
+export const SendTabNavigator = createMaterialTopTabNavigator(
+  {
+    Send: {
+      screen: SendTransactionNavigator
+    },
+    Receive: {
+      screen: Views.Receive
+    }
+  },
+  {
+    tabBarComponent: OMGTab,
+    tabBarOptions: {}
+  }
+)
+
+Views.Transfer.router = SendTabNavigator.router
+
+// The root of navigation tree.
 const BottomTabNavigator = createBottomTabNavigator(
   {
     Balance: {
@@ -35,6 +81,9 @@ const BottomTabNavigator = createBottomTabNavigator(
     },
     Transfer: {
       screen: Views.Transfer,
+      params: {
+        navigator: SendTabNavigator
+      },
       navigationOptions: {
         tabBarLabel: ({ focused, tintColor }) => (
           <OMGText
@@ -58,7 +107,14 @@ const BottomTabNavigator = createBottomTabNavigator(
             }}>
             <OMGIcon name='qr' size={24} color='#04070d' />
           </OMGBox>
-        )
+        ),
+        tabBarOnPress: ({ navigation }) => {
+          navigation.navigate({
+            routeName: 'Transfer',
+            params: {},
+            action: NavigationActions.navigate({ routeName: 'Scan' })
+          })
+        }
       }
     },
     History: {
@@ -108,6 +164,7 @@ const BottomTabNavigator = createBottomTabNavigator(
   }
 )
 
+// Used when want quick access to different screens.
 const debugNavigator = createStackNavigator(
   {
     Home: {
@@ -116,6 +173,10 @@ const debugNavigator = createStackNavigator(
     Balance: {
       screen: Views.Balance,
       navigationOptions: () => ({ title: 'Balance' })
+    },
+    SelectBalance: {
+      screen: Views.SelectBalance,
+      navigationOptions: () => ({ title: 'Select Balance' })
     },
     CreateWallet: {
       screen: Views.CreateWallet,
@@ -165,6 +226,6 @@ const debugNavigator = createStackNavigator(
   }
 )
 
-const AppContainer = createAppContainer(debugNavigator)
+const AppContainer = createAppContainer(BottomTabNavigator)
 
 export default AppContainer

@@ -3,7 +3,7 @@ import { Image, StyleSheet, View } from 'react-native'
 import OMGBox from '../omg-box'
 import OMGText from '../omg-text'
 import { Title } from 'react-native-paper'
-import { ethersUtils } from 'common/utils'
+import { ethersUtils, formatter } from 'common/utils'
 
 const OMGItemWallet = ({ name, wallet, selected, style, onPress }) => {
   return (
@@ -22,12 +22,20 @@ const OMGItemWallet = ({ name, wallet, selected, style, onPress }) => {
       </View>
       <View style={styles.sectionAmount}>
         <OMGText style={styles.balance} weight='bold'>
-          {ethersUtils.formatEther(wallet.balance)}
+          {formatTokenBalance(ethersUtils.formatEther(wallet.balance))}
         </OMGText>
         <OMGText style={styles.currency}>ETH</OMGText>
       </View>
     </OMGBox>
   )
+}
+
+const formatTokenBalance = amount => {
+  return formatter.format(amount, {
+    commify: true,
+    maxDecimal: 2,
+    ellipsize: false
+  })
 }
 
 const styles = StyleSheet.create({
@@ -71,7 +79,7 @@ const styles = StyleSheet.create({
   currency: {
     color: '#BCCCDC',
     fontSize: 12,
-    marginTop: -4
+    marginTop: 4
   }
 })
 

@@ -1,10 +1,23 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView, withNavigation } from 'react-navigation'
 import { OMGText, OMGIcon, OMGQRScanner, OMGButton } from 'components/widgets'
 
-const Send = ({ theme, navigation }) => {
+const Scan = ({ theme, navigation }) => {
+  const [address, setAddress] = useState(null)
+
+  const navigateNext = useCallback(() => {
+    navigation.navigate('TransactionForm')
+  }, [navigation])
+
+  useEffect(() => {
+    if (address) {
+      console.log(address)
+      navigateNext()
+    }
+  }, [address, navigateNext])
+
   const TopView = () => {
     return (
       <Fragment>
@@ -26,6 +39,7 @@ const Send = ({ theme, navigation }) => {
     <SafeAreaView style={styles.contentContainer(theme)}>
       <OMGQRScanner
         showMarker={true}
+        // onReceiveQR={e => setAddress(e.data)}
         cameraStyle={styles.cameraContainer}
         notAuthorizedView={
           <OMGText style={styles.notAuthorizedView}>
@@ -34,7 +48,9 @@ const Send = ({ theme, navigation }) => {
         }
         renderTop={<TopView />}
         renderBottom={
-          <OMGButton style={styles.button}>Or, Send Manually</OMGButton>
+          <OMGButton style={styles.button} onPress={navigateNext}>
+            Or, Send Manually
+          </OMGButton>
         }
       />
     </SafeAreaView>
@@ -88,4 +104,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withNavigation(withTheme(Send))
+export default withNavigation(withTheme(Scan))

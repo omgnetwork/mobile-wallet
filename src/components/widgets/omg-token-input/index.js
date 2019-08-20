@@ -6,9 +6,11 @@ import OMGIcon from '../omg-icon'
 import OMGText from '../omg-text'
 import { formatter } from 'common/utils'
 
-const OMGTokenInput = ({ theme, token, style }) => {
+const OMGTokenInput = ({ theme, token, style, onPress }) => {
   return (
-    <TouchableOpacity style={{ ...styles.container(theme), ...style }}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={{ ...styles.container(theme), ...style }}>
       <OMGImage
         style={styles.logo}
         source={{

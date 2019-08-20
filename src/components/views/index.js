@@ -9,8 +9,9 @@ import History from './history'
 import Main from './main'
 import Receive from './receive'
 import Transfer from './transfer'
-import Send from './send'
+import Scan from './scan'
 import Setting from './setting'
+import SelectBalance from './select-balance'
 import Preview from './preview'
 
 export {
@@ -25,7 +26,8 @@ export {
   History,
   Receive,
   Transfer,
-  Send,
+  SelectBalance,
+  Scan,
   Setting,
   Preview
 }

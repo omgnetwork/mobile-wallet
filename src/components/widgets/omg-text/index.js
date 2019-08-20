@@ -16,13 +16,13 @@ const OMGText = ({ children, weight, style, ellipsizeMode, numberOfLines }) => {
 const fontFamilySelector = weight => {
   switch (weight) {
     case 'extra-bold':
-      return 'Circular-Black'
+      return 'CircularStd-Black'
     case 'bold':
-      return 'Circular-Bold'
+      return 'CircularStd-Bold'
     case 'medium':
-      return 'Circular-Medium'
+      return 'CircularStd-Medium'
     default:
-      return 'Circular-Book'
+      return 'CircularStd-Book'
   }
 }
 
