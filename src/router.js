@@ -19,9 +19,6 @@ const SendTransactionNavigator = createStackNavigator(
     },
     TransactionForm: {
       screen: Views.TransactionForm
-    },
-    SelectBalance: {
-      screen: Views.SelectBalance
     }
   },
   {
@@ -164,6 +161,19 @@ const BottomTabNavigator = createBottomTabNavigator(
   }
 )
 
+const RootNavigator = createStackNavigator(
+  {
+    Main: BottomTabNavigator,
+    SelectBalanceModal: {
+      screen: Views.SelectBalance
+    }
+  },
+  {
+    initialRouteName: 'Main',
+    headerMode: 'none'
+  }
+)
+
 // Used when want quick access to different screens.
 const debugNavigator = createStackNavigator(
   {
@@ -226,6 +236,6 @@ const debugNavigator = createStackNavigator(
   }
 )
 
-const AppContainer = createAppContainer(BottomTabNavigator)
+const AppContainer = createAppContainer(RootNavigator)
 
 export default AppContainer

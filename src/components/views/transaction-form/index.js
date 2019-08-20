@@ -14,20 +14,6 @@ import {
   OMGFeeInput
 } from 'components/widgets'
 
-// const mockToken = {
-//   tokenName: 'Ether',
-//   tokenSymbol: 'ETH',
-//   tokenDecimal: 18,
-//   contractAddress: '0x',
-//   balance: '21.633139948168146707',
-//   price: 1
-// }
-
-// const mockWallet = {
-//   address: '0x4522fb44C2aB359e76eCc75C22C9409690F12241',
-//   name: 'Give away'
-// }
-
 const mockFee = {
   name: 'Fast',
   amount: '10',
@@ -46,7 +32,7 @@ const TransactionForm = ({ token, wallet, theme, navigation }) => {
               token={selectedToken}
               style={styles.tokenInput}
               onPress={() =>
-                navigation.navigate('SelectBalance', {
+                navigation.navigate('SelectBalanceModal', {
                   currentToken: selectedToken,
                   assets: wallet.assets
                 })

@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, ScrollView, FlatList } from 'react-native'
+import React, { useState } from 'react'
+import { View, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useLoading } from 'common/hooks'
-import { OMGBox, OMGButton, OMGEmpty, OMGTokenSelect } from 'components/widgets'
+import {
+  OMGButton,
+  OMGEmpty,
+  OMGTokenSelect,
+  OMGIcon,
+  OMGText
+} from 'components/widgets'
 
 const SelectBalance = ({ primaryWallet, theme, loadingStatus, navigation }) => {
   const assets = navigation.getParam('assets', primaryWallet.assets)
@@ -14,6 +20,20 @@ const SelectBalance = ({ primaryWallet, theme, loadingStatus, navigation }) => {
 
   return (
     <View style={styles.container(theme)}>
+      <View style={styles.header}>
+        <OMGIcon
+          name='chevron-left'
+          size={18}
+          color={theme.colors.gray3}
+          style={styles.headerIcon}
+          onPress={() =>
+            navigation.navigate('TransactionForm', {
+              selectedToken: selectedToken
+            })
+          }
+        />
+        <OMGText style={styles.headerTitle(theme)}>Select Balance</OMGText>
+      </View>
       <FlatList
         data={assets || []}
         keyExtractor={item => item.contractAddress}
@@ -37,7 +57,6 @@ const SelectBalance = ({ primaryWallet, theme, loadingStatus, navigation }) => {
       />
       <View style={styles.buttonContainer}>
         <OMGButton
-          style={styles.button}
           onPress={() => {
             navigation.navigate('TransactionForm', {
               selectedToken
@@ -57,39 +76,17 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     padding: 16
   }),
-  formContainer: {
-    flex: 1
+  header: {
+    flexDirection: 'row',
+    marginBottom: 32
   },
-  fromContainer: {
-    flexDirection: 'column'
-  },
-  toContainer: {
-    marginTop: 8,
-    flexDirection: 'column'
-  },
-  amountContainer: {
-    marginTop: 8,
-    flexDirection: 'column'
-  },
-  feeContainer: {
-    marginTop: 8,
-    flexDirection: 'column'
-  },
-  tokenInput: {
-    marginTop: 16
-  },
-  walletAddress: {
-    marginTop: 16
-  },
-  addressInput: {
-    marginTop: 16
-  },
-  amountInput: {
-    marginTop: 16
-  },
-  feeInput: {
-    marginTop: 16
-  },
+  headerIcon: {},
+  headerTitle: theme => ({
+    fontSize: 18,
+    color: theme.colors.gray3,
+    marginLeft: 16,
+    textTransform: 'uppercase'
+  }),
   buttonContainer: {
     justifyContent: 'flex-end',
     marginVertical: 16,
