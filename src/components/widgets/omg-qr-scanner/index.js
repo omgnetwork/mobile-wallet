@@ -8,6 +8,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 
 const OMGQRScanner = props => {
   const {
+    reactivate,
     renderTop,
     renderBottom,
     borderColor,
@@ -24,7 +25,7 @@ const OMGQRScanner = props => {
           androidCameraPermissionOptions: null
         }}
         ref={cameraRef}
-        reactivateTimeout={300}
+        reactivate={reactivate}
         onRead={props.onReceiveQR || (e => console.log(e.data))}
         pendingAuthorizationView={
           <OMGText style={styles.loadingText}>Loading...</OMGText>

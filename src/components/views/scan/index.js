@@ -7,16 +7,34 @@ import React, {
 } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { SafeAreaView, withNavigation } from 'react-navigation'
+import {
+  SafeAreaView,
+  withNavigation,
+  StackActions,
+  NavigationActions
+} from 'react-navigation'
 import { OMGText, OMGIcon, OMGQRScanner, OMGButton } from 'components/widgets'
 
 const Scan = ({ theme, navigation }) => {
   const camera = useRef(null)
+  const [showCamera, setShowCamera] = useState(false)
   const [address, setAddress] = useState(null)
 
-  if (navigation.getParam('reactivate')) {
-    camera.current.reactivate()
-  }
+  useEffect(() => {
+    if (address == null || navigation.getParam('reactivate')) {
+      setShowCamera(true)
+    }
+  }, [address, navigation])
+
+  useEffect(() => {
+    if (address) {
+      navigateNext()
+      requestAnimationFrame(() => {
+        setShowCamera(false)
+        setAddress(null)
+      })
+    }
+  }, [address, navigateNext])
 
   const navigateNext = useCallback(() => {
     let cleanAddress = address
@@ -28,13 +46,6 @@ const Scan = ({ theme, navigation }) => {
     }
     navigation.navigate('TransactionForm', { address: cleanAddress })
   }, [address, navigation])
-
-  useEffect(() => {
-    if (address) {
-      console.log(address)
-      navigateNext()
-    }
-  }, [address, navigateNext])
 
   const TopView = () => {
     return (
@@ -55,23 +66,25 @@ const Scan = ({ theme, navigation }) => {
 
   return (
     <SafeAreaView style={styles.contentContainer(theme)}>
-      <OMGQRScanner
-        showMarker={true}
-        onReceiveQR={e => setAddress(e.data)}
-        cameraRef={camera}
-        cameraStyle={styles.cameraContainer}
-        notAuthorizedView={
-          <OMGText style={styles.notAuthorizedView}>
-            Enable the camera permission to scan a QR code.
-          </OMGText>
-        }
-        renderTop={<TopView />}
-        renderBottom={
-          <OMGButton style={styles.button} onPress={navigateNext}>
-            Or, Send Manually
-          </OMGButton>
-        }
-      />
+      {showCamera && (
+        <OMGQRScanner
+          showMarker={true}
+          onReceiveQR={e => setAddress(e.data)}
+          cameraRef={camera}
+          cameraStyle={styles.cameraContainer}
+          notAuthorizedView={
+            <OMGText style={styles.notAuthorizedView}>
+              Enable the camera permission to scan a QR code.
+            </OMGText>
+          }
+          renderTop={<TopView />}
+          renderBottom={
+            <OMGButton style={styles.button} onPress={navigateNext}>
+              Or, Send Manually
+            </OMGButton>
+          }
+        />
+      )}
     </SafeAreaView>
   )
 }
