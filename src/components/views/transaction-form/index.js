@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { withNavigation } from 'react-navigation'
+import { useTextInput } from 'common/hooks'
 import { withTheme } from 'react-native-paper'
 import {
   OMGBox,
@@ -13,6 +14,7 @@ import {
   OMGAmountInput,
   OMGFeeInput
 } from 'components/widgets'
+import { random } from 'common/utils'
 
 const mockFee = {
   name: 'Fast',
@@ -20,8 +22,29 @@ const mockFee = {
   symbol: 'Gwei'
 }
 
-const TransactionForm = ({ token, wallet, theme, navigation }) => {
+const TransactionForm = ({ wallet, theme, navigation }) => {
   const selectedToken = navigation.getParam('selectedToken', wallet.assets[0])
+  const [actionId, setActionId] = useState()
+  const [tokenBalance, tokenBalanceCallback] = useTextInput(actionId)
+  const selectedAddress = navigation.getParam(
+    'address',
+    '0xf1deFf59DA938E31673DA1300b479896C743d968'
+  )
+
+  useEffect(() => {
+    if (tokenBalance) {
+      navigation.navigate('TransactionConfirmModal', {
+        token: { ...selectedToken, balance: tokenBalance },
+        fromWallet: wallet,
+        toWallet: {
+          name: 'Another wallet',
+          address: selectedAddress
+        },
+        fee: mockFee
+      })
+    }
+  }, [navigation, selectedAddress, selectedToken, tokenBalance, wallet])
+
   return (
     <View style={styles.container(theme)}>
       <ScrollView>
@@ -43,14 +66,18 @@ const TransactionForm = ({ token, wallet, theme, navigation }) => {
           <OMGBox style={styles.toContainer}>
             <OMGText weight='bold'>To</OMGText>
             <OMGAddressInput
-              address={wallet.address}
+              address={selectedAddress}
               style={styles.addressInput}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate('Scan', { reactivate: true })}
             />
           </OMGBox>
           <OMGBox style={styles.amountContainer}>
             <OMGText weight='bold'>Amount</OMGText>
-            <OMGAmountInput token={selectedToken} style={styles.amountInput} />
+            <OMGAmountInput
+              token={selectedToken}
+              callback={tokenBalanceCallback}
+              style={styles.amountInput}
+            />
           </OMGBox>
           <OMGBox style={styles.feeContainer}>
             <OMGText weight='bold'>Transaction Fee</OMGText>
@@ -58,7 +85,11 @@ const TransactionForm = ({ token, wallet, theme, navigation }) => {
           </OMGBox>
         </View>
         <View style={styles.buttonContainer}>
-          <OMGButton style={styles.button}>Next</OMGButton>
+          <OMGButton
+            style={styles.button}
+            onPress={() => setActionId(random.fastRandomId())}>
+            Next
+          </OMGButton>
         </View>
       </ScrollView>
     </View>

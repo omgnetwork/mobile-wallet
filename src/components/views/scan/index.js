@@ -1,15 +1,33 @@
-import React, { Fragment, useState, useEffect, useCallback } from 'react'
+import React, {
+  Fragment,
+  useState,
+  useEffect,
+  useCallback,
+  useRef
+} from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView, withNavigation } from 'react-navigation'
 import { OMGText, OMGIcon, OMGQRScanner, OMGButton } from 'components/widgets'
 
 const Scan = ({ theme, navigation }) => {
+  const camera = useRef(null)
   const [address, setAddress] = useState(null)
 
+  if (navigation.getParam('reactivate')) {
+    camera.current.reactivate()
+  }
+
   const navigateNext = useCallback(() => {
-    navigation.navigate('TransactionForm')
-  }, [navigation])
+    let cleanAddress = address
+    if (address) {
+      cleanAddress =
+        address.indexOf('ethereum:') > -1
+          ? address.replace('ethereum:', '')
+          : address
+    }
+    navigation.navigate('TransactionForm', { address: cleanAddress })
+  }, [address, navigation])
 
   useEffect(() => {
     if (address) {
@@ -39,7 +57,8 @@ const Scan = ({ theme, navigation }) => {
     <SafeAreaView style={styles.contentContainer(theme)}>
       <OMGQRScanner
         showMarker={true}
-        // onReceiveQR={e => setAddress(e.data)}
+        onReceiveQR={e => setAddress(e.data)}
+        cameraRef={camera}
         cameraStyle={styles.cameraContainer}
         notAuthorizedView={
           <OMGText style={styles.notAuthorizedView}>

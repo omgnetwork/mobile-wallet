@@ -4,6 +4,7 @@ import ImportWallet from './import-wallet'
 import Wallets from './wallets'
 import Deposit from './deposit'
 import TransactionForm from './transaction-form'
+import TransactionConfirm from './transaction-confirm'
 import Home from './home'
 import History from './history'
 import Main from './main'
@@ -22,6 +23,7 @@ export {
   Wallets,
   Deposit,
   TransactionForm,
+  TransactionConfirm,
   Home,
   History,
   Receive,

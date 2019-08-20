@@ -5,7 +5,7 @@ import OMGImage from '../omg-image'
 import OMGText from '../omg-text'
 import OMGTextInput from '../omg-text-input'
 
-const OMGAmountInput = ({ theme, token, style }) => {
+const OMGAmountInput = ({ theme, token, style, callback }) => {
   return (
     <View style={{ ...styles.container(theme), ...style }}>
       <OMGImage
@@ -17,6 +17,7 @@ const OMGAmountInput = ({ theme, token, style }) => {
       <OMGTextInput
         style={styles.text(theme)}
         placeholder='00.00'
+        callback={callback}
         hideUnderline={true}
         keyboardType='decimal-pad'
         lines={1}

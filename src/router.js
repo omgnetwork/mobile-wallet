@@ -166,6 +166,9 @@ const RootNavigator = createStackNavigator(
     Main: BottomTabNavigator,
     SelectBalanceModal: {
       screen: Views.SelectBalance
+    },
+    TransactionConfirmModal: {
+      screen: Views.TransactionConfirm
     }
   },
   {

@@ -4,7 +4,13 @@ import { withTheme } from 'react-native-paper'
 import OMGImage from '../omg-image'
 import OMGText from '../omg-text'
 
-const OMGWalletAddress = ({ theme, wallet, style }) => {
+const OMGWalletAddress = ({
+  theme,
+  wallet,
+  colorName,
+  colorAddress,
+  style
+}) => {
   return (
     <View style={{ ...styles.container(theme), ...style }}>
       <OMGImage
@@ -13,10 +19,10 @@ const OMGWalletAddress = ({ theme, wallet, style }) => {
           uri: `https://api.adorable.io/avatars/285/${wallet.address}.png`
         }}
       />
-      <OMGText style={styles.text(theme)}>{wallet.name}</OMGText>
+      <OMGText style={styles.text(theme, colorName)}>{wallet.name}</OMGText>
       <View style={styles.rightContainer}>
         <OMGText
-          style={styles.address(theme)}
+          style={styles.address(theme, colorAddress)}
           ellipsizeMode='tail'
           numberOfLines={1}>
           {wallet.address}
@@ -28,7 +34,6 @@ const OMGWalletAddress = ({ theme, wallet, style }) => {
 
 const styles = StyleSheet.create({
   container: theme => ({
-    flex: 1,
     flexDirection: 'row',
     backgroundColor: theme.colors.backgroundDisabled,
     borderColor: theme.colors.background,
@@ -42,13 +47,13 @@ const styles = StyleSheet.create({
     height: 26,
     marginRight: 16
   },
-  address: theme => ({
-    color: theme.colors.gray2,
+  address: (theme, colorAddress) => ({
+    color: colorAddress || theme.colors.gray2,
     maxWidth: 128,
     marginRight: 10
   }),
-  text: theme => ({
-    color: theme.colors.primary,
+  text: (theme, colorName) => ({
+    color: colorName || theme.colors.primary,
     fontSize: 14,
     flex: 1
   }),

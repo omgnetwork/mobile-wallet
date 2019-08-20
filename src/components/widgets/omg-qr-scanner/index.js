@@ -7,7 +7,13 @@ import OMGText from '../omg-text'
 const SCREEN_WIDTH = Dimensions.get('window').width
 
 const OMGQRScanner = props => {
-  const { renderTop, renderBottom, borderColor, borderStrokeWidth } = props
+  const {
+    renderTop,
+    renderBottom,
+    borderColor,
+    borderStrokeWidth,
+    cameraRef
+  } = props
 
   return (
     <View style={styles.container}>
@@ -17,8 +23,9 @@ const OMGQRScanner = props => {
           useCamera2Api: true,
           androidCameraPermissionOptions: null
         }}
+        ref={cameraRef}
         reactivateTimeout={300}
-        // onRead={props.onReceiveQR || (e => console.log(e.data))}
+        onRead={props.onReceiveQR || (e => console.log(e.data))}
         pendingAuthorizationView={
           <OMGText style={styles.loadingText}>Loading...</OMGText>
         }
