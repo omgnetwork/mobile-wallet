@@ -8,7 +8,7 @@ import OMGTextInput from '../omg-text-input'
 const OMGAmountInput = ({
   theme,
   token,
-  value,
+  inputRef,
   defaultValue,
   style,
   callback
@@ -25,6 +25,7 @@ const OMGAmountInput = ({
         style={styles.text(theme)}
         placeholder='00.00'
         callback={callback}
+        inputRef={inputRef}
         hideUnderline={true}
         defaultValue={defaultValue}
         keyboardType='decimal-pad'

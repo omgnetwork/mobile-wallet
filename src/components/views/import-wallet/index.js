@@ -1,10 +1,9 @@
-import React, { useState, Fragment, useEffect } from 'react'
+import React, { useState, Fragment, useEffect, useRef } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
 import { walletActions, settingActions } from 'common/actions'
-import { useAlert, useTextInput, useLoading } from 'common/hooks'
-import { random } from 'common/utils'
+import { useAlert, useLoading } from 'common/hooks'
 import {
   OMGRadioButton,
   OMGTextInput,
@@ -77,8 +76,8 @@ const Mnemonic = ({
   navigation
 }) => {
   const [actionId, setActionId] = useState()
-  const [mnemonic, mnemonicCallback] = useTextInput(actionId)
-  const [walletName, walletNameCallback] = useTextInput(actionId)
+  const mnemonicRef = useRef(null)
+  const walletNameRef = useRef(null)
   const [loading] = useLoading(loadingStatus)
   const snackbarProps = useAlert({
     loadingStatus,
@@ -86,11 +85,9 @@ const Mnemonic = ({
     msgFailed: 'Failed to import a wallet. Make sure the mnemonic is correct.'
   })
 
-  useEffect(() => {
-    if (mnemonic) {
-      importWalletByMnemonic(mnemonic, provider, walletName)
-    }
-  }, [importWalletByMnemonic, mnemonic, provider, walletName])
+  const importWallet = () => {
+    importWalletByMnemonic(mnemonicRef.current, provider, walletNameRef.current)
+  }
 
   useEffect(() => {
     if (loadingStatus === 'SUCCESS') {
@@ -109,8 +106,8 @@ const Mnemonic = ({
         <OMGTextInput
           placeholder='Enter mnemonic...'
           lines={4}
+          inputRef={mnemonicRef}
           hideUnderline={true}
-          callback={mnemonicCallback}
           disabled={!loading}
         />
       </OMGBox>
@@ -121,14 +118,12 @@ const Mnemonic = ({
         <OMGTextInput
           placeholder='Your wallet name'
           hideUnderline={true}
-          callback={walletNameCallback}
+          inputRef={walletNameRef}
           disabled={!loading}
         />
       </OMGBox>
       <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 16 }}>
-        <OMGButton
-          loading={loading}
-          onPress={() => setActionId(random.fastRandomId())}>
+        <OMGButton loading={loading} onPress={importWallet}>
           Import
         </OMGButton>
       </View>

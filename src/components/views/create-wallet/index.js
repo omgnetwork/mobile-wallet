@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
 import { Title } from 'react-native-paper'
-import { useTextInput, useLoading } from 'common/hooks'
-import { random } from 'common/utils'
+import { useLoading } from 'common/hooks'
 import {
   OMGButton,
   OMGBox,
@@ -20,14 +19,13 @@ const CreateWalletComponent = ({
   navigation
 }) => {
   const [loading] = useLoading(loadingStatus)
-  const [actionId, setActionId] = useState()
-  const [name, setName] = useTextInput(actionId)
+  const walletNameRef = useRef()
 
-  useEffect(() => {
-    if (name) {
-      createWallet(provider, name)
+  const create = () => {
+    if (walletNameRef.current) {
+      createWallet(provider, walletNameRef.current)
     }
-  }, [createWallet, name, provider])
+  }
 
   useEffect(() => {
     if (loadingStatus === 'SUCCESS') {
@@ -39,11 +37,11 @@ const CreateWalletComponent = ({
     <OMGBackground style={{ flex: 1, flexDirection: 'column', padding: 16 }}>
       <OMGBox>
         <Title style={{ fontSize: 14 }}>Name</Title>
-        <OMGTextInput placeholder='Name' callback={setName} />
+        <OMGTextInput placeholder='Name' inputRef={walletNameRef} />
       </OMGBox>
       <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 16 }}>
         <OMGButton
-          onPress={() => setActionId(random.fastRandomId())}
+          onPress={create}
           style={{ marginTop: 16 }}
           loading={loading}
           disabled={loading}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState } from 'react'
 import { TextInput, StyleSheet, Platform } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import PropTypes from 'prop-types'
@@ -11,22 +11,18 @@ const OMGTextInput = ({
   keyboardType,
   defaultValue,
   value,
-  callback,
+  inputRef,
   disabled
 }) => {
   const [underlineTextcolor, setUnderlineTextcolor] = useState('#D9E2EC')
-  const textInput = useRef(null)
-
-  useEffect(() => {
-    callback && callback(textInput.current._lastNativeText)
-  }, [callback])
-
   const numberOfLines = lines ? lines : 1
   return (
     <TextInput
       mode='flat'
       placeholder={placeholder}
-      ref={textInput}
+      onChangeText={text => {
+        inputRef && (inputRef.current = text)
+      }}
       underlineColorAndroid={hideUnderline ? 'transparent' : underlineTextcolor}
       onBlur={() => setUnderlineTextcolor('#D9E2EC')}
       onFocus={() => setUnderlineTextcolor('#627D98')}

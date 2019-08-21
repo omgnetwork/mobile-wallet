@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useRef } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { withNavigation } from 'react-navigation'
-import { useTextInput } from 'common/hooks'
 import { withTheme } from 'react-native-paper'
 import {
   OMGBox,
@@ -14,7 +13,6 @@ import {
   OMGAmountInput,
   OMGFeeInput
 } from 'components/widgets'
-import { random } from 'common/utils'
 
 const mockFee = {
   name: 'Fast',
@@ -26,16 +24,13 @@ const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
 
 const TransactionForm = ({ wallet, theme, navigation }) => {
   const selectedToken = navigation.getParam('selectedToken', wallet.assets[0])
-  const [actionId, setActionId] = useState()
-  const [tokenBalance, tokenBalanceCallback] = useTextInput(actionId)
   const selectedAddress = navigation.getParam('address')
-
-  console.log(navigation.getParam('lastAmount'))
-
-  useEffect(() => {
-    if (tokenBalance) {
+  const defaultAmount = navigation.getParam('lastAmount')
+  const textRef = useRef(defaultAmount)
+  const submit = () => {
+    if (textRef.current) {
       navigation.navigate('TransferConfirm', {
-        token: { ...selectedToken, balance: tokenBalance },
+        token: { ...selectedToken, balance: textRef.current },
         fromWallet: wallet,
         toWallet: {
           name: 'Another wallet',
@@ -43,8 +38,10 @@ const TransactionForm = ({ wallet, theme, navigation }) => {
         },
         fee: mockFee
       })
+    } else {
+      // Warn to fill amount
     }
-  }, [navigation, selectedAddress, selectedToken, tokenBalance, wallet])
+  }
 
   return (
     <View style={styles.container(theme)}>
@@ -76,8 +73,8 @@ const TransactionForm = ({ wallet, theme, navigation }) => {
             <OMGText weight='bold'>Amount</OMGText>
             <OMGAmountInput
               token={selectedToken}
+              inputRef={textRef}
               defaultValue={navigation.getParam('lastAmount')}
-              callback={tokenBalanceCallback}
               style={styles.amountInput}
             />
           </OMGBox>
@@ -87,9 +84,7 @@ const TransactionForm = ({ wallet, theme, navigation }) => {
           </OMGBox>
         </View>
         <View style={styles.buttonContainer}>
-          <OMGButton
-            style={styles.button}
-            onPress={() => setActionId(random.fastRandomId())}>
+          <OMGButton style={styles.button} onPress={submit}>
             Next
           </OMGButton>
         </View>
