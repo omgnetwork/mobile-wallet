@@ -14,3 +14,18 @@ export const sendErc20Token = (token, fromWallet, toAddress) => {
     }
   })
 }
+
+export const sendEthToken = (token, fromWallet, toAddress) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const pendingTransaction = await ethersUtils.sendEthToken(
+        token,
+        fromWallet,
+        toAddress
+      )
+      resolve(pendingTransaction)
+    } catch (err) {
+      reject(err)
+    }
+  })
+}

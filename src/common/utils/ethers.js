@@ -85,9 +85,6 @@ export const getTokenBalance = (provider, contractAddress, accountAddress) => {
 }
 
 export const sendErc20Token = (token, wallet, toAddress) => {
-  console.log(token)
-  console.log(wallet)
-  console.log(toAddress)
   const contractAbi = [
     {
       name: 'transfer',
@@ -117,6 +114,13 @@ export const sendErc20Token = (token, wallet, toAddress) => {
   const numberOfTokens = parseUnits(token.balance, token.numberOfDecimals)
 
   return contract.transfer(toAddress, numberOfTokens)
+}
+
+export const sendEthToken = (token, wallet, toAddress) => {
+  return wallet.sendTransaction({
+    to: toAddress,
+    value: ethers.utils.parseEther(token.balance)
+  })
 }
 
 export const formatUnits = (amount, numberOfDecimals) => {

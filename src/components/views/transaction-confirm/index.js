@@ -19,6 +19,7 @@ const TransactionConfirm = ({
   navigation,
   provider,
   sendErc20Token,
+  sendEthToken,
   loadingStatus
 }) => {
   const token = navigation.getParam('token')
@@ -47,6 +48,16 @@ const TransactionConfirm = ({
       })
     }
   }, [fee, fromWallet, loadingStatus, navigation, toWallet, token])
+
+  const sendToken = () => {
+    if (token.contractAddress === '0x') {
+      // ETH token
+      sendEthToken(token, fromWallet, provider, toWallet.address)
+    } else {
+      // ERC20 Token
+      sendErc20Token(token, fromWallet, provider, toWallet.address)
+    }
+  }
 
   return (
     <View style={styles.container(theme)}>
@@ -115,12 +126,7 @@ const TransactionConfirm = ({
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <OMGButton
-          style={styles.button}
-          loading={loading}
-          onPress={() => {
-            sendErc20Token(token, fromWallet, provider, toWallet.address)
-          }}>
+        <OMGButton style={styles.button} loading={loading} onPress={sendToken}>
           Send Transaction
         </OMGButton>
       </View>
@@ -272,6 +278,10 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+  sendEthToken: (token, wallet, provider, toAddress) =>
+    dispatch(
+      transactionActions.sendEthToken(token, wallet, provider, toAddress)
+    ),
   sendErc20Token: (token, wallet, provider, toAddress) =>
     dispatch(
       transactionActions.sendErc20Token(token, wallet, provider, toAddress)

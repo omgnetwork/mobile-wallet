@@ -13,8 +13,6 @@ export const sendErc20Token = (token, fromWallet, provider, toAddress) => {
       toAddress
     )
 
-    console.log(tx)
-
     return {
       hash: tx.hash,
       from: tx.from,
@@ -35,11 +33,13 @@ export const sendEthToken = (token, fromWallet, provider, toAddress) => {
       fromWallet.address,
       provider
     )
-    const tx = await transactionService.sendErc20Token(
+    const tx = await transactionService.sendEthToken(
       token,
       blockchainWallet,
       toAddress
     )
+
+    console.log(tx)
 
     return {
       hash: tx.hash,
@@ -50,7 +50,7 @@ export const sendEthToken = (token, fromWallet, provider, toAddress) => {
   }
 
   return createAsyncAction({
-    type: 'TRANSACTION/SEND_ERC20_TOKEN',
+    type: 'TRANSACTION/SEND_ETH_TOKEN',
     operation: asyncAction
   })
 }
