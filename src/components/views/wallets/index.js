@@ -8,7 +8,7 @@ import { walletActions, settingActions } from 'common/actions'
 import { OMGMenu, OMGEmpty } from 'components/widgets'
 
 const Wallets = ({
-  loadingStatus,
+  loading,
   deleteAllWallet,
   wallets,
   primaryWalletAddress,
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  loadingStatus: state.loadingStatus,
+  loading: state.loading,
   wallets: state.wallets,
   provider: state.setting.provider,
   primaryWalletAddress: state.setting.primaryWalletAddress

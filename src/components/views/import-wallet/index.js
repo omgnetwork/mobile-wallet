@@ -3,7 +3,7 @@ import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
 import { walletActions, settingActions } from 'common/actions'
-import { useAlert, useLoading } from 'common/hooks'
+import { useAlert } from 'common/hooks'
 import {
   OMGRadioButton,
   OMGTextInput,
@@ -70,17 +70,15 @@ const ImportWalletComponent = props => {
 
 const Mnemonic = ({
   importWalletByMnemonic,
-  loadingStatus,
+  loading,
   provider,
   wallets,
   navigation
 }) => {
-  const [actionId, setActionId] = useState()
   const mnemonicRef = useRef(null)
   const walletNameRef = useRef(null)
-  const [loading] = useLoading(loadingStatus)
   const snackbarProps = useAlert({
-    loadingStatus,
+    loading,
     msgSuccess: 'Import wallet successful',
     msgFailed: 'Failed to import a wallet. Make sure the mnemonic is correct.'
   })
@@ -90,10 +88,10 @@ const Mnemonic = ({
   }
 
   useEffect(() => {
-    if (loadingStatus === 'SUCCESS') {
+    if (loading.success && loading.action === 'WALLET_IMPORT') {
       navigation.goBack()
     }
-  }, [loadingStatus, navigation, wallets])
+  }, [loading, navigation, wallets])
 
   return (
     <Fragment>
@@ -108,7 +106,7 @@ const Mnemonic = ({
           lines={4}
           inputRef={mnemonicRef}
           hideUnderline={true}
-          disabled={!loading}
+          disabled={loading.show}
         />
       </OMGBox>
       <OMGBox style={{ marginTop: 16 }}>
@@ -119,11 +117,11 @@ const Mnemonic = ({
           placeholder='Your wallet name'
           hideUnderline={true}
           inputRef={walletNameRef}
-          disabled={!loading}
+          disabled={loading.show}
         />
       </OMGBox>
       <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 16 }}>
-        <OMGButton loading={loading} onPress={importWallet}>
+        <OMGButton loading={loading.show} onPress={importWallet}>
           Import
         </OMGButton>
       </View>
@@ -139,7 +137,7 @@ const Mnemonic = ({
 ImportWalletComponent.Mnemonic = Mnemonic
 
 const mapStateToProps = (state, ownProps) => ({
-  loadingStatus: state.loadingStatus,
+  loading: state.loading,
   wallets: state.wallets,
   provider: state.setting.provider
 })

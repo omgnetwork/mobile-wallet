@@ -1,6 +1,7 @@
 export const createAsyncAction = ({
   operation: doAsyncAction,
-  type: actionType
+  type: actionType,
+  background: background
 }) => {
   return async dispatch => {
     dispatch({ type: `${actionType}/INITIATED` })
@@ -12,8 +13,8 @@ export const createAsyncAction = ({
         console.log(err)
         dispatch({ type: `${actionType}/FAILED`, data: err })
       }
-      const loadingType = actionType.replace('/', '_')
-      dispatch({ type: `LOADING/${loadingType}/DEFAULT` })
+      // const loadingType = actionType.replace('/', '_')
+      // dispatch({ type: `LOADING/${loadingType}/IDLE` })
     })
   }
 }

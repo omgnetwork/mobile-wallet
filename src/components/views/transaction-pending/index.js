@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { View, StyleSheet, Linking } from 'react-native'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { useLoading } from 'common/hooks'
 import { Formatter } from 'common/utils'
 import Config from 'react-native-config'
 import {
@@ -14,18 +13,12 @@ import {
 } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const TransactionPending = ({
-  theme,
-  navigation,
-  pendingTx,
-  loadingStatus
-}) => {
+const TransactionPending = ({ theme, navigation, pendingTx, loading }) => {
   const token = navigation.getParam('token')
   const fromWallet = navigation.getParam('fromWallet')
   const toWallet = navigation.getParam('toWallet')
   const fee = navigation.getParam('fee')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
-  const [loading] = useLoading(loadingStatus)
 
   return (
     <View style={styles.container(theme)}>
@@ -82,7 +75,7 @@ const TransactionPending = ({
       <View style={styles.bottomContainer}>
         <OMGButton
           style={styles.button}
-          loading={loading}
+          loading={loading.show}
           onPress={() => {
             navigation.navigate('Balance')
           }}>
@@ -226,7 +219,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => ({
   pendingTx: state.transaction.pendingTxs.slice(-1).pop(),
-  loadingStatus: state.loadingStatus,
+  loading: state.loading,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   )

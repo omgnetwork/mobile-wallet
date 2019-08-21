@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { withNavigation, NavigationActions } from 'react-navigation'
 import { withTheme, Snackbar } from 'react-native-paper'
-import { useLoading, useAlert } from 'common/hooks'
+import { useAlert } from 'common/hooks'
 import { Formatter } from 'common/utils'
 import { transactionActions } from 'common/actions'
 import {
@@ -20,23 +20,23 @@ const TransactionConfirm = ({
   provider,
   sendErc20Token,
   sendEthToken,
-  loadingStatus
+  loading
 }) => {
   const token = navigation.getParam('token')
   const fromWallet = navigation.getParam('fromWallet')
   const toWallet = navigation.getParam('toWallet')
   const fee = navigation.getParam('fee')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
-  const [loading] = useLoading(loadingStatus)
   const snackbarProps = useAlert({
-    loadingStatus,
+    loading,
+    actions: ['TRANSACTION_SEND_ERC20_TOKEN', 'TRANSACTION_SEND_ETH_TOKEN'],
     msgSuccess:
       'The transaction is sending. Track the progress at the etherscan.',
     msgFailed: 'Failed to send a transaction.'
   })
 
   useEffect(() => {
-    if (loadingStatus === 'SUCCESS') {
+    if (loading.success && loading.action.indexOf('TRANSACTION') === 0) {
       navigation.navigate({
         routeName: 'TransferPending',
         params: {
@@ -47,7 +47,15 @@ const TransactionConfirm = ({
         }
       })
     }
-  }, [fee, fromWallet, loadingStatus, navigation, toWallet, token])
+  }, [
+    fee,
+    fromWallet,
+    loading.action,
+    loading.success,
+    navigation,
+    toWallet,
+    token
+  ])
 
   const sendToken = () => {
     if (token.contractAddress === '0x') {
@@ -130,7 +138,10 @@ const TransactionConfirm = ({
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <OMGButton style={styles.button} loading={loading} onPress={sendToken}>
+        <OMGButton
+          style={styles.button}
+          loading={loading.show}
+          onPress={sendToken}>
           Send Transaction
         </OMGButton>
       </View>
@@ -275,7 +286,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => ({
   provider: state.setting.provider,
-  loadingStatus: state.loadingStatus,
+  loading: state.loading,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   )

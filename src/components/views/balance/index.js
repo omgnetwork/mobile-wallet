@@ -6,7 +6,6 @@ import { walletActions } from 'common/actions'
 import EthereumBalance from './EthereumBalance'
 import PlasmaBalance from './PlasmaBalance'
 import ShowQR from './ShowQR'
-import { useLoading } from 'common/hooks'
 import {
   OMGBackground,
   OMGEmpty,
@@ -16,9 +15,8 @@ import {
 
 const pageWidth = Dimensions.get('window').width - 56
 
-const Balance = ({ theme, primaryWalletAddress, loadingStatus, wallets }) => {
+const Balance = ({ theme, primaryWalletAddress, loading, wallets }) => {
   const [primaryWallet, setPrimaryWallet] = useState(null)
-  const [loading] = useLoading(loadingStatus)
 
   useEffect(() => {
     if (primaryWalletAddress) {
@@ -33,7 +31,7 @@ const Balance = ({ theme, primaryWalletAddress, loadingStatus, wallets }) => {
         {primaryWallet ? primaryWallet.name : 'Initializing...'}
       </OMGText>
       {!wallets || !primaryWallet ? (
-        <OMGEmpty loading={loading} />
+        <OMGEmpty loading={loading.show} />
       ) : (
         <OMGViewPager pageWidth={pageWidth}>
           <View style={styles.firstPage}>
@@ -84,7 +82,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  loadingStatus: state.loadingStatus,
+  loading: state.loading,
   wallets: state.wallets,
   provider: state.setting.provider,
   primaryWalletAddress: state.setting.primaryWalletAddress

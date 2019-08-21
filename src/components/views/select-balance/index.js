@@ -3,7 +3,6 @@ import { View, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { useLoading } from 'common/hooks'
 import {
   OMGButton,
   OMGEmpty,
@@ -12,10 +11,9 @@ import {
   OMGText
 } from 'components/widgets'
 
-const SelectBalance = ({ primaryWallet, theme, loadingStatus, navigation }) => {
+const SelectBalance = ({ primaryWallet, theme, loading, navigation }) => {
   const assets = navigation.getParam('assets', primaryWallet.assets)
   const currentToken = navigation.getParam('currentToken')
-  const [loading] = useLoading(loadingStatus)
   const [selectedToken, setSelectedToken] = useState(currentToken || assets[0])
 
   return (
@@ -34,7 +32,9 @@ const SelectBalance = ({ primaryWallet, theme, loadingStatus, navigation }) => {
         data={assets || []}
         keyExtractor={item => item.contractAddress}
         keyboardShouldPersistTaps='always'
-        ListEmptyComponent={<OMGEmpty text='Empty assets' loading={loading} />}
+        ListEmptyComponent={
+          <OMGEmpty text='Empty assets' loading={loading.show} />
+        }
         contentContainerStyle={
           assets && assets.length
             ? {}
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  loadingStatus: state.loadingStatus,
+  loading: state.loading,
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
   )

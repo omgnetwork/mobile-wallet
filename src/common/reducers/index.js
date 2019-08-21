@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux'
-import { loadingStatusReducer } from './loadingStatus'
+import { loadingReducer } from './loadingReducer'
 import { walletsReducer } from './walletReducer'
 import { transactionReducer } from './transactionReducer'
 import { settingReducer } from './settingReducer'
 
 export default combineReducers({
   wallets: walletsReducer,
-  loadingStatus: loadingStatusReducer,
+  loading: loadingReducer,
   transaction: transactionReducer,
   setting: settingReducer
 })

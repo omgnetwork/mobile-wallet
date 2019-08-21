@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
 import { walletActions } from 'common/actions'
 import { withTheme, Text } from 'react-native-paper'
-import { useLoading } from 'common/hooks'
 import Config from 'react-native-config'
 import { Formatter } from 'common/utils'
 import { OMGItemToken, OMGAssetHeader, OMGAssetList } from 'components/widgets'
@@ -73,7 +72,7 @@ const formatTokenPrice = (amount, price) => {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  loadingStatus: state.loadingStatus,
+  loading: state.loading,
   wallets: state.wallets,
   provider: state.setting.provider,
   primaryWalletAddress: state.setting.primaryWalletAddress

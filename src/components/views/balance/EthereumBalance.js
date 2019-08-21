@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { StyleSheet, RefreshControl } from 'react-native'
 import { walletActions } from 'common/actions'
 import { withTheme, Text } from 'react-native-paper'
-import { useLoading } from 'common/hooks'
 import Config from 'react-native-config'
 import { Formatter } from 'common/utils'
 import { OMGItemToken, OMGAssetHeader, OMGAssetList } from 'components/widgets'
@@ -14,10 +13,9 @@ const EthereumBalance = ({
   primaryWalletAddress,
   provider,
   loadAssets,
-  loadingStatus
+  loading
 }) => {
   const [totalBalance, setTotalBalance] = useState(0.0)
-  const [loading] = useLoading(loadingStatus)
   const currency = 'USD'
 
   useEffect(() => {
@@ -43,7 +41,7 @@ const EthereumBalance = ({
       <OMGAssetHeader
         amount={formatTotalBalance(totalBalance)}
         currency={currency}
-        loading={loading}
+        loading={loading.show}
         rootChain={true}
         blockchain={'Ethereum'}
         network={Config.ETHERSCAN_NETWORK}
@@ -51,10 +49,10 @@ const EthereumBalance = ({
       <OMGAssetList
         data={primaryWallet.assets || []}
         keyExtractor={item => item.contractAddress}
-        loading={loading}
+        loading={loading.show}
         refreshControl={
           <RefreshControl
-            refreshing={loading}
+            refreshing={loading.show}
             onRefresh={() => loadAssets(provider, primaryWalletAddress)}
           />
         }
@@ -107,7 +105,7 @@ const formatTokenPrice = (amount, price) => {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  loadingStatus: state.loadingStatus,
+  loading: state.loading,
   provider: state.setting.provider,
   primaryWalletAddress: state.setting.primaryWalletAddress
 })

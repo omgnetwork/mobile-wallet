@@ -3,7 +3,6 @@ import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
 import { Title } from 'react-native-paper'
-import { useLoading } from 'common/hooks'
 import {
   OMGButton,
   OMGBox,
@@ -13,12 +12,11 @@ import {
 import { walletActions } from 'common/actions'
 
 const CreateWalletComponent = ({
-  loadingStatus,
+  loading,
   provider,
   createWallet,
   navigation
 }) => {
-  const [loading] = useLoading(loadingStatus)
   const walletNameRef = useRef()
 
   const create = () => {
@@ -28,10 +26,10 @@ const CreateWalletComponent = ({
   }
 
   useEffect(() => {
-    if (loadingStatus === 'SUCCESS') {
+    if (loading.success && loading.action === 'WALLET_CREATE') {
       navigation.goBack()
     }
-  }, [loadingStatus, navigation])
+  }, [loading, navigation])
 
   return (
     <OMGBackground style={{ flex: 1, flexDirection: 'column', padding: 16 }}>
@@ -43,8 +41,8 @@ const CreateWalletComponent = ({
         <OMGButton
           onPress={create}
           style={{ marginTop: 16 }}
-          loading={loading}
-          disabled={loading}>
+          loading={loading.show}
+          disabled={loading.show}>
           Create Wallet
         </OMGButton>
       </View>
@@ -53,7 +51,7 @@ const CreateWalletComponent = ({
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  loadingStatus: state.loadingStatus,
+  loading: state.loading,
   wallets: state.wallets,
   provider: state.setting.provider
 })
