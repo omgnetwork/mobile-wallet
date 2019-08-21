@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Platform } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import OMGImage from '../omg-image'
 import OMGText from '../omg-text'
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   text: theme => ({
     color: theme.colors.primary,
     fontSize: 14,
-    paddingTop: -8,
+    paddingTop: Platform.OS === 'ios' ? -8 : 20,
     flex: 1
   }),
   rightContainer: {

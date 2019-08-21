@@ -94,11 +94,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   createWallet: (provider, name) =>
     dispatch(walletActions.create(provider, name)),
-  deleteAllWallet: () => dispatch(walletActions.clear()),
-  getTxHistory: address =>
-    dispatch(walletActions.getTransactionHistory(address)),
-  initAssets: (provider, address, txHistory) =>
-    dispatch(walletActions.initAssets(provider, address, txHistory))
+  deleteAllWallet: () => dispatch(walletActions.clear())
 })
 
 export default connect(

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, RefreshControl } from 'react-native'
 import { walletActions } from 'common/actions'
 import { withTheme, Text } from 'react-native-paper'
 import { useLoading } from 'common/hooks'
@@ -13,8 +13,7 @@ const EthereumBalance = ({
   primaryWallet,
   primaryWalletAddress,
   provider,
-  getTxHistory,
-  initAssets,
+  loadAssets,
   loadingStatus
 }) => {
   const [totalBalance, setTotalBalance] = useState(0.0)
@@ -22,16 +21,10 @@ const EthereumBalance = ({
   const currency = 'USD'
 
   useEffect(() => {
-    if (!primaryWallet.txHistory) {
-      getTxHistory(primaryWalletAddress)
+    if (provider && !primaryWallet.assets) {
+      loadAssets(provider, primaryWalletAddress)
     }
-  }, [primaryWalletAddress, getTxHistory, primaryWallet])
-
-  useEffect(() => {
-    if (primaryWallet.txHistory && !primaryWallet.assets) {
-      initAssets(provider, primaryWalletAddress, primaryWallet.txHistory)
-    }
-  }, [initAssets, primaryWalletAddress, provider, primaryWallet])
+  }, [loadAssets, primaryWalletAddress, provider, primaryWallet])
 
   useEffect(() => {
     if (primaryWallet.assets) {
@@ -59,6 +52,12 @@ const EthereumBalance = ({
         data={primaryWallet.assets || []}
         keyExtractor={item => item.contractAddress}
         loading={loading}
+        refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={() => loadAssets(provider, primaryWalletAddress)}
+          />
+        }
         style={styles.list}
         renderItem={({ item }) => (
           <OMGItemToken
@@ -117,10 +116,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   createWallet: (provider, name) =>
     dispatch(walletActions.create(provider, name)),
   deleteAllWallet: () => dispatch(walletActions.clear()),
-  getTxHistory: address =>
-    dispatch(walletActions.getTransactionHistory(address)),
-  initAssets: (provider, address, txHistory) =>
-    dispatch(walletActions.initAssets(provider, address, txHistory))
+  loadAssets: (provider, address) =>
+    dispatch(walletActions.loadAssets(provider, address))
 })
 
 export default connect(

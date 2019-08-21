@@ -37,7 +37,7 @@ const TransactionConfirm = ({
   useEffect(() => {
     if (loadingStatus === 'SUCCESS') {
       navigation.navigate({
-        routeName: 'TransactionPendingModal',
+        routeName: 'TransferPending',
         params: {
           token,
           fromWallet,

@@ -26,17 +26,14 @@ const SelectBalance = ({ primaryWallet, theme, loadingStatus, navigation }) => {
           size={18}
           color={theme.colors.gray3}
           style={styles.headerIcon}
-          onPress={() =>
-            navigation.navigate('TransactionForm', {
-              selectedToken: selectedToken
-            })
-          }
+          onPress={() => navigation.navigate('TransactionForm')}
         />
         <OMGText style={styles.headerTitle(theme)}>Select Balance</OMGText>
       </View>
       <FlatList
         data={assets || []}
         keyExtractor={item => item.contractAddress}
+        keyboardShouldPersistTaps='always'
         ListEmptyComponent={<OMGEmpty text='Empty assets' loading={loading} />}
         contentContainerStyle={
           assets && assets.length

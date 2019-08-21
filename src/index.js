@@ -69,13 +69,6 @@ const App = () => {
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1
-  },
-  scrollView: {
-    flex: 1
-  },
-  view: {
-    flex: 1,
-    justifyContent: 'center'
   }
 })
 

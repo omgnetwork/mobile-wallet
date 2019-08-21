@@ -101,6 +101,8 @@ PODS:
     - React
   - RNGestureHandler (1.3.0):
     - React
+  - RNScreens (1.0.0-alpha.23):
+    - React
   - RNSVG (9.6.2):
     - React
   - RNVectorIcons (6.6.0):
@@ -136,6 +138,7 @@ DEPENDENCIES:
   - ReactNativePermissions (from `../node_modules/react-native-permissions`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -201,6 +204,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/async-storage"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNScreens:
+    :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
@@ -238,10 +243,11 @@ SPEC CHECKSUMS:
   ReactNativePermissions: a8da737c35e77bf4ea1d4102d881b406fb791125
   RNCAsyncStorage: e99188b8a89ea0edddc82d8831cd5142f4550fdc
   RNGestureHandler: 7ccf2f3f60458e084f9ada01fbaf610f6fef073c
+  RNScreens: 354046589421edc3d83d5c6212475bf1fb9a731d
   RNSVG: 2e097b92aaa6d4e0f354fd7c49cbf3b17f8b3920
   RNVectorIcons: 66af4d5c8ff4f584c7b7cd9c4b0780920f27fce2
   yoga: 88c514f310aff89b94a14c5fbf44b95735af0cb7
 
-PODFILE CHECKSUM: 65f1acff2a4f464798c900501e5dda3079176b3a
+PODFILE CHECKSUM: b94006ab044e5c10ae49ccd8ff769706f40bc618
 
 COCOAPODS: 1.5.3

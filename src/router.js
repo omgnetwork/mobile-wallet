@@ -164,13 +164,13 @@ const BottomTabNavigator = createBottomTabNavigator(
 const RootNavigator = createStackNavigator(
   {
     Main: BottomTabNavigator,
-    SelectBalanceModal: {
+    TransferSelectBalance: {
       screen: Views.SelectBalance
     },
-    TransactionConfirmModal: {
+    TransferConfirm: {
       screen: Views.TransactionConfirm
     },
-    TransactionPendingModal: {
+    TransferPending: {
       screen: Views.TransactionPending
     }
   },

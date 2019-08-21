@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { StackActions, NavigationActions } from 'react-navigation'
 import { OMGIcon, OMGBox, OMGText } from 'components/widgets'
 
 const Transfer = ({ navigation, theme }) => {
   const [rendering, setRendering] = useState(true)
-  const SendTabNavigator = navigation.getParam('navigator')
+  const TransferTabNavigator = navigation.getParam('navigator')
 
   useEffect(() => {
     function willFocus() {
@@ -37,7 +36,7 @@ const Transfer = ({ navigation, theme }) => {
           <OMGIcon name='x-mark' size={18} color={theme.colors.gray3} />
         </OMGBox>
       </View>
-      {rendering && <SendTabNavigator navigation={navigation} />}
+      {rendering && <TransferTabNavigator navigation={navigation} />}
     </View>
   )
 }

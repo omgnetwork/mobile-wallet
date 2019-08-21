@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, View, StyleSheet } from 'react-native'
+import { TouchableOpacity, View, StyleSheet, Platform } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import OMGImage from '../omg-image'
 import OMGIcon from '../omg-icon'
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   text: theme => ({
     color: theme.colors.primary,
     fontSize: 14,
-    paddingTop: -8,
+    paddingTop: Platform.OS === 'ios' ? -8 : 20,
     flex: 1
   }),
   rightContainer: theme => ({

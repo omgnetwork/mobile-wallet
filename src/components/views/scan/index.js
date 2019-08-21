@@ -5,14 +5,9 @@ import React, {
   useCallback,
   useRef
 } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, InteractionManager } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import {
-  SafeAreaView,
-  withNavigation,
-  StackActions,
-  NavigationActions
-} from 'react-navigation'
+import { SafeAreaView, withNavigation } from 'react-navigation'
 import { OMGText, OMGIcon, OMGQRScanner, OMGButton } from 'components/widgets'
 
 const Scan = ({ theme, navigation }) => {

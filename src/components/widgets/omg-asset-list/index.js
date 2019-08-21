@@ -9,6 +9,7 @@ const OMGAssetList = ({
   style,
   data,
   renderItem,
+  refreshControl,
   keyExtractor,
   loading
 }) => {
@@ -26,6 +27,7 @@ const OMGAssetList = ({
         <FlatList
           style={styles.assetList}
           data={data}
+          refreshControl={refreshControl}
           keyExtractor={keyExtractor}
           ListEmptyComponent={
             <OMGEmpty text='Empty assets' loading={loading} />

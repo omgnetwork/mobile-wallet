@@ -32,7 +32,7 @@ const TransactionForm = ({ wallet, theme, navigation }) => {
 
   useEffect(() => {
     if (tokenBalance) {
-      navigation.navigate('TransactionConfirmModal', {
+      navigation.navigate('TransferConfirm', {
         token: { ...selectedToken, balance: tokenBalance },
         fromWallet: wallet,
         toWallet: {
@@ -54,7 +54,7 @@ const TransactionForm = ({ wallet, theme, navigation }) => {
               token={selectedToken}
               style={styles.tokenInput}
               onPress={() =>
-                navigation.navigate('SelectBalanceModal', {
+                navigation.navigate('TransferSelectBalance', {
                   currentToken: selectedToken,
                   assets: wallet.assets
                 })

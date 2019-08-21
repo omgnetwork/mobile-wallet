@@ -145,38 +145,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   },
-  subHeaderContainer: {
-    marginTop: 16,
-    paddingHorizontal: 16,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  amountContainer: theme => ({
-    marginTop: 8,
-    backgroundColor: theme.colors.background,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  }),
-  balanceContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   addressContainer: {
     marginTop: 16,
     paddingLeft: 16
-  },
-  transactionFeeContainer: {
-    flexDirection: 'column',
-    marginTop: 16,
-    paddingHorizontal: 16
-  },
-  feeContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginLeft: 8,
-    marginTop: 16
   },
   totalContainer: theme => ({
     marginTop: 16,
@@ -210,12 +181,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
     flexDirection: 'row'
   },
-  feeAmount: theme => ({
-    color: theme.colors.primary
-  }),
-  feeWorth: theme => ({
-    color: theme.colors.gray2
-  }),
   totalText: theme => ({
     color: theme.colors.gray3
   }),
