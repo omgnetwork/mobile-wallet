@@ -1,10 +1,10 @@
-import { ethersUtils } from '../utils'
+import { Ethers } from '../utils'
 import { settingStorage } from '../storages'
 
 export const create = providerName => {
   return new Promise(async (resolve, reject) => {
     try {
-      const provider = ethersUtils.createProvider(providerName)
+      const provider = Ethers.createProvider(providerName)
       await settingStorage.setProviderName(providerName)
       resolve(provider)
     } catch (err) {
@@ -21,7 +21,7 @@ export const getName = async defaultProviderName => {
 export const getTransactionHistory = address => {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await ethersUtils.fetchTransactionDetail(address)
+      const response = await Ethers.fetchTransactionDetail(address)
 
       const formattedTxHistory = response.data.result.map(tx => {
         return {
@@ -52,13 +52,13 @@ export const getTokenBalance = (
 ) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const balance = await ethersUtils.getTokenBalance(
+      const balance = await Ethers.getTokenBalance(
         provider,
         contractAddress,
         accountAddress
       )
 
-      resolve(ethersUtils.formatUnits(balance, tokenDecimal))
+      resolve(Ethers.formatUnits(balance, tokenDecimal))
     } catch (err) {
       reject(err)
     }

@@ -1,5 +1,6 @@
 import { transactionService, walletService } from '../services'
 import { createAsyncAction } from './actionCreators'
+import { Datetime } from 'common/utils'
 
 export const sendErc20Token = (token, fromWallet, provider, toAddress) => {
   const asyncAction = async () => {
@@ -17,7 +18,8 @@ export const sendErc20Token = (token, fromWallet, provider, toAddress) => {
       hash: tx.hash,
       from: tx.from,
       nonce: tx.nonce,
-      gasPrice: tx.gasPrice.toString()
+      gasPrice: tx.gasPrice.toString(),
+      createdAt: Datetime.now()
     }
   }
 

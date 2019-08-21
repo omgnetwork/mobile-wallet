@@ -4,7 +4,7 @@ import OMGBox from '../omg-box'
 import OMGText from '../omg-text'
 import OMGIcon from '../omg-icon'
 import { withTheme } from 'react-native-paper'
-import { formatter } from 'common/utils'
+import { Formatter } from 'common/utils'
 
 const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
   return (
@@ -41,7 +41,7 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
 }
 
 const formatTokenBalance = amount => {
-  return formatter.format(amount, {
+  return Formatter.format(amount, {
     commify: true,
     maxDecimal: 3,
     ellipsize: false
@@ -51,7 +51,7 @@ const formatTokenBalance = amount => {
 const formatTokenPrice = (amount, price) => {
   const parsedAmount = parseFloat(amount)
   const tokenPrice = parsedAmount * price
-  return formatter.format(tokenPrice, {
+  return Formatter.format(tokenPrice, {
     commify: true,
     maxDecimal: 2,
     ellipsize: false

@@ -5,7 +5,7 @@ import { walletActions } from 'common/actions'
 import { withTheme, Text } from 'react-native-paper'
 import { useLoading } from 'common/hooks'
 import Config from 'react-native-config'
-import { formatter } from 'common/utils'
+import { Formatter } from 'common/utils'
 import { OMGItemToken, OMGAssetHeader, OMGAssetList } from 'components/widgets'
 
 const EthereumBalance = ({
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 })
 
 const formatTotalBalance = balance => {
-  return formatter.format(balance, {
+  return Formatter.format(balance, {
     commify: true,
     maxDecimal: 2,
     ellipsize: false
@@ -89,7 +89,7 @@ const formatTotalBalance = balance => {
 }
 
 const formatTokenBalance = amount => {
-  return formatter.format(amount, {
+  return Formatter.format(amount, {
     commify: true,
     maxDecimal: 3,
     ellipsize: false
@@ -99,7 +99,7 @@ const formatTokenBalance = amount => {
 const formatTokenPrice = (amount, price) => {
   const parsedAmount = parseFloat(amount)
   const tokenPrice = parsedAmount * price
-  return formatter.format(tokenPrice, {
+  return Formatter.format(tokenPrice, {
     commify: true,
     maxDecimal: 2,
     ellipsize: false

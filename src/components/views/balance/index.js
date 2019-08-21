@@ -14,7 +14,6 @@ import {
   OMGText
 } from 'components/widgets'
 
-// 48 = marginRight (8) + marginLeft (8) + paddingLeft (16) + paddingRight (16) + overlapContentWidth (16)
 const pageWidth = Dimensions.get('window').width - 56
 
 const Balance = ({ theme, primaryWalletAddress, loadingStatus, wallets }) => {

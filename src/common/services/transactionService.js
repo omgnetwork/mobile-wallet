@@ -1,9 +1,9 @@
-import { ethersUtils } from '../utils'
+import { Ethers } from '../utils'
 
 export const sendErc20Token = (token, fromWallet, toAddress) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const pendingTransaction = await ethersUtils.sendErc20Token(
+      const pendingTransaction = await Ethers.sendErc20Token(
         token,
         fromWallet,
         toAddress
@@ -18,7 +18,7 @@ export const sendErc20Token = (token, fromWallet, toAddress) => {
 export const sendEthToken = (token, fromWallet, toAddress) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const pendingTransaction = await ethersUtils.sendEthToken(
+      const pendingTransaction = await Ethers.sendEthToken(
         token,
         fromWallet,
         toAddress

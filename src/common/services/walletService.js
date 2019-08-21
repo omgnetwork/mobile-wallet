@@ -1,10 +1,10 @@
-import { ethersUtils } from '../utils'
+import { Ethers } from '../utils'
 import { walletStorage, settingStorage } from '../storages'
 
 export const create = (provider, name) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const wallet = ethersUtils.createWallet()
+      const wallet = Ethers.createWallet()
       const connectedProviderWallet = wallet.connect(provider)
 
       const privateKey = await connectedProviderWallet.privateKey
@@ -25,7 +25,7 @@ export const get = async (address, provider) => {
   return new Promise(async (resolve, reject) => {
     try {
       const privateKey = await walletStorage.getPrivateKey(address)
-      const wallet = ethersUtils.importWalletByPrivateKey(privateKey)
+      const wallet = Ethers.importWalletByPrivateKey(privateKey)
       const connectedProviderWallet = wallet.connect(provider)
       resolve(connectedProviderWallet)
     } catch (err) {
@@ -37,9 +37,9 @@ export const get = async (address, provider) => {
 export const getEthBalance = address => {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await ethersUtils.getEthBalance(address)
+      const response = await Ethers.getEthBalance(address)
       const balance = response.data.result
-      const formattedBalance = ethersUtils.formatUnits(balance, 18)
+      const formattedBalance = Ethers.formatUnits(balance, 18)
       resolve(formattedBalance)
     } catch (err) {
       reject(err)
@@ -58,7 +58,7 @@ export const importByMnemonic = (mnemonic, provider, name) => {
         throw 'Wallet name is empty'
       }
 
-      const wallet = ethersUtils.importWalletByMnemonic(mnemonic)
+      const wallet = Ethers.importWalletByMnemonic(mnemonic)
       const connectedProviderWallet = wallet.connect(provider)
 
       const privateKey = await connectedProviderWallet.privateKey

@@ -4,7 +4,7 @@ import { withTheme } from 'react-native-paper'
 import OMGImage from '../omg-image'
 import OMGIcon from '../omg-icon'
 import OMGText from '../omg-text'
-import { formatter } from 'common/utils'
+import { Formatter } from 'common/utils'
 
 const OMGTokenInput = ({ theme, token, style, onPress }) => {
   return (
@@ -29,7 +29,7 @@ const OMGTokenInput = ({ theme, token, style, onPress }) => {
 }
 
 const formatTokenBalance = amount => {
-  return formatter.format(amount, {
+  return Formatter.format(amount, {
     commify: true,
     maxDecimal: 6,
     ellipsize: false

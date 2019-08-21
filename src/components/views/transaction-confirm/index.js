@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native'
 import { withNavigation, NavigationActions } from 'react-navigation'
 import { withTheme, Snackbar } from 'react-native-paper'
 import { useLoading, useAlert } from 'common/hooks'
-import { formatter } from 'common/utils'
+import { Formatter } from 'common/utils'
 import { transactionActions } from 'common/actions'
 import {
   OMGBox,
@@ -144,7 +144,7 @@ const TransactionConfirm = ({
 }
 
 const formatTokenBalance = amount => {
-  return formatter.format(amount, {
+  return Formatter.format(amount, {
     commify: true,
     maxDecimal: 3,
     ellipsize: false
@@ -154,7 +154,7 @@ const formatTokenBalance = amount => {
 const formatTokenPrice = (amount, price) => {
   const parsedAmount = parseFloat(amount)
   const tokenPrice = parsedAmount * price
-  return formatter.format(tokenPrice, {
+  return Formatter.format(tokenPrice, {
     commify: true,
     maxDecimal: 2,
     ellipsize: false
@@ -163,7 +163,7 @@ const formatTokenPrice = (amount, price) => {
 
 const formatTotalPrice = (tokenPrice, feePrice) => {
   const totalPrice = parseFloat(tokenPrice) + parseFloat(feePrice)
-  return formatter.format(totalPrice, {
+  return Formatter.format(totalPrice, {
     commify: true,
     maxDecimal: 2,
     ellipsize: false
