@@ -24,6 +24,7 @@ const TransactionPending = ({
   const fromWallet = navigation.getParam('fromWallet')
   const toWallet = navigation.getParam('toWallet')
   const fee = navigation.getParam('fee')
+  const tokenPrice = formatTokenPrice(token.balance, token.price)
   const [loading] = useLoading(loadingStatus)
 
   return (
@@ -54,7 +55,7 @@ const TransactionPending = ({
                   {formatTokenBalance(token.balance)} {token.tokenSymbol}
                 </OMGText>
                 <OMGText style={styles.sentDetailSecondline(theme)}>
-                  {formatTokenPrice(token.balance, token.price)} USD
+                  {tokenPrice} USD
                 </OMGText>
               </View>
             </View>
@@ -72,8 +73,10 @@ const TransactionPending = ({
           </View>
         </View>
         <View style={styles.totalContainer(theme)}>
-          <OMGText style={styles.totalText(theme)}>Max Total</OMGText>
-          <OMGText style={styles.totalText(theme)}>00.00 USD</OMGText>
+          <OMGText style={styles.totalText(theme)}>Total</OMGText>
+          <OMGText style={styles.totalText(theme)}>
+            {formatTotalPrice(tokenPrice, 0.047)} USD
+          </OMGText>
         </View>
       </View>
       <View style={styles.bottomContainer}>
@@ -111,6 +114,15 @@ const formatTokenPrice = (amount, price) => {
   const parsedAmount = parseFloat(amount)
   const tokenPrice = parsedAmount * price
   return formatter.format(tokenPrice, {
+    commify: true,
+    maxDecimal: 2,
+    ellipsize: false
+  })
+}
+
+const formatTotalPrice = (tokenPrice, feePrice) => {
+  const totalPrice = parseFloat(tokenPrice) + parseFloat(feePrice)
+  return formatter.format(totalPrice, {
     commify: true,
     maxDecimal: 2,
     ellipsize: false
@@ -213,6 +225,7 @@ const styles = StyleSheet.create({
   sentContentContainer: theme => ({
     justifyContent: 'space-between',
     backgroundColor: theme.colors.backgroundDisabled,
+    borderRadius: theme.roundness,
     padding: 12,
     marginTop: 8
   }),

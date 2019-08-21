@@ -25,6 +25,7 @@ const TransactionConfirm = ({
   const fromWallet = navigation.getParam('fromWallet')
   const toWallet = navigation.getParam('toWallet')
   const fee = navigation.getParam('fee')
+  const tokenPrice = formatTokenPrice(token.balance, token.price)
   const [loading] = useLoading(loadingStatus)
   const snackbarProps = useAlert({
     loadingStatus,
@@ -82,9 +83,7 @@ const TransactionConfirm = ({
             <OMGText style={styles.tokenSymbol(theme)}>
               {token.tokenSymbol}
             </OMGText>
-            <OMGText style={styles.tokenWorth(theme)}>
-              {formatTokenPrice(token.balance, token.price)} USD
-            </OMGText>
+            <OMGText style={styles.tokenWorth(theme)}>{tokenPrice} USD</OMGText>
           </View>
         </View>
         <OMGBox style={styles.addressContainer}>
@@ -110,7 +109,9 @@ const TransactionConfirm = ({
         </View>
         <View style={styles.totalContainer(theme)}>
           <OMGText style={styles.totalText(theme)}>Max Total</OMGText>
-          <OMGText style={styles.totalText(theme)}>00.00 USD</OMGText>
+          <OMGText style={styles.totalText(theme)}>
+            {formatTotalPrice(tokenPrice, 0.047)} USD
+          </OMGText>
         </View>
       </View>
       <View style={styles.buttonContainer}>
@@ -144,6 +145,15 @@ const formatTokenPrice = (amount, price) => {
   const parsedAmount = parseFloat(amount)
   const tokenPrice = parsedAmount * price
   return formatter.format(tokenPrice, {
+    commify: true,
+    maxDecimal: 2,
+    ellipsize: false
+  })
+}
+
+const formatTotalPrice = (tokenPrice, feePrice) => {
+  const totalPrice = parseFloat(tokenPrice) + parseFloat(feePrice)
+  return formatter.format(totalPrice, {
     commify: true,
     maxDecimal: 2,
     ellipsize: false
