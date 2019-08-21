@@ -30,6 +30,8 @@ const TransactionForm = ({ wallet, theme, navigation }) => {
   const [tokenBalance, tokenBalanceCallback] = useTextInput(actionId)
   const selectedAddress = navigation.getParam('address')
 
+  console.log(navigation.getParam('lastAmount'))
+
   useEffect(() => {
     if (tokenBalance) {
       navigation.navigate('TransferConfirm', {
@@ -74,6 +76,7 @@ const TransactionForm = ({ wallet, theme, navigation }) => {
             <OMGText weight='bold'>Amount</OMGText>
             <OMGAmountInput
               token={selectedToken}
+              defaultValue={navigation.getParam('lastAmount')}
               callback={tokenBalanceCallback}
               style={styles.amountInput}
             />

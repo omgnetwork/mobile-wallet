@@ -10,6 +10,7 @@ const OMGTextInput = ({
   lines,
   keyboardType,
   defaultValue,
+  value,
   callback,
   disabled
 }) => {
@@ -34,6 +35,7 @@ const OMGTextInput = ({
       editable={disabled ? disabled : true}
       multiline={numberOfLines > 1}
       defaultValue={defaultValue}
+      value={value}
       textAlignVertical='top'
       keyboardType={keyboardType}
       style={{

@@ -82,7 +82,11 @@ const TransactionConfirm = ({
             name='chevron-left'
             size={14}
             color={theme.colors.gray3}
-            onPress={() => navigation.navigate('Main')}
+            onPress={() =>
+              navigation.navigate('TransactionForm', {
+                lastAmount: token.balance
+              })
+            }
           />
           <OMGText style={styles.edit}>Edit</OMGText>
         </View>
