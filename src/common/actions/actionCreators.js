@@ -13,8 +13,8 @@ export const createAsyncAction = ({
         console.log(err)
         dispatch({ type: `${actionType}/FAILED`, data: err })
       }
-      // const loadingType = actionType.replace('/', '_')
-      // dispatch({ type: `LOADING/${loadingType}/IDLE` })
+      const actionName = actionType.replace('/', '_')
+      dispatch({ type: `LOADING/${actionName}/IDLE` })
     })
   }
 }
