@@ -6,7 +6,6 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import Router from 'router'
 import createStore from 'common/stores'
 import { walletActions, settingActions } from 'common/actions'
-import { Main } from 'components/views'
 import Config from 'react-native-config'
 
 YellowBox.ignoreWarnings(['Warning:', 'Setting'])

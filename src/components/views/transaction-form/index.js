@@ -22,14 +22,13 @@ const mockFee = {
   symbol: 'Gwei'
 }
 
+const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
+
 const TransactionForm = ({ wallet, theme, navigation }) => {
   const selectedToken = navigation.getParam('selectedToken', wallet.assets[0])
   const [actionId, setActionId] = useState()
   const [tokenBalance, tokenBalanceCallback] = useTextInput(actionId)
-  const selectedAddress = navigation.getParam(
-    'address',
-    '0xf1deFf59DA938E31673DA1300b479896C743d968'
-  )
+  const selectedAddress = navigation.getParam('address')
 
   useEffect(() => {
     if (tokenBalance) {
@@ -38,7 +37,7 @@ const TransactionForm = ({ wallet, theme, navigation }) => {
         fromWallet: wallet,
         toWallet: {
           name: 'Another wallet',
-          address: selectedAddress
+          address: selectedAddress || testAddress
         },
         fee: mockFee
       })
@@ -66,7 +65,7 @@ const TransactionForm = ({ wallet, theme, navigation }) => {
           <OMGBox style={styles.toContainer}>
             <OMGText weight='bold'>To</OMGText>
             <OMGAddressInput
-              address={selectedAddress}
+              address={selectedAddress || testAddress}
               style={styles.addressInput}
               onPress={() => navigation.navigate('Scan', { reactivate: true })}
             />

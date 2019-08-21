@@ -37,6 +37,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Enable to scan the QR code</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UIAppFonts</key>
@@ -72,12 +74,8 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSCameraUsageDescription</key>
-	<string>Enable to scan the QR code</string>
 </dict>
 </plist>

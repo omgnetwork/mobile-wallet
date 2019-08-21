@@ -169,6 +169,9 @@ const RootNavigator = createStackNavigator(
     },
     TransactionConfirmModal: {
       screen: Views.TransactionConfirm
+    },
+    TransactionPendingModal: {
+      screen: Views.TransactionPending
     }
   },
   {

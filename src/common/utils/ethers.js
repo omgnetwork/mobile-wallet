@@ -31,6 +31,10 @@ export const formatEther = wei => {
   return ethers.utils.formatEther(wei)
 }
 
+export const parseUnits = (tokenBalance, tokenNumberOfDecimals) => {
+  return ethers.utils.parseUnits(tokenBalance, tokenNumberOfDecimals)
+}
+
 export const fetchTransactionDetail = address => {
   return axios.get(Config.ETHERSCAN_API_URL, {
     params: {
@@ -78,6 +82,41 @@ export const getTokenBalance = (provider, contractAddress, accountAddress) => {
 
   const contract = new ethers.Contract(contractAddress, abi, provider)
   return contract.balanceOf(accountAddress)
+}
+
+export const sendErc20Token = (token, wallet, toAddress) => {
+  console.log(token)
+  console.log(wallet)
+  console.log(toAddress)
+  const contractAbi = [
+    {
+      name: 'transfer',
+      type: 'function',
+      inputs: [
+        {
+          name: '_to',
+          type: 'address'
+        },
+        {
+          type: 'uint256',
+          name: '_tokens'
+        }
+      ],
+      constant: false,
+      outputs: [],
+      payable: false
+    }
+  ]
+
+  const contract = new ethers.Contract(
+    token.contractAddress,
+    contractAbi,
+    wallet
+  )
+
+  const numberOfTokens = parseUnits(token.balance, token.numberOfDecimals)
+
+  return contract.transfer(toAddress, numberOfTokens)
 }
 
 export const formatUnits = (amount, numberOfDecimals) => {

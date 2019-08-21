@@ -1,24 +1,23 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet } from 'react-native'
-import { withNavigation, NavigationActions } from 'react-navigation'
-import { withTheme, Snackbar } from 'react-native-paper'
-import { useLoading, useAlert } from 'common/hooks'
+import { View, StyleSheet, Linking } from 'react-native'
+import { withNavigation } from 'react-navigation'
+import { withTheme } from 'react-native-paper'
+import { useLoading } from 'common/hooks'
 import { formatter } from 'common/utils'
-import { transactionActions } from 'common/actions'
+import Config from 'react-native-config'
 import {
   OMGBox,
   OMGButton,
   OMGText,
-  OMGIcon,
   OMGWalletAddress
 } from 'components/widgets'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const TransactionConfirm = ({
+const TransactionPending = ({
   theme,
   navigation,
-  provider,
-  sendErc20Token,
+  pendingTx,
   loadingStatus
 }) => {
   const token = navigation.getParam('token')
@@ -26,66 +25,12 @@ const TransactionConfirm = ({
   const toWallet = navigation.getParam('toWallet')
   const fee = navigation.getParam('fee')
   const [loading] = useLoading(loadingStatus)
-  const snackbarProps = useAlert({
-    loadingStatus,
-    msgSuccess:
-      'The transaction is sending. Track the progress at the etherscan.',
-    msgFailed: 'Failed to send a transaction.'
-  })
-
-  useEffect(() => {
-    if (loadingStatus === 'SUCCESS') {
-      navigation.navigate({
-        routeName: 'TransactionPendingModal',
-        params: {
-          token,
-          fromWallet,
-          toWallet,
-          fee
-        }
-      })
-    }
-  }, [fee, fromWallet, loadingStatus, navigation, toWallet, token])
 
   return (
     <View style={styles.container(theme)}>
       <View style={styles.contentContainer}>
         <View style={styles.headerContainer}>
-          <OMGText style={styles.title(theme)}>Transfer</OMGText>
-          <OMGIcon
-            name='x-mark'
-            size={18}
-            color={theme.colors.gray3}
-            onPress={() =>
-              navigation.navigate({
-                routeName: 'Main',
-                params: {},
-                action: NavigationActions.navigate({ routeName: 'Balance' })
-              })
-            }
-          />
-        </View>
-        <View style={styles.subHeaderContainer}>
-          <OMGIcon
-            name='chevron-left'
-            size={14}
-            color={theme.colors.gray3}
-            onPress={() => navigation.navigate('Main')}
-          />
-          <OMGText style={styles.edit}>Edit</OMGText>
-        </View>
-        <View style={styles.amountContainer(theme)}>
-          <OMGText style={styles.tokenBalance(theme)}>
-            {formatTokenBalance(token.balance)}
-          </OMGText>
-          <View style={styles.balanceContainer}>
-            <OMGText style={styles.tokenSymbol(theme)}>
-              {token.tokenSymbol}
-            </OMGText>
-            <OMGText style={styles.tokenWorth(theme)}>
-              {formatTokenPrice(token.balance, token.price)} USD
-            </OMGText>
-          </View>
+          <OMGText style={styles.title(theme)}>Pending Transaction</OMGText>
         </View>
         <OMGBox style={styles.addressContainer}>
           <OMGText style={styles.subtitle(theme)} weight='bold'>
@@ -97,15 +42,33 @@ const TransactionConfirm = ({
           </OMGText>
           <OMGWalletAddress wallet={toWallet} style={styles.walletAddress} />
         </OMGBox>
-        <View style={styles.transactionFeeContainer}>
+        <View style={styles.sentContainer}>
           <OMGText weight='bold' style={styles.subtitle(theme)}>
-            Transaction Fee
+            Sent
           </OMGText>
-          <View style={styles.feeContainer}>
-            <OMGText style={styles.feeAmount(theme)}>
-              {fee.amount} {fee.symbol}
-            </OMGText>
-            <OMGText style={styles.feeWorth(theme)}>0.047 USD</OMGText>
+          <View style={styles.sentContentContainer(theme)}>
+            <View style={styles.sentSection}>
+              <OMGText style={styles.sentTitle}>Amount</OMGText>
+              <View style={styles.sentDetail}>
+                <OMGText style={styles.sentDetailFirstline(theme)}>
+                  {formatTokenBalance(token.balance)} {token.tokenSymbol}
+                </OMGText>
+                <OMGText style={styles.sentDetailSecondline(theme)}>
+                  {formatTokenPrice(token.balance, token.price)} USD
+                </OMGText>
+              </View>
+            </View>
+            <View style={styles.sentSection}>
+              <OMGText style={styles.sentTitle}>Fee</OMGText>
+              <View style={styles.sentDetail}>
+                <OMGText style={styles.sentDetailFirstline(theme)}>
+                  {fee.amount} {fee.symbol}
+                </OMGText>
+                <OMGText style={styles.sentDetailSecondline(theme)}>
+                  0.047 USD
+                </OMGText>
+              </View>
+            </View>
           </View>
         </View>
         <View style={styles.totalContainer(theme)}>
@@ -113,21 +76,25 @@ const TransactionConfirm = ({
           <OMGText style={styles.totalText(theme)}>00.00 USD</OMGText>
         </View>
       </View>
-      <View style={styles.buttonContainer}>
+      <View style={styles.bottomContainer}>
         <OMGButton
           style={styles.button}
           loading={loading}
           onPress={() => {
-            sendErc20Token(token, fromWallet, provider, toWallet.address)
+            navigation.navigate('Balance')
           }}>
-          Send Transaction
+          Done
         </OMGButton>
+        <TouchableOpacity
+          style={styles.trackEtherscanButton}
+          onPress={() => {
+            Linking.openURL(`${Config.ETHERSCAN_TX_URL}${pendingTx.hash}`)
+          }}>
+          <OMGText style={styles.trackEtherscanText(theme)}>
+            Track on Etherscan
+          </OMGText>
+        </TouchableOpacity>
       </View>
-      <Snackbar
-        style={{ marginBottom: 16 }}
-        duration={1300}
-        {...snackbarProps}
-      />
     </View>
   )
 }
@@ -173,8 +140,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   amountContainer: theme => ({
-    marginTop: 16,
-    padding: 20,
+    marginTop: 8,
     backgroundColor: theme.colors.background,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -207,8 +173,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: theme.colors.background
   }),
-  buttonContainer: {
+  bottomContainer: {
     justifyContent: 'flex-end',
+    alignItems: 'center',
     marginVertical: 16,
     paddingHorizontal: 16
   },
@@ -223,17 +190,6 @@ const styles = StyleSheet.create({
   edit: {
     marginLeft: 8
   },
-  tokenBalance: theme => ({
-    fontSize: 18,
-    color: theme.colors.gray3
-  }),
-  tokenSymbol: theme => ({
-    fontSize: 18,
-    color: theme.colors.gray3
-  }),
-  tokenWorth: theme => ({
-    color: theme.colors.black2
-  }),
   subtitle: theme => ({
     marginTop: 8,
     color: theme.colors.gray3
@@ -250,25 +206,55 @@ const styles = StyleSheet.create({
   }),
   totalText: theme => ({
     color: theme.colors.gray3
+  }),
+  sentContainer: {
+    marginHorizontal: 16
+  },
+  sentContentContainer: theme => ({
+    justifyContent: 'space-between',
+    backgroundColor: theme.colors.backgroundDisabled,
+    padding: 12,
+    marginTop: 8
+  }),
+  sentTitle: theme => ({
+    color: theme.colors.primary
+  }),
+  sentDetail: {
+    flexDirection: 'column',
+    alignItems: 'flex-end'
+  },
+  sentSection: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 8
+  },
+  sentDetailFirstline: theme => ({
+    color: theme.colors.primary,
+    fontSize: 14
+  }),
+  sentDetailSecondline: theme => ({
+    color: theme.colors.gray2,
+    fontSize: 12
+  }),
+  trackEtherscanButton: {
+    padding: 8,
+    marginTop: 16
+  },
+  trackEtherscanText: theme => ({
+    color: theme.colors.gray3
   })
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  provider: state.setting.provider,
+  pendingTx: state.transaction.pendingTxs.slice(-1).pop(),
   loadingStatus: state.loadingStatus,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   )
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  sendErc20Token: (token, wallet, provider, toAddress) =>
-    dispatch(
-      transactionActions.sendErc20Token(token, wallet, provider, toAddress)
-    )
-})
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
-)(withNavigation(withTheme(TransactionConfirm)))
+  null
+)(withNavigation(withTheme(TransactionPending)))
