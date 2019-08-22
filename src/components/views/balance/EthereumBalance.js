@@ -19,7 +19,7 @@ const EthereumBalance = ({
   const currency = 'USD'
 
   useEffect(() => {
-    if (provider && !primaryWallet.assets) {
+    if ((provider && !primaryWallet.assets) || primaryWallet.shouldRefresh) {
       loadAssets(provider, primaryWalletAddress)
     }
   }, [loadAssets, primaryWalletAddress, provider, primaryWallet])

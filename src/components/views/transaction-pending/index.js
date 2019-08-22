@@ -92,7 +92,6 @@ const TransactionPending = ({
       <View style={styles.bottomContainer}>
         <OMGButton
           style={styles.button}
-          loading={loading.show}
           onPress={() => {
             navigation.navigate('Balance')
           }}>

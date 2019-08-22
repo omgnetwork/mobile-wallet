@@ -18,7 +18,15 @@ export const walletsReducer = (state = [], action) => {
     case 'WALLET/INIT_ASSETS/SUCCESS':
       return state.map(wallet => {
         if (wallet.address === action.data.address) {
-          return { ...wallet, assets: action.data.assets }
+          return { ...wallet, assets: action.data.assets, shouldRefresh: false }
+        } else {
+          return wallet
+        }
+      })
+    case 'TRANSACTION/WAIT_RECEIPT/SUCCESS':
+      return state.map(wallet => {
+        if (wallet.address === action.data.from) {
+          return { ...wallet, shouldRefresh: true }
         } else {
           return wallet
         }
