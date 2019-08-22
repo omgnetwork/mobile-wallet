@@ -12,9 +12,11 @@ const Tab = ({ focusAnim, title, onPress }) => {
           justifyContent: 'center',
           borderTopLeftRadius: 8,
           borderTopRightRadius: 8,
+          marginLeft: title === 'Send' ? 16 : 0,
+          marginRight: title === 'Receive' ? 16 : 0,
           backgroundColor: focusAnim.interpolate({
             inputRange: [0, 1],
-            outputRange: ['transparent', '#3c414d']
+            outputRange: ['transparent', '#04070d']
           })
         }}>
         <Animated.Text
@@ -31,7 +33,7 @@ const Tab = ({ focusAnim, title, onPress }) => {
       </Animated.View>
       <Animated.View
         style={{
-          backgroundColor: '#3c414d',
+          backgroundColor: '#04070d',
           height: 4
         }}
       />
@@ -53,10 +55,6 @@ const OMGTab = props => {
         const focusAnim = position.interpolate({
           inputRange: [index - 1, index, index + 1],
           outputRange: [0, 1, 0]
-        })
-        const underlineAnim = position.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 1]
         })
         return (
           <Tab

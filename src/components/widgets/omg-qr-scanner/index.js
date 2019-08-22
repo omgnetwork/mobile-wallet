@@ -21,7 +21,7 @@ const OMGQRScanner = props => {
       <QRCodeScanner
         {...props}
         cameraProps={{
-          useCamera2Api: true,
+          useCamera2Api: false,
           androidCameraPermissionOptions: null
         }}
         ref={cameraRef}

@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     margin: 16,
     fontSize: 18,
     textTransform: 'uppercase',
-    color: theme.colors.primary
+    color: theme.colors.gray3
   }),
   icon: {
     padding: 16

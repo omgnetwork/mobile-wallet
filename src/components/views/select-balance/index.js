@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     padding: 16
   }),
   header: {
+    alignItems: 'center',
     flexDirection: 'row',
     marginBottom: 32
   },
