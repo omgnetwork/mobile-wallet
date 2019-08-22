@@ -43,6 +43,8 @@ target 'wallet' do
   pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
 
 
+  pod 'RNCPushNotificationIOS', :path => '../node_modules/@react-native-community/push-notification-ios'
+
   target 'walletTests' do
     inherit! :search_paths
     # Pods for testing

@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, Linking } from 'react-native'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Formatter } from 'common/utils'
+import { transactionActions } from 'common/actions'
 import Config from 'react-native-config'
 import {
   OMGBox,
@@ -13,12 +14,24 @@ import {
 } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const TransactionPending = ({ theme, navigation, pendingTx, loading }) => {
+const TransactionPending = ({
+  theme,
+  navigation,
+  pendingTx,
+  loading,
+  wallet,
+  provider,
+  waitForTransaction
+}) => {
   const token = navigation.getParam('token')
   const fromWallet = navigation.getParam('fromWallet')
   const toWallet = navigation.getParam('toWallet')
   const fee = navigation.getParam('fee')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
+
+  useEffect(() => {
+    waitForTransaction(provider, wallet, pendingTx)
+  }, [pendingTx, provider, waitForTransaction, wallet])
 
   return (
     <View style={styles.container(theme)}>
@@ -220,12 +233,18 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, ownProps) => ({
   pendingTx: state.transaction.pendingTxs.slice(-1).pop(),
   loading: state.loading,
+  provider: state.setting.provider,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   )
 })
 
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  waitForTransaction: (provider, wallet, tx) =>
+    dispatch(transactionActions.waitForTransaction(provider, wallet, tx))
+})
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withNavigation(withTheme(TransactionPending)))

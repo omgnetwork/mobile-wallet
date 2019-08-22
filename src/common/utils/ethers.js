@@ -31,8 +31,16 @@ export const formatEther = wei => {
   return ethers.utils.formatEther(wei)
 }
 
+export const formatUnits = (amount, numberOfDecimals) => {
+  return ethers.utils.formatUnits(amount, numberOfDecimals)
+}
+
 export const parseUnits = (tokenBalance, tokenNumberOfDecimals) => {
   return ethers.utils.parseUnits(tokenBalance, tokenNumberOfDecimals)
+}
+
+export const commify = amount => {
+  return ethers.utils.commify(amount)
 }
 
 export const fetchTransactionDetail = address => {
@@ -123,10 +131,6 @@ export const sendEthToken = (token, wallet, toAddress) => {
   })
 }
 
-export const formatUnits = (amount, numberOfDecimals) => {
-  return ethers.utils.formatUnits(amount, numberOfDecimals)
-}
-
-export const commify = amount => {
-  return ethers.utils.commify(amount)
+export const waitForTransaction = (provider, tx) => {
+  return provider.waitForTransaction(tx.hash)
 }

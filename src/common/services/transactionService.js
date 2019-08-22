@@ -29,3 +29,14 @@ export const sendEthToken = (token, fromWallet, toAddress) => {
     }
   })
 }
+
+export const waitForTransaction = (provider, tx) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const txReceipt = await Ethers.waitForTransaction(provider, tx)
+      resolve(txReceipt)
+    } catch (err) {
+      reject(err)
+    }
+  })
+}

@@ -99,6 +99,8 @@ PODS:
     - React
   - RNCAsyncStorage (1.6.1):
     - React
+  - RNCPushNotificationIOS (1.0.2):
+    - React
   - RNGestureHandler (1.3.0):
     - React
   - RNScreens (1.0.0-alpha.23):
@@ -137,6 +139,7 @@ DEPENDENCIES:
   - React-RCTWebSocket (from `../node_modules/react-native/Libraries/WebSocket`)
   - ReactNativePermissions (from `../node_modules/react-native-permissions`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -202,6 +205,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-permissions"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
+  RNCPushNotificationIOS:
+    :path: "../node_modules/@react-native-community/push-notification-ios"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNScreens:
@@ -242,12 +247,13 @@ SPEC CHECKSUMS:
   React-RCTWebSocket: f32b93e0953d7c07fd5dd45305406282cfdc95cf
   ReactNativePermissions: a8da737c35e77bf4ea1d4102d881b406fb791125
   RNCAsyncStorage: e99188b8a89ea0edddc82d8831cd5142f4550fdc
+  RNCPushNotificationIOS: e063e649fa697b77869c05fd18e370799285db4f
   RNGestureHandler: 7ccf2f3f60458e084f9ada01fbaf610f6fef073c
   RNScreens: 354046589421edc3d83d5c6212475bf1fb9a731d
   RNSVG: 2e097b92aaa6d4e0f354fd7c49cbf3b17f8b3920
   RNVectorIcons: 66af4d5c8ff4f584c7b7cd9c4b0780920f27fce2
   yoga: 88c514f310aff89b94a14c5fbf44b95735af0cb7
 
-PODFILE CHECKSUM: b94006ab044e5c10ae49ccd8ff769706f40bc618
+PODFILE CHECKSUM: 9b4db150a431be1b98af9ef30eee6522b109284c
 
 COCOAPODS: 1.5.3
