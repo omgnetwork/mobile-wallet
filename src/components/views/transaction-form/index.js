@@ -55,6 +55,7 @@ const TransactionForm = ({ wallet, theme, navigation }) => {
   const selectedAddress = navigation.getParam('address')
   const defaultAmount = navigation.getParam('lastAmount')
   const textRef = useRef(defaultAmount)
+
   const submit = () => {
     if (textRef.current) {
       navigation.navigate('TransferConfirm', {
@@ -82,7 +83,8 @@ const TransactionForm = ({ wallet, theme, navigation }) => {
               style={styles.tokenInput}
               onPress={() =>
                 navigation.navigate('TransferSelectBalance', {
-                  currentToken: { ...selectedToken, balance: textRef.current },
+                  currentToken: selectedToken,
+                  lastAmount: textRef.current,
                   assets: wallet.assets
                 })
               }
@@ -121,7 +123,7 @@ const TransactionForm = ({ wallet, theme, navigation }) => {
             />
           </OMGBox>
         </View>
-        <View style={styles.buttonContainer}>
+        <View style={styles.buttonContainer(theme)}>
           <OMGButton style={styles.button} onPress={submit}>
             Next
           </OMGButton>
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.background
+    backgroundColor: theme.colors.white
   }),
   formContainer: {
     flex: 1
@@ -170,11 +172,13 @@ const styles = StyleSheet.create({
   feeInput: {
     marginTop: 16
   },
-  buttonContainer: {
-    justifyContent: 'flex-end',
+  buttonContainer: theme => ({
+    backgroundColor: theme.colors.white,
+    justifyContent: 'center',
+    alignItems: 'center',
     marginVertical: 16,
     paddingHorizontal: 16
-  }
+  })
 })
 
 const mapStateToProps = (state, ownProps) => ({

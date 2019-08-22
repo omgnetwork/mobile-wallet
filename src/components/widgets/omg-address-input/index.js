@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     backgroundColor: theme.colors.white,
-    borderColor: theme.colors.background,
+    borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
     alignItems: 'center'
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 16,
-    borderLeftColor: theme.colors.background,
+    borderLeftColor: theme.colors.gray4,
     borderLeftWidth: 1
   })
 })

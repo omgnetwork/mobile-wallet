@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
-import { withNavigation } from 'react-navigation'
+import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import {
   OMGButton,
@@ -14,10 +14,11 @@ import {
 const SelectBalance = ({ primaryWallet, theme, loading, navigation }) => {
   const assets = navigation.getParam('assets', primaryWallet.assets)
   const currentToken = navigation.getParam('currentToken')
+  const lastAmount = navigation.getParam('lastAmount')
   const [selectedToken, setSelectedToken] = useState(currentToken || assets[0])
 
   return (
-    <View style={styles.container(theme)}>
+    <SafeAreaView style={styles.container(theme)}>
       <View style={styles.header}>
         <OMGIcon
           name='chevron-left'
@@ -26,7 +27,7 @@ const SelectBalance = ({ primaryWallet, theme, loading, navigation }) => {
           style={styles.headerIcon}
           onPress={() =>
             navigation.navigate('TransactionForm', {
-              lastAmount: currentToken.balance
+              lastAmount: lastAmount
             })
           }
         />
@@ -60,14 +61,14 @@ const SelectBalance = ({ primaryWallet, theme, loading, navigation }) => {
         <OMGButton
           onPress={() => {
             navigation.navigate('TransactionForm', {
-              selectedToken,
+              selectedToken: selectedToken || currentToken,
               lastAmount: null
             })
           }}>
           Apply
         </OMGButton>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
-import { withNavigation } from 'react-navigation'
+import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import {
   OMGButton,
@@ -18,7 +18,7 @@ const SelectFee = ({ theme, loading, navigation }) => {
   const [selectedFee, setSelectedFee] = useState(currentFee || fees[0])
 
   return (
-    <View style={styles.container(theme)}>
+    <SafeAreaView style={styles.container(theme)}>
       <View style={styles.header}>
         <OMGIcon
           name='chevron-left'
@@ -73,7 +73,7 @@ const SelectFee = ({ theme, loading, navigation }) => {
           </OMGButton>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

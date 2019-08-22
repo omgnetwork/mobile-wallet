@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, Linking } from 'react-native'
-import { withNavigation } from 'react-navigation'
+import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Formatter } from 'common/utils'
 import { transactionActions } from 'common/actions'
@@ -38,7 +38,7 @@ const TransactionPending = ({
   }, [pendingTx, pendingTxs, provider, waitForTransaction, wallet])
 
   return (
-    <View style={styles.container(theme)}>
+    <SafeAreaView style={styles.container(theme)}>
       <View style={styles.contentContainer}>
         <View style={styles.headerContainer}>
           <OMGText style={styles.title(theme)}>Pending Transaction</OMGText>
@@ -107,7 +107,7 @@ const TransactionPending = ({
           </OMGText>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     padding: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: theme.colors.background
+    backgroundColor: theme.colors.gray4
   }),
   bottomContainer: {
     justifyContent: 'flex-end',

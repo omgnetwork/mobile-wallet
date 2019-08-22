@@ -8,7 +8,12 @@ import EthereumBalance from './EthereumBalance'
 import PlasmaBalance from './PlasmaBalance'
 import LinearGradient from 'react-native-linear-gradient'
 import ShowQR from './ShowQR'
-import { OMGEmpty, OMGViewPager, OMGText } from 'components/widgets'
+import {
+  OMGEmpty,
+  OMGViewPager,
+  OMGText,
+  OMGStatusBar
+} from 'components/widgets'
 
 const pageWidth = Dimensions.get('window').width - 56
 
@@ -23,33 +28,39 @@ const Balance = ({ theme, primaryWalletAddress, loading, wallets }) => {
   }, [primaryWalletAddress, wallets])
 
   return (
-    <LinearGradient
-      style={styles.container}
-      colors={[theme.colors.black5, theme.colors.gray1]}>
-      <OMGText style={styles.title(theme)}>
-        {primaryWallet ? primaryWallet.name : 'Initializing...'}
-      </OMGText>
-      {!wallets || !primaryWallet ? (
-        <OMGEmpty loading={loading.show} />
-      ) : (
-        <OMGViewPager pageWidth={pageWidth}>
-          <View style={styles.firstPage}>
-            <PlasmaBalance primaryWallet={primaryWallet} />
-          </View>
-          <View style={styles.secondPage}>
-            <EthereumBalance primaryWallet={primaryWallet} />
-          </View>
-          <View style={styles.thirdPage}>
-            <ShowQR primaryWallet={primaryWallet} />
-          </View>
-        </OMGViewPager>
-      )}
-      {/* {rootChain ? null : <OMGAssetFooter />} */}
-    </LinearGradient>
+    <SafeAreaView style={styles.safeAreaView(theme)}>
+      <LinearGradient
+        style={styles.container}
+        colors={[theme.colors.black5, theme.colors.gray1]}>
+        <OMGText style={styles.title(theme)}>
+          {primaryWallet ? primaryWallet.name : 'Initializing...'}
+        </OMGText>
+        {!wallets || !primaryWallet ? (
+          <OMGEmpty loading={loading.show} />
+        ) : (
+          <OMGViewPager pageWidth={pageWidth}>
+            <View style={styles.firstPage}>
+              <PlasmaBalance primaryWallet={primaryWallet} />
+            </View>
+            <View style={styles.secondPage}>
+              <EthereumBalance primaryWallet={primaryWallet} />
+            </View>
+            <View style={styles.thirdPage}>
+              <ShowQR primaryWallet={primaryWallet} />
+            </View>
+          </OMGViewPager>
+        )}
+        {/* {rootChain ? null : <OMGAssetFooter />} */}
+      </LinearGradient>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
+  safeAreaView: theme => ({
+    flex: 1,
+    backgroundColor: theme.colors.black5
+  }),
   container: {
     flex: 1,
     padding: 16

@@ -56,7 +56,7 @@ const Preview = ({ navigation, theme }) => {
       style={{
         flex: 1,
         paddingHorizontal: 16,
-        backgroundColor: theme.colors.background
+        backgroundColor: theme.colors.gray4
       }}>
       <ScrollView>
         <OMGRadioButton

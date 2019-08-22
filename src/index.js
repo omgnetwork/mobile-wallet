@@ -6,6 +6,7 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import Router from 'router'
 import createStore from 'common/stores'
 import { walletActions, settingActions } from 'common/actions'
+import { OMGStatusBar } from 'components/widgets'
 import Config from 'react-native-config'
 
 YellowBox.ignoreWarnings(['Warning:', 'Setting'])
@@ -36,7 +37,7 @@ const App = () => {
       primary: '#3c414d',
       primaryLight: '#5b626f',
       primaryDarker: '#262a31',
-      background: '#f0f2f5',
+      background: '#ffffff',
       backgroundDisabled: '#f7f8fa',
       blue1: '#ebf3ff',
       blue2: '#2176ff',
@@ -48,6 +49,7 @@ const App = () => {
       gray1: '#d8d8d8',
       gray2: '#abb2c2',
       gray3: '#04070D',
+      gray4: '#f0f2f5',
       white: '#FFFFFF',
       white2: '#BCCCDC',
       white3: '#f7f8fa'
@@ -56,25 +58,14 @@ const App = () => {
 
   return (
     <Fragment>
-      <StatusBar
-        barStyle='light-content'
-        backgroundColor={theme.colors.black5}
-      />
+      <OMGStatusBar theme={theme} />
       <Provider store={store}>
         <PaperProvider theme={theme}>
-          <SafeAreaView style={styles.safeAreaView}>
-            <Router />
-          </SafeAreaView>
+          <Router />
         </PaperProvider>
       </Provider>
     </Fragment>
   )
 }
-
-const styles = StyleSheet.create({
-  safeAreaView: {
-    flex: 1
-  }
-})
 
 export default App

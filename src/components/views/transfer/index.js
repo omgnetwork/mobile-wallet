@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
+import { SafeAreaView } from 'react-navigation'
 import { OMGIcon, OMGBox, OMGText } from 'components/widgets'
 
 const Transfer = ({ navigation, theme }) => {
@@ -25,7 +26,7 @@ const Transfer = ({ navigation, theme }) => {
   }, [navigation])
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
       <View style={styles.titleContainer}>
         <OMGText style={styles.title(theme)}>Transfer</OMGText>
         <OMGBox
@@ -37,7 +38,7 @@ const Transfer = ({ navigation, theme }) => {
         </OMGBox>
       </View>
       {rendering && <TransferTabNavigator navigation={navigation} />}
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -51,12 +52,14 @@ const styles = StyleSheet.create({
   },
   title: theme => ({
     flex: 1,
-    margin: 16,
+    marginHorizontal: 16,
+    marginBottom: 16,
     fontSize: 18,
     textTransform: 'uppercase',
     color: theme.colors.gray3
   }),
   icon: {
+    marginBottom: 16,
     padding: 16
   }
 })

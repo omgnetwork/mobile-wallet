@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useRef
 } from 'react'
-import { View, StyleSheet, InteractionManager } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView, withNavigation } from 'react-navigation'
 import { OMGText, OMGIcon, OMGQRScanner, OMGButton } from 'components/widgets'
@@ -60,7 +60,7 @@ const Scan = ({ theme, navigation }) => {
   }
 
   return (
-    <SafeAreaView style={styles.contentContainer(theme)}>
+    <View style={styles.contentContainer(theme)}>
       {showCamera && (
         <OMGQRScanner
           showMarker={true}
@@ -80,7 +80,7 @@ const Scan = ({ theme, navigation }) => {
           }
         />
       )}
-    </SafeAreaView>
+    </View>
   )
 }
 

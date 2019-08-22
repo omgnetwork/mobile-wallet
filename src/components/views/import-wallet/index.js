@@ -42,7 +42,7 @@ const ImportWalletComponent = props => {
       style={{
         flex: 1,
         justifyContent: 'flex-end',
-        backgroundColor: colors.background
+        backgroundColor: colors.gray4
       }}>
       <OMGBackground
         style={{ flex: 1, flexDirection: 'column', paddingHorizontal: 16 }}>

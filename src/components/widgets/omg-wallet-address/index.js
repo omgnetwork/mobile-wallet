@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
     backgroundColor: theme.colors.backgroundDisabled,
-    borderColor: theme.colors.background,
+    borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
     padding: 12,

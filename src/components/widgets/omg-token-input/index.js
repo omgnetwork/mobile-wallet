@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     backgroundColor: theme.colors.white,
-    borderColor: theme.colors.background,
+    borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
     padding: 12,

@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   }),
   container: (theme, selected) => ({
     flexDirection: 'row',
-    backgroundColor: selected ? theme.colors.blue1 : theme.colors.background,
+    backgroundColor: selected ? theme.colors.blue1 : theme.colors.gray4,
     alignItems: 'center',
     padding: 20,
     borderRadius: theme.roundness,

@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
-import { withNavigation, NavigationActions } from 'react-navigation'
+import {
+  withNavigation,
+  NavigationActions,
+  SafeAreaView
+} from 'react-navigation'
 import { withTheme, Snackbar } from 'react-native-paper'
 import { useAlert } from 'common/hooks'
 import { Formatter } from 'common/utils'
@@ -71,7 +75,7 @@ const TransactionConfirm = ({
   }
 
   return (
-    <View style={styles.container(theme)}>
+    <SafeAreaView style={styles.container(theme)}>
       <View style={styles.contentContainer}>
         <View style={styles.headerContainer}>
           <OMGText style={styles.title(theme)}>Transfer</OMGText>
@@ -153,7 +157,7 @@ const TransactionConfirm = ({
         duration={1300}
         {...snackbarProps}
       />
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -209,7 +213,7 @@ const styles = StyleSheet.create({
   amountContainer: theme => ({
     marginTop: 16,
     padding: 20,
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.gray4,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
@@ -239,7 +243,7 @@ const styles = StyleSheet.create({
     padding: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: theme.colors.background
+    backgroundColor: theme.colors.gray4
   }),
   buttonContainer: {
     justifyContent: 'flex-end',
