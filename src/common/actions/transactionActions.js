@@ -23,6 +23,8 @@ export const sendErc20Token = (token, fee, fromWallet, provider, toAddress) => {
       hash: tx.hash,
       from: tx.from,
       nonce: tx.nonce,
+      value: token.balance,
+      symbol: token.tokenSymbol,
       gasPrice: tx.gasPrice.toString(),
       createdAt: Datetime.now()
     }
@@ -53,7 +55,8 @@ export const sendEthToken = (token, fee, fromWallet, provider, toAddress) => {
       nonce: tx.nonce,
       value: token.balance,
       symbol: token.tokenSymbol,
-      gasPrice: tx.gasPrice.toString()
+      gasPrice: tx.gasPrice.toString(),
+      createdAt: Datetime.now()
     }
   }
 
