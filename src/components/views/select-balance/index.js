@@ -24,7 +24,11 @@ const SelectBalance = ({ primaryWallet, theme, loading, navigation }) => {
           size={18}
           color={theme.colors.gray3}
           style={styles.headerIcon}
-          onPress={() => navigation.navigate('TransactionForm')}
+          onPress={() =>
+            navigation.navigate('TransactionForm', {
+              lastAmount: currentToken.balance
+            })
+          }
         />
         <OMGText style={styles.headerTitle(theme)}>Select Balance</OMGText>
       </View>
@@ -56,7 +60,8 @@ const SelectBalance = ({ primaryWallet, theme, loading, navigation }) => {
         <OMGButton
           onPress={() => {
             navigation.navigate('TransactionForm', {
-              selectedToken
+              selectedToken,
+              lastAmount: null
             })
           }}>
           Apply

@@ -48,7 +48,8 @@ const App = () => {
       gray2: '#abb2c2',
       gray3: '#04070D',
       white: '#FFFFFF',
-      white2: '#BCCCDC'
+      white2: '#BCCCDC',
+      white3: '#f7f8fa'
     }
   }
 

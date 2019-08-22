@@ -6,11 +6,9 @@ export const transactionReducer = (state = { pendingTxs: [] }, action) => {
     case 'TRANSACTION/WAIT_RECEIPT/SUCCESS':
       return {
         ...state,
-        pendingTxs: [
-          state.pendingTxs.filter(
-            pendingTx => pendingTx.hash !== action.data.hash
-          )
-        ]
+        pendingTxs: state.pendingTxs.filter(
+          pendingTx => pendingTx.hash !== action.data.hash
+        )
       }
     default:
       return state

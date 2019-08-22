@@ -4,10 +4,12 @@ import { withTheme } from 'react-native-paper'
 import OMGIcon from '../omg-icon'
 import OMGText from '../omg-text'
 
-const OMGFeeInput = ({ theme, fee, style }) => {
+const OMGFeeInput = ({ theme, fee, style, onPress }) => {
   return (
-    <TouchableOpacity style={{ ...styles.container(theme), ...style }}>
-      <OMGText style={styles.text(theme)}>{fee.name}</OMGText>
+    <TouchableOpacity
+      style={{ ...styles.container(theme), ...style }}
+      onPress={onPress}>
+      <OMGText style={styles.text(theme)}>{fee.speed}</OMGText>
       <View style={styles.rightContainer}>
         <OMGText style={styles.amount(theme)}>
           {fee.amount} {fee.symbol}

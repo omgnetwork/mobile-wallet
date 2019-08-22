@@ -20,10 +20,38 @@ const mockFee = {
   symbol: 'Gwei'
 }
 
+const fees = [
+  {
+    id: 1,
+    speed: 'Fast',
+    estimateTime: 'Less than 2 minute',
+    amount: '10',
+    symbol: 'Gwei',
+    price: '0.047'
+  },
+  {
+    id: 2,
+    speed: 'Standard',
+    estimateTime: 'Less than 5 minutes',
+    amount: '4',
+    symbol: 'Gwei',
+    price: '0.019'
+  },
+  {
+    id: 3,
+    speed: 'Safe low',
+    estimateTime: 'Less than 30 minutes',
+    amount: '1.5',
+    symbol: 'Gwei',
+    price: '0.007'
+  }
+]
+
 const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
 
 const TransactionForm = ({ wallet, theme, navigation }) => {
   const selectedToken = navigation.getParam('selectedToken', wallet.assets[0])
+  const selectedFee = navigation.getParam('selectedFee', fees[0])
   const selectedAddress = navigation.getParam('address')
   const defaultAmount = navigation.getParam('lastAmount')
   const textRef = useRef(defaultAmount)
@@ -36,7 +64,7 @@ const TransactionForm = ({ wallet, theme, navigation }) => {
           name: 'Another wallet',
           address: selectedAddress || testAddress
         },
-        fee: mockFee
+        fee: selectedFee
       })
     } else {
       // Warn to fill amount
@@ -54,7 +82,7 @@ const TransactionForm = ({ wallet, theme, navigation }) => {
               style={styles.tokenInput}
               onPress={() =>
                 navigation.navigate('TransferSelectBalance', {
-                  currentToken: selectedToken,
+                  currentToken: { ...selectedToken, balance: textRef.current },
                   assets: wallet.assets
                 })
               }
@@ -80,7 +108,17 @@ const TransactionForm = ({ wallet, theme, navigation }) => {
           </OMGBox>
           <OMGBox style={styles.feeContainer}>
             <OMGText weight='bold'>Transaction Fee</OMGText>
-            <OMGFeeInput fee={mockFee} style={styles.feeInput} />
+            <OMGFeeInput
+              fee={selectedFee}
+              style={styles.feeInput}
+              onPress={() => {
+                navigation.navigate('TransferSelectFee', {
+                  currentToken: { ...selectedToken, balance: textRef.current },
+                  currentFee: selectedFee,
+                  fees: fees
+                })
+              }}
+            />
           </OMGBox>
         </View>
         <View style={styles.buttonContainer}>

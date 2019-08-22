@@ -6,7 +6,7 @@ import {
 import { createAsyncAction } from './actionCreators'
 import { Datetime } from 'common/utils'
 
-export const sendErc20Token = (token, fromWallet, provider, toAddress) => {
+export const sendErc20Token = (token, fee, fromWallet, provider, toAddress) => {
   const asyncAction = async () => {
     const blockchainWallet = await walletService.get(
       fromWallet.address,
@@ -14,6 +14,7 @@ export const sendErc20Token = (token, fromWallet, provider, toAddress) => {
     )
     const tx = await transactionService.sendErc20Token(
       token,
+      fee,
       blockchainWallet,
       toAddress
     )
@@ -33,7 +34,7 @@ export const sendErc20Token = (token, fromWallet, provider, toAddress) => {
   })
 }
 
-export const sendEthToken = (token, fromWallet, provider, toAddress) => {
+export const sendEthToken = (token, fee, fromWallet, provider, toAddress) => {
   const asyncAction = async () => {
     const blockchainWallet = await walletService.get(
       fromWallet.address,
@@ -41,6 +42,7 @@ export const sendEthToken = (token, fromWallet, provider, toAddress) => {
     )
     const tx = await transactionService.sendEthToken(
       token,
+      fee,
       blockchainWallet,
       toAddress
     )

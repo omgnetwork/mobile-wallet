@@ -167,6 +167,9 @@ const RootNavigator = createStackNavigator(
     TransferSelectBalance: {
       screen: Views.SelectBalance
     },
+    TransferSelectFee: {
+      screen: Views.SelectFee
+    },
     TransferConfirm: {
       screen: Views.TransactionConfirm
     },

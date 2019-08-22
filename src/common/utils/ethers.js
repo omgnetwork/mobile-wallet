@@ -92,7 +92,7 @@ export const getTokenBalance = (provider, contractAddress, accountAddress) => {
   return contract.balanceOf(accountAddress)
 }
 
-export const sendErc20Token = (token, wallet, toAddress) => {
+export const sendErc20Token = (token, fee, wallet, toAddress) => {
   const contractAbi = [
     {
       name: 'transfer',
@@ -121,13 +121,20 @@ export const sendErc20Token = (token, wallet, toAddress) => {
 
   const numberOfTokens = parseUnits(token.balance, token.numberOfDecimals)
 
-  return contract.transfer(toAddress, numberOfTokens)
+  const options = {
+    gasLimit: 150000,
+    gasPrice: parseUnits(fee.amount, 'gwei')
+  }
+
+  return contract.transfer(toAddress, numberOfTokens, options)
 }
 
-export const sendEthToken = (token, wallet, toAddress) => {
+export const sendEthToken = (token, fee, wallet, toAddress) => {
   return wallet.sendTransaction({
     to: toAddress,
-    value: ethers.utils.parseEther(token.balance)
+    value: ethers.utils.parseEther(token.balance),
+    gasLimit: 150000,
+    gasPrice: parseUnits(fee.amount, 'gwei')
   })
 }
 

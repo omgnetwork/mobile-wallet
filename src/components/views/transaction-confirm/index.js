@@ -20,6 +20,7 @@ const TransactionConfirm = ({
   provider,
   sendErc20Token,
   sendEthToken,
+  pendingTxs,
   loading
 }) => {
   const token = navigation.getParam('token')
@@ -43,6 +44,7 @@ const TransactionConfirm = ({
           token,
           fromWallet,
           toWallet,
+          pendingTx: pendingTxs.slice(-1).pop(),
           fee
         }
       })
@@ -53,6 +55,7 @@ const TransactionConfirm = ({
     loading.action,
     loading.success,
     navigation,
+    pendingTxs,
     toWallet,
     token
   ])
@@ -60,10 +63,10 @@ const TransactionConfirm = ({
   const sendToken = () => {
     if (token.contractAddress === '0x') {
       // ETH token
-      sendEthToken(token, fromWallet, provider, toWallet.address)
+      sendEthToken(token, fee, fromWallet, provider, toWallet.address)
     } else {
       // ERC20 Token
-      sendErc20Token(token, fromWallet, provider, toWallet.address)
+      sendErc20Token(token, fee, fromWallet, provider, toWallet.address)
     }
   }
 
@@ -285,6 +288,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, ownProps) => ({
+  pendingTxs: state.transaction.pendingTxs,
   provider: state.setting.provider,
   loading: state.loading,
   wallet: state.wallets.find(
@@ -293,13 +297,13 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  sendEthToken: (token, wallet, provider, toAddress) =>
+  sendEthToken: (token, fee, wallet, provider, toAddress) =>
     dispatch(
-      transactionActions.sendEthToken(token, wallet, provider, toAddress)
+      transactionActions.sendEthToken(token, fee, wallet, provider, toAddress)
     ),
-  sendErc20Token: (token, wallet, provider, toAddress) =>
+  sendErc20Token: (token, fee, wallet, provider, toAddress) =>
     dispatch(
-      transactionActions.sendErc20Token(token, wallet, provider, toAddress)
+      transactionActions.sendErc20Token(token, fee, wallet, provider, toAddress)
     )
 })
 

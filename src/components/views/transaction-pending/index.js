@@ -17,12 +17,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 const TransactionPending = ({
   theme,
   navigation,
-  pendingTx,
   loading,
   wallet,
   provider,
+  pendingTxs,
   waitForTransaction
 }) => {
+  const pendingTx = navigation.getParam('pendingTx')
   const token = navigation.getParam('token')
   const fromWallet = navigation.getParam('fromWallet')
   const toWallet = navigation.getParam('toWallet')
@@ -30,8 +31,11 @@ const TransactionPending = ({
   const tokenPrice = formatTokenPrice(token.balance, token.price)
 
   useEffect(() => {
-    waitForTransaction(provider, wallet, pendingTx)
-  }, [pendingTx, provider, waitForTransaction, wallet])
+    const hasPendingTx = pendingTxs.length && pendingTxs.indexOf(pendingTx) > -1
+    if (hasPendingTx) {
+      waitForTransaction(provider, wallet, pendingTx)
+    }
+  }, [pendingTx, pendingTxs, provider, waitForTransaction, wallet])
 
   return (
     <View style={styles.container(theme)}>
@@ -231,7 +235,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  pendingTx: state.transaction.pendingTxs.slice(-1).pop(),
+  pendingTxs: state.transaction.pendingTxs,
   loading: state.loading,
   provider: state.setting.provider,
   wallet: state.wallets.find(

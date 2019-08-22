@@ -14,6 +14,7 @@ import Transfer from './transfer'
 import Scan from './scan'
 import Setting from './setting'
 import SelectBalance from './select-balance'
+import SelectFee from './select-fee'
 import Preview from './preview'
 
 export {
@@ -31,6 +32,7 @@ export {
   Receive,
   Transfer,
   SelectBalance,
+  SelectFee,
   Scan,
   Setting,
   Preview
