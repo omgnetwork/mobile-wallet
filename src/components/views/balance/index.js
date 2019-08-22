@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, View, Dimensions } from 'react-native'
-import { withTheme, Text } from 'react-native-paper'
+import { SafeAreaView } from 'react-navigation'
+import { withTheme } from 'react-native-paper'
 import { walletActions } from 'common/actions'
 import EthereumBalance from './EthereumBalance'
 import PlasmaBalance from './PlasmaBalance'
+import LinearGradient from 'react-native-linear-gradient'
 import ShowQR from './ShowQR'
-import {
-  OMGBackground,
-  OMGEmpty,
-  OMGViewPager,
-  OMGText
-} from 'components/widgets'
+import { OMGEmpty, OMGViewPager, OMGText } from 'components/widgets'
 
 const pageWidth = Dimensions.get('window').width - 56
 
@@ -26,7 +23,9 @@ const Balance = ({ theme, primaryWalletAddress, loading, wallets }) => {
   }, [primaryWalletAddress, wallets])
 
   return (
-    <OMGBackground style={styles.container(theme)}>
+    <LinearGradient
+      style={styles.container}
+      colors={[theme.colors.black5, theme.colors.gray1]}>
       <OMGText style={styles.title(theme)}>
         {primaryWallet ? primaryWallet.name : 'Initializing...'}
       </OMGText>
@@ -46,16 +45,15 @@ const Balance = ({ theme, primaryWalletAddress, loading, wallets }) => {
         </OMGViewPager>
       )}
       {/* {rootChain ? null : <OMGAssetFooter />} */}
-    </OMGBackground>
+    </LinearGradient>
   )
 }
 
 const styles = StyleSheet.create({
-  container: theme => ({
+  container: {
     flex: 1,
-    padding: 16,
-    backgroundColor: theme.colors.white
-  }),
+    padding: 16
+  },
   firstPage: {
     width: pageWidth,
     marginRight: 8
@@ -71,7 +69,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 16,
     textTransform: 'uppercase',
-    color: theme.colors.primary
+    color: theme.colors.white
   }),
   list: {
     flex: 1,

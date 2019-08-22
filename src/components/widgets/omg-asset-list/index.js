@@ -15,15 +15,14 @@ const OMGAssetList = ({
 }) => {
   1
   return (
-    <OMGBackground style={{ ...styles.container, ...style }}>
+    <OMGBackground style={{ ...styles.container(theme), ...style }}>
       <View style={styles.header}>
         <OMGText style={styles.title(theme)} weight='bold'>
           ASSETS
         </OMGText>
         {/* <OMGIcon name='plus' color={theme.colors.gray3} style={styles.add} /> */}
       </View>
-      <Divider inset={false} />
-      <View style={styles.assetContainer}>
+      <View style={styles.assetContainer(theme)}>
         <FlatList
           style={styles.assetList}
           data={data}
@@ -43,19 +42,23 @@ const OMGAssetList = ({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column'
-  },
-  header: {
+  container: theme => ({
+    flexDirection: 'column',
+    backgroundColor: theme.colors.white
+  }),
+  header: theme => ({
     flexDirection: 'row',
     paddingVertical: 16,
     paddingHorizontal: 10,
-    alignItems: 'center'
-  },
+    alignItems: 'center',
+    backgroundColor: theme.colors.white
+  }),
   add: {
     justifyContent: 'flex-end'
   },
-  assetContainer: {},
+  assetContainer: theme => ({
+    backgroundColor: theme.colors.white
+  }),
   assetList: {},
   title: theme => ({
     flex: 1,

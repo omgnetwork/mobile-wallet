@@ -39,6 +39,7 @@ const App = () => {
       background: '#f0f2f5',
       backgroundDisabled: '#f7f8fa',
       blue1: '#ebf3ff',
+      blue2: '#2176ff',
       black1: '#d0d6e2',
       black2: '#858b9a',
       black3: '#3c414d',
@@ -55,7 +56,10 @@ const App = () => {
 
   return (
     <Fragment>
-      <StatusBar barStyle='dark-content' backgroundColor='#f0f4f8' />
+      <StatusBar
+        barStyle='light-content'
+        backgroundColor={theme.colors.black5}
+      />
       <Provider store={store}>
         <PaperProvider theme={theme}>
           <SafeAreaView style={styles.safeAreaView}>

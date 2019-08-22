@@ -43,7 +43,7 @@ const OMGAssetHeader = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'column',
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.white,
     borderTopLeftRadius: theme.roundness,
     borderTopRightRadius: theme.roundness
   }),
@@ -61,15 +61,17 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'left',
     fontSize: 32,
-    color: theme.colors.white
+    color: theme.colors.black3
   }),
   balanceCurrency: theme => ({
-    color: theme.colors.primaryLight,
+    color: theme.colors.black1,
     fontSize: 32
   }),
   footer: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.primaryDarker
+    backgroundColor: theme.colors.blue2,
+    borderRadius: theme.roundness,
+    marginHorizontal: 20
   }),
   subfooter: {
     flex: 1,
@@ -81,18 +83,18 @@ const styles = StyleSheet.create({
   subfooterText1: theme => ({
     fontSize: 12,
     textTransform: 'capitalize',
-    color: theme.colors.black1,
+    color: theme.colors.white,
     marginRight: 4
   }),
   subfooterText2: theme => ({
     fontSize: 12,
     textTransform: 'capitalize',
-    color: theme.colors.black2
+    color: theme.colors.black1
   }),
   divider: theme => ({
     borderLeftWidth: 1,
-    borderLeftColor: theme.colors.white,
-    opacity: 0.1
+    borderLeftColor: theme.colors.black4,
+    opacity: 0.3
   })
 })
 
