@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase'
   },
   container: theme => ({
-    borderRadius: 36,
+    borderRadius: theme.roundness,
     justifyContent: 'center',
     backgroundColor: theme.colors.gray3,
     alignSelf: 'center',
