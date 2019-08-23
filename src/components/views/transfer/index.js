@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-navigation'
-import { OMGIcon, OMGBox, OMGText } from 'components/widgets'
+import { OMGIcon, OMGBox, OMGText, OMGStatusBar } from 'components/widgets'
 
 const Transfer = ({ navigation, theme }) => {
   const [rendering, setRendering] = useState(true)
@@ -27,6 +27,10 @@ const Transfer = ({ navigation, theme }) => {
 
   return (
     <SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
+      <OMGStatusBar
+        barStyle={'dark-content'}
+        backgroundColor={theme.colors.white}
+      />
       <View style={styles.titleContainer}>
         <OMGText style={styles.title(theme)}>Transfer</OMGText>
         <OMGBox
