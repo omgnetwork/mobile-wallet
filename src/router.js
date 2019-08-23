@@ -1,25 +1,69 @@
 import React from 'react'
-import { createAppContainer, createStackNavigator } from 'react-navigation'
-import { createBottomTabNavigator } from 'react-navigation-tabs'
+import {
+  createAppContainer,
+  createSwitchNavigator,
+  createStackNavigator,
+  NavigationActions
+} from 'react-navigation'
+import {
+  createBottomTabNavigator,
+  createMaterialTopTabNavigator
+} from 'react-navigation-tabs'
 import * as Views from 'components/views'
-import { Text } from 'react-native-paper'
-import { OMGIcon, OMGBox } from 'components/widgets'
+import { OMGIcon, OMGBox, OMGText, OMGTab } from 'components/widgets'
 
+// Navigation tree in [root -> transfer -> send]
+const SendTransactionNavigator = createSwitchNavigator(
+  {
+    Scan: {
+      screen: Views.Scan
+    },
+    TransactionForm: {
+      screen: Views.TransactionForm
+    }
+  },
+  {
+    initialRouteName: 'Scan',
+    initialRouteKey: 'Scan',
+    headerMode: 'none'
+  }
+)
+
+// Navigation tree in [root -> transfer]
+export const SendTabNavigator = createMaterialTopTabNavigator(
+  {
+    Send: {
+      screen: SendTransactionNavigator
+    },
+    Receive: {
+      screen: Views.Receive
+    }
+  },
+  {
+    tabBarComponent: OMGTab,
+    tabBarOptions: {}
+  }
+)
+
+Views.Transfer.router = SendTabNavigator.router
+
+// The root of navigation tree.
 const BottomTabNavigator = createBottomTabNavigator(
   {
     Balance: {
       screen: Views.Balance,
       navigationOptions: {
         tabBarLabel: ({ focused, tintColor }) => (
-          <Text
+          <OMGText
             style={{
               opacity: focused ? 1.0 : 0.7,
               color: tintColor,
               fontSize: 12,
+              paddingBottom: 8,
               alignSelf: 'center'
             }}>
             Balance
-          </Text>
+          </OMGText>
         ),
         tabBarIcon: ({ focused, tintColor }) => (
           <OMGIcon
@@ -34,9 +78,23 @@ const BottomTabNavigator = createBottomTabNavigator(
       }
     },
     Transfer: {
-      screen: Views.Send,
+      screen: Views.Transfer,
+      params: {
+        navigator: SendTabNavigator
+      },
       navigationOptions: {
-        tabBarLabel: 'Transfer',
+        tabBarLabel: ({ focused, tintColor }) => (
+          <OMGText
+            style={{
+              opacity: focused ? 1.0 : 0.7,
+              color: tintColor,
+              fontSize: 12,
+              paddingBottom: 8,
+              alignSelf: 'center'
+            }}>
+            Transfer
+          </OMGText>
+        ),
         tabBarVisible: false,
         tabBarIcon: () => (
           <OMGBox
@@ -47,22 +105,30 @@ const BottomTabNavigator = createBottomTabNavigator(
             }}>
             <OMGIcon name='qr' size={24} color='#04070d' />
           </OMGBox>
-        )
+        ),
+        tabBarOnPress: ({ navigation }) => {
+          navigation.navigate({
+            routeName: 'Transfer',
+            params: {},
+            action: NavigationActions.navigate({ routeName: 'Scan' })
+          })
+        }
       }
     },
-    Transaction: {
-      screen: Views.Transaction,
+    History: {
+      screen: Views.History,
       navigationOptions: {
         tabBarLabel: ({ focused, tintColor }) => (
-          <Text
+          <OMGText
             style={{
               opacity: focused ? 1.0 : 0.7,
               color: tintColor,
               fontSize: 12,
+              paddingBottom: 8,
               alignSelf: 'center'
             }}>
             History
-          </Text>
+          </OMGText>
         ),
         tabBarIcon: ({ focused, tintColor }) => (
           <OMGIcon
@@ -89,13 +155,37 @@ const BottomTabNavigator = createBottomTabNavigator(
       },
       style: {
         backgroundColor: '#04070d',
-        height: 80
+        height: 88,
+        paddingBottom: 8
       }
     }
   }
 )
 
-const navigator = createStackNavigator(
+const RootNavigator = createStackNavigator(
+  {
+    Main: BottomTabNavigator,
+    TransferSelectBalance: {
+      screen: Views.SelectBalance
+    },
+    TransferSelectFee: {
+      screen: Views.SelectFee
+    },
+    TransferConfirm: {
+      screen: Views.TransactionConfirm
+    },
+    TransferPending: {
+      screen: Views.TransactionPending
+    }
+  },
+  {
+    initialRouteName: 'Main',
+    headerMode: 'none'
+  }
+)
+
+// Used when want quick access to different screens.
+const debugNavigator = createStackNavigator(
   {
     Home: {
       screen: Views.Home
@@ -103,6 +193,10 @@ const navigator = createStackNavigator(
     Balance: {
       screen: Views.Balance,
       navigationOptions: () => ({ title: 'Balance' })
+    },
+    SelectBalance: {
+      screen: Views.SelectBalance,
+      navigationOptions: () => ({ title: 'Select Balance' })
     },
     CreateWallet: {
       screen: Views.CreateWallet,
@@ -116,21 +210,17 @@ const navigator = createStackNavigator(
       screen: Views.Receive,
       navigationOptions: () => ({ title: 'Receive' })
     },
-    Scan: {
-      screen: Views.Scan,
-      navigationOptions: () => ({ title: 'Scan' })
-    },
     Setting: {
       screen: Views.Setting,
       navigationOptions: () => ({ title: 'Setting' })
     },
-    Transaction: {
-      screen: Views.Transaction,
-      navigationOptions: () => ({ title: 'Transaction' })
+    TransactionForm: {
+      screen: Views.TransactionForm,
+      navigationOptions: () => ({ title: 'TransactionForm' })
     },
-    Send: {
-      screen: Views.Send,
-      navigationOptions: () => ({ title: 'Send' })
+    Transfer: {
+      screen: Views.Transfer,
+      navigationOptions: () => ({ title: 'Transfer' })
     },
     Deposit: {
       screen: Views.Deposit,
@@ -145,20 +235,17 @@ const navigator = createStackNavigator(
       navigationOptions: ({ navigation }) => ({
         title: 'Preview',
         headerRight: (
-          <OMGIcon
-            name='ic-plus'
-            onPress={() => navigation.navigate('Deposit')}
-          />
+          <OMGIcon name='plus' onPress={() => navigation.navigate('Deposit')} />
         )
       })
     }
   },
   {
-    initialRouteName: 'Main',
+    initialRouteName: 'Home',
     headerMode: 'none'
   }
 )
 
-const AppContainer = createAppContainer(BottomTabNavigator)
+const AppContainer = createAppContainer(RootNavigator)
 
 export default AppContainer

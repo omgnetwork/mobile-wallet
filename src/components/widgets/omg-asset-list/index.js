@@ -1,7 +1,7 @@
 import React, { useRef, Fragment, useEffect } from 'react'
 import { StyleSheet, View, ActivityIndicator } from 'react-native'
 import { Text, withTheme, Divider } from 'react-native-paper'
-import { OMGBackground, OMGIcon, OMGEmpty } from 'components/widgets'
+import { OMGBackground, OMGText, OMGEmpty } from 'components/widgets'
 import { FlatList } from 'react-native-gesture-handler'
 
 const OMGAssetList = ({
@@ -9,21 +9,24 @@ const OMGAssetList = ({
   style,
   data,
   renderItem,
+  refreshControl,
   keyExtractor,
   loading
 }) => {
   1
   return (
-    <OMGBackground style={{ ...styles.container, ...style }}>
+    <OMGBackground style={{ ...styles.container(theme), ...style }}>
       <View style={styles.header}>
-        <Text style={styles.title(theme)}>Assets</Text>
-        {/* <OMGIcon name='plus' color={theme.colors.icon} style={styles.add} /> */}
+        <OMGText style={styles.title(theme)} weight='bold'>
+          ASSETS
+        </OMGText>
+        {/* <OMGIcon name='plus' color={theme.colors.gray3} style={styles.add} /> */}
       </View>
-      <Divider inset={false} />
-      <View style={styles.assetContainer}>
+      <View style={styles.assetContainer(theme)}>
         <FlatList
           style={styles.assetList}
           data={data}
+          refreshControl={refreshControl}
           keyExtractor={keyExtractor}
           ListEmptyComponent={
             <OMGEmpty text='Empty assets' loading={loading} />
@@ -39,26 +42,29 @@ const OMGAssetList = ({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column'
-  },
-  header: {
+  container: theme => ({
+    flexDirection: 'column',
+    backgroundColor: theme.colors.white
+  }),
+  header: theme => ({
     flexDirection: 'row',
     paddingVertical: 16,
     paddingHorizontal: 10,
-    alignItems: 'center'
-  },
+    alignItems: 'center',
+    backgroundColor: theme.colors.white
+  }),
   add: {
     justifyContent: 'flex-end'
   },
-  assetContainer: {},
+  assetContainer: theme => ({
+    backgroundColor: theme.colors.white
+  }),
   assetList: {},
   title: theme => ({
     flex: 1,
     textAlign: 'left',
     justifyContent: 'flex-start',
-    fontWeight: 'bold',
-    color: theme.colors.darkText3,
+    color: theme.colors.black3,
     fontSize: 14
   })
 })

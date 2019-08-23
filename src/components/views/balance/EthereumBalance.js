@@ -1,11 +1,10 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, RefreshControl } from 'react-native'
 import { walletActions } from 'common/actions'
 import { withTheme, Text } from 'react-native-paper'
-import { useLoading } from 'common/hooks'
 import Config from 'react-native-config'
-import { formatter } from 'common/utils'
+import { Formatter } from 'common/utils'
 import { OMGItemToken, OMGAssetHeader, OMGAssetList } from 'components/widgets'
 
 const EthereumBalance = ({
@@ -13,25 +12,17 @@ const EthereumBalance = ({
   primaryWallet,
   primaryWalletAddress,
   provider,
-  getTxHistory,
-  initAssets,
-  loadingStatus
+  loadAssets,
+  loading
 }) => {
   const [totalBalance, setTotalBalance] = useState(0.0)
-  const [loading] = useLoading(loadingStatus)
   const currency = 'USD'
 
   useEffect(() => {
-    if (!primaryWallet.txHistory) {
-      getTxHistory(primaryWalletAddress)
+    if ((provider && !primaryWallet.assets) || primaryWallet.shouldRefresh) {
+      loadAssets(provider, primaryWalletAddress)
     }
-  }, [primaryWalletAddress, getTxHistory, primaryWallet])
-
-  useEffect(() => {
-    if (primaryWallet.txHistory && !primaryWallet.assets) {
-      initAssets(provider, primaryWalletAddress, primaryWallet.txHistory)
-    }
-  }, [initAssets, primaryWalletAddress, provider, primaryWallet])
+  }, [loadAssets, primaryWalletAddress, provider, primaryWallet])
 
   useEffect(() => {
     if (primaryWallet.assets) {
@@ -50,7 +41,7 @@ const EthereumBalance = ({
       <OMGAssetHeader
         amount={formatTotalBalance(totalBalance)}
         currency={currency}
-        loading={loading}
+        loading={loading.show}
         rootChain={true}
         blockchain={'Ethereum'}
         network={Config.ETHERSCAN_NETWORK}
@@ -58,7 +49,13 @@ const EthereumBalance = ({
       <OMGAssetList
         data={primaryWallet.assets || []}
         keyExtractor={item => item.contractAddress}
-        loading={loading}
+        loading={loading.show}
+        refreshControl={
+          <RefreshControl
+            refreshing={loading.show}
+            onRefresh={() => loadAssets(provider, primaryWalletAddress)}
+          />
+        }
         style={styles.list}
         renderItem={({ item }) => (
           <OMGItemToken
@@ -76,13 +73,14 @@ const EthereumBalance = ({
 const styles = StyleSheet.create({
   list: {
     flex: 1,
+    paddingTop: 12,
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4
   }
 })
 
 const formatTotalBalance = balance => {
-  return formatter.format(balance, {
+  return Formatter.format(balance, {
     commify: true,
     maxDecimal: 2,
     ellipsize: false
@@ -90,17 +88,17 @@ const formatTotalBalance = balance => {
 }
 
 const formatTokenBalance = amount => {
-  return formatter.format(amount, {
+  return Formatter.format(amount, {
     commify: true,
     maxDecimal: 3,
-    ellipsize: true
+    ellipsize: false
   })
 }
 
 const formatTokenPrice = (amount, price) => {
   const parsedAmount = parseFloat(amount)
   const tokenPrice = parsedAmount * price
-  return formatter.format(tokenPrice, {
+  return Formatter.format(tokenPrice, {
     commify: true,
     maxDecimal: 2,
     ellipsize: false
@@ -108,7 +106,7 @@ const formatTokenPrice = (amount, price) => {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  loadingStatus: state.loadingStatus,
+  loading: state.loading,
   provider: state.setting.provider,
   primaryWalletAddress: state.setting.primaryWalletAddress
 })
@@ -117,10 +115,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   createWallet: (provider, name) =>
     dispatch(walletActions.create(provider, name)),
   deleteAllWallet: () => dispatch(walletActions.clear()),
-  getTxHistory: address =>
-    dispatch(walletActions.getTransactionHistory(address)),
-  initAssets: (provider, address, txHistory) =>
-    dispatch(walletActions.initAssets(provider, address, txHistory))
+  loadAssets: (provider, address) =>
+    dispatch(walletActions.loadAssets(provider, address))
 })
 
 export default connect(

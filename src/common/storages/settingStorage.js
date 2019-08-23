@@ -1,19 +1,19 @@
-import { storageUtils } from '../utils'
+import { Storage } from '../utils'
 
 export const setProviderName = providerName => {
   if (!providerName) return null
-  return storageUtils.set('setting_provider_name', providerName)
+  return Storage.set('setting_provider_name', providerName)
 }
 
 export const getProviderName = () => {
-  return storageUtils.get('setting_provider_name')
+  return Storage.get('setting_provider_name')
 }
 
 export const setPrimaryAddress = address => {
   if (!address) return Promise.resolve(null)
-  return storageUtils.set('primary_wallet_address', address)
+  return Storage.set('primary_wallet_address', address)
 }
 
 export const getPrimaryAddress = async defaultAddress => {
-  return (await storageUtils.get('primary_wallet_address')) || defaultAddress
+  return (await Storage.get('primary_wallet_address')) || defaultAddress
 }

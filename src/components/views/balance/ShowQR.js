@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
-import { OMGQRCode, OMGBackground } from 'components/widgets'
+import { OMGQRCode, OMGBackground, OMGText } from 'components/widgets'
 
 const ShowQR = ({ theme, primaryWallet, primaryWalletAddress }) => {
   return (
@@ -14,7 +14,9 @@ const ShowQR = ({ theme, primaryWallet, primaryWalletAddress }) => {
             uri: `https://api.adorable.io/avatars/285/${primaryWalletAddress}.png`
           }}
         />
-        <Text style={styles.title(theme)}>{primaryWallet.name}</Text>
+        <OMGText style={styles.title(theme)} weight='bold'>
+          {primaryWallet.name}
+        </OMGText>
       </View>
       <View style={styles.qrContainer}>
         <OMGQRCode
@@ -22,7 +24,9 @@ const ShowQR = ({ theme, primaryWallet, primaryWalletAddress }) => {
           displayText={primaryWalletAddress}
         />
       </View>
-      <Text style={styles.bottomText(theme)}>View Transaction History</Text>
+      <OMGText style={styles.bottomText(theme)}>
+        View Transaction History
+      </OMGText>
     </OMGBackground>
   )
 }
@@ -56,7 +60,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontSize: 18,
     marginTop: 16,
-    color: theme.colors.icon
+    color: theme.colors.gray3
   }),
   bottomText: theme => ({
     color: theme.colors.primary,

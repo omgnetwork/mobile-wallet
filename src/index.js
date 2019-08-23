@@ -6,6 +6,7 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import Router from 'router'
 import createStore from 'common/stores'
 import { walletActions, settingActions } from 'common/actions'
+import { OMGStatusBar } from 'components/widgets'
 import Config from 'react-native-config'
 
 YellowBox.ignoreWarnings(['Warning:', 'Setting'])
@@ -36,47 +37,35 @@ const App = () => {
       primary: '#3c414d',
       primaryLight: '#5b626f',
       primaryDarker: '#262a31',
-      accent: '#f1c40f',
-      background: '#f0f2f5',
-      surface: '#D9E2EC',
-      placeholder: '#BCCCDC',
-      darkText1: '#d0d6e2',
-      darkText2: '#858b9a',
-      darkText3: '#3c414d',
-      darkText4: '#e4e7ed',
-      darkText5: '#000000',
-      grey1: '#d8d8d8',
-      icon: '#04070D',
-      input: '#FFFFFF',
-      white: '#FFFFFF'
+      background: '#ffffff',
+      backgroundDisabled: '#f7f8fa',
+      blue1: '#ebf3ff',
+      blue2: '#2176ff',
+      black1: '#d0d6e2',
+      black2: '#858b9a',
+      black3: '#3c414d',
+      black4: '#e4e7ed',
+      black5: '#000000',
+      gray1: '#d8d8d8',
+      gray2: '#abb2c2',
+      gray3: '#04070D',
+      gray4: '#f0f2f5',
+      white: '#FFFFFF',
+      white2: '#BCCCDC',
+      white3: '#f7f8fa'
     }
   }
 
   return (
     <Fragment>
-      <StatusBar barStyle='dark-content' backgroundColor='#f0f4f8' />
+      <OMGStatusBar theme={theme} />
       <Provider store={store}>
         <PaperProvider theme={theme}>
-          <SafeAreaView style={styles.safeAreaView}>
-            <Router />
-          </SafeAreaView>
+          <Router />
         </PaperProvider>
       </Provider>
     </Fragment>
   )
 }
-
-const styles = StyleSheet.create({
-  safeAreaView: {
-    flex: 1
-  },
-  scrollView: {
-    flex: 1
-  },
-  view: {
-    flex: 1,
-    justifyContent: 'center'
-  }
-})
 
 export default App

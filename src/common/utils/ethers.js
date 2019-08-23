@@ -31,6 +31,18 @@ export const formatEther = wei => {
   return ethers.utils.formatEther(wei)
 }
 
+export const formatUnits = (amount, numberOfDecimals) => {
+  return ethers.utils.formatUnits(amount, numberOfDecimals)
+}
+
+export const parseUnits = (tokenBalance, tokenNumberOfDecimals) => {
+  return ethers.utils.parseUnits(tokenBalance, tokenNumberOfDecimals)
+}
+
+export const commify = amount => {
+  return ethers.utils.commify(amount)
+}
+
 export const fetchTransactionDetail = address => {
   return axios.get(Config.ETHERSCAN_API_URL, {
     params: {
@@ -80,10 +92,52 @@ export const getTokenBalance = (provider, contractAddress, accountAddress) => {
   return contract.balanceOf(accountAddress)
 }
 
-export const formatUnits = (amount, numberOfDecimals) => {
-  return ethers.utils.formatUnits(amount, numberOfDecimals)
+export const sendErc20Token = (token, fee, wallet, toAddress) => {
+  const contractAbi = [
+    {
+      name: 'transfer',
+      type: 'function',
+      inputs: [
+        {
+          name: '_to',
+          type: 'address'
+        },
+        {
+          type: 'uint256',
+          name: '_tokens'
+        }
+      ],
+      constant: false,
+      outputs: [],
+      payable: false
+    }
+  ]
+
+  const contract = new ethers.Contract(
+    token.contractAddress,
+    contractAbi,
+    wallet
+  )
+
+  const numberOfTokens = parseUnits(token.balance, token.numberOfDecimals)
+
+  const options = {
+    gasLimit: 150000,
+    gasPrice: parseUnits(fee.amount, 'gwei')
+  }
+
+  return contract.transfer(toAddress, numberOfTokens, options)
 }
 
-export const commify = amount => {
-  return ethers.utils.commify(amount)
+export const sendEthToken = (token, fee, wallet, toAddress) => {
+  return wallet.sendTransaction({
+    to: toAddress,
+    value: ethers.utils.parseEther(token.balance),
+    gasLimit: 150000,
+    gasPrice: parseUnits(fee.amount, 'gwei')
+  })
+}
+
+export const waitForTransaction = (provider, tx) => {
+  return provider.waitForTransaction(tx.hash)
 }

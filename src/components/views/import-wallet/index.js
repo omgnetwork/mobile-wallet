@@ -1,14 +1,14 @@
-import React, { useState, Fragment, useEffect } from 'react'
+import React, { useState, Fragment, useEffect, useRef } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
 import { walletActions, settingActions } from 'common/actions'
-import { useAlert, useTextInput, useLoading } from 'common/hooks'
-import { random } from 'common/utils'
+import { useAlert } from 'common/hooks'
 import {
   OMGRadioButton,
   OMGTextInput,
   OMGBackground,
+  OMGText,
   OMGBox,
   OMGButton
 } from 'components/widgets'
@@ -42,7 +42,7 @@ const ImportWalletComponent = props => {
       style={{
         flex: 1,
         justifyContent: 'flex-end',
-        backgroundColor: colors.background
+        backgroundColor: colors.gray4
       }}>
       <OMGBackground
         style={{ flex: 1, flexDirection: 'column', paddingHorizontal: 16 }}>
@@ -70,62 +70,58 @@ const ImportWalletComponent = props => {
 
 const Mnemonic = ({
   importWalletByMnemonic,
-  loadingStatus,
+  loading,
   provider,
   wallets,
   navigation
 }) => {
-  const [actionId, setActionId] = useState()
-  const [mnemonic, mnemonicCallback] = useTextInput(actionId)
-  const [walletName, walletNameCallback] = useTextInput(actionId)
-  const [loading] = useLoading(loadingStatus)
+  const mnemonicRef = useRef(null)
+  const walletNameRef = useRef(null)
   const snackbarProps = useAlert({
-    loadingStatus,
+    loading,
     msgSuccess: 'Import wallet successful',
     msgFailed: 'Failed to import a wallet. Make sure the mnemonic is correct.'
   })
 
-  useEffect(() => {
-    if (mnemonic) {
-      importWalletByMnemonic(mnemonic, provider, walletName)
-    }
-  }, [importWalletByMnemonic, mnemonic, provider, walletName])
+  const importWallet = () => {
+    importWalletByMnemonic(mnemonicRef.current, provider, walletNameRef.current)
+  }
 
   useEffect(() => {
-    if (loadingStatus === 'SUCCESS') {
+    if (loading.success && loading.action === 'WALLET_IMPORT') {
       navigation.goBack()
     }
-  }, [loadingStatus, navigation, wallets])
+  }, [loading, navigation, wallets])
 
   return (
     <Fragment>
-      <Text>
+      <OMGText>
         Copy and paste Ethereum official wallet's Mnemonic to the input field to
         import.
-      </Text>
+      </OMGText>
       <OMGBox style={{ marginTop: 16 }}>
         <Title style={{ fontSize: 16, fontWeight: 'bold' }}>Mnemonic</Title>
         <OMGTextInput
           placeholder='Enter mnemonic...'
           lines={4}
+          inputRef={mnemonicRef}
           hideUnderline={true}
-          callback={mnemonicCallback}
-          disabled={!loading}
+          disabled={loading.show}
         />
       </OMGBox>
       <OMGBox style={{ marginTop: 16 }}>
-        <Title style={{ fontSize: 16, fontWeight: 'bold' }}>Wallet Name</Title>
+        <OMGText style={{ fontSize: 16 }} weight='bold'>
+          Wallet Name
+        </OMGText>
         <OMGTextInput
           placeholder='Your wallet name'
           hideUnderline={true}
-          callback={walletNameCallback}
-          disabled={!loading}
+          inputRef={walletNameRef}
+          disabled={loading.show}
         />
       </OMGBox>
       <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 16 }}>
-        <OMGButton
-          loading={loading}
-          onPress={() => setActionId(random.fastRandomId())}>
+        <OMGButton loading={loading.show} onPress={importWallet}>
           Import
         </OMGButton>
       </View>
@@ -141,7 +137,7 @@ const Mnemonic = ({
 ImportWalletComponent.Mnemonic = Mnemonic
 
 const mapStateToProps = (state, ownProps) => ({
-  loadingStatus: state.loadingStatus,
+  loading: state.loading,
   wallets: state.wallets,
   provider: state.setting.provider
 })

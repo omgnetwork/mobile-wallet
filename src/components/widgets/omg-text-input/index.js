@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState } from 'react'
 import { TextInput, StyleSheet, Platform } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import PropTypes from 'prop-types'
@@ -8,22 +8,21 @@ const OMGTextInput = ({
   placeholder,
   hideUnderline,
   lines,
-  callback,
+  keyboardType,
+  defaultValue,
+  value,
+  inputRef,
   disabled
 }) => {
   const [underlineTextcolor, setUnderlineTextcolor] = useState('#D9E2EC')
-  const textInput = useRef(null)
-
-  useEffect(() => {
-    callback && callback(textInput.current._lastNativeText)
-  }, [callback])
-
   const numberOfLines = lines ? lines : 1
   return (
     <TextInput
       mode='flat'
       placeholder={placeholder}
-      ref={textInput}
+      onChangeText={text => {
+        inputRef && (inputRef.current = text)
+      }}
       underlineColorAndroid={hideUnderline ? 'transparent' : underlineTextcolor}
       onBlur={() => setUnderlineTextcolor('#D9E2EC')}
       onFocus={() => setUnderlineTextcolor('#627D98')}
@@ -31,17 +30,21 @@ const OMGTextInput = ({
       numberOfLines={numberOfLines}
       editable={disabled ? disabled : true}
       multiline={numberOfLines > 1}
+      defaultValue={defaultValue}
+      value={value}
       textAlignVertical='top'
+      keyboardType={keyboardType}
       style={{
         ...styles.textInput,
         ...style,
-        minHeight: Math.max(24, numberOfLines * 18)
+        minHeight: Math.max(20, numberOfLines * 18)
       }}
     />
   )
 }
 const styles = StyleSheet.create({
   textInput: {
+    fontFamily: 'CircularStd-Book',
     backgroundColor: '#FFFFFF',
     paddingTop: 12,
     marginLeft: Platform.OS === 'ios' ? 0 : -4

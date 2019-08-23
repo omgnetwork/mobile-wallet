@@ -5,10 +5,11 @@ import {
   Animated,
   ActivityIndicator
 } from 'react-native'
-import { Text } from 'react-native-paper'
+import { withTheme } from 'react-native-paper'
 import { Push, Fade } from 'common/anims'
+import OMGText from '../omg-text'
 
-const OMGButton = ({ disabled, style, children, onPress, loading }) => {
+const OMGButton = ({ disabled, style, children, onPress, loading, theme }) => {
   const opacity = disabled || loading ? styles.inactive : styles.active
   const scale = useRef(new Animated.Value(1.0))
   const fade = useRef(new Animated.Value(1.0))
@@ -20,10 +21,10 @@ const OMGButton = ({ disabled, style, children, onPress, loading }) => {
         color='#ffffff'
         style={{ ...styles.icon }}
       />
-      <Text style={styles.text}>{children}</Text>
+      <OMGText style={styles.text}>{children}</OMGText>
     </Fragment>
   ) : (
-    <Text style={styles.text}>{children}</Text>
+    <OMGText style={styles.text}>{children}</OMGText>
   )
 
   useEffect(() => {
@@ -37,7 +38,7 @@ const OMGButton = ({ disabled, style, children, onPress, loading }) => {
       disabled={disabled || loading}
       activeOpacity={0.7}
       style={{
-        ...styles.container,
+        ...styles.container(theme),
         ...style,
         ...opacity,
         transform: [{ scale: scale.current }]
@@ -63,16 +64,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textTransform: 'uppercase'
   },
-  container: {
-    borderRadius: 36,
+  container: theme => ({
+    borderRadius: theme.roundness,
     justifyContent: 'center',
-    backgroundColor: '#334e68',
+    backgroundColor: theme.colors.gray3,
     alignSelf: 'center',
     width: '100%',
     paddingHorizontal: 8,
     paddingVertical: 12,
     flexDirection: 'row'
-  },
+  }),
   inactive: {
     opacity: 0.5
   },
@@ -81,4 +82,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default OMGButton
+export default withTheme(OMGButton)

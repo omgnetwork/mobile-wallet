@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme, Text } from 'react-native-paper'
-import { OMGBackground, OMGEmpty } from 'components/widgets'
+import { OMGBackground, OMGEmpty, OMGText } from 'components/widgets'
 
 const OMGAssetHeader = ({
   theme,
@@ -19,21 +19,21 @@ const OMGAssetHeader = ({
         {loading ? (
           <OMGEmpty style={styles.loading} loading={loading} />
         ) : (
-          <Text style={styles.balanceAmount(theme)}>{amount}</Text>
+          <OMGText style={styles.balanceAmount(theme)}>{amount}</OMGText>
         )}
-        <Text style={styles.balanceCurrency(theme)}>{currency}</Text>
+        <OMGText style={styles.balanceCurrency(theme)}>{currency}</OMGText>
       </View>
       <View style={styles.footer(theme)}>
         <View style={styles.subfooter}>
-          <Text style={styles.subfooterText1(theme)}>{blockchain}</Text>
-          <Text style={styles.subfooterText2(theme)}>
+          <OMGText style={styles.subfooterText1(theme)}>{blockchain}</OMGText>
+          <OMGText style={styles.subfooterText2(theme)}>
             {rootChain ? 'Rootchain' : 'Childchain'}
-          </Text>
+          </OMGText>
         </View>
         <View style={styles.divider(theme)} />
         <View style={styles.subfooter}>
-          <Text style={styles.subfooterText1(theme)}>{network}</Text>
-          <Text style={styles.subfooterText2(theme)}>Network</Text>
+          <OMGText style={styles.subfooterText1(theme)}>{network}</OMGText>
+          <OMGText style={styles.subfooterText2(theme)}>Network</OMGText>
         </View>
       </View>
     </OMGBackground>
@@ -43,7 +43,7 @@ const OMGAssetHeader = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'column',
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.white,
     borderTopLeftRadius: theme.roundness,
     borderTopRightRadius: theme.roundness
   }),
@@ -61,15 +61,17 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'left',
     fontSize: 32,
-    color: theme.colors.white
+    color: theme.colors.black3
   }),
   balanceCurrency: theme => ({
-    color: theme.colors.primaryLight,
+    color: theme.colors.black1,
     fontSize: 32
   }),
   footer: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.primaryDarker
+    backgroundColor: theme.colors.blue2,
+    borderRadius: theme.roundness,
+    marginHorizontal: 20
   }),
   subfooter: {
     flex: 1,
@@ -81,18 +83,18 @@ const styles = StyleSheet.create({
   subfooterText1: theme => ({
     fontSize: 12,
     textTransform: 'capitalize',
-    color: theme.colors.darkText1,
+    color: theme.colors.white,
     marginRight: 4
   }),
   subfooterText2: theme => ({
     fontSize: 12,
     textTransform: 'capitalize',
-    color: theme.colors.darkText2
+    color: theme.colors.black1
   }),
   divider: theme => ({
     borderLeftWidth: 1,
-    borderLeftColor: theme.colors.white,
-    opacity: 0.1
+    borderLeftColor: theme.colors.black4,
+    opacity: 0.3
   })
 })
 

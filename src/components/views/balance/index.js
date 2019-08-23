@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, View, Dimensions } from 'react-native'
-import { withTheme, Text } from 'react-native-paper'
+import { SafeAreaView } from 'react-navigation'
+import { withTheme } from 'react-native-paper'
 import { walletActions } from 'common/actions'
 import EthereumBalance from './EthereumBalance'
 import PlasmaBalance from './PlasmaBalance'
+import LinearGradient from 'react-native-linear-gradient'
 import ShowQR from './ShowQR'
-import { useLoading } from 'common/hooks'
-import { OMGBackground, OMGEmpty, OMGViewPager } from 'components/widgets'
+import {
+  OMGEmpty,
+  OMGViewPager,
+  OMGText,
+  OMGStatusBar
+} from 'components/widgets'
 
-// 48 = marginRight (8) + marginLeft (8) + paddingLeft (16) + paddingRight (16) + overlapContentWidth (16)
 const pageWidth = Dimensions.get('window').width - 56
 
-const Balance = ({ theme, primaryWalletAddress, loadingStatus, wallets }) => {
+const Balance = ({ theme, primaryWalletAddress, loading, wallets }) => {
   const [primaryWallet, setPrimaryWallet] = useState(null)
-  const [loading] = useLoading(loadingStatus)
 
   useEffect(() => {
     if (primaryWalletAddress) {
@@ -24,37 +28,43 @@ const Balance = ({ theme, primaryWalletAddress, loadingStatus, wallets }) => {
   }, [primaryWalletAddress, wallets])
 
   return (
-    <OMGBackground style={styles.container(theme)}>
-      <Text style={styles.title(theme)}>
-        {primaryWallet ? primaryWallet.name : 'Initializing...'}
-      </Text>
-      {!wallets || !primaryWallet ? (
-        <OMGEmpty loading={loading} />
-      ) : (
-        <OMGViewPager pageWidth={pageWidth}>
-          <View style={styles.firstPage}>
-            <PlasmaBalance primaryWallet={primaryWallet} />
-          </View>
-          <View style={styles.secondPage}>
-            <EthereumBalance primaryWallet={primaryWallet} />
-          </View>
-          <View style={styles.thirdPage}>
-            <ShowQR primaryWallet={primaryWallet} />
-          </View>
-        </OMGViewPager>
-      )}
-      {/* {rootChain ? null : <OMGAssetFooter />} */}
-    </OMGBackground>
+    <SafeAreaView style={styles.safeAreaView(theme)}>
+      <LinearGradient
+        style={styles.container}
+        colors={[theme.colors.black5, theme.colors.gray1]}>
+        <OMGText style={styles.title(theme)}>
+          {primaryWallet ? primaryWallet.name : 'Initializing...'}
+        </OMGText>
+        {!wallets || !primaryWallet ? (
+          <OMGEmpty loading={loading.show} />
+        ) : (
+          <OMGViewPager pageWidth={pageWidth}>
+            <View style={styles.firstPage}>
+              <PlasmaBalance primaryWallet={primaryWallet} />
+            </View>
+            <View style={styles.secondPage}>
+              <EthereumBalance primaryWallet={primaryWallet} />
+            </View>
+            <View style={styles.thirdPage}>
+              <ShowQR primaryWallet={primaryWallet} />
+            </View>
+          </OMGViewPager>
+        )}
+        {/* {rootChain ? null : <OMGAssetFooter />} */}
+      </LinearGradient>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
-  container: theme => ({
+  safeAreaView: theme => ({
     flex: 1,
-    padding: 16,
-    backgroundColor: theme.colors.white,
-    marginBottom: 32
+    backgroundColor: theme.colors.black5
   }),
+  container: {
+    flex: 1,
+    padding: 16
+  },
   firstPage: {
     width: pageWidth,
     marginRight: 8
@@ -70,7 +80,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 16,
     textTransform: 'uppercase',
-    color: theme.colors.primary
+    color: theme.colors.white
   }),
   list: {
     flex: 1,
@@ -81,7 +91,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  loadingStatus: state.loadingStatus,
+  loading: state.loading,
   wallets: state.wallets,
   provider: state.setting.provider,
   primaryWalletAddress: state.setting.primaryWalletAddress
@@ -90,11 +100,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   createWallet: (provider, name) =>
     dispatch(walletActions.create(provider, name)),
-  deleteAllWallet: () => dispatch(walletActions.clear()),
-  getTxHistory: address =>
-    dispatch(walletActions.getTransactionHistory(address)),
-  initAssets: (provider, address, txHistory) =>
-    dispatch(walletActions.initAssets(provider, address, txHistory))
+  deleteAllWallet: () => dispatch(walletActions.clear())
 })
 
 export default connect(

@@ -1,4 +1,4 @@
-import * as ethersUtils from './ethers'
+import * as Ethers from './ethers'
 
 export const format = (number, { commify, maxDecimal, ellipsize }) => {
   const stringNumber = number.toString()
@@ -24,7 +24,7 @@ export const formatDecimal = (number, maxDecimal) => {
 
 export const formatComma = (number, commify) => {
   if (commify) {
-    return ethersUtils.commify(number)
+    return Ethers.commify(number)
   }
 }
 

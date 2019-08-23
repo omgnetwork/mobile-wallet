@@ -10,12 +10,6 @@ const Home = ({ navigation }) => {
         <Button
           mode='outlined'
           style={styles.button}
-          onPress={() => navigation.navigate('Scan')}>
-          Scan
-        </Button>
-        <Button
-          mode='outlined'
-          style={styles.button}
           onPress={() => navigation.navigate('Receive')}>
           Receive
         </Button>
@@ -28,8 +22,14 @@ const Home = ({ navigation }) => {
         <Button
           mode='outlined'
           style={styles.button}
-          onPress={() => navigation.navigate('Transaction')}>
-          Transaction
+          onPress={() => navigation.navigate('TransactionForm')}>
+          TransactionForm
+        </Button>
+        <Button
+          mode='outlined'
+          style={styles.button}
+          onPress={() => navigation.navigate('SelectBalance')}>
+          SelectBalance
         </Button>
         <Button
           mode='outlined'
@@ -40,8 +40,8 @@ const Home = ({ navigation }) => {
         <Button
           mode='outlined'
           style={styles.button}
-          onPress={() => navigation.navigate('Send')}>
-          Send
+          onPress={() => navigation.navigate('Transfer')}>
+          Transfer
         </Button>
         <Button
           mode='outlined'

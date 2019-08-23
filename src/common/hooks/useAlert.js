@@ -1,41 +1,32 @@
 import { useState, useEffect, useCallback } from 'react'
 
-function getAlertMsg(loadingStatus, msgSuccess, msgFailed) {
-  switch (loadingStatus) {
-    case 'SUCCESS':
-      return msgSuccess
-    case 'FAILED':
-      return msgFailed
-    default:
-      return null
+function getAlertMsg(loading, msgSuccess, msgFailed) {
+  if (loading.success) {
+    return msgSuccess
+  } else if (loading.failed) {
+    return msgFailed
+  } else {
+    return null
   }
 }
 
-function getVisible(loadingStatus) {
-  switch (loadingStatus) {
-    case 'SUCCESS':
-    case 'FAILED':
-      return true
-    case 'INITIATED':
-      return false
-    default:
-      return null
-  }
+function getVisible(loading, actions) {
+  return !loading.show && actions.indexOf(loading.action) > -1
 }
 
-const useAlert = ({ loadingStatus, msgSuccess, msgFailed }) => {
-  const [visible, setVisible] = useState(getVisible(loadingStatus))
-  const [msg, setMsg] = useState(getAlertMsg(loadingStatus))
+const useAlert = ({ loading, actions, msgSuccess, msgFailed }) => {
+  const [visible, setVisible] = useState(getVisible(loading, actions))
+  const [msg, setMsg] = useState(getAlertMsg(loading))
 
   const visibleCallback = useCallback(() => {
-    const latestVisible = getVisible(loadingStatus)
+    const latestVisible = getVisible(loading, actions)
     latestVisible && setVisible(latestVisible)
-  }, [loadingStatus])
+  }, [actions, loading])
 
   const msgCallback = useCallback(() => {
-    const latestMsg = getAlertMsg(loadingStatus, msgSuccess, msgFailed)
+    const latestMsg = getAlertMsg(loading, msgSuccess, msgFailed)
     latestMsg && setMsg(latestMsg)
-  }, [loadingStatus, msgSuccess, msgFailed])
+  }, [loading, msgSuccess, msgFailed])
 
   useEffect(() => {
     visibleCallback()

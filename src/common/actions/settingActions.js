@@ -43,8 +43,8 @@ export const setPrimaryWallet = (address, provider) => {
   }
 
   return createAsyncAction({
-    operation: 'SETTING/SET_PRIMARY_WALLET',
-    action: asyncAction
+    type: 'SETTING/SET_PRIMARY_WALLET',
+    operation: asyncAction
   })
 }
 

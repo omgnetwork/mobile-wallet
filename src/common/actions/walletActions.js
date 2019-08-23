@@ -60,8 +60,10 @@ export const getTransactionHistory = address => {
   })
 }
 
-export const initAssets = (provider, address, txHistory) => {
+export const loadAssets = (provider, address) => {
   const asyncAction = async () => {
+    const txHistory = await providerService.getTransactionHistory(address)
+
     const distinctTx = Array.from(
       new Set(txHistory.map(tx => tx.contractAddress))
     )

@@ -1,4 +1,4 @@
-import { storageUtils } from '../utils'
+import { Storage } from '../utils'
 
 export const add = async ({ address, balance, name }) => {
   const wallets = (await all()) || []
@@ -13,13 +13,13 @@ export const add = async ({ address, balance, name }) => {
     name: name
   }
 
-  await storageUtils.set('wallets', JSON.stringify([...wallets, wallet]))
+  await Storage.set('wallets', JSON.stringify([...wallets, wallet]))
   return wallet
 }
 
 export const all = async () => {
   try {
-    const result = (await storageUtils.get('wallets')) || '[]'
+    const result = (await Storage.get('wallets')) || '[]'
     return JSON.parse(result)
   } catch (err) {
     console.log(err)
@@ -28,13 +28,13 @@ export const all = async () => {
 }
 
 export const clear = () => {
-  return storageUtils.clearAll()
+  return Storage.clearAll()
 }
 
 export const setPrivateKey = ({ address, privateKey }) => {
-  return storageUtils.secureSet(address, privateKey)
+  return Storage.secureSet(address, privateKey)
 }
 
 export const getPrivateKey = address => {
-  return storageUtils.secureGet(address)
+  return Storage.secureGet(address)
 }

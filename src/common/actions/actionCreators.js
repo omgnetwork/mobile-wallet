@@ -1,9 +1,11 @@
 export const createAsyncAction = ({
   operation: doAsyncAction,
-  type: actionType
+  type: actionType,
+  isBackgroundTask: isBackgroundTask
 }) => {
   return async dispatch => {
-    dispatch({ type: `${actionType}/INITIATED` })
+    const actionStartStatus = isBackgroundTask ? 'LISTENING' : 'INITIATED'
+    dispatch({ type: `${actionType}/${actionStartStatus}` })
     requestAnimationFrame(async () => {
       try {
         const result = await doAsyncAction()
@@ -12,8 +14,8 @@ export const createAsyncAction = ({
         console.log(err)
         dispatch({ type: `${actionType}/FAILED`, data: err })
       }
-      const loadingType = actionType.replace('/', '_')
-      dispatch({ type: `LOADING/${loadingType}/DEFAULT` })
+      const actionName = actionType.replace('/', '_')
+      dispatch({ type: `LOADING/${actionName}/IDLE` })
     })
   }
 }
