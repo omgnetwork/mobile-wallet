@@ -1,12 +1,10 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import { StatusBar, StyleSheet, YellowBox } from 'react-native'
-import { SafeAreaView } from 'react-navigation'
+import { YellowBox } from 'react-native'
 import { Provider } from 'react-redux'
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import Router from 'router'
 import createStore from 'common/stores'
 import { walletActions, settingActions } from 'common/actions'
-import { OMGStatusBar } from 'components/widgets'
 import Config from 'react-native-config'
 
 YellowBox.ignoreWarnings(['Warning:', 'Setting'])
@@ -58,7 +56,6 @@ const App = () => {
 
   return (
     <Fragment>
-      <OMGStatusBar theme={theme} />
       <Provider store={store}>
         <PaperProvider theme={theme}>
           <Router />

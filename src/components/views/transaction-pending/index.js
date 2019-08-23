@@ -10,7 +10,8 @@ import {
   OMGBox,
   OMGButton,
   OMGText,
-  OMGWalletAddress
+  OMGWalletAddress,
+  OMGStatusBar
 } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
@@ -39,6 +40,7 @@ const TransactionPending = ({
 
   return (
     <SafeAreaView style={styles.container(theme)}>
+      <OMGStatusBar barStyle={'dark-content'} />
       <View style={styles.contentContainer}>
         <View style={styles.headerContainer}>
           <OMGText style={styles.title(theme)}>Pending Transaction</OMGText>

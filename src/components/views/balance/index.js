@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, View, Dimensions } from 'react-native'
+import { StyleSheet, View, Dimensions, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { walletActions } from 'common/actions'
@@ -17,7 +17,13 @@ import {
 
 const pageWidth = Dimensions.get('window').width - 56
 
-const Balance = ({ theme, primaryWalletAddress, loading, wallets }) => {
+const Balance = ({
+  theme,
+  primaryWalletAddress,
+  navigation,
+  loading,
+  wallets
+}) => {
   const [primaryWallet, setPrimaryWallet] = useState(null)
 
   useEffect(() => {
@@ -27,8 +33,24 @@ const Balance = ({ theme, primaryWalletAddress, loading, wallets }) => {
     }
   }, [primaryWalletAddress, wallets])
 
+  useEffect(() => {
+    function willFocus() {
+      StatusBar.setBarStyle('light-content')
+    }
+
+    const willFocusSubscription = navigation.addListener('willFocus', willFocus)
+
+    return () => {
+      willFocusSubscription.remove()
+    }
+  }, [navigation])
+
   return (
     <SafeAreaView style={styles.safeAreaView(theme)}>
+      <OMGStatusBar
+        barStyle={'light-content'}
+        backgroundColor={theme.colors.blacks}
+      />
       <LinearGradient
         style={styles.container}
         colors={[theme.colors.black5, theme.colors.gray1]}>
