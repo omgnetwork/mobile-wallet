@@ -93,7 +93,7 @@ const TransactionPending = ({
         <OMGButton
           style={styles.button}
           onPress={() => {
-            navigation.navigate('Balance')
+            navigation.goBack()
           }}>
           Done
         </OMGButton>

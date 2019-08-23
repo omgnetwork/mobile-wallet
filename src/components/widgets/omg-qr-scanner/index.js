@@ -96,7 +96,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: Platform.OS === 'ios' ? 0 : 0.5,
     backgroundColor: 'rgba(60, 65, 77, 0.45)'
   },
   bottomContainer: {
@@ -111,7 +110,6 @@ const styles = StyleSheet.create({
   },
   sideOverlay: {
     flex: 1,
-    marginTop: Platform.OS === 'ios' ? 0.5 : 0,
     backgroundColor: 'rgba(60, 65, 77, 0.45)'
   },
   loadingText: {
