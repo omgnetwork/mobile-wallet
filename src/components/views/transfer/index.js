@@ -58,13 +58,11 @@ const styles = StyleSheet.create({
   title: theme => ({
     flex: 1,
     marginHorizontal: 16,
-    marginBottom: 16,
     fontSize: 18,
     textTransform: 'uppercase',
     color: theme.colors.gray3
   }),
   icon: {
-    marginBottom: 16,
     padding: 16
   }
 })
