@@ -1,6 +1,7 @@
 import React from 'react'
 import {
   createAppContainer,
+  createSwitchNavigator,
   createStackNavigator,
   NavigationActions
 } from 'react-navigation'
@@ -12,7 +13,7 @@ import * as Views from 'components/views'
 import { OMGIcon, OMGBox, OMGText, OMGTab } from 'components/widgets'
 
 // Navigation tree in [root -> transfer -> send]
-const SendTransactionNavigator = createStackNavigator(
+const SendTransactionNavigator = createSwitchNavigator(
   {
     Scan: {
       screen: Views.Scan
