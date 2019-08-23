@@ -42,16 +42,19 @@ const TransactionConfirm = ({
 
   useEffect(() => {
     if (loading.success && loading.action.indexOf('TRANSACTION') === 0) {
-      navigation.navigate({
-        routeName: 'TransferPending',
-        params: {
-          token,
-          fromWallet,
-          toWallet,
-          pendingTx: pendingTxs.slice(-1).pop(),
-          fee
-        }
-      })
+      navigation.reset([
+        NavigationActions.navigate({ routeName: 'Main' }),
+        NavigationActions.navigate({
+          routeName: 'TransferPending',
+          params: {
+            token,
+            fromWallet,
+            toWallet,
+            pendingTx: pendingTxs.slice(-1).pop(),
+            fee
+          }
+        })
+      ])
     }
   }, [
     fee,
