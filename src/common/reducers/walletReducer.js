@@ -18,7 +18,14 @@ export const walletsReducer = (state = [], action) => {
     case 'WALLET/INIT_ASSETS/SUCCESS':
       return state.map(wallet => {
         if (wallet.address === action.data.address) {
-          return { ...wallet, assets: action.data.assets, shouldRefresh: false }
+          const assets = wallet.assets || []
+          return {
+            ...wallet,
+            assets: mergeAssets(assets, action.data.assets),
+            shouldRefresh: false,
+            updatedAt: action.data.updatedAt,
+            updatedBlock: action.data.updatedBlock
+          }
         } else {
           return wallet
         }
@@ -34,4 +41,22 @@ export const walletsReducer = (state = [], action) => {
     default:
       return state
   }
+}
+
+const mergeAssets = (oldAssets, newAssets) => {
+  const contractAddresses = [...oldAssets, ...newAssets].map(
+    asset => asset.contractAddress
+  )
+  const contractAddressSet = new Set(contractAddresses)
+  const contractAddressList = Array.from(contractAddressSet)
+
+  return contractAddressList.map(contractAddress => {
+    const oldAsset = oldAssets.find(
+      asset => asset.contractAddress === contractAddress
+    )
+    const newAsset = newAssets.find(
+      asset => asset.contractAddress === contractAddress
+    )
+    return newAsset || oldAsset
+  })
 }

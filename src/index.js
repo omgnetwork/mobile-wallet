@@ -6,25 +6,7 @@ import Router from 'router'
 import createStore from 'common/stores'
 import { walletActions, settingActions } from 'common/actions'
 import Config from 'react-native-config'
-import PushNotification from 'react-native-push-notification'
-import PushNotificationIOS from '@react-native-community/push-notification-ios'
-
-PushNotification.configure({
-  onNotification: function(notification) {
-    console.log('NOTIFICATION:', notification)
-
-    // process the notification
-
-    // required on iOS only (see fetchCompletionHandler docs: https://github.com/react-native-community/react-native-push-notification-ios)
-    notification.finish(PushNotificationIOS.FetchResult.NoData)
-  },
-
-  permissions: {
-    alert: true,
-    badge: true,
-    sound: true
-  }
-})
+import { notificationService } from 'common/services'
 
 YellowBox.ignoreWarnings(['Warning:', 'Setting'])
 
@@ -38,6 +20,7 @@ const App = () => {
         settingActions.syncProviderToStore(Config.ETHERSCAN_NETWORK)
       )
       store.dispatch(settingActions.syncPrimaryWalletAddressToStore(null))
+      notificationService.init()
     }
 
     sync()

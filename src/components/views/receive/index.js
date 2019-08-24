@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: theme.colors.white,
     justifyContent: 'center',
-    height: 320,
+    height: 280,
     borderBottomLeftRadius: theme.roundness,
     borderBottommRightRadius: theme.roundness
   }),

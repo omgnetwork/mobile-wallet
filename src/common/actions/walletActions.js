@@ -1,6 +1,6 @@
-import { walletService, providerService, priceService } from '../services'
+import { walletService, providerService } from '../services'
 import { createAsyncAction } from './actionCreators'
-import Config from 'react-native-config'
+import { Datetime } from 'common/utils'
 
 export const create = (provider, name) => {
   const asyncAction = async () => {
@@ -62,64 +62,13 @@ export const getTransactionHistory = address => {
 
 export const loadAssets = (provider, address) => {
   const asyncAction = async () => {
-    const txHistory = await providerService.getTransactionHistory(address)
-
-    const distinctTx = Array.from(
-      new Set(txHistory.map(tx => tx.contractAddress))
-    )
-
-    const fetchEth = async () => {
-      const pendingBalance = walletService.getEthBalance(address)
-      const pendingPrice = priceService.fetchPriceUsd(
-        '0x',
-        Config.ETHERSCAN_NETWORK
-      )
-
-      const [balance, price] = await Promise.all([pendingBalance, pendingPrice])
-
-      return {
-        tokenName: 'Ether',
-        tokenSymbol: 'ETH',
-        tokenDecimal: 18,
-        contractAddress: '0x',
-        balance: balance,
-        price: price
-      }
-    }
-
-    const unresolvedEth = fetchEth()
-    const unresolvedErc20 = distinctTx.map(async contractAddress => {
-      const tx = txHistory.find(t => t.contractAddress === contractAddress)
-
-      const pendingBalance = providerService.getTokenBalance(
-        provider,
-        tx.contractAddress,
-        tx.tokenDecimal,
-        address
-      )
-
-      const pendingPrice = priceService.fetchPriceUsd(
-        tx.contractAddress,
-        Config.ETHERSCAN_NETWORK
-      )
-
-      const [balance, price] = await Promise.all([pendingBalance, pendingPrice])
-
-      return {
-        tokenName: tx.tokenName,
-        tokenSymbol: tx.tokenSymbol,
-        tokenDecimal: tx.tokenDecimal,
-        contractAddress: tx.contractAddress,
-        balance: balance,
-        price: price
-      }
-    })
-
-    const assets = await Promise.all([unresolvedEth, ...unresolvedErc20])
+    const updatedAssets = await walletService.fetchAssets(provider, address)
 
     return {
       address,
-      assets
+      assets: updatedAssets.assets,
+      updatedBlock: updatedAssets.updatedBlock,
+      updatedAt: Datetime.now()
     }
   }
 

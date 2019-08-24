@@ -26,6 +26,7 @@ export const getTransactionHistory = address => {
       const formattedTxHistory = response.data.result.map(tx => {
         return {
           hash: tx.hash,
+          blockNumber: tx.blockNumber,
           tokenName: tx.tokenName,
           tokenSymbol: tx.tokenSymbol,
           tokenDecimal: tx.tokenDecimal,
