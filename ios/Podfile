@@ -23,26 +23,16 @@ target 'wallet' do
   pod 'React-jsiexecutor', :path => '../node_modules/react-native/ReactCommon/jsiexecutor'
   pod 'React-jsinspector', :path => '../node_modules/react-native/ReactCommon/jsinspector'
   pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
-
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
-
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
-
   pod 'react-native-sensitive-info', :path => '../node_modules/react-native-sensitive-info'
-
   pod 'react-native-config', :path => '../node_modules/react-native-config'
-
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
-
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
-
   pod 'react-native-camera', :path => '../node_modules/react-native-camera'
-
   pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
-
-
   pod 'RNCPushNotificationIOS', :path => '../node_modules/@react-native-community/push-notification-ios'
 
   target 'walletTests' do
