@@ -28,13 +28,9 @@ export const importByMnemonic = (wallets, mnemonic, provider, name) => {
   })
 }
 
-export const clear = () => {
-  const asyncAction = async () => {
-    return await walletService.clear()
-  }
-
-  return createAsyncAction({
-    operation: asyncAction,
+export const clear = dispatch => {
+  return createAction(dispatch, {
+    operation: () => {},
     type: 'WALLET/DELETE_ALL'
   })
 }

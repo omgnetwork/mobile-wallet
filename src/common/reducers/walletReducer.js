@@ -5,7 +5,7 @@ export const walletsReducer = (state = [], action) => {
       return [...state, action.data]
     case 'WALLET/SYNC/SUCCESS':
       return action.data.wallets
-    case 'WALLET/DELETE_ALL/SUCCESS':
+    case 'WALLET/DELETE_ALL/OK':
       return []
     case 'WALLET/GET_TX_HISTORY/SUCCESS':
       return state.map(wallet => {

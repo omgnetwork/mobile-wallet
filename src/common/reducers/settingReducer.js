@@ -17,6 +17,12 @@ export const settingReducer = (state = {}, action) => {
         ...state,
         primaryWallet: action.data.wallet
       }
+    case 'WALLET/DELETE_ALL/OK':
+      return {
+        ...state,
+        primaryWallet: null,
+        primaryWalletAddress: null
+      }
     default:
       return state
   }

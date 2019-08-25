@@ -29,22 +29,17 @@ const Wallets = ({
   }, [])
 
   useEffect(() => {
-    dispatchPrimaryWalletAddress(primaryAddress)
-
-    if (primaryAddress) {
-      dispatchSetPrimaryWallet(primaryAddress, provider)
-    }
-
-    if (!primaryAddress && wallets.length > 0) {
+    if (!primaryWalletAddress && wallets.length > 0) {
       setPrimaryAddress(wallets[0].address)
     }
-  }, [
-    primaryAddress,
-    provider,
-    dispatchPrimaryWalletAddress,
-    dispatchSetPrimaryWallet,
-    wallets
-  ])
+  }, [primaryWalletAddress, wallets])
+
+  useEffect(() => {
+    if (primaryAddress) {
+      console.log('dispatchPrimaryWalletAddress')
+      dispatchPrimaryWalletAddress(primaryAddress)
+    }
+  }, [dispatchPrimaryWalletAddress, primaryAddress, provider])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -74,7 +69,7 @@ const Wallets = ({
         <OMGMenu
           style={{ marginBottom: 16 }}
           anchorComponent={
-            <OMGButton onPress={() => navigation.navigate('ImportWallet')}>
+            <OMGButton onPress={() => navigation.navigate('CreateWallet')}>
               Add Wallet
             </OMGButton>
           }
@@ -130,11 +125,9 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchDeleteAllWallets: () => dispatch(walletActions.clear()),
+  dispatchDeleteAllWallets: () => walletActions.clear(dispatch),
   dispatchPrimaryWalletAddress: address =>
-    settingActions.setPrimaryAddress(dispatch, address),
-  dispatchSetPrimaryWallet: (address, provider) =>
-    dispatch(settingActions.setPrimaryWallet(address, provider))
+    settingActions.setPrimaryAddress(dispatch, address)
 })
 
 export default connect(

@@ -13,7 +13,7 @@ export const create = (provider, name) => {
       const address = await connectedProviderWallet.address
       const balance = await connectedProviderWallet.getBalance()
 
-      await walletStorage.setPrivateKey({ address, privateKey, balance })
+      await walletStorage.setPrivateKey({ address, privateKey })
 
       resolve({ address, balance, name })
     } catch (err) {
@@ -29,17 +29,6 @@ export const get = async (address, provider) => {
       const wallet = Ethers.importWalletByPrivateKey(privateKey)
       const connectedProviderWallet = wallet.connect(provider)
       resolve(connectedProviderWallet)
-    } catch (err) {
-      reject(err)
-    }
-  })
-}
-
-export const clear = () => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      await walletStorage.clear()
-      resolve([])
     } catch (err) {
       reject(err)
     }
@@ -208,7 +197,7 @@ export const importByMnemonic = (wallets, mnemonic, provider, name) => {
 
       await walletStorage.setPrivateKey({ address, privateKey })
 
-      const newWallet = { address, name, balance }
+      const newWallet = { address, name, balance, shouldRefresh: true }
 
       resolve(newWallet)
     } catch (err) {

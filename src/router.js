@@ -246,6 +246,6 @@ const debugNavigator = createStackNavigator(
   }
 )
 
-const AppContainer = createAppContainer(RootNavigator)
+const AppContainer = createAppContainer(debugNavigator)
 
 export default AppContainer
