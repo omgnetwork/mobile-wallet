@@ -13,16 +13,28 @@ const EthereumBalance = ({
   primaryWalletAddress,
   provider,
   loadAssets,
-  loading
+  loading,
+  setShouldRefreshWallet
 }) => {
   const [totalBalance, setTotalBalance] = useState(0.0)
   const currency = 'USD'
 
   useEffect(() => {
-    if ((provider && !primaryWallet.assets) || primaryWallet.shouldRefresh) {
-      loadAssets(provider, primaryWalletAddress)
+    if (provider && primaryWallet.shouldRefresh) {
+      loadAssets(
+        provider,
+        primaryWalletAddress,
+        primaryWallet.updatedBlock || '0'
+      )
+      setShouldRefreshWallet(primaryWalletAddress, false)
     }
-  }, [loadAssets, primaryWalletAddress, provider, primaryWallet])
+  }, [
+    loadAssets,
+    primaryWalletAddress,
+    provider,
+    primaryWallet,
+    setShouldRefreshWallet
+  ])
 
   useEffect(() => {
     if (primaryWallet.assets) {
@@ -53,7 +65,13 @@ const EthereumBalance = ({
         refreshControl={
           <RefreshControl
             refreshing={loading.show}
-            onRefresh={() => loadAssets(provider, primaryWalletAddress)}
+            onRefresh={() =>
+              loadAssets(
+                provider,
+                primaryWalletAddress,
+                primaryWallet.updatedBlock || '0'
+              )
+            }
           />
         }
         style={styles.list}
@@ -112,11 +130,10 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  createWallet: (provider, name) =>
-    dispatch(walletActions.create(provider, name)),
-  deleteAllWallet: () => dispatch(walletActions.clear()),
-  loadAssets: (provider, address) =>
-    dispatch(walletActions.loadAssets(provider, address))
+  loadAssets: (provider, address, lastBlockNumber) =>
+    dispatch(walletActions.loadAssets(provider, address, lastBlockNumber)),
+  setShouldRefreshWallet: (address, shouldRefresh) =>
+    walletActions.setShouldRefreshWallet(dispatch, address, shouldRefresh)
 })
 
 export default connect(

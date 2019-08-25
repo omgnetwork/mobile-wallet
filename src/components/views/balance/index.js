@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, View, Dimensions } from 'react-native'
+import { StyleSheet, View, Dimensions, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { walletActions } from 'common/actions'
@@ -17,18 +17,26 @@ import {
 
 const pageWidth = Dimensions.get('window').width - 56
 
-const Balance = ({ theme, primaryWalletAddress, loading, wallets }) => {
-  const [primaryWallet, setPrimaryWallet] = useState(null)
-
+const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
   useEffect(() => {
-    if (primaryWalletAddress) {
-      const wallet = wallets.find(w => w.address === primaryWalletAddress)
-      setPrimaryWallet(wallet)
+    function willFocus() {
+      StatusBar.setBarStyle('light-content')
+      StatusBar.setBackgroundColor(theme.colors.black5)
     }
-  }, [primaryWalletAddress, wallets])
+
+    const willFocusSubscription = navigation.addListener('willFocus', willFocus)
+
+    return () => {
+      willFocusSubscription.remove()
+    }
+  }, [navigation, primaryWallet, theme.colors.black5])
 
   return (
     <SafeAreaView style={styles.safeAreaView(theme)}>
+      <OMGStatusBar
+        barStyle={'light-content'}
+        backgroundColor={theme.colors.black5}
+      />
       <LinearGradient
         style={styles.container}
         colors={[theme.colors.black5, theme.colors.gray1]}>
@@ -93,17 +101,14 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
   wallets: state.wallets,
+  primaryWallet: state.wallets.find(
+    w => w.address === state.setting.primaryWalletAddress
+  ),
   provider: state.setting.provider,
   primaryWalletAddress: state.setting.primaryWalletAddress
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  createWallet: (provider, name) =>
-    dispatch(walletActions.create(provider, name)),
-  deleteAllWallet: () => dispatch(walletActions.clear())
-})
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(withTheme(Balance))

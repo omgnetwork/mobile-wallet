@@ -1,50 +1,40 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { withNavigation } from 'react-navigation'
+import { withNavigation, SafeAreaView } from 'react-navigation'
 import { StyleSheet, FlatList, View } from 'react-native'
 import { withTheme, Text } from 'react-native-paper'
-import { OMGBackground, OMGItemWallet, OMGButton } from 'components/widgets'
+import { OMGItemWallet, OMGButton } from 'components/widgets'
 import { walletActions, settingActions } from 'common/actions'
 import { OMGMenu, OMGEmpty } from 'components/widgets'
 
 const Wallets = ({
   loading,
-  deleteAllWallet,
   wallets,
   primaryWalletAddress,
-  savePrimaryWalletAddress,
-  setPrimaryWallet,
+  dispatchDeleteAllWallets,
+  dispatchPrimaryWalletAddress,
+  dispatchSetPrimaryWallet,
   provider,
   navigation
 }) => {
   const [primaryAddress, setPrimaryAddress] = useState(primaryWalletAddress)
   const [menuVisible, setMenuVisible] = useState(false)
 
-  const showMenuCallback = useCallback(() => {
-    setMenuVisible(true)
-  }, [])
-
-  const dismissMenuCallback = useCallback(() => {
-    setMenuVisible(false)
-  }, [])
-
   useEffect(() => {
-    savePrimaryWalletAddress(primaryAddress)
-    setPrimaryWallet(primaryAddress, provider)
-
-    if (!primaryAddress && wallets.length > 0) {
+    if (!primaryWalletAddress && wallets.length > 0) {
       setPrimaryAddress(wallets[0].address)
     }
-  }, [
-    primaryAddress,
-    provider,
-    savePrimaryWalletAddress,
-    setPrimaryWallet,
-    wallets
-  ])
+  }, [primaryWalletAddress, wallets])
+
+  useEffect(() => {
+    if (primaryAddress) {
+      console.log('dispatchPrimaryWalletAddress')
+      dispatchPrimaryWalletAddress(primaryAddress)
+    }
+  }, [dispatchPrimaryWalletAddress, primaryAddress, provider])
 
   return (
-    <OMGBackground style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <FlatList
         style={{ flex: 1 }}
         data={wallets}
@@ -68,35 +58,14 @@ const Wallets = ({
         }}
       />
       <View style={styles.button}>
-        <OMGMenu
-          style={{ marginBottom: 16 }}
-          anchorComponent={
-            <OMGButton onPress={showMenuCallback}>Add Wallet</OMGButton>
-          }
-          items={[
-            {
-              title: 'Create Wallet',
-              onPress: () => {
-                dismissMenuCallback()
-                navigation.navigate('CreateWallet')
-              }
-            },
-            {
-              title: 'Import Wallet',
-              onPress: () => {
-                dismissMenuCallback()
-                navigation.navigate('ImportWallet')
-              }
-            }
-          ]}
-          visible={menuVisible}
-          onDismiss={dismissMenuCallback}
-        />
-        <OMGButton onPress={deleteAllWallet} style={{ marginTop: 16 }}>
+        <OMGButton onPress={() => navigation.navigate('ImportWallet')}>
+          Add Wallet
+        </OMGButton>
+        <OMGButton onPress={dispatchDeleteAllWallets} style={{ marginTop: 16 }}>
           Clear
         </OMGButton>
       </View>
-    </OMGBackground>
+    </SafeAreaView>
   )
 }
 
@@ -125,11 +94,9 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  deleteAllWallet: () => dispatch(walletActions.clear()),
-  savePrimaryWalletAddress: address =>
-    dispatch(settingActions.setPrimaryAddress(address)),
-  setPrimaryWallet: (address, provider) =>
-    dispatch(settingActions.setPrimaryWallet(address, provider))
+  dispatchDeleteAllWallets: () => walletActions.clear(dispatch),
+  dispatchPrimaryWalletAddress: address =>
+    settingActions.setPrimaryAddress(dispatch, address)
 })
 
 export default connect(

@@ -1,6 +1,6 @@
 import React from 'react'
 import QRCodeScanner from 'react-native-qrcode-scanner'
-import { View, StyleSheet, Dimensions, Platform } from 'react-native'
+import { View, StyleSheet, Dimensions } from 'react-native'
 import Svg, { Rect, Path } from 'react-native-svg'
 import OMGText from '../omg-text'
 

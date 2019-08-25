@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-navigation'
 import { OMGIcon, OMGBox, OMGText, OMGStatusBar } from 'components/widgets'
@@ -10,6 +10,8 @@ const Transfer = ({ navigation, theme }) => {
 
   useEffect(() => {
     function willFocus() {
+      StatusBar.setBarStyle('dark-content')
+      StatusBar.setBackgroundColor(theme.colors.white)
       setRendering(true)
     }
     function willBlur() {
@@ -23,7 +25,7 @@ const Transfer = ({ navigation, theme }) => {
       willBlurSubscription.remove()
       willFocusSubscription.remove()
     }
-  }, [navigation])
+  }, [navigation, theme.colors.white])
 
   return (
     <SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
@@ -57,13 +59,11 @@ const styles = StyleSheet.create({
   title: theme => ({
     flex: 1,
     marginHorizontal: 16,
-    marginBottom: 16,
     fontSize: 18,
     textTransform: 'uppercase',
     color: theme.colors.gray3
   }),
   icon: {
-    marginBottom: 16,
     padding: 16
   }
 })

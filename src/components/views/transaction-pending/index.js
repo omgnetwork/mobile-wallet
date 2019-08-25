@@ -10,7 +10,8 @@ import {
   OMGBox,
   OMGButton,
   OMGText,
-  OMGWalletAddress
+  OMGWalletAddress,
+  OMGStatusBar
 } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
@@ -21,7 +22,7 @@ const TransactionPending = ({
   wallet,
   provider,
   pendingTxs,
-  waitForTransaction
+  dispatchSubscribeTransaction
 }) => {
   const pendingTx = navigation.getParam('pendingTx')
   const token = navigation.getParam('token')
@@ -33,12 +34,13 @@ const TransactionPending = ({
   useEffect(() => {
     const hasPendingTx = pendingTxs.length && pendingTxs.indexOf(pendingTx) > -1
     if (hasPendingTx) {
-      waitForTransaction(provider, wallet, pendingTx)
+      dispatchSubscribeTransaction(provider, wallet, pendingTx)
     }
-  }, [pendingTx, pendingTxs, provider, waitForTransaction, wallet])
+  }, [pendingTx, pendingTxs, provider, dispatchSubscribeTransaction, wallet])
 
   return (
     <SafeAreaView style={styles.container(theme)}>
+      <OMGStatusBar barStyle={'dark-content'} />
       <View style={styles.contentContainer}>
         <View style={styles.headerContainer}>
           <OMGText style={styles.title(theme)}>Pending Transaction</OMGText>
@@ -243,8 +245,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  waitForTransaction: (provider, wallet, tx) =>
-    dispatch(transactionActions.waitForTransaction(provider, wallet, tx))
+  dispatchSubscribeTransaction: (provider, wallet, tx) =>
+    dispatch(transactionActions.subscribeTransaction(provider, wallet, tx))
 })
 
 export default connect(

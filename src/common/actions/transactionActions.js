@@ -66,9 +66,12 @@ export const sendEthToken = (token, fee, fromWallet, provider, toAddress) => {
   })
 }
 
-export const waitForTransaction = (provider, wallet, tx) => {
+export const subscribeTransaction = (provider, wallet, tx) => {
   const asyncAction = async () => {
-    const txReceipt = await transactionService.waitForTransaction(provider, tx)
+    const txReceipt = await transactionService.subscribeTransaction(
+      provider,
+      tx
+    )
 
     console.log(txReceipt)
     notificationService.sendNotification({

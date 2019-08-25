@@ -10,14 +10,16 @@ const OMGQRCode = ({ payload, displayText, size, theme, style }) => {
   return (
     <View style={{ ...styles.container, ...style }}>
       <QRCode value={payload} size={size || 200} style={styles.qrcode} />
-      <View style={styles.displayTextContainer}>
-        <OMGText style={styles.text(theme)}>{displayText}</OMGText>
-        <OMGBox
-          style={styles.icon(theme)}
-          onPress={() => Clipboard.setString(displayText)}>
-          <OMGIcon name='copy' size={14} color={theme.colors.gray3} />
-        </OMGBox>
-      </View>
+      {displayText && (
+        <View style={styles.displayTextContainer}>
+          <OMGText style={styles.text(theme)}>{displayText}</OMGText>
+          <OMGBox
+            style={styles.icon(theme)}
+            onPress={() => Clipboard.setString(displayText)}>
+            <OMGIcon name='copy' size={14} color={theme.colors.gray3} />
+          </OMGBox>
+        </View>
+      )}
     </View>
   )
 }

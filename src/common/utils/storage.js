@@ -3,7 +3,7 @@ import Storage from '@react-native-community/async-storage'
 
 const SECURE_STORAGE_NAME = 'omgwallet'
 
-const options = {
+export const options = {
   sharedPreferencesName: SECURE_STORAGE_NAME,
   keychainService: SECURE_STORAGE_NAME
 }

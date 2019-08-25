@@ -22,8 +22,8 @@ const TransactionConfirm = ({
   theme,
   navigation,
   provider,
-  sendErc20Token,
-  sendEthToken,
+  dispatchSendErc20Token,
+  dispatchSendEthToken,
   pendingTxs,
   loading
 }) => {
@@ -70,10 +70,10 @@ const TransactionConfirm = ({
   const sendToken = () => {
     if (token.contractAddress === '0x') {
       // ETH token
-      sendEthToken(token, fee, fromWallet, provider, toWallet.address)
+      dispatchSendEthToken(token, fee, fromWallet, provider, toWallet.address)
     } else {
       // ERC20 Token
-      sendErc20Token(token, fee, fromWallet, provider, toWallet.address)
+      dispatchSendErc20Token(token, fee, fromWallet, provider, toWallet.address)
     }
   }
 
@@ -304,11 +304,11 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  sendEthToken: (token, fee, wallet, provider, toAddress) =>
+  dispatchSendEthToken: (token, fee, wallet, provider, toAddress) =>
     dispatch(
       transactionActions.sendEthToken(token, fee, wallet, provider, toAddress)
     ),
-  sendErc20Token: (token, fee, wallet, provider, toAddress) =>
+  dispatchSendErc20Token: (token, fee, wallet, provider, toAddress) =>
     dispatch(
       transactionActions.sendErc20Token(token, fee, wallet, provider, toAddress)
     )

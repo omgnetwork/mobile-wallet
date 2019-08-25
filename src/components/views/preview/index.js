@@ -6,6 +6,7 @@ import {
   OMGRadioButton,
   OMGTextInput,
   OMGButton,
+  OMGText,
   OMGBox,
   OMGPasswordTextInput,
   OMGAssetList,
@@ -66,6 +67,10 @@ const Preview = ({ navigation, theme }) => {
           }}
         />
         <OMGBox style={{ marginVertical: 16 }}>
+          <OMGText weight='normal'>Book</OMGText>
+          <OMGText weight='medium'>Medium</OMGText>
+          <OMGText weight='bold'>Bold</OMGText>
+          <OMGText weight='extra-bold'>Black</OMGText>
           <OMGTokenInput token={mockToken} theme={theme} />
           <OMGWalletAddress wallet={mockWallet} style={{ marginTop: 16 }} />
           <OMGAddressInput

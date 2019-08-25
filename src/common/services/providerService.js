@@ -5,7 +5,6 @@ export const create = providerName => {
   return new Promise(async (resolve, reject) => {
     try {
       const provider = Ethers.createProvider(providerName)
-      await settingStorage.setProviderName(providerName)
       resolve(provider)
     } catch (err) {
       reject(err)
@@ -18,14 +17,18 @@ export const getName = async defaultProviderName => {
   return providerName || defaultProviderName
 }
 
-export const getTransactionHistory = address => {
+export const getTransactionHistory = (address, lastBlockNumber) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await Ethers.fetchTransactionDetail(address)
+      const response = await Ethers.fetchTransactionDetail(
+        address,
+        lastBlockNumber
+      )
 
       const formattedTxHistory = response.data.result.map(tx => {
         return {
           hash: tx.hash,
+          blockNumber: tx.blockNumber,
           tokenName: tx.tokenName,
           tokenSymbol: tx.tokenSymbol,
           tokenDecimal: tx.tokenDecimal,

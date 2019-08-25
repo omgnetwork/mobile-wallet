@@ -1,4 +1,4 @@
-import * as colors from './colors'
+import colors from './colors'
 import * as dimens from './dimens'
 
 export { colors, dimens }

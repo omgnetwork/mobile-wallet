@@ -78,13 +78,7 @@ const mapStateToProps = (state, ownProps) => ({
   primaryWalletAddress: state.setting.primaryWalletAddress
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  createWallet: (provider, name) =>
-    dispatch(walletActions.create(provider, name)),
-  deleteAllWallet: () => dispatch(walletActions.clear())
-})
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(withNavigation(withTheme(PlasmaBalance)))

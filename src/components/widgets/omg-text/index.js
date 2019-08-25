@@ -1,11 +1,17 @@
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import { Text } from 'react-native-paper'
 
 const OMGText = ({ children, weight, style, ellipsizeMode, numberOfLines }) => {
   return (
     <Text
-      style={{ ...styles.text(weight), ...style }}
+      style={[
+        Platform.OS === 'ios'
+          ? styles.textIOS(weight)
+          : styles.textAndroid(weight),
+        style
+      ]}
+      fontFamily={fontFamilySelector(weight)}
       ellipsizeMode={ellipsizeMode}
       numberOfLines={numberOfLines}>
       {children}
@@ -26,8 +32,25 @@ const fontFamilySelector = weight => {
   }
 }
 
+const fontWeightSelector = weight => {
+  switch (weight) {
+    case 'extra-bold':
+      return '900'
+    case 'bold':
+      return '700'
+    case 'medium':
+      return '500'
+    default:
+      return '400'
+  }
+}
+
 const styles = StyleSheet.create({
-  text: weight => ({
+  textIOS: weight => ({
+    fontFamily: fontFamilySelector(weight),
+    fontWeight: fontWeightSelector(weight)
+  }),
+  textAndroid: weight => ({
     fontFamily: fontFamilySelector(weight)
   })
 })
