@@ -35,28 +35,6 @@ export const clear = dispatch => {
   })
 }
 
-export const syncAllToStore = () => {
-  const asyncAction = async () => {
-    const wallets = await walletService.all()
-    const updatedWallets = wallets.map(wallet => {
-      if (wallet.assets && wallet.assets.length > 0) {
-        return {
-          ...wallet,
-          shouldRefresh: true
-        }
-      } else {
-        return wallet
-      }
-    })
-    return { wallets: updatedWallets }
-  }
-
-  return createAsyncAction({
-    operation: asyncAction,
-    type: 'WALLET/SYNC'
-  })
-}
-
 export const getTransactionHistory = address => {
   const asyncAction = async () => {
     const txHistory = await providerService.getTransactionHistory(address)

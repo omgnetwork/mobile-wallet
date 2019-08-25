@@ -130,9 +130,6 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  createWallet: (provider, name) =>
-    dispatch(walletActions.create(provider, name)),
-  deleteAllWallet: () => dispatch(walletActions.clear()),
   loadAssets: (provider, address, lastBlockNumber) =>
     dispatch(walletActions.loadAssets(provider, address, lastBlockNumber)),
   setShouldRefreshWallet: (address, shouldRefresh) =>

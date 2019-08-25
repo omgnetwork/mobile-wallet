@@ -14,14 +14,14 @@ import { walletActions } from 'common/actions'
 const CreateWalletComponent = ({
   loading,
   provider,
-  createWallet,
+  dispatchCreateWallet,
   navigation
 }) => {
   const walletNameRef = useRef()
 
   const create = () => {
     if (walletNameRef.current) {
-      createWallet(provider, walletNameRef.current)
+      dispatchCreateWallet(provider, walletNameRef.current)
     }
   }
 
@@ -57,9 +57,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  createWallet: (provider, name) =>
-    dispatch(walletActions.create(provider, name)),
-  deleteAllWallet: () => dispatch(walletActions.clear())
+  dispatchCreateWallet: (provider, name) =>
+    dispatch(walletActions.create(provider, name))
 })
 
 export default connect(

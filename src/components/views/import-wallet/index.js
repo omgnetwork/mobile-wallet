@@ -67,7 +67,7 @@ const ImportWalletComponent = props => {
 }
 
 const Mnemonic = ({
-  importWalletByMnemonic,
+  dispatchImportWalletByMnemonic,
   loading,
   provider,
   wallets,
@@ -84,7 +84,7 @@ const Mnemonic = ({
   })
 
   const importWallet = () => {
-    importWalletByMnemonic(
+    dispatchImportWalletByMnemonic(
       wallets,
       mnemonicRef.current,
       provider,
@@ -149,7 +149,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  importWalletByMnemonic: (wallets, mnemonic, provider, name) =>
+  dispatchImportWalletByMnemonic: (wallets, mnemonic, provider, name) =>
     dispatch(walletActions.importByMnemonic(wallets, mnemonic, provider, name))
 })
 

@@ -22,7 +22,7 @@ const TransactionPending = ({
   wallet,
   provider,
   pendingTxs,
-  subscribeTransaction
+  dispatchSubscribeTransaction
 }) => {
   const pendingTx = navigation.getParam('pendingTx')
   const token = navigation.getParam('token')
@@ -34,9 +34,9 @@ const TransactionPending = ({
   useEffect(() => {
     const hasPendingTx = pendingTxs.length && pendingTxs.indexOf(pendingTx) > -1
     if (hasPendingTx) {
-      subscribeTransaction(provider, wallet, pendingTx)
+      dispatchSubscribeTransaction(provider, wallet, pendingTx)
     }
-  }, [pendingTx, pendingTxs, provider, subscribeTransaction, wallet])
+  }, [pendingTx, pendingTxs, provider, dispatchSubscribeTransaction, wallet])
 
   return (
     <SafeAreaView style={styles.container(theme)}>
@@ -245,7 +245,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  subscribeTransaction: (provider, wallet, tx) =>
+  dispatchSubscribeTransaction: (provider, wallet, tx) =>
     dispatch(transactionActions.subscribeTransaction(provider, wallet, tx))
 })
 

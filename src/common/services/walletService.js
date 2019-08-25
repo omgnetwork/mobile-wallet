@@ -35,17 +35,6 @@ export const get = async (address, provider) => {
   })
 }
 
-export const all = () => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const wallets = await walletStorage.all()
-      resolve(wallets)
-    } catch (err) {
-      reject(err)
-    }
-  })
-}
-
 export const getEthBalance = address => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -200,17 +189,6 @@ export const importByMnemonic = (wallets, mnemonic, provider, name) => {
       const newWallet = { address, name, balance, shouldRefresh: true }
 
       resolve(newWallet)
-    } catch (err) {
-      reject(err)
-    }
-  })
-}
-
-export const getPrimaryAddress = defaultAddress => {
-  return new Promise((resolve, reject) => {
-    try {
-      const primaryAddress = settingStorage.getPrimaryAddress(defaultAddress)
-      resolve(primaryAddress)
     } catch (err) {
       reject(err)
     }
