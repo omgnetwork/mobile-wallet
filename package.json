@@ -8,7 +8,8 @@
     "lint": "eslint .",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "fix": "eslint . --fix"
+    "fix": "eslint . --fix",
+    "postinstall": "rn-nodeify --install assert,stream,events,crypto,url,http,https,vm,os --hack"
   },
   "rnpm": {
     "assets": [
@@ -16,23 +17,31 @@
     ]
   },
   "dependencies": {
+    "@omisego/omg-js": "^2.0.0-v0.2",
     "@react-native-community/async-storage": "^1.6.1",
     "@react-native-community/push-notification-ios": "^1.0.2",
+    "@tradle/react-native-http": "^2.0.1",
+    "assert": "^1.5.0",
     "axios": "^0.19.0",
     "eslint-plugin-jest": "^22.13.6",
     "ethers": "^4.0.33",
+    "events": "^1.1.1",
+    "https-browserify": "0.0.1",
     "moment": "^2.24.0",
     "react": "16.8.6",
     "react-native": "0.60.4",
     "react-native-camera": "^3.1.2",
     "react-native-config": "^0.11.7",
+    "react-native-crypto": "^2.2.0",
     "react-native-gesture-handler": "^1.3.0",
     "react-native-linear-gradient": "^2.5.6",
+    "react-native-os": "^1.2.5",
     "react-native-paper": "^3.0.0-alpha.2",
     "react-native-permissions": "^1.2.0",
     "react-native-push-notification": "^3.1.9",
     "react-native-qrcode-scanner": "^1.2.1",
     "react-native-qrcode-svg": "^5.1.2",
+    "react-native-randombytes": "^3.5.3",
     "react-native-screens": "^1.0.0-alpha.23",
     "react-native-sensitive-info": "^5.4.2",
     "react-native-svg": "^9.6.2",
@@ -41,9 +50,14 @@
     "react-navigation-backhandler": "^1.3.2",
     "react-navigation-material-bottom-tabs": "^1.0.0",
     "react-redux": "^7.1.0",
+    "readable-stream": "^1.0.33",
     "redux": "^4.0.4",
     "redux-persist": "^5.10.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "stream-browserify": "^1.0.0",
+    "url": "^0.10.3",
+    "vm-browserify": "0.0.4",
+    "web3": "^1.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
@@ -60,9 +74,36 @@
     "metro-react-native-babel-preset": "^0.55.0",
     "prettier": "1.18.2",
     "react-test-renderer": "16.8.6",
-    "redux-devtools-extension": "^2.13.8"
+    "redux-devtools-extension": "^2.13.8",
+    "rn-nodeify": "^10.1.0"
   },
   "jest": {
     "preset": "react-native"
+  },
+  "react-native": {
+    "_stream_transform": "readable-stream/transform",
+    "_stream_readable": "readable-stream/readable",
+    "_stream_writable": "readable-stream/writable",
+    "_stream_duplex": "readable-stream/duplex",
+    "_stream_passthrough": "readable-stream/passthrough",
+    "stream": "stream-browserify",
+    "crypto": "react-native-crypto",
+    "http": "@tradle/react-native-http",
+    "https": "https-browserify",
+    "vm": "vm-browserify",
+    "os": "react-native-os"
+  },
+  "browser": {
+    "_stream_transform": "readable-stream/transform",
+    "_stream_readable": "readable-stream/readable",
+    "_stream_writable": "readable-stream/writable",
+    "_stream_duplex": "readable-stream/duplex",
+    "_stream_passthrough": "readable-stream/passthrough",
+    "stream": "stream-browserify",
+    "crypto": "react-native-crypto",
+    "http": "@tradle/react-native-http",
+    "https": "https-browserify",
+    "vm": "vm-browserify",
+    "os": "react-native-os"
   }
 }
