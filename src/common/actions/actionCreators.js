@@ -26,9 +26,9 @@ export const createAction = (
 ) => {
   try {
     const result = doAction()
-    dispatch({ type: `${actionType}/SUCCESS`, data: result })
+    dispatch({ type: `${actionType}/OK`, data: result })
   } catch (err) {
     console.log(err)
-    dispatch({ type: `${actionType}/FAILED`, data: err })
+    dispatch({ type: `${actionType}/ERROR`, data: err })
   }
 }

@@ -4,7 +4,7 @@ import { providerService, walletService } from '../services'
 export const setProvider = providerName => {
   const asyncAction = async () => {
     const provider = await providerService.create(providerName)
-    return { provider }
+    return { provider, providerName }
   }
   return createAsyncAction({
     operation: asyncAction,
@@ -14,9 +14,9 @@ export const setProvider = providerName => {
 
 export const syncProviderToStore = defaultProviderName => {
   const asyncAction = async () => {
-    const name = await providerService.getName(defaultProviderName)
-    const provider = await providerService.create(name)
-    return { provider }
+    const providerName = await providerService.getName(defaultProviderName)
+    const provider = await providerService.create(providerName)
+    return { provider, providerName }
   }
   return createAsyncAction({
     operation: asyncAction,

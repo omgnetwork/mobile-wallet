@@ -73,6 +73,7 @@ export const subscribeTransaction = (provider, wallet, tx) => {
       tx
     )
 
+    console.log(txReceipt)
     notificationService.sendNotification({
       title: `${wallet.name} sent`,
       message: `${tx.value} ${tx.symbol}`

@@ -9,11 +9,11 @@ import { OMGMenu, OMGEmpty } from 'components/widgets'
 
 const Wallets = ({
   loading,
-  deleteAllWallet,
   wallets,
   primaryWalletAddress,
-  savePrimaryWalletAddress,
-  setPrimaryWallet,
+  dispatchDeleteAllWallets,
+  dispatchPrimaryWalletAddress,
+  dispatchSetPrimaryWallet,
   provider,
   navigation
 }) => {
@@ -29,8 +29,11 @@ const Wallets = ({
   }, [])
 
   useEffect(() => {
-    savePrimaryWalletAddress(primaryAddress)
-    setPrimaryWallet(primaryAddress, provider)
+    dispatchPrimaryWalletAddress(primaryAddress)
+
+    if (primaryAddress) {
+      dispatchSetPrimaryWallet(primaryAddress, provider)
+    }
 
     if (!primaryAddress && wallets.length > 0) {
       setPrimaryAddress(wallets[0].address)
@@ -38,8 +41,8 @@ const Wallets = ({
   }, [
     primaryAddress,
     provider,
-    savePrimaryWalletAddress,
-    setPrimaryWallet,
+    dispatchPrimaryWalletAddress,
+    dispatchSetPrimaryWallet,
     wallets
   ])
 
@@ -92,7 +95,7 @@ const Wallets = ({
           visible={menuVisible}
           onDismiss={dismissMenuCallback}
         />
-        <OMGButton onPress={deleteAllWallet} style={{ marginTop: 16 }}>
+        <OMGButton onPress={dispatchDeleteAllWallets} style={{ marginTop: 16 }}>
           Clear
         </OMGButton>
       </View>
@@ -125,11 +128,11 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  deleteAllWallet: () => dispatch(walletActions.clear()),
-  savePrimaryWalletAddress: address =>
+  dispatchDeleteAllWallets: () => dispatch(walletActions.clear()),
+  dispatchPrimaryWalletAddress: address =>
     dispatch(settingActions.setPrimaryAddress(address)),
-  setPrimaryWallet: (address, provider) =>
-    dispatch(settingActions.setPrimaryWallet(address, provider))
+  dispatchSetPrimaryWallet: (address, provider) =>
+    dispatch(settingActions.dispatchSetPrimaryWallet(address, provider))
 })
 
 export default connect(

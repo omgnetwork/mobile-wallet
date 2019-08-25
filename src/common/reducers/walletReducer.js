@@ -38,6 +38,14 @@ export const walletsReducer = (state = [], action) => {
           return wallet
         }
       })
+    case 'WALLET/SET_SHOULD_REFRESH/OK':
+      return state.map(wallet => {
+        if (wallet.address === action.data.address) {
+          return { ...wallet, shouldRefresh: action.data.shouldRefresh }
+        } else {
+          return wallet
+        }
+      })
     default:
       return state
   }

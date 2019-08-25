@@ -17,22 +17,7 @@ import {
 
 const pageWidth = Dimensions.get('window').width - 56
 
-const Balance = ({
-  theme,
-  primaryWalletAddress,
-  navigation,
-  loading,
-  wallets
-}) => {
-  const [primaryWallet, setPrimaryWallet] = useState(null)
-
-  useEffect(() => {
-    if (primaryWalletAddress) {
-      const wallet = wallets.find(w => w.address === primaryWalletAddress)
-      setPrimaryWallet(wallet)
-    }
-  }, [primaryWalletAddress, wallets])
-
+const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
   useEffect(() => {
     function willFocus() {
       StatusBar.setBarStyle('light-content')
@@ -43,7 +28,7 @@ const Balance = ({
     return () => {
       willFocusSubscription.remove()
     }
-  }, [navigation])
+  }, [navigation, primaryWallet])
 
   return (
     <SafeAreaView style={styles.safeAreaView(theme)}>
@@ -115,6 +100,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
   wallets: state.wallets,
+  primaryWallet: state.wallets.find(
+    w => w.address === state.setting.primaryWalletAddress
+  ),
   provider: state.setting.provider,
   primaryWalletAddress: state.setting.primaryWalletAddress
 })

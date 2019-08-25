@@ -43,14 +43,17 @@ export const commify = amount => {
   return ethers.utils.commify(amount)
 }
 
-export const fetchTransactionDetail = address => {
+export const fetchTransactionDetail = (address, lastBlockNumber) => {
+  console.log('fetchTransactionDetail')
   return axios.get(Config.ETHERSCAN_API_URL, {
     params: {
       module: 'account',
       sort: 'asc',
       apikey: Config.ETHERSCAN_API_KEY,
       address: address,
-      action: 'tokentx'
+      action: 'tokentx',
+      startblock: lastBlockNumber,
+      endblock: '99999999'
     }
   })
 }

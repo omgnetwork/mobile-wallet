@@ -1,6 +1,5 @@
 import { walletService, providerService } from '../services'
-import { createAsyncAction } from './actionCreators'
-import { Datetime } from 'common/utils'
+import { createAsyncAction, createAction } from './actionCreators'
 
 export const create = (provider, name) => {
   const asyncAction = async () => {
@@ -38,7 +37,17 @@ export const clear = () => {
 export const syncAllToStore = () => {
   const asyncAction = async () => {
     const wallets = await walletService.all()
-    return { wallets }
+    const updatedWallets = wallets.map(wallet => {
+      if (wallet.assets && wallet.assets.length > 0) {
+        return {
+          ...wallet,
+          shouldRefresh: true
+        }
+      } else {
+        return wallet
+      }
+    })
+    return { wallets: updatedWallets }
   }
 
   return createAsyncAction({
@@ -60,20 +69,30 @@ export const getTransactionHistory = address => {
   })
 }
 
-export const loadAssets = (provider, address) => {
+export const loadAssets = (provider, address, lastBlockNumber) => {
   const asyncAction = async () => {
-    const updatedAssets = await walletService.fetchAssets(provider, address)
-
-    return {
+    const updatedAssets = await walletService.fetchAssets(
+      provider,
       address,
-      assets: updatedAssets.assets,
-      updatedBlock: updatedAssets.updatedBlock,
-      updatedAt: Datetime.now()
-    }
+      lastBlockNumber
+    )
+
+    return updatedAssets
   }
 
   return createAsyncAction({
     type: 'WALLET/INIT_ASSETS',
-    operation: asyncAction
+    operation: asyncAction,
+    isBackgroundTask: lastBlockNumber > 0
+  })
+}
+
+export const setShouldRefreshWallet = (dispatch, address, shouldRefresh) => {
+  return createAction(dispatch, {
+    operation: () => ({
+      address,
+      shouldRefresh
+    }),
+    type: 'WALLET/SET_SHOULD_REFRESH'
   })
 }

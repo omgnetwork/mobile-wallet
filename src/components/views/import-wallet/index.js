@@ -37,6 +37,8 @@ const ImportWalletComponent = props => {
     }
   }
 
+  console.log(props)
+
   return (
     <SafeAreaView
       style={{
@@ -57,9 +59,7 @@ const ImportWalletComponent = props => {
             }}
           />
           <Fragment>
-            {method === 'mnemonic' && (
-              <ImportWalletComponent.Mnemonic {...props} />
-            )}
+            {method === 'mnemonic' && <Mnemonic {...props} />}
             {method === 'keystore' && <Text>Empty</Text>}
           </Fragment>
         </ScrollView>
@@ -79,6 +79,7 @@ const Mnemonic = ({
   const walletNameRef = useRef(null)
   const snackbarProps = useAlert({
     loading,
+    actions: ['WALLET_IMPORT'],
     msgSuccess: 'Import wallet successful',
     msgFailed: 'Failed to import a wallet. Make sure the mnemonic is correct.'
   })
@@ -144,9 +145,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   importWalletByMnemonic: (mnemonic, provider, name) =>
-    dispatch(walletActions.importByMnemonic(mnemonic, provider, name)),
-  setPrimaryAddress: address =>
-    dispatch(settingActions.setPrimaryAddress(address))
+    dispatch(walletActions.importByMnemonic(mnemonic, provider, name))
 })
 
 export default connect(

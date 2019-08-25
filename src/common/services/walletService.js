@@ -14,7 +14,7 @@ export const create = (provider, name) => {
       const balance = await connectedProviderWallet.getBalance()
 
       await walletStorage.setPrivateKey({ address, privateKey })
-      await walletStorage.add({ address, balance, name })
+      // await walletStorage.add({ address, balance, name })
 
       resolve({ address, balance, name })
     } catch (err) {
@@ -71,10 +71,16 @@ export const getEthBalance = address => {
   })
 }
 
-export const fetchAssets = (provider, address) => {
+export const fetchAssets = (provider, address, lastBlockNumber) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const txHistory = await providerService.getTransactionHistory(address)
+      const txHistory = await providerService.getTransactionHistory(
+        address,
+        lastBlockNumber
+      )
+
+      console.log(txHistory)
+
       const pendingEthPrice = priceService.fetchPriceUsd(
         '0x',
         Config.ETHERSCAN_NETWORK
@@ -84,10 +90,15 @@ export const fetchAssets = (provider, address) => {
       const pendingEthToken = fetchEthToken(pendingEthBalance, pendingEthPrice)
       const pendingERC20Tokens = fetchERC20Token(txHistory, provider, address)
       const assets = await Promise.all([pendingEthToken, ...pendingERC20Tokens])
-      resolve({
+      const updatedBlock = txHistory.slice(-1).pop().blockNumber
+      const updatedAssets = {
+        address,
         assets,
-        updatedBlock: txHistory.slice(-1).pop().blockNumber
-      })
+        updatedBlock,
+        updatedAt: Datetime.now()
+      }
+
+      resolve(updatedAssets)
     } catch (err) {
       console.log(err)
       reject(new Error(`Cannot fetch assets for address ${address}.`))
@@ -188,12 +199,11 @@ export const importByMnemonic = (mnemonic, provider, name) => {
 
       const privateKey = await connectedProviderWallet.privateKey
       const address = await connectedProviderWallet.address
-      const balance = await connectedProviderWallet.getBalance()
 
       await walletStorage.setPrivateKey({ address, privateKey })
 
-      const newWallet = { address, balance, name: name }
-      await walletStorage.add(newWallet)
+      const newWallet = { address, name: name }
+      // await walletStorage.add(newWallet)
 
       resolve(newWallet)
     } catch (err) {
@@ -205,7 +215,7 @@ export const importByMnemonic = (mnemonic, provider, name) => {
 export const setPrimaryAddress = address => {
   return new Promise(async (resolve, reject) => {
     try {
-      await settingStorage.setPrimaryAddress(address)
+      // await settingStorage.setPrimaryAddress(address)
       resolve(address)
     } catch (err) {
       reject(err)
