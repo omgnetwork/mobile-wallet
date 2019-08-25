@@ -13,8 +13,7 @@ export const create = (provider, name) => {
       const address = await connectedProviderWallet.address
       const balance = await connectedProviderWallet.getBalance()
 
-      await walletStorage.setPrivateKey({ address, privateKey })
-      // await walletStorage.add({ address, balance, name })
+      await walletStorage.setPrivateKey({ address, privateKey, balance })
 
       resolve({ address, balance, name })
     } catch (err) {
@@ -183,15 +182,15 @@ export const fetchERC20Token = (txHistory, provider, address) => {
   }
 }
 
-export const importByMnemonic = (mnemonic, provider, name) => {
+export const importByMnemonic = (wallets, mnemonic, provider, name) => {
   return new Promise(async (resolve, reject) => {
     try {
       if (mnemonic.split(' ').length !== 12) {
-        throw 'Invalid mnemonic'
+        throw new Error('Invalid mnemonic')
       }
 
       if (!name) {
-        throw 'Wallet name is empty'
+        throw new Error('Wallet name is empty')
       }
 
       const wallet = Ethers.importWalletByMnemonic(mnemonic)
@@ -199,24 +198,19 @@ export const importByMnemonic = (mnemonic, provider, name) => {
 
       const privateKey = await connectedProviderWallet.privateKey
       const address = await connectedProviderWallet.address
+      const balance = await connectedProviderWallet.getBalance()
+
+      if (wallets.find(w => w.address === address)) {
+        throw new Error(
+          'Cannot add the wallet. The wallet has already existed.'
+        )
+      }
 
       await walletStorage.setPrivateKey({ address, privateKey })
 
-      const newWallet = { address, name: name }
-      // await walletStorage.add(newWallet)
+      const newWallet = { address, name, balance }
 
       resolve(newWallet)
-    } catch (err) {
-      reject(err)
-    }
-  })
-}
-
-export const setPrimaryAddress = address => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      // await settingStorage.setPrimaryAddress(address)
-      resolve(address)
     } catch (err) {
       reject(err)
     }

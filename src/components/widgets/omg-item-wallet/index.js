@@ -22,7 +22,7 @@ const OMGItemWallet = ({ name, wallet, selected, style, onPress }) => {
       </View>
       <View style={styles.sectionAmount}>
         <OMGText style={styles.balance} weight='bold'>
-          {formatTokenBalance(Ethers.formatEther(wallet.balance))}
+          {formatTokenBalance(Ethers.formatEther(wallet.balance || '0'))}
         </OMGText>
         <OMGText style={styles.currency}>ETH</OMGText>
       </View>

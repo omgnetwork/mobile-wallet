@@ -37,8 +37,6 @@ const ImportWalletComponent = props => {
     }
   }
 
-  console.log(props)
-
   return (
     <SafeAreaView
       style={{
@@ -73,6 +71,7 @@ const Mnemonic = ({
   loading,
   provider,
   wallets,
+  error,
   navigation
 }) => {
   const mnemonicRef = useRef(null)
@@ -81,11 +80,16 @@ const Mnemonic = ({
     loading,
     actions: ['WALLET_IMPORT'],
     msgSuccess: 'Import wallet successful',
-    msgFailed: 'Failed to import a wallet. Make sure the mnemonic is correct.'
+    error
   })
 
   const importWallet = () => {
-    importWalletByMnemonic(mnemonicRef.current, provider, walletNameRef.current)
+    importWalletByMnemonic(
+      wallets,
+      mnemonicRef.current,
+      provider,
+      walletNameRef.current
+    )
   }
 
   useEffect(() => {
@@ -140,12 +144,13 @@ ImportWalletComponent.Mnemonic = Mnemonic
 const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
   wallets: state.wallets,
-  provider: state.setting.provider
+  provider: state.setting.provider,
+  error: state.error
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  importWalletByMnemonic: (mnemonic, provider, name) =>
-    dispatch(walletActions.importByMnemonic(mnemonic, provider, name))
+  importWalletByMnemonic: (wallets, mnemonic, provider, name) =>
+    dispatch(walletActions.importByMnemonic(wallets, mnemonic, provider, name))
 })
 
 export default connect(

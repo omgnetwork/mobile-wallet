@@ -7,13 +7,12 @@ export const settingReducer = (state = {}, action) => {
         provider: action.data.provider,
         providerName: action.data.providerName
       }
-    case 'SETTING/SET_PRIMARY_ADDRESS/SUCCESS':
-    case 'SETTING/SYNC_PRIMARY_ADDRESS/SUCCESS':
+    case 'SETTING/SET_PRIMARY_ADDRESS/OK':
       return {
         ...state,
         primaryWalletAddress: action.data.primaryWalletAddress
       }
-    case 'SETTING/SET_PRIMARY_WALLET':
+    case 'SETTING/SET_PRIMARY_WALLET/SUCCESS':
       return {
         ...state,
         primaryWallet: action.data.wallet

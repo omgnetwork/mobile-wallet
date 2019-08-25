@@ -14,7 +14,7 @@ function getVisible(loading, actions) {
   return !loading.show && actions.indexOf(loading.action) > -1
 }
 
-const useAlert = ({ loading, actions, msgSuccess, msgFailed }) => {
+const useAlert = ({ loading, actions, msgSuccess, error }) => {
   const [visible, setVisible] = useState(getVisible(loading, actions))
   const [msg, setMsg] = useState(getAlertMsg(loading))
 
@@ -23,10 +23,14 @@ const useAlert = ({ loading, actions, msgSuccess, msgFailed }) => {
     latestVisible && setVisible(latestVisible)
   }, [actions, loading])
 
+  const getMsgFailed = useCallback(() => {
+    return error && error.message
+  }, [error])
+
   const msgCallback = useCallback(() => {
-    const latestMsg = getAlertMsg(loading, msgSuccess, msgFailed)
+    const latestMsg = getAlertMsg(loading, msgSuccess, getMsgFailed())
     latestMsg && setMsg(latestMsg)
-  }, [loading, msgSuccess, msgFailed])
+  }, [loading, getMsgFailed, msgSuccess])
 
   useEffect(() => {
     visibleCallback()

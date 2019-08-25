@@ -11,7 +11,10 @@ export const createAsyncAction = ({
         const result = await doAsyncAction()
         dispatch({ type: `${actionType}/SUCCESS`, data: result })
       } catch (err) {
-        console.log(err)
+        console.log(
+          `%c [ERROR] ${err.message}`,
+          'font-weight: bold; color: #ff0000'
+        )
         dispatch({ type: `${actionType}/FAILED`, data: err })
       }
       const actionName = actionType.replace('/', '_')
@@ -28,7 +31,10 @@ export const createAction = (
     const result = doAction()
     dispatch({ type: `${actionType}/OK`, data: result })
   } catch (err) {
-    console.log(err)
+    console.log(
+      `%c [ERROR] ${err.message}`,
+      'font-weight: bold; color: #ff0000'
+    )
     dispatch({ type: `${actionType}/ERROR`, data: err })
   }
 }

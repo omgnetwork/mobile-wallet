@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { withNavigation } from 'react-navigation'
+import { withNavigation, SafeAreaView } from 'react-navigation'
 import { StyleSheet, FlatList, View } from 'react-native'
 import { withTheme, Text } from 'react-native-paper'
 import { OMGBackground, OMGItemWallet, OMGButton } from 'components/widgets'
@@ -47,7 +47,7 @@ const Wallets = ({
   ])
 
   return (
-    <OMGBackground style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <FlatList
         style={{ flex: 1 }}
         data={wallets}
@@ -74,7 +74,9 @@ const Wallets = ({
         <OMGMenu
           style={{ marginBottom: 16 }}
           anchorComponent={
-            <OMGButton onPress={showMenuCallback}>Add Wallet</OMGButton>
+            <OMGButton onPress={() => navigation.navigate('ImportWallet')}>
+              Add Wallet
+            </OMGButton>
           }
           items={[
             {
@@ -99,7 +101,7 @@ const Wallets = ({
           Clear
         </OMGButton>
       </View>
-    </OMGBackground>
+    </SafeAreaView>
   )
 }
 
@@ -130,9 +132,9 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchDeleteAllWallets: () => dispatch(walletActions.clear()),
   dispatchPrimaryWalletAddress: address =>
-    dispatch(settingActions.setPrimaryAddress(address)),
+    settingActions.setPrimaryAddress(dispatch, address),
   dispatchSetPrimaryWallet: (address, provider) =>
-    dispatch(settingActions.dispatchSetPrimaryWallet(address, provider))
+    dispatch(settingActions.setPrimaryWallet(address, provider))
 })
 
 export default connect(
