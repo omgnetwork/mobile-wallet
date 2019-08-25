@@ -11,6 +11,7 @@ const Transfer = ({ navigation, theme }) => {
   useEffect(() => {
     function willFocus() {
       StatusBar.setBarStyle('dark-content')
+      StatusBar.setBackgroundColor(theme.colors.white)
       setRendering(true)
     }
     function willBlur() {
@@ -24,7 +25,7 @@ const Transfer = ({ navigation, theme }) => {
       willBlurSubscription.remove()
       willFocusSubscription.remove()
     }
-  }, [navigation])
+  }, [navigation, theme.colors.white])
 
   return (
     <SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>

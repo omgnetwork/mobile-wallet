@@ -21,6 +21,7 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
   useEffect(() => {
     function willFocus() {
       StatusBar.setBarStyle('light-content')
+      StatusBar.setBackgroundColor(theme.colors.black5)
     }
 
     const willFocusSubscription = navigation.addListener('willFocus', willFocus)
@@ -28,13 +29,13 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
     return () => {
       willFocusSubscription.remove()
     }
-  }, [navigation, primaryWallet])
+  }, [navigation, primaryWallet, theme.colors.black5])
 
   return (
     <SafeAreaView style={styles.safeAreaView(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.blacks}
+        backgroundColor={theme.colors.black5}
       />
       <LinearGradient
         style={styles.container}
@@ -107,13 +108,7 @@ const mapStateToProps = (state, ownProps) => ({
   primaryWalletAddress: state.setting.primaryWalletAddress
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  createWallet: (provider, name) =>
-    dispatch(walletActions.create(provider, name)),
-  deleteAllWallet: () => dispatch(walletActions.clear())
-})
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(withTheme(Balance))
