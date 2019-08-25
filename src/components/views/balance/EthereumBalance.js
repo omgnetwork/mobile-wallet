@@ -21,7 +21,6 @@ const EthereumBalance = ({
 
   useEffect(() => {
     if (provider && primaryWallet.shouldRefresh) {
-      console.log('primarywallet', primaryWallet)
       loadAssets(
         provider,
         primaryWalletAddress,

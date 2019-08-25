@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { StyleSheet, FlatList, View } from 'react-native'
 import { withTheme, Text } from 'react-native-paper'
-import { OMGBackground, OMGItemWallet, OMGButton } from 'components/widgets'
+import { OMGItemWallet, OMGButton } from 'components/widgets'
 import { walletActions, settingActions } from 'common/actions'
 import { OMGMenu, OMGEmpty } from 'components/widgets'
 
@@ -19,14 +19,6 @@ const Wallets = ({
 }) => {
   const [primaryAddress, setPrimaryAddress] = useState(primaryWalletAddress)
   const [menuVisible, setMenuVisible] = useState(false)
-
-  const showMenuCallback = useCallback(() => {
-    setMenuVisible(true)
-  }, [])
-
-  const dismissMenuCallback = useCallback(() => {
-    setMenuVisible(false)
-  }, [])
 
   useEffect(() => {
     if (!primaryWalletAddress && wallets.length > 0) {
@@ -66,32 +58,9 @@ const Wallets = ({
         }}
       />
       <View style={styles.button}>
-        <OMGMenu
-          style={{ marginBottom: 16 }}
-          anchorComponent={
-            <OMGButton onPress={() => navigation.navigate('CreateWallet')}>
-              Add Wallet
-            </OMGButton>
-          }
-          items={[
-            {
-              title: 'Create Wallet',
-              onPress: () => {
-                dismissMenuCallback()
-                navigation.navigate('CreateWallet')
-              }
-            },
-            {
-              title: 'Import Wallet',
-              onPress: () => {
-                dismissMenuCallback()
-                navigation.navigate('ImportWallet')
-              }
-            }
-          ]}
-          visible={menuVisible}
-          onDismiss={dismissMenuCallback}
-        />
+        <OMGButton onPress={() => navigation.navigate('ImportWallet')}>
+          Add Wallet
+        </OMGButton>
         <OMGButton onPress={dispatchDeleteAllWallets} style={{ marginTop: 16 }}>
           Clear
         </OMGButton>
