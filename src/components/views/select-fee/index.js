@@ -26,7 +26,7 @@ const SelectFee = ({ theme, loading, navigation }) => {
           color={theme.colors.gray3}
           style={styles.headerIcon}
           onPress={() =>
-            navigation.navigate('TransactionForm', {
+            navigation.navigate('TransferForm', {
               lastAmount: currentToken.balance
             })
           }
@@ -64,7 +64,7 @@ const SelectFee = ({ theme, loading, navigation }) => {
         <View style={styles.buttonContainer}>
           <OMGButton
             onPress={() => {
-              navigation.navigate('TransactionForm', {
+              navigation.navigate('TransferForm', {
                 selectedFee,
                 lastAmount: currentToken.balance
               })

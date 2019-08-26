@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: theme.colors.white,
     alignItems: 'center',
-    padding: 10
+    paddingVertical: 10
   }),
   sectionName: {
     flex: 1,

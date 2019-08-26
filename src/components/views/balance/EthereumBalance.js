@@ -91,7 +91,6 @@ const EthereumBalance = ({
 const styles = StyleSheet.create({
   list: {
     flex: 1,
-    paddingTop: 12,
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4
   }

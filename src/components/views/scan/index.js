@@ -22,7 +22,7 @@ const Scan = ({ theme, navigation }) => {
           ? address.replace('ethereum:', '')
           : address
     }
-    navigation.navigate('TransactionForm', { address: cleanAddress })
+    navigation.navigate('TransferForm', { address: cleanAddress })
   }, [address, navigation])
 
   useEffect(() => {

@@ -14,12 +14,6 @@ import {
   OMGFeeInput
 } from 'components/widgets'
 
-const mockFee = {
-  name: 'Fast',
-  amount: '10',
-  symbol: 'Gwei'
-}
-
 const fees = [
   {
     id: 1,
@@ -49,15 +43,26 @@ const fees = [
 
 const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
 
-const TransactionForm = ({ wallet, theme, navigation }) => {
+const TransferForm = ({ wallet, theme, navigation }) => {
   const selectedToken = navigation.getParam('selectedToken', wallet.assets[0])
   const selectedFee = navigation.getParam('selectedFee', fees[0])
   const selectedAddress = navigation.getParam('address')
   const defaultAmount = navigation.getParam('lastAmount')
+  const scannable = navigation.getParam('scannable')
+  const showApproveERC20 = navigation.getParam('showApproveERC20')
   const textRef = useRef(defaultAmount)
 
   const submit = () => {
     if (textRef.current) {
+      console.log({
+        token: { ...selectedToken, balance: textRef.current },
+        fromWallet: wallet,
+        toWallet: {
+          name: 'Another wallet',
+          address: selectedAddress || testAddress
+        },
+        fee: selectedFee
+      })
       navigation.navigate('TransferConfirm', {
         token: { ...selectedToken, balance: textRef.current },
         fromWallet: wallet,
@@ -96,7 +101,8 @@ const TransactionForm = ({ wallet, theme, navigation }) => {
             <OMGAddressInput
               address={selectedAddress || testAddress}
               style={styles.addressInput}
-              onPress={() => navigation.navigate('Scan', { reactivate: true })}
+              scannable={scannable}
+              onPress={() => navigation.navigate('Scan')}
             />
           </OMGBox>
           <OMGBox style={styles.amountContainer}>
@@ -190,4 +196,4 @@ const mapStateToProps = (state, ownProps) => ({
 export default connect(
   mapStateToProps,
   null
-)(withNavigation(withTheme(TransactionForm)))
+)(withNavigation(withTheme(TransferForm)))

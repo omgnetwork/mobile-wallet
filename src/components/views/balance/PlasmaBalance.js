@@ -1,22 +1,33 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState, Fragment, useEffect } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
-import { walletActions } from 'common/actions'
-import { withTheme, Text } from 'react-native-paper'
+import { plasmaActions } from 'common/actions'
+import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
 import { Formatter } from 'common/utils'
-import { OMGItemToken, OMGAssetHeader, OMGAssetList } from 'components/widgets'
+import {
+  OMGItemToken,
+  OMGAssetHeader,
+  OMGAssetList,
+  OMGAssetFooter
+} from 'components/widgets'
 
-const PlasmaBalance = ({}) => {
+const PlasmaBalance = ({ dispatchDepositEth, navigation }) => {
   const currency = 'USD'
+  const [callPlasma, setCallPlasma] = useState(true)
+
+  useEffect(() => {
+    // if (callPlasma) dispatchDepositEth()
+    setCallPlasma(false)
+  }, [callPlasma, dispatchDepositEth])
 
   return (
     <Fragment>
       <OMGAssetHeader
         amount={formatTotalBalance(0.0)}
         currency={currency}
-        rootChain={true}
+        rootChain={false}
         blockchain={'Plasma'}
         network={Config.OMISEGO_NETWORK}
       />
@@ -32,6 +43,9 @@ const PlasmaBalance = ({}) => {
             price={formatTokenPrice(item.balance, item.price)}
           />
         )}
+      />
+      <OMGAssetFooter
+        onPressDeposit={() => navigation.navigate('ChildChainDeposit')}
       />
     </Fragment>
   )
@@ -78,7 +92,11 @@ const mapStateToProps = (state, ownProps) => ({
   primaryWalletAddress: state.setting.primaryWalletAddress
 })
 
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatchDepositEth: () => dispatch(plasmaActions.depositEth())
+})
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withNavigation(withTheme(PlasmaBalance)))

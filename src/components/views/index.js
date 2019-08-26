@@ -3,9 +3,9 @@ import Balance from './balance'
 import ImportWallet from './import-wallet'
 import Wallets from './wallets'
 import Deposit from './deposit'
-import TransactionForm from './transaction-form'
-import TransactionConfirm from './transaction-confirm'
-import TransactionPending from './transaction-pending'
+import TransferForm from './transfer-form'
+import TransferConfirm from './transfer-confirm'
+import TransferPending from './transfer-pending'
 import Home from './home'
 import History from './history'
 import Main from './main'
@@ -24,9 +24,9 @@ export {
   ImportWallet,
   Wallets,
   Deposit,
-  TransactionForm,
-  TransactionConfirm,
-  TransactionPending,
+  TransferForm,
+  TransferConfirm,
+  TransferPending,
   Home,
   History,
   Receive,

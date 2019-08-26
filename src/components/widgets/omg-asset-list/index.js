@@ -16,7 +16,7 @@ const OMGAssetList = ({
   1
   return (
     <OMGBackground style={{ ...styles.container(theme), ...style }}>
-      <View style={styles.header}>
+      <View style={styles.header(theme)}>
         <OMGText style={styles.title(theme)} weight='bold'>
           ASSETS
         </OMGText>
@@ -48,8 +48,7 @@ const styles = StyleSheet.create({
   }),
   header: theme => ({
     flexDirection: 'row',
-    paddingVertical: 16,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     alignItems: 'center',
     backgroundColor: theme.colors.white
   }),
@@ -57,7 +56,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   assetContainer: theme => ({
-    backgroundColor: theme.colors.white
+    backgroundColor: theme.colors.white,
+    paddingHorizontal: 4
   }),
   assetList: {},
   title: theme => ({

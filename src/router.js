@@ -12,14 +12,17 @@ import {
 import * as Views from 'components/views'
 import { OMGIcon, OMGBox, OMGText, OMGTab } from 'components/widgets'
 
-// Navigation tree in [root -> transfer -> send]
 const SendTransactionNavigator = createSwitchNavigator(
   {
     Scan: {
       screen: Views.Scan
     },
-    TransactionForm: {
-      screen: Views.TransactionForm
+    TransferForm: {
+      screen: Views.TransferForm,
+      params: {
+        scannable: true,
+        showApproveERC20: false
+      }
     }
   },
   {
@@ -30,7 +33,7 @@ const SendTransactionNavigator = createSwitchNavigator(
 )
 
 // Navigation tree in [root -> transfer]
-export const SendTabNavigator = createMaterialTopTabNavigator(
+export const TransferTabNavigator = createMaterialTopTabNavigator(
   {
     Send: {
       screen: SendTransactionNavigator
@@ -45,9 +48,41 @@ export const SendTabNavigator = createMaterialTopTabNavigator(
   }
 )
 
-Views.Transfer.router = SendTabNavigator.router
+export const RootChainTransferNavigator = createStackNavigator(
+  {
+    TransferTab: {
+      screen: TransferTabNavigator
+    },
+    TransferConfirm: {
+      screen: Views.TransferConfirm
+    }
+  },
+  {
+    initialRouteName: 'TransferTab',
+    initialRouteKey: 'RootChainTransferNavigator',
+    headerMode: 'none'
+  }
+)
 
-// The root of navigation tree.
+export const ChildChainTransferNavigator = createStackNavigator(
+  {
+    TransferForm: {
+      screen: Views.TransferForm
+    },
+    TransferConfirm: {
+      screen: Views.TransferConfirm
+    }
+  },
+  {
+    initialRouteName: 'TransferForm',
+    initialRouteKey: 'TransferForm',
+    headerMode: 'none'
+  }
+)
+
+Views.Transfer.router = RootChainTransferNavigator.router
+Views.Deposit.router = ChildChainTransferNavigator.router
+
 const BottomTabNavigator = createBottomTabNavigator(
   {
     Balance: {
@@ -80,7 +115,7 @@ const BottomTabNavigator = createBottomTabNavigator(
     Transfer: {
       screen: Views.Transfer,
       params: {
-        navigator: SendTabNavigator
+        navigator: RootChainTransferNavigator
       },
       navigationOptions: {
         tabBarLabel: ({ focused, tintColor }) => (
@@ -145,7 +180,9 @@ const BottomTabNavigator = createBottomTabNavigator(
   },
   {
     initialRouteName: 'Balance',
+    initialRouteKey: 'BottomBar',
     headerMode: 'none',
+    resetOnBlur: 'true',
     tabBarOptions: {
       activeTintColor: '#f7f8fa',
       inactiveTintColor: '#d0d6e2',
@@ -171,15 +208,22 @@ const RootNavigator = createStackNavigator(
     TransferSelectFee: {
       screen: Views.SelectFee
     },
-    TransferConfirm: {
-      screen: Views.TransactionConfirm
-    },
     TransferPending: {
-      screen: Views.TransactionPending
+      screen: Views.TransferPending,
+      navigationOptions: () => ({ gesturesEnabled: false })
+    },
+    ChildChainDeposit: {
+      screen: Views.Deposit,
+      params: {
+        navigator: ChildChainTransferNavigator,
+        scannable: false,
+        showApproveERC20: true
+      }
     }
   },
   {
     initialRouteName: 'Main',
+    initialRouteKey: 'Root',
     headerMode: 'none'
   }
 )
@@ -214,9 +258,9 @@ const debugNavigator = createStackNavigator(
       screen: Views.Setting,
       navigationOptions: () => ({ title: 'Setting' })
     },
-    TransactionForm: {
-      screen: Views.TransactionForm,
-      navigationOptions: () => ({ title: 'TransactionForm' })
+    TransferForm: {
+      screen: Views.TransferForm,
+      navigationOptions: () => ({ title: 'TransferForm' })
     },
     Transfer: {
       screen: Views.Transfer,

@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, Linking } from 'react-native'
-import { withNavigation, SafeAreaView } from 'react-navigation'
+import { withNavigation, SafeAreaView, StackActions } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Formatter } from 'common/utils'
 import { transactionActions } from 'common/actions'
 import Config from 'react-native-config'
+import { AndroidBackHandler } from 'react-navigation-backhandler'
 import {
   OMGBox,
   OMGButton,
@@ -15,10 +16,9 @@ import {
 } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const TransactionPending = ({
+const TransferPending = ({
   theme,
   navigation,
-  loading,
   wallet,
   provider,
   pendingTxs,
@@ -31,6 +31,10 @@ const TransactionPending = ({
   const fee = navigation.getParam('fee')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
 
+  const handleOnBackPressedAndroid = () => {
+    return true
+  }
+
   useEffect(() => {
     const hasPendingTx = pendingTxs.length && pendingTxs.indexOf(pendingTx) > -1
     if (hasPendingTx) {
@@ -39,77 +43,85 @@ const TransactionPending = ({
   }, [pendingTx, pendingTxs, provider, dispatchSubscribeTransaction, wallet])
 
   return (
-    <SafeAreaView style={styles.container(theme)}>
-      <OMGStatusBar barStyle={'dark-content'} />
-      <View style={styles.contentContainer}>
-        <View style={styles.headerContainer}>
-          <OMGText style={styles.title(theme)}>Pending Transaction</OMGText>
-        </View>
-        <OMGBox style={styles.addressContainer}>
-          <OMGText style={styles.subtitle(theme)} weight='bold'>
-            From
-          </OMGText>
-          <OMGWalletAddress wallet={fromWallet} style={styles.walletAddress} />
-          <OMGText style={styles.subtitle(theme)} weight='bold'>
-            To
-          </OMGText>
-          <OMGWalletAddress wallet={toWallet} style={styles.walletAddress} />
-        </OMGBox>
-        <View style={styles.sentContainer}>
-          <OMGText weight='bold' style={styles.subtitle(theme)}>
-            Sent
-          </OMGText>
-          <View style={styles.sentContentContainer(theme)}>
-            <View style={styles.sentSection}>
-              <OMGText style={styles.sentTitle}>Amount</OMGText>
-              <View style={styles.sentDetail}>
-                <OMGText style={styles.sentDetailFirstline(theme)}>
-                  {formatTokenBalance(token.balance)} {token.tokenSymbol}
-                </OMGText>
-                <OMGText style={styles.sentDetailSecondline(theme)}>
-                  {tokenPrice} USD
-                </OMGText>
+    <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
+      <SafeAreaView style={styles.container(theme)}>
+        <OMGStatusBar
+          barStyle='dark-content'
+          backgroundColor={theme.colors.white}
+        />
+        <View style={styles.contentContainer}>
+          <View style={styles.headerContainer}>
+            <OMGText style={styles.title(theme)}>Pending Transaction</OMGText>
+          </View>
+          <OMGBox style={styles.addressContainer}>
+            <OMGText style={styles.subtitle(theme)} weight='bold'>
+              From
+            </OMGText>
+            <OMGWalletAddress
+              wallet={fromWallet}
+              style={styles.walletAddress}
+            />
+            <OMGText style={styles.subtitle(theme)} weight='bold'>
+              To
+            </OMGText>
+            <OMGWalletAddress wallet={toWallet} style={styles.walletAddress} />
+          </OMGBox>
+          <View style={styles.sentContainer}>
+            <OMGText weight='bold' style={styles.subtitle(theme)}>
+              Sent
+            </OMGText>
+            <View style={styles.sentContentContainer(theme)}>
+              <View style={styles.sentSection}>
+                <OMGText style={styles.sentTitle}>Amount</OMGText>
+                <View style={styles.sentDetail}>
+                  <OMGText style={styles.sentDetailFirstline(theme)}>
+                    {formatTokenBalance(token.balance)} {token.tokenSymbol}
+                  </OMGText>
+                  <OMGText style={styles.sentDetailSecondline(theme)}>
+                    {tokenPrice} USD
+                  </OMGText>
+                </View>
               </View>
-            </View>
-            <View style={styles.sentSection}>
-              <OMGText style={styles.sentTitle}>Fee</OMGText>
-              <View style={styles.sentDetail}>
-                <OMGText style={styles.sentDetailFirstline(theme)}>
-                  {fee.amount} {fee.symbol}
-                </OMGText>
-                <OMGText style={styles.sentDetailSecondline(theme)}>
-                  0.047 USD
-                </OMGText>
+              <View style={styles.sentSection}>
+                <OMGText style={styles.sentTitle}>Fee</OMGText>
+                <View style={styles.sentDetail}>
+                  <OMGText style={styles.sentDetailFirstline(theme)}>
+                    {fee.amount} {fee.symbol}
+                  </OMGText>
+                  <OMGText style={styles.sentDetailSecondline(theme)}>
+                    0.047 USD
+                  </OMGText>
+                </View>
               </View>
             </View>
           </View>
+          <View style={styles.totalContainer(theme)}>
+            <OMGText style={styles.totalText(theme)}>Total</OMGText>
+            <OMGText style={styles.totalText(theme)}>
+              {formatTotalPrice(tokenPrice, 0.047)} USD
+            </OMGText>
+          </View>
         </View>
-        <View style={styles.totalContainer(theme)}>
-          <OMGText style={styles.totalText(theme)}>Total</OMGText>
-          <OMGText style={styles.totalText(theme)}>
-            {formatTotalPrice(tokenPrice, 0.047)} USD
-          </OMGText>
+        <View style={styles.bottomContainer}>
+          <OMGButton
+            style={styles.button}
+            onPress={() => {
+              navigation.navigate({ routeName: 'Balance' })
+            }}>
+            Done
+          </OMGButton>
+          <TouchableOpacity
+            style={styles.trackEtherscanButton}
+            onPress={() => {
+              Linking.openURL(`${Config.ETHERSCAN_TX_URL}${pendingTx.hash}`)
+            }}>
+            <OMGText style={styles.trackEtherscanText(theme)}>
+              Track on Etherscan
+            </OMGText>
+          </TouchableOpacity>
         </View>
-      </View>
-      <View style={styles.bottomContainer}>
-        <OMGButton
-          style={styles.button}
-          onPress={() => {
-            navigation.goBack()
-          }}>
-          Done
-        </OMGButton>
-        <TouchableOpacity
-          style={styles.trackEtherscanButton}
-          onPress={() => {
-            Linking.openURL(`${Config.ETHERSCAN_TX_URL}${pendingTx.hash}`)
-          }}>
-          <OMGText style={styles.trackEtherscanText(theme)}>
-            Track on Etherscan
-          </OMGText>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </AndroidBackHandler>
   )
 }
 
@@ -252,4 +264,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNavigation(withTheme(TransactionPending)))
+)(withNavigation(withTheme(TransferPending)))

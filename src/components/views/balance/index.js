@@ -58,7 +58,6 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
             </View>
           </OMGViewPager>
         )}
-        {/* {rootChain ? null : <OMGAssetFooter />} */}
       </LinearGradient>
     </SafeAreaView>
   )
@@ -71,7 +70,8 @@ const styles = StyleSheet.create({
   }),
   container: {
     flex: 1,
-    padding: 16
+    paddingHorizontal: 12,
+    paddingVertical: 20
   },
   firstPage: {
     width: pageWidth,

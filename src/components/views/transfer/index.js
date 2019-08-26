@@ -6,7 +6,7 @@ import { OMGIcon, OMGBox, OMGText, OMGStatusBar } from 'components/widgets'
 
 const Transfer = ({ navigation, theme }) => {
   const [rendering, setRendering] = useState(true)
-  const TransferTabNavigator = navigation.getParam('navigator')
+  const RootChainTransferNavigator = navigation.getParam('navigator')
 
   useEffect(() => {
     function willFocus() {
@@ -43,7 +43,7 @@ const Transfer = ({ navigation, theme }) => {
           <OMGIcon name='x-mark' size={18} color={theme.colors.gray3} />
         </OMGBox>
       </View>
-      {rendering && <TransferTabNavigator navigation={navigation} />}
+      {rendering && <RootChainTransferNavigator navigation={navigation} />}
     </SafeAreaView>
   )
 }

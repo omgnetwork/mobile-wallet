@@ -18,7 +18,7 @@ import {
   OMGWalletAddress
 } from 'components/widgets'
 
-const TransactionConfirm = ({
+const TransferConfirm = ({
   theme,
   navigation,
   provider,
@@ -42,19 +42,16 @@ const TransactionConfirm = ({
 
   useEffect(() => {
     if (loading.success && loading.action.indexOf('TRANSACTION') === 0) {
-      navigation.reset([
-        NavigationActions.navigate({ routeName: 'Main' }),
-        NavigationActions.navigate({
-          routeName: 'TransferPending',
-          params: {
-            token,
-            fromWallet,
-            toWallet,
-            pendingTx: pendingTxs.slice(-1).pop(),
-            fee
-          }
-        })
-      ])
+      navigation.navigate({
+        routeName: 'TransferPending',
+        params: {
+          token,
+          fromWallet,
+          toWallet,
+          pendingTx: pendingTxs.slice(-1).pop(),
+          fee
+        }
+      })
     }
   }, [
     fee,
@@ -68,7 +65,7 @@ const TransactionConfirm = ({
   ])
 
   const sendToken = () => {
-    if (token.contractAddress === '0x') {
+    if (token.contractAddress === '0x0') {
       // ETH token
       dispatchSendEthToken(token, fee, fromWallet, provider, toWallet.address)
     } else {
@@ -80,28 +77,13 @@ const TransactionConfirm = ({
   return (
     <SafeAreaView style={styles.container(theme)}>
       <View style={styles.contentContainer}>
-        <View style={styles.headerContainer}>
-          <OMGText style={styles.title(theme)}>Transfer</OMGText>
-          <OMGIcon
-            name='x-mark'
-            size={18}
-            color={theme.colors.gray3}
-            onPress={() =>
-              navigation.navigate({
-                routeName: 'Main',
-                params: {},
-                action: NavigationActions.navigate({ routeName: 'Balance' })
-              })
-            }
-          />
-        </View>
         <View style={styles.subHeaderContainer}>
           <OMGIcon
             name='chevron-left'
             size={14}
             color={theme.colors.gray3}
             onPress={() =>
-              navigation.navigate('TransactionForm', {
+              navigation.navigate('TransferForm', {
                 lastAmount: token.balance
               })
             }
@@ -200,15 +182,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1
   },
-  headerContainer: {
-    paddingHorizontal: 16,
-    marginTop: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
   subHeaderContainer: {
-    marginTop: 16,
     paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center'
@@ -256,11 +230,6 @@ const styles = StyleSheet.create({
   subHeaderTitle: {
     fontSize: 14
   },
-  title: theme => ({
-    fontSize: 18,
-    textTransform: 'uppercase',
-    color: theme.colors.gray3
-  }),
   edit: {
     marginLeft: 8
   },
@@ -317,4 +286,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNavigation(withTheme(TransactionConfirm)))
+)(withNavigation(withTheme(TransferConfirm)))

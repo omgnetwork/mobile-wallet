@@ -44,7 +44,6 @@ export const commify = amount => {
 }
 
 export const fetchTransactionDetail = (address, lastBlockNumber) => {
-  console.log('fetchTransactionDetail')
   return axios.get(Config.ETHERSCAN_API_URL, {
     params: {
       module: 'account',

@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'column',
     backgroundColor: theme.colors.white,
+    paddingBottom: 16,
     borderTopLeftRadius: theme.roundness,
     borderTopRightRadius: theme.roundness
   }),

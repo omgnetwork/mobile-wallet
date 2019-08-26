@@ -56,10 +56,8 @@ export const fetchAssets = (provider, address, lastBlockNumber) => {
         lastBlockNumber
       )
 
-      console.log(txHistory)
-
       const pendingEthPrice = priceService.fetchPriceUsd(
-        '0x',
+        '0x0',
         Config.ETHERSCAN_NETWORK
       )
       const pendingEthBalance = getEthBalance(address)
@@ -95,7 +93,7 @@ export const fetchEthToken = (pendingEthBalance, pendingEthPrice) => {
         tokenName: 'Ether',
         tokenSymbol: 'ETH',
         tokenDecimal: 18,
-        contractAddress: '0x',
+        contractAddress: '0x0',
         balance: balance,
         price: price
       })

@@ -22,8 +22,8 @@ const Home = ({ navigation }) => {
         <Button
           mode='outlined'
           style={styles.button}
-          onPress={() => navigation.navigate('TransactionForm')}>
-          TransactionForm
+          onPress={() => navigation.navigate('TransferForm')}>
+          TransferForm
         </Button>
         <Button
           mode='outlined'
