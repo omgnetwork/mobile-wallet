@@ -10,6 +10,8 @@ export const transactionReducer = (state = { pendingTxs: [] }, action) => {
           pendingTx => pendingTx.hash !== action.data.hash
         )
       }
+    case 'WALLET/DELETE_ALL/OK':
+      return { pendingTxs: [] }
     default:
       return state
   }

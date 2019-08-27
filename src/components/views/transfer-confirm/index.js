@@ -2,8 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
-import { withTheme, Snackbar } from 'react-native-paper'
-import { useAlert } from 'common/hooks'
+import { withTheme } from 'react-native-paper'
 import { Formatter } from 'common/utils'
 import { transactionActions } from 'common/actions'
 import {
@@ -28,13 +27,13 @@ const TransferConfirm = ({
   const toWallet = navigation.getParam('toWallet')
   const fee = navigation.getParam('fee')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
-  const snackbarProps = useAlert({
-    loading,
-    actions: ['TRANSACTION_SEND_ERC20_TOKEN', 'TRANSACTION_SEND_ETH_TOKEN'],
-    msgSuccess:
-      'The transaction is sending. Track the progress at the etherscan.',
-    msgFailed: 'Failed to send a transaction.'
-  })
+  // const snackbarProps = useSnackbarProps({
+  //   loading,
+  //   actions: ['TRANSACTION_SEND_ERC20_TOKEN', 'TRANSACTION_SEND_ETH_TOKEN'],
+  //   msgSuccess:
+  //     'The transaction is sending. Track the progress at the etherscan.',
+  //   msgFailed: 'Failed to send a transaction.'
+  // })
 
   useEffect(() => {
     if (loading.success && loading.action.indexOf('TRANSACTION') === 0) {
@@ -133,11 +132,11 @@ const TransferConfirm = ({
           Send Transaction
         </OMGButton>
       </View>
-      <Snackbar
+      {/* <Snackbar
         style={{ marginBottom: 16 }}
         duration={1300}
         {...snackbarProps}
-      />
+      /> */}
     </SafeAreaView>
   )
 }

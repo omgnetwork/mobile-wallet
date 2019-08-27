@@ -1,37 +1,24 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { StyleSheet, FlatList, View } from 'react-native'
-import { withTheme, Text } from 'react-native-paper'
+import { withTheme } from 'react-native-paper'
 import { OMGItemWallet, OMGButton } from 'components/widgets'
 import { walletActions, settingActions } from 'common/actions'
-import { OMGMenu, OMGEmpty } from 'components/widgets'
+import { OMGEmpty } from 'components/widgets'
 
 const Wallets = ({
-  loading,
   wallets,
   primaryWalletAddress,
   dispatchDeleteAllWallets,
   dispatchPrimaryWalletAddress,
-  dispatchSetPrimaryWallet,
-  provider,
   navigation
 }) => {
-  const [primaryAddress, setPrimaryAddress] = useState(primaryWalletAddress)
-  const [menuVisible, setMenuVisible] = useState(false)
-
   useEffect(() => {
     if (!primaryWalletAddress && wallets.length > 0) {
-      setPrimaryAddress(wallets[0].address)
+      dispatchPrimaryWalletAddress(wallets[0].address)
     }
-  }, [primaryWalletAddress, wallets])
-
-  useEffect(() => {
-    if (primaryAddress) {
-      console.log('dispatchPrimaryWalletAddress')
-      dispatchPrimaryWalletAddress(primaryAddress)
-    }
-  }, [dispatchPrimaryWalletAddress, primaryAddress, provider])
+  }, [dispatchPrimaryWalletAddress, primaryWalletAddress, wallets])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -49,8 +36,8 @@ const Wallets = ({
             <OMGItemWallet
               style={styles.item}
               key={item.address}
-              onPress={() => setPrimaryAddress(item.address)}
-              selected={item.address === primaryAddress}
+              onPress={() => dispatchPrimaryWalletAddress(item.address)}
+              selected={item.address === primaryWalletAddress}
               name={item.name}
               wallet={item}
             />

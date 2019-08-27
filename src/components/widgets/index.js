@@ -18,6 +18,7 @@ import OMGQRCode from './omg-qr-code'
 import OMGQRScanner from './omg-qr-scanner'
 import OMGPasswordTextInput from './omg-password-text-input'
 import OMGRadioButton from './omg-radio-button'
+import OMGSnackbar from './omg-snackbar'
 import OMGStatusBar from './omg-status-bar'
 import OMGTab from './omg-tab'
 import OMGText from './omg-text'
@@ -48,6 +49,7 @@ export {
   OMGQRScanner,
   OMGPasswordTextInput,
   OMGRadioButton,
+  OMGSnackbar,
   OMGStatusBar,
   OMGTab,
   OMGTextInput,

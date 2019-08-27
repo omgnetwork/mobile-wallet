@@ -1,11 +1,15 @@
 import Home from './home'
-import TransferChildChain from './transfer-childchain'
-import TransferRootChain from './transfer-rootchain'
+import TransferChildChainNavigator from './transfer-childchain'
+import TransferRootChainNavigator from './transfer-rootchain'
 import WarpPortal from './warp-portal'
 import * as Views from 'components/views'
 
-Views.Transfer.router = TransferRootChain.router
-Views.Deposit.router = TransferChildChain.router
+Views.Transfer.router = TransferRootChainNavigator.router
+Views.Deposit.router = TransferChildChainNavigator.router
 
-export const AppNavigator = Home(TransferRootChain, TransferChildChain)
+export const AppNavigator = Home(
+  TransferRootChainNavigator,
+  TransferChildChainNavigator
+)
+
 export const WarpPortalNavigator = WarpPortal

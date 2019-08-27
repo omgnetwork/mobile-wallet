@@ -1,3 +1,3 @@
-import useAlert from './useAlert'
+import useSnackbarProps from './useSnackbarProps'
 
-export { useAlert }
+export { useSnackbarProps }
