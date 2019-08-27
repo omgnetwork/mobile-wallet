@@ -1,17 +1,17 @@
-import React, { Fragment } from 'react'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import React from 'react'
+import { StyleSheet, ScrollView } from 'react-native'
 import { Button } from 'react-native-paper'
 import { OMGBackground } from 'components/widgets'
 
-const Home = ({ navigation }) => {
+const WarpPortal = ({ navigation }) => {
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#f0f4f8' }}>
+    <ScrollView style={{ flex: 1 }}>
       <OMGBackground style={styles.container}>
         <Button
           mode='outlined'
           style={styles.button}
-          onPress={() => navigation.navigate('Receive')}>
-          Receive
+          onPress={() => navigation.navigate('TransferReceive')}>
+          TransferReceive
         </Button>
         <Button
           mode='outlined'
@@ -28,8 +28,8 @@ const Home = ({ navigation }) => {
         <Button
           mode='outlined'
           style={styles.button}
-          onPress={() => navigation.navigate('SelectBalance')}>
-          SelectBalance
+          onPress={() => navigation.navigate('TransferSelectBalance')}>
+          TransferSelectBalance
         </Button>
         <Button
           mode='outlined'
@@ -70,7 +70,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    paddingTop: 16
+    paddingTop: 16,
+    backgroundColor: '#FFFFFF'
   },
   button: {
     flex: 1,
@@ -79,4 +80,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Home
+export default WarpPortal

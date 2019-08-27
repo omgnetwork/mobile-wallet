@@ -102,7 +102,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
               address={selectedAddress || testAddress}
               style={styles.addressInput}
               scannable={scannable}
-              onPress={() => navigation.navigate('Scan')}
+              onPress={() => navigation.navigate('TransferScanner')}
             />
           </OMGBox>
           <OMGBox style={styles.amountContainer}>

@@ -2,7 +2,6 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-navigation'
-import { TransferForm } from 'components/views'
 import { OMGIcon, OMGBox, OMGText, OMGStatusBar } from 'components/widgets'
 
 const Deposit = ({ navigation, theme }) => {

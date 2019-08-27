@@ -6,8 +6,8 @@ import { OMGTab } from 'components/widgets'
 // Root > BottomBar > Transfer > Send > RootChain > TransferTab > SendTransaction
 const ScannerTransferFormSwitchNavigator = createSwitchNavigator(
   {
-    Scan: {
-      screen: Views.Scan
+    TransferScanner: {
+      screen: Views.TransferScanner
     },
     TransferForm: {
       screen: Views.TransferForm,
@@ -18,8 +18,8 @@ const ScannerTransferFormSwitchNavigator = createSwitchNavigator(
     }
   },
   {
-    initialRouteName: 'Scan',
-    initialRouteKey: 'Scan',
+    initialRouteName: 'TransferScanner',
+    initialRouteKey: 'TransferScanner',
     headerMode: 'none'
   }
 )
@@ -31,7 +31,7 @@ const SendReceiveNavigator = createMaterialTopTabNavigator(
       screen: ScannerTransferFormSwitchNavigator
     },
     Receive: {
-      screen: Views.Receive
+      screen: Views.TransferReceive
     }
   },
   {

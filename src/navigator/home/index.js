@@ -7,10 +7,10 @@ export default (TransferRootChain, TransferChildChain) =>
     {
       Main: BottomTabNavigator(TransferRootChain),
       TransferSelectBalance: {
-        screen: Views.SelectBalance
+        screen: Views.TransferSelectBalance
       },
       TransferSelectFee: {
-        screen: Views.SelectFee
+        screen: Views.TransferSelectFee
       },
       TransferPending: {
         screen: Views.TransferPending,

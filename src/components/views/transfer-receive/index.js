@@ -10,7 +10,7 @@ import {
   OMGIcon
 } from 'components/widgets'
 
-const Receive = ({ theme, primaryWallet, primaryWalletAddress }) => {
+const TransferReceive = ({ theme, primaryWallet, primaryWalletAddress }) => {
   return (
     <OMGBackground style={styles.container(theme)}>
       <View style={styles.contentContainer(theme)}>
@@ -111,4 +111,4 @@ const mapStateToProps = (state, ownProps) => ({
 export default connect(
   mapStateToProps,
   null
-)(withTheme(Receive))
+)(withTheme(TransferReceive))

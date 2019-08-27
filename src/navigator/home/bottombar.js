@@ -47,7 +47,9 @@ export default RootChainTransferNavigator =>
             navigation.navigate({
               routeName: 'Transfer',
               params: {},
-              action: NavigationActions.navigate({ routeName: 'Scan' })
+              action: NavigationActions.navigate({
+                routeName: 'TransferScanner'
+              })
             })
           }
         }

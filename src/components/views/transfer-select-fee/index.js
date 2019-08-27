@@ -11,7 +11,7 @@ import {
   OMGText
 } from 'components/widgets'
 
-const SelectFee = ({ theme, loading, navigation }) => {
+const TransferSelectFee = ({ theme, loading, navigation }) => {
   const fees = navigation.getParam('fees')
   const currentToken = navigation.getParam('currentToken')
   const currentFee = navigation.getParam('currentFee')
@@ -127,4 +127,4 @@ const mapStateToProps = (state, ownProps) => ({
 export default connect(
   mapStateToProps,
   null
-)(withNavigation(withTheme(SelectFee)))
+)(withNavigation(withTheme(TransferSelectFee)))

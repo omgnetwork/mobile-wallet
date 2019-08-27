@@ -11,7 +11,12 @@ import {
   OMGText
 } from 'components/widgets'
 
-const SelectBalance = ({ primaryWallet, theme, loading, navigation }) => {
+const TransferSelectBalance = ({
+  primaryWallet,
+  theme,
+  loading,
+  navigation
+}) => {
   const assets = navigation.getParam('assets', primaryWallet.assets)
   const currentToken = navigation.getParam('currentToken')
   const lastAmount = navigation.getParam('lastAmount')
@@ -109,4 +114,4 @@ const mapStateToProps = (state, ownProps) => ({
 export default connect(
   mapStateToProps,
   null
-)(withNavigation(withTheme(SelectBalance)))
+)(withNavigation(withTheme(TransferSelectBalance)))

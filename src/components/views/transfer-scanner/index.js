@@ -10,7 +10,7 @@ import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { OMGText, OMGIcon, OMGQRScanner, OMGButton } from 'components/widgets'
 
-const Scan = ({ theme, navigation }) => {
+const TransferScanner = ({ theme, navigation }) => {
   const camera = useRef(null)
   const [address, setAddress] = useState(null)
 
@@ -118,4 +118,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withNavigation(withTheme(Scan))
+export default withNavigation(withTheme(TransferScanner))

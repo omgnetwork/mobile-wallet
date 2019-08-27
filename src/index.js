@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { YellowBox } from 'react-native'
 import { Provider } from 'react-redux'
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
