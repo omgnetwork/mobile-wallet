@@ -4,6 +4,7 @@ import { createAppContainer, createStackNavigator } from 'react-navigation'
 
 import * as Views from 'components/views'
 import { OMGIcon } from 'components/widgets'
+
 // Used when want quick access to different screens.
 const debugNavigator = createStackNavigator(
   {

@@ -8,7 +8,6 @@ import TransferConfirm from './transfer-confirm'
 import TransferPending from './transfer-pending'
 import Home from './home'
 import History from './history'
-import Main from './main'
 import Receive from './receive'
 import Transfer from './transfer'
 import Scan from './scan'
@@ -18,7 +17,6 @@ import SelectFee from './select-fee'
 import Preview from './preview'
 
 export {
-  Main,
   Balance,
   CreateWallet,
   ImportWallet,
