@@ -48,7 +48,7 @@ const WarpPortalNavigator = createStackNavigator(
       screen: Views.Transfer,
       params: {
         navigator: TransferRootchainNavigator,
-        scannable: true,
+        isDeposit: true,
         showApproveERC20: false
       },
       navigationOptions: () => ({
@@ -59,7 +59,7 @@ const WarpPortalNavigator = createStackNavigator(
       screen: Views.Deposit,
       params: {
         navigator: TransferChildchainNavigator,
-        scannable: false,
+        isDeposit: false,
         showApproveERC20: true
       },
       navigationOptions: () => ({ title: 'Deposit' })

@@ -3,27 +3,20 @@ import { TouchableOpacity, View, StyleSheet, Platform } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import OMGImage from '../omg-image'
 import OMGIcon from '../omg-icon'
+import OMGText from '../omg-text'
 import OMGTextInput from '../omg-text-input'
+import Config from 'react-native-config'
 
-const OMGAddressInput = ({ theme, address, style, onPress }) => {
+const OMGPlasmaAddress = ({ theme, style, onPress }) => {
   return (
     <View style={{ ...styles.container(theme), ...style }}>
-      <OMGImage
-        style={styles.logo(theme)}
-        source={{
-          uri: `https://api.adorable.io/avatars/285/${address}.png`
-        }}
-      />
-      <OMGTextInput
-        style={styles.text(theme)}
-        defaultValue={address}
-        placeholder='Paste address'
-        hideUnderline={true}
-        lines={1}
-      />
-      <TouchableOpacity style={styles.rightContainer(theme)} onPress={onPress}>
-        <OMGIcon name='qr' size={24} color={theme.colors.gray3} />
-      </TouchableOpacity>
+      <View style={styles.logo(theme)}>
+        <OMGIcon name='files' size={14} />
+      </View>
+      <OMGText style={styles.plasmaName(theme)}>Plasma Contract</OMGText>
+      <OMGText style={styles.plasmaAddress(theme)}>
+        {Config.PLASMA_CONTRACT_ADDRESS}
+      </OMGText>
     </View>
   )
 }
@@ -50,15 +43,15 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     marginLeft: 12
   }),
-  walletName: theme => ({
+  plasmaName: theme => ({
     color: theme.colors.primary,
     flex: 1
   }),
-  text: theme => ({
+  plasmaAddress: theme => ({
     color: theme.colors.primary,
     fontSize: 14,
-    paddingTop: Platform.OS === 'ios' ? -8 : 20,
-    flex: 1
+    paddingRight: 12,
+    paddingTop: Platform.OS === 'ios' ? -8 : 20
   }),
   rightContainer: theme => ({
     width: 50,
@@ -72,4 +65,4 @@ const styles = StyleSheet.create({
   })
 })
 
-export default withTheme(OMGAddressInput)
+export default withTheme(OMGPlasmaAddress)

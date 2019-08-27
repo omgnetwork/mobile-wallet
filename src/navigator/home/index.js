@@ -19,9 +19,7 @@ export default (TransferRootChain, TransferChildChain) =>
       ChildChainDeposit: {
         screen: Views.Deposit,
         params: {
-          navigator: TransferChildChain,
-          scannable: false,
-          showApproveERC20: true
+          navigator: TransferChildChain
         }
       }
     },

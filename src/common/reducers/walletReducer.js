@@ -15,7 +15,7 @@ export const walletsReducer = (state = [], action) => {
           return wallet
         }
       })
-    case 'WALLET/INIT_ASSETS/SUCCESS':
+    case 'WALLET/LOAD_ASSETS/SUCCESS':
       return state.map(wallet => {
         if (wallet.address === action.data.address) {
           const assets = wallet.assets || []

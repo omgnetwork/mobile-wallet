@@ -4,7 +4,9 @@ import { View, StyleSheet } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Formatter } from 'common/utils'
-import { transactionActions } from 'common/actions'
+import Config from 'react-native-config'
+import { notifySendToken } from 'common/notify'
+import { transactionActions, plasmaActions } from 'common/actions'
 import {
   OMGBox,
   OMGButton,
@@ -17,8 +19,7 @@ const TransferConfirm = ({
   theme,
   navigation,
   provider,
-  dispatchSendErc20Token,
-  dispatchSendEthToken,
+  dispatchSendToken,
   pendingTxs,
   loading
 }) => {
@@ -27,16 +28,12 @@ const TransferConfirm = ({
   const toWallet = navigation.getParam('toWallet')
   const fee = navigation.getParam('fee')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
-  // const snackbarProps = useSnackbarProps({
-  //   loading,
-  //   actions: ['TRANSACTION_SEND_ERC20_TOKEN', 'TRANSACTION_SEND_ETH_TOKEN'],
-  //   msgSuccess:
-  //     'The transaction is sending. Track the progress at the etherscan.',
-  //   msgFailed: 'Failed to send a transaction.'
-  // })
 
   useEffect(() => {
-    if (loading.success && loading.action.indexOf('TRANSACTION') === 0) {
+    if (
+      loading.success &&
+      notifySendToken.actions.indexOf(loading.action) > -1
+    ) {
       navigation.navigate({
         routeName: 'TransferPending',
         params: {
@@ -60,13 +57,7 @@ const TransferConfirm = ({
   ])
 
   const sendToken = () => {
-    if (token.contractAddress === '0x0') {
-      // ETH token
-      dispatchSendEthToken(token, fee, fromWallet, provider, toWallet.address)
-    } else {
-      // ERC20 Token
-      dispatchSendErc20Token(token, fee, fromWallet, provider, toWallet.address)
-    }
+    dispatchSendToken(token, fee, fromWallet, provider, toWallet.address)
   }
 
   return (
@@ -100,11 +91,19 @@ const TransferConfirm = ({
           <OMGText style={styles.subtitle(theme)} weight='bold'>
             From
           </OMGText>
-          <OMGWalletAddress wallet={fromWallet} style={styles.walletAddress} />
+          <OMGWalletAddress
+            address={fromWallet.address}
+            name={fromWallet.name}
+            style={styles.walletAddress}
+          />
           <OMGText style={styles.subtitle(theme)} weight='bold'>
             To
           </OMGText>
-          <OMGWalletAddress wallet={toWallet} style={styles.walletAddress} />
+          <OMGWalletAddress
+            address={toWallet.address}
+            name={toWallet.name}
+            style={styles.walletAddress}
+          />
         </OMGBox>
         <View style={styles.transactionFeeContainer}>
           <OMGText weight='bold' style={styles.subtitle(theme)}>
@@ -132,11 +131,6 @@ const TransferConfirm = ({
           Send Transaction
         </OMGButton>
       </View>
-      {/* <Snackbar
-        style={{ marginBottom: 16 }}
-        duration={1300}
-        {...snackbarProps}
-      /> */}
     </SafeAreaView>
   )
 }
@@ -268,15 +262,35 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchSendEthToken: (token, fee, wallet, provider, toAddress) =>
-    dispatch(
-      transactionActions.sendEthToken(token, fee, wallet, provider, toAddress)
-    ),
-  dispatchSendErc20Token: (token, fee, wallet, provider, toAddress) =>
-    dispatch(
-      transactionActions.sendErc20Token(token, fee, wallet, provider, toAddress)
-    )
+  dispatchSendToken: (token, fee, wallet, provider, toAddress) =>
+    dispatch(getAction(token, fee, wallet, provider, toAddress))
 })
+
+const getAction = (token, fee, wallet, provider, toAddress) => {
+  const TO_PLASMA = toAddress === Config.PLASMA_CONTRACT_ADDRESS
+  const ETH_TOKEN = token.contractAddress === '0x0'
+  if (TO_PLASMA && ETH_TOKEN) {
+    return plasmaActions.depositEth(wallet, provider, token, fee)
+  } else if (TO_PLASMA && !ETH_TOKEN) {
+    // plasmaActions.depositEth(wallet.address, wallet.privateKey, token, fee)
+  } else if (!TO_PLASMA && ETH_TOKEN) {
+    return transactionActions.sendEthToken(
+      token,
+      fee,
+      wallet,
+      provider,
+      toAddress
+    )
+  } else {
+    return transactionActions.sendErc20Token(
+      token,
+      fee,
+      wallet,
+      provider,
+      toAddress
+    )
+  }
+}
 
 export default connect(
   mapStateToProps,

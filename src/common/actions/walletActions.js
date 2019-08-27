@@ -60,7 +60,7 @@ export const loadAssets = (provider, address, lastBlockNumber) => {
   }
 
   return createAsyncAction({
-    type: 'WALLET/INIT_ASSETS',
+    type: 'WALLET/LOAD_ASSETS',
     operation: asyncAction,
     isBackgroundTask: lastBlockNumber > 0
   })

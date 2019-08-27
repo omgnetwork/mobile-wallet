@@ -12,8 +12,7 @@ const ScannerTransferFormSwitchNavigator = createSwitchNavigator(
     TransferForm: {
       screen: Views.TransferForm,
       params: {
-        scannable: true,
-        showApproveERC20: false
+        isDeposit: false
       }
     }
   },

@@ -1,10 +1,8 @@
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import rootReducer from '../reducers'
-import { providerService } from 'common/services'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistStore, persistReducer, createTransform } from 'redux-persist'
-import Config from 'react-native-config'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 
 import Storage from '@react-native-community/async-storage'

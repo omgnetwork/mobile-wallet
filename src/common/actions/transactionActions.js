@@ -49,6 +49,8 @@ export const sendEthToken = (token, fee, fromWallet, provider, toAddress) => {
       toAddress
     )
 
+    console.log(tx)
+
     return {
       hash: tx.hash,
       from: tx.from,

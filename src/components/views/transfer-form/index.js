@@ -48,21 +48,11 @@ const TransferForm = ({ wallet, theme, navigation }) => {
   const selectedFee = navigation.getParam('selectedFee', fees[0])
   const selectedAddress = navigation.getParam('address')
   const defaultAmount = navigation.getParam('lastAmount')
-  const scannable = navigation.getParam('scannable')
-  const showApproveERC20 = navigation.getParam('showApproveERC20')
+  const isDeposit = navigation.getParam('isDeposit')
   const textRef = useRef(defaultAmount)
 
   const submit = () => {
     if (textRef.current) {
-      console.log({
-        token: { ...selectedToken, balance: textRef.current },
-        fromWallet: wallet,
-        toWallet: {
-          name: 'Another wallet',
-          address: selectedAddress || testAddress
-        },
-        fee: selectedFee
-      })
       navigation.navigate('TransferConfirm', {
         token: { ...selectedToken, balance: textRef.current },
         fromWallet: wallet,
@@ -94,16 +84,27 @@ const TransferForm = ({ wallet, theme, navigation }) => {
                 })
               }
             />
-            <OMGWalletAddress wallet={wallet} style={styles.walletAddress} />
+            <OMGWalletAddress
+              name={wallet.name}
+              address={wallet.address}
+              style={styles.walletAddress}
+            />
           </OMGBox>
           <OMGBox style={styles.toContainer}>
             <OMGText weight='bold'>To</OMGText>
-            <OMGAddressInput
-              address={selectedAddress || testAddress}
-              style={styles.addressInput}
-              scannable={scannable}
-              onPress={() => navigation.navigate('TransferScanner')}
-            />
+            {isDeposit ? (
+              <OMGWalletAddress
+                style={styles.addressInput}
+                name='Plasma Contract'
+                address={selectedAddress}
+              />
+            ) : (
+              <OMGAddressInput
+                address={selectedAddress || testAddress}
+                style={styles.addressInput}
+                onPress={() => navigation.navigate('TransferScanner')}
+              />
+            )}
           </OMGBox>
           <OMGBox style={styles.amountContainer}>
             <OMGText weight='bold'>Amount</OMGText>

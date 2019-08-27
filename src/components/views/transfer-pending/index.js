@@ -58,13 +58,18 @@ const TransferPending = ({
               From
             </OMGText>
             <OMGWalletAddress
-              wallet={fromWallet}
+              name={fromWallet.name}
+              address={fromWallet.address}
               style={styles.walletAddress}
             />
             <OMGText style={styles.subtitle(theme)} weight='bold'>
               To
             </OMGText>
-            <OMGWalletAddress wallet={toWallet} style={styles.walletAddress} />
+            <OMGWalletAddress
+              address={toWallet.address}
+              name={toWallet.name}
+              style={styles.walletAddress}
+            />
           </OMGBox>
           <View style={styles.sentContainer}>
             <OMGText weight='bold' style={styles.subtitle(theme)}>
