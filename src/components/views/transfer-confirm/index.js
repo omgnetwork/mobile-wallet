@@ -1,11 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
-import {
-  withNavigation,
-  NavigationActions,
-  SafeAreaView
-} from 'react-navigation'
+import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme, Snackbar } from 'react-native-paper'
 import { useAlert } from 'common/hooks'
 import { Formatter } from 'common/utils'
