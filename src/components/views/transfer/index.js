@@ -18,12 +18,12 @@ const Transfer = ({ navigation, theme }) => {
       setRendering(false)
     }
 
-    const willFocusSubscription = navigation.addListener('didFocus', didFocus)
-    const willBlurSubscription = navigation.addListener('didBlur', didBlur)
+    const didFocusSubscription = navigation.addListener('didFocus', didFocus)
+    const didBlurSubscription = navigation.addListener('didBlur', didBlur)
 
     return () => {
-      willBlurSubscription.remove()
-      willFocusSubscription.remove()
+      didBlurSubscription.remove()
+      didFocusSubscription.remove()
     }
   }, [navigation, theme.colors.white])
 

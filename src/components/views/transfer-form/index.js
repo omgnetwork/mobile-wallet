@@ -57,7 +57,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
         token: { ...selectedToken, balance: textRef.current },
         fromWallet: wallet,
         toWallet: {
-          name: 'Another wallet',
+          name: isDeposit ? 'Plasma Contract' : 'Another wallet',
           address: selectedAddress || testAddress
         },
         fee: selectedFee
