@@ -68,7 +68,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
   }
 
   return (
-    <View style={styles.container(theme)}>
+    <SafeAreaView style={styles.container(theme)}>
       <ScrollView contentContainerStyle={styles.formContainer}>
         <View style={styles.formContainer}>
           <OMGBox style={styles.fromContainer}>
@@ -134,7 +134,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
           <OMGButton onPress={submit}>Next</OMGButton>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -180,9 +180,6 @@ const styles = StyleSheet.create({
     marginTop: 16
   },
   buttonContainer: {
-    // justifyContent: 'flex-end',
-    // justifyContent: 'center',
-    // alignItems: 'center',
     marginTop: 16,
     marginBottom: 16,
     paddingHorizontal: 16
