@@ -30,7 +30,28 @@ export const walletsReducer = (state = [], action) => {
           return wallet
         }
       })
-    case 'TRANSACTION/WAIT_RECEIPT/SUCCESS':
+    case 'PLASMA/LOAD_ASSETS/SUCCESS':
+      return state.map(wallet => {
+        if (wallet.address === action.data.address) {
+          const plasmaAssets = wallet.plasmaAssets || []
+          return {
+            ...wallet,
+            plasmaAssets: mergeAssets(plasmaAssets, action.data.plasmaAssets),
+            shouldRefreshPlasma: false
+          }
+        } else {
+          return wallet
+        }
+      })
+    case 'PLASMA/WAIT_DEPOSITING/SUCCESS':
+      return state.map(wallet => {
+        if (wallet.address === action.data.from) {
+          return { ...wallet, shouldRefresh: true, shouldRefreshPlasma: true }
+        } else {
+          return wallet
+        }
+      })
+    case 'TRANSACTION/WAIT_SENDING/SUCCESS':
       return state.map(wallet => {
         if (wallet.address === action.data.from) {
           return { ...wallet, shouldRefresh: true }
@@ -46,6 +67,15 @@ export const walletsReducer = (state = [], action) => {
           return wallet
         }
       })
+    case 'PLASMA/SET_SHOULD_REFRESH/OK':
+      return state.map(wallet => {
+        if (wallet.address === action.data.address) {
+          return { ...wallet, shouldRefreshPlasma: action.data.shouldRefresh }
+        } else {
+          return wallet
+        }
+      })
+
     default:
       return state
   }

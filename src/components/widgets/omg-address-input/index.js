@@ -30,7 +30,6 @@ const OMGAddressInput = ({ theme, address, style, onPress }) => {
 
 const styles = StyleSheet.create({
   container: theme => ({
-    flex: 1,
     flexDirection: 'row',
     backgroundColor: theme.colors.white,
     borderColor: theme.colors.gray4,

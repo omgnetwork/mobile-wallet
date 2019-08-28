@@ -7,7 +7,7 @@ import { OMGIcon, OMGBox, OMGText, OMGStatusBar } from 'components/widgets'
 const Deposit = ({ navigation, theme }) => {
   const ChildChainTransferNavigator = navigation.getParam('navigator')
   return (
-    <SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
+    <SafeAreaView style={styles.container}>
       <OMGStatusBar
         barStyle={'dark-content'}
         backgroundColor={theme.colors.white}

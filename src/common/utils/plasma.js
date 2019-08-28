@@ -25,14 +25,11 @@ export const depositEth = async (address, privateKey, weiAmount, options) => {
     transaction.ETH_CURRENCY
   )
 
-  console.log(depositTransaction)
   const txOptions = {
     from: address,
     privateKey,
     ...options
   }
-
-  console.log(txOptions)
 
   return rootChain.depositEth(depositTransaction, weiAmount, txOptions)
 }

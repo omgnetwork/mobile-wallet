@@ -2,7 +2,7 @@ import React, { useState, Fragment, useEffect } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
-import { plasmaActions } from 'common/actions'
+import { plasmaActions, walletActions } from 'common/actions'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
 import { Formatter } from 'common/utils'
@@ -13,26 +13,45 @@ import {
   OMGAssetFooter
 } from 'components/widgets'
 
-const PlasmaBalance = ({ dispatchDepositEth, navigation }) => {
+const PlasmaBalance = ({
+  dispatchLoadAssets,
+  dispatchSetShouldRefreshPlasma,
+  wallet,
+  navigation
+}) => {
   const currency = 'USD'
-  const [callPlasma, setCallPlasma] = useState(true)
+  const [totalBalance, setTotalBalance] = useState(0.0)
 
   useEffect(() => {
-    // if (callPlasma) dispatchDepositEth()
-    setCallPlasma(false)
-  }, [callPlasma, dispatchDepositEth])
+    if (wallet.shouldRefreshPlasma) {
+      dispatchLoadAssets(wallet)
+      dispatchSetShouldRefreshPlasma(wallet.address, false)
+    }
+  }, [dispatchLoadAssets, dispatchSetShouldRefreshPlasma, wallet])
+
+  useEffect(() => {
+    if (wallet.plasmaAssets) {
+      const totalPrices = wallet.plasmaAssets.reduce((acc, asset) => {
+        const parsedAmount = parseFloat(asset.balance)
+        const tokenPrice = parsedAmount * asset.price
+        return tokenPrice + acc
+      }, 0)
+
+      setTotalBalance(totalPrices)
+    }
+  }, [wallet.plasmaAssets])
 
   return (
     <Fragment>
       <OMGAssetHeader
-        amount={formatTotalBalance(0.0)}
+        amount={formatTotalBalance(totalBalance)}
         currency={currency}
         rootChain={false}
         blockchain={'Plasma'}
         network={Config.OMISEGO_NETWORK}
       />
       <OMGAssetList
-        data={[]}
+        data={wallet.plasmaAssets || []}
         keyExtractor={item => item.contractAddress}
         style={styles.list}
         renderItem={({ item }) => (
@@ -71,7 +90,7 @@ const formatTokenBalance = amount => {
   return Formatter.format(amount, {
     commify: true,
     maxDecimal: 3,
-    ellipsize: true
+    ellipsize: false
   })
 }
 
@@ -87,13 +106,16 @@ const formatTokenPrice = (amount, price) => {
 
 const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
-  wallets: state.wallets,
-  provider: state.setting.provider,
-  primaryWalletAddress: state.setting.primaryWalletAddress
+  wallet: state.wallets.find(
+    wallet => wallet.address === state.setting.primaryWalletAddress
+  )
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchDepositEth: () => dispatch(plasmaActions.depositEth())
+  dispatchLoadAssets: wallet =>
+    dispatch(plasmaActions.fetchAssets(wallet.assets, wallet.address)),
+  dispatchSetShouldRefreshPlasma: (address, shouldRefreshPlasma) =>
+    walletActions.setShouldRefreshPlasma(dispatch, address, shouldRefreshPlasma)
 })
 
 export default connect(

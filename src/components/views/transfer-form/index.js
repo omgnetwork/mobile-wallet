@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, ScrollView } from 'react-native'
-import { withNavigation } from 'react-navigation'
+import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import {
   OMGBox,
@@ -69,7 +69,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
 
   return (
     <View style={styles.container(theme)}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.formContainer}>
         <View style={styles.formContainer}>
           <OMGBox style={styles.fromContainer}>
             <OMGText weight='bold'>From</OMGText>
@@ -130,10 +130,8 @@ const TransferForm = ({ wallet, theme, navigation }) => {
             />
           </OMGBox>
         </View>
-        <View style={styles.buttonContainer(theme)}>
-          <OMGButton style={styles.button} onPress={submit}>
-            Next
-          </OMGButton>
+        <View style={styles.buttonContainer}>
+          <OMGButton onPress={submit}>Next</OMGButton>
         </View>
       </ScrollView>
     </View>
@@ -147,10 +145,12 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white
   }),
   formContainer: {
+    paddingTop: 0,
     flex: 1
   },
   fromContainer: {
-    flexDirection: 'column'
+    flexDirection: 'column',
+    justifyContent: 'flex-start'
   },
   toContainer: {
     marginTop: 8,
@@ -179,13 +179,14 @@ const styles = StyleSheet.create({
   feeInput: {
     marginTop: 16
   },
-  buttonContainer: theme => ({
-    backgroundColor: theme.colors.white,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 16,
+  buttonContainer: {
+    // justifyContent: 'flex-end',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    marginTop: 16,
+    marginBottom: 16,
     paddingHorizontal: 16
-  })
+  }
 })
 
 const mapStateToProps = (state, ownProps) => ({

@@ -140,10 +140,6 @@ export const sendEthToken = (token, fee, wallet, toAddress) => {
   })
 }
 
-export const subscribeTransaction = (provider, tx) => {
-  return provider.waitForTransaction(tx.hash)
-}
-
-export const subscribeWallet = (provider, wallet) => {
-  provider.on(wallet.address, balance => {})
+export const subscribeTransaction = (provider, tx, confirmations) => {
+  return provider.waitForTransaction(tx.hash, confirmations)
 }

@@ -268,7 +268,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 const getAction = (token, fee, wallet, provider, toAddress) => {
   const TO_PLASMA = toAddress === Config.PLASMA_CONTRACT_ADDRESS
-  const ETH_TOKEN = token.contractAddress === '0x0'
+  const ETH_TOKEN =
+    token.contractAddress === '0x0000000000000000000000000000000000000000'
   if (TO_PLASMA && ETH_TOKEN) {
     return plasmaActions.depositEth(wallet, provider, token, fee)
   } else if (TO_PLASMA && !ETH_TOKEN) {

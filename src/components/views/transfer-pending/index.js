@@ -4,7 +4,7 @@ import { View, StyleSheet, Linking } from 'react-native'
 import { withNavigation, SafeAreaView, StackActions } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Formatter } from 'common/utils'
-import { transactionActions } from 'common/actions'
+import { transactionActions, plasmaActions } from 'common/actions'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
 import {
@@ -22,7 +22,8 @@ const TransferPending = ({
   wallet,
   provider,
   pendingTxs,
-  dispatchSubscribeTransaction
+  dispatchSubscribeTransaction,
+  dispatchSubscribeDeposit
 }) => {
   const pendingTx = navigation.getParam('pendingTx')
   const token = navigation.getParam('token')
@@ -36,11 +37,19 @@ const TransferPending = ({
   }
 
   useEffect(() => {
-    const hasPendingTx = pendingTxs.length && pendingTxs.indexOf(pendingTx) > -1
-    if (hasPendingTx) {
+    console.log(pendingTx)
+    if (pendingTx && pendingTx.type === 'ROOTCHAIN_SEND') {
       dispatchSubscribeTransaction(provider, wallet, pendingTx)
+    } else if (pendingTx && pendingTx.type === 'CHILDCHAIN_DEPOSIT') {
+      dispatchSubscribeDeposit(provider, wallet, pendingTx)
     }
-  }, [pendingTx, pendingTxs, provider, dispatchSubscribeTransaction, wallet])
+  }, [
+    pendingTx,
+    provider,
+    dispatchSubscribeTransaction,
+    wallet,
+    dispatchSubscribeDeposit
+  ])
 
   return (
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
@@ -262,6 +271,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatchSubscribeDeposit: (provider, wallet, tx) =>
+    dispatch(plasmaActions.waitDeposit(provider, wallet, tx)),
   dispatchSubscribeTransaction: (provider, wallet, tx) =>
     dispatch(transactionActions.subscribeTransaction(provider, wallet, tx))
 })

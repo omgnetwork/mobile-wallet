@@ -75,3 +75,17 @@ export const setShouldRefreshWallet = (dispatch, address, shouldRefresh) => {
     type: 'WALLET/SET_SHOULD_REFRESH'
   })
 }
+
+export const setShouldRefreshPlasma = (
+  dispatch,
+  address,
+  shouldRefreshPlasma
+) => {
+  return createAction(dispatch, {
+    operation: () => ({
+      address,
+      shouldRefreshPlasma
+    }),
+    type: 'PLASMA/SET_SHOULD_REFRESH'
+  })
+}

@@ -1,5 +1,24 @@
-import { createAsyncAction } from './actionCreators'
-import { plasmaService, walletService } from 'common/services'
+import { createAction, createAsyncAction } from './actionCreators'
+import {
+  plasmaService,
+  walletService,
+  transactionService,
+  notificationService
+} from 'common/services'
+import { Datetime } from 'common/utils'
+
+export const fetchAssets = (rootchainAssets, address) => {
+  const asyncAction = async () => {
+    const assets = await plasmaService.fetchAssets(rootchainAssets, address)
+
+    return { address, plasmaAssets: assets }
+  }
+  return createAsyncAction({
+    type: 'PLASMA/LOAD_ASSETS',
+    operation: asyncAction
+  })
+}
+
 export const depositEth = (wallet, provider, token, fee) => {
   const asyncAction = async () => {
     const blockchainWallet = await walletService.get(wallet.address, provider)
@@ -11,7 +30,15 @@ export const depositEth = (wallet, provider, token, fee) => {
       fee
     )
 
-    return { address: wallet.address, transactionReceipt }
+    return {
+      hash: transactionReceipt.transactionHash,
+      from: wallet.address,
+      value: token.balance,
+      symbol: token.tokenSymbol,
+      gasPrice: fee.amount,
+      type: 'CHILDCHAIN_DEPOSIT',
+      createdAt: Datetime.now()
+    }
   }
   return createAsyncAction({
     type: 'PLASMA/DEPOSIT_ETH_TOKEN',
@@ -19,61 +46,29 @@ export const depositEth = (wallet, provider, token, fee) => {
   })
 }
 
-async function waitForTransaction(
-  web3,
-  transactionHash,
-  millisToWaitForTxn,
-  blocksToWaitForTxn
-) {
-  var transactionReceiptAsync = async (transactionHash, resolve, reject) => {
-    try {
-      let transactionReceipt = await web3.eth.getTransactionReceipt(
-        transactionHash
-      )
+export const waitDeposit = (provider, wallet, tx) => {
+  const asyncAction = async () => {
+    const txReceipt = await transactionService.subscribeTransaction(
+      provider,
+      tx,
+      5
+    )
+    console.log(txReceipt)
 
-      if (blocksToWaitForTxn > 0) {
-        try {
-          let block = await web3.eth.getBlock(transactionReceipt.blockNumber)
-          let current = await web3.eth.getBlock('latest')
+    notificationService.sendNotification({
+      title: `${wallet.name} deposited`,
+      message: `${tx.value} ${tx.symbol}`
+    })
 
-          console.log(`transaction block: ${block.number}`)
-          console.log(`current block:     ${current.number}`)
-
-          if (current.number - block.number >= blocksToWaitForTxn) {
-            let transaction = await web3.eth.getTransaction(transactionHash)
-
-            if (transaction.blockNumber !== null) {
-              return resolve(transactionReceipt)
-            } else {
-              return reject(
-                new Error(
-                  'Transaction with hash: ' +
-                    transactionHash +
-                    ' ended up in an uncle block.'
-                )
-              )
-            }
-          } else {
-            setTimeout(
-              () => transactionReceiptAsync(transactionHash, resolve, reject),
-              millisToWaitForTxn
-            )
-          }
-        } catch (e) {
-          setTimeout(
-            () => transactionReceiptAsync(transactionHash, resolve, reject),
-            millisToWaitForTxn
-          )
-        }
-      } else {
-        return resolve(transactionReceipt)
-      }
-    } catch (e) {
-      return reject(e)
+    return {
+      hash: tx.hash,
+      from: tx.from,
+      gasPrice: tx.gasPrice.toString()
     }
   }
-
-  return new Promise((resolve, reject) =>
-    transactionReceiptAsync(transactionHash, resolve, reject)
-  )
+  return createAsyncAction({
+    type: 'PLASMA/WAIT_DEPOSITING',
+    operation: asyncAction,
+    isBackgroundTask: true
+  })
 }

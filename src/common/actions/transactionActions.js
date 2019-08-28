@@ -49,13 +49,12 @@ export const sendEthToken = (token, fee, fromWallet, provider, toAddress) => {
       toAddress
     )
 
-    console.log(tx)
-
     return {
       hash: tx.hash,
       from: tx.from,
       nonce: tx.nonce,
       value: token.balance,
+      type: 'ROOTCHAIN_SEND',
       symbol: token.tokenSymbol,
       gasPrice: tx.gasPrice.toString(),
       createdAt: Datetime.now()
@@ -72,7 +71,8 @@ export const subscribeTransaction = (provider, wallet, tx) => {
   const asyncAction = async () => {
     const txReceipt = await transactionService.subscribeTransaction(
       provider,
-      tx
+      tx,
+      1
     )
 
     console.log(txReceipt)
@@ -90,7 +90,7 @@ export const subscribeTransaction = (provider, wallet, tx) => {
   }
 
   return createAsyncAction({
-    type: 'TRANSACTION/WAIT_RECEIPT',
+    type: 'TRANSACTION/WAIT_SENDING',
     operation: asyncAction,
     isBackgroundTask: true
   })
