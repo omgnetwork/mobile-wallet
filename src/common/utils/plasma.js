@@ -34,6 +34,8 @@ export const depositEth = (address, privateKey, weiAmount, options) => {
   return rootChain.depositEth(depositTransaction, weiAmount, txOptions)
 }
 
+// const approveErc20 = ()
+
 export const depositErc20 = async (
   address,
   privateKey,
@@ -69,9 +71,7 @@ export const depositErc20 = async (
 
   const erc20Contract = new web3.eth.Contract(erc20ApproveABI, contractAddress)
 
-  console.log(erc20Contract.address)
   const nonce = await web3.eth.getTransactionCount(address)
-  console.log(nonce)
 
   const txDetails = {
     from: address,
@@ -85,7 +85,6 @@ export const depositErc20 = async (
 
   const gas = await web3.eth.estimateGas(txDetails)
 
-  console.log(txDetails)
   const signedTx = await web3.eth.accounts.signTransaction(
     {
       ...txDetails,
@@ -95,9 +94,6 @@ export const depositErc20 = async (
   )
 
   await web3.eth.sendSignedTransaction(signedTx.rawTransaction)
-  // Approve successfully
-
-  console.log('Approved!')
 
   const depositTransaction = transaction.encodeDeposit(
     address,
@@ -109,8 +105,6 @@ export const depositErc20 = async (
     from: address,
     privateKey
   }
-
-  console.log(txOptions)
 
   return rootChain.depositToken(depositTransaction, txOptions)
 }

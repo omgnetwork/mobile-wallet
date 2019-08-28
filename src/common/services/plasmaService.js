@@ -70,8 +70,7 @@ export const depositErc20 = (address, privateKey, token, fee) => {
         weiAmount,
         token.contractAddress,
         {
-          gasPrice: Ethers.parseUnits(fee.amount, fee.symbol),
-          gasLimit: 6000000
+          gasPrice: Ethers.parseUnits(fee.amount, fee.symbol)
         }
       )
       resolve(transactionReceipt)

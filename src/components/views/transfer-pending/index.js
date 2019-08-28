@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, Linking } from 'react-native'
-import { withNavigation, SafeAreaView, StackActions } from 'react-navigation'
+import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Formatter } from 'common/utils'
 import { transactionActions, plasmaActions } from 'common/actions'
@@ -31,24 +31,28 @@ const TransferPending = ({
   const toWallet = navigation.getParam('toWallet')
   const fee = navigation.getParam('fee')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
+  const [subscribed, setSubscribed] = useState(false)
 
   const handleOnBackPressedAndroid = () => {
     return true
   }
 
   useEffect(() => {
-    console.log(pendingTx)
-    if (pendingTx && pendingTx.type === 'ROOTCHAIN_SEND') {
-      dispatchSubscribeTransaction(provider, wallet, pendingTx)
-    } else if (pendingTx && pendingTx.type === 'CHILDCHAIN_DEPOSIT') {
-      dispatchSubscribeDeposit(provider, wallet, pendingTx)
+    if (!subscribed) {
+      if (pendingTx && pendingTx.type === 'ROOTCHAIN_SEND') {
+        dispatchSubscribeTransaction(provider, wallet, pendingTx)
+      } else if (pendingTx && pendingTx.type === 'CHILDCHAIN_DEPOSIT') {
+        dispatchSubscribeDeposit(provider, wallet, pendingTx)
+      }
+      setSubscribed(true)
     }
   }, [
     pendingTx,
     provider,
     dispatchSubscribeTransaction,
     wallet,
-    dispatchSubscribeDeposit
+    dispatchSubscribeDeposit,
+    subscribed
   ])
 
   return (

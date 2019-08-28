@@ -16,7 +16,7 @@ export default (TransferRootChain, TransferChildChain) =>
         screen: Views.TransferPending,
         navigationOptions: () => ({ gesturesEnabled: false })
       },
-      ChildChainDeposit: {
+      TransferDeposit: {
         screen: Views.Deposit,
         params: {
           navigator: TransferChildChain

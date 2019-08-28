@@ -5,6 +5,7 @@ import {
 } from '../services'
 import { createAsyncAction } from './actionCreators'
 import { Datetime } from 'common/utils'
+import Config from 'react-native-config'
 
 export const sendErc20Token = (token, fee, fromWallet, provider, toAddress) => {
   const asyncAction = async () => {
@@ -72,7 +73,7 @@ export const subscribeTransaction = (provider, wallet, tx) => {
     const txReceipt = await transactionService.subscribeTransaction(
       provider,
       tx,
-      1
+      Config.ROOTCHAIN_TRANSFER_CONFIRMATION_BLOCKS
     )
 
     console.log(txReceipt)

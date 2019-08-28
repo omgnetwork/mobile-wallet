@@ -6,6 +6,7 @@ import {
   notificationService
 } from 'common/services'
 import { Datetime } from 'common/utils'
+import Config from 'react-native-config'
 
 export const fetchAssets = (rootchainAssets, address) => {
   const asyncAction = async () => {
@@ -78,7 +79,7 @@ export const waitDeposit = (provider, wallet, tx) => {
     const txReceipt = await transactionService.subscribeTransaction(
       provider,
       tx,
-      5
+      Config.CHILDCHAIN_DEPOSIT_CONFIRMATION_BLOCKS
     )
     console.log(txReceipt)
 

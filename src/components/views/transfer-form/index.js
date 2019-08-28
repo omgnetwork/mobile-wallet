@@ -69,7 +69,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container(theme)}>
-      <ScrollView contentContainerStyle={styles.formContainer}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.formContainer}>
           <OMGBox style={styles.fromContainer}>
             <OMGText weight='bold'>From</OMGText>
@@ -144,8 +144,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: theme.colors.white
   }),
+  scrollView: {
+    flexGrow: 1
+  },
   formContainer: {
-    paddingTop: 0,
     flex: 1
   },
   fromContainer: {
@@ -153,15 +155,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start'
   },
   toContainer: {
-    marginTop: 8,
     flexDirection: 'column'
   },
   amountContainer: {
-    marginTop: 8,
     flexDirection: 'column'
   },
   feeContainer: {
-    marginTop: 8,
     flexDirection: 'column'
   },
   tokenInput: {

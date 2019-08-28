@@ -64,7 +64,7 @@ const PlasmaBalance = ({
         )}
       />
       <OMGAssetFooter
-        onPressDeposit={() => navigation.navigate('ChildChainDeposit')}
+        onPressDeposit={() => navigation.navigate('TransferDeposit')}
       />
     </Fragment>
   )

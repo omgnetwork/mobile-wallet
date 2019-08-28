@@ -9,17 +9,17 @@ const Transfer = ({ navigation, theme }) => {
   const RootChainTransferNavigator = navigation.getParam('navigator')
 
   useEffect(() => {
-    function willFocus() {
+    function didFocus() {
       StatusBar.setBarStyle('dark-content')
       StatusBar.setBackgroundColor(theme.colors.white)
       setRendering(true)
     }
-    function willBlur() {
+    function didBlur() {
       setRendering(false)
     }
 
-    const willFocusSubscription = navigation.addListener('willFocus', willFocus)
-    const willBlurSubscription = navigation.addListener('willBlur', willBlur)
+    const willFocusSubscription = navigation.addListener('didFocus', didFocus)
+    const willBlurSubscription = navigation.addListener('didBlur', didBlur)
 
     return () => {
       willBlurSubscription.remove()

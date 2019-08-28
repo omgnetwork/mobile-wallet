@@ -1,11 +1,25 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import React, { useEffect } from 'react'
+import { View, StyleSheet, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-navigation'
 import { OMGIcon, OMGBox, OMGText, OMGStatusBar } from 'components/widgets'
 
 const Deposit = ({ navigation, theme }) => {
   const ChildChainTransferNavigator = navigation.getParam('navigator')
+
+  useEffect(() => {
+    function didFocus() {
+      StatusBar.setBarStyle('dark-content')
+      StatusBar.setBackgroundColor(theme.colors.white)
+    }
+
+    const didFocusSubscription = navigation.addListener('didFocus', didFocus)
+
+    return () => {
+      didFocusSubscription.remove()
+    }
+  }, [navigation, theme.colors.white])
+
   return (
     <SafeAreaView style={styles.container}>
       <OMGStatusBar
