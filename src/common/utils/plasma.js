@@ -18,7 +18,7 @@ export const getEthBalance = address => {
   return childChain.getBalance(address)
 }
 
-export const depositEth = async (address, privateKey, weiAmount, options) => {
+export const depositEth = (address, privateKey, weiAmount, options) => {
   const depositTransaction = transaction.encodeDeposit(
     address,
     weiAmount,
@@ -32,4 +32,85 @@ export const depositEth = async (address, privateKey, weiAmount, options) => {
   }
 
   return rootChain.depositEth(depositTransaction, weiAmount, txOptions)
+}
+
+export const depositErc20 = async (
+  address,
+  privateKey,
+  weiAmount,
+  contractAddress,
+  options
+) => {
+  const erc20ApproveABI = [
+    {
+      name: 'approve',
+      type: 'function',
+      constant: false,
+      inputs: [
+        {
+          name: '_spender',
+          type: 'address'
+        },
+        {
+          name: '_value',
+          type: 'uint256'
+        }
+      ],
+      outputs: [
+        {
+          name: '',
+          type: 'bool'
+        }
+      ],
+      payable: false,
+      stateMutability: 'nonpayable'
+    }
+  ]
+
+  const erc20Contract = new web3.eth.Contract(erc20ApproveABI, contractAddress)
+
+  console.log(erc20Contract.address)
+  const nonce = await web3.eth.getTransactionCount(address)
+  console.log(nonce)
+
+  const txDetails = {
+    from: address,
+    to: contractAddress,
+    nonce: nonce,
+    data: erc20Contract.methods
+      .approve(Config.PLASMA_CONTRACT_ADDRESS, weiAmount)
+      .encodeABI(),
+    gasPrice: options.gasPrice
+  }
+
+  const gas = await web3.eth.estimateGas(txDetails)
+
+  console.log(txDetails)
+  const signedTx = await web3.eth.accounts.signTransaction(
+    {
+      ...txDetails,
+      gas
+    },
+    privateKey
+  )
+
+  await web3.eth.sendSignedTransaction(signedTx.rawTransaction)
+  // Approve successfully
+
+  console.log('Approved!')
+
+  const depositTransaction = transaction.encodeDeposit(
+    address,
+    weiAmount,
+    contractAddress
+  )
+
+  const txOptions = {
+    from: address,
+    privateKey
+  }
+
+  console.log(txOptions)
+
+  return rootChain.depositToken(depositTransaction, txOptions)
 }

@@ -273,7 +273,7 @@ const getAction = (token, fee, wallet, provider, toAddress) => {
   if (TO_PLASMA && ETH_TOKEN) {
     return plasmaActions.depositEth(wallet, provider, token, fee)
   } else if (TO_PLASMA && !ETH_TOKEN) {
-    // plasmaActions.depositEth(wallet.address, wallet.privateKey, token, fee)
+    return plasmaActions.depositErc20(wallet, provider, token, fee)
   } else if (!TO_PLASMA && ETH_TOKEN) {
     return transactionActions.sendEthToken(
       token,

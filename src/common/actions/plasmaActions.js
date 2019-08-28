@@ -46,6 +46,33 @@ export const depositEth = (wallet, provider, token, fee) => {
   })
 }
 
+export const depositErc20 = (wallet, provider, token, fee) => {
+  const asyncAction = async () => {
+    const blockchainWallet = await walletService.get(wallet.address, provider)
+
+    const transactionReceipt = await plasmaService.depositErc20(
+      blockchainWallet.address,
+      blockchainWallet.privateKey,
+      token,
+      fee
+    )
+
+    return {
+      hash: transactionReceipt.transactionHash,
+      from: wallet.address,
+      value: token.balance,
+      symbol: token.tokenSymbol,
+      gasPrice: fee.amount,
+      type: 'CHILDCHAIN_DEPOSIT',
+      createdAt: Datetime.now()
+    }
+  }
+  return createAsyncAction({
+    type: 'PLASMA/DEPOSIT_ERC20_TOKEN',
+    operation: asyncAction
+  })
+}
+
 export const waitDeposit = (provider, wallet, tx) => {
   const asyncAction = async () => {
     const txReceipt = await transactionService.subscribeTransaction(

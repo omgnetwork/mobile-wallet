@@ -59,3 +59,24 @@ export const depositEth = (address, privateKey, amount, fee) => {
     }
   })
 }
+
+export const depositErc20 = (address, privateKey, token, fee) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const weiAmount = Ethers.parseUnits(token.balance, token.tokenDecimal)
+      const transactionReceipt = await Plasma.depositErc20(
+        address,
+        privateKey,
+        weiAmount,
+        token.contractAddress,
+        {
+          gasPrice: Ethers.parseUnits(fee.amount, fee.symbol),
+          gasLimit: 6000000
+        }
+      )
+      resolve(transactionReceipt)
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
