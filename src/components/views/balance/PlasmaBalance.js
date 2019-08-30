@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native'
 import { plasmaActions, walletActions } from 'common/actions'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
-import { Formatter } from 'common/utils'
+import { Formatter, Datetime } from 'common/utils'
 import {
   OMGItemToken,
   OMGAssetHeader,
@@ -53,6 +53,7 @@ const PlasmaBalance = ({
       <OMGAssetList
         data={wallet.plasmaAssets || []}
         keyExtractor={item => item.contractAddress}
+        updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
         style={styles.list}
         renderItem={({ item }) => (
           <OMGItemToken

@@ -25,6 +25,7 @@ export const sendErc20Token = (token, fee, fromWallet, provider, toAddress) => {
       from: tx.from,
       nonce: tx.nonce,
       value: token.balance,
+      type: 'ROOTCHAIN_SEND',
       symbol: token.tokenSymbol,
       gasPrice: tx.gasPrice.toString(),
       createdAt: Datetime.now()

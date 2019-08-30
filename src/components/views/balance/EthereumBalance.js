@@ -4,7 +4,7 @@ import { StyleSheet, RefreshControl } from 'react-native'
 import { walletActions } from 'common/actions'
 import { withTheme, Text } from 'react-native-paper'
 import Config from 'react-native-config'
-import { Formatter } from 'common/utils'
+import { Formatter, Datetime } from 'common/utils'
 import { OMGItemToken, OMGAssetHeader, OMGAssetList } from 'components/widgets'
 
 const EthereumBalance = ({
@@ -61,19 +61,20 @@ const EthereumBalance = ({
       <OMGAssetList
         data={primaryWallet.assets || []}
         keyExtractor={item => item.contractAddress}
+        // updatedAt={Datetime.format(primaryWallet.updatedAt, 'LTS')}
         loading={loading.show}
-        refreshControl={
-          <RefreshControl
-            refreshing={loading.show}
-            onRefresh={() =>
-              loadAssets(
-                provider,
-                primaryWalletAddress,
-                primaryWallet.updatedBlock || '0'
-              )
-            }
-          />
-        }
+        // refreshControl={
+        //   <RefreshControl
+        //     refreshing={loading.show}
+        //     onRefresh={() =>
+        //       loadAssets(
+        //         provider,
+        //         primaryWalletAddress,
+        //         primaryWallet.updatedBlock || '0'
+        //       )
+        //     }
+        //   />
+        // }
         style={styles.list}
         renderItem={({ item }) => (
           <OMGItemToken
