@@ -1,4 +1,4 @@
-package com.wallet;
+package co.omisego.plasmawallet;
 
 import android.app.Application;
 import android.util.Log;
