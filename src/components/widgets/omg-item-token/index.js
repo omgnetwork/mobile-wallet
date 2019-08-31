@@ -5,7 +5,7 @@ import OMGText from '../omg-text'
 import { withTheme } from 'react-native-paper'
 
 const OMGItemToken = ({ symbol, price, balance, style, onPress, theme }) => {
-  const flash = useRef(false)
+  const [animating, setAnimating] = useState(false)
   const shadowAnim = useRef(new Animated.Value(0))
   const shadowOpacity = useRef(new Animated.Value(0))
   const balanceOpacity = useRef(new Animated.Value(1.0))
@@ -13,11 +13,11 @@ const OMGItemToken = ({ symbol, price, balance, style, onPress, theme }) => {
 
   useEffect(() => {
     if (currentBalance !== balance) {
-      flash.current = true
+      setAnimating(true)
       Animated.sequence([
         Animated.parallel([
           Animator.spring(shadowAnim, 4, 2000),
-          Animator.spring(shadowOpacity, 0.15, 2000)
+          Animator.spring(shadowOpacity, 0.2, 2000)
         ]),
         Animator.spring(balanceOpacity, 0.3, 500)
       ]).start(({ finished }) => {
@@ -34,16 +34,16 @@ const OMGItemToken = ({ symbol, price, balance, style, onPress, theme }) => {
         ])
       ]).start(({ finished }) => {
         if (finished) {
-          flash.current = false
+          setAnimating(false)
         }
       })
     }
-  }, [balance, currentBalance])
+  }, [balance, currentBalance, setAnimating, symbol])
 
   return (
     <Animated.View
       style={{
-        ...styles.container(theme, flash, shadowAnim, shadowOpacity),
+        ...styles.container(theme, animating, shadowAnim, shadowOpacity),
         ...style
       }}
       elevation={5}
@@ -77,24 +77,24 @@ const styles = StyleSheet.create({
     borderRadius: theme.roundness,
     borderWidth: 0.5
   }),
-  container: (theme, flash, shadowAnim, shadowOpacity) => ({
+  container: (theme, animating, shadowAnim, shadowOpacity) => ({
     flexDirection: 'row',
     borderRadius: theme.roundness,
-    marginTop: flash.current ? 4 : 0,
     backgroundColor: theme.colors.white,
-    paddingHorizontal: flash.current ? 12 : 20,
-    marginHorizontal: flash.current ? 8 : 0,
     shadowColor: '#000000',
-    elevation: flash.current ? shadowAnim.current : 0,
+    elevation: shadowAnim.current,
+    paddingHorizontal: animating ? 12 : 20,
+    marginHorizontal: animating ? 8 : 0,
     shadowOffset: {
       width: 0,
       height: 4
     },
-    marginBottom: flash.current ? 10 : 0,
+    marginTop: 2,
+    marginBottom: 6,
     shadowRadius: 4,
-    shadowOpacity: flash.current ? shadowOpacity.current : 0.0,
+    shadowOpacity: shadowOpacity.current,
     alignItems: 'center',
-    paddingVertical: 10
+    paddingVertical: 6
   }),
   sectionName: {
     flex: 1,

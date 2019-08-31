@@ -36,7 +36,9 @@ const OMGAssetList = ({
             <OMGEmpty text='Empty assets' loading={loading} />
           }
           contentContainerStyle={
-            data && data.length ? {} : { flexGrow: 1, justifyContent: 'center' }
+            data && data.length
+              ? styles.contentContainer
+              : styles.emptyContentContainer
           }
           renderItem={renderItem}
         />
@@ -51,6 +53,11 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     paddingBottom: 8
   }),
+  contentContainer: {},
+  emptyContentContainer: {
+    flexGrow: 1,
+    justifyContent: 'center'
+  },
   header: theme => ({
     flexDirection: 'row',
     paddingHorizontal: 20,
