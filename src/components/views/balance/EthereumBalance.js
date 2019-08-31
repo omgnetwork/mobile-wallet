@@ -63,18 +63,6 @@ const EthereumBalance = ({
         keyExtractor={item => item.contractAddress}
         // updatedAt={Datetime.format(primaryWallet.updatedAt, 'LTS')}
         loading={loading.show}
-        // refreshControl={
-        //   <RefreshControl
-        //     refreshing={loading.show}
-        //     onRefresh={() =>
-        //       loadAssets(
-        //         provider,
-        //         primaryWalletAddress,
-        //         primaryWallet.updatedBlock || '0'
-        //       )
-        //     }
-        //   />
-        // }
         style={styles.list}
         renderItem={({ item }) => (
           <OMGItemToken

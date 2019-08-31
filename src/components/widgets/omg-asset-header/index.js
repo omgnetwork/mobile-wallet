@@ -23,7 +23,7 @@ const OMGAssetHeader = ({
         )}
         <OMGText style={styles.balanceCurrency(theme)}>{currency}</OMGText>
       </View>
-      <View style={styles.footer(theme)}>
+      <View style={styles.footer(theme, rootChain)}>
         <View style={styles.subfooter}>
           <OMGText style={styles.subfooterText1(theme)}>{blockchain}</OMGText>
           <OMGText style={styles.subfooterText2(theme)}>
@@ -68,9 +68,9 @@ const styles = StyleSheet.create({
     color: theme.colors.black1,
     fontSize: 32
   }),
-  footer: theme => ({
+  footer: (theme, rootChain) => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.blue2,
+    backgroundColor: rootChain ? theme.colors.purple : theme.colors.blue2,
     borderRadius: theme.roundness,
     marginHorizontal: 20
   }),
