@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.wallet"
+        applicationId "co.omisego.plasmawallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

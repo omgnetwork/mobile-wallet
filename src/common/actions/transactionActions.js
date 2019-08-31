@@ -5,6 +5,7 @@ import {
 } from '../services'
 import { createAsyncAction } from './actionCreators'
 import { Datetime } from 'common/utils'
+import Config from 'react-native-config'
 
 export const sendErc20Token = (token, fee, fromWallet, provider, toAddress) => {
   const asyncAction = async () => {
@@ -24,6 +25,7 @@ export const sendErc20Token = (token, fee, fromWallet, provider, toAddress) => {
       from: tx.from,
       nonce: tx.nonce,
       value: token.balance,
+      type: 'ROOTCHAIN_SEND',
       symbol: token.tokenSymbol,
       gasPrice: tx.gasPrice.toString(),
       createdAt: Datetime.now()
@@ -54,6 +56,7 @@ export const sendEthToken = (token, fee, fromWallet, provider, toAddress) => {
       from: tx.from,
       nonce: tx.nonce,
       value: token.balance,
+      type: 'ROOTCHAIN_SEND',
       symbol: token.tokenSymbol,
       gasPrice: tx.gasPrice.toString(),
       createdAt: Datetime.now()
@@ -70,7 +73,8 @@ export const subscribeTransaction = (provider, wallet, tx) => {
   const asyncAction = async () => {
     const txReceipt = await transactionService.subscribeTransaction(
       provider,
-      tx
+      tx,
+      Config.ROOTCHAIN_TRANSFER_CONFIRMATION_BLOCKS
     )
 
     console.log(txReceipt)
@@ -88,7 +92,7 @@ export const subscribeTransaction = (provider, wallet, tx) => {
   }
 
   return createAsyncAction({
-    type: 'TRANSACTION/WAIT_RECEIPT',
+    type: 'TRANSACTION/WAIT_SENDING',
     operation: asyncAction,
     isBackgroundTask: true
   })

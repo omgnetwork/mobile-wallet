@@ -2,8 +2,7 @@ import React, { useState, Fragment, useEffect, useRef } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
-import { walletActions, settingActions } from 'common/actions'
-import { useAlert } from 'common/hooks'
+import { walletActions } from 'common/actions'
 import {
   OMGRadioButton,
   OMGTextInput,
@@ -12,7 +11,7 @@ import {
   OMGBox,
   OMGButton
 } from 'components/widgets'
-import { Text, Title, Snackbar, withTheme } from 'react-native-paper'
+import { Text, Title, withTheme } from 'react-native-paper'
 import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-navigation'
 
@@ -76,12 +75,6 @@ const Mnemonic = ({
 }) => {
   const mnemonicRef = useRef(null)
   const walletNameRef = useRef(null)
-  const snackbarProps = useAlert({
-    loading,
-    actions: ['WALLET_IMPORT'],
-    msgSuccess: 'Import wallet successful',
-    error
-  })
 
   const importWallet = () => {
     dispatchImportWalletByMnemonic(
@@ -130,11 +123,6 @@ const Mnemonic = ({
           Import
         </OMGButton>
       </View>
-      <Snackbar
-        style={{ marginBottom: 56 }}
-        duration={1300}
-        {...snackbarProps}
-      />
     </Fragment>
   )
 }

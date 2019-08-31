@@ -1,10 +1,10 @@
 import { Ethers } from '../utils'
 import { settingStorage } from '../storages'
 
-export const create = providerName => {
+export const create = async providerName => {
   return new Promise(async (resolve, reject) => {
     try {
-      const provider = Ethers.createProvider(providerName)
+      const provider = await Ethers.createProvider(providerName)
       resolve(provider)
     } catch (err) {
       reject(err)

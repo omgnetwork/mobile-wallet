@@ -60,7 +60,7 @@ export const loadAssets = (provider, address, lastBlockNumber) => {
   }
 
   return createAsyncAction({
-    type: 'WALLET/INIT_ASSETS',
+    type: 'WALLET/LOAD_ASSETS',
     operation: asyncAction,
     isBackgroundTask: lastBlockNumber > 0
   })
@@ -73,5 +73,19 @@ export const setShouldRefreshWallet = (dispatch, address, shouldRefresh) => {
       shouldRefresh
     }),
     type: 'WALLET/SET_SHOULD_REFRESH'
+  })
+}
+
+export const setShouldRefreshPlasma = (
+  dispatch,
+  address,
+  shouldRefreshPlasma
+) => {
+  return createAction(dispatch, {
+    operation: () => ({
+      address,
+      shouldRefreshPlasma
+    }),
+    type: 'PLASMA/SET_SHOULD_REFRESH'
   })
 }

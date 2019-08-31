@@ -130,7 +130,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.wallet"
+        applicationId "co.omisego.plasmawallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -191,6 +191,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-randombytes')
     implementation project(':react-native-push-notification')
     implementation (project(':react-native-camera')) {
         exclude group: "com.google.android.gms"

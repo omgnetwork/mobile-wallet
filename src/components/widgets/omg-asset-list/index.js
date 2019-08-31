@@ -10,17 +10,21 @@ const OMGAssetList = ({
   data,
   renderItem,
   refreshControl,
+  updatedAt,
   keyExtractor,
   loading
 }) => {
-  1
   return (
     <OMGBackground style={{ ...styles.container(theme), ...style }}>
-      <View style={styles.header}>
+      <View style={styles.header(theme)}>
         <OMGText style={styles.title(theme)} weight='bold'>
           ASSETS
         </OMGText>
-        {/* <OMGIcon name='plus' color={theme.colors.gray3} style={styles.add} /> */}
+        {updatedAt && (
+          <OMGText style={styles.updatedAt(theme)}>
+            Updated at: {updatedAt}
+          </OMGText>
+        )}
       </View>
       <View style={styles.assetContainer(theme)}>
         <FlatList
@@ -32,7 +36,9 @@ const OMGAssetList = ({
             <OMGEmpty text='Empty assets' loading={loading} />
           }
           contentContainerStyle={
-            data && data.length ? {} : { flexGrow: 1, justifyContent: 'center' }
+            data && data.length
+              ? styles.contentContainer
+              : styles.emptyContentContainer
           }
           renderItem={renderItem}
         />
@@ -44,20 +50,30 @@ const OMGAssetList = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'column',
-    backgroundColor: theme.colors.white
+    backgroundColor: theme.colors.white,
+    paddingBottom: 8
   }),
+  contentContainer: {},
+  emptyContentContainer: {
+    flexGrow: 1,
+    justifyContent: 'center'
+  },
   header: theme => ({
     flexDirection: 'row',
-    paddingVertical: 16,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     alignItems: 'center',
     backgroundColor: theme.colors.white
+  }),
+  updatedAt: theme => ({
+    color: theme.colors.black2,
+    fontSize: 12
   }),
   add: {
     justifyContent: 'flex-end'
   },
   assetContainer: theme => ({
-    backgroundColor: theme.colors.white
+    backgroundColor: theme.colors.white,
+    paddingBottom: 8
   }),
   assetList: {},
   title: theme => ({

@@ -32,10 +32,14 @@ export const sendEthToken = (token, fee, fromWallet, toAddress) => {
   })
 }
 
-export const subscribeTransaction = (provider, tx) => {
+export const subscribeTransaction = (provider, tx, confirmations) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const txReceipt = await Ethers.subscribeTransaction(provider, tx)
+      const txReceipt = await Ethers.subscribeTransaction(
+        provider,
+        tx,
+        confirmations
+      )
       resolve(txReceipt)
     } catch (err) {
       reject(err)

@@ -1,42 +1,13 @@
 import React from 'react'
-import { View, Animated, TouchableOpacity } from 'react-native'
+import { View, Animated, TouchableOpacity, StyleSheet } from 'react-native'
 
 const Tab = ({ focusAnim, title, onPress }) => {
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={{ flex: 1, flexDirection: 'column' }}>
-      <Animated.View
-        style={{
-          padding: 12,
-          justifyContent: 'center',
-          borderTopLeftRadius: 8,
-          borderTopRightRadius: 8,
-          marginLeft: title === 'Send' ? 16 : 0,
-          marginRight: title === 'Receive' ? 16 : 0,
-          backgroundColor: focusAnim.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['transparent', '#04070d']
-          })
-        }}>
-        <Animated.Text
-          style={{
-            textAlign: 'center',
-            textTransform: 'uppercase',
-            color: focusAnim.interpolate({
-              inputRange: [0, 1],
-              outputRange: ['#3c414d', '#ffffff']
-            })
-          }}>
-          {title}
-        </Animated.Text>
+    <TouchableOpacity onPress={onPress} style={styles.tabContainer}>
+      <Animated.View style={styles.tab(title, focusAnim)}>
+        <Animated.Text style={styles.tabText(focusAnim)}>{title}</Animated.Text>
       </Animated.View>
-      <Animated.View
-        style={{
-          backgroundColor: '#04070d',
-          height: 4
-        }}
-      />
+      <Animated.View style={styles.tabBottomLine} />
     </TouchableOpacity>
   )
 }
@@ -44,13 +15,7 @@ const Tab = ({ focusAnim, title, onPress }) => {
 const OMGTab = props => {
   const { navigationState, navigation, position } = props
   return (
-    <View
-      style={{
-        justifyContent: 'space-around',
-        backgroundColor: '#ffffff',
-        flexDirection: 'row',
-        alignItems: 'center'
-      }}>
+    <View style={styles.omgTab}>
       {navigationState.routes.map((route, index) => {
         const focusAnim = position.interpolate({
           inputRange: [index - 1, index, index + 1],
@@ -68,5 +33,42 @@ const OMGTab = props => {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  omgTab: {
+    justifyContent: 'space-around',
+    backgroundColor: '#ffffff',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  tabContainer: {
+    flex: 1,
+    flexDirection: 'column'
+  },
+  tab: (title, focusAnim) => ({
+    padding: 12,
+    justifyContent: 'center',
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    marginLeft: title === 'Send' ? 16 : 0,
+    marginRight: title === 'Receive' ? 16 : 0,
+    backgroundColor: focusAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['transparent', '#04070d']
+    })
+  }),
+  tabText: focusAnim => ({
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    color: focusAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['#3c414d', '#ffffff']
+    })
+  }),
+  tabBottomLine: {
+    backgroundColor: '#04070d',
+    height: 4
+  }
+})
 
 export default OMGTab

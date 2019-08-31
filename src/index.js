@@ -1,11 +1,12 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { YellowBox } from 'react-native'
 import { Provider } from 'react-redux'
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import Router from 'router'
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import createStore from 'common/stores'
 import { settingActions } from 'common/actions'
 import Config from 'react-native-config'
+import { OMGSnackbar } from 'components/widgets'
 import { notificationService } from 'common/services'
 import { colors } from 'common/styles'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -43,6 +44,7 @@ const App = () => {
         <PaperProvider theme={theme}>
           <PersistGate persistor={persistor}>
             <Router />
+            <OMGSnackbar />
           </PersistGate>
         </PaperProvider>
       </Provider>

@@ -25,7 +25,7 @@ const mockToken = {
   tokenName: 'Ether',
   tokenSymbol: 'ETH',
   tokenDecimal: 18,
-  contractAddress: '0x',
+  contractAddress: '0x0000000000000000000000000000000000000000',
   balance: '21.633139948168146707',
   price: 1
 }

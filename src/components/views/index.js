@@ -1,39 +1,37 @@
-import CreateWallet from './create-wallet'
 import Balance from './balance'
-import ImportWallet from './import-wallet'
-import Wallets from './wallets'
+import CreateWallet from './create-wallet'
 import Deposit from './deposit'
-import TransactionForm from './transaction-form'
-import TransactionConfirm from './transaction-confirm'
-import TransactionPending from './transaction-pending'
-import Home from './home'
 import History from './history'
-import Main from './main'
-import Receive from './receive'
-import Transfer from './transfer'
-import Scan from './scan'
-import Setting from './setting'
-import SelectBalance from './select-balance'
-import SelectFee from './select-fee'
+import ImportWallet from './import-wallet'
 import Preview from './preview'
+import Setting from './setting'
+import Transfer from './transfer'
+import TransferConfirm from './transfer-confirm'
+import TransferForm from './transfer-form'
+import TransferPending from './transfer-pending'
+import TransferReceive from './transfer-receive'
+import TransferScanner from './transfer-scanner'
+import TransferSelectBalance from './transfer-select-balance'
+import TransferSelectFee from './transfer-select-fee'
+import Wallets from './wallets'
+import WarpPortal from './warp-portal'
 
 export {
-  Main,
   Balance,
   CreateWallet,
-  ImportWallet,
-  Wallets,
   Deposit,
-  TransactionForm,
-  TransactionConfirm,
-  TransactionPending,
-  Home,
   History,
-  Receive,
-  Transfer,
-  SelectBalance,
-  SelectFee,
-  Scan,
+  ImportWallet,
+  Preview,
   Setting,
-  Preview
+  Transfer,
+  TransferConfirm,
+  TransferForm,
+  TransferPending,
+  TransferReceive,
+  TransferScanner,
+  TransferSelectBalance,
+  TransferSelectFee,
+  Wallets,
+  WarpPortal
 }

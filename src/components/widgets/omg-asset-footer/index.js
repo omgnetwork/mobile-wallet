@@ -3,15 +3,17 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGBackground, OMGText } from 'components/widgets'
 
-const OMGAssetFooter = ({ theme, style }) => {
+const OMGAssetFooter = ({ theme, style, onPressDeposit, onPressExit }) => {
   return (
     <OMGBackground style={{ ...styles.container(theme), ...style }}>
-      <TouchableOpacity style={styles.subfooter}>
+      <TouchableOpacity style={styles.subfooter} onPress={onPressDeposit}>
         <OMGText style={styles.subfooterText(theme)}>DEPOSIT</OMGText>
       </TouchableOpacity>
       <View style={styles.divider(theme)} />
       <TouchableOpacity style={styles.subfooter}>
-        <OMGText style={styles.subfooterText(theme)}>EXIT</OMGText>
+        <OMGText style={styles.subfooterText(theme)} onPress={onPressExit}>
+          EXIT
+        </OMGText>
       </TouchableOpacity>
     </OMGBackground>
   )

@@ -6,24 +6,24 @@ import { OMGIcon, OMGBox, OMGText, OMGStatusBar } from 'components/widgets'
 
 const Transfer = ({ navigation, theme }) => {
   const [rendering, setRendering] = useState(true)
-  const TransferTabNavigator = navigation.getParam('navigator')
+  const RootChainTransferNavigator = navigation.getParam('navigator')
 
   useEffect(() => {
-    function willFocus() {
+    function didFocus() {
       StatusBar.setBarStyle('dark-content')
       StatusBar.setBackgroundColor(theme.colors.white)
       setRendering(true)
     }
-    function willBlur() {
+    function didBlur() {
       setRendering(false)
     }
 
-    const willFocusSubscription = navigation.addListener('willFocus', willFocus)
-    const willBlurSubscription = navigation.addListener('willBlur', willBlur)
+    const didFocusSubscription = navigation.addListener('didFocus', didFocus)
+    const didBlurSubscription = navigation.addListener('didBlur', didBlur)
 
     return () => {
-      willBlurSubscription.remove()
-      willFocusSubscription.remove()
+      didBlurSubscription.remove()
+      didFocusSubscription.remove()
     }
   }, [navigation, theme.colors.white])
 
@@ -43,7 +43,7 @@ const Transfer = ({ navigation, theme }) => {
           <OMGIcon name='x-mark' size={18} color={theme.colors.gray3} />
         </OMGBox>
       </View>
-      {rendering && <TransferTabNavigator navigation={navigation} />}
+      {rendering && <RootChainTransferNavigator navigation={navigation} />}
     </SafeAreaView>
   )
 }

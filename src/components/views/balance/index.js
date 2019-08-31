@@ -19,15 +19,15 @@ const pageWidth = Dimensions.get('window').width - 56
 
 const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
   useEffect(() => {
-    function willFocus() {
+    function didFocus() {
       StatusBar.setBarStyle('light-content')
       StatusBar.setBackgroundColor(theme.colors.black5)
     }
 
-    const willFocusSubscription = navigation.addListener('willFocus', willFocus)
+    const didFocusSubscription = navigation.addListener('didFocus', didFocus)
 
     return () => {
-      willFocusSubscription.remove()
+      didFocusSubscription.remove()
     }
   }, [navigation, primaryWallet, theme.colors.black5])
 
@@ -58,7 +58,6 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
             </View>
           </OMGViewPager>
         )}
-        {/* {rootChain ? null : <OMGAssetFooter />} */}
       </LinearGradient>
     </SafeAreaView>
   )
@@ -71,7 +70,8 @@ const styles = StyleSheet.create({
   }),
   container: {
     flex: 1,
-    padding: 16
+    paddingHorizontal: 12,
+    paddingVertical: 20
   },
   firstPage: {
     width: pageWidth,

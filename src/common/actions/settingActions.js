@@ -12,9 +12,8 @@ export const setProvider = providerName => {
   })
 }
 
-export const syncProviderToStore = defaultProviderName => {
+export const syncProviderToStore = providerName => {
   const asyncAction = async () => {
-    const providerName = await providerService.getName(defaultProviderName)
     const provider = await providerService.create(providerName)
     return { provider, providerName }
   }

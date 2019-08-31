@@ -9,12 +9,11 @@ const OMGAddressInput = ({ theme, address, style, onPress }) => {
   return (
     <View style={{ ...styles.container(theme), ...style }}>
       <OMGImage
-        style={styles.logo}
+        style={styles.logo(theme)}
         source={{
           uri: `https://api.adorable.io/avatars/285/${address}.png`
         }}
       />
-
       <OMGTextInput
         style={styles.text(theme)}
         defaultValue={address}
@@ -31,7 +30,6 @@ const OMGAddressInput = ({ theme, address, style, onPress }) => {
 
 const styles = StyleSheet.create({
   container: theme => ({
-    flex: 1,
     flexDirection: 'row',
     backgroundColor: theme.colors.white,
     borderColor: theme.colors.gray4,
@@ -39,13 +37,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: 'center'
   }),
-  logo: {
-    width: 26,
-    height: 26,
+  logo: theme => ({
+    width: 24,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: theme.colors.black4,
     marginRight: 16,
+    borderWidth: 1,
+    borderRadius: theme.roundness,
     marginVertical: 12,
     marginLeft: 12
-  },
+  }),
+  walletName: theme => ({
+    color: theme.colors.primary,
+    flex: 1
+  }),
   text: theme => ({
     color: theme.colors.primary,
     fontSize: 14,

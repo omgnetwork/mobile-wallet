@@ -44,7 +44,6 @@ export const commify = amount => {
 }
 
 export const fetchTransactionDetail = (address, lastBlockNumber) => {
-  console.log('fetchTransactionDetail')
   return axios.get(Config.ETHERSCAN_API_URL, {
     params: {
       module: 'account',
@@ -141,10 +140,6 @@ export const sendEthToken = (token, fee, wallet, toAddress) => {
   })
 }
 
-export const subscribeTransaction = (provider, tx) => {
-  return provider.waitForTransaction(tx.hash)
-}
-
-export const subscribeWallet = (provider, wallet) => {
-  provider.on(wallet.address, balance => {})
+export const subscribeTransaction = (provider, tx, confirmations) => {
+  return provider.waitForTransaction(tx.hash, confirmations)
 }

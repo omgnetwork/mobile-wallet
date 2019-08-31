@@ -1,28 +1,59 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState, Fragment, useEffect } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
-import { walletActions } from 'common/actions'
-import { withTheme, Text } from 'react-native-paper'
+import { plasmaActions, walletActions } from 'common/actions'
+import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
-import { Formatter } from 'common/utils'
-import { OMGItemToken, OMGAssetHeader, OMGAssetList } from 'components/widgets'
+import { Formatter, Datetime } from 'common/utils'
+import {
+  OMGItemToken,
+  OMGAssetHeader,
+  OMGAssetList,
+  OMGAssetFooter
+} from 'components/widgets'
 
-const PlasmaBalance = ({}) => {
+const PlasmaBalance = ({
+  dispatchLoadAssets,
+  dispatchSetShouldRefreshPlasma,
+  wallet,
+  navigation
+}) => {
   const currency = 'USD'
+  const [totalBalance, setTotalBalance] = useState(0.0)
+
+  useEffect(() => {
+    if (wallet.shouldRefreshPlasma) {
+      dispatchLoadAssets(wallet)
+      dispatchSetShouldRefreshPlasma(wallet.address, false)
+    }
+  }, [dispatchLoadAssets, dispatchSetShouldRefreshPlasma, wallet])
+
+  useEffect(() => {
+    if (wallet.plasmaAssets) {
+      const totalPrices = wallet.plasmaAssets.reduce((acc, asset) => {
+        const parsedAmount = parseFloat(asset.balance)
+        const tokenPrice = parsedAmount * asset.price
+        return tokenPrice + acc
+      }, 0)
+
+      setTotalBalance(totalPrices)
+    }
+  }, [wallet.plasmaAssets])
 
   return (
     <Fragment>
       <OMGAssetHeader
-        amount={formatTotalBalance(0.0)}
+        amount={formatTotalBalance(totalBalance)}
         currency={currency}
-        rootChain={true}
+        rootChain={false}
         blockchain={'Plasma'}
         network={Config.OMISEGO_NETWORK}
       />
       <OMGAssetList
-        data={[]}
+        data={wallet.plasmaAssets || []}
         keyExtractor={item => item.contractAddress}
+        updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
         style={styles.list}
         renderItem={({ item }) => (
           <OMGItemToken
@@ -32,6 +63,9 @@ const PlasmaBalance = ({}) => {
             price={formatTokenPrice(item.balance, item.price)}
           />
         )}
+      />
+      <OMGAssetFooter
+        onPressDeposit={() => navigation.navigate('TransferDeposit')}
       />
     </Fragment>
   )
@@ -57,7 +91,7 @@ const formatTokenBalance = amount => {
   return Formatter.format(amount, {
     commify: true,
     maxDecimal: 3,
-    ellipsize: true
+    ellipsize: false
   })
 }
 
@@ -73,12 +107,19 @@ const formatTokenPrice = (amount, price) => {
 
 const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
-  wallets: state.wallets,
-  provider: state.setting.provider,
-  primaryWalletAddress: state.setting.primaryWalletAddress
+  wallet: state.wallets.find(
+    wallet => wallet.address === state.setting.primaryWalletAddress
+  )
+})
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatchLoadAssets: wallet =>
+    dispatch(plasmaActions.fetchAssets(wallet.assets, wallet.address)),
+  dispatchSetShouldRefreshPlasma: (address, shouldRefreshPlasma) =>
+    walletActions.setShouldRefreshPlasma(dispatch, address, shouldRefreshPlasma)
 })
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withNavigation(withTheme(PlasmaBalance)))
