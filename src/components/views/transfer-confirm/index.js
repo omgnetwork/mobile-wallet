@@ -278,13 +278,13 @@ const getAction = (token, fee, wallet, provider, toAddress, isRootchain) => {
   const TO_PLASMA = toAddress === Config.PLASMA_CONTRACT_ADDRESS
   const ETH_TOKEN =
     token.contractAddress === '0x0000000000000000000000000000000000000000'
-  if (!isRootchain) {
-    return plasmaActions.transfer(provider, wallet, toAddress, token, fee)
-  } else if (TO_PLASMA && ETH_TOKEN) {
+  if (TO_PLASMA && ETH_TOKEN) {
     return plasmaActions.depositEth(wallet, provider, token, fee)
   } else if (TO_PLASMA && !ETH_TOKEN) {
     return plasmaActions.depositErc20(wallet, provider, token, fee)
-  } else if (!TO_PLASMA && ETH_TOKEN) {
+  } else if (!isRootchain) {
+    return plasmaActions.transfer(provider, wallet, toAddress, token, fee)
+  } else if (ETH_TOKEN) {
     return transactionActions.sendEthToken(
       token,
       fee,
