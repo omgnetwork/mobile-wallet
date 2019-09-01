@@ -43,7 +43,6 @@ export const fetchAssets = (rootchainAssets, address) => {
 export const transfer = (fromBlockchainWallet, toAddress, token, fee) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log({ fromBlockchainWallet, toAddress, token, fee })
       const payments = Plasma.createPayment(
         toAddress,
         token.contractAddress,
@@ -57,17 +56,16 @@ export const transfer = (fromBlockchainWallet, toAddress, token, fee) => {
         plasmaFee
       )
 
-      console.log(createdTransactions)
-      const typedData = Plasma.getTypedData(createdTransactions.transactions[0])
+      const transaction = createdTransactions.transactions[0]
+      const typedData = Plasma.getTypedData(transaction)
       const signatures = await Plasma.signTransaction(
         typedData,
         fromBlockchainWallet.privateKey
       )
-      console.log(signatures)
 
       const signedTransaction = await Plasma.buildSignedTransaction(
         typedData,
-        signatures
+        new Array(transaction.inputs.length).fill(signatures[0])
       )
 
       console.log(signedTransaction)
