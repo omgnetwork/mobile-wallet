@@ -31,8 +31,6 @@ export const fetchAssets = (rootchainAssets, address) => {
           }
         }
       })
-
-      console.log(plasmaAssets)
       resolve(plasmaAssets)
     } catch (err) {
       reject(err)
@@ -48,8 +46,8 @@ export const transfer = (fromBlockchainWallet, toAddress, token, fee) => {
         token.contractAddress,
         Ethers.parseUnits(token.balance, token.tokenDecimal)
       )
-
       const plasmaFee = Plasma.createFee(Ethers.parseUnits(fee.amount, 'gwei'))
+
       const createdTransactions = await Plasma.createTransaction(
         fromBlockchainWallet.address,
         payments,
@@ -68,13 +66,11 @@ export const transfer = (fromBlockchainWallet, toAddress, token, fee) => {
         new Array(transaction.inputs.length).fill(signatures[0])
       )
 
-      console.log(signedTransaction)
       const transactionReceipt = await Plasma.submitTransaction(
         signedTransaction
       )
       resolve(transactionReceipt)
     } catch (err) {
-      console.log(err)
       reject(err)
     }
   })

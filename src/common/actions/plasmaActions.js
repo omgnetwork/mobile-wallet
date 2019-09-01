@@ -1,4 +1,4 @@
-import { createAction, createAsyncAction } from './actionCreators'
+import { createAsyncAction } from './actionCreators'
 import {
   plasmaService,
   walletService,
