@@ -136,7 +136,7 @@ export const sendEthToken = (token, fee, wallet, toAddress) => {
     to: toAddress,
     value: ethers.utils.parseEther(token.balance),
     gasLimit: 150000,
-    gasPrice: parseUnits(fee.amount, 'gwei')
+    gasPrice: parseUnits(fee.amount, '')
   })
 }
 

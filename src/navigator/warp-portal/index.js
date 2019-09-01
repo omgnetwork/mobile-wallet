@@ -4,10 +4,10 @@ import { SafeAreaView } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation'
 import { OMGStatusBar, OMGIcon } from 'components/widgets'
 import TransferChildchainNavigator from '../transfer-childchain'
-import TransferRootchainNavigator from '../transfer-rootchain'
+import TransferRootChainNavigator from '../transfer-rootchain'
 
 Views.Deposit.router = TransferChildchainNavigator.router
-Views.Transfer.router = TransferRootchainNavigator.router
+Views.Transfer.router = TransferRootChainNavigator.router
 
 // Used when want quick access to different screens.
 const WarpPortalNavigator = createStackNavigator(
@@ -47,7 +47,7 @@ const WarpPortalNavigator = createStackNavigator(
     Transfer: {
       screen: Views.Transfer,
       params: {
-        navigator: TransferRootchainNavigator,
+        navigator: TransferRootChainNavigator,
         isDeposit: true,
         showApproveERC20: false
       },

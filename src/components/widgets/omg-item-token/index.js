@@ -16,10 +16,10 @@ const OMGItemToken = ({ symbol, price, balance, style, onPress, theme }) => {
       setAnimating(true)
       Animated.sequence([
         Animated.parallel([
-          Animator.spring(shadowAnim, 4, 2000),
-          Animator.spring(shadowOpacity, 0.2, 2000)
+          Animator.spring(shadowAnim, 4, 2000, true),
+          Animator.spring(shadowOpacity, 0.2, 2000, true)
         ]),
-        Animator.spring(balanceOpacity, 0.3, 500)
+        Animator.spring(balanceOpacity, 0.3, 500, true)
       ]).start(({ finished }) => {
         if (finished) {
           setCurrentBalance(balance)
@@ -27,10 +27,10 @@ const OMGItemToken = ({ symbol, price, balance, style, onPress, theme }) => {
       })
     } else {
       Animated.sequence([
-        Animator.spring(balanceOpacity, 1.0, 500),
+        Animator.spring(balanceOpacity, 1.0, 500, true),
         Animated.parallel([
-          Animator.spring(shadowAnim, 0, 2000),
-          Animator.spring(shadowOpacity, 0, 2000)
+          Animator.spring(shadowAnim, 0, 2000, true),
+          Animator.spring(shadowOpacity, 0, 2000, true)
         ])
       ]).start(({ finished }) => {
         if (finished) {

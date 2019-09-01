@@ -54,7 +54,7 @@ const EthereumBalance = ({
         amount={formatTotalBalance(totalBalance)}
         currency={currency}
         loading={loading.show}
-        rootChain={true}
+        rootchain={true}
         blockchain={'Ethereum'}
         network={Config.ETHERSCAN_NETWORK}
       />

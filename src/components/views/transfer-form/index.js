@@ -44,11 +44,15 @@ const fees = [
 const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
 
 const TransferForm = ({ wallet, theme, navigation }) => {
-  const selectedToken = navigation.getParam('selectedToken', wallet.assets[0])
   const selectedFee = navigation.getParam('selectedFee', fees[0])
   const selectedAddress = navigation.getParam('address')
   const defaultAmount = navigation.getParam('lastAmount')
   const isDeposit = navigation.getParam('isDeposit')
+  const isRootchain = navigation.getParam('rootchain')
+  const selectedToken = navigation.getParam(
+    'selectedToken',
+    isDeposit || isRootchain ? wallet.assets[0] : wallet.plasmaAssets[0]
+  )
   const textRef = useRef(defaultAmount)
 
   const submit = () => {
@@ -56,6 +60,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
       navigation.navigate('TransferConfirm', {
         token: { ...selectedToken, balance: textRef.current },
         fromWallet: wallet,
+        isRootchain: isRootchain,
         toWallet: {
           name: isDeposit ? 'Plasma Contract' : 'Another wallet',
           address: selectedAddress || testAddress
@@ -80,7 +85,10 @@ const TransferForm = ({ wallet, theme, navigation }) => {
                 navigation.navigate('TransferSelectBalance', {
                   currentToken: selectedToken,
                   lastAmount: textRef.current,
-                  assets: wallet.assets
+                  assets:
+                    isDeposit || isRootchain
+                      ? wallet.assets
+                      : wallet.plasmaAssets
                 })
               }
             />

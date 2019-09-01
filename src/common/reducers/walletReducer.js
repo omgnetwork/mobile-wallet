@@ -59,6 +59,14 @@ export const walletsReducer = (state = [], action) => {
           return wallet
         }
       })
+    case 'PLASMA/WAIT_SENDING/SUCCESS':
+      return state.map(wallet => {
+        if (wallet.address === action.data.from) {
+          return { ...wallet, shouldRefreshPlasma: true }
+        } else {
+          return wallet
+        }
+      })
     case 'WALLET/SET_SHOULD_REFRESH/OK':
       return state.map(wallet => {
         if (wallet.address === action.data.address) {

@@ -7,7 +7,10 @@ import { OMGTab } from 'components/widgets'
 const ScannerTransferFormSwitchNavigator = createSwitchNavigator(
   {
     TransferScanner: {
-      screen: Views.TransferScanner
+      screen: Views.TransferScanner,
+      params: {
+        rootchain: true
+      }
     },
     TransferForm: {
       screen: Views.TransferForm,

@@ -23,7 +23,8 @@ const TransferPending = ({
   provider,
   pendingTxs,
   dispatchSubscribeTransaction,
-  dispatchSubscribeDeposit
+  dispatchSubscribeDeposit,
+  dispatchSubscribeChildchainTransaction
 }) => {
   const pendingTx = navigation.getParam('pendingTx')
   const token = navigation.getParam('token')
@@ -43,6 +44,8 @@ const TransferPending = ({
         dispatchSubscribeTransaction(provider, wallet, pendingTx)
       } else if (pendingTx && pendingTx.type === 'CHILDCHAIN_DEPOSIT') {
         dispatchSubscribeDeposit(provider, wallet, pendingTx)
+      } else if (pendingTx && pendingTx.type === 'CHILDCHAIN_SEND') {
+        dispatchSubscribeChildchainTransaction(provider, wallet, pendingTx)
       }
       setSubscribed(true)
     }
@@ -52,7 +55,8 @@ const TransferPending = ({
     dispatchSubscribeTransaction,
     wallet,
     dispatchSubscribeDeposit,
-    subscribed
+    subscribed,
+    dispatchSubscribeChildchainTransaction
   ])
 
   return (
@@ -278,7 +282,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchSubscribeDeposit: (provider, wallet, tx) =>
     dispatch(plasmaActions.waitDeposit(provider, wallet, tx)),
   dispatchSubscribeTransaction: (provider, wallet, tx) =>
-    dispatch(transactionActions.subscribeTransaction(provider, wallet, tx))
+    dispatch(transactionActions.subscribeTransaction(provider, wallet, tx)),
+  dispatchSubscribeChildchainTransaction: (provider, wallet, tx) =>
+    dispatch(plasmaActions.waitWatcherRecordTransaction(provider, wallet, tx))
 })
 
 export default connect(

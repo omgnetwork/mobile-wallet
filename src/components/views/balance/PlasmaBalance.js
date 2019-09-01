@@ -46,7 +46,7 @@ const PlasmaBalance = ({
       <OMGAssetHeader
         amount={formatTotalBalance(totalBalance)}
         currency={currency}
-        rootChain={false}
+        rootchain={false}
         blockchain={'Plasma'}
         network={Config.OMISEGO_NETWORK}
       />

@@ -27,6 +27,7 @@ const TransferConfirm = ({
   const fromWallet = navigation.getParam('fromWallet')
   const toWallet = navigation.getParam('toWallet')
   const fee = navigation.getParam('fee')
+  const isRootchain = navigation.getParam('isRootchain')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
 
   useEffect(() => {
@@ -57,7 +58,14 @@ const TransferConfirm = ({
   ])
 
   const sendToken = () => {
-    dispatchSendToken(token, fee, fromWallet, provider, toWallet.address)
+    dispatchSendToken(
+      token,
+      fee,
+      fromWallet,
+      provider,
+      toWallet.address,
+      isRootchain
+    )
   }
 
   return (
@@ -262,15 +270,17 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchSendToken: (token, fee, wallet, provider, toAddress) =>
-    dispatch(getAction(token, fee, wallet, provider, toAddress))
+  dispatchSendToken: (token, fee, wallet, provider, toAddress, isRootchain) =>
+    dispatch(getAction(token, fee, wallet, provider, toAddress, isRootchain))
 })
 
-const getAction = (token, fee, wallet, provider, toAddress) => {
+const getAction = (token, fee, wallet, provider, toAddress, isRootchain) => {
   const TO_PLASMA = toAddress === Config.PLASMA_CONTRACT_ADDRESS
   const ETH_TOKEN =
     token.contractAddress === '0x0000000000000000000000000000000000000000'
-  if (TO_PLASMA && ETH_TOKEN) {
+  if (!isRootchain) {
+    return plasmaActions.transfer(provider, wallet, toAddress, token, fee)
+  } else if (TO_PLASMA && ETH_TOKEN) {
     return plasmaActions.depositEth(wallet, provider, token, fee)
   } else if (TO_PLASMA && !ETH_TOKEN) {
     return plasmaActions.depositErc20(wallet, provider, token, fee)

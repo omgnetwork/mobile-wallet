@@ -1,10 +1,12 @@
 import React from 'react'
 import QRCodeScanner from 'react-native-qrcode-scanner'
-import { View, StyleSheet, Dimensions } from 'react-native'
+import { View, StyleSheet, Dimensions, Animated } from 'react-native'
 import Svg, { Rect, Path } from 'react-native-svg'
 import OMGText from '../omg-text'
 
 const SCREEN_WIDTH = Dimensions.get('window').width
+const ROOTCHAIN_OVERLAY_COLOR = 'rgba(125, 85, 246, 0.50)'
+const CHILDCHAIN_OVERLAY_COLOR = 'rgba(33, 118, 255, 0.50)'
 
 const OMGQRScanner = props => {
   const {
@@ -13,6 +15,7 @@ const OMGQRScanner = props => {
     renderBottom,
     borderColor,
     borderStrokeWidth,
+    overlayColorAnim,
     cameraRef
   } = props
 
@@ -32,16 +35,20 @@ const OMGQRScanner = props => {
         }
         customMarker={
           <View style={styles.contentContainer}>
-            <View style={styles.topContainer}>{renderTop}</View>
+            <Animated.View style={styles.topContainer(overlayColorAnim)}>
+              {renderTop}
+            </Animated.View>
             <View style={styles.scannerContainer}>
-              <View style={styles.sideOverlay} />
+              <Animated.View style={styles.sideOverlay(overlayColorAnim)} />
               <QRMarker
                 borderColor={borderColor}
                 borderStrokeWidth={borderStrokeWidth}
               />
-              <View style={styles.sideOverlay} />
+              <Animated.View style={styles.sideOverlay(overlayColorAnim)} />
             </View>
-            <View style={styles.bottomContainer}>{renderBottom}</View>
+            <Animated.View style={styles.bottomContainer(overlayColorAnim)}>
+              {renderBottom}
+            </Animated.View>
           </View>
         }
       />
@@ -49,28 +56,36 @@ const OMGQRScanner = props => {
   )
 }
 
-const QRMarker = ({ borderColor, borderStrokeWidth }) => {
-  const width = Math.round(SCREEN_WIDTH * 0.75)
+const QRMarker = ({ borderColor, borderStrokeWidth, borderStrokeLength }) => {
+  const width = Math.round(SCREEN_WIDTH * 0.68)
   const height = width
   const strokeColor = borderColor || 'white'
   const strokeWidth = borderStrokeWidth || 4
+  const strokeLength = borderStrokeLength || 30
   return (
     <Svg width={width} height={height}>
       <Rect width={width} height={height} fill='transparent' />
-      <Path d={`M0,0 L0,50 M0,0 L50,0`} stroke='white' strokeWidth='4' />
       <Path
-        d={`M${width},0 L${width - 50},0 M${width},0 L${width},50`}
+        d={`M0,0 L0,${strokeLength} M0,0 L${strokeLength},0`}
         stroke={strokeColor}
         strokeWidth={strokeWidth}
       />
       <Path
-        d={`M0,${height} L0,${height - 50} M0,${height} L50,${height}`}
+        d={`M${width},0 L${width -
+          strokeLength},0 M${width},0 L${width},${strokeLength}`}
+        stroke={strokeColor}
+        strokeWidth={strokeWidth}
+      />
+      <Path
+        d={`M0,${height} L0,${height -
+          strokeLength} M0,${height} L${strokeLength},${height}`}
         stroke={strokeColor}
         strokeWidth={strokeWidth}
       />
       <Path
         d={`M${width},${height} L${width -
-          50},${height} M${width},${height} L${width},${height - 50}`}
+          strokeLength},${height} M${width},${height} L${width},${height -
+          strokeLength}`}
         stroke={strokeColor}
         strokeWidth={strokeWidth}
       />
@@ -91,27 +106,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around'
   },
-  topContainer: {
+  topContainer: overlayColorAnim => ({
     width: SCREEN_WIDTH,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(60, 65, 77, 0.45)'
-  },
-  bottomContainer: {
+    backgroundColor: overlayColorAnim.current.interpolate({
+      inputRange: [0, 1],
+      outputRange: [ROOTCHAIN_OVERLAY_COLOR, CHILDCHAIN_OVERLAY_COLOR]
+    })
+  }),
+  bottomContainer: overlayColorAnim => ({
     width: SCREEN_WIDTH,
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    backgroundColor: 'rgba(60, 65, 77, 0.45)'
-  },
+    backgroundColor: overlayColorAnim.current.interpolate({
+      inputRange: [0, 1],
+      outputRange: [ROOTCHAIN_OVERLAY_COLOR, CHILDCHAIN_OVERLAY_COLOR]
+    })
+  }),
   scannerContainer: {
     flexDirection: 'row'
   },
-  sideOverlay: {
+  sideOverlay: overlayColorAnim => ({
     flex: 1,
-    backgroundColor: 'rgba(60, 65, 77, 0.45)'
-  },
+    backgroundColor: overlayColorAnim.current.interpolate({
+      inputRange: [0, 1],
+      outputRange: [ROOTCHAIN_OVERLAY_COLOR, CHILDCHAIN_OVERLAY_COLOR]
+    })
+  }),
   loadingText: {
     textAlign: 'center'
   }

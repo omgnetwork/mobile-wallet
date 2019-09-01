@@ -47,6 +47,37 @@ export const depositEth = (wallet, provider, token, fee) => {
   })
 }
 
+export const transfer = (provider, fromWallet, toAddress, token, fee) => {
+  const asyncAction = async () => {
+    const blockchainWallet = await walletService.get(
+      fromWallet.address,
+      provider
+    )
+
+    const transactionReceipt = await plasmaService.transfer(
+      blockchainWallet,
+      toAddress,
+      token,
+      fee
+    )
+
+    return {
+      hash: transactionReceipt.transactionHash,
+      from: fromWallet.address,
+      value: token.balance,
+      symbol: token.tokenSymbol,
+      gasPrice: fee.amount,
+      type: 'CHILDCHAIN_SEND',
+      createdAt: Datetime.now()
+    }
+  }
+
+  return createAsyncAction({
+    type: 'PLASMA/SEND_TOKEN',
+    operation: asyncAction
+  })
+}
+
 export const depositErc20 = (wallet, provider, token, fee) => {
   const asyncAction = async () => {
     const blockchainWallet = await walletService.get(wallet.address, provider)
@@ -96,6 +127,28 @@ export const waitDeposit = (provider, wallet, tx) => {
   }
   return createAsyncAction({
     type: 'PLASMA/WAIT_DEPOSITING',
+    operation: asyncAction,
+    isBackgroundTask: true
+  })
+}
+
+export const waitWatcherRecordTransaction = (provider, wallet, tx) => {
+  const asyncAction = async () => {
+    await plasmaService.wait(40000)
+
+    notificationService.sendNotification({
+      title: `${wallet.name} sent`,
+      message: `${tx.value} ${tx.symbol}`
+    })
+
+    return {
+      hash: tx.hash,
+      from: tx.from,
+      gasPrice: tx.gasPrice.toString()
+    }
+  }
+  return createAsyncAction({
+    type: 'PLASMA/WAIT_SENDING',
     operation: asyncAction,
     isBackgroundTask: true
   })
