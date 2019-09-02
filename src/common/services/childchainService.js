@@ -9,11 +9,12 @@ export const fetchAssets = (rootchainAssets, address) => {
         const token = rootchainAssets.find(
           asset => balance.currency === asset.contractAddress
         )
+
         if (token) {
           return {
             ...token,
             balance: Formatter.formatUnits(
-              balance.amount.toString(),
+              balance.amount.toFixed(),
               token.tokenDecimal
             )
           }
@@ -24,13 +25,14 @@ export const fetchAssets = (rootchainAssets, address) => {
             tokenDecimal: 18,
             contractAddress: '0x123456',
             balance: Formatter.formatUnits(
-              balance.amount.toString(),
+              balance.amount.toFixed(),
               token.tokenDecimal
             ),
             price: 1
           }
         }
       })
+
       resolve(childchainAssets)
     } catch (err) {
       reject(err)

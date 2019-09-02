@@ -1,5 +1,5 @@
 import { Rootchain, Formatter, Datetime } from '../utils'
-import { walletStorage, settingStorage } from '../storages'
+import { walletStorage } from '../storages'
 import { priceService, providerService } from '../services'
 import Config from 'react-native-config'
 
