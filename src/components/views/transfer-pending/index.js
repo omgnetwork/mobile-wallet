@@ -21,7 +21,6 @@ const TransferPending = ({
   navigation,
   wallet,
   provider,
-  pendingTxs,
   dispatchSubscribeTransaction,
   dispatchSubscribeDeposit,
   dispatchSubscribeChildchainTransaction
@@ -132,15 +131,17 @@ const TransferPending = ({
             }}>
             Done
           </OMGButton>
-          <TouchableOpacity
-            style={styles.trackEtherscanButton}
-            onPress={() => {
-              Linking.openURL(`${Config.ETHERSCAN_TX_URL}${pendingTx.hash}`)
-            }}>
-            <OMGText style={styles.trackEtherscanText(theme)}>
-              Track on Etherscan
-            </OMGText>
-          </TouchableOpacity>
+          {pendingTx.type !== 'CHILDCHAIN_SEND' && (
+            <TouchableOpacity
+              style={styles.trackEtherscanButton}
+              onPress={() => {
+                Linking.openURL(`${Config.ETHERSCAN_TX_URL}${pendingTx.hash}`)
+              }}>
+              <OMGText style={styles.trackEtherscanText(theme)}>
+                Track on Etherscan
+              </OMGText>
+            </TouchableOpacity>
+          )}
         </View>
       </SafeAreaView>
     </AndroidBackHandler>

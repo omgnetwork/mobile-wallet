@@ -1,6 +1,6 @@
 import { ChildChain, RootChain, OmgUtil } from '@omisego/omg-js'
 import Config from 'react-native-config'
-import * as Parser from './parser'
+import * as ABI from './abi'
 import Web3 from 'web3'
 
 const { transaction } = OmgUtil
@@ -75,8 +75,6 @@ export const depositEth = (address, privateKey, weiAmount, options) => {
   return rootchain.depositEth(depositTransaction, weiAmount, txOptions)
 }
 
-// const approveErc20 = ()
-
 export const depositErc20 = async (
   address,
   privateKey,
@@ -84,33 +82,7 @@ export const depositErc20 = async (
   contractAddress,
   options
 ) => {
-  const erc20ApproveABI = [
-    {
-      name: 'approve',
-      type: 'function',
-      constant: false,
-      inputs: [
-        {
-          name: '_spender',
-          type: 'address'
-        },
-        {
-          name: '_value',
-          type: 'uint256'
-        }
-      ],
-      outputs: [
-        {
-          name: '',
-          type: 'bool'
-        }
-      ],
-      payable: false,
-      stateMutability: 'nonpayable'
-    }
-  ]
-
-  const erc20Contract = new web3.eth.Contract(erc20ApproveABI, contractAddress)
+  const erc20Contract = new web3.eth.Contract(ABI.erc20Abi(), contractAddress)
 
   const nonce = await web3.eth.getTransactionCount(address)
 

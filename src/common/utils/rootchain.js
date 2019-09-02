@@ -1,6 +1,7 @@
 import 'ethers/dist/shims.js'
 import { ethers } from 'ethers'
 import * as Parser from './parser'
+import * as ABI from './abi'
 import axios from 'axios'
 import Config from 'react-native-config'
 
@@ -53,57 +54,14 @@ export const getEthBalance = address => {
   })
 }
 export const getTokenBalance = (provider, contractAddress, accountAddress) => {
-  const abi = [
-    {
-      constant: true,
-      inputs: [
-        {
-          name: '_owner',
-          type: 'address'
-        }
-      ],
-      name: 'balanceOf',
-      outputs: [
-        {
-          name: 'balance',
-          type: 'uint256'
-        }
-      ],
-      payable: false,
-      type: 'function'
-    }
-  ]
-
+  const abi = ABI.erc20Abi()
   const contract = new ethers.Contract(contractAddress, abi, provider)
   return contract.balanceOf(accountAddress)
 }
 
 export const sendErc20Token = (token, fee, wallet, toAddress) => {
-  const contractAbi = [
-    {
-      name: 'transfer',
-      type: 'function',
-      inputs: [
-        {
-          name: '_to',
-          type: 'address'
-        },
-        {
-          type: 'uint256',
-          name: '_tokens'
-        }
-      ],
-      constant: false,
-      outputs: [],
-      payable: false
-    }
-  ]
-
-  const contract = new ethers.Contract(
-    token.contractAddress,
-    contractAbi,
-    wallet
-  )
+  const abi = ABI.erc20Abi()
+  const contract = new ethers.Contract(token.contractAddress, abi, wallet)
 
   const numberOfTokens = Parser.parseUnits(
     token.balance,
@@ -111,7 +69,7 @@ export const sendErc20Token = (token, fee, wallet, toAddress) => {
   )
 
   const options = {
-    gasLimit: 150000,
+    gasLimit: Number(Config.ROOTCHAIN_GAS_LIMIT),
     gasPrice: Parser.parseUnits(fee.amount, 'gwei')
   }
 
@@ -122,7 +80,7 @@ export const sendEthToken = (token, fee, wallet, toAddress) => {
   return wallet.sendTransaction({
     to: toAddress,
     value: ethers.utils.parseEther(token.balance),
-    gasLimit: 150000,
+    gasLimit: Number(Config.ROOTCHAIN_GAS_LIMIT),
     gasPrice: Parser.parseUnits(fee.amount, 'gwei')
   })
 }
