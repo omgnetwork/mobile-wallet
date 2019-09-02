@@ -6,7 +6,7 @@ import { withTheme } from 'react-native-paper'
 import { Formatter } from 'common/utils'
 import Config from 'react-native-config'
 import { notifySendToken } from 'common/notify'
-import { transactionActions, childchainActions } from 'common/actions'
+import { rootchainActions, childchainActions } from 'common/actions'
 import {
   OMGBox,
   OMGButton,
@@ -285,7 +285,7 @@ const getAction = (token, fee, wallet, provider, toAddress, isRootchain) => {
   } else if (!isRootchain) {
     return childchainActions.transfer(provider, wallet, toAddress, token, fee)
   } else if (ETH_TOKEN) {
-    return transactionActions.sendEthToken(
+    return rootchainActions.sendEthToken(
       token,
       fee,
       wallet,
@@ -293,7 +293,7 @@ const getAction = (token, fee, wallet, provider, toAddress, isRootchain) => {
       toAddress
     )
   } else {
-    return transactionActions.sendErc20Token(
+    return rootchainActions.sendErc20Token(
       token,
       fee,
       wallet,

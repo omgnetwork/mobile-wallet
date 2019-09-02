@@ -2,7 +2,7 @@ import { createAsyncAction } from './actionCreators'
 import {
   childchainService,
   walletService,
-  transactionService,
+  rootchainService,
   notificationService
 } from 'common/services'
 import { Datetime } from 'common/utils'
@@ -106,7 +106,7 @@ export const depositErc20 = (wallet, provider, token, fee) => {
 
 export const waitDeposit = (provider, wallet, tx) => {
   const asyncAction = async () => {
-    const txReceipt = await transactionService.subscribeTransaction(
+    const txReceipt = await rootchainService.subscribeTransaction(
       provider,
       tx,
       Config.CHILDCHAIN_DEPOSIT_CONFIRMATION_BLOCKS
