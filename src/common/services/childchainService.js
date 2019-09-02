@@ -1,4 +1,4 @@
-import { Childchain, Ethers } from '../utils'
+import { Childchain, Formatter, Parser } from '../utils'
 
 export const fetchAssets = (rootchainAssets, address) => {
   return new Promise(async (resolve, reject) => {
@@ -12,7 +12,7 @@ export const fetchAssets = (rootchainAssets, address) => {
         if (token) {
           return {
             ...token,
-            balance: Ethers.formatUnits(
+            balance: Formatter.formatUnits(
               balance.amount.toString(),
               token.tokenDecimal
             )
@@ -23,7 +23,7 @@ export const fetchAssets = (rootchainAssets, address) => {
             tokenSymbol: 'Unknown',
             tokenDecimal: 18,
             contractAddress: '0x123456',
-            balance: Ethers.formatUnits(
+            balance: Formatter.formatUnits(
               balance.amount.toString(),
               token.tokenDecimal
             ),
@@ -44,10 +44,10 @@ export const transfer = (fromBlockchainWallet, toAddress, token, fee) => {
       const payments = Childchain.createPayment(
         toAddress,
         token.contractAddress,
-        Ethers.parseUnits(token.balance, token.tokenDecimal)
+        Parser.parseUnits(token.balance, token.tokenDecimal)
       )
       const childchainFee = Childchain.createFee(
-        Ethers.parseUnits(fee.amount, 'gwei')
+        Parser.parseUnits(fee.amount, 'gwei')
       )
 
       const createdTransactions = await Childchain.createTransaction(
@@ -81,13 +81,13 @@ export const transfer = (fromBlockchainWallet, toAddress, token, fee) => {
 export const depositEth = (address, privateKey, amount, fee) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const weiAmount = Ethers.parseUnits(amount, 'ether')
+      const weiAmount = Parser.parseUnits(amount, 'ether')
       const transactionReceipt = await Childchain.depositEth(
         address,
         privateKey,
         weiAmount,
         {
-          gasPrice: Ethers.parseUnits(fee.amount, fee.symbol)
+          gasPrice: Parser.parseUnits(fee.amount, fee.symbol)
         }
       )
       console.log(transactionReceipt)
@@ -101,14 +101,14 @@ export const depositEth = (address, privateKey, amount, fee) => {
 export const depositErc20 = (address, privateKey, token, fee) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const weiAmount = Ethers.parseUnits(token.balance, token.tokenDecimal)
+      const weiAmount = Parser.parseUnits(token.balance, token.tokenDecimal)
       const transactionReceipt = await Childchain.depositErc20(
         address,
         privateKey,
         weiAmount,
         token.contractAddress,
         {
-          gasPrice: Ethers.parseUnits(fee.amount, fee.symbol)
+          gasPrice: Parser.parseUnits(fee.amount, fee.symbol)
         }
       )
       resolve(transactionReceipt)

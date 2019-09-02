@@ -1,13 +1,13 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, RefreshControl } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { walletActions } from 'common/actions'
-import { withTheme, Text } from 'react-native-paper'
+import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
-import { Formatter, Datetime } from 'common/utils'
+import { Formatter } from 'common/utils'
 import { OMGItemToken, OMGAssetHeader, OMGAssetList } from 'components/widgets'
 
-const EthereumBalance = ({
+const RootchainBalance = ({
   theme,
   primaryWallet,
   primaryWalletAddress,
@@ -127,4 +127,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTheme(EthereumBalance))
+)(withTheme(RootchainBalance))

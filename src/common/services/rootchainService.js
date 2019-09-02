@@ -1,9 +1,9 @@
-import { Ethers } from '../utils'
+import { Rootchain } from '../utils'
 
 export const sendErc20Token = (token, fee, fromWallet, toAddress) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const pendingTransaction = await Ethers.sendErc20Token(
+      const pendingTransaction = await Rootchain.sendErc20Token(
         token,
         fee,
         fromWallet,
@@ -19,7 +19,7 @@ export const sendErc20Token = (token, fee, fromWallet, toAddress) => {
 export const sendEthToken = (token, fee, fromWallet, toAddress) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const pendingTransaction = await Ethers.sendEthToken(
+      const pendingTransaction = await Rootchain.sendEthToken(
         token,
         fee,
         fromWallet,
@@ -35,7 +35,7 @@ export const sendEthToken = (token, fee, fromWallet, toAddress) => {
 export const subscribeTransaction = (provider, tx, confirmations) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const txReceipt = await Ethers.subscribeTransaction(
+      const txReceipt = await Rootchain.subscribeTransaction(
         provider,
         tx,
         confirmations

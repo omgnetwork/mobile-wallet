@@ -1,4 +1,4 @@
-import { Ethers, Datetime } from '../utils'
+import { Rootchain, Formatter, Datetime } from '../utils'
 import { walletStorage, settingStorage } from '../storages'
 import { priceService, providerService } from '../services'
 import Config from 'react-native-config'
@@ -6,7 +6,7 @@ import Config from 'react-native-config'
 export const create = (provider, name) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const wallet = Ethers.createWallet()
+      const wallet = Rootchain.createWallet()
       const connectedProviderWallet = wallet.connect(provider)
 
       const privateKey = await connectedProviderWallet.privateKey
@@ -26,7 +26,7 @@ export const get = async (address, provider) => {
   return new Promise(async (resolve, reject) => {
     try {
       const privateKey = await walletStorage.getPrivateKey(address)
-      const wallet = Ethers.importWalletByPrivateKey(privateKey)
+      const wallet = Rootchain.importWalletByPrivateKey(privateKey)
       const connectedProviderWallet = wallet.connect(provider)
       resolve(connectedProviderWallet)
     } catch (err) {
@@ -38,9 +38,9 @@ export const get = async (address, provider) => {
 export const getEthBalance = address => {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await Ethers.getEthBalance(address)
+      const response = await Rootchain.getEthBalance(address)
       const balance = response.data.result
-      const formattedBalance = Ethers.formatUnits(balance, 18)
+      const formattedBalance = Formatter.formatUnits(balance, 18)
       resolve(formattedBalance)
     } catch (err) {
       reject(err)
@@ -172,7 +172,7 @@ export const importByMnemonic = (wallets, mnemonic, provider, name) => {
         throw new Error('Wallet name is empty')
       }
 
-      const wallet = Ethers.importWalletByMnemonic(mnemonic)
+      const wallet = Rootchain.importWalletByMnemonic(mnemonic)
       const connectedProviderWallet = wallet.connect(provider)
 
       const privateKey = await connectedProviderWallet.privateKey

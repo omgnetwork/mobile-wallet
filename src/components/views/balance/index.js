@@ -4,7 +4,7 @@ import { StyleSheet, View, Dimensions, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { walletActions } from 'common/actions'
-import EthereumBalance from './EthereumBalance'
+import RootchainBalance from './RootchainBalance'
 import ChildchainBalance from './ChildchainBalance'
 import LinearGradient from 'react-native-linear-gradient'
 import ShowQR from './ShowQR'
@@ -51,7 +51,7 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
               <ChildchainBalance primaryWallet={primaryWallet} />
             </View>
             <View style={styles.secondPage}>
-              <EthereumBalance primaryWallet={primaryWallet} />
+              <RootchainBalance primaryWallet={primaryWallet} />
             </View>
             <View style={styles.thirdPage}>
               <ShowQR primaryWallet={primaryWallet} />

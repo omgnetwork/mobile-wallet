@@ -47,7 +47,7 @@ const ChildchainBalance = ({
         amount={formatTotalBalance(totalBalance)}
         currency={currency}
         rootchain={false}
-        blockchain={'Childchain'}
+        blockchain={'Plasma'}
         network={Config.OMISEGO_NETWORK}
       />
       <OMGAssetList

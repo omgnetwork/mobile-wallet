@@ -1,10 +1,10 @@
-import { Ethers } from '../utils'
+import { Rootchain, Formatter } from '../utils'
 import { settingStorage } from '../storages'
 
 export const create = async providerName => {
   return new Promise(async (resolve, reject) => {
     try {
-      const provider = await Ethers.createProvider(providerName)
+      const provider = await Rootchain.createProvider(providerName)
       resolve(provider)
     } catch (err) {
       reject(err)
@@ -20,7 +20,7 @@ export const getName = async defaultProviderName => {
 export const getTransactionHistory = (address, lastBlockNumber) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await Ethers.fetchTransactionDetail(
+      const response = await Rootchain.fetchTransactionDetail(
         address,
         lastBlockNumber
       )
@@ -55,13 +55,13 @@ export const getTokenBalance = (
 ) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const balance = await Ethers.getTokenBalance(
+      const balance = await Rootchain.getTokenBalance(
         provider,
         contractAddress,
         accountAddress
       )
 
-      resolve(Ethers.formatUnits(balance, tokenDecimal))
+      resolve(Formatter.formatUnits(balance, tokenDecimal))
     } catch (err) {
       reject(err)
     }

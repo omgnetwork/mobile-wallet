@@ -1,5 +1,6 @@
 import 'ethers/dist/shims.js'
 import { ethers } from 'ethers'
+import * as Parser from './parser'
 import axios from 'axios'
 import Config from 'react-native-config'
 
@@ -24,23 +25,6 @@ export const importWalletByMnemonic = mnemonic => {
 // Get a wallet instance by privateKey
 export const importWalletByPrivateKey = privateKey => {
   return new ethers.Wallet(privateKey)
-}
-
-// Format wei (big decimal) into eth string
-export const formatEther = wei => {
-  return ethers.utils.formatEther(wei)
-}
-
-export const formatUnits = (amount, numberOfDecimals) => {
-  return ethers.utils.formatUnits(amount, numberOfDecimals)
-}
-
-export const parseUnits = (tokenBalance, tokenNumberOfDecimals) => {
-  return ethers.utils.parseUnits(tokenBalance, tokenNumberOfDecimals)
-}
-
-export const commify = amount => {
-  return ethers.utils.commify(amount)
 }
 
 export const fetchTransactionDetail = (address, lastBlockNumber) => {
@@ -121,11 +105,14 @@ export const sendErc20Token = (token, fee, wallet, toAddress) => {
     wallet
   )
 
-  const numberOfTokens = parseUnits(token.balance, token.numberOfDecimals)
+  const numberOfTokens = Parser.parseUnits(
+    token.balance,
+    token.numberOfDecimals
+  )
 
   const options = {
     gasLimit: 150000,
-    gasPrice: parseUnits(fee.amount, 'gwei')
+    gasPrice: Parser.parseUnits(fee.amount, 'gwei')
   }
 
   return contract.transfer(toAddress, numberOfTokens, options)
@@ -136,7 +123,7 @@ export const sendEthToken = (token, fee, wallet, toAddress) => {
     to: toAddress,
     value: ethers.utils.parseEther(token.balance),
     gasLimit: 150000,
-    gasPrice: parseUnits(fee.amount, 'gwei')
+    gasPrice: Parser.parseUnits(fee.amount, 'gwei')
   })
 }
 

@@ -1,4 +1,19 @@
-import * as Ethers from './ethers'
+import 'ethers/dist/shims.js'
+import { ethers } from 'ethers'
+
+export const formatEther = wei => {
+  return ethers.utils.formatEther(wei)
+}
+
+export const formatUnits = (amount, numberOfDecimals) => {
+  return ethers.utils.formatUnits(amount, numberOfDecimals)
+}
+
+export const formatComma = (number, commify) => {
+  if (commify) {
+    return ethers.utils.commify(number)
+  }
+}
 
 export const format = (number, { commify, maxDecimal, ellipsize }) => {
   const stringNumber = number.toString()
@@ -20,12 +35,6 @@ export const formatDecimal = (number, maxDecimal) => {
     }
   }
   return { exceed: false, number }
-}
-
-export const formatComma = (number, commify) => {
-  if (commify) {
-    return Ethers.commify(number)
-  }
 }
 
 export const formatEllipsize = (number, ellipsize) => {
