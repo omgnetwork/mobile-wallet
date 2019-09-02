@@ -37,8 +37,8 @@ const EthereumBalance = ({
   ])
 
   useEffect(() => {
-    if (primaryWallet.assets) {
-      const totalPrices = primaryWallet.assets.reduce((acc, asset) => {
+    if (primaryWallet.rootchainAssets) {
+      const totalPrices = primaryWallet.rootchainAssets.reduce((acc, asset) => {
         const parsedAmount = parseFloat(asset.balance)
         const tokenPrice = parsedAmount * asset.price
         return tokenPrice + acc
@@ -59,7 +59,7 @@ const EthereumBalance = ({
         network={Config.ETHERSCAN_NETWORK}
       />
       <OMGAssetList
-        data={primaryWallet.assets || []}
+        data={primaryWallet.rootchainAssets || []}
         keyExtractor={item => item.contractAddress}
         // updatedAt={Datetime.format(primaryWallet.updatedAt, 'LTS')}
         loading={loading.show}

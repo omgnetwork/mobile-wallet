@@ -51,7 +51,9 @@ const TransferForm = ({ wallet, theme, navigation }) => {
   const isRootchain = navigation.getParam('rootchain')
   const selectedToken = navigation.getParam(
     'selectedToken',
-    isDeposit || isRootchain ? wallet.assets[0] : wallet.plasmaAssets[0]
+    isDeposit || isRootchain
+      ? wallet.rootchainAssets[0]
+      : wallet.childchainAssets[0]
   )
   const textRef = useRef(defaultAmount)
 
@@ -87,8 +89,8 @@ const TransferForm = ({ wallet, theme, navigation }) => {
                   lastAmount: textRef.current,
                   assets:
                     isDeposit || isRootchain
-                      ? wallet.assets
-                      : wallet.plasmaAssets
+                      ? wallet.rootchainAssets
+                      : wallet.childchainAssets
                 })
               }
             />

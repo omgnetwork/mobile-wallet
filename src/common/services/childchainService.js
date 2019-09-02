@@ -1,11 +1,11 @@
-import { Plasma, Ethers } from '../utils'
+import { Childchain, Ethers } from '../utils'
 
 export const fetchAssets = (rootchainAssets, address) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const balances = await Plasma.getEthBalance(address)
+      const balances = await Childchain.getBalances(address)
 
-      const plasmaAssets = balances.map(balance => {
+      const childchainAssets = balances.map(balance => {
         const token = rootchainAssets.find(
           asset => balance.currency === asset.contractAddress
         )
@@ -31,7 +31,7 @@ export const fetchAssets = (rootchainAssets, address) => {
           }
         }
       })
-      resolve(plasmaAssets)
+      resolve(childchainAssets)
     } catch (err) {
       reject(err)
     }
@@ -41,32 +41,34 @@ export const fetchAssets = (rootchainAssets, address) => {
 export const transfer = (fromBlockchainWallet, toAddress, token, fee) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const payments = Plasma.createPayment(
+      const payments = Childchain.createPayment(
         toAddress,
         token.contractAddress,
         Ethers.parseUnits(token.balance, token.tokenDecimal)
       )
-      const plasmaFee = Plasma.createFee(Ethers.parseUnits(fee.amount, 'gwei'))
+      const childchainFee = Childchain.createFee(
+        Ethers.parseUnits(fee.amount, 'gwei')
+      )
 
-      const createdTransactions = await Plasma.createTransaction(
+      const createdTransactions = await Childchain.createTransaction(
         fromBlockchainWallet.address,
         payments,
-        plasmaFee
+        childchainFee
       )
 
       const transaction = createdTransactions.transactions[0]
-      const typedData = Plasma.getTypedData(transaction)
-      const signatures = await Plasma.signTransaction(
+      const typedData = Childchain.getTypedData(transaction)
+      const signatures = await Childchain.signTransaction(
         typedData,
         fromBlockchainWallet.privateKey
       )
 
-      const signedTransaction = await Plasma.buildSignedTransaction(
+      const signedTransaction = await Childchain.buildSignedTransaction(
         typedData,
         new Array(transaction.inputs.length).fill(signatures[0])
       )
 
-      const transactionReceipt = await Plasma.submitTransaction(
+      const transactionReceipt = await Childchain.submitTransaction(
         signedTransaction
       )
       resolve(transactionReceipt)
@@ -80,7 +82,7 @@ export const depositEth = (address, privateKey, amount, fee) => {
   return new Promise(async (resolve, reject) => {
     try {
       const weiAmount = Ethers.parseUnits(amount, 'ether')
-      const transactionReceipt = await Plasma.depositEth(
+      const transactionReceipt = await Childchain.depositEth(
         address,
         privateKey,
         weiAmount,
@@ -100,7 +102,7 @@ export const depositErc20 = (address, privateKey, token, fee) => {
   return new Promise(async (resolve, reject) => {
     try {
       const weiAmount = Ethers.parseUnits(token.balance, token.tokenDecimal)
-      const transactionReceipt = await Plasma.depositErc20(
+      const transactionReceipt = await Childchain.depositErc20(
         address,
         privateKey,
         weiAmount,

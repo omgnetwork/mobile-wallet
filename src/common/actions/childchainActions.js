@@ -1,6 +1,6 @@
 import { createAsyncAction } from './actionCreators'
 import {
-  plasmaService,
+  childchainService,
   walletService,
   transactionService,
   notificationService
@@ -10,12 +10,11 @@ import Config from 'react-native-config'
 
 export const fetchAssets = (rootchainAssets, address) => {
   const asyncAction = async () => {
-    const assets = await plasmaService.fetchAssets(rootchainAssets, address)
-
-    return { address, plasmaAssets: assets }
+    const assets = await childchainService.fetchAssets(rootchainAssets, address)
+    return { address, childchainAssets: assets }
   }
   return createAsyncAction({
-    type: 'PLASMA/LOAD_ASSETS',
+    type: 'CHILDCHAIN/LOAD_ASSETS',
     operation: asyncAction
   })
 }
@@ -24,7 +23,7 @@ export const depositEth = (wallet, provider, token, fee) => {
   const asyncAction = async () => {
     const blockchainWallet = await walletService.get(wallet.address, provider)
 
-    const transactionReceipt = await plasmaService.depositEth(
+    const transactionReceipt = await childchainService.depositEth(
       blockchainWallet.address,
       blockchainWallet.privateKey,
       token.balance,
@@ -42,7 +41,7 @@ export const depositEth = (wallet, provider, token, fee) => {
     }
   }
   return createAsyncAction({
-    type: 'PLASMA/DEPOSIT_ETH_TOKEN',
+    type: 'CHILDCHAIN/DEPOSIT_ETH_TOKEN',
     operation: asyncAction
   })
 }
@@ -54,7 +53,7 @@ export const transfer = (provider, fromWallet, toAddress, token, fee) => {
       provider
     )
 
-    const transactionReceipt = await plasmaService.transfer(
+    const transactionReceipt = await childchainService.transfer(
       blockchainWallet,
       toAddress,
       token,
@@ -73,7 +72,7 @@ export const transfer = (provider, fromWallet, toAddress, token, fee) => {
   }
 
   return createAsyncAction({
-    type: 'PLASMA/SEND_TOKEN',
+    type: 'CHILDCHAIN/SEND_TOKEN',
     operation: asyncAction
   })
 }
@@ -82,7 +81,7 @@ export const depositErc20 = (wallet, provider, token, fee) => {
   const asyncAction = async () => {
     const blockchainWallet = await walletService.get(wallet.address, provider)
 
-    const transactionReceipt = await plasmaService.depositErc20(
+    const transactionReceipt = await childchainService.depositErc20(
       blockchainWallet.address,
       blockchainWallet.privateKey,
       token,
@@ -100,7 +99,7 @@ export const depositErc20 = (wallet, provider, token, fee) => {
     }
   }
   return createAsyncAction({
-    type: 'PLASMA/DEPOSIT_ERC20_TOKEN',
+    type: 'CHILDCHAIN/DEPOSIT_ERC20_TOKEN',
     operation: asyncAction
   })
 }
@@ -126,7 +125,7 @@ export const waitDeposit = (provider, wallet, tx) => {
     }
   }
   return createAsyncAction({
-    type: 'PLASMA/WAIT_DEPOSITING',
+    type: 'CHILDCHAIN/WAIT_DEPOSITING',
     operation: asyncAction,
     isBackgroundTask: true
   })
@@ -134,7 +133,7 @@ export const waitDeposit = (provider, wallet, tx) => {
 
 export const waitWatcherRecordTransaction = (provider, wallet, tx) => {
   const asyncAction = async () => {
-    await plasmaService.wait(40000)
+    await childchainService.wait(40000)
 
     notificationService.sendNotification({
       title: `${wallet.name} sent`,
@@ -148,7 +147,7 @@ export const waitWatcherRecordTransaction = (provider, wallet, tx) => {
     }
   }
   return createAsyncAction({
-    type: 'PLASMA/WAIT_SENDING',
+    type: 'CHILDCHAIN/WAIT_SENDING',
     operation: asyncAction,
     isBackgroundTask: true
   })

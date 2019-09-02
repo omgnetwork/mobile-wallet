@@ -64,11 +64,14 @@ export const fetchAssets = (provider, address, lastBlockNumber) => {
 
       const pendingEthToken = fetchEthToken(pendingEthBalance, pendingEthPrice)
       const pendingERC20Tokens = fetchERC20Token(txHistory, provider, address)
-      const assets = await Promise.all([pendingEthToken, ...pendingERC20Tokens])
+      const rootchainAssets = await Promise.all([
+        pendingEthToken,
+        ...pendingERC20Tokens
+      ])
       const updatedBlock = txHistory.slice(-1).pop().blockNumber
       const updatedAssets = {
         address,
-        assets,
+        rootchainAssets,
         updatedBlock,
         updatedAt: Datetime.now()
       }
@@ -76,7 +79,7 @@ export const fetchAssets = (provider, address, lastBlockNumber) => {
       resolve(updatedAssets)
     } catch (err) {
       console.log(err)
-      reject(new Error(`Cannot fetch assets for address ${address}.`))
+      reject(new Error(`Cannot fetch rootchainAssets for address ${address}.`))
     }
   })
 }

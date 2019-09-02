@@ -2,7 +2,7 @@ import React, { useState, Fragment, useEffect } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
-import { plasmaActions, walletActions } from 'common/actions'
+import { childchainActions, walletActions } from 'common/actions'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
 import { Formatter, Datetime } from 'common/utils'
@@ -13,9 +13,9 @@ import {
   OMGAssetFooter
 } from 'components/widgets'
 
-const PlasmaBalance = ({
+const ChildchainBalance = ({
   dispatchLoadAssets,
-  dispatchSetShouldRefreshPlasma,
+  dispatchSetShouldRefreshChildchain,
   wallet,
   navigation
 }) => {
@@ -23,15 +23,15 @@ const PlasmaBalance = ({
   const [totalBalance, setTotalBalance] = useState(0.0)
 
   useEffect(() => {
-    if (wallet.shouldRefreshPlasma) {
+    if (wallet.shouldRefreshChildchain) {
       dispatchLoadAssets(wallet)
-      dispatchSetShouldRefreshPlasma(wallet.address, false)
+      dispatchSetShouldRefreshChildchain(wallet.address, false)
     }
-  }, [dispatchLoadAssets, dispatchSetShouldRefreshPlasma, wallet])
+  }, [dispatchLoadAssets, dispatchSetShouldRefreshChildchain, wallet])
 
   useEffect(() => {
-    if (wallet.plasmaAssets) {
-      const totalPrices = wallet.plasmaAssets.reduce((acc, asset) => {
+    if (wallet.childchainAssets) {
+      const totalPrices = wallet.childchainAssets.reduce((acc, asset) => {
         const parsedAmount = parseFloat(asset.balance)
         const tokenPrice = parsedAmount * asset.price
         return tokenPrice + acc
@@ -39,7 +39,7 @@ const PlasmaBalance = ({
 
       setTotalBalance(totalPrices)
     }
-  }, [wallet.plasmaAssets])
+  }, [wallet.childchainAssets])
 
   return (
     <Fragment>
@@ -47,11 +47,11 @@ const PlasmaBalance = ({
         amount={formatTotalBalance(totalBalance)}
         currency={currency}
         rootchain={false}
-        blockchain={'Plasma'}
+        blockchain={'Childchain'}
         network={Config.OMISEGO_NETWORK}
       />
       <OMGAssetList
-        data={wallet.plasmaAssets || []}
+        data={wallet.childchainAssets || []}
         keyExtractor={item => item.contractAddress}
         updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
         style={styles.list}
@@ -114,12 +114,18 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchLoadAssets: wallet =>
-    dispatch(plasmaActions.fetchAssets(wallet.assets, wallet.address)),
-  dispatchSetShouldRefreshPlasma: (address, shouldRefreshPlasma) =>
-    walletActions.setShouldRefreshPlasma(dispatch, address, shouldRefreshPlasma)
+    dispatch(
+      childchainActions.fetchAssets(wallet.rootchainAssets, wallet.address)
+    ),
+  dispatchSetShouldRefreshChildchain: (address, shouldRefreshChildchain) =>
+    walletActions.setShouldRefreshChildchain(
+      dispatch,
+      address,
+      shouldRefreshChildchain
+    )
 })
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNavigation(withTheme(PlasmaBalance)))
+)(withNavigation(withTheme(ChildchainBalance)))

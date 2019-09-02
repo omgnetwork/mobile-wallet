@@ -17,7 +17,7 @@ const TransferSelectBalance = ({
   loading,
   navigation
 }) => {
-  const assets = navigation.getParam('assets', primaryWallet.assets)
+  const assets = navigation.getParam('assets', primaryWallet.rootchainAssets)
   const currentToken = navigation.getParam('currentToken')
   const lastAmount = navigation.getParam('lastAmount')
   const [selectedToken, setSelectedToken] = useState(currentToken || assets[0])

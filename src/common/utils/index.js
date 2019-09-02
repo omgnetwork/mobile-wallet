@@ -4,6 +4,6 @@ import * as Storage from './storage'
 import * as Datetime from './datetime'
 import * as Formatter from './formatter'
 import * as Notification from './notification'
-import * as Plasma from './plasma'
+import * as Childchain from './childchain'
 
-export { Ethers, Price, Storage, Formatter, Datetime, Notification, Plasma }
+export { Ethers, Price, Storage, Formatter, Datetime, Notification, Childchain }

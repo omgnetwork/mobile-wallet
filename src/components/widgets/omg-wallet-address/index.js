@@ -7,10 +7,10 @@ import OMGIcon from '../omg-icon'
 import Config from 'react-native-config'
 
 const OMGWalletAddress = ({ theme, name, address, style }) => {
-  const IS_PLASMA_ADDRESS = address === Config.PLASMA_CONTRACT_ADDRESS
+  const IS_CHILDCHAIN_ADDRESS = address === Config.CHILDCHAIN_CONTRACT_ADDRESS
   return (
     <View style={{ ...styles.container(theme), ...style }}>
-      {IS_PLASMA_ADDRESS ? (
+      {IS_CHILDCHAIN_ADDRESS ? (
         <View style={styles.logo(theme)}>
           <OMGIcon name='files' size={14} />
         </View>

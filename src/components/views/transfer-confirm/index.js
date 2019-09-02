@@ -6,7 +6,7 @@ import { withTheme } from 'react-native-paper'
 import { Formatter } from 'common/utils'
 import Config from 'react-native-config'
 import { notifySendToken } from 'common/notify'
-import { transactionActions, plasmaActions } from 'common/actions'
+import { transactionActions, childchainActions } from 'common/actions'
 import {
   OMGBox,
   OMGButton,
@@ -275,15 +275,15 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 })
 
 const getAction = (token, fee, wallet, provider, toAddress, isRootchain) => {
-  const TO_PLASMA = toAddress === Config.PLASMA_CONTRACT_ADDRESS
+  const TO_CHILDCHAIN = toAddress === Config.CHILDCHAIN_CONTRACT_ADDRESS
   const ETH_TOKEN =
     token.contractAddress === '0x0000000000000000000000000000000000000000'
-  if (TO_PLASMA && ETH_TOKEN) {
-    return plasmaActions.depositEth(wallet, provider, token, fee)
-  } else if (TO_PLASMA && !ETH_TOKEN) {
-    return plasmaActions.depositErc20(wallet, provider, token, fee)
+  if (TO_CHILDCHAIN && ETH_TOKEN) {
+    return childchainActions.depositEth(wallet, provider, token, fee)
+  } else if (TO_CHILDCHAIN && !ETH_TOKEN) {
+    return childchainActions.depositErc20(wallet, provider, token, fee)
   } else if (!isRootchain) {
-    return plasmaActions.transfer(provider, wallet, toAddress, token, fee)
+    return childchainActions.transfer(provider, wallet, toAddress, token, fee)
   } else if (ETH_TOKEN) {
     return transactionActions.sendEthToken(
       token,

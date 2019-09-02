@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { walletActions } from 'common/actions'
 import EthereumBalance from './EthereumBalance'
-import PlasmaBalance from './PlasmaBalance'
+import ChildchainBalance from './ChildchainBalance'
 import LinearGradient from 'react-native-linear-gradient'
 import ShowQR from './ShowQR'
 import {
@@ -48,7 +48,7 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
         ) : (
           <OMGViewPager pageWidth={pageWidth}>
             <View style={styles.firstPage}>
-              <PlasmaBalance primaryWallet={primaryWallet} />
+              <ChildchainBalance primaryWallet={primaryWallet} />
             </View>
             <View style={styles.secondPage}>
               <EthereumBalance primaryWallet={primaryWallet} />
