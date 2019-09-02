@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { Formatter } from 'common/utils'
+import { Formatter, Rootchain } from 'common/utils'
 import Config from 'react-native-config'
 import { notifySendToken } from 'common/notify'
 import { rootchainActions, childchainActions } from 'common/actions'
@@ -276,8 +276,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 const getAction = (token, fee, wallet, provider, toAddress, isRootchain) => {
   const TO_CHILDCHAIN = toAddress === Config.CHILDCHAIN_CONTRACT_ADDRESS
-  const ETH_TOKEN =
-    token.contractAddress === '0x0000000000000000000000000000000000000000'
+  const ETH_TOKEN = token.contractAddress === Rootchain.ETH_TOKEN
   if (TO_CHILDCHAIN && ETH_TOKEN) {
     return childchainActions.depositEth(wallet, provider, token, fee)
   } else if (TO_CHILDCHAIN && !ETH_TOKEN) {

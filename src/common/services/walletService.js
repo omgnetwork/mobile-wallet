@@ -57,7 +57,7 @@ export const fetchAssets = (provider, address, lastBlockNumber) => {
       )
 
       const pendingEthPrice = priceService.fetchPriceUsd(
-        '0x0000000000000000000000000000000000000000',
+        Rootchain.ETH_ADDRESS,
         Config.ETHERSCAN_NETWORK
       )
       const pendingEthBalance = getEthBalance(address)
@@ -96,7 +96,7 @@ export const fetchEthToken = (pendingEthBalance, pendingEthPrice) => {
         tokenName: 'Ether',
         tokenSymbol: 'ETH',
         tokenDecimal: 18,
-        contractAddress: '0x0000000000000000000000000000000000000000',
+        contractAddress: Rootchain.ETH_ADDRESS,
         balance: balance,
         price: price
       })

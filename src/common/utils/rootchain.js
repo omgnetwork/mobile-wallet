@@ -5,12 +5,12 @@ import * as ABI from './abi'
 import axios from 'axios'
 import Config from 'react-native-config'
 
-// Returns a wallet
+export const ETH_ADDRESS = '0x0000000000000000000000000000000000000000'
+
 export const createWallet = () => {
   return ethers.Wallet.createRandom()
 }
 
-// Create etherscan provider
 export const createProvider = providerName => {
   return new ethers.providers.EtherscanProvider(
     providerName,
@@ -18,12 +18,10 @@ export const createProvider = providerName => {
   )
 }
 
-// Returns  a wallet
 export const importWalletByMnemonic = mnemonic => {
   return ethers.Wallet.fromMnemonic(mnemonic)
 }
 
-// Get a wallet instance by privateKey
 export const importWalletByPrivateKey = privateKey => {
   return new ethers.Wallet(privateKey)
 }
