@@ -59,6 +59,10 @@ export const submitTransaction = signedTx => {
   return childchain.submitTransaction(signedTx)
 }
 
+export const getTransactions = address => {
+  return childchain.getTransactions([{ address, limit: 10 }])
+}
+
 export const depositEth = (address, privateKey, weiAmount, options) => {
   const depositTransaction = transaction.encodeDeposit(
     address,

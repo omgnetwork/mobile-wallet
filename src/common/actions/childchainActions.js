@@ -19,6 +19,22 @@ export const fetchAssets = (rootchainAssets, address) => {
   })
 }
 
+export const invalidatePendingTx = (pendingTxs, address) => {
+  const asyncAction = async () => {
+    const resolvedTxs = await childchainService.getResolvedPendingTxs(
+      pendingTxs,
+      address
+    )
+
+    return { resolvedPendingTxs: resolvedTxs }
+  }
+  return createAsyncAction({
+    type: 'CHILDCHAIN/INVALIDATE_PENDING_TXS',
+    operation: asyncAction,
+    isBackgroundTask: true
+  })
+}
+
 export const depositEth = (wallet, provider, token, fee) => {
   const asyncAction = async () => {
     const blockchainWallet = await walletService.get(wallet.address, provider)
@@ -60,13 +76,15 @@ export const transfer = (provider, fromWallet, toAddress, token, fee) => {
       fee
     )
 
+    console.log(transactionReceipt)
+
     return {
-      hash: transactionReceipt.transactionHash,
+      hash: transactionReceipt.txhash,
       from: fromWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
       gasPrice: fee.amount,
-      type: 'CHILDCHAIN_SEND',
+      type: 'CHILDCHAIN_SEND_TOKEN',
       createdAt: Datetime.now()
     }
   }
@@ -131,7 +149,7 @@ export const waitDeposit = (provider, wallet, tx) => {
   })
 }
 
-export const waitWatcherRecordTransaction = (provider, wallet, tx) => {
+export const waitWatcherRecordTransaction = (wallet, tx) => {
   const asyncAction = async () => {
     await childchainService.wait(40000)
 

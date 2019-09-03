@@ -40,6 +40,23 @@ export const fetchAssets = (rootchainAssets, address) => {
   })
 }
 
+export const getResolvedPendingTxs = (pendingTxs, address) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const transactions = await Childchain.getTransactions(address)
+      resolve(
+        transactions.filter(
+          tx =>
+            pendingTxs.find(pendingTx => pendingTx.txhash === tx.hash) !==
+            undefined
+        )
+      )
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
 export const transfer = (fromBlockchainWallet, toAddress, token, fee) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -48,6 +65,7 @@ export const transfer = (fromBlockchainWallet, toAddress, token, fee) => {
         token.contractAddress,
         Parser.parseUnits(token.balance, token.tokenDecimal)
       )
+
       const childchainFee = Childchain.createFee(
         Parser.parseUnits(fee.amount, 'gwei')
       )
@@ -57,15 +75,14 @@ export const transfer = (fromBlockchainWallet, toAddress, token, fee) => {
         payments,
         childchainFee
       )
-
       const transaction = createdTransactions.transactions[0]
       const typedData = Childchain.getTypedData(transaction)
-      const signatures = await Childchain.signTransaction(
+      const signatures = Childchain.signTransaction(
         typedData,
         fromBlockchainWallet.privateKey
       )
 
-      const signedTransaction = await Childchain.buildSignedTransaction(
+      const signedTransaction = Childchain.buildSignedTransaction(
         typedData,
         new Array(transaction.inputs.length).fill(signatures[0])
       )
@@ -75,6 +92,7 @@ export const transfer = (fromBlockchainWallet, toAddress, token, fee) => {
       )
       resolve(transactionReceipt)
     } catch (err) {
+      console.log(err)
       reject(err)
     }
   })

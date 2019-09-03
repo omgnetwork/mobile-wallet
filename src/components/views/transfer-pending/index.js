@@ -43,8 +43,8 @@ const TransferPending = ({
         dispatchSubscribeTransaction(provider, wallet, pendingTx)
       } else if (pendingTx && pendingTx.type === 'CHILDCHAIN_DEPOSIT') {
         dispatchSubscribeDeposit(provider, wallet, pendingTx)
-      } else if (pendingTx && pendingTx.type === 'CHILDCHAIN_SEND') {
-        dispatchSubscribeChildchainTransaction(provider, wallet, pendingTx)
+      } else if (pendingTx && pendingTx.type === 'CHILDCHAIN_SEND_TOKEN') {
+        dispatchSubscribeChildchainTransaction(wallet, pendingTx)
       }
       setSubscribed(true)
     }
@@ -131,7 +131,7 @@ const TransferPending = ({
             }}>
             Done
           </OMGButton>
-          {pendingTx.type !== 'CHILDCHAIN_SEND' && (
+          {pendingTx.type !== 'CHILDCHAIN_SEND_TOKEN' && (
             <TouchableOpacity
               style={styles.trackEtherscanButton}
               onPress={() => {
@@ -284,10 +284,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(childchainActions.waitDeposit(provider, wallet, tx)),
   dispatchSubscribeTransaction: (provider, wallet, tx) =>
     dispatch(rootchainActions.subscribeTransaction(provider, wallet, tx)),
-  dispatchSubscribeChildchainTransaction: (provider, wallet, tx) =>
-    dispatch(
-      childchainActions.waitWatcherRecordTransaction(provider, wallet, tx)
-    )
+  dispatchSubscribeChildchainTransaction: (wallet, tx) =>
+    dispatch(childchainActions.waitWatcherRecordTransaction(wallet, tx))
 })
 
 export default connect(

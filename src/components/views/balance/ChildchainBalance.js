@@ -15,7 +15,10 @@ import {
 
 const ChildchainBalance = ({
   dispatchLoadAssets,
+  dispatchInvalidatePendingTxs,
   dispatchSetShouldRefreshChildchain,
+  dispatchSubscribeChildchainTransaction,
+  pendingTxs,
   wallet,
   navigation
 }) => {
@@ -25,9 +28,16 @@ const ChildchainBalance = ({
   useEffect(() => {
     if (wallet.shouldRefreshChildchain) {
       dispatchLoadAssets(wallet)
+      dispatchInvalidatePendingTxs(wallet, pendingTxs)
       dispatchSetShouldRefreshChildchain(wallet.address, false)
     }
-  }, [dispatchLoadAssets, dispatchSetShouldRefreshChildchain, wallet])
+  }, [
+    dispatchInvalidatePendingTxs,
+    dispatchLoadAssets,
+    dispatchSetShouldRefreshChildchain,
+    pendingTxs,
+    wallet
+  ])
 
   useEffect(() => {
     if (wallet.childchainAssets) {
@@ -40,6 +50,17 @@ const ChildchainBalance = ({
       setTotalBalance(totalPrices)
     }
   }, [wallet.childchainAssets])
+
+  useEffect(() => {
+    const resubscribeTxs = pendingTxs.filter(
+      pendingTx =>
+        pendingTx.resubscribe && pendingTx.type === 'CHILDCHAIN_SEND_TOKEN'
+    )
+
+    resubscribeTxs.forEach(tx => {
+      dispatchSubscribeChildchainTransaction(wallet, tx)
+    })
+  }, [dispatchSubscribeChildchainTransaction, pendingTxs, wallet])
 
   return (
     <Fragment>
@@ -106,6 +127,7 @@ const formatTokenPrice = (amount, price) => {
 }
 
 const mapStateToProps = (state, ownProps) => ({
+  pendingTxs: state.transaction.pendingTxs,
   loading: state.loading,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
@@ -113,6 +135,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatchInvalidatePendingTxs: (wallet, pendingTxs) =>
+    dispatch(childchainActions.invalidatePendingTx(pendingTxs, wallet.address)),
   dispatchLoadAssets: wallet =>
     dispatch(
       childchainActions.fetchAssets(wallet.rootchainAssets, wallet.address)
@@ -122,7 +146,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
       dispatch,
       address,
       shouldRefreshChildchain
-    )
+    ),
+  dispatchSubscribeChildchainTransaction: (wallet, tx) =>
+    dispatch(childchainActions.waitWatcherRecordTransaction(wallet, tx))
 })
 
 export default connect(

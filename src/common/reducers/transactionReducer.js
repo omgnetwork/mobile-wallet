@@ -15,6 +15,33 @@ export const transactionReducer = (state = { pendingTxs: [] }, action) => {
           pendingTx => pendingTx.hash !== action.data.hash
         )
       }
+    case 'CHILDCHAIN/WAIT_SENDING/LISTENING':
+      return {
+        ...state,
+        pendingTxs: state.pendingTxs.map(pendingTx =>
+          pendingTx.type === 'CHILDCHAIN_SEND_TOKEN'
+            ? { ...pendingTx, resubscribe: false }
+            : pendingTx
+        )
+      }
+    case 'CHILDCHAIN/INVALIDATE_PENDING_TXS/SUCCESS':
+      const resolvedPendingTxHashes = action.data.resolvedPendingTxs.map(
+        tx => tx.txhash
+      )
+      return {
+        ...state,
+        pendingTxs: state.pendingTxs
+          .filter(
+            pendingTx => resolvedPendingTxHashes.indexOf(pendingTx.hash) === -1
+          )
+          .map(tx => {
+            if (tx.type === 'CHILDCHAIN_SEND_TOKEN') {
+              return { ...tx, resubscribe: true }
+            } else {
+              return tx
+            }
+          })
+      }
     case 'WALLET/DELETE_ALL/OK':
       return { pendingTxs: [] }
     default:

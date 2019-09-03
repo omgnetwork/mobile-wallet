@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
@@ -29,6 +29,9 @@ const TransferConfirm = ({
   const fee = navigation.getParam('fee')
   const isRootchain = navigation.getParam('isRootchain')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
+  const loadingVisible =
+    loading.show && notifySendToken.actions.indexOf(loading.action) > -1
+  const [confirmBtnDisable, setConfirmBtnDisable] = useState(false)
 
   useEffect(() => {
     if (
@@ -56,6 +59,17 @@ const TransferConfirm = ({
     toWallet,
     token
   ])
+
+  useEffect(() => {
+    const isPendingChildchainTransaction =
+      pendingTxs.find(tx => tx.type === 'CHILDCHAIN_SEND_TOKEN') !== undefined
+    const isChildchainTransaction =
+      !isRootchain && toWallet.address !== Config.CHILDCHAIN_CONTRACT_ADDRESS
+
+    setConfirmBtnDisable(
+      isPendingChildchainTransaction && isChildchainTransaction
+    )
+  }, [isRootchain, pendingTxs, toWallet.address])
 
   const sendToken = () => {
     dispatchSendToken(
@@ -134,9 +148,10 @@ const TransferConfirm = ({
       <View style={styles.buttonContainer}>
         <OMGButton
           style={styles.button}
-          loading={loading.show}
+          loading={loadingVisible}
+          disabled={loadingVisible || confirmBtnDisable}
           onPress={sendToken}>
-          Send Transaction
+          {confirmBtnDisable ? 'Waiting for watcher...' : 'Send Transaction'}
         </OMGButton>
       </View>
     </SafeAreaView>
