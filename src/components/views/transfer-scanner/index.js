@@ -14,6 +14,7 @@ import { Animator } from 'common/anims'
 
 const TransferScanner = ({ theme, navigation }) => {
   const rootchain = navigation.getParam('rootchain')
+  const [rendering, setRendering] = useState(true)
   const camera = useRef(null)
   const [address, setAddress] = useState(null)
   const [rootchainScanner, setRootChainScanner] = useState(rootchain)
@@ -41,6 +42,23 @@ const TransferScanner = ({ theme, navigation }) => {
     }
   }, [address, navigateNext])
 
+  useEffect(() => {
+    function didFocus() {
+      setRendering(true)
+    }
+    function didBlur() {
+      setRendering(false)
+    }
+
+    const didFocusSubscription = navigation.addListener('didFocus', didFocus)
+    const didBlurSubscription = navigation.addListener('didBlur', didBlur)
+
+    return () => {
+      didBlurSubscription.remove()
+      didFocusSubscription.remove()
+    }
+  }, [navigation, theme.colors.white])
+
   const TopMarker = ({ textAboveLine, textBelowLine, onPressSwitch }) => {
     return (
       <Fragment>
@@ -60,41 +78,43 @@ const TransferScanner = ({ theme, navigation }) => {
 
   return (
     <View style={styles.contentContainer(theme)}>
-      <OMGQRScanner
-        showMarker={true}
-        onReceiveQR={e => setAddress(e.data)}
-        cameraRef={camera}
-        cameraStyle={styles.cameraContainer}
-        overlayColorAnim={overlayColorAnim}
-        notAuthorizedView={
-          <OMGText style={styles.notAuthorizedView}>
-            Enable the camera permission to scan a QR code.
-          </OMGText>
-        }
-        renderTop={
-          <TopMarker
-            textAboveLine={
-              rootchainScanner
-                ? 'Sending on \nEthereum Rootchain'
-                : 'Sending on \nPlasma Childchain'
-            }
-            textBelowLine={
-              rootchainScanner
-                ? 'Switch to Plasma Childchain'
-                : 'Switch to Ethereum Rootchain'
-            }
-            onPressSwitch={() => {
-              setRootChainScanner(!rootchainScanner)
-              transitionOverlay(rootchainScanner)
-            }}
-          />
-        }
-        renderBottom={
-          <OMGButton style={styles.button} onPress={navigateNext}>
-            Or, Send Manually
-          </OMGButton>
-        }
-      />
+      {rendering && (
+        <OMGQRScanner
+          showMarker={true}
+          onReceiveQR={e => setAddress(e.data)}
+          cameraRef={camera}
+          cameraStyle={styles.cameraContainer}
+          overlayColorAnim={overlayColorAnim}
+          notAuthorizedView={
+            <OMGText style={styles.notAuthorizedView}>
+              Enable the camera permission to scan a QR code.
+            </OMGText>
+          }
+          renderTop={
+            <TopMarker
+              textAboveLine={
+                rootchainScanner
+                  ? 'Sending on \nEthereum Rootchain'
+                  : 'Sending on \nPlasma Childchain'
+              }
+              textBelowLine={
+                rootchainScanner
+                  ? 'Switch to Plasma Childchain'
+                  : 'Switch to Ethereum Rootchain'
+              }
+              onPressSwitch={() => {
+                setRootChainScanner(!rootchainScanner)
+                transitionOverlay(rootchainScanner)
+              }}
+            />
+          }
+          renderBottom={
+            <OMGButton style={styles.button} onPress={navigateNext}>
+              Or, Send Manually
+            </OMGButton>
+          }
+        />
+      )}
     </View>
   )
 }
