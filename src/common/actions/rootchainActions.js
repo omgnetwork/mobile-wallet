@@ -44,6 +44,7 @@ export const sendEthToken = (token, fee, fromWallet, provider, toAddress) => {
       fromWallet.address,
       provider
     )
+
     const tx = await rootchainService.sendEthToken(
       token,
       fee,

@@ -26,7 +26,7 @@ const ChildchainBalance = ({
   const [totalBalance, setTotalBalance] = useState(0.0)
 
   useEffect(() => {
-    if (wallet.shouldRefreshChildchain) {
+    if (wallet.shouldRefreshChildchain && wallet.childchainAssets) {
       dispatchLoadAssets(wallet)
       dispatchInvalidatePendingTxs(wallet, pendingTxs)
       dispatchSetShouldRefreshChildchain(wallet.address, false)
