@@ -75,8 +75,23 @@ export const transfer = (fromBlockchainWallet, toAddress, token, fee) => {
         payments,
         childchainFee
       )
+
       const transaction = createdTransactions.transactions[0]
-      const typedData = Childchain.getTypedData(transaction)
+
+      // Remove the exponential notion from the amount when converting to string.
+      const sanitizedTransaction = {
+        ...transaction,
+        inputs: transaction.inputs.map(input => ({
+          ...input,
+          amount: input.amount.toString(10)
+        })),
+        outputs: transaction.outputs.map(output => ({
+          ...output,
+          amount: output.amount.toString(10)
+        }))
+      }
+
+      const typedData = Childchain.getTypedData(sanitizedTransaction)
       const signatures = Childchain.signTransaction(
         typedData,
         fromBlockchainWallet.privateKey
@@ -84,7 +99,7 @@ export const transfer = (fromBlockchainWallet, toAddress, token, fee) => {
 
       const signedTransaction = Childchain.buildSignedTransaction(
         typedData,
-        new Array(transaction.inputs.length).fill(signatures[0])
+        new Array(sanitizedTransaction.inputs.length).fill(signatures[0])
       )
 
       const transactionReceipt = await Childchain.submitTransaction(
