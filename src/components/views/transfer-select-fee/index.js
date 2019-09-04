@@ -88,11 +88,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     margin: 16
   },
-  headerIcon: {},
+  headerIcon: {
+    padding: 8,
+    marginLeft: -8
+  },
   headerTitle: theme => ({
     fontSize: 18,
     color: theme.colors.gray3,
-    marginLeft: 16,
+    marginLeft: 8,
     textTransform: 'uppercase'
   }),
   buttonContainer: {
