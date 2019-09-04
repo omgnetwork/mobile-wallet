@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useReducer } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
@@ -29,8 +29,7 @@ const TransferConfirm = ({
   const fee = navigation.getParam('fee')
   const isRootchain = navigation.getParam('isRootchain')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
-  const loadingVisible =
-    loading.show && notifySendToken.actions.indexOf(loading.action) > -1
+  const [loadingVisible, setLoadingVisible] = useState(false)
   const [confirmBtnDisable, setConfirmBtnDisable] = useState(false)
 
   useEffect(() => {
@@ -59,6 +58,19 @@ const TransferConfirm = ({
     toWallet,
     token
   ])
+
+  useEffect(() => {
+    if (loading.show && notifySendToken.actions.indexOf(loading.action) > -1) {
+      setLoadingVisible(true)
+    } else if (
+      !loading.show &&
+      notifySendToken.actions.indexOf(loading.action) > -1
+    ) {
+      setLoadingVisible(false)
+    } else {
+      loadingVisible
+    }
+  }, [loading.action, loading.show, loadingVisible])
 
   useEffect(() => {
     const isPendingChildchainTransaction =
@@ -291,7 +303,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 const getAction = (token, fee, wallet, provider, toAddress, isRootchain) => {
   const TO_CHILDCHAIN = toAddress === Config.CHILDCHAIN_CONTRACT_ADDRESS
-  const ETH_TOKEN = token.contractAddress === Rootchain.ETH_TOKEN
+  const ETH_TOKEN = token.contractAddress === Rootchain.ETH_ADDRESS
   if (TO_CHILDCHAIN && ETH_TOKEN) {
     return childchainActions.depositEth(wallet, provider, token, fee)
   } else if (TO_CHILDCHAIN && !ETH_TOKEN) {
