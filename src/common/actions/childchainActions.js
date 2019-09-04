@@ -151,7 +151,9 @@ export const waitDeposit = (provider, wallet, tx) => {
 
 export const waitWatcherRecordTransaction = (wallet, tx) => {
   const asyncAction = async () => {
-    await childchainService.wait(40000)
+    await childchainService.wait(
+      Number(Config.CHILDCHAIN_WATCHER_WAIT_DURATION || '40000')
+    )
 
     notificationService.sendNotification({
       title: `${wallet.name} sent`,
