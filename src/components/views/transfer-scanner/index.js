@@ -44,18 +44,30 @@ const TransferScanner = ({ theme, navigation }) => {
 
   useEffect(() => {
     function didFocus() {
-      setRendering(true)
+      requestAnimationFrame(() => {
+        setRendering(true)
+      })
     }
+
     function didBlur() {
       setRendering(false)
     }
 
     const didFocusSubscription = navigation.addListener('didFocus', didFocus)
-    const didBlurSubscription = navigation.addListener('didBlur', didBlur)
+
+    // Two levels above
+    const transferNavigator = navigation
+      .dangerouslyGetParent()
+      .dangerouslyGetParent()
+
+    const didParentBlurSubscription = transferNavigator.addListener(
+      'didBlur',
+      didBlur
+    )
 
     return () => {
-      didBlurSubscription.remove()
       didFocusSubscription.remove()
+      didParentBlurSubscription.remove()
     }
   }, [navigation, theme.colors.white])
 

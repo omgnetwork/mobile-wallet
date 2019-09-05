@@ -3,7 +3,6 @@ import { View, StyleSheet, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-navigation'
 import { OMGIcon, OMGBox, OMGText, OMGStatusBar } from 'components/widgets'
-
 const Transfer = ({ navigation, theme }) => {
   const RootChainTransferNavigator = navigation.getParam('navigator')
 
