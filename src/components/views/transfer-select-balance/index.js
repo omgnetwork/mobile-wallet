@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, FlatList, Platform } from 'react-native'
+import { View, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
