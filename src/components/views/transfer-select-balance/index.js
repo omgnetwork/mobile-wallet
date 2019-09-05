@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, FlatList } from 'react-native'
+import { View, StyleSheet, FlatList, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
@@ -47,7 +47,7 @@ const TransferSelectBalance = ({
         }
         contentContainerStyle={
           assets && assets.length
-            ? {}
+            ? styles.listContainer
             : { flexGrow: 1, justifyContent: 'center' }
         }
         renderItem={({ item }) => (
@@ -81,14 +81,13 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.white,
-    padding: 16
+    backgroundColor: theme.colors.white
   }),
   header: {
     alignItems: 'center',
     flexDirection: 'row',
-    marginTop: 16,
-    marginBottom: 24
+    marginLeft: 16,
+    marginTop: 8
   },
   headerIcon: {
     padding: 8,
@@ -101,6 +100,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textTransform: 'uppercase'
   }),
+  listContainer: {
+    marginTop: 24,
+    paddingHorizontal: 16
+  },
   buttonContainer: {
     justifyContent: 'flex-end',
     marginVertical: 16,
