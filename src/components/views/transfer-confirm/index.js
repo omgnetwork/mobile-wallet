@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useReducer } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { Formatter } from 'common/utils'
+import { Formatter, Rootchain } from 'common/utils'
 import Config from 'react-native-config'
 import { notifySendToken } from 'common/notify'
-import { transactionActions, plasmaActions } from 'common/actions'
+import { rootchainActions, childchainActions } from 'common/actions'
 import {
   OMGBox,
   OMGButton,
@@ -27,7 +27,10 @@ const TransferConfirm = ({
   const fromWallet = navigation.getParam('fromWallet')
   const toWallet = navigation.getParam('toWallet')
   const fee = navigation.getParam('fee')
+  const isRootchain = navigation.getParam('isRootchain')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
+  const [loadingVisible, setLoadingVisible] = useState(false)
+  const [confirmBtnDisable, setConfirmBtnDisable] = useState(false)
 
   useEffect(() => {
     if (
@@ -56,8 +59,39 @@ const TransferConfirm = ({
     token
   ])
 
+  useEffect(() => {
+    if (loading.show && notifySendToken.actions.indexOf(loading.action) > -1) {
+      setLoadingVisible(true)
+    } else if (
+      !loading.show &&
+      notifySendToken.actions.indexOf(loading.action) > -1
+    ) {
+      setLoadingVisible(false)
+    } else {
+      loadingVisible
+    }
+  }, [loading.action, loading.show, loadingVisible])
+
+  useEffect(() => {
+    const isPendingChildchainTransaction =
+      pendingTxs.find(tx => tx.type === 'CHILDCHAIN_SEND_TOKEN') !== undefined
+    const isChildchainTransaction =
+      !isRootchain && toWallet.address !== Config.CHILDCHAIN_CONTRACT_ADDRESS
+
+    setConfirmBtnDisable(
+      isPendingChildchainTransaction && isChildchainTransaction
+    )
+  }, [isRootchain, pendingTxs, toWallet.address])
+
   const sendToken = () => {
-    dispatchSendToken(token, fee, fromWallet, provider, toWallet.address)
+    dispatchSendToken(
+      token,
+      fee,
+      fromWallet,
+      provider,
+      toWallet.address,
+      isRootchain
+    )
   }
 
   return (
@@ -126,9 +160,10 @@ const TransferConfirm = ({
       <View style={styles.buttonContainer}>
         <OMGButton
           style={styles.button}
-          loading={loading.show}
+          loading={loadingVisible}
+          disabled={loadingVisible || confirmBtnDisable}
           onPress={sendToken}>
-          Send Transaction
+          {confirmBtnDisable ? 'Waiting for watcher...' : 'Send Transaction'}
         </OMGButton>
       </View>
     </SafeAreaView>
@@ -262,20 +297,21 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchSendToken: (token, fee, wallet, provider, toAddress) =>
-    dispatch(getAction(token, fee, wallet, provider, toAddress))
+  dispatchSendToken: (token, fee, wallet, provider, toAddress, isRootchain) =>
+    dispatch(getAction(token, fee, wallet, provider, toAddress, isRootchain))
 })
 
-const getAction = (token, fee, wallet, provider, toAddress) => {
-  const TO_PLASMA = toAddress === Config.PLASMA_CONTRACT_ADDRESS
-  const ETH_TOKEN =
-    token.contractAddress === '0x0000000000000000000000000000000000000000'
-  if (TO_PLASMA && ETH_TOKEN) {
-    return plasmaActions.depositEth(wallet, provider, token, fee)
-  } else if (TO_PLASMA && !ETH_TOKEN) {
-    return plasmaActions.depositErc20(wallet, provider, token, fee)
-  } else if (!TO_PLASMA && ETH_TOKEN) {
-    return transactionActions.sendEthToken(
+const getAction = (token, fee, wallet, provider, toAddress, isRootchain) => {
+  const TO_CHILDCHAIN = toAddress === Config.CHILDCHAIN_CONTRACT_ADDRESS
+  const ETH_TOKEN = token.contractAddress === Rootchain.ETH_ADDRESS
+  if (TO_CHILDCHAIN && ETH_TOKEN) {
+    return childchainActions.depositEth(wallet, provider, token, fee)
+  } else if (TO_CHILDCHAIN && !ETH_TOKEN) {
+    return childchainActions.depositErc20(wallet, provider, token, fee)
+  } else if (!isRootchain) {
+    return childchainActions.transfer(provider, wallet, toAddress, token, fee)
+  } else if (ETH_TOKEN) {
+    return rootchainActions.sendEthToken(
       token,
       fee,
       wallet,
@@ -283,7 +319,7 @@ const getAction = (token, fee, wallet, provider, toAddress) => {
       toAddress
     )
   } else {
-    return transactionActions.sendErc20Token(
+    return rootchainActions.sendErc20Token(
       token,
       fee,
       wallet,

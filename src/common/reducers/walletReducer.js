@@ -18,10 +18,13 @@ export const walletsReducer = (state = [], action) => {
     case 'WALLET/LOAD_ASSETS/SUCCESS':
       return state.map(wallet => {
         if (wallet.address === action.data.address) {
-          const assets = wallet.assets || []
+          const rootchainAssets = wallet.rootchainAssets || []
           return {
             ...wallet,
-            assets: mergeAssets(assets, action.data.assets),
+            rootchainAssets: mergeAssets(
+              rootchainAssets,
+              action.data.rootchainAssets
+            ),
             shouldRefresh: false,
             updatedAt: action.data.updatedAt,
             updatedBlock: action.data.updatedBlock
@@ -30,31 +33,46 @@ export const walletsReducer = (state = [], action) => {
           return wallet
         }
       })
-    case 'PLASMA/LOAD_ASSETS/SUCCESS':
+    case 'CHILDCHAIN/LOAD_ASSETS/SUCCESS':
       return state.map(wallet => {
         if (wallet.address === action.data.address) {
-          const plasmaAssets = wallet.plasmaAssets || []
+          const childchainAssets = wallet.childchainAssets || []
           return {
             ...wallet,
-            plasmaAssets: mergeAssets(plasmaAssets, action.data.plasmaAssets),
-            shouldRefreshPlasma: false
+            childchainAssets: mergeAssets(
+              childchainAssets,
+              action.data.childchainAssets
+            ),
+            shouldRefreshChildchain: false
           }
         } else {
           return wallet
         }
       })
-    case 'PLASMA/WAIT_DEPOSITING/SUCCESS':
+    case 'CHILDCHAIN/WAIT_DEPOSITING/SUCCESS':
       return state.map(wallet => {
         if (wallet.address === action.data.from) {
-          return { ...wallet, shouldRefresh: true, shouldRefreshPlasma: true }
+          return {
+            ...wallet,
+            shouldRefresh: true,
+            shouldRefreshChildchain: true
+          }
         } else {
           return wallet
         }
       })
-    case 'TRANSACTION/WAIT_SENDING/SUCCESS':
+    case 'ROOTCHAIN/WAIT_SENDING/SUCCESS':
       return state.map(wallet => {
         if (wallet.address === action.data.from) {
           return { ...wallet, shouldRefresh: true }
+        } else {
+          return wallet
+        }
+      })
+    case 'CHILDCHAIN/WAIT_SENDING/SUCCESS':
+      return state.map(wallet => {
+        if (wallet.address === action.data.from) {
+          return { ...wallet, shouldRefreshChildchain: true }
         } else {
           return wallet
         }
@@ -67,10 +85,13 @@ export const walletsReducer = (state = [], action) => {
           return wallet
         }
       })
-    case 'PLASMA/SET_SHOULD_REFRESH/OK':
+    case 'CHILDCHAIN/SET_SHOULD_REFRESH/OK':
       return state.map(wallet => {
         if (wallet.address === action.data.address) {
-          return { ...wallet, shouldRefreshPlasma: action.data.shouldRefresh }
+          return {
+            ...wallet,
+            shouldRefreshChildchain: action.data.shouldRefresh
+          }
         } else {
           return wallet
         }

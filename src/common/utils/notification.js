@@ -8,11 +8,6 @@ export const create = ({ title, message }) => {
 export const init = () => {
   PushNotification.configure({
     onNotification: function(notification) {
-      console.log('NOTIFICATION:', notification)
-
-      // process the notification
-
-      // required on iOS only (see fetchCompletionHandler docs: https://github.com/react-native-community/react-native-push-notification-ios)
       notification.finish(PushNotificationIOS.FetchResult.NoData)
     },
 

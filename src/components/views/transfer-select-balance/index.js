@@ -17,7 +17,7 @@ const TransferSelectBalance = ({
   loading,
   navigation
 }) => {
-  const assets = navigation.getParam('assets', primaryWallet.assets)
+  const assets = navigation.getParam('assets', primaryWallet.rootchainAssets)
   const currentToken = navigation.getParam('currentToken')
   const lastAmount = navigation.getParam('lastAmount')
   const [selectedToken, setSelectedToken] = useState(currentToken || assets[0])
@@ -47,7 +47,7 @@ const TransferSelectBalance = ({
         }
         contentContainerStyle={
           assets && assets.length
-            ? {}
+            ? styles.listContainer
             : { flexGrow: 1, justifyContent: 'center' }
         }
         renderItem={({ item }) => (
@@ -81,22 +81,29 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.white,
-    padding: 16
+    backgroundColor: theme.colors.white
   }),
   header: {
     alignItems: 'center',
     flexDirection: 'row',
-    marginTop: 16,
-    marginBottom: 32
+    marginLeft: 16,
+    marginTop: 8
   },
-  headerIcon: {},
+  headerIcon: {
+    padding: 8,
+    marginLeft: -8
+  },
   headerTitle: theme => ({
     fontSize: 18,
     color: theme.colors.gray3,
-    marginLeft: 16,
+    marginLeft: 8,
+    alignSelf: 'center',
     textTransform: 'uppercase'
   }),
+  listContainer: {
+    marginTop: 24,
+    paddingHorizontal: 16
+  },
   buttonContainer: {
     justifyContent: 'flex-end',
     marginVertical: 16,

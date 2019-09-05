@@ -1,15 +1,15 @@
 import * as walletService from './walletService'
 import * as providerService from './providerService'
 import * as priceService from './priceService'
-import * as transactionService from './transactionService'
+import * as rootchainService from './rootchainService'
 import * as notificationService from './notificationService'
-import * as plasmaService from './plasmaService'
+import * as childchainService from './childchainService'
 
 export {
   walletService,
   providerService,
   priceService,
-  transactionService,
+  rootchainService,
   notificationService,
-  plasmaService
+  childchainService
 }

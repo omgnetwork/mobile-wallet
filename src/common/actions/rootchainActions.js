@@ -1,5 +1,5 @@
 import {
-  transactionService,
+  rootchainService,
   walletService,
   notificationService
 } from '../services'
@@ -13,7 +13,7 @@ export const sendErc20Token = (token, fee, fromWallet, provider, toAddress) => {
       fromWallet.address,
       provider
     )
-    const tx = await transactionService.sendErc20Token(
+    const tx = await rootchainService.sendErc20Token(
       token,
       fee,
       blockchainWallet,
@@ -33,7 +33,7 @@ export const sendErc20Token = (token, fee, fromWallet, provider, toAddress) => {
   }
 
   return createAsyncAction({
-    type: 'TRANSACTION/SEND_ERC20_TOKEN',
+    type: 'ROOTCHAIN/SEND_ERC20_TOKEN',
     operation: asyncAction
   })
 }
@@ -44,7 +44,8 @@ export const sendEthToken = (token, fee, fromWallet, provider, toAddress) => {
       fromWallet.address,
       provider
     )
-    const tx = await transactionService.sendEthToken(
+
+    const tx = await rootchainService.sendEthToken(
       token,
       fee,
       blockchainWallet,
@@ -64,14 +65,14 @@ export const sendEthToken = (token, fee, fromWallet, provider, toAddress) => {
   }
 
   return createAsyncAction({
-    type: 'TRANSACTION/SEND_ETH_TOKEN',
+    type: 'ROOTCHAIN/SEND_ETH_TOKEN',
     operation: asyncAction
   })
 }
 
 export const subscribeTransaction = (provider, wallet, tx) => {
   const asyncAction = async () => {
-    const txReceipt = await transactionService.subscribeTransaction(
+    const txReceipt = await rootchainService.subscribeTransaction(
       provider,
       tx,
       Config.ROOTCHAIN_TRANSFER_CONFIRMATION_BLOCKS
@@ -92,7 +93,7 @@ export const subscribeTransaction = (provider, wallet, tx) => {
   }
 
   return createAsyncAction({
-    type: 'TRANSACTION/WAIT_SENDING',
+    type: 'ROOTCHAIN/WAIT_SENDING',
     operation: asyncAction,
     isBackgroundTask: true
   })

@@ -11,7 +11,7 @@ const refreshWalletTransform = createTransform(
   inboundState => inboundState,
   outboundState => {
     return outboundState.map(wallet => {
-      return { ...wallet, shouldRefresh: true, shouldRefreshPlasma: true }
+      return { ...wallet, shouldRefresh: true, shouldRefreshChildchain: true }
     })
   },
   { whitelist: ['wallets'] }

@@ -1,5 +1,5 @@
 export const fetchPriceUsd = (contractAddress, network) => {
-  // ETH mainnet
+  // mainnet
   if (network === 'homestead') {
     //TODO Fetch price from Coinmarketcap.
     return Promise.resolve({

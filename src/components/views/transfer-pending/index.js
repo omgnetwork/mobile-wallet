@@ -4,7 +4,7 @@ import { View, StyleSheet, Linking } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Formatter } from 'common/utils'
-import { transactionActions, plasmaActions } from 'common/actions'
+import { rootchainActions, childchainActions } from 'common/actions'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
 import {
@@ -21,9 +21,9 @@ const TransferPending = ({
   navigation,
   wallet,
   provider,
-  pendingTxs,
   dispatchSubscribeTransaction,
-  dispatchSubscribeDeposit
+  dispatchSubscribeDeposit,
+  dispatchSubscribeChildchainTransaction
 }) => {
   const pendingTx = navigation.getParam('pendingTx')
   const token = navigation.getParam('token')
@@ -43,6 +43,8 @@ const TransferPending = ({
         dispatchSubscribeTransaction(provider, wallet, pendingTx)
       } else if (pendingTx && pendingTx.type === 'CHILDCHAIN_DEPOSIT') {
         dispatchSubscribeDeposit(provider, wallet, pendingTx)
+      } else if (pendingTx && pendingTx.type === 'CHILDCHAIN_SEND_TOKEN') {
+        dispatchSubscribeChildchainTransaction(wallet, pendingTx)
       }
       setSubscribed(true)
     }
@@ -52,7 +54,8 @@ const TransferPending = ({
     dispatchSubscribeTransaction,
     wallet,
     dispatchSubscribeDeposit,
-    subscribed
+    subscribed,
+    dispatchSubscribeChildchainTransaction
   ])
 
   return (
@@ -128,15 +131,17 @@ const TransferPending = ({
             }}>
             Done
           </OMGButton>
-          <TouchableOpacity
-            style={styles.trackEtherscanButton}
-            onPress={() => {
-              Linking.openURL(`${Config.ETHERSCAN_TX_URL}${pendingTx.hash}`)
-            }}>
-            <OMGText style={styles.trackEtherscanText(theme)}>
-              Track on Etherscan
-            </OMGText>
-          </TouchableOpacity>
+          {pendingTx.type !== 'CHILDCHAIN_SEND_TOKEN' && (
+            <TouchableOpacity
+              style={styles.trackEtherscanButton}
+              onPress={() => {
+                Linking.openURL(`${Config.ETHERSCAN_TX_URL}${pendingTx.hash}`)
+              }}>
+              <OMGText style={styles.trackEtherscanText(theme)}>
+                Track on Etherscan
+              </OMGText>
+            </TouchableOpacity>
+          )}
         </View>
       </SafeAreaView>
     </AndroidBackHandler>
@@ -276,9 +281,11 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchSubscribeDeposit: (provider, wallet, tx) =>
-    dispatch(plasmaActions.waitDeposit(provider, wallet, tx)),
+    dispatch(childchainActions.waitDeposit(provider, wallet, tx)),
   dispatchSubscribeTransaction: (provider, wallet, tx) =>
-    dispatch(transactionActions.subscribeTransaction(provider, wallet, tx))
+    dispatch(rootchainActions.subscribeTransaction(provider, wallet, tx)),
+  dispatchSubscribeChildchainTransaction: (wallet, tx) =>
+    dispatch(childchainActions.waitWatcherRecordTransaction(wallet, tx))
 })
 
 export default connect(
