@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native'
 import { walletActions } from 'common/actions'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
-import { Formatter } from 'common/utils'
+import { Formatter, Datetime } from 'common/utils'
 import { OMGItemToken, OMGAssetHeader, OMGAssetList } from 'components/widgets'
 
 const RootchainBalance = ({
@@ -37,6 +37,7 @@ const RootchainBalance = ({
   ])
 
   useEffect(() => {
+    console.log(primaryWallet)
     if (primaryWallet.rootchainAssets) {
       const totalPrices = primaryWallet.rootchainAssets.reduce((acc, asset) => {
         const parsedAmount = parseFloat(asset.balance)
@@ -61,7 +62,7 @@ const RootchainBalance = ({
       <OMGAssetList
         data={primaryWallet.rootchainAssets || []}
         keyExtractor={item => item.contractAddress}
-        // updatedAt={Datetime.format(primaryWallet.updatedAt, 'LTS')}
+        updatedAt={Datetime.format(primaryWallet.updatedAt, 'LTS')}
         loading={loading.show}
         style={styles.list}
         renderItem={({ item }) => (

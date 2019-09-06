@@ -6,6 +6,7 @@ import OMGAssetFooter from './omg-asset-footer'
 import OMGBackground from './omg-background'
 import OMGBox from './omg-box'
 import OMGButton from './omg-button'
+import OMGDrawerContent from './omg-drawer-content'
 import OMGEmpty from './omg-empty'
 import OMGFeeInput from './omg-fee-input'
 import OMGFeeSelect from './omg-fee-select'
@@ -37,6 +38,7 @@ export {
   OMGBackground,
   OMGBox,
   OMGButton,
+  OMGDrawerContent,
   OMGEmpty,
   OMGFeeInput,
   OMGFeeSelect,
