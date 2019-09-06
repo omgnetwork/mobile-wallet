@@ -12,6 +12,7 @@ import {
   OMGEmpty,
   OMGViewPager,
   OMGText,
+  OMGIcon,
   OMGStatusBar
 } from 'components/widgets'
 
@@ -31,6 +32,8 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
     }
   }, [navigation, primaryWallet, theme.colors.black5])
 
+  const drawerNavigation = navigation.dangerouslyGetParent()
+
   return (
     <SafeAreaView style={styles.safeAreaView(theme)}>
       <OMGStatusBar
@@ -40,9 +43,18 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
       <LinearGradient
         style={styles.container}
         colors={[theme.colors.black5, theme.colors.gray1]}>
-        <OMGText style={styles.title(theme)}>
-          {primaryWallet ? primaryWallet.name : 'Initializing...'}
-        </OMGText>
+        <View style={styles.topContainer}>
+          <OMGText style={styles.topTitleLeft(theme)}>
+            {primaryWallet ? primaryWallet.name : 'Initializing...'}
+          </OMGText>
+          <OMGIcon
+            style={styles.topIconRight}
+            size={24}
+            name='hamburger'
+            onPress={() => drawerNavigation.openDrawer()}
+            color={theme.colors.white}
+          />
+        </View>
         {!wallets || !primaryWallet ? (
           <OMGEmpty loading={loading.show} />
         ) : (
@@ -68,6 +80,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.black5
   }),
+  topContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  topTitleLeft: theme => ({
+    fontSize: 18,
+    marginBottom: 16,
+    textTransform: 'uppercase',
+    color: theme.colors.white
+  }),
+  topIconRight: {},
   container: {
     flex: 1,
     paddingHorizontal: 12,
@@ -84,12 +107,6 @@ const styles = StyleSheet.create({
     width: pageWidth,
     marginLeft: 8
   },
-  title: theme => ({
-    fontSize: 18,
-    marginBottom: 16,
-    textTransform: 'uppercase',
-    color: theme.colors.white
-  }),
   list: {
     flex: 1,
     borderBottomLeftRadius: 4,

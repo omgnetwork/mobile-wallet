@@ -1,11 +1,26 @@
 import { createStackNavigator } from 'react-navigation'
 import * as Views from 'components/views'
 import BottomTabNavigator from './bottombar'
+import { createDrawerNavigator } from 'react-navigation-drawer'
+
+const drawerNavigator = TransferRootChain =>
+  createDrawerNavigator(
+    {
+      BalanceDrawer: {
+        screen: BottomTabNavigator(TransferRootChain)
+      }
+    },
+    {
+      drawerPosition: 'right',
+      hideStatusBar: false,
+      edgeWidth: 0
+    }
+  )
 
 export default (TransferRootChain, TransferChildChain) =>
   createStackNavigator(
     {
-      Main: BottomTabNavigator(TransferRootChain),
+      Main: drawerNavigator(TransferRootChain),
       TransferSelectBalance: {
         screen: Views.TransferSelectBalance
       },
