@@ -1,6 +1,6 @@
-import React, { useRef, Fragment, useEffect } from 'react'
-import { StyleSheet, View, ActivityIndicator } from 'react-native'
-import { Text, withTheme, Divider } from 'react-native-paper'
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import { withTheme } from 'react-native-paper'
 import { OMGBackground, OMGText, OMGEmpty } from 'components/widgets'
 import { FlatList } from 'react-native-gesture-handler'
 
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   assetContainer: theme => ({
     backgroundColor: theme.colors.white,
-    paddingBottom: 8
+    paddingVertical: 8
   }),
   assetList: {},
   title: theme => ({

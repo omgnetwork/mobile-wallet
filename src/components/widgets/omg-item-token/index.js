@@ -16,8 +16,8 @@ const OMGItemToken = ({ symbol, price, balance, style, onPress, theme }) => {
       setAnimating(true)
       Animated.sequence([
         Animated.parallel([
-          Animator.spring(shadowAnim, 4, 2000, true),
-          Animator.spring(shadowOpacity, 0.2, 2000, true)
+          Animator.spring(shadowAnim, 4, 1500, true),
+          Animator.spring(shadowOpacity, 0.2, 1500, true)
         ]),
         Animator.spring(balanceOpacity, 0.3, 500, true)
       ]).start(({ finished }) => {
@@ -29,8 +29,8 @@ const OMGItemToken = ({ symbol, price, balance, style, onPress, theme }) => {
       Animated.sequence([
         Animator.spring(balanceOpacity, 1.0, 500, true),
         Animated.parallel([
-          Animator.spring(shadowAnim, 0, 2000, true),
-          Animator.spring(shadowOpacity, 0, 2000, true)
+          Animator.spring(shadowAnim, 0, 1500, true),
+          Animator.spring(shadowOpacity, 0, 1500, true)
         ])
       ]).start(({ finished }) => {
         if (finished) {
@@ -87,11 +87,11 @@ const styles = StyleSheet.create({
     marginHorizontal: animating ? 8 : 0,
     shadowOffset: {
       width: 0,
-      height: 4
+      height: shadowAnim.current
     },
     marginTop: 2,
     marginBottom: 6,
-    shadowRadius: 4,
+    shadowRadius: shadowAnim.current,
     shadowOpacity: shadowOpacity.current,
     alignItems: 'center',
     paddingVertical: 6
