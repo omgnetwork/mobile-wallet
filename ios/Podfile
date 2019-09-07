@@ -40,6 +40,8 @@ target 'PlasmaWallet' do
 
   pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
 
+  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
   target 'PlasmaWalletTests' do
     inherit! :search_paths
     # Pods for testing

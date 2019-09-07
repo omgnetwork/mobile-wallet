@@ -11,7 +11,13 @@ const OMGSnackbar = ({ loading, error, style }) => {
     notifiers: Object.values(Notifiers)
   })
 
-  return <Snackbar style={{ ...style }} duration={1300} {...snackbarProps} />
+  return (
+    <Snackbar
+      style={{ ...style }}
+      duration={Snackbar.DURATION_SHORT}
+      {...snackbarProps}
+    />
+  )
 }
 
 const mapStateToProps = (state, ownProps) => ({

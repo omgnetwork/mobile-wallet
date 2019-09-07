@@ -44,7 +44,7 @@ const App = () => {
         <PaperProvider theme={theme}>
           <PersistGate persistor={persistor}>
             <Router />
-            <OMGSnackbar />
+            <OMGSnackbar style={{ backgroundColor: colors.black3 }} />
           </PersistGate>
         </PaperProvider>
       </Provider>

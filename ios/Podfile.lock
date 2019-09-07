@@ -59,19 +59,19 @@ PODS:
     - React-cxxreact (= 0.60.4)
     - React-jsi (= 0.60.4)
   - React-jsinspector (0.60.4)
-  - react-native-camera (3.3.2):
+  - react-native-camera (3.1.2):
     - React
-    - react-native-camera/RCT (= 3.3.2)
-    - react-native-camera/RN (= 3.3.2)
-  - react-native-camera/RCT (3.3.2):
+    - react-native-camera/RCT (= 3.1.2)
+    - react-native-camera/RN (= 3.1.2)
+  - react-native-camera/RCT (3.1.2):
     - React
-  - react-native-camera/RN (3.3.2):
+  - react-native-camera/RN (3.1.2):
     - React
   - react-native-config (0.11.7):
     - React
   - react-native-randombytes (3.5.3):
     - React
-  - react-native-sensitive-info (5.5.1):
+  - react-native-sensitive-info (5.4.2):
     - React
   - React-RCTActionSheet (0.60.4):
     - React-Core (= 0.60.4)
@@ -109,7 +109,7 @@ PODS:
     - React
   - RNScreens (1.0.0-alpha.23):
     - React
-  - RNSVG (9.8.4):
+  - RNSVG (9.6.2):
     - React
   - RNVectorIcons (6.6.0):
     - React
@@ -245,7 +245,7 @@ SPEC CHECKSUMS:
   react-native-camera: 9c50d7def800895e7991ccda6203929553ceec9c
   react-native-config: 8c2a92aa66a6cec1a23d9eda7ba6fcf31a63ace5
   react-native-randombytes: d3184d351604f78e019535178766590188bbc133
-  react-native-sensitive-info: 55dfb76a47e1d4131d5139c2168f2f345a423c81
+  react-native-sensitive-info: f78f6471a8ee7de67e11ffccc7060eb93b969ef5
   React-RCTActionSheet: 08864c609d9f959abf3d51fdd93f8bc6e91f21eb
   React-RCTAnimation: a4547e9fac2627ded3df9d302f5558b475faf819
   React-RCTBlob: 62d5c263a2adb8f7a2cafd601beba18a2d99cbbb
@@ -266,6 +266,6 @@ SPEC CHECKSUMS:
   RNVectorIcons: 66af4d5c8ff4f584c7b7cd9c4b0780920f27fce2
   yoga: 88c514f310aff89b94a14c5fbf44b95735af0cb7
 
-PODFILE CHECKSUM: d63b18c03d5d765d3e200ca444db8ebe70678842
+PODFILE CHECKSUM: 499c83da0de40569628761c9453ada923c484719
 
 COCOAPODS: 1.5.3
