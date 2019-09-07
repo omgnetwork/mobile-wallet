@@ -11,8 +11,7 @@ import {
   OMGBox,
   OMGButton
 } from 'components/widgets'
-import { Text, Title, withTheme } from 'react-native-paper'
-import { ScrollView } from 'react-native-gesture-handler'
+import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 
 const ImportWalletComponent = props => {

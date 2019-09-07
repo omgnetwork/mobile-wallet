@@ -61,6 +61,13 @@ const OMGDrawerContent = ({
     navigation.closeDrawer()
   }
 
+  const handleManageWalletPress = () => {
+    navigation.navigate('ImportWallet')
+    requestAnimationFrame(() => {
+      navigation.closeDrawer()
+    })
+  }
+
   return (
     <SafeAreaView
       style={styles.container}
@@ -84,9 +91,7 @@ const OMGDrawerContent = ({
         </OMGText>
         <TouchableOpacity
           style={styles.settingItem}
-          onPress={() => {
-            navigation.navigate('ImportWallet')
-          }}>
+          onPress={handleManageWalletPress}>
           <OMGText style={styles.settingItemText}>Manage Wallets</OMGText>
         </TouchableOpacity>
       </View>
