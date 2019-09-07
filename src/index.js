@@ -6,7 +6,7 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import createStore from 'common/stores'
 import { settingActions } from 'common/actions'
 import Config from 'react-native-config'
-import { OMGSnackbar } from 'components/widgets'
+import { OMGAlert } from 'components/widgets'
 import { notificationService } from 'common/services'
 import { colors } from 'common/styles'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -44,7 +44,7 @@ const App = () => {
         <PaperProvider theme={theme}>
           <PersistGate persistor={persistor}>
             <Router />
-            <OMGSnackbar style={{ backgroundColor: colors.black3 }} />
+            <OMGAlert />
           </PersistGate>
         </PaperProvider>
       </Provider>
