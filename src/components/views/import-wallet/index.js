@@ -1,6 +1,6 @@
-import React, { useState, Fragment, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, SafeAreaView } from 'react-native'
+import { View, Platform, StyleSheet, SafeAreaView } from 'react-native'
 import { walletActions } from 'common/actions'
 import {
   OMGIcon,
@@ -33,9 +33,7 @@ const ImportWalletComponent = props => {
           />
           <OMGText style={styles.headerTitle(theme)}>Import Wallet</OMGText>
         </View>
-        <View style={styles.importByMnemonic}>
-          <OMGText weight='bold'>Import By Mnemonic</OMGText>
-        </View>
+        <View style={styles.line(theme)} />
         <Mnemonic {...props} />
       </OMGBackground>
     </SafeAreaView>
@@ -70,28 +68,25 @@ const Mnemonic = ({
   }, [loading, navigation, wallets])
 
   return (
-    <Fragment>
-      <OMGText>
-        Copy and paste Ethereum official wallet's Mnemonic to the input field to
-        import.
+    <View style={styles.mnemonicContainer}>
+      <OMGText style={styles.textBoxTitle} weight='bold'>
+        Mnemonic Phrase
       </OMGText>
       <OMGBox style={styles.textBox(theme)}>
-        <OMGText style={styles.textBoxTitle} weight='bold'>
-          Mnemonic
-        </OMGText>
         <OMGTextInput
           placeholder='Enter mnemonic...'
-          lines={4}
+          lines={2}
+          clearButtonMode='while-editing'
           style={styles.textInput(theme)}
           inputRef={mnemonicRef}
           hideUnderline={true}
           disabled={loading.show}
         />
       </OMGBox>
+      <OMGText style={styles.textBoxTitle} weight='bold'>
+        Wallet Name
+      </OMGText>
       <OMGBox style={styles.textBox(theme)}>
-        <OMGText style={styles.textBoxTitle} weight='bold'>
-          Wallet Name
-        </OMGText>
         <OMGTextInput
           placeholder='Your wallet name'
           hideUnderline={true}
@@ -105,7 +100,7 @@ const Mnemonic = ({
           Import
         </OMGButton>
       </View>
-    </Fragment>
+    </View>
   )
 }
 
@@ -117,13 +112,13 @@ const styles = StyleSheet.create({
   contentContainer: theme => ({
     flex: 1,
     flexDirection: 'column',
-    paddingHorizontal: 16,
     paddingVertical: 8,
     backgroundColor: theme.colors.white
   }),
   header: {
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    paddingHorizontal: 16
   },
   headerIcon: {
     padding: 8,
@@ -140,13 +135,28 @@ const styles = StyleSheet.create({
   },
   textBox: theme => ({
     marginTop: 16,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.white,
+    borderRadius: theme.roundness,
+    borderColor: theme.colors.gray4,
+    borderWidth: 1
   }),
   textInput: theme => ({
-    backgroundColor: theme.colors.gray4
+    paddingTop: Platform.OS === 'ios' ? -8 : 20,
+    backgroundColor: theme.colors.white
   }),
   textBoxTitle: {
-    fontSize: 16
+    marginTop: 16,
+    fontSize: 14
+  },
+  line: theme => ({
+    marginTop: 16,
+    backgroundColor: theme.colors.white3,
+    height: 6
+  }),
+  mnemonicContainer: {
+    paddingHorizontal: 16,
+    flex: 1,
+    flexDirection: 'column'
   }
 })
 

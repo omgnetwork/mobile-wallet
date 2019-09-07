@@ -9,6 +9,7 @@ const OMGTextInput = ({
   hideUnderline,
   lines,
   keyboardType,
+  autoCapitalize,
   defaultValue,
   value,
   inputRef,
@@ -20,6 +21,7 @@ const OMGTextInput = ({
     <TextInput
       mode='flat'
       placeholder={placeholder}
+      autoCapitalize={autoCapitalize || 'none'}
       onChangeText={text => {
         inputRef && (inputRef.current = text)
       }}
