@@ -3,16 +3,17 @@ import { connect } from 'react-redux'
 import { StyleSheet, View, Dimensions, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import RootchainBalance from './RootchainBalance'
-import ChildchainBalance from './ChildchainBalance'
+import RootchainBalance from './rootchain-balance'
+import ChildchainBalance from './childchain-balance'
 import LinearGradient from 'react-native-linear-gradient'
-import ShowQR from './ShowQR'
+import ShowQR from './show-qr'
 import {
   OMGEmpty,
   OMGViewPager,
   OMGText,
   OMGIcon,
-  OMGStatusBar
+  OMGStatusBar,
+  OMGButton
 } from 'components/widgets'
 
 const pageWidth = Dimensions.get('window').width - 56
@@ -44,7 +45,7 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
         colors={[theme.colors.black5, theme.colors.gray1]}>
         <View style={styles.topContainer}>
           <OMGText style={styles.topTitleLeft(theme)}>
-            {primaryWallet ? primaryWallet.name : 'Initializing...'}
+            {primaryWallet ? primaryWallet.name : 'Missing a wallet'}
           </OMGText>
           <OMGIcon
             style={styles.topIconRight}
@@ -55,7 +56,14 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
           />
         </View>
         {!wallets || !primaryWallet ? (
-          <OMGEmpty loading={loading.show} />
+          <View style={styles.emptyButton}>
+            <OMGButton
+              onPress={() => {
+                navigation.navigate('ImportWallet')
+              }}>
+              Go to import a wallet
+            </OMGButton>
+          </View>
         ) : (
           <OMGViewPager pageWidth={pageWidth}>
             <View style={styles.firstPage}>
@@ -111,6 +119,10 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
     marginBottom: 32
+  },
+  emptyButton: {
+    flex: 1,
+    justifyContent: 'center'
   }
 })
 

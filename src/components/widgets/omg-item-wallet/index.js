@@ -2,14 +2,11 @@ import React from 'react'
 import { Image, StyleSheet, View } from 'react-native'
 import OMGBox from '../omg-box'
 import OMGText from '../omg-text'
-import { Title } from 'react-native-paper'
-import { Formatter } from 'common/utils'
+import { withTheme } from 'react-native-paper'
 
-const OMGItemWallet = ({ name, wallet, selected, style, onPress }) => {
+const OMGItemWallet = ({ wallet, style, theme }) => {
   return (
-    <OMGBox
-      style={{ ...styles.container(selected), ...style }}
-      onPress={onPress}>
+    <OMGBox style={{ ...styles.container(theme), ...style }}>
       <Image
         style={styles.logo}
         source={{
@@ -17,25 +14,13 @@ const OMGItemWallet = ({ name, wallet, selected, style, onPress }) => {
         }}
       />
       <View style={styles.sectionName}>
-        <Title style={styles.name}>{name}</Title>
-        <OMGText style={styles.address}>{wallet.address}</OMGText>
-      </View>
-      <View style={styles.sectionAmount}>
-        <OMGText style={styles.balance} weight='bold'>
-          {formatTokenBalance(Formatter.formatEther(wallet.balance || '0'))}
+        <OMGText style={styles.name(theme)} weight='bold'>
+          {wallet.name}
         </OMGText>
-        <OMGText style={styles.currency}>ETH</OMGText>
+        <OMGText style={styles.address(theme)}>{wallet.address}</OMGText>
       </View>
     </OMGBox>
   )
-}
-
-const formatTokenBalance = amount => {
-  return Formatter.format(amount, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
-  })
 }
 
 const styles = StyleSheet.create({
@@ -44,15 +29,12 @@ const styles = StyleSheet.create({
     height: 64,
     borderRadius: 12
   },
-  container: selected => ({
-    flex: 1,
+  container: theme => ({
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.white3,
     alignItems: 'center',
-    padding: 12,
-    borderRadius: 12,
-    borderColor: '#334e68',
-    borderWidth: selected ? 0.5 : 0
+    paddingVertical: 20,
+    borderRadius: theme.roundness
   }),
   sectionName: {
     flex: 1,
@@ -60,27 +42,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginLeft: 16
   },
-  sectionAmount: {
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    marginLeft: 16
-  },
-  name: {
-    fontSize: 16
-  },
-  balance: {
-    maxWidth: 48,
-    fontSize: 16
-  },
-  address: {
-    color: '#BCCCDC',
+  name: theme => ({
+    fontSize: 16,
+    color: theme.colors.primary
+  }),
+  address: theme => ({
+    color: theme.colors.gray5,
     fontSize: 12
-  },
-  currency: {
-    color: '#BCCCDC',
-    fontSize: 12,
-    marginTop: 4
-  }
+  })
 })
 
-export default OMGItemWallet
+export default withTheme(OMGItemWallet)

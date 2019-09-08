@@ -3,6 +3,8 @@ import CreateWallet from './create-wallet'
 import Deposit from './deposit'
 import History from './history'
 import ImportWallet from './import-wallet'
+import ImportWalletMnemonic from './import-wallet/mnemonic'
+import ImportWalletSuccess from './import-wallet/import-success'
 import Preview from './preview'
 import Setting from './setting'
 import Transfer from './transfer'
@@ -22,6 +24,8 @@ export {
   Deposit,
   History,
   ImportWallet,
+  ImportWalletMnemonic,
+  ImportWalletSuccess,
   Preview,
   Setting,
   Transfer,

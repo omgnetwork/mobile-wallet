@@ -2,7 +2,7 @@ export const walletsReducer = (state = [], action) => {
   switch (action.type) {
     case 'WALLET/CREATE/SUCCESS':
     case 'WALLET/IMPORT/SUCCESS':
-      return [...state, action.data]
+      return [...state, { ...action.data, shouldRefreshChildchain: true }]
     case 'WALLET/SYNC/SUCCESS':
       return action.data.wallets
     case 'WALLET/DELETE_ALL/OK':

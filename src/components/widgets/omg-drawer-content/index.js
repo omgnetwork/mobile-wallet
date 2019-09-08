@@ -72,19 +72,25 @@ const OMGDrawerContent = ({
     <SafeAreaView
       style={styles.container}
       forceInset={{ top: 'always', horizontal: 'never' }}>
-      <OMGText weight='bold' style={styles.titleText}>
-        WALLETS
-      </OMGText>
-      <View style={styles.walletContainer}>
-        {wallets.map(wallet => (
-          <OMGDrawerWalletItem
-            wallet={wallet}
-            key={wallet.address}
-            onWalletPress={handleWalletPress}
-            primary={wallet.address === primaryWallet.address}
-          />
-        ))}
-      </View>
+      {wallets.length > 0 && (
+        <View>
+          <OMGText weight='bold' style={styles.titleText}>
+            WALLETS
+          </OMGText>
+
+          {wallets.map(wallet => (
+            <OMGDrawerWalletItem
+              wallet={wallet}
+              key={wallet.address}
+              onWalletPress={handleWalletPress}
+              primary={
+                primaryWallet && primaryWallet.address === wallet.address
+              }
+            />
+          ))}
+        </View>
+      )}
+
       <View style={styles.settingContainer}>
         <OMGText weight='bold' style={styles.titleText}>
           SETTINGS
@@ -110,7 +116,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   settingContainer: {
-    marginTop: 50,
+    marginTop: 16,
     flexDirection: 'column'
   },
   titleText: {
