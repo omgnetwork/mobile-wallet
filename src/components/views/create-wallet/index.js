@@ -38,8 +38,7 @@ const CreateWallet = ({ theme, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'flex-end'
+    flex: 1
   },
   contentContainer: theme => ({
     flex: 1,

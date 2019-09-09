@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
-import { View, Platform, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { walletActions, settingActions } from 'common/actions'
-import { OMGTextInput, OMGText, OMGBox, OMGButton } from 'components/widgets'
+import { OMGText, OMGTextInputBox, OMGButton } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 
@@ -50,30 +50,24 @@ const Mnemonic = ({
       <OMGText style={styles.textBoxTitle} weight='bold'>
         Mnemonic Phrase
       </OMGText>
-      <OMGBox style={styles.textBox(theme)}>
-        <OMGTextInput
-          placeholder='Enter mnemonic...'
-          lines={2}
-          clearButtonMode='while-editing'
-          style={styles.textInput(theme)}
-          inputRef={mnemonicRef}
-          hideUnderline={true}
-          disabled={loading.show}
-        />
-      </OMGBox>
+      <OMGTextInputBox
+        style={styles.textBox}
+        inputRef={mnemonicRef}
+        disabled={loading.show}
+        lines={2}
+        placeholder='Enter mnemonic...'
+      />
       <OMGText style={styles.textBoxTitle} weight='bold'>
         Wallet Name
       </OMGText>
-      <OMGBox style={styles.textBox(theme)}>
-        <OMGTextInput
-          placeholder='Your wallet name'
-          hideUnderline={true}
-          style={styles.textInput(theme)}
-          inputRef={walletNameRef}
-          disabled={loading.show}
-        />
-      </OMGBox>
-      <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 16 }}>
+      <OMGTextInputBox
+        placeholder='Your wallet name'
+        hideUnderline={true}
+        style={styles.textBox}
+        inputRef={walletNameRef}
+        disabled={loading.show}
+      />
+      <View style={styles.buttonContainer}>
         <OMGButton loading={loading.show} onPress={importWallet}>
           Import
         </OMGButton>
@@ -96,18 +90,9 @@ const styles = StyleSheet.create({
   importByMnemonic: {
     marginTop: 16
   },
-  textBox: theme => ({
-    marginTop: 16,
-    backgroundColor: theme.colors.white,
-    borderRadius: theme.roundness,
-    borderColor: theme.colors.gray4,
-    borderWidth: 1
-  }),
-  textInput: theme => ({
-    paddingTop: -8,
-    paddingBottom: -20,
-    backgroundColor: theme.colors.white
-  }),
+  textBox: {
+    marginTop: 16
+  },
   textBoxTitle: {
     marginTop: 16,
     fontSize: 14
@@ -121,6 +106,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     flex: 1,
     flexDirection: 'column'
+  },
+  buttonContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 16
   }
 })
 

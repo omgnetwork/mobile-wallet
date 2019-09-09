@@ -24,6 +24,7 @@ import OMGStatusBar from './omg-status-bar'
 import OMGTab from './omg-tab'
 import OMGText from './omg-text'
 import OMGTextInput from './omg-text-input'
+import OMGTextInputBox from './omg-text-input-box'
 import OMGTokenInput from './omg-token-input'
 import OMGTokenSelect from './omg-token-select'
 import OMGViewPager from './omg-view-pager'
@@ -55,6 +56,7 @@ export {
   OMGStatusBar,
   OMGTab,
   OMGTextInput,
+  OMGTextInputBox,
   OMGTokenInput,
   OMGTokenSelect,
   OMGText,

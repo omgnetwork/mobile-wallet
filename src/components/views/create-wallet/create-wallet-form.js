@@ -3,13 +3,7 @@ import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
 import { Platform, View, StyleSheet } from 'react-native'
-import {
-  OMGButton,
-  OMGBox,
-  OMGTextInput,
-  OMGText,
-  OMGBackground
-} from 'components/widgets'
+import { OMGButton, OMGText, OMGTextInputBox } from 'components/widgets'
 import { walletActions } from 'common/actions'
 
 const CreateWalletForm = ({
@@ -37,15 +31,12 @@ const CreateWalletForm = ({
   return (
     <SafeAreaView style={styles.container}>
       <OMGText weight='bold'>Name</OMGText>
-      <OMGBox style={styles.nameContainer(theme)}>
-        <OMGTextInput
-          placeholder='Name'
-          inputRef={walletNameRef}
-          hideUnderline={true}
-          disabled={loading.show}
-          style={styles.nameText(theme)}
-        />
-      </OMGBox>
+      <OMGTextInputBox
+        placeholder='Name'
+        disabled={loading.show}
+        inputRef={walletNameRef}
+        style={styles.nameContainer}
+      />
       <View style={styles.button}>
         <OMGButton
           onPress={create}
@@ -64,19 +55,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     padding: 16
   },
-  nameContainer: theme => ({
-    marginTop: 16,
-    backgroundColor: theme.colors.white,
-    borderRadius: theme.roundness,
-    borderColor: theme.colors.gray4,
-    borderWidth: 1
-  }),
-  nameText: theme => ({
-    paddingTop: -8,
-    paddingBottom: -16,
-    backgroundColor: theme.colors.white
-  }),
-  button: { flex: 1, justifyContent: 'flex-end', marginBottom: 16 }
+  nameContainer: {
+    marginTop: 16
+  },
+  button: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 16
+  }
 })
 
 const mapStateToProps = (state, ownProps) => ({
