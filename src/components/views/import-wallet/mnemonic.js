@@ -104,7 +104,8 @@ const styles = StyleSheet.create({
     borderWidth: 1
   }),
   textInput: theme => ({
-    paddingTop: Platform.OS === 'ios' ? -8 : 20,
+    paddingTop: -8,
+    paddingBottom: -20,
     backgroundColor: theme.colors.white
   }),
   textBoxTitle: {

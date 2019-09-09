@@ -41,6 +41,8 @@ const CreateWalletForm = ({
         <OMGTextInput
           placeholder='Name'
           inputRef={walletNameRef}
+          hideUnderline={true}
+          disabled={loading.show}
           style={styles.nameText(theme)}
         />
       </OMGBox>
@@ -70,7 +72,8 @@ const styles = StyleSheet.create({
     borderWidth: 1
   }),
   nameText: theme => ({
-    paddingTop: Platform.OS === 'ios' ? -8 : 20,
+    paddingTop: -8,
+    paddingBottom: -16,
     backgroundColor: theme.colors.white
   }),
   button: { flex: 1, justifyContent: 'flex-end', marginBottom: 16 }
