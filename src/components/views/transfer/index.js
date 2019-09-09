@@ -2,8 +2,15 @@ import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-navigation'
-import { OMGIcon, OMGBox, OMGText, OMGStatusBar } from 'components/widgets'
-const Transfer = ({ navigation, theme }) => {
+import { connect } from 'react-redux'
+import {
+  OMGIcon,
+  OMGBox,
+  OMGText,
+  OMGStatusBar,
+  OMGEmpty
+} from 'components/widgets'
+const Transfer = ({ navigation, theme, primaryWallet }) => {
   const RootChainTransferNavigator = navigation.getParam('navigator')
 
   useEffect(() => {
@@ -35,7 +42,13 @@ const Transfer = ({ navigation, theme }) => {
           <OMGIcon name='x-mark' size={18} color={theme.colors.gray3} />
         </OMGBox>
       </View>
-      <RootChainTransferNavigator navigation={navigation} />
+      {primaryWallet ? (
+        <RootChainTransferNavigator navigation={navigation} />
+      ) : (
+        <OMGEmpty
+          text={'The wallet is not found. Try import a wallet first.'}
+        />
+      )}
     </SafeAreaView>
   )
 }
@@ -60,4 +73,13 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withTheme(Transfer)
+const mapStateToProps = (state, ownProps) => ({
+  primaryWallet: state.wallets.find(
+    w => w.address === state.setting.primaryWalletAddress
+  )
+})
+
+export default connect(
+  mapStateToProps,
+  null
+)(withTheme(Transfer))
