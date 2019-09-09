@@ -45,7 +45,7 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
         colors={[theme.colors.black5, theme.colors.gray1]}>
         <View style={styles.topContainer}>
           <OMGText style={styles.topTitleLeft(theme)}>
-            {primaryWallet ? primaryWallet.name : 'Missing a wallet'}
+            {primaryWallet ? primaryWallet.name : 'Wallet not found.'}
           </OMGText>
           <OMGIcon
             style={styles.topIconRight}
@@ -59,9 +59,9 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
           <View style={styles.emptyButton}>
             <OMGButton
               onPress={() => {
-                navigation.navigate('ImportWallet')
+                navigation.navigate('ManageWallet')
               }}>
-              Go to import a wallet
+              Manage wallet
             </OMGButton>
           </View>
         ) : (

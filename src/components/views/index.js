@@ -5,6 +5,7 @@ import History from './history'
 import ImportWallet from './import-wallet'
 import ImportWalletMnemonic from './import-wallet/mnemonic'
 import ImportWalletSuccess from './import-wallet/import-success'
+import ManageWallet from './manage-wallet'
 import Preview from './preview'
 import Setting from './setting'
 import Transfer from './transfer'
@@ -26,6 +27,7 @@ export {
   ImportWallet,
   ImportWalletMnemonic,
   ImportWalletSuccess,
+  ManageWallet,
   Preview,
   Setting,
   Transfer,

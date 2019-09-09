@@ -62,7 +62,7 @@ const OMGDrawerContent = ({
   }
 
   const handleManageWalletPress = () => {
-    navigation.navigate('ImportWallet')
+    navigation.navigate('ManageWallet')
     requestAnimationFrame(() => {
       navigation.closeDrawer()
     })
