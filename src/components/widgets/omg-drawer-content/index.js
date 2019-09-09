@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingLeft: 30,
-    paddingTop: 64
+    paddingTop: 32
   },
   walletContainer: {
     marginTop: 16,

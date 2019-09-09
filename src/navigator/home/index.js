@@ -14,7 +14,7 @@ const drawerNavigator = TransferRootChain =>
     },
     {
       drawerPosition: 'right',
-      hideStatusBar: true,
+      hideStatusBar: false,
       drawerBackgroundColor: 'white',
       edgeWidth: 0,
       contentComponent: props => <OMGDrawerContent {...props} />

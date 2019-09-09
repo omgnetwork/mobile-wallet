@@ -11,6 +11,7 @@ const OMGTextInput = ({
   keyboardType,
   autoCapitalize,
   defaultValue,
+  maxLength,
   value,
   inputRef,
   onFocus,
@@ -40,6 +41,7 @@ const OMGTextInput = ({
         onFocus && onFocus()
       }}
       importantForAutofill='no'
+      maxLength={maxLength}
       numberOfLines={numberOfLines}
       editable={disabled === undefined ? true : !disabled}
       multiline={numberOfLines > 1}
@@ -51,7 +53,10 @@ const OMGTextInput = ({
       style={{
         ...styles.textInput,
         ...style,
-        minHeight: Math.max(20, numberOfLines * 18)
+        minHeight: Math.max(
+          20,
+          Platform.OS === 'ios' ? numberOfLines * 24 : numberOfLines * 18
+        )
       }}
     />
   )
@@ -60,6 +65,7 @@ const styles = StyleSheet.create({
   textInput: {
     fontFamily: 'CircularStd-Book',
     backgroundColor: '#FFFFFF',
+    paddingVertical: Platform.OS === 'ios' ? 8 : 0,
     marginLeft: Platform.OS === 'ios' ? 0 : -4
   }
 })

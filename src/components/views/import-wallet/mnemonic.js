@@ -62,9 +62,9 @@ const Mnemonic = ({
       </OMGText>
       <OMGTextInputBox
         placeholder='Your wallet name'
-        hideUnderline={true}
         style={styles.textBox}
         inputRef={walletNameRef}
+        maxLength={15}
         disabled={loading.show}
       />
       <View style={styles.buttonContainer}>

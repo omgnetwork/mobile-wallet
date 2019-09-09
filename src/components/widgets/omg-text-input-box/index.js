@@ -10,16 +10,24 @@ const OMGTextInputBox = ({
   disabled,
   inputRef,
   lines,
+  maxLength,
   theme
 }) => {
   const [focus, setFocus] = useState(false)
+  const numberOfLines = lines ? lines : 1
+
   return (
-    <View style={{ ...styles.container(theme, focus, disabled), ...style }}>
+    <View
+      style={{
+        ...styles.container(theme, focus, disabled, numberOfLines),
+        ...style
+      }}>
       <OMGTextInput
         style={{ ...styles.text(theme, disabled), ...textStyle }}
         inputRef={inputRef}
         hideUnderline={true}
         disabled={disabled}
+        maxLength={maxLength}
         lines={lines}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
@@ -30,11 +38,12 @@ const OMGTextInputBox = ({
 }
 
 const styles = StyleSheet.create({
-  container: (theme, focus, disabled) => ({
+  container: (theme, focus, disabled, lines) => ({
     backgroundColor: theme.colors.white,
     borderRadius: theme.roundness,
     opacity: disabled ? 0.4 : 1.0,
     paddingHorizontal: 8,
+    paddingVertical: 8,
     borderColor: focus ? theme.colors.gray5 : theme.colors.gray4,
     borderWidth: 1
   }),
