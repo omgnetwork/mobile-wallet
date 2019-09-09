@@ -1,12 +1,7 @@
 import React, { useState } from 'react'
-import {
-  withNavigation,
-  SafeAreaView,
-  NavigationContext
-} from 'react-navigation'
+import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { connect } from 'react-redux'
-import { Platform, View, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import BackupImage from './backup.svg'
 import BackupIcon1 from './backup-ic1.svg'
 import BackupIcon2 from './backup-ic2.svg'
@@ -41,7 +36,7 @@ const CreateWalletBackup = ({ theme, navigation }) => {
   const [showBackupModal, setShowBackupModal] = useState(false)
 
   const navigateNext = () => {
-    navigation.navigate('BackupForm', wallet)
+    // navigation.navigate('BackupForm', wallet)
     requestAnimationFrame(() => {
       setShowBackupModal(false)
     })

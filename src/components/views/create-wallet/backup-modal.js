@@ -8,7 +8,7 @@ import BackupCamera from './backup-camera'
 const BackupModal = ({ visible, theme, onPressOk, onPressCancel }) => {
   return (
     <View style={styles.container(theme)}>
-      <Modal isVisible={visible} style={styles.modal}>
+      <Modal isVisible={visible} style={styles.modal} useNativeDriver={true}>
         <View style={styles.contentContainer(theme)}>
           <BackupCamera width={85} height={55} style={styles.image} />
           <OMGText style={styles.textTitle(theme)} weight='bold'>
