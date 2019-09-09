@@ -1,7 +1,7 @@
 import { createStackNavigator } from 'react-navigation'
 import * as Views from 'components/views'
 
-export default ImportWalletNavigator =>
+export default (ImportWalletNavigator, CreateWalletNavigator) =>
   createStackNavigator(
     {
       ManageWallet: Views.ManageWallet,
@@ -9,6 +9,12 @@ export default ImportWalletNavigator =>
         screen: Views.ImportWallet,
         params: {
           navigator: ImportWalletNavigator
+        }
+      },
+      CreateWallet: {
+        screen: Views.CreateWallet,
+        params: {
+          navigator: CreateWalletNavigator
         }
       }
     },

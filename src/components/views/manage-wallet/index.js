@@ -57,18 +57,20 @@ const ManageWallet = ({ theme, navigation }) => {
           style={styles.menuItem}
           onPress={() => navigation.navigate('ImportWallet')}
         />
-        <View style={styles.divider} />
+        <View style={styles.divider(theme)} />
         <ManageWalletMenu
           title='Create Wallet'
           style={styles.menuItem}
           theme={theme}
+          onPress={() => navigation.navigate('CreateWallet')}
         />
-        <View style={styles.divider} />
+        <View style={styles.divider(theme)} />
         <ManageWalletMenu
           title='Backup Wallet'
           style={styles.menuItem}
           theme={theme}
         />
+        <View style={styles.divider(theme)} />
       </View>
     </SafeAreaView>
   )
@@ -94,11 +96,8 @@ const styles = StyleSheet.create({
     marginRight: -16
   },
   menuContainer: {},
-  menuItem: {
-    marginTop: 8
-  },
+  menuItem: {},
   divider: theme => ({
-    marginTop: 8,
     backgroundColor: theme.colors.black1,
     height: 1,
     opacity: 0.3

@@ -1,5 +1,7 @@
 import Balance from './balance'
 import CreateWallet from './create-wallet'
+import CreateWalletForm from './create-wallet/create-wallet-form'
+import CreateWalletBackup from './create-wallet/backup'
 import Deposit from './deposit'
 import History from './history'
 import ImportWallet from './import-wallet'
@@ -22,6 +24,8 @@ import WarpPortal from './warp-portal'
 export {
   Balance,
   CreateWallet,
+  CreateWalletBackup,
+  CreateWalletForm,
   Deposit,
   History,
   ImportWallet,

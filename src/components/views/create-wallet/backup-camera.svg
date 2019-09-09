@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="89px" height="64px" viewBox="0 0 89 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>Camera</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Hi-Res" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Backup-Wallet_3" transform="translate(-144.000000, -472.000000)">
+            <g id="Group-3" transform="translate(16.000000, 409.000000)">
+                <g id="Camera" transform="translate(130.000000, 63.000000)">
+                    <g id="Group" transform="translate(5.000000, 0.000000)" fill="#1A56F0">
+                        <path d="M18.025641,11.3846154 L21.1018928,2.15586014 C21.5242307,0.888846371 23.0421153,0 24.7834592,0 L49.2165408,0 C50.9578847,0 52.4757693,0.888846371 52.8981072,2.15586014 L55.974359,11.3846154 L70.2051282,11.3846154 C72.300978,11.3846154 74,12.9529434 74,14.887574 L74,57.2149901 C74,59.1496207 72.300978,60.7179487 70.2051282,60.7179487 L3.79487179,60.7179487 C1.69902198,60.7179487 0,59.1496207 0,57.2149901 L0,14.887574 C0,12.9529434 1.69902198,11.3846154 3.79487179,11.3846154 L18.025641,11.3846154 Z" id="Combined-Shape"></path>
+                    </g>
+                    <circle id="Oval" stroke="#FFFFFF" stroke-width="2.5" cx="42" cy="34.1538462" r="11.3846154"></circle>
+                    <path d="M0.5,6.5 L84.5,60.7179487" id="Line-7" stroke="#04070D" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

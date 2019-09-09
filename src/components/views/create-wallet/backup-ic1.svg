@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Hi-Res" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round">
+        <g id="Backup-Wallet_2" transform="translate(-51.000000, -437.000000)" stroke="#04070D">
+            <g id="Group" transform="translate(53.000000, 439.000000)">
+                <path d="M14.6666667,5.33333333 L11.3333333,5.33333333 C10.2287638,5.33333333 9.33333333,6.22876383 9.33333333,7.33333333 L9.33333333,18.6666667 L2,18.6666667 C0.8954305,18.6666667 1.3527075e-16,17.7712362 0,16.6666667 L0,2 C-1.3527075e-16,0.8954305 0.8954305,2.02906125e-16 2,0 L12.6666667,0 C13.7712362,-6.46995335e-16 14.6666667,0.8954305 14.6666667,2 L14.6666667,5.33333333 Z" id="Combined-Shape" stroke-width="2.5"></path>
+                <path d="M11.3333333,5.33333333 L20.0043747,5.33333333 L24,9.33333333 L24,22 C24,23.1045695 23.1045695,24 22,24 L11.3333333,24 C10.2287638,24 9.33333333,23.1045695 9.33333333,22 L9.33333333,7.33333333 C9.33333333,6.22876383 10.2287638,5.33333333 11.3333333,5.33333333 Z" id="Rectangle" stroke-width="2.5"></path>
+                <path d="M20,5.33333333 L20,7.33333333 C20,8.43790283 20.8954305,9.33333333 22,9.33333333 L24,9.33333333 L20,5.33333333 Z" id="Path-15" fill="#04070D"></path>
+            </g>
+        </g>
+    </g>
+</svg>
