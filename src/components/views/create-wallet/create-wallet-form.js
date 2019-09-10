@@ -9,7 +9,7 @@ import { walletActions } from 'common/actions'
 const CreateWalletForm = ({
   loading,
   provider,
-  theme,
+  wallets,
   wallet,
   dispatchCreateWallet,
   navigation
@@ -18,13 +18,13 @@ const CreateWalletForm = ({
 
   const create = () => {
     if (walletNameRef.current) {
-      dispatchCreateWallet(provider, walletNameRef.current)
+      dispatchCreateWallet(wallets, provider, walletNameRef.current)
     }
   }
 
   useEffect(() => {
     if (loading.success && loading.action === 'WALLET_CREATE' && wallet) {
-      navigation.navigate('CreateWalletBackup', { wallet: wallet })
+      navigation.navigate('CreateWalletBackupWarning', { wallet: wallet })
     }
   }, [loading, navigation, wallet])
 
@@ -68,13 +68,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
+  wallets: state.wallets,
   wallet: state.wallets.length && state.wallets.slice(-1).pop(),
   provider: state.setting.provider
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchCreateWallet: (provider, name) =>
-    dispatch(walletActions.create(provider, name))
+  dispatchCreateWallet: (wallets, provider, name) =>
+    dispatch(walletActions.create(wallets, provider, name))
 })
 
 export default connect(

@@ -1,9 +1,9 @@
 import { walletService, providerService } from '../services'
 import { createAsyncAction, createAction } from './actionCreators'
 
-export const create = (provider, name) => {
+export const create = (wallets, provider, name) => {
   const asyncAction = async () => {
-    return await walletService.create(provider, name)
+    return await walletService.create(wallets, provider, name)
   }
 
   return createAsyncAction({

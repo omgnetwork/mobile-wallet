@@ -23,6 +23,7 @@ import OMGRadioButton from './omg-radio-button'
 import OMGStatusBar from './omg-status-bar'
 import OMGTab from './omg-tab'
 import OMGText from './omg-text'
+import OMGTextChip from './omg-text-chip'
 import OMGTextInput from './omg-text-input'
 import OMGTextInputBox from './omg-text-input-box'
 import OMGTokenInput from './omg-token-input'
@@ -55,11 +56,12 @@ export {
   OMGAlert,
   OMGStatusBar,
   OMGTab,
+  OMGText,
+  OMGTextChip,
   OMGTextInput,
   OMGTextInputBox,
   OMGTokenInput,
   OMGTokenSelect,
-  OMGText,
   OMGViewPager,
   OMGWalletAddress
 }

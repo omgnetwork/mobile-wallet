@@ -37,7 +37,6 @@ const RootchainBalance = ({
   ])
 
   useEffect(() => {
-    console.log(primaryWallet)
     if (primaryWallet.rootchainAssets) {
       const totalPrices = primaryWallet.rootchainAssets.reduce((acc, asset) => {
         const parsedAmount = parseFloat(asset.balance)

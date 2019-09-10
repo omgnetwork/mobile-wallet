@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { View, StyleSheet } from 'react-native'
+import { connect } from 'react-redux'
+import { walletService } from 'common/services'
 import BackupImage from './assets/backup.svg'
 import BackupIcon1 from './assets/backup-ic1.svg'
 import BackupIcon2 from './assets/backup-ic2.svg'
@@ -31,16 +33,24 @@ const itemStyles = StyleSheet.create({
   })
 })
 
-const CreateWalletBackup = ({ theme, navigation }) => {
+const CreateWalletBackup = ({ theme, navigation, provider }) => {
   const wallet = navigation.getParam('wallet')
   const [showBackupModal, setShowBackupModal] = useState(false)
+  const [mnemonic, setMnemonic] = useState(null)
 
   const navigateNext = () => {
-    // navigation.navigate('BackupForm', wallet)
-    requestAnimationFrame(() => {
-      setShowBackupModal(false)
+    setShowBackupModal(false)
+    requestAnimationFrame(async () => {
+      const blockchainWallet = await walletService.get(wallet.address, provider)
+      setMnemonic(blockchainWallet.mnemonic)
     })
   }
+
+  useEffect(() => {
+    if (mnemonic) {
+      navigation.navigate('CreateWalletBackupMnemonic', { mnemonic: mnemonic })
+    }
+  }, [mnemonic, navigation])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -117,4 +127,12 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withNavigation(withTheme(CreateWalletBackup))
+const mapStateToProps = (state, ownProps) => ({
+  loading: state.loading,
+  provider: state.setting.provider
+})
+
+export default connect(
+  mapStateToProps,
+  null
+)(withNavigation(withTheme(CreateWalletBackup)))

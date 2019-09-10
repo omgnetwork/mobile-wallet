@@ -13,3 +13,8 @@ export const notifyImportWallet = {
   actions: ['WALLET_IMPORT'],
   msgSuccess: 'Import wallet successful'
 }
+
+export const notifyCreateWallet = {
+  actions: ['WALLET_CREATE'],
+  msgSuccess: 'Create wallet successful'
+}

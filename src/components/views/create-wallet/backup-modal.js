@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native'
 import Modal from 'react-native-modal'
 import { OMGText, OMGButton } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
-import BackupCamera from './backup-camera'
+import BackupCamera from './assets/backup-camera.svg'
 
 const BackupModal = ({ visible, theme, onPressOk, onPressCancel }) => {
   return (
