@@ -1,12 +1,14 @@
 import React from 'react'
-import { Image, StyleSheet, View } from 'react-native'
-import OMGBox from '../omg-box'
+import { Image, StyleSheet, View, TouchableOpacity } from 'react-native'
 import OMGText from '../omg-text'
+import OMGIcon from '../omg-icon'
 import { withTheme } from 'react-native-paper'
 
-const OMGItemWallet = ({ wallet, style, theme }) => {
+const OMGItemWallet = ({ wallet, style, theme, showCaret, onPress }) => {
   return (
-    <OMGBox style={{ ...styles.container(theme), ...style }}>
+    <TouchableOpacity
+      style={{ ...styles.container(theme), ...style }}
+      onPress={onPress}>
       <Image
         style={styles.logo}
         source={{
@@ -19,7 +21,8 @@ const OMGItemWallet = ({ wallet, style, theme }) => {
         </OMGText>
         <OMGText style={styles.address(theme)}>{wallet.address}</OMGText>
       </View>
-    </OMGBox>
+      {showCaret && <OMGIcon name='chevron-right' size={24} />}
+    </TouchableOpacity>
   )
 }
 

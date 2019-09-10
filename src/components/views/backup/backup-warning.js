@@ -34,6 +34,7 @@ const itemStyles = StyleSheet.create({
 
 const BackupWarning = ({ theme, navigation }) => {
   const name = navigation.getParam('name')
+  const wallet = navigation.getParam('wallet')
   const [showBackupModal, setShowBackupModal] = useState(false)
   const [mnemonic, setMnemonic] = useState(null)
 
@@ -128,4 +129,4 @@ const styles = StyleSheet.create({
   }
 })
 
-withNavigation(withTheme(BackupWarning))
+export default withNavigation(withTheme(BackupWarning))

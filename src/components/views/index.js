@@ -1,7 +1,9 @@
+import Backup from './backup'
+import BackupList from './backup/backup-list'
+import BackupWarning from './backup/backup-warning'
 import Balance from './balance'
 import CreateWallet from './create-wallet'
 import CreateWalletForm from './create-wallet/create-wallet-form'
-import BackupWarning from './backup/backup-warning'
 import CreateWalletBackupMnemonic from './create-wallet/create-wallet-backup-mnemonic'
 import CreateWalletMnemonicConfirm from './create-wallet/create-wallet-mnemonic-confirm'
 import CreateWalletMnemonicFailed from './create-wallet/create-wallet-mnemonic-failed'
@@ -25,9 +27,11 @@ import Wallets from './wallets'
 import WarpPortal from './warp-portal'
 
 export {
+  Backup,
+  BackupList,
+  BackupWarning,
   Balance,
   CreateWallet,
-  BackupWarning,
   CreateWalletForm,
   CreateWalletBackupMnemonic,
   CreateWalletMnemonicConfirm,

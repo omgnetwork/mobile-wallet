@@ -69,6 +69,7 @@ const ManageWallet = ({ theme, navigation }) => {
           title='Backup Wallet'
           style={styles.menuItem}
           theme={theme}
+          onPress={() => navigation.navigate('BackupWallet')}
         />
         <View style={styles.divider(theme)} />
       </View>
