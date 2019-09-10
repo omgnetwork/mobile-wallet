@@ -8,13 +8,14 @@ import { OMGButton, OMGText, OMGTextChip } from 'components/widgets'
 const CreateWalletBackupMnemonic = ({ theme, navigation }) => {
   const mnemonic = navigation.getParam('mnemonic')
   const phrases = mnemonic.split(' ')
-  const [showBackupModal, setShowBackupModal] = useState(false)
 
   const mnemonicPhrases = phrases.map(text => {
     return <OMGTextChip text={text} style={{ marginRight: 8 }} />
   })
 
-  const navigateNext = () => {}
+  const navigateNext = () => {
+    navigation.navigate('CreateWalletMnemonicConfirm', { mnemonic })
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -27,7 +28,7 @@ const CreateWalletBackupMnemonic = ({ theme, navigation }) => {
       </OMGText>
       <View style={styles.mnemonicContainer}>{mnemonicPhrases}</View>
       <View style={styles.buttonContainer}>
-        <OMGButton>Next</OMGButton>
+        <OMGButton onPress={navigateNext}>Next</OMGButton>
       </View>
     </SafeAreaView>
   )

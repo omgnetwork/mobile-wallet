@@ -5,7 +5,8 @@ export default createStackNavigator(
   {
     CreateWalletForm: Views.CreateWalletForm,
     CreateWalletBackupWarning: Views.CreateWalletBackupWarning,
-    CreateWalletBackupMnemonic: Views.CreateWalletBackupMnemonic
+    CreateWalletBackupMnemonic: Views.CreateWalletBackupMnemonic,
+    CreateWalletMnemonicConfirm: Views.CreateWalletMnemonicConfirm
   },
   {
     initialRouteName: 'CreateWalletForm',

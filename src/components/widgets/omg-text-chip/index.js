@@ -1,13 +1,15 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGText } from 'components/widgets'
 
-const OMGTextChip = ({ theme, text, style }) => {
+const OMGTextChip = ({ theme, text, style, onPress }) => {
   return (
-    <View style={{ ...styles.container(theme), ...style }}>
+    <TouchableOpacity
+      style={{ ...styles.container(theme), ...style }}
+      onPress={onPress}>
       <OMGText style={styles.text(theme)}>{text}</OMGText>
-    </View>
+    </TouchableOpacity>
   )
 }
 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="80px" height="80px" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>Illust</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Hi-Res" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Create-Wallet_5_Confirm-Phrase_1" transform="translate(-16.000000, -111.000000)">
+            <g id="Illust" transform="translate(16.000000, 111.000000)">
+                <circle id="Oval" fill="#1A56F0" cx="40" cy="40" r="40"></circle>
+                <g id="Group-2" transform="translate(24.000000, 22.000000)">
+                    <path d="M9,12 L9,4 C9,1.790861 10.790861,4.05812251e-16 13,0 L19,0 C21.209139,-4.05812251e-16 23,1.790861 23,4 L23,12" id="Path" stroke="#04070D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <rect id="Rectangle" fill="#FFFFFF" x="0" y="12" width="32" height="25" rx="4"></rect>
+                    <path d="M15,25.7324356 C14.4021986,25.3866262 14,24.7402824 14,24 C14,22.8954305 14.8954305,22 16,22 C17.1045695,22 18,22.8954305 18,24 C18,24.7402824 17.5978014,25.3866262 17,25.7324356 L17,27 C17,27.5522847 16.5522847,28 16,28 C15.4477153,28 15,27.5522847 15,27 L15,25.7324356 Z" id="Combined-Shape" fill="#04070D"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
