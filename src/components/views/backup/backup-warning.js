@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { View, StyleSheet } from 'react-native'
-import { connect } from 'react-redux'
 import { Rootchain } from 'common/utils'
 import BackupImage from './assets/backup.svg'
 import BackupIcon1 from './assets/backup-ic1.svg'
@@ -33,7 +32,7 @@ const itemStyles = StyleSheet.create({
   })
 })
 
-const CreateWalletBackup = ({ theme, navigation, provider }) => {
+const BackupWarning = ({ theme, navigation }) => {
   const name = navigation.getParam('name')
   const [showBackupModal, setShowBackupModal] = useState(false)
   const [mnemonic, setMnemonic] = useState(null)
@@ -129,12 +128,4 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state, ownProps) => ({
-  loading: state.loading,
-  provider: state.setting.provider
-})
-
-export default connect(
-  mapStateToProps,
-  null
-)(withNavigation(withTheme(CreateWalletBackup)))
+withNavigation(withTheme(BackupWarning))
