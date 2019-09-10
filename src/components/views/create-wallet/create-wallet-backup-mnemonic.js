@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { View, StyleSheet } from 'react-native'
@@ -7,14 +7,15 @@ import { OMGButton, OMGText, OMGTextChip } from 'components/widgets'
 
 const CreateWalletBackupMnemonic = ({ theme, navigation }) => {
   const mnemonic = navigation.getParam('mnemonic')
+  const name = navigation.getParam('name')
   const phrases = mnemonic.split(' ')
 
   const mnemonicPhrases = phrases.map(text => {
-    return <OMGTextChip text={text} style={{ marginRight: 8 }} />
+    return <OMGTextChip text={text} style={styles.chip} />
   })
 
   const navigateNext = () => {
-    navigation.navigate('CreateWalletMnemonicConfirm', { mnemonic })
+    navigation.navigate('CreateWalletMnemonicConfirm', { mnemonic, name })
   }
 
   return (
@@ -59,6 +60,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     justifyContent: 'flex-end'
+  },
+  chip: {
+    marginRight: 8
   }
 })
 

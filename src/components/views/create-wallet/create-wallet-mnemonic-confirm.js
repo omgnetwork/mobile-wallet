@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
+import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
+import { walletActions, settingActions } from 'common/actions'
 import BackupMnemonicImage from './assets/backup-mnemonic.svg'
 import {
   OMGButton,
@@ -17,8 +19,18 @@ const shuffle = unshuffled => {
     .map(a => a.value)
 }
 
-const CreateWalletMnemonicConfirm = ({ theme, navigation }) => {
+const CreateWalletMnemonicConfirm = ({
+  theme,
+  navigation,
+  dispatchCreateWallet,
+  dispatchSetPrimaryWallet,
+  provider,
+  wallets,
+  wallet,
+  loading
+}) => {
   const mnemonic = navigation.getParam('mnemonic')
+  const walletName = navigation.getParam('name')
   const phrases = shuffle(mnemonic.split(' '))
   const [unorderedPhrases, setUnorderedPhrases] = useState(phrases)
   const [orderedPhrases, setOrderedPhrases] = useState([])
@@ -47,7 +59,26 @@ const CreateWalletMnemonicConfirm = ({ theme, navigation }) => {
     )
   })
 
-  const navigateNext = () => {}
+  const disabledBtn = unorderedPhrases.length > 0
+
+  const confirm = () => {
+    if (orderedPhrases.join(' ') === mnemonic) {
+      dispatchCreateWallet(wallets, provider, walletName)
+    } else {
+      navigation.navigate('CreateWalletMnemonicFailed')
+      requestAnimationFrame(() => {
+        setUnorderedPhrases(phrases)
+        setOrderedPhrases([])
+      })
+    }
+  }
+
+  useEffect(() => {
+    if (loading.success && loading.action === 'WALLET_CREATE' && wallet) {
+      dispatchSetPrimaryWallet(wallet)
+      navigation.navigate('Balance')
+    }
+  }, [dispatchSetPrimaryWallet, loading, navigation, wallet])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -65,7 +96,12 @@ const CreateWalletMnemonicConfirm = ({ theme, navigation }) => {
       />
       <View style={styles.mnemonicContainer}>{mnemonicPhrases}</View>
       <View style={styles.buttonContainer}>
-        <OMGButton>Next</OMGButton>
+        <OMGButton
+          onPress={confirm}
+          disabled={disabledBtn || loading.show}
+          loading={loading.show}>
+          Confirm
+        </OMGButton>
       </View>
     </SafeAreaView>
   )
@@ -108,4 +144,21 @@ const styles = StyleSheet.create({
   })
 })
 
-export default withNavigation(withTheme(CreateWalletMnemonicConfirm))
+const mapStateToProps = (state, ownProps) => ({
+  loading: state.loading,
+  wallets: state.wallets,
+  wallet: state.wallets.length && state.wallets.slice(-1).pop(),
+  provider: state.setting.provider
+})
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatchCreateWallet: (wallets, provider, name) =>
+    dispatch(walletActions.create(wallets, provider, name)),
+  dispatchSetPrimaryWallet: wallet =>
+    settingActions.setPrimaryAddress(dispatch, wallet.address)
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withNavigation(withTheme(CreateWalletMnemonicConfirm)))

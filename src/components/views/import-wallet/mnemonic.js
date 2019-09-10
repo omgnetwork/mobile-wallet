@@ -21,7 +21,7 @@ const Mnemonic = ({
   const importWallet = () => {
     dispatchImportWalletByMnemonic(
       wallets,
-      mnemonicRef.current,
+      mnemonicRef.current.toLowerCase(),
       provider,
       walletNameRef.current
     )

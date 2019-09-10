@@ -3,7 +3,7 @@ import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { walletService } from 'common/services'
+import { Rootchain } from 'common/utils'
 import BackupImage from './assets/backup.svg'
 import BackupIcon1 from './assets/backup-ic1.svg'
 import BackupIcon2 from './assets/backup-ic2.svg'
@@ -34,23 +34,25 @@ const itemStyles = StyleSheet.create({
 })
 
 const CreateWalletBackup = ({ theme, navigation, provider }) => {
-  const wallet = navigation.getParam('wallet')
+  const name = navigation.getParam('name')
   const [showBackupModal, setShowBackupModal] = useState(false)
   const [mnemonic, setMnemonic] = useState(null)
 
   const navigateNext = () => {
     setShowBackupModal(false)
     requestAnimationFrame(async () => {
-      const blockchainWallet = await walletService.get(wallet.address, provider)
-      setMnemonic(blockchainWallet.mnemonic)
+      setMnemonic(Rootchain.generateMnemonic())
     })
   }
 
   useEffect(() => {
     if (mnemonic) {
-      navigation.navigate('CreateWalletBackupMnemonic', { mnemonic: mnemonic })
+      navigation.navigate('CreateWalletBackupMnemonic', {
+        mnemonic: mnemonic,
+        name: name
+      })
     }
-  }, [mnemonic, navigation])
+  }, [mnemonic, navigation, name])
 
   return (
     <SafeAreaView style={styles.container}>
