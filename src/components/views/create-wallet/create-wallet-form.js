@@ -35,7 +35,7 @@ const CreateWalletForm = ({
         placeholder='Name'
         disabled={loading.show}
         inputRef={walletNameRef}
-        maxLength={15}
+        maxLength={20}
         style={styles.nameContainer}
       />
       <View style={styles.button}>

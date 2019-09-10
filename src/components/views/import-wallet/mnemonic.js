@@ -64,7 +64,7 @@ const Mnemonic = ({
         placeholder='Your wallet name'
         style={styles.textBox}
         inputRef={walletNameRef}
-        maxLength={15}
+        maxLength={20}
         disabled={loading.show}
       />
       <View style={styles.buttonContainer}>
