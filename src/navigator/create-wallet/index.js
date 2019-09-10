@@ -4,7 +4,7 @@ import * as Views from 'components/views'
 export default createStackNavigator(
   {
     CreateWalletForm: Views.CreateWalletForm,
-    CreateWalletBackupWarning: Views.CreateWalletBackupWarning,
+    CreateWalletBackupWarning: Views.BackupWarning,
     CreateWalletBackupMnemonic: Views.CreateWalletBackupMnemonic,
     CreateWalletMnemonicConfirm: Views.CreateWalletMnemonicConfirm,
     CreateWalletMnemonicFailed: Views.CreateWalletMnemonicFailed

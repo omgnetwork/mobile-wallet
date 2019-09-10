@@ -1,11 +1,10 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef } from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { showMessage } from 'react-native-flash-message'
 import { OMGButton, OMGText, OMGTextInputBox } from 'components/widgets'
-import { walletActions } from 'common/actions'
 
 const CreateWalletForm = ({ wallets, navigation }) => {
   const walletNameRef = useRef()
@@ -58,15 +57,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  // loading: state.loading,
   wallets: state.wallets
-  // wallet: state.wallets.length && state.wallets.slice(-1).pop(),
-  // provider: state.setting.provider
-})
-
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchCreateWallet: (wallets, provider, name) =>
-    dispatch(walletActions.create(wallets, provider, name))
 })
 
 export default connect(
