@@ -53,6 +53,7 @@ const CreateWalletMnemonicConfirm = ({
     return (
       <OMGTextChip
         text={text}
+        key={text}
         style={styles.chip(theme)}
         onPress={() => onAddOrderedPhrase(text)}
       />
@@ -63,7 +64,7 @@ const CreateWalletMnemonicConfirm = ({
 
   const confirm = () => {
     if (orderedPhrases.join(' ') === mnemonic) {
-      dispatchCreateWallet(wallets, provider, walletName)
+      dispatchCreateWallet(wallets, mnemonic, provider, walletName)
     } else {
       navigation.navigate('CreateWalletMnemonicFailed')
       requestAnimationFrame(() => {
@@ -152,8 +153,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchCreateWallet: (wallets, provider, name) =>
-    dispatch(walletActions.create(wallets, provider, name)),
+  dispatchCreateWallet: (wallets, mnemonic, provider, name) =>
+    dispatch(walletActions.create(wallets, mnemonic, provider, name)),
   dispatchSetPrimaryWallet: wallet =>
     settingActions.setPrimaryAddress(dispatch, wallet.address)
 })

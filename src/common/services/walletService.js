@@ -3,15 +3,6 @@ import { walletStorage } from '../storages'
 import { priceService, providerService } from '../services'
 import Config from 'react-native-config'
 
-export const create = (wallets, provider, name) => {
-  try {
-    const mnemonic = Rootchain.generateMnemonic()
-    return importByMnemonic(wallets, mnemonic, provider, name)
-  } catch (err) {
-    Promise.reject(err)
-  }
-}
-
 export const get = async (address, provider) => {
   return new Promise(async (resolve, reject) => {
     try {

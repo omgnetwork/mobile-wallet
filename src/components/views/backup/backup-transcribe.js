@@ -18,7 +18,7 @@ const BackupTranscribe = ({ navigation, theme }) => {
   }
 
   const mnemonicPhrases = phrases.map(text => {
-    return <OMGTextChip text={text} style={styles.chip} />
+    return <OMGTextChip text={text} style={styles.chip} key={text} />
   })
 
   return (

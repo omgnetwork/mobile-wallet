@@ -7,6 +7,7 @@ const OMGMnemonicConfirmBox = ({ theme, phrases, onRemovePhrase, style }) => {
   const chips = phrases.map(phrase => (
     <OMGTextChip
       text={phrase}
+      key={phrase}
       onPress={() => onRemovePhrase(phrase)}
       style={styles.chip}
     />

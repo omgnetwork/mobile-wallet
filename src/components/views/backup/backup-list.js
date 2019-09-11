@@ -8,6 +8,7 @@ const BackupList = ({ navigation, wallets }) => {
   const backupItems = wallets.map(wallet => (
     <OMGItemWallet
       wallet={wallet}
+      key={wallet.address}
       style={styles.walletItem}
       showCaret={true}
       onPress={() => {
