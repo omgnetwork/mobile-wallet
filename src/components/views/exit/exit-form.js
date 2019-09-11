@@ -6,7 +6,7 @@ import {
   OMGText,
   OMGTokenInput,
   OMGAmountInput,
-  OMGTextWarning,
+  OMGExitWarning,
   OMGButton
 } from 'components/widgets'
 import { withNavigation } from 'react-navigation'
@@ -21,8 +21,9 @@ const ExitForm = ({ wallet, theme, navigation }) => {
 
   const navigateNext = () => {
     if (textRef.current) {
-    } else {
-      // Warn to fill amount
+      navigation.navigate('ExitConfirm', {
+        token: { ...selectedToken, balance: textRef.current }
+      })
     }
   }
 
@@ -49,7 +50,7 @@ const ExitForm = ({ wallet, theme, navigation }) => {
         defaultValue={navigation.getParam('lastAmount')}
         style={styles.amountInput}
       />
-      <OMGTextWarning style={styles.textWarning} />
+      <OMGExitWarning style={styles.textWarning} />
       <View style={styles.buttonContainer}>
         <OMGButton onPress={navigateNext}>Next</OMGButton>
       </View>

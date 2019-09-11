@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native'
 import { OMGText, OMGIcon } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 
-const OMGTextWarning = ({ theme, style }) => {
+const OMGExitWarning = ({ theme, style }) => {
   return (
     <View style={{ ...styles.container(theme), ...style }}>
       <View style={styles.iconContainer(theme)}>
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
   })
 })
 
-export default withTheme(OMGTextWarning)
+export default withTheme(OMGExitWarning)

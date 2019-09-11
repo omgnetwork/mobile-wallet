@@ -9,6 +9,7 @@ import OMGBox from './omg-box'
 import OMGButton from './omg-button'
 import OMGDrawerContent from './omg-drawer-content'
 import OMGEmpty from './omg-empty'
+import OMGExitWarning from './omg-exit-warning'
 import OMGFeeInput from './omg-fee-input'
 import OMGFeeSelect from './omg-fee-select'
 import OMGMenu from './omg-menu'
@@ -27,7 +28,6 @@ import OMGText from './omg-text'
 import OMGTextChip from './omg-text-chip'
 import OMGTextInput from './omg-text-input'
 import OMGTextInputBox from './omg-text-input-box'
-import OMGTextWarning from './omg-text-warning'
 import OMGTokenInput from './omg-token-input'
 import OMGTokenSelect from './omg-token-select'
 import OMGViewPager from './omg-view-pager'
@@ -44,6 +44,7 @@ export {
   OMGButton,
   OMGDrawerContent,
   OMGEmpty,
+  OMGExitWarning,
   OMGFeeInput,
   OMGFeeSelect,
   OMGIcon,
@@ -63,7 +64,6 @@ export {
   OMGTextChip,
   OMGTextInput,
   OMGTextInputBox,
-  OMGTextWarning,
   OMGTokenInput,
   OMGTokenSelect,
   OMGViewPager,
