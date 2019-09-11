@@ -115,7 +115,7 @@ const Preview = ({ navigation, theme }) => {
           style={{ marginTop: 16 }}
         />
         <OMGAssetList theme={theme} />
-        <OMGItemToken symbol='OMG' balance={3.0} />
+        <OMGItemToken token={mockToken} />
         <OMGAssetFooter theme={theme} />
       </ScrollView>
     </View>

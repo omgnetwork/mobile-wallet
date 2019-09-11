@@ -21,7 +21,12 @@ const drawerNavigator = TransferRootChain =>
     }
   )
 
-export default (TransferRootChain, TransferChildChain, ManageWalletNavigator) =>
+export default (
+  TransferRootChain,
+  TransferChildChain,
+  ExitNavigator,
+  ManageWalletNavigator
+) =>
   createStackNavigator(
     {
       Main: drawerNavigator(TransferRootChain),
@@ -40,6 +45,12 @@ export default (TransferRootChain, TransferChildChain, ManageWalletNavigator) =>
         screen: Views.Deposit,
         params: {
           navigator: TransferChildChain
+        }
+      },
+      TransferExit: {
+        screen: Views.Exit,
+        params: {
+          navigator: ExitNavigator
         }
       }
     },

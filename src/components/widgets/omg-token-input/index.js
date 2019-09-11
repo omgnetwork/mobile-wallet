@@ -14,7 +14,7 @@ const OMGTokenInput = ({ theme, token, style, onPress }) => {
       <OMGImage
         style={styles.logo}
         source={{
-          uri: `https://api.adorable.io/avatars/285/${token.symbol}.png`
+          uri: `https://api.adorable.io/avatars/285/${token.contractAddress}.png`
         }}
       />
       <OMGText style={styles.text(theme)}>{token.tokenSymbol}</OMGText>

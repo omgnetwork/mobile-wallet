@@ -2,13 +2,15 @@ import React, { useEffect, useState, useRef } from 'react'
 import { Image, StyleSheet, View, Animated } from 'react-native'
 import { Animator } from 'common/anims'
 import OMGText from '../omg-text'
+import { Formatter } from 'common/utils'
 import { withTheme } from 'react-native-paper'
 
-const OMGItemToken = ({ symbol, price, balance, style, onPress, theme }) => {
+const OMGItemToken = ({ token, style, onPress, theme }) => {
   const [animating, setAnimating] = useState(false)
   const shadowAnim = useRef(new Animated.Value(0))
   const shadowOpacity = useRef(new Animated.Value(0))
   const balanceOpacity = useRef(new Animated.Value(1.0))
+  const balance = formatTokenBalance(token.balance)
   const [currentBalance, setCurrentBalance] = useState(balance)
 
   useEffect(() => {
@@ -38,7 +40,7 @@ const OMGItemToken = ({ symbol, price, balance, style, onPress, theme }) => {
         }
       })
     }
-  }, [balance, currentBalance, setAnimating, symbol])
+  }, [balance, currentBalance])
 
   return (
     <Animated.View
@@ -51,11 +53,11 @@ const OMGItemToken = ({ symbol, price, balance, style, onPress, theme }) => {
       <Image
         style={styles.logo(theme)}
         source={{
-          uri: `https://api.adorable.io/avatars/285/${symbol}.png`
+          uri: `https://api.adorable.io/avatars/285/${token.contractAddress}.png`
         }}
       />
       <View style={styles.sectionName}>
-        <OMGText style={styles.symbol(theme)}>{symbol}</OMGText>
+        <OMGText style={styles.symbol(theme)}>{token.tokenSymbol}</OMGText>
       </View>
       <Animated.View style={styles.sectionAmount(balanceOpacity)}>
         <OMGText
@@ -64,10 +66,30 @@ const OMGItemToken = ({ symbol, price, balance, style, onPress, theme }) => {
           numberOfLines={1}>
           {currentBalance}
         </OMGText>
-        <OMGText style={styles.fiatValue(theme)}>{price} USD</OMGText>
+        <OMGText style={styles.fiatValue(theme)}>
+          {formatTokenPrice(token.balance, token.price)} USD
+        </OMGText>
       </Animated.View>
     </Animated.View>
   )
+}
+
+const formatTokenBalance = amount => {
+  return Formatter.format(amount, {
+    commify: true,
+    maxDecimal: 3,
+    ellipsize: false
+  })
+}
+
+const formatTokenPrice = (amount, price) => {
+  const parsedAmount = parseFloat(amount)
+  const tokenPrice = parsedAmount * price
+  return Formatter.format(tokenPrice, {
+    commify: true,
+    maxDecimal: 2,
+    ellipsize: false
+  })
 }
 
 const styles = StyleSheet.create({

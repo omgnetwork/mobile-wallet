@@ -14,7 +14,7 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
       <Image
         style={styles.logo(theme)}
         source={{
-          uri: `https://api.adorable.io/avatars/285/${token.tokenSymbol}.png`
+          uri: `https://api.adorable.io/avatars/285/${token.contractAddress}.png`
         }}
       />
       <View style={styles.sectionName}>

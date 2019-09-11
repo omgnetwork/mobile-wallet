@@ -65,12 +65,7 @@ const RootchainBalance = ({
         loading={loading.show}
         style={styles.list}
         renderItem={({ item }) => (
-          <OMGItemToken
-            key={item.contractAddress}
-            symbol={item.tokenSymbol}
-            balance={formatTokenBalance(item.balance)}
-            price={formatTokenPrice(item.balance, item.price)}
-          />
+          <OMGItemToken key={item.contractAddress} token={item} />
         )}
       />
     </Fragment>
@@ -87,24 +82,6 @@ const styles = StyleSheet.create({
 
 const formatTotalBalance = balance => {
   return Formatter.format(balance, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
-  })
-}
-
-const formatTokenBalance = amount => {
-  return Formatter.format(amount, {
-    commify: true,
-    maxDecimal: 3,
-    ellipsize: false
-  })
-}
-
-const formatTokenPrice = (amount, price) => {
-  const parsedAmount = parseFloat(amount)
-  const tokenPrice = parsedAmount * price
-  return Formatter.format(tokenPrice, {
     commify: true,
     maxDecimal: 2,
     ellipsize: false

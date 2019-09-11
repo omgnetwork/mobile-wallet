@@ -20,5 +20,7 @@ export default {
   gray5: '#858b9a',
   white: '#FFFFFF',
   white2: '#BCCCDC',
-  white3: '#f7f8fa'
+  white3: '#f7f8fa',
+  yellow: '#f59700',
+  yellow2: '#fff7e5'
 }
