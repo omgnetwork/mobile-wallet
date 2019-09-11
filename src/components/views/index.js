@@ -1,6 +1,7 @@
 import Backup from './backup'
 import BackupList from './backup/backup-list'
 import BackupWarning from './backup/backup-warning'
+import BackupTranscribe from './backup/backup-transcribe'
 import Balance from './balance'
 import CreateWallet from './create-wallet'
 import CreateWalletForm from './create-wallet/create-wallet-form'
@@ -30,6 +31,7 @@ export {
   Backup,
   BackupList,
   BackupWarning,
+  BackupTranscribe,
   Balance,
   CreateWallet,
   CreateWalletForm,

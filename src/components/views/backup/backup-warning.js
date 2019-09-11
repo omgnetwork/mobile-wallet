@@ -3,6 +3,7 @@ import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { View, StyleSheet } from 'react-native'
 import { Rootchain } from 'common/utils'
+import { walletStorage } from 'common/storages'
 import BackupImage from './assets/backup.svg'
 import BackupIcon1 from './assets/backup-ic1.svg'
 import BackupIcon2 from './assets/backup-ic2.svg'
@@ -38,21 +39,36 @@ const BackupWarning = ({ theme, navigation }) => {
   const [showBackupModal, setShowBackupModal] = useState(false)
   const [mnemonic, setMnemonic] = useState(null)
 
-  const navigateNext = () => {
-    setShowBackupModal(false)
-    requestAnimationFrame(async () => {
-      setMnemonic(Rootchain.generateMnemonic())
+  async function navigateToBackupTranscribe() {
+    navigation.navigate('BackupTranscribe', {
+      mnemonic: await walletStorage.getMnemonic(wallet.address),
+      wallet: wallet
     })
   }
 
+  const navigateNext = () => {
+    setShowBackupModal(false)
+    if (wallet) {
+      navigateToBackupTranscribe()
+    } else {
+      requestAnimationFrame(async () => {
+        setMnemonic(Rootchain.generateMnemonic())
+      })
+    }
+  }
+
   useEffect(() => {
-    if (mnemonic) {
+    function navigateToCreateWalletBackupMnemonic() {
       navigation.navigate('CreateWalletBackupMnemonic', {
         mnemonic: mnemonic,
         name: name
       })
     }
-  }, [mnemonic, navigation, name])
+
+    if (mnemonic && name) {
+      navigateToCreateWalletBackupMnemonic()
+    }
+  }, [mnemonic, name, navigation])
 
   return (
     <SafeAreaView style={styles.container}>
