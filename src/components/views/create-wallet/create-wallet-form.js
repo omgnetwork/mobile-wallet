@@ -21,6 +21,11 @@ const CreateWalletForm = ({ wallets, navigation }) => {
       navigation.navigate('CreateWalletBackupWarning', {
         name: walletNameRef.current
       })
+    } else {
+      showMessage({
+        type: 'danger',
+        message: 'The wallet name should not be empty.'
+      })
     }
   }
 

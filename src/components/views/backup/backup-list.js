@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
     padding: 16
   },
   walletItem: {
-    marginTop: 8
+    marginTop: 8,
+    padding: 8
   }
 })
 
