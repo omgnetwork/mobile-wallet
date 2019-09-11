@@ -1,3 +1,3 @@
-import useSnackbarProps from './useSnackbarProps'
+import useFlashMessage from './useFlashMessage'
 
-export { useSnackbarProps }
+export { useFlashMessage }

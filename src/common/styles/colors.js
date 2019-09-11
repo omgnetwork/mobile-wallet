@@ -7,6 +7,7 @@ export default {
   purple: '#7d55f6',
   blue1: '#ebf3ff',
   blue2: '#2176ff',
+  blue3: '#dbe9ff',
   black1: '#d0d6e2',
   black2: '#858b9a',
   black3: '#3c414d',
@@ -16,6 +17,7 @@ export default {
   gray2: '#abb2c2',
   gray3: '#04070D',
   gray4: '#f0f2f5',
+  gray5: '#858b9a',
   white: '#FFFFFF',
   white2: '#BCCCDC',
   white3: '#f7f8fa'

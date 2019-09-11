@@ -1,9 +1,9 @@
 import { Storage } from '../utils'
 
-export const setPrivateKey = ({ address, privateKey }) => {
-  return Storage.secureSet(address, privateKey)
+export const setMnemonic = ({ address, mnemonic }) => {
+  return Storage.secureSet(address, mnemonic)
 }
 
-export const getPrivateKey = address => {
+export const getMnemonic = address => {
   return Storage.secureGet(address)
 }

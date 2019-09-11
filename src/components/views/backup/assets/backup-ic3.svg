@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="32px" viewBox="0 0 30 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>Group 5</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Hi-Res" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round">
+        <g id="Backup-Wallet_2" transform="translate(-50.000000, -556.000000)" stroke="#04070D" stroke-width="2.5">
+            <g id="Group-5" transform="translate(53.000000, 559.000000)">
+                <circle id="Oval" stroke-linecap="round" cx="12" cy="12.9230769" r="11.0769231"></circle>
+                <rect id="Rectangle" fill="#FFFFFF" x="8.90384615" y="-1.25" width="5.26923077" height="5.26923077"></rect>
+                <rect id="Rectangle-Copy-5" fill="#FFFFFF" x="8.90384615" y="21.8269231" width="5.26923077" height="5.26923077"></rect>
+                <rect id="Rectangle-Copy-3" fill="#FFFFFF" x="-1.25" y="10.75" width="5.26923077" height="5.26923077"></rect>
+                <rect id="Rectangle-Copy-4" fill="#FFFFFF" x="19.9807692" y="10.75" width="5.26923077" height="5.26923077"></rect>
+                <path d="M9.53846154,10.6153846 L14.4624352,15.5393583" id="Line-6" stroke-linecap="round"></path>
+                <path d="M9.53846154,10.6153846 L14.4624352,15.5393583" id="Line-6-Copy" stroke-linecap="round" transform="translate(12.000000, 12.923077) scale(-1, 1) translate(-12.000000, -12.923077) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

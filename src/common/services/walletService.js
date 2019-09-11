@@ -3,30 +3,11 @@ import { walletStorage } from '../storages'
 import { priceService, providerService } from '../services'
 import Config from 'react-native-config'
 
-export const create = (provider, name) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const wallet = Rootchain.createWallet()
-      const connectedProviderWallet = wallet.connect(provider)
-
-      const privateKey = await connectedProviderWallet.privateKey
-      const address = await connectedProviderWallet.address
-      const balance = await connectedProviderWallet.getBalance()
-
-      await walletStorage.setPrivateKey({ address, privateKey })
-
-      resolve({ address, balance, name })
-    } catch (err) {
-      reject(err)
-    }
-  })
-}
-
 export const get = async (address, provider) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const privateKey = await walletStorage.getPrivateKey(address)
-      const wallet = Rootchain.importWalletByPrivateKey(privateKey)
+      const mnemonic = await walletStorage.getMnemonic(address)
+      const wallet = Rootchain.importWalletByMnemonic(mnemonic)
       const connectedProviderWallet = wallet.connect(provider)
       resolve(connectedProviderWallet)
     } catch (err) {
@@ -68,7 +49,8 @@ export const fetchAssets = (provider, address, lastBlockNumber) => {
         pendingEthToken,
         ...pendingERC20Tokens
       ])
-      const updatedBlock = txHistory.slice(-1).pop().blockNumber
+      const updatedBlock =
+        (txHistory.length && txHistory.slice(-1).pop().blockNumber) || 0
       const updatedAssets = {
         address,
         rootchainAssets,
@@ -175,7 +157,6 @@ export const importByMnemonic = (wallets, mnemonic, provider, name) => {
       const wallet = Rootchain.importWalletByMnemonic(mnemonic)
       const connectedProviderWallet = wallet.connect(provider)
 
-      const privateKey = await connectedProviderWallet.privateKey
       const address = await connectedProviderWallet.address
       const balance = await connectedProviderWallet.getBalance()
 
@@ -183,9 +164,13 @@ export const importByMnemonic = (wallets, mnemonic, provider, name) => {
         throw new Error(
           'Cannot add the wallet. The wallet has already existed.'
         )
+      } else if (wallets.find(w => w.name === name)) {
+        throw new Error(
+          'Cannot add the wallet. The wallet name has already been taken.'
+        )
       }
 
-      await walletStorage.setPrivateKey({ address, privateKey })
+      await walletStorage.setMnemonic({ address, mnemonic })
 
       const newWallet = { address, name, balance, shouldRefresh: true }
 

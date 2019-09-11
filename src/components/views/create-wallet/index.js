@@ -1,67 +1,71 @@
-import React, { useRef, useEffect } from 'react'
-import { withNavigation } from 'react-navigation'
-import { connect } from 'react-redux'
-import { View } from 'react-native'
-import { Title } from 'react-native-paper'
+import React from 'react'
+import { View, StyleSheet, SafeAreaView } from 'react-native'
 import {
-  OMGButton,
-  OMGBox,
-  OMGTextInput,
-  OMGBackground
+  OMGIcon,
+  OMGBackground,
+  OMGText,
+  OMGStatusBar
 } from 'components/widgets'
-import { walletActions } from 'common/actions'
+import { withTheme } from 'react-native-paper'
+import { withNavigation } from 'react-navigation'
 
-const CreateWalletComponent = ({
-  loading,
-  provider,
-  dispatchCreateWallet,
-  navigation
-}) => {
-  const walletNameRef = useRef()
-
-  const create = () => {
-    if (walletNameRef.current) {
-      dispatchCreateWallet(provider, walletNameRef.current)
-    }
-  }
-
-  useEffect(() => {
-    if (loading.success && loading.action === 'WALLET_CREATE') {
-      navigation.goBack()
-    }
-  }, [loading, navigation])
+const CreateWallet = ({ theme, navigation }) => {
+  const CreateWalletNavigator = navigation.getParam('navigator')
 
   return (
-    <OMGBackground style={{ flex: 1, flexDirection: 'column', padding: 16 }}>
-      <OMGBox>
-        <Title style={{ fontSize: 14 }}>Name</Title>
-        <OMGTextInput placeholder='Name' inputRef={walletNameRef} />
-      </OMGBox>
-      <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 16 }}>
-        <OMGButton
-          onPress={create}
-          style={{ marginTop: 16 }}
-          loading={loading.show}
-          disabled={loading.show}>
-          Create Wallet
-        </OMGButton>
-      </View>
-    </OMGBackground>
+    <SafeAreaView style={styles.container}>
+      <OMGStatusBar
+        barStyle={'dark-content'}
+        backgroundColor={theme.colors.white}
+      />
+      <OMGBackground style={styles.contentContainer(theme)}>
+        <View style={styles.header}>
+          <OMGIcon
+            name='chevron-left'
+            size={18}
+            color={theme.colors.gray3}
+            style={styles.headerIcon}
+            onPress={() => navigation.goBack()}
+          />
+          <OMGText style={styles.headerTitle(theme)}>Create Wallet</OMGText>
+        </View>
+        <View style={styles.line(theme)} />
+        <CreateWalletNavigator navigation={navigation} />
+      </OMGBackground>
+    </SafeAreaView>
   )
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  loading: state.loading,
-  wallets: state.wallets,
-  provider: state.setting.provider
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  contentContainer: theme => ({
+    flex: 1,
+    flexDirection: 'column',
+    paddingVertical: 8,
+    backgroundColor: theme.colors.white
+  }),
+  header: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 16
+  },
+  headerIcon: {
+    padding: 8,
+    marginLeft: -8
+  },
+  headerTitle: theme => ({
+    fontSize: 18,
+    color: theme.colors.gray3,
+    marginLeft: 8,
+    textTransform: 'uppercase'
+  }),
+  line: theme => ({
+    marginTop: 16,
+    backgroundColor: theme.colors.white3,
+    height: 6
+  })
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchCreateWallet: (provider, name) =>
-    dispatch(walletActions.create(provider, name))
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withNavigation(CreateWalletComponent))
+export default withNavigation(withTheme(CreateWallet))

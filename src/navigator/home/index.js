@@ -1,11 +1,31 @@
+import React from 'react'
 import { createStackNavigator } from 'react-navigation'
 import * as Views from 'components/views'
 import BottomTabNavigator from './bottombar'
+import { OMGDrawerContent } from 'components/widgets'
+import { createDrawerNavigator } from 'react-navigation-drawer'
 
-export default (TransferRootChain, TransferChildChain) =>
+const drawerNavigator = TransferRootChain =>
+  createDrawerNavigator(
+    {
+      MainDrawer: {
+        screen: BottomTabNavigator(TransferRootChain)
+      }
+    },
+    {
+      drawerPosition: 'right',
+      hideStatusBar: false,
+      drawerBackgroundColor: 'white',
+      edgeWidth: 0,
+      contentComponent: props => <OMGDrawerContent {...props} />
+    }
+  )
+
+export default (TransferRootChain, TransferChildChain, ManageWalletNavigator) =>
   createStackNavigator(
     {
-      Main: BottomTabNavigator(TransferRootChain),
+      Main: drawerNavigator(TransferRootChain),
+      ManageWallet: ManageWalletNavigator,
       TransferSelectBalance: {
         screen: Views.TransferSelectBalance
       },

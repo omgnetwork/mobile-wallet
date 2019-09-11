@@ -7,10 +7,6 @@ import Config from 'react-native-config'
 
 export const ETH_ADDRESS = '0x0000000000000000000000000000000000000000'
 
-export const createWallet = () => {
-  return ethers.Wallet.createRandom()
-}
-
 export const createProvider = providerName => {
   return new ethers.providers.EtherscanProvider(
     providerName,
@@ -20,6 +16,10 @@ export const createProvider = providerName => {
 
 export const importWalletByMnemonic = mnemonic => {
   return ethers.Wallet.fromMnemonic(mnemonic)
+}
+
+export const generateMnemonic = () => {
+  return ethers.utils.HDNode.entropyToMnemonic(ethers.utils.randomBytes(16))
 }
 
 export const importWalletByPrivateKey = privateKey => {

@@ -1,147 +1,71 @@
-import React, { useState, Fragment, useEffect, useRef } from 'react'
-import { withNavigation } from 'react-navigation'
-import { connect } from 'react-redux'
-import { View } from 'react-native'
-import { walletActions } from 'common/actions'
+import React from 'react'
+import { View, StyleSheet, SafeAreaView } from 'react-native'
 import {
-  OMGRadioButton,
-  OMGTextInput,
+  OMGIcon,
   OMGBackground,
   OMGText,
-  OMGBox,
-  OMGButton
+  OMGStatusBar
 } from 'components/widgets'
-import { Text, Title, withTheme } from 'react-native-paper'
-import { ScrollView } from 'react-native-gesture-handler'
-import { SafeAreaView } from 'react-navigation'
+import { withTheme } from 'react-native-paper'
+import { withNavigation } from 'react-navigation'
 
-const ImportWalletComponent = props => {
-  const [method, setMethod] = useState('keystore')
-
-  const { colors } = props.theme
-
-  const importMethod = selectedIndex => {
-    switch (selectedIndex) {
-      case 0:
-        setMethod('mnemonic')
-        break
-      case 1:
-        setMethod('keystore')
-        break
-      case 2:
-        setMethod('private_key')
-        break
-      default:
-        return
-    }
-  }
+const ImportWallet = ({ theme, navigation }) => {
+  const ImportWalletNavigator = navigation.getParam('navigator')
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        justifyContent: 'flex-end',
-        backgroundColor: colors.gray4
-      }}>
-      <OMGBackground
-        style={{ flex: 1, flexDirection: 'column', paddingHorizontal: 16 }}>
-        <ScrollView
-          keyboardShouldPersistTaps='always'
-          contentContainerStyle={{ flex: 1, flexDirection: 'column' }}
-          style={{ flex: 1 }}>
-          <OMGRadioButton
-            choices={['Mnemonic', 'Keystore', 'Private Key', 'Just 4th Button']}
-            onSelected={selectedIndex => {
-              importMethod(selectedIndex)
-            }}
+    <SafeAreaView style={styles.container}>
+      <OMGStatusBar
+        barStyle={'dark-content'}
+        backgroundColor={theme.colors.white}
+      />
+      <OMGBackground style={styles.contentContainer(theme)}>
+        <View style={styles.header}>
+          <OMGIcon
+            name='chevron-left'
+            size={18}
+            color={theme.colors.gray3}
+            style={styles.headerIcon}
+            onPress={() => navigation.goBack()}
           />
-          <Fragment>
-            {method === 'mnemonic' && <Mnemonic {...props} />}
-            {method === 'keystore' && <Text>Empty</Text>}
-          </Fragment>
-        </ScrollView>
+          <OMGText style={styles.headerTitle(theme)}>Import Wallet</OMGText>
+        </View>
+        <View style={styles.line(theme)} />
+        <ImportWalletNavigator navigation={navigation} />
       </OMGBackground>
     </SafeAreaView>
   )
 }
 
-const Mnemonic = ({
-  dispatchImportWalletByMnemonic,
-  loading,
-  provider,
-  wallets,
-  error,
-  navigation
-}) => {
-  const mnemonicRef = useRef(null)
-  const walletNameRef = useRef(null)
-
-  const importWallet = () => {
-    dispatchImportWalletByMnemonic(
-      wallets,
-      mnemonicRef.current,
-      provider,
-      walletNameRef.current
-    )
-  }
-
-  useEffect(() => {
-    if (loading.success && loading.action === 'WALLET_IMPORT') {
-      navigation.goBack()
-    }
-  }, [loading, navigation, wallets])
-
-  return (
-    <Fragment>
-      <OMGText>
-        Copy and paste Ethereum official wallet's Mnemonic to the input field to
-        import.
-      </OMGText>
-      <OMGBox style={{ marginTop: 16 }}>
-        <Title style={{ fontSize: 16, fontWeight: 'bold' }}>Mnemonic</Title>
-        <OMGTextInput
-          placeholder='Enter mnemonic...'
-          lines={4}
-          inputRef={mnemonicRef}
-          hideUnderline={true}
-          disabled={loading.show}
-        />
-      </OMGBox>
-      <OMGBox style={{ marginTop: 16 }}>
-        <OMGText style={{ fontSize: 16 }} weight='bold'>
-          Wallet Name
-        </OMGText>
-        <OMGTextInput
-          placeholder='Your wallet name'
-          hideUnderline={true}
-          inputRef={walletNameRef}
-          disabled={loading.show}
-        />
-      </OMGBox>
-      <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 16 }}>
-        <OMGButton loading={loading.show} onPress={importWallet}>
-          Import
-        </OMGButton>
-      </View>
-    </Fragment>
-  )
-}
-
-ImportWalletComponent.Mnemonic = Mnemonic
-
-const mapStateToProps = (state, ownProps) => ({
-  loading: state.loading,
-  wallets: state.wallets,
-  provider: state.setting.provider,
-  error: state.error
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  contentContainer: theme => ({
+    flex: 1,
+    flexDirection: 'column',
+    paddingVertical: 8,
+    backgroundColor: theme.colors.white
+  }),
+  header: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 16
+  },
+  headerIcon: {
+    padding: 8,
+    marginLeft: -8
+  },
+  headerTitle: theme => ({
+    fontSize: 18,
+    color: theme.colors.gray3,
+    marginLeft: 8,
+    textTransform: 'uppercase'
+  }),
+  line: theme => ({
+    marginTop: 16,
+    backgroundColor: theme.colors.white3,
+    height: 6
+  })
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchImportWalletByMnemonic: (wallets, mnemonic, provider, name) =>
-    dispatch(walletActions.importByMnemonic(wallets, mnemonic, provider, name))
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withNavigation(withTheme(ImportWalletComponent)))
+export default withNavigation(withTheme(ImportWallet))

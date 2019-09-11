@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="109px" height="110px" viewBox="0 0 109 110" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>Backup_Illust</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Hi-Res" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Backup-Wallet_2" transform="translate(-50.000000, -141.000000)">
+            <g id="Backup_Illust" transform="translate(50.000000, 141.000000)">
+                <g id="Group-2">
+                    <rect id="Rectangle-Copy" fill="#04070D" x="0.769230769" y="10" width="81" height="100" rx="4"></rect>
+                    <rect id="Rectangle" fill="#1A56F0" x="10.7692308" y="0" width="81" height="100" rx="4"></rect>
+                    <g id="Group" transform="translate(27.769231, 31.000000)" stroke="#FFFFFF" stroke-linecap="square">
+                        <path d="M0,0.388059701 L23,0.388059701" id="Line-2"></path>
+                        <path d="M0,17.0746269 L46,17.0746269" id="Line-3"></path>
+                        <path d="M0,34.1492537 L46,34.1492537" id="Line-3-Copy"></path>
+                        <path d="M0,51.2238806 L25.7307692,51.2238806" id="Line-3-Copy-2"></path>
+                    </g>
+                </g>
+                <g id="Group-3" transform="translate(79.254710, 54.656059) rotate(41.000000) translate(-79.254710, -54.656059) translate(73.754710, 15.656059)" stroke="#04070D">
+                    <path d="M0.910768609,0.598650551 L0.910768609,67.8896879 L4.73039795,76.2681401 L9.91076861,67.8823667 L9.91076861,0.598650551 L0.910768609,0.598650551 Z" id="Rectangle" fill="#FFFFFF"></path>
+                    <path d="M1.1806903,67.4703636 L9.8454767,67.4703636" id="Line"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

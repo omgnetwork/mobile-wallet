@@ -9,35 +9,54 @@ const OMGTextInput = ({
   hideUnderline,
   lines,
   keyboardType,
+  autoCapitalize,
   defaultValue,
+  maxLength,
   value,
   inputRef,
-  disabled
+  onFocus,
+  onBlur,
+  disabled,
+  theme
 }) => {
-  const [underlineTextcolor, setUnderlineTextcolor] = useState('#D9E2EC')
+  const [underlineTextcolor, setUnderlineTextcolor] = useState(
+    theme.colors.gray4
+  )
   const numberOfLines = lines ? lines : 1
   return (
     <TextInput
       mode='flat'
       placeholder={placeholder}
+      autoCapitalize={autoCapitalize || 'none'}
       onChangeText={text => {
         inputRef && (inputRef.current = text)
       }}
       underlineColorAndroid={hideUnderline ? 'transparent' : underlineTextcolor}
-      onBlur={() => setUnderlineTextcolor('#D9E2EC')}
-      onFocus={() => setUnderlineTextcolor('#627D98')}
+      onBlur={() => {
+        setUnderlineTextcolor(theme.colors.gray4)
+        onBlur && onBlur()
+      }}
+      onFocus={() => {
+        setUnderlineTextcolor(theme.colors.gray5)
+        onFocus && onFocus()
+      }}
       importantForAutofill='no'
+      maxLength={maxLength}
       numberOfLines={numberOfLines}
-      editable={disabled ? disabled : true}
+      editable={disabled === undefined ? true : !disabled}
       multiline={numberOfLines > 1}
       defaultValue={defaultValue}
       value={value}
-      textAlignVertical='top'
+      textAlignVertical={lines > 1 ? 'top' : 'center'}
       keyboardType={keyboardType}
+      selectionColor={theme.colors.gray5}
       style={{
         ...styles.textInput,
         ...style,
-        minHeight: Math.max(20, numberOfLines * 18)
+        minHeight: Math.max(
+          20,
+          Platform.OS === 'ios' ? numberOfLines * 24 : numberOfLines * 18
+        )
       }}
     />
   )
@@ -46,7 +65,7 @@ const styles = StyleSheet.create({
   textInput: {
     fontFamily: 'CircularStd-Book',
     backgroundColor: '#FFFFFF',
-    paddingTop: 12,
+    paddingVertical: Platform.OS === 'ios' ? 8 : 0,
     marginLeft: Platform.OS === 'ios' ? 0 : -4
   }
 })

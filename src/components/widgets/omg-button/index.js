@@ -9,7 +9,15 @@ import { withTheme } from 'react-native-paper'
 import { Push, Fade } from 'common/anims'
 import OMGText from '../omg-text'
 
-const OMGButton = ({ disabled, style, children, onPress, loading, theme }) => {
+const OMGButton = ({
+  disabled,
+  style,
+  textStyle,
+  children,
+  onPress,
+  loading,
+  theme
+}) => {
   const opacity = disabled || loading ? styles.inactive : styles.active
   const scale = useRef(new Animated.Value(1.0))
   const fade = useRef(new Animated.Value(1.0))
@@ -21,10 +29,10 @@ const OMGButton = ({ disabled, style, children, onPress, loading, theme }) => {
         color='#ffffff'
         style={{ ...styles.icon }}
       />
-      <OMGText style={styles.text}>{children}</OMGText>
+      <OMGText style={{ ...styles.text, ...textStyle }}>{children}</OMGText>
     </Fragment>
   ) : (
-    <OMGText style={styles.text}>{children}</OMGText>
+    <OMGText style={{ ...styles.text, ...textStyle }}>{children}</OMGText>
   )
 
   useEffect(() => {

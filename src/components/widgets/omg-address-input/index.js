@@ -19,7 +19,6 @@ const OMGAddressInput = ({ theme, address, style, onPress }) => {
         defaultValue={address}
         placeholder='Paste address'
         hideUnderline={true}
-        lines={1}
       />
       <TouchableOpacity style={styles.rightContainer(theme)} onPress={onPress}>
         <OMGIcon name='qr' size={24} color={theme.colors.gray3} />
@@ -56,7 +55,6 @@ const styles = StyleSheet.create({
   text: theme => ({
     color: theme.colors.primary,
     fontSize: 14,
-    paddingTop: Platform.OS === 'ios' ? -8 : 20,
     flex: 1
   }),
   rightContainer: theme => ({
