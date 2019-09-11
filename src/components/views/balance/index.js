@@ -45,7 +45,7 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
         colors={[theme.colors.black5, theme.colors.gray1]}>
         <View style={styles.topContainer}>
           <OMGText style={styles.topTitleLeft(theme)}>
-            {primaryWallet ? primaryWallet.name : 'Wallet not found.'}
+            {primaryWallet ? primaryWallet.name : 'Wallet not found'}
           </OMGText>
           <OMGIcon
             style={styles.topIconRight}
