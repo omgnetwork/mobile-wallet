@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
     padding: 16
   },
   walletItem: {
-    marginTop: 16
+    marginTop: 16,
+    padding: 8
   },
   title: theme => ({
     color: theme.colors.gray3
