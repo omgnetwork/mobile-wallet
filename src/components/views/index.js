@@ -12,6 +12,7 @@ import Deposit from './deposit'
 import Exit from './exit'
 import ExitForm from './exit/exit-form'
 import ExitConfirm from './exit/exit-confirm'
+import ExitPending from './exit/exit-pending'
 import History from './history'
 import ImportWallet from './import-wallet'
 import ImportWalletMnemonic from './import-wallet/mnemonic'
@@ -45,6 +46,7 @@ export {
   Exit,
   ExitForm,
   ExitConfirm,
+  ExitPending,
   History,
   ImportWallet,
   ImportWalletMnemonic,

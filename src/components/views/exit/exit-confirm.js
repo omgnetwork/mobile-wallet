@@ -11,7 +11,12 @@ const ExitConfirm = ({ theme, navigation }) => {
   const [loadingVisible, setLoadingVisible] = useState(false)
   const [confirmBtnDisable, setConfirmBtnDisable] = useState(false)
 
-  const exit = () => {}
+  const exit = () => {
+    navigation.navigate('ExitPending', {
+      token,
+      pendingTx: { hash: '1234' }
+    })
+  }
 
   return (
     <SafeAreaView style={styles.container(theme)}>
@@ -48,7 +53,7 @@ const ExitConfirm = ({ theme, navigation }) => {
           loading={loadingVisible}
           disabled={loadingVisible || confirmBtnDisable}
           onPress={exit}>
-          {confirmBtnDisable ? 'Waiting for watcher...' : 'Send Transaction'}
+          Exit from plasma chain
         </OMGButton>
       </View>
     </SafeAreaView>

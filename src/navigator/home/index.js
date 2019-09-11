@@ -52,7 +52,8 @@ export default (
         params: {
           navigator: ExitNavigator
         }
-      }
+      },
+      ExitPending: Views.ExitPending
     },
     {
       initialRouteName: 'Main',
