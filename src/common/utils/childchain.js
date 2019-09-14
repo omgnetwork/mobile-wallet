@@ -47,6 +47,10 @@ export const getTypedData = tx => {
   return transaction.getTypedData(tx, Config.CHILDCHAIN_CONTRACT_ADDRESS)
 }
 
+export const getExitData = utxo => {
+  return childchain.getExitData(utxo)
+}
+
 export const signTransaction = (typedData, privateKey) => {
   return childchain.signTransaction(typedData, [privateKey])
 }
@@ -124,4 +128,39 @@ export const depositErc20 = async (
   }
 
   return rootchain.depositToken(depositTransaction, txOptions)
+}
+
+export const getUtxos = (address, options) => {
+  const { currency } = options
+
+  return childchain
+    .getUtxos(address)
+    .then(utxos =>
+      currency ? utxos.filter(utxo => utxo.currency === currency) : utxos
+    )
+    .then(utxos => utxos.sort((a, b) => b.utxo_pos - a.utxo_pos))
+}
+
+export const standardExit = async (exitData, blockchainWallet, options) => {
+  return rootchain.startStandardExit(
+    exitData.utxo_pos,
+    exitData.txbytes,
+    exitData.proof,
+    {
+      privateKey: blockchainWallet.privateKey,
+      from: blockchainWallet.address,
+      gas: 1000000,
+      gasPrice: 10000000000
+    }
+  )
+}
+
+export const unlockTokenExitable = async (tokenContractAddress, options) => {
+  try {
+    const receipt = await rootchain.addToken(tokenContractAddress, options)
+    return Promise.resolve(receipt)
+  } catch (err) {
+    console.log('unlockTokenExitable', err)
+    return Promise.resolve(true)
+  }
 }

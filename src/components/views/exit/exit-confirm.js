@@ -1,21 +1,39 @@
 import React, { useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
+import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { Formatter } from 'common/utils'
+import { childchainActions } from 'common/actions'
 import { OMGText, OMGIcon, OMGButton, OMGExitWarning } from 'components/widgets'
 
-const ExitConfirm = ({ theme, navigation }) => {
+const exitFee = {
+  id: 3,
+  speed: 'Safe low',
+  estimateTime: 'Less than 30 minutes',
+  amount: '1.5',
+  symbol: 'Gwei',
+  price: '0.007'
+}
+
+const ExitConfirm = ({
+  theme,
+  navigation,
+  primaryWallet,
+  provider,
+  dispatchExit
+}) => {
   const token = navigation.getParam('token')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
   const [loadingVisible, setLoadingVisible] = useState(false)
   const [confirmBtnDisable, setConfirmBtnDisable] = useState(false)
 
   const exit = () => {
-    navigation.navigate('ExitPending', {
-      token,
-      pendingTx: { hash: '1234' }
-    })
+    // navigation.navigate('ExitPending', {
+    //   token,
+    //   pendingTx: { hash: '1234' }
+    // })
+    dispatchExit(primaryWallet, provider, token, exitFee)
   }
 
   return (
@@ -137,4 +155,19 @@ const styles = StyleSheet.create({
   })
 })
 
-export default withNavigation(withTheme(ExitConfirm))
+const mapStateToProps = (state, ownProps) => ({
+  primaryWallet: state.wallets.find(
+    w => w.address === state.setting.primaryWalletAddress
+  ),
+  provider: state.setting.provider
+})
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatchExit: (wallet, provider, token, fee) =>
+    dispatch(childchainActions.exit(wallet, provider, token, exitFee))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withNavigation(withTheme(ExitConfirm)))

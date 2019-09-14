@@ -7,6 +7,7 @@ import * as Formatter from './formatter'
 import * as Notification from './notification'
 import * as Parser from './parser'
 import * as ABI from './abi'
+import * as BigNumber from './bignumber'
 
 export {
   Price,
@@ -17,5 +18,6 @@ export {
   Notification,
   Rootchain,
   Childchain,
-  ABI
+  ABI,
+  BigNumber
 }

@@ -105,6 +105,7 @@ export const transfer = (fromBlockchainWallet, toAddress, token, fee) => {
       const transactionReceipt = await Childchain.submitTransaction(
         signedTransaction
       )
+
       resolve(transactionReceipt)
     } catch (err) {
       console.log(err)
@@ -150,6 +151,87 @@ export const depositErc20 = (address, privateKey, token, fee) => {
     } catch (err) {
       reject(err)
     }
+  })
+}
+
+export const exit = (blockchainWallet, token, fee) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Prepare UTXO with exact desired amount to be transferred.
+      const receipt = await transfer(
+        blockchainWallet,
+        blockchainWallet.address,
+        token,
+        fee
+      )
+
+      console.log(receipt)
+
+      const unlockReceipt = await Childchain.unlockTokenExitable(
+        token.contractAddress,
+        {
+          gasPrice: Parser.parseUnits(fee.amount, fee.symbol),
+          gas: 500000,
+          from: blockchainWallet.address,
+          privateKey: blockchainWallet.privateKey
+        }
+      )
+
+      console.log(unlockReceipt)
+
+      const desiredAmount = Parser.parseUnits(token.balance, token.tokenDecimal)
+
+      // Wait for new utxos to be merge or split within the block.
+      const selectedUtxo = await waitUntilFoundMatchedUTXO(
+        desiredAmount,
+        blockchainWallet,
+        token
+      )
+
+      const exitData = await Childchain.getExitData(selectedUtxo)
+      console.log('selectedUtxo', selectedUtxo)
+
+      const startExitReceipt = await Childchain.standardExit(
+        exitData,
+        blockchainWallet,
+        {
+          gas: 1000000,
+          gasPrice: Parser.parseUnits(fee.amount, fee.symbol)
+        }
+      )
+
+      console.log('Exit receipt', startExitReceipt)
+      resolve(startExitReceipt)
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
+function waitUntilFoundMatchedUTXO(desiredAmount, blockchainWallet, token) {
+  return new Promise((waitResolve, waitReject) => {
+    setTimeout(async () => {
+      // Reload UTXOs
+      const utxos = await Childchain.getUtxos(blockchainWallet.address, {
+        currency: token.contractAddress
+      })
+
+      // Find the correct one
+      const selectedUtxo = utxos.find(utxo =>
+        utxo.amount.isEqualTo(desiredAmount)
+      )
+
+      if (selectedUtxo) {
+        waitResolve(selectedUtxo)
+      } else {
+        console.log(utxos)
+        return await waitUntilFoundMatchedUTXO(
+          desiredAmount,
+          blockchainWallet,
+          token
+        )
+      }
+    }, 5000)
   })
 }
 

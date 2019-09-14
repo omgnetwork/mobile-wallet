@@ -149,6 +149,18 @@ export const waitDeposit = (provider, wallet, tx) => {
   })
 }
 
+export const exit = (wallet, provider, token, fee) => {
+  const asyncAction = async () => {
+    console.log('test')
+    const blockchainWallet = await walletService.get(wallet.address, provider)
+    return { utxos: await childchainService.exit(blockchainWallet, token, fee) }
+  }
+  return createAsyncAction({
+    type: 'CHILDCHAIN/EXIT',
+    operation: asyncAction
+  })
+}
+
 export const waitWatcherRecordTransaction = (wallet, tx) => {
   const asyncAction = async () => {
     await childchainService.wait(
