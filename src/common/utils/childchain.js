@@ -160,7 +160,6 @@ export const unlockTokenExitable = async (tokenContractAddress, options) => {
     const receipt = await rootchain.addToken(tokenContractAddress, options)
     return Promise.resolve(receipt)
   } catch (err) {
-    console.log('unlockTokenExitable', err)
     return Promise.resolve(true)
   }
 }

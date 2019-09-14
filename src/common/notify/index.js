@@ -6,7 +6,13 @@ export const notifySendToken = {
     'CHILDCHAIN_DEPOSIT_ETH_TOKEN',
     'CHILDCHAIN_DEPOSIT_ERC20_TOKEN'
   ],
-  msgSuccess: 'The transaction is sending. Track the progress at the etherscan.'
+  msgSuccess: 'The transaction is sending. Track the progress at the Etherscan.'
+}
+
+export const notifyExit = {
+  actions: ['CHILDCHAIN_EXIT'],
+  msgSuccess:
+    'The transaction is exiting from childchain. Track the progress at the Etherscan.'
 }
 
 export const notifyImportWallet = {

@@ -5,6 +5,7 @@ import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { Formatter } from 'common/utils'
 import { childchainActions } from 'common/actions'
+import { notifyExit } from 'common/notify'
 import { OMGText, OMGIcon, OMGButton, OMGExitWarning } from 'components/widgets'
 
 const exitFee = {
@@ -21,20 +22,39 @@ const ExitConfirm = ({
   navigation,
   primaryWallet,
   provider,
+  loading,
+  pendingTxs,
   dispatchExit
 }) => {
   const token = navigation.getParam('token')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
   const [loadingVisible, setLoadingVisible] = useState(false)
-  const [confirmBtnDisable, setConfirmBtnDisable] = useState(false)
 
   const exit = () => {
-    // navigation.navigate('ExitPending', {
-    //   token,
-    //   pendingTx: { hash: '1234' }
-    // })
     dispatchExit(primaryWallet, provider, token, exitFee)
   }
+
+  useEffect(() => {
+    if (loading.show && notifyExit.actions.indexOf(loading.action) > -1) {
+      setLoadingVisible(true)
+    } else if (
+      !loading.show &&
+      notifyExit.actions.indexOf(loading.action) > -1
+    ) {
+      setLoadingVisible(false)
+    } else {
+      loadingVisible
+    }
+  }, [loading.action, loading.show, loadingVisible])
+
+  useEffect(() => {
+    if (loading.success && notifyExit.actions.indexOf(loading.action) > -1) {
+      navigation.navigate('ExitPending', {
+        token,
+        pendingTx: pendingTxs.slice(-1).pop()
+      })
+    }
+  })
 
   return (
     <SafeAreaView style={styles.container(theme)}>
@@ -69,7 +89,6 @@ const ExitConfirm = ({
         <OMGButton
           style={styles.button}
           loading={loadingVisible}
-          disabled={loadingVisible || confirmBtnDisable}
           onPress={exit}>
           Exit from plasma chain
         </OMGButton>
@@ -159,6 +178,8 @@ const mapStateToProps = (state, ownProps) => ({
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
   ),
+  pendingTxs: state.transaction.pendingTxs,
+  loading: state.loading,
   provider: state.setting.provider
 })
 

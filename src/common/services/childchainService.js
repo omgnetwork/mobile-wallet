@@ -181,7 +181,7 @@ export const exit = (blockchainWallet, token, fee) => {
 
       const desiredAmount = Parser.parseUnits(token.balance, token.tokenDecimal)
 
-      // Wait for new utxos to be merge or split within the block.
+      // Wait for found matched UTXO after merge or split.
       const selectedUtxo = await waitUntilFoundMatchedUTXO(
         desiredAmount,
         blockchainWallet,
@@ -222,6 +222,7 @@ function waitUntilFoundMatchedUTXO(desiredAmount, blockchainWallet, token) {
       )
 
       if (selectedUtxo) {
+        console.log('resolve', selectedUtxo)
         waitResolve(selectedUtxo)
       } else {
         console.log(utxos)
@@ -231,7 +232,7 @@ function waitUntilFoundMatchedUTXO(desiredAmount, blockchainWallet, token) {
           token
         )
       }
-    }, 5000)
+    }, 3000)
   })
 }
 
