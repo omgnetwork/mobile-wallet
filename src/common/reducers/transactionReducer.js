@@ -8,6 +8,7 @@ export const transactionReducer = (state = { pendingTxs: [] }, action) => {
     case 'CHILDCHAIN/EXIT/SUCCESS':
       return { ...state, pendingTxs: [...state.pendingTxs, action.data] }
     case 'CHILDCHAIN/WAIT_DEPOSITING/SUCCESS':
+    case 'CHILDCHAIN/WAIT_EXITING/SUCCESS':
     case 'CHILDCHAIN/WAIT_SENDING/SUCCESS':
     case 'ROOTCHAIN/WAIT_SENDING/SUCCESS':
       return {

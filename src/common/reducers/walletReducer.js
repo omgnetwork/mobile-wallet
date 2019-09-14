@@ -61,6 +61,18 @@ export const walletsReducer = (state = [], action) => {
           return wallet
         }
       })
+    case 'CHILDCHAIN/WAIT_EXITING/SUCCESS':
+      return state.map(wallet => {
+        if (wallet.address === action.data.from) {
+          return {
+            ...wallet,
+            shouldRefresh: false,
+            shouldRefreshChildchain: true
+          }
+        } else {
+          return wallet
+        }
+      })
     case 'ROOTCHAIN/WAIT_SENDING/SUCCESS':
       return state.map(wallet => {
         if (wallet.address === action.data.from) {

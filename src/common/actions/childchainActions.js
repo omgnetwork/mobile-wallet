@@ -149,6 +149,32 @@ export const waitDeposit = (provider, wallet, tx) => {
   })
 }
 
+export const waitExit = (provider, wallet, tx) => {
+  const asyncAction = async () => {
+    const txReceipt = await rootchainService.subscribeTransaction(
+      provider,
+      tx,
+      12
+    )
+
+    notificationService.sendNotification({
+      title: `${wallet.name} exit is now taking off!`,
+      message: `${tx.value} ${tx.symbol}`
+    })
+
+    return {
+      hash: tx.hash,
+      from: tx.from,
+      gasPrice: tx.gasPrice.toString()
+    }
+  }
+  return createAsyncAction({
+    type: 'CHILDCHAIN/WAIT_EXITING',
+    operation: asyncAction,
+    isBackgroundTask: true
+  })
+}
+
 export const exit = (wallet, provider, token, fee) => {
   const asyncAction = async () => {
     const blockchainWallet = await walletService.get(wallet.address, provider)

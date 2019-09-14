@@ -17,14 +17,30 @@ import {
 } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const ExitPending = ({ theme, navigation }) => {
+const ExitPending = ({
+  theme,
+  navigation,
+  dispatchSubscribeExit,
+  provider,
+  wallet
+}) => {
   const pendingTx = navigation.getParam('pendingTx')
   const token = navigation.getParam('token')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
+  const [subscribed, setSubscribed] = useState(false)
 
   const handleOnBackPressedAndroid = () => {
     return true
   }
+
+  useEffect(() => {
+    if (!subscribed) {
+      if (pendingTx && pendingTx.type === 'CHILDCHAIN_EXIT') {
+        dispatchSubscribeExit(provider, wallet, pendingTx)
+        setSubscribed(true)
+      }
+    }
+  }, [subscribed, pendingTx, dispatchSubscribeExit, provider, wallet])
 
   return (
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
@@ -169,9 +185,19 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({})
+const mapStateToProps = (state, ownProps) => ({
+  pendingTxs: state.transaction.pendingTxs,
+  loading: state.loading,
+  provider: state.setting.provider,
+  wallet: state.wallets.find(
+    wallet => wallet.address === state.setting.primaryWalletAddress
+  )
+})
 
-const mapDispatchToProps = (dispatch, ownProps) => ({})
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatchSubscribeExit: (provider, wallet, tx) =>
+    dispatch(childchainActions.waitExit(provider, wallet, tx))
+})
 
 export default connect(
   mapStateToProps,
