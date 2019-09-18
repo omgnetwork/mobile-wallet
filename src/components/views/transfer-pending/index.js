@@ -42,7 +42,7 @@ const TransferPending = ({
       if (pendingTx && pendingTx.type === 'ROOTCHAIN_SEND') {
         dispatchSubscribeTransaction(provider, wallet, pendingTx)
       } else if (pendingTx && pendingTx.type === 'CHILDCHAIN_DEPOSIT') {
-        dispatchSubscribeDeposit(provider, wallet, pendingTx)
+        dispatchSubscribeDeposit(wallet, pendingTx)
       } else if (pendingTx && pendingTx.type === 'CHILDCHAIN_SEND_TOKEN') {
         dispatchSubscribeChildchainTransaction(wallet, pendingTx)
       }
@@ -280,8 +280,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchSubscribeDeposit: (provider, wallet, tx) =>
-    dispatch(childchainActions.waitDeposit(provider, wallet, tx)),
+  dispatchSubscribeDeposit: (wallet, tx) =>
+    dispatch(childchainActions.waitDeposit(wallet, tx)),
   dispatchSubscribeTransaction: (provider, wallet, tx) =>
     dispatch(rootchainActions.subscribeTransaction(provider, wallet, tx)),
   dispatchSubscribeChildchainTransaction: (wallet, tx) =>
