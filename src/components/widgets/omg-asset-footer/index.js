@@ -12,11 +12,8 @@ const OMGAssetFooter = ({
 }) => {
   return (
     <OMGBackground style={{ ...styles.container(theme), ...style }}>
-      <TouchableOpacity
-        style={styles.subfooter}
-        disabled={disabled}
-        onPress={onPressDeposit}>
-        <OMGText style={styles.subfooterText(theme, disabled)}>DEPOSIT</OMGText>
+      <TouchableOpacity style={styles.subfooter} onPress={onPressDeposit}>
+        <OMGText style={styles.subfooterText(theme, false)}>DEPOSIT</OMGText>
       </TouchableOpacity>
       <View style={styles.divider(theme)} />
       <TouchableOpacity

@@ -4,24 +4,13 @@ export const settingReducer = (state = {}, action) => {
     case 'SETTING/SYNC_PROVIDER/SUCCESS':
       return {
         ...state,
-        provider: action.data.provider,
-        providerName: action.data.providerName
+        providerName: action.data.providerName,
+        provider: action.data.provider
       }
     case 'SETTING/SET_PRIMARY_ADDRESS/OK':
       return {
         ...state,
         primaryWalletAddress: action.data.primaryWalletAddress
-      }
-    case 'SETTING/SET_PRIMARY_WALLET/SUCCESS':
-      return {
-        ...state,
-        primaryWallet: action.data.wallet
-      }
-    case 'WALLET/DELETE_ALL/OK':
-      return {
-        ...state,
-        primaryWallet: null,
-        primaryWalletAddress: null
       }
     default:
       return state

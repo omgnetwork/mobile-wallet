@@ -6,6 +6,7 @@ import * as Datetime from './datetime'
 import * as Formatter from './formatter'
 import * as Notification from './notification'
 import * as Parser from './parser'
+import * as Polling from './polling'
 import * as ABI from './abi'
 import * as BigNumber from './bignumber'
 
@@ -14,6 +15,7 @@ export {
   Storage,
   Formatter,
   Parser,
+  Polling,
   Datetime,
   Notification,
   Rootchain,

@@ -25,6 +25,8 @@ export const getTransactionHistory = (address, lastBlockNumber) => {
         lastBlockNumber
       )
 
+      console.log(response)
+
       const formattedTxHistory = response.data.result.map(tx => {
         return {
           hash: tx.hash,

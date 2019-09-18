@@ -12,7 +12,8 @@ const web3 = new Web3(
     transactionConfirmationBlocks: 1
   }
 )
-const rootchain = new RootChain(web3, Config.CHILDCHAIN_CONTRACT_ADDRESS)
+
+const rootchain = new RootChain(web3, Config.PLASMA_CONTRACT_ADDRESS)
 const childchain = new ChildChain(Config.CHILDCHAIN_WATCHER_URL)
 
 export const getBalances = address => {
@@ -44,7 +45,7 @@ export const createTransaction = (fromAddress, payments, fee) => {
 }
 
 export const getTypedData = tx => {
-  return transaction.getTypedData(tx, Config.CHILDCHAIN_CONTRACT_ADDRESS)
+  return transaction.getTypedData(tx, Config.PLASMA_CONTRACT_ADDRESS)
 }
 
 export const getExitData = utxo => {
@@ -99,7 +100,7 @@ export const depositErc20 = async (
     to: contractAddress,
     nonce: nonce,
     data: erc20Contract.methods
-      .approve(Config.CHILDCHAIN_CONTRACT_ADDRESS, weiAmount)
+      .approve(Config.PLASMA_CONTRACT_ADDRESS, weiAmount)
       .encodeABI(),
     gasPrice: options.gasPrice
   }
@@ -131,7 +132,7 @@ export const depositErc20 = async (
 }
 
 export const getUtxos = (address, options) => {
-  const { currency } = options
+  const { currency } = options || {}
 
   return childchain
     .getUtxos(address)

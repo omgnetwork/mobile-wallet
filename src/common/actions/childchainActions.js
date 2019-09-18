@@ -10,8 +10,12 @@ import Config from 'react-native-config'
 
 export const fetchAssets = (rootchainAssets, address) => {
   const asyncAction = async () => {
-    const assets = await childchainService.fetchAssets(rootchainAssets, address)
-    return { address, childchainAssets: assets }
+    const result = await childchainService.fetchAssets(rootchainAssets, address)
+    return {
+      address,
+      childchainAssets: result.childchainAssets,
+      lastUtxoPos: result.lastUtxoPos
+    }
   }
   return createAsyncAction({
     type: 'CHILDCHAIN/LOAD_ASSETS',
@@ -130,7 +134,6 @@ export const waitDeposit = (provider, wallet, tx) => {
       Config.CHILDCHAIN_DEPOSIT_CONFIRMATION_BLOCKS
     )
     console.log(txReceipt)
-
     notificationService.sendNotification({
       title: `${wallet.name} deposited`,
       message: `${tx.value} ${tx.symbol}`
@@ -202,9 +205,12 @@ export const exit = (wallet, provider, token, fee) => {
 
 export const waitWatcherRecordTransaction = (wallet, tx) => {
   const asyncAction = async () => {
-    await childchainService.wait(
-      Number(Config.CHILDCHAIN_WATCHER_WAIT_DURATION || '40000')
+    await childchainService.waitUntilFoundNewUTXO(
+      wallet.lastUtxoPos || '0',
+      wallet.address
     )
+
+    console.log('childchain transaction confirm')
 
     notificationService.sendNotification({
       title: `${wallet.name} sent`,

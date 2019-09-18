@@ -10,7 +10,7 @@ const OMGExitWarning = ({ theme, style }) => {
         <OMGIcon name='attention' style={styles.icon(theme)} />
       </View>
       <OMGText style={styles.text(theme)}>
-        You are about to move fund out of to Ethereum
+        You are about to move fund out of Ethereum
         <OMGText weight='bold'> Plasma </OMGText>
         Chain to
         <OMGText weight='bold'> Ethereum </OMGText>

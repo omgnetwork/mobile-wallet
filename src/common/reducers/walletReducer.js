@@ -43,7 +43,8 @@ export const walletsReducer = (state = [], action) => {
               childchainAssets,
               action.data.childchainAssets
             ),
-            shouldRefreshChildchain: false
+            shouldRefreshChildchain: false,
+            lastUtxoPos: action.data.lastUtxoPos
           }
         } else {
           return wallet

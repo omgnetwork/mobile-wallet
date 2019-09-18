@@ -55,6 +55,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
       ? wallet.rootchainAssets[0]
       : wallet.childchainAssets[0]
   )
+  const addressRef = useRef(selectedAddress || testAddress)
   const textRef = useRef(defaultAmount)
 
   const submit = () => {
@@ -65,7 +66,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
         isRootchain: isRootchain,
         toWallet: {
           name: isDeposit ? 'Plasma Contract' : 'Another wallet',
-          address: selectedAddress || testAddress
+          address: addressRef.current
         },
         fee: selectedFee
       })
@@ -110,8 +111,8 @@ const TransferForm = ({ wallet, theme, navigation }) => {
               />
             ) : (
               <OMGAddressInput
-                address={selectedAddress || testAddress}
                 style={styles.addressInput}
+                inputRef={addressRef}
                 onPress={() => navigation.navigate('TransferScanner')}
               />
             )}

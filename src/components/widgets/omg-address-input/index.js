@@ -5,18 +5,19 @@ import OMGImage from '../omg-image'
 import OMGIcon from '../omg-icon'
 import OMGTextInput from '../omg-text-input'
 
-const OMGAddressInput = ({ theme, address, style, onPress }) => {
+const OMGAddressInput = ({ theme, style, onPress, inputRef }) => {
   return (
     <View style={{ ...styles.container(theme), ...style }}>
       <OMGImage
         style={styles.logo(theme)}
         source={{
-          uri: `https://api.adorable.io/avatars/285/${address}.png`
+          uri: `https://api.adorable.io/avatars/285/${inputRef.current}.png`
         }}
       />
       <OMGTextInput
         style={styles.text(theme)}
-        defaultValue={address}
+        defaultValue={inputRef.current}
+        inputRef={inputRef}
         placeholder='Paste address'
         hideUnderline={true}
       />

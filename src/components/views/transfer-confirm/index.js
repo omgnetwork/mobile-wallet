@@ -76,7 +76,7 @@ const TransferConfirm = ({
     const isPendingChildchainTransaction =
       pendingTxs.find(tx => tx.type === 'CHILDCHAIN_SEND_TOKEN') !== undefined
     const isChildchainTransaction =
-      !isRootchain && toWallet.address !== Config.CHILDCHAIN_CONTRACT_ADDRESS
+      !isRootchain && toWallet.address !== Config.PLASMA_CONTRACT_ADDRESS
 
     setConfirmBtnDisable(
       isPendingChildchainTransaction && isChildchainTransaction
@@ -302,7 +302,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 })
 
 const getAction = (token, fee, wallet, provider, toAddress, isRootchain) => {
-  const TO_CHILDCHAIN = toAddress === Config.CHILDCHAIN_CONTRACT_ADDRESS
+  const TO_CHILDCHAIN = toAddress === Config.PLASMA_CONTRACT_ADDRESS
   const ETH_TOKEN = token.contractAddress === Rootchain.ETH_ADDRESS
   if (TO_CHILDCHAIN && ETH_TOKEN) {
     return childchainActions.depositEth(wallet, provider, token, fee)

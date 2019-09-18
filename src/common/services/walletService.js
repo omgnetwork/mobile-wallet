@@ -49,6 +49,7 @@ export const fetchAssets = (provider, address, lastBlockNumber) => {
         pendingEthToken,
         ...pendingERC20Tokens
       ])
+
       const updatedBlock =
         (txHistory.length && txHistory.slice(-1).pop().blockNumber) || 0
       const updatedAssets = {
