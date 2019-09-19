@@ -1,18 +1,17 @@
-function delayRequest(sendRequest, interval, resolve) {
-  setTimeout(async () => {
-    const result = await sendRequest()
+import BackgroundTimer from 'react-native-background-timer'
 
-    console.log(result)
-    if (result.success) {
-      resolve(result.data)
-    } else {
-      delayRequest(sendRequest, interval, resolve)
-    }
-  }, interval || 5000)
+async function execute(request, resolve) {
+  const result = await request()
+  if (result.success) {
+    resolve(result.data)
+    BackgroundTimer.stopBackgroundTimer()
+  }
 }
 
-export const poll = (sendRequest, interval) => {
+export const poll = (request, interval) => {
   return new Promise((resolve, reject) => {
-    delayRequest(sendRequest, interval, resolve)
+    BackgroundTimer.runBackgroundTimer(() => {
+      execute(request, resolve)
+    }, interval || 5000)
   })
 }
