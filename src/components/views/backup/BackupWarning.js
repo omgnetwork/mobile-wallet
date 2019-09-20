@@ -8,7 +8,7 @@ import BackupImage from './assets/backup.svg'
 import BackupIcon1 from './assets/backup-ic1.svg'
 import BackupIcon2 from './assets/backup-ic2.svg'
 import BackupIcon3 from './assets/backup-ic3.svg'
-import BackupModal from './backup-modal'
+import BackupModal from './BackupModal'
 import { OMGButton, OMGText } from 'components/widgets'
 
 const SuggestionItem = ({ renderImage, text, style, theme }) => {
