@@ -66,10 +66,6 @@ export const getResolvedPendingTxs = (pendingTxs, address) => {
 export const transfer = (fromBlockchainWallet, toAddress, token, fee) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const utxos = await Childchain.getUtxos(fromBlockchainWallet.address, {
-        currency: '0x0000000000000000000000000000000000000000'
-      })
-
       const payments = Childchain.createPayment(
         toAddress,
         token.contractAddress,
@@ -217,6 +213,23 @@ export const exit = (blockchainWallet, token, fee) => {
   })
 }
 
+export const processExits = (blockchainWallet, token, fee) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const receipt = await Childchain.processExits(token.contractAddress, {
+        gasPrice: Parser.parseUnits(fee.amount, fee.symbol),
+        gas: 500000,
+        from: blockchainWallet.address,
+        privateKey: blockchainWallet.privateKey
+      })
+
+      resolve(receipt)
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
 export const waitUntilFoundMatchedUTXO = (
   desiredAmount,
   blockchainWallet,
@@ -246,12 +259,10 @@ export const waitUntilFoundMatchedUTXO = (
   }, 5000)
 }
 
-export const waitUntilFoundNewUTXO = (lastUtxoPos, address) => {
+export const waitUntilFoundNewUTXO = (address, options) => {
   return Polling.poll(async () => {
-    const utxos = await Childchain.getUtxos(address)
-    const latestUtxoPos =
-      (utxos.length && utxos[0].utxo_pos.toString(10)) || '0'
-    if (latestUtxoPos > lastUtxoPos) {
+    const utxos = await Childchain.getUtxos(address, options)
+    if (utxos.length) {
       return {
         success: true,
         data: utxos

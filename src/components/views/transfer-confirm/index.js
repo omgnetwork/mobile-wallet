@@ -5,7 +5,7 @@ import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Formatter, Rootchain } from 'common/utils'
 import Config from 'react-native-config'
-import { notifySendToken } from 'common/notify'
+import { Notify } from 'common/constants'
 import { rootchainActions, childchainActions } from 'common/actions'
 import {
   OMGBox,
@@ -31,21 +31,19 @@ const TransferConfirm = ({
   const tokenPrice = formatTokenPrice(token.balance, token.price)
   const [loadingVisible, setLoadingVisible] = useState(false)
   const [confirmBtnDisable, setConfirmBtnDisable] = useState(false)
+  const observedActions = [
+    ...Notify.transfer.actions,
+    ...Notify.deposit.actions
+  ]
 
   useEffect(() => {
-    if (
-      loading.success &&
-      notifySendToken.actions.indexOf(loading.action) > -1
-    ) {
-      navigation.navigate({
-        routeName: 'TransferPending',
-        params: {
-          token,
-          fromWallet,
-          toWallet,
-          pendingTx: pendingTxs.slice(-1).pop(),
-          fee
-        }
+    if (loading.success && observedActions.indexOf(loading.action) > -1) {
+      navigation.navigate('TransferPending', {
+        token,
+        fromWallet,
+        toWallet,
+        pendingTx: pendingTxs.slice(-1).pop(),
+        fee
       })
     }
   }, [
@@ -54,23 +52,21 @@ const TransferConfirm = ({
     loading.action,
     loading.success,
     navigation,
+    observedActions,
     pendingTxs,
     toWallet,
     token
   ])
 
   useEffect(() => {
-    if (loading.show && notifySendToken.actions.indexOf(loading.action) > -1) {
+    if (loading.show && observedActions.indexOf(loading.action) > -1) {
       setLoadingVisible(true)
-    } else if (
-      !loading.show &&
-      notifySendToken.actions.indexOf(loading.action) > -1
-    ) {
+    } else if (!loading.show && observedActions.indexOf(loading.action) > -1) {
       setLoadingVisible(false)
     } else {
       loadingVisible
     }
-  }, [loading.action, loading.show, loadingVisible])
+  }, [loading.action, loading.show, loadingVisible, observedActions])
 
   useEffect(() => {
     const isPendingChildchainTransaction =

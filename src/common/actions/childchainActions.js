@@ -54,6 +54,7 @@ export const depositEth = (wallet, provider, token, fee) => {
       from: wallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
+      contractAddress: token.contractAddress,
       gasPrice: fee.amount,
       type: 'CHILDCHAIN_DEPOSIT',
       createdAt: Datetime.now()
@@ -86,6 +87,7 @@ export const transfer = (provider, fromWallet, toAddress, token, fee) => {
       from: fromWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
+      contractAddress: token.contractAddress,
       gasPrice: fee.amount,
       type: 'CHILDCHAIN_SEND_TOKEN',
       createdAt: Datetime.now()
@@ -114,6 +116,7 @@ export const depositErc20 = (wallet, provider, token, fee) => {
       from: wallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
+      contractAddress: token.contractAddress,
       gasPrice: fee.amount,
       type: 'CHILDCHAIN_DEPOSIT',
       createdAt: Datetime.now()
@@ -127,10 +130,11 @@ export const depositErc20 = (wallet, provider, token, fee) => {
 
 export const waitDeposit = (wallet, tx) => {
   const asyncAction = async () => {
-    await childchainService.waitUntilFoundNewUTXO(
-      wallet.lastUtxoPos,
-      wallet.address
-    )
+    await childchainService.waitUntilFoundNewUTXO(wallet.lastUtxoPos, {
+      lastUtxoPos: wallet.lastUtxoPos,
+      currency: tx.contractAddress
+    })
+
     notificationService.sendNotification({
       title: `${wallet.name} deposited`,
       message: `${tx.value} ${tx.symbol}`
@@ -189,6 +193,7 @@ export const exit = (wallet, provider, token, fee) => {
       from: wallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
+      contractAddress: token.contractAddress,
       gasPrice: fee.amount,
       type: 'CHILDCHAIN_EXIT',
       createdAt: Datetime.now()
@@ -200,12 +205,39 @@ export const exit = (wallet, provider, token, fee) => {
   })
 }
 
+export const processExits = (wallet, provider, token, fee) => {
+  const asyncAction = async () => {
+    const blockchainWallet = await walletService.get(wallet.address, provider)
+    const exitReceipt = await childchainService.processExits(
+      blockchainWallet,
+      token,
+      fee
+    )
+    return {
+      hash: exitReceipt.transactionHash,
+      from: wallet.address,
+      value: token.balance,
+      symbol: token.tokenSymbol,
+      contractAddress: token.contractAddress,
+      gasPrice: fee.amount,
+      type: 'CHILDCHAIN_PROCESS_EXIT',
+      createdAt: Datetime.now()
+    }
+  }
+
+  return createAsyncAction({
+    type: 'CHILDCHAIN/PROCESS_EXIT',
+    operation: asyncAction
+  })
+}
+
 export const waitWatcherRecordTransaction = (wallet, tx) => {
   const asyncAction = async () => {
-    await childchainService.waitUntilFoundNewUTXO(
-      wallet.lastUtxoPos,
-      wallet.address
-    )
+    console.log(tx)
+    await childchainService.waitUntilFoundNewUTXO(wallet.address, {
+      lastUtxoPos: wallet.lastUtxoPos,
+      currency: tx.contractAddress
+    })
 
     notificationService.sendNotification({
       title: `${wallet.name} sent`,

@@ -132,12 +132,15 @@ export const depositErc20 = async (
 }
 
 export const getUtxos = (address, options) => {
-  const { currency } = options || {}
+  const { currency, lastUtxoPos } = options || {}
 
   return childchain
     .getUtxos(address)
     .then(utxos =>
       currency ? utxos.filter(utxo => utxo.currency === currency) : utxos
+    )
+    .then(utxos =>
+      utxos.filter(utxo => utxo.utxo_pos.toString(10) > (lastUtxoPos || 0))
     )
     .then(utxos => utxos.sort((a, b) => b.utxo_pos - a.utxo_pos))
 }
@@ -163,4 +166,8 @@ export const unlockTokenExitable = async (tokenContractAddress, options) => {
   } catch (err) {
     return Promise.resolve(true)
   }
+}
+
+export const processExits = (contractAddress, options) => {
+  return rootchain.processExits(contractAddress, 0, 10, options)
 }
