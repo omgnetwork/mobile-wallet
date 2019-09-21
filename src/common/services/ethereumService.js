@@ -1,9 +1,9 @@
-import { Rootchain } from '../utils'
+import { Ethereum } from 'common/blockchain'
 
 export const sendErc20Token = (token, fee, fromWallet, toAddress) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const pendingTransaction = await Rootchain.sendErc20Token(
+      const pendingTransaction = await Ethereum.sendErc20Token(
         token,
         fee,
         fromWallet,
@@ -19,7 +19,7 @@ export const sendErc20Token = (token, fee, fromWallet, toAddress) => {
 export const sendEthToken = (token, fee, fromWallet, toAddress) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const pendingTransaction = await Rootchain.sendEthToken(
+      const pendingTransaction = await Ethereum.sendEthToken(
         token,
         fee,
         fromWallet,
@@ -35,11 +35,7 @@ export const sendEthToken = (token, fee, fromWallet, toAddress) => {
 export const subscribeTransaction = (provider, tx, confirmations) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const txReceipt = await Rootchain.subscribeTransaction(
-        provider,
-        tx,
-        confirmations
-      )
+      const txReceipt = await Ethereum.subscribeTx(provider, tx, confirmations)
       resolve(txReceipt)
     } catch (err) {
       reject(err)

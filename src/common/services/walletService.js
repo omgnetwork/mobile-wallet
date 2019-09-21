@@ -1,5 +1,7 @@
-import { Rootchain, Formatter, Datetime } from '../utils'
+import { Formatter, Datetime } from '../utils'
 import { walletStorage } from '../storages'
+import { ContractAddress } from 'common/constants'
+import { Ethereum } from 'common/blockchain'
 import { priceService, providerService } from '../services'
 import Config from 'react-native-config'
 
@@ -7,7 +9,7 @@ export const get = async (address, provider) => {
   return new Promise(async (resolve, reject) => {
     try {
       const mnemonic = await walletStorage.getMnemonic(address)
-      const wallet = Rootchain.importWalletByMnemonic(mnemonic)
+      const wallet = Ethereum.importWalletMnemonic(mnemonic)
       const connectedProviderWallet = wallet.connect(provider)
       resolve(connectedProviderWallet)
     } catch (err) {
@@ -19,7 +21,7 @@ export const get = async (address, provider) => {
 export const getEthBalance = address => {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await Rootchain.getEthBalance(address)
+      const response = await Ethereum.getEthBalance(address)
       const balance = response.data.result
       const formattedBalance = Formatter.formatUnits(balance, 18)
       resolve(formattedBalance)
@@ -38,7 +40,7 @@ export const fetchAssets = (provider, address, lastBlockNumber) => {
       )
 
       const pendingEthPrice = priceService.fetchPriceUsd(
-        Rootchain.ETH_ADDRESS,
+        ContractAddress.ETH_ADDRESS,
         Config.ETHERSCAN_NETWORK
       )
       const pendingEthBalance = getEthBalance(address)
@@ -79,7 +81,7 @@ export const fetchEthToken = (pendingEthBalance, pendingEthPrice) => {
         tokenName: 'Ether',
         tokenSymbol: 'ETH',
         tokenDecimal: 18,
-        contractAddress: Rootchain.ETH_ADDRESS,
+        contractAddress: ContractAddress.ETH_ADDRESS,
         balance: balance,
         price: price
       })
@@ -155,7 +157,7 @@ export const importByMnemonic = (wallets, mnemonic, provider, name) => {
         throw new Error('Wallet name is empty')
       }
 
-      const wallet = Rootchain.importWalletByMnemonic(mnemonic)
+      const wallet = Ethereum.importWalletMnemonic(mnemonic)
       const connectedProviderWallet = wallet.connect(provider)
 
       const address = await connectedProviderWallet.address

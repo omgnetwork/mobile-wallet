@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { View, StyleSheet } from 'react-native'
-import { Rootchain } from 'common/utils'
+import { Ethereum } from 'common/blockchain'
 import { walletStorage } from 'common/storages'
 import BackupImage from './assets/backup.svg'
 import BackupIcon1 from './assets/backup-ic1.svg'
@@ -52,7 +52,7 @@ const BackupWarning = ({ theme, navigation }) => {
       navigateToBackupTranscribe()
     } else {
       requestAnimationFrame(async () => {
-        setMnemonic(Rootchain.generateMnemonic())
+        setMnemonic(Ethereum.generateMnemonic())
       })
     }
   }

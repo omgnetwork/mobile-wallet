@@ -4,7 +4,7 @@ import { View, StyleSheet, Linking } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Formatter } from 'common/utils'
-import { rootchainActions, childchainActions } from 'common/actions'
+import { ethereumActions, plasmaActions } from 'common/actions'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
 import {
@@ -196,7 +196,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchSubscribeExit: (provider, wallet, tx) =>
-    dispatch(childchainActions.waitExit(provider, wallet, tx))
+    dispatch(plasmaActions.waitExit(provider, wallet, tx))
 })
 
 export default connect(

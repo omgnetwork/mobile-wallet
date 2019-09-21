@@ -1,15 +1,15 @@
 import { createAsyncAction } from './actionCreators'
 import {
-  childchainService,
+  plasmaService,
   walletService,
-  rootchainService,
+  ethereumService,
   notificationService
 } from 'common/services'
 import { Datetime } from 'common/utils'
 
 export const fetchAssets = (rootchainAssets, address) => {
   const asyncAction = async () => {
-    const result = await childchainService.fetchAssets(rootchainAssets, address)
+    const result = await plasmaService.fetchAssets(rootchainAssets, address)
     return {
       address,
       childchainAssets: result.childchainAssets,
@@ -24,7 +24,7 @@ export const fetchAssets = (rootchainAssets, address) => {
 
 export const invalidatePendingTx = (pendingTxs, address) => {
   const asyncAction = async () => {
-    const resolvedTxs = await childchainService.getResolvedPendingTxs(
+    const resolvedTxs = await plasmaService.getResolvedPendingTxs(
       pendingTxs,
       address
     )
@@ -42,7 +42,7 @@ export const depositEth = (wallet, provider, token, fee) => {
   const asyncAction = async () => {
     const blockchainWallet = await walletService.get(wallet.address, provider)
 
-    const transactionReceipt = await childchainService.depositEth(
+    const transactionReceipt = await plasmaService.depositEth(
       blockchainWallet.address,
       blockchainWallet.privateKey,
       token.balance,
@@ -73,7 +73,7 @@ export const transfer = (provider, fromWallet, toAddress, token, fee) => {
       provider
     )
 
-    const transactionReceipt = await childchainService.transfer(
+    const transactionReceipt = await plasmaService.transfer(
       blockchainWallet,
       toAddress,
       token,
@@ -104,7 +104,7 @@ export const depositErc20 = (wallet, provider, token, fee) => {
   const asyncAction = async () => {
     const blockchainWallet = await walletService.get(wallet.address, provider)
 
-    const transactionReceipt = await childchainService.depositErc20(
+    const transactionReceipt = await plasmaService.depositErc20(
       blockchainWallet.address,
       blockchainWallet.privateKey,
       token,
@@ -130,7 +130,7 @@ export const depositErc20 = (wallet, provider, token, fee) => {
 
 export const waitDeposit = (wallet, tx) => {
   const asyncAction = async () => {
-    await childchainService.waitUntilFoundNewUTXO(wallet.lastUtxoPos, {
+    await plasmaService.waitUntilFoundNewUTXO(wallet.lastUtxoPos, {
       lastUtxoPos: wallet.lastUtxoPos,
       currency: tx.contractAddress
     })
@@ -155,7 +155,7 @@ export const waitDeposit = (wallet, tx) => {
 
 export const waitExit = (provider, wallet, tx) => {
   const asyncAction = async () => {
-    const txReceipt = await rootchainService.subscribeTransaction(
+    const txReceipt = await ethereumService.subscribeTransaction(
       provider,
       tx,
       12
@@ -182,11 +182,7 @@ export const waitExit = (provider, wallet, tx) => {
 export const exit = (wallet, provider, token, fee) => {
   const asyncAction = async () => {
     const blockchainWallet = await walletService.get(wallet.address, provider)
-    const exitReceipt = await childchainService.exit(
-      blockchainWallet,
-      token,
-      fee
-    )
+    const exitReceipt = await plasmaService.exit(blockchainWallet, token, fee)
 
     return {
       hash: exitReceipt.transactionHash,
@@ -208,7 +204,7 @@ export const exit = (wallet, provider, token, fee) => {
 export const processExits = (wallet, provider, token, fee) => {
   const asyncAction = async () => {
     const blockchainWallet = await walletService.get(wallet.address, provider)
-    const exitReceipt = await childchainService.processExits(
+    const exitReceipt = await plasmaService.processExits(
       blockchainWallet,
       token,
       fee
@@ -234,7 +230,7 @@ export const processExits = (wallet, provider, token, fee) => {
 export const waitWatcherRecordTransaction = (wallet, tx) => {
   const asyncAction = async () => {
     console.log(tx)
-    await childchainService.waitUntilFoundNewUTXO(wallet.address, {
+    await plasmaService.waitUntilFoundNewUTXO(wallet.address, {
       lastUtxoPos: wallet.lastUtxoPos,
       currency: tx.contractAddress
     })

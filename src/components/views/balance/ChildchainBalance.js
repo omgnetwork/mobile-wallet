@@ -2,7 +2,7 @@ import React, { useState, Fragment, useEffect } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
-import { childchainActions, walletActions } from 'common/actions'
+import { plasmaActions, walletActions } from 'common/actions'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
 import { Formatter, Datetime } from 'common/utils'
@@ -116,11 +116,9 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchInvalidatePendingTxs: (wallet, pendingTxs) =>
-    dispatch(childchainActions.invalidatePendingTx(pendingTxs, wallet.address)),
+    dispatch(plasmaActions.invalidatePendingTx(pendingTxs, wallet.address)),
   dispatchLoadAssets: wallet =>
-    dispatch(
-      childchainActions.fetchAssets(wallet.rootchainAssets, wallet.address)
-    ),
+    dispatch(plasmaActions.fetchAssets(wallet.rootchainAssets, wallet.address)),
   dispatchSetShouldRefreshChildchain: (address, shouldRefreshChildchain) =>
     walletActions.setShouldRefreshChildchain(
       dispatch,
@@ -128,7 +126,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
       shouldRefreshChildchain
     ),
   dispatchSubscribeChildchainTransaction: (wallet, tx) =>
-    dispatch(childchainActions.waitWatcherRecordTransaction(wallet, tx))
+    dispatch(plasmaActions.waitWatcherRecordTransaction(wallet, tx))
 })
 
 export default connect(

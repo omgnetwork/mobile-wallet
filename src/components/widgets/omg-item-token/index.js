@@ -11,7 +11,9 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
   const shadowOpacity = useRef(new Animated.Value(0))
   const balanceOpacity = useRef(new Animated.Value(1.0))
   const balance = formatTokenBalance(token.balance)
+  const price = formatTokenPrice(token.balance, token.price)
   const [currentBalance, setCurrentBalance] = useState(balance)
+  const [currentPrice, setCurrentPrice] = useState(price)
 
   useEffect(() => {
     if (currentBalance !== balance) {
@@ -25,6 +27,7 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
       ]).start(({ finished }) => {
         if (finished) {
           setCurrentBalance(balance)
+          setCurrentPrice(price)
         }
       })
     } else {
@@ -40,7 +43,7 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
         }
       })
     }
-  }, [balance, currentBalance])
+  }, [balance, currentBalance, price])
 
   return (
     <Animated.View
@@ -66,9 +69,7 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
           numberOfLines={1}>
           {currentBalance}
         </OMGText>
-        <OMGText style={styles.fiatValue(theme)}>
-          {formatTokenPrice(token.balance, token.price)} USD
-        </OMGText>
+        <OMGText style={styles.fiatValue(theme)}>{currentPrice} USD</OMGText>
       </Animated.View>
     </Animated.View>
   )

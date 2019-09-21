@@ -1,5 +1,5 @@
 import {
-  rootchainService,
+  ethereumService,
   walletService,
   notificationService
 } from '../services'
@@ -13,7 +13,7 @@ export const sendErc20Token = (token, fee, fromWallet, provider, toAddress) => {
       fromWallet.address,
       provider
     )
-    const tx = await rootchainService.sendErc20Token(
+    const tx = await ethereumService.sendErc20Token(
       token,
       fee,
       blockchainWallet,
@@ -45,7 +45,7 @@ export const sendEthToken = (token, fee, fromWallet, provider, toAddress) => {
       provider
     )
 
-    const tx = await rootchainService.sendEthToken(
+    const tx = await ethereumService.sendEthToken(
       token,
       fee,
       blockchainWallet,
@@ -72,7 +72,7 @@ export const sendEthToken = (token, fee, fromWallet, provider, toAddress) => {
 
 export const subscribeTransaction = (provider, wallet, tx) => {
   const asyncAction = async () => {
-    const txReceipt = await rootchainService.subscribeTransaction(
+    const txReceipt = await ethereumService.subscribeTransaction(
       provider,
       tx,
       Config.ROOTCHAIN_TRANSFER_CONFIRMATION_BLOCKS

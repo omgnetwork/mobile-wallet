@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useReducer } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { Formatter, Rootchain } from 'common/utils'
+import { Formatter } from 'common/utils'
 import Config from 'react-native-config'
-import { Notify } from 'common/constants'
-import { rootchainActions, childchainActions } from 'common/actions'
+import { Notify, ContractAddress } from 'common/constants'
+import { ethereumActions, plasmaActions } from 'common/actions'
 import {
   OMGBox,
   OMGButton,
@@ -299,23 +299,17 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 const getAction = (token, fee, wallet, provider, toAddress, isRootchain) => {
   const TO_CHILDCHAIN = toAddress === Config.PLASMA_CONTRACT_ADDRESS
-  const ETH_TOKEN = token.contractAddress === Rootchain.ETH_ADDRESS
+  const ETH_TOKEN = token.contractAddress === ContractAddress.ETH_ADDRESS
   if (TO_CHILDCHAIN && ETH_TOKEN) {
-    return childchainActions.depositEth(wallet, provider, token, fee)
+    return plasmaActions.depositEth(wallet, provider, token, fee)
   } else if (TO_CHILDCHAIN && !ETH_TOKEN) {
-    return childchainActions.depositErc20(wallet, provider, token, fee)
+    return plasmaActions.depositErc20(wallet, provider, token, fee)
   } else if (!isRootchain) {
-    return childchainActions.transfer(provider, wallet, toAddress, token, fee)
+    return plasmaActions.transfer(provider, wallet, toAddress, token, fee)
   } else if (ETH_TOKEN) {
-    return rootchainActions.sendEthToken(
-      token,
-      fee,
-      wallet,
-      provider,
-      toAddress
-    )
+    return ethereumActions.sendEthToken(token, fee, wallet, provider, toAddress)
   } else {
-    return rootchainActions.sendErc20Token(
+    return ethereumActions.sendErc20Token(
       token,
       fee,
       wallet,

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { Formatter } from 'common/utils'
-import { childchainActions } from 'common/actions'
+import { plasmaActions } from 'common/actions'
 import { Notify } from 'common/constants'
 import { OMGText, OMGIcon, OMGButton, OMGExitWarning } from 'components/widgets'
 
@@ -185,7 +185,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchExit: (wallet, provider, token, fee) =>
-    dispatch(childchainActions.exit(wallet, provider, token, exitFee))
+    dispatch(plasmaActions.exit(wallet, provider, token, exitFee))
 })
 
 export default connect(

@@ -1,5 +1,3 @@
-import * as Rootchain from './rootchain'
-import * as Childchain from './childchain'
 import * as Price from './price'
 import * as Storage from './storage'
 import * as Datetime from './datetime'
@@ -18,8 +16,6 @@ export {
   Polling,
   Datetime,
   Notification,
-  Rootchain,
-  Childchain,
   ABI,
   BigNumber
 }
