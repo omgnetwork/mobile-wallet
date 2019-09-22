@@ -26,6 +26,7 @@ const ChildchainBalance = ({
   const [totalBalance, setTotalBalance] = useState(0.0)
   const disabledChildchainAction =
     !wallet.childchainAssets || wallet.childchainAssets.length === 0
+
   useEffect(() => {
     if (wallet.shouldRefreshChildchain && wallet.rootchainAssets) {
       dispatchLoadAssets(wallet)

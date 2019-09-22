@@ -98,3 +98,18 @@ export const subscribeTransaction = (provider, wallet, tx) => {
     isBackgroundTask: true
   })
 }
+
+export const invalidatePendingTx = (pendingTxs, address) => {
+  const asyncAction = async () => {
+    const resolvedTxs = await ethereumService.getResolvedPendingTxs(
+      pendingTxs,
+      address
+    )
+    return { resolvedPendingTxs: resolvedTxs }
+  }
+  return createAsyncAction({
+    type: 'ROOTCHAIN/INVALIDATE_PENDING_TXS',
+    operation: asyncAction,
+    isBackgroundTask: true
+  })
+}

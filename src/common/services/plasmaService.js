@@ -54,7 +54,7 @@ export const getResolvedPendingTxs = (pendingTxs, address) => {
       resolve(
         transactions.filter(
           tx =>
-            pendingTxs.find(pendingTx => pendingTx.txhash === tx.hash) !==
+            pendingTxs.find(pendingTx => pendingTx.hash === tx.txhash) !==
             undefined
         )
       )

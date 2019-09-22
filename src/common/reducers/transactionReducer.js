@@ -26,9 +26,10 @@ export const transactionReducer = (state = { pendingTxs: [] }, action) => {
             : pendingTx
         )
       }
+    case 'ROOTCHAIN/INVALIDATE_PENDING_TXS/SUCCESS':
     case 'CHILDCHAIN/INVALIDATE_PENDING_TXS/SUCCESS':
       const resolvedPendingTxHashes = action.data.resolvedPendingTxs.map(
-        tx => tx.txhash
+        tx => tx.hash
       )
       return {
         ...state,

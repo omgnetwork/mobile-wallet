@@ -42,3 +42,22 @@ export const subscribeTransaction = (provider, tx, confirmations) => {
     }
   })
 }
+
+export const getResolvedPendingTxs = (pendingTxs, address) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await Ethereum.getTxs(address)
+      const transactions = response.data.result
+      console.log(transactions)
+      resolve(
+        transactions.filter(
+          tx =>
+            pendingTxs.find(pendingTx => pendingTx.hash === tx.hash) !==
+            undefined
+        )
+      )
+    } catch (err) {
+      reject(err)
+    }
+  })
+}

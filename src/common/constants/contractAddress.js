@@ -1,1 +1,4 @@
+import Config from 'react-native-config'
+
 export const ETH_ADDRESS = '0x0000000000000000000000000000000000000000'
+export const PLASMA_CONTRACT_ADDRESS = Config.PLASMA_CONTRACT_ADDRESS

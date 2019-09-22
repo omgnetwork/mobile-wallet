@@ -7,7 +7,7 @@
     "test": "jest",
     "lint": "eslint .",
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --simulator='iPhone 11 Pro'",
     "fix": "eslint . --fix",
     "postinstall": "rn-nodeify --install assert,stream,events,crypto,url,http,https,vm,os --hack"
   },
