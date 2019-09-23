@@ -47,17 +47,23 @@ export const fetchAssets = (rootchainAssets, address) => {
   })
 }
 
-export const getResolvedPendingTxs = (pendingTxs, address) => {
+export const getResolvedPendingTxs = (pendingTxs, address, resolvedTxs) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const transactions = await Plasma.getTxs(address)
-      resolve(
-        transactions.filter(
-          tx =>
-            pendingTxs.find(pendingTx => pendingTx.hash === tx.txhash) !==
-            undefined
+      if (resolvedTxs && resolvedTxs.length) {
+        console.log(resolvedTxs)
+        resolve(resolvedTxs)
+      } else {
+        const transactions = await Plasma.getTxs(address, 0, 10)
+        console.log(transactions)
+        resolve(
+          transactions.filter(
+            tx =>
+              pendingTxs.find(pendingTx => pendingTx.hash === tx.txhash) !==
+              undefined
+          )
         )
-      )
+      }
     } catch (err) {
       reject(err)
     }
@@ -187,7 +193,7 @@ export const exit = (blockchainWallet, token, fee) => {
       const desiredAmount = Parser.parseUnits(token.balance, token.tokenDecimal)
 
       // Wait for found matched UTXO after merge or split.
-      const selectedUtxo = await waitUntilFoundMatchedUTXO(
+      const selectedUtxo = await subscribeExit(
         desiredAmount,
         blockchainWallet,
         token
@@ -229,11 +235,8 @@ export const processExits = (blockchainWallet, token, fee) => {
   })
 }
 
-export const waitUntilFoundMatchedUTXO = (
-  desiredAmount,
-  blockchainWallet,
-  token
-) => {
+// Subscribe exit
+export const subscribeExit = (desiredAmount, blockchainWallet, token) => {
   return Polling.poll(async () => {
     // Reload UTXOs
     const utxos = await Plasma.getUtxos(blockchainWallet.address, {
@@ -258,7 +261,8 @@ export const waitUntilFoundMatchedUTXO = (
   }, 5000)
 }
 
-export const waitUntilFoundNewUTXO = (address, options) => {
+// Subscribe deposit and childchain transfer
+export const subscribeUTXOs = (address, options) => {
   return Polling.poll(async () => {
     const utxos = await Plasma.getUtxos(address, options)
     if (utxos.length) {
@@ -272,8 +276,4 @@ export const waitUntilFoundNewUTXO = (address, options) => {
       }
     }
   }, 5000)
-}
-
-export const wait = ms => {
-  return new Promise((resolve, reject) => setTimeout(resolve, ms))
 }

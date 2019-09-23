@@ -164,6 +164,9 @@ export const submitTx = signedTx => {
   return Plasma.childchain.submitTransaction(signedTx)
 }
 
-export const getTxs = address => {
-  return Plasma.childchain.getTransactions([{ address, limit: 10 }])
+export const getTxs = (address, blknum, limit) => {
+  return Plasma.childchain.getTransactions({
+    address: address,
+    limit: limit || 10
+  })
 }

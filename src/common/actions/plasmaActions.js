@@ -22,15 +22,23 @@ export const fetchAssets = (rootchainAssets, address) => {
   })
 }
 
-export const invalidatePendingTx = (pendingTxs, address) => {
+export const invalidatePendingTx = (pendingTxs, address, resolvedTxs) => {
   const asyncAction = async () => {
-    const resolvedTxs = await plasmaService.getResolvedPendingTxs(
+    const currentWatcherTxs = await plasmaService.getResolvedPendingTxs(
       pendingTxs,
-      address
+      address,
+      resolvedTxs
     )
 
-    return { resolvedPendingTxs: resolvedTxs }
+    return {
+      resolvedPendingTxs:
+        currentWatcherTxs &&
+        currentWatcherTxs.map(tx => ({
+          hash: tx.hash
+        }))
+    }
   }
+
   return createAsyncAction({
     type: 'CHILDCHAIN/INVALIDATE_PENDING_TXS',
     operation: asyncAction,
@@ -130,7 +138,7 @@ export const depositErc20 = (wallet, provider, token, fee) => {
 
 export const waitDeposit = (wallet, tx) => {
   const asyncAction = async () => {
-    await plasmaService.waitUntilFoundNewUTXO(wallet.lastUtxoPos, {
+    await plasmaService.subscribeUTXOs(wallet.lastUtxoPos, {
       lastUtxoPos: wallet.lastUtxoPos,
       currency: tx.contractAddress
     })
@@ -227,10 +235,11 @@ export const processExits = (wallet, provider, token, fee) => {
   })
 }
 
+// Subscribe childchain transfer
 export const waitWatcherRecordTransaction = (wallet, tx) => {
   const asyncAction = async () => {
     console.log(tx)
-    await plasmaService.waitUntilFoundNewUTXO(wallet.address, {
+    await plasmaService.subscribeUTXOs(wallet.address, {
       lastUtxoPos: wallet.lastUtxoPos,
       currency: tx.contractAddress
     })
