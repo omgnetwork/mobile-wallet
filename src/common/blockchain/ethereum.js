@@ -35,7 +35,21 @@ export const getERC20Balance = (provider, contractAddress, accountAddress) => {
   const contract = new ethers.Contract(contractAddress, abi, provider)
   return contract.balanceOf(accountAddress)
 }
+
 // Transaction Management
+export const getERC20Txs = (address, lastBlockNumber) => {
+  return axios.get(Config.ETHERSCAN_API_URL, {
+    params: {
+      module: 'account',
+      sort: 'asc',
+      apikey: Config.ETHERSCAN_API_KEY,
+      address: address,
+      action: 'tokentx',
+      startblock: lastBlockNumber || '0',
+      endblock: '99999999'
+    }
+  })
+}
 
 export const getTxs = (address, lastBlockNumber) => {
   return axios.get(Config.ETHERSCAN_API_URL, {
@@ -44,8 +58,8 @@ export const getTxs = (address, lastBlockNumber) => {
       sort: 'asc',
       apikey: Config.ETHERSCAN_API_KEY,
       address: address,
-      action: 'tokentx',
-      startblock: lastBlockNumber,
+      action: 'txlist',
+      startblock: lastBlockNumber || '0',
       endblock: '99999999'
     }
   })

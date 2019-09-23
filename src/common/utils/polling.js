@@ -1,17 +1,17 @@
-import BackgroundTimer from 'react-native-background-timer'
+// import BackgroundTimer from 'react-native-background-timer'
 
-async function execute(request, resolve) {
-  const result = await request()
-  if (result.success) {
-    resolve(result.data)
-    BackgroundTimer.stopBackgroundTimer()
-  }
-}
+// async function execute(request, resolve) {
+//   const result = await request()
+//   if (result.success) {
+//     resolve(result.data)
+//     BackgroundTimer.stopBackgroundTimer()
+//   }
+// }
 
-export const poll = (request, interval) => {
-  return new Promise((resolve, reject) => {
-    BackgroundTimer.runBackgroundTimer(() => {
-      execute(request, resolve)
-    }, interval || 5000)
-  })
-}
+// export const poll = (request, interval) => {
+//   return new Promise((resolve, reject) => {
+//     BackgroundTimer.runBackgroundTimer(() => {
+//       execute(request, resolve)
+//     }, interval || 5000)
+//   })
+// }

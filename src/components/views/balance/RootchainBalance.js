@@ -14,8 +14,7 @@ const RootchainBalance = ({
   dispatchLoadAssets,
   wallet,
   loading,
-  dispatchSetShouldRefreshWallet,
-  dispatchInvalidatePendingTxs
+  dispatchRefreshRootchain
 }) => {
   const [totalBalance, setTotalBalance] = useState(0.0)
   const currency = 'USD'
@@ -23,15 +22,13 @@ const RootchainBalance = ({
   useEffect(() => {
     if (provider && wallet.shouldRefresh) {
       dispatchLoadAssets(provider, wallet.address, wallet.updatedBlock || '0')
-      dispatchInvalidatePendingTxs(wallet, pendingTxs)
-      dispatchSetShouldRefreshWallet(wallet.address, false)
+      dispatchRefreshRootchain(wallet.address, false)
     }
   }, [
-    dispatchInvalidatePendingTxs,
     dispatchLoadAssets,
     pendingTxs,
     provider,
-    dispatchSetShouldRefreshWallet,
+    dispatchRefreshRootchain,
     wallet
   ])
 
@@ -99,10 +96,8 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchLoadAssets: (provider, address, lastBlockNumber) =>
     dispatch(walletActions.loadAssets(provider, address, lastBlockNumber)),
-  dispatchSetShouldRefreshWallet: (address, shouldRefresh) =>
-    walletActions.setShouldRefreshWallet(dispatch, address, shouldRefresh),
-  dispatchInvalidatePendingTxs: (wallet, pendingTxs) =>
-    dispatch(ethereumActions.invalidatePendingTx(pendingTxs, wallet.address))
+  dispatchRefreshRootchain: (address, shouldRefresh) =>
+    walletActions.refreshRootchain(dispatch, address, shouldRefresh)
 })
 
 export default connect(

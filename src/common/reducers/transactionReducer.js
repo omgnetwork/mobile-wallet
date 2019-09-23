@@ -7,45 +7,15 @@ export const transactionReducer = (state = { pendingTxs: [] }, action) => {
     case 'CHILDCHAIN/DEPOSIT_ERC20_TOKEN/SUCCESS':
     case 'CHILDCHAIN/EXIT/SUCCESS':
       return { ...state, pendingTxs: [...state.pendingTxs, action.data] }
-    case 'CHILDCHAIN/WAIT_DEPOSITING/SUCCESS':
-    case 'CHILDCHAIN/WAIT_EXITING/SUCCESS':
-    case 'CHILDCHAIN/WAIT_SENDING/SUCCESS':
-    case 'ROOTCHAIN/WAIT_SENDING/SUCCESS':
+    case 'TRANSACTION/INVALIDATE_PENDING_TX/OK':
       return {
         ...state,
         pendingTxs: state.pendingTxs.filter(
-          pendingTx => pendingTx.hash !== action.data.hash
+          pendingTx => pendingTx.hash !== action.data.resolvedPendingTx.hash
         )
-      }
-    case 'CHILDCHAIN/WAIT_SENDING/LISTENING':
-      return {
-        ...state,
-        pendingTxs: state.pendingTxs.map(pendingTx =>
-          pendingTx.type === 'CHILDCHAIN_SEND_TOKEN'
-            ? { ...pendingTx, resubscribe: false }
-            : pendingTx
-        )
-      }
-    case 'ROOTCHAIN/INVALIDATE_PENDING_TXS/SUCCESS':
-    case 'CHILDCHAIN/INVALIDATE_PENDING_TXS/SUCCESS':
-      const resolvedPendingTxHashes = action.data.resolvedPendingTxs.map(
-        tx => tx.hash
-      )
-      return {
-        ...state,
-        pendingTxs: state.pendingTxs
-          .filter(
-            pendingTx => resolvedPendingTxHashes.indexOf(pendingTx.hash) === -1
-          )
-          .map(tx => {
-            if (tx.type === 'CHILDCHAIN_SEND_TOKEN') {
-              return { ...tx, resubscribe: true }
-            } else {
-              return tx
-            }
-          })
       }
     case 'WALLET/DELETE_ALL/OK':
+    case 'SETTING/SET_PRIMARY_ADDRESS/OK':
       return { pendingTxs: [] }
     default:
       return state

@@ -21,7 +21,7 @@ export const getName = async defaultProviderName => {
 export const getTransactionHistory = (address, lastBlockNumber) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await Ethereum.getTxs(address, lastBlockNumber)
+      const response = await Ethereum.getERC20Txs(address, lastBlockNumber)
 
       console.log(response)
 

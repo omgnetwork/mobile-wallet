@@ -32,30 +32,25 @@ export const sendEthToken = (token, fee, fromWallet, toAddress) => {
   })
 }
 
-export const subscribeTransaction = (provider, tx, confirmations) => {
+export const getERC20Txs = (address, lastBlockNumber) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const txReceipt = await Ethereum.subscribeTx(provider, tx, confirmations)
-      resolve(txReceipt)
+      const response = await Ethereum.getERC20Txs(address, lastBlockNumber)
+      const currentRootchainTxs = response.data.result
+      resolve(currentRootchainTxs)
     } catch (err) {
       reject(err)
     }
   })
 }
 
-export const getResolvedPendingTxs = (pendingTxs, address) => {
+export const getTxs = (address, lastBlockNumber) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await Ethereum.getTxs(address)
-      const transactions = response.data.result
-      console.log(transactions)
-      resolve(
-        transactions.filter(
-          tx =>
-            pendingTxs.find(pendingTx => pendingTx.hash === tx.hash) !==
-            undefined
-        )
-      )
+      const response = await Ethereum.getTxs(address, lastBlockNumber)
+      const currentRootchainTxs = response.data.result
+      console.log(currentRootchainTxs)
+      resolve(currentRootchainTxs)
     } catch (err) {
       reject(err)
     }

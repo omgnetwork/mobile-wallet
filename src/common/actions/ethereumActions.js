@@ -1,11 +1,6 @@
-import {
-  ethereumService,
-  walletService,
-  notificationService
-} from '../services'
+import { ethereumService, walletService } from '../services'
 import { createAsyncAction } from './actionCreators'
 import { Datetime } from 'common/utils'
-import Config from 'react-native-config'
 
 export const sendErc20Token = (token, fee, fromWallet, provider, toAddress) => {
   const asyncAction = async () => {
@@ -67,49 +62,5 @@ export const sendEthToken = (token, fee, fromWallet, provider, toAddress) => {
   return createAsyncAction({
     type: 'ROOTCHAIN/SEND_ETH_TOKEN',
     operation: asyncAction
-  })
-}
-
-export const subscribeTransaction = (provider, wallet, tx) => {
-  const asyncAction = async () => {
-    const txReceipt = await ethereumService.subscribeTransaction(
-      provider,
-      tx,
-      Config.ROOTCHAIN_TRANSFER_CONFIRMATION_BLOCKS
-    )
-
-    console.log(txReceipt)
-    notificationService.sendNotification({
-      title: `${wallet.name} sent`,
-      message: `${tx.value} ${tx.symbol}`
-    })
-
-    return {
-      hash: tx.hash,
-      from: tx.from,
-      nonce: tx.nonce,
-      gasPrice: tx.gasPrice.toString()
-    }
-  }
-
-  return createAsyncAction({
-    type: 'ROOTCHAIN/WAIT_SENDING',
-    operation: asyncAction,
-    isBackgroundTask: true
-  })
-}
-
-export const invalidatePendingTx = (pendingTxs, address) => {
-  const asyncAction = async () => {
-    const resolvedTxs = await ethereumService.getResolvedPendingTxs(
-      pendingTxs,
-      address
-    )
-    return { resolvedPendingTxs: resolvedTxs }
-  }
-  return createAsyncAction({
-    type: 'ROOTCHAIN/INVALIDATE_PENDING_TXS',
-    operation: asyncAction,
-    isBackgroundTask: true
   })
 }

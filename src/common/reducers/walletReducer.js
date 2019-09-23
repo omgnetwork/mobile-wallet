@@ -50,47 +50,30 @@ export const walletsReducer = (state = [], action) => {
           return wallet
         }
       })
-    case 'CHILDCHAIN/WAIT_DEPOSITING/SUCCESS':
+    case 'WALLET/REFRESH_CHILDCHAIN/OK':
       return state.map(wallet => {
-        if (wallet.address === action.data.from) {
+        if (wallet.address === action.data.address) {
           return {
             ...wallet,
-            shouldRefresh: true,
-            shouldRefreshChildchain: true
+            shouldRefreshChildchain: action.data.shouldRefresh
           }
         } else {
           return wallet
         }
       })
-    case 'CHILDCHAIN/WAIT_EXITING/SUCCESS':
+    case 'WALLET/REFRESH_BOTH/OK':
       return state.map(wallet => {
-        if (wallet.address === action.data.from) {
+        if (wallet.address === action.data.address) {
           return {
             ...wallet,
-            shouldRefresh: false,
-            shouldRefreshChildchain: true
+            shouldRefreshChildchain: action.data.shouldRefresh,
+            shouldRefresh: action.data.shouldRefresh
           }
         } else {
           return wallet
         }
       })
-    case 'ROOTCHAIN/WAIT_SENDING/SUCCESS':
-      return state.map(wallet => {
-        if (wallet.address === action.data.from) {
-          return { ...wallet, shouldRefresh: true }
-        } else {
-          return wallet
-        }
-      })
-    case 'CHILDCHAIN/WAIT_SENDING/SUCCESS':
-      return state.map(wallet => {
-        if (wallet.address === action.data.from) {
-          return { ...wallet, shouldRefreshChildchain: true }
-        } else {
-          return wallet
-        }
-      })
-    case 'WALLET/SET_SHOULD_REFRESH/OK':
+    case 'WALLET/REFRESH_ROOTCHAIN/OK':
       return state.map(wallet => {
         if (wallet.address === action.data.address) {
           return { ...wallet, shouldRefresh: action.data.shouldRefresh }

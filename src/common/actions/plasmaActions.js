@@ -22,30 +22,6 @@ export const fetchAssets = (rootchainAssets, address) => {
   })
 }
 
-export const invalidatePendingTx = (pendingTxs, address, resolvedTxs) => {
-  const asyncAction = async () => {
-    const currentWatcherTxs = await plasmaService.getResolvedPendingTxs(
-      pendingTxs,
-      address,
-      resolvedTxs
-    )
-
-    return {
-      resolvedPendingTxs:
-        currentWatcherTxs &&
-        currentWatcherTxs.map(tx => ({
-          hash: tx.hash
-        }))
-    }
-  }
-
-  return createAsyncAction({
-    type: 'CHILDCHAIN/INVALIDATE_PENDING_TXS',
-    operation: asyncAction,
-    isBackgroundTask: true
-  })
-}
-
 export const depositEth = (wallet, provider, token, fee) => {
   const asyncAction = async () => {
     const blockchainWallet = await walletService.get(wallet.address, provider)
@@ -136,57 +112,6 @@ export const depositErc20 = (wallet, provider, token, fee) => {
   })
 }
 
-export const waitDeposit = (wallet, tx) => {
-  const asyncAction = async () => {
-    await plasmaService.subscribeUTXOs(wallet.lastUtxoPos, {
-      lastUtxoPos: wallet.lastUtxoPos,
-      currency: tx.contractAddress
-    })
-
-    notificationService.sendNotification({
-      title: `${wallet.name} deposited`,
-      message: `${tx.value} ${tx.symbol}`
-    })
-
-    return {
-      hash: tx.hash,
-      from: tx.from,
-      gasPrice: tx.gasPrice.toString()
-    }
-  }
-  return createAsyncAction({
-    type: 'CHILDCHAIN/WAIT_DEPOSITING',
-    operation: asyncAction,
-    isBackgroundTask: true
-  })
-}
-
-export const waitExit = (provider, wallet, tx) => {
-  const asyncAction = async () => {
-    const txReceipt = await ethereumService.subscribeTransaction(
-      provider,
-      tx,
-      12
-    )
-
-    notificationService.sendNotification({
-      title: `${wallet.name} exit is now taking off!`,
-      message: `${tx.value} ${tx.symbol}`
-    })
-
-    return {
-      hash: tx.hash,
-      from: tx.from,
-      gasPrice: tx.gasPrice.toString()
-    }
-  }
-  return createAsyncAction({
-    type: 'CHILDCHAIN/WAIT_EXITING',
-    operation: asyncAction,
-    isBackgroundTask: true
-  })
-}
-
 export const exit = (wallet, provider, token, fee) => {
   const asyncAction = async () => {
     const blockchainWallet = await walletService.get(wallet.address, provider)
@@ -232,32 +157,5 @@ export const processExits = (wallet, provider, token, fee) => {
   return createAsyncAction({
     type: 'CHILDCHAIN/PROCESS_EXIT',
     operation: asyncAction
-  })
-}
-
-// Subscribe childchain transfer
-export const waitWatcherRecordTransaction = (wallet, tx) => {
-  const asyncAction = async () => {
-    console.log(tx)
-    await plasmaService.subscribeUTXOs(wallet.address, {
-      lastUtxoPos: wallet.lastUtxoPos,
-      currency: tx.contractAddress
-    })
-
-    notificationService.sendNotification({
-      title: `${wallet.name} sent`,
-      message: `${tx.value} ${tx.symbol}`
-    })
-
-    return {
-      hash: tx.hash,
-      from: tx.from,
-      gasPrice: tx.gasPrice.toString()
-    }
-  }
-  return createAsyncAction({
-    type: 'CHILDCHAIN/WAIT_SENDING',
-    operation: asyncAction,
-    isBackgroundTask: true
   })
 }

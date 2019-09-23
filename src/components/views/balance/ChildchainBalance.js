@@ -30,7 +30,7 @@ const ChildchainBalance = ({
   useEffect(() => {
     if (wallet.shouldRefreshChildchain && wallet.rootchainAssets) {
       dispatchLoadAssets(wallet)
-      dispatchInvalidatePendingTxs(wallet, pendingTxs)
+      // dispatchInvalidatePendingTxs(wallet, pendingTxs)
       dispatchSetShouldRefreshChildchain(wallet.address, false)
     }
   }, [
@@ -52,17 +52,6 @@ const ChildchainBalance = ({
       setTotalBalance(totalPrices)
     }
   }, [wallet.childchainAssets])
-
-  useEffect(() => {
-    const resubscribeTxs = pendingTxs.filter(
-      pendingTx =>
-        pendingTx.resubscribe && pendingTx.type === 'CHILDCHAIN_SEND_TOKEN'
-    )
-
-    resubscribeTxs.forEach(tx => {
-      dispatchSubscribeChildchainTransaction(wallet, tx)
-    })
-  }, [dispatchSubscribeChildchainTransaction, pendingTxs, wallet])
 
   return (
     <Fragment>
@@ -116,18 +105,10 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchInvalidatePendingTxs: (wallet, pendingTxs) =>
-    dispatch(plasmaActions.invalidatePendingTx(pendingTxs, wallet.address)),
   dispatchLoadAssets: wallet =>
     dispatch(plasmaActions.fetchAssets(wallet.rootchainAssets, wallet.address)),
   dispatchSetShouldRefreshChildchain: (address, shouldRefreshChildchain) =>
-    walletActions.setShouldRefreshChildchain(
-      dispatch,
-      address,
-      shouldRefreshChildchain
-    ),
-  dispatchSubscribeChildchainTransaction: (wallet, tx) =>
-    dispatch(plasmaActions.waitWatcherRecordTransaction(wallet, tx))
+    walletActions.refreshChildchain(dispatch, address, shouldRefreshChildchain)
 })
 
 export default connect(

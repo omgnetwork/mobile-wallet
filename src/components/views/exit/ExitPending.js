@@ -7,40 +7,16 @@ import { Formatter } from 'common/utils'
 import { ethereumActions, plasmaActions } from 'common/actions'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
-import {
-  OMGBox,
-  OMGButton,
-  OMGText,
-  OMGWalletAddress,
-  OMGStatusBar,
-  OMGIcon
-} from 'components/widgets'
+import { OMGButton, OMGText, OMGStatusBar, OMGIcon } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const ExitPending = ({
-  theme,
-  navigation,
-  dispatchSubscribeExit,
-  provider,
-  wallet
-}) => {
+const ExitPending = ({ theme, navigation }) => {
   const pendingTx = navigation.getParam('pendingTx')
   const token = navigation.getParam('token')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
-  const [subscribed, setSubscribed] = useState(false)
-
   const handleOnBackPressedAndroid = () => {
     return true
   }
-
-  useEffect(() => {
-    if (!subscribed) {
-      if (pendingTx && pendingTx.type === 'CHILDCHAIN_EXIT') {
-        dispatchSubscribeExit(provider, wallet, pendingTx)
-        setSubscribed(true)
-      }
-    }
-  }, [subscribed, pendingTx, dispatchSubscribeExit, provider, wallet])
 
   return (
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
@@ -194,12 +170,7 @@ const mapStateToProps = (state, ownProps) => ({
   )
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchSubscribeExit: (provider, wallet, tx) =>
-    dispatch(plasmaActions.waitExit(provider, wallet, tx))
-})
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(withNavigation(withTheme(ExitPending)))

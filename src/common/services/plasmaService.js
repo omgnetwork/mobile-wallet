@@ -47,23 +47,14 @@ export const fetchAssets = (rootchainAssets, address) => {
   })
 }
 
-export const getResolvedPendingTxs = (pendingTxs, address, resolvedTxs) => {
+export const getTxs = address => {
   return new Promise(async (resolve, reject) => {
     try {
-      if (resolvedTxs && resolvedTxs.length) {
-        console.log(resolvedTxs)
-        resolve(resolvedTxs)
-      } else {
-        const transactions = await Plasma.getTxs(address, 0, 10)
-        console.log(transactions)
-        resolve(
-          transactions.filter(
-            tx =>
-              pendingTxs.find(pendingTx => pendingTx.hash === tx.txhash) !==
-              undefined
-          )
-        )
-      }
+      const transactions = await Plasma.getTxs(address, 0, 10)
+      const currentWatcherTxs = transactions.map(tx => ({
+        hash: tx.txhash
+      }))
+      resolve(currentWatcherTxs)
     } catch (err) {
       reject(err)
     }
@@ -252,23 +243,6 @@ export const subscribeExit = (desiredAmount, blockchainWallet, token) => {
       return {
         success: true,
         data: selectedUtxo
-      }
-    } else {
-      return {
-        success: false
-      }
-    }
-  }, 5000)
-}
-
-// Subscribe deposit and childchain transfer
-export const subscribeUTXOs = (address, options) => {
-  return Polling.poll(async () => {
-    const utxos = await Plasma.getUtxos(address, options)
-    if (utxos.length) {
-      return {
-        success: true,
-        data: utxos
       }
     } else {
       return {

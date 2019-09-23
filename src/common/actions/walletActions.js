@@ -71,13 +71,33 @@ export const loadAssets = (provider, address, lastBlockNumber) => {
   })
 }
 
-export const setShouldRefreshWallet = (dispatch, address, shouldRefresh) => {
+export const refreshRootchain = (dispatch, address, shouldRefresh) => {
   return createAction(dispatch, {
     operation: () => ({
       address,
       shouldRefresh
     }),
-    type: 'WALLET/SET_SHOULD_REFRESH'
+    type: 'WALLET/REFRESH_ROOTCHAIN'
+  })
+}
+
+export const refreshChildchain = (dispatch, address, shouldRefresh) => {
+  return createAction(dispatch, {
+    operation: () => ({
+      address,
+      shouldRefresh
+    }),
+    type: 'WALLET/REFRESH_CHILDCHAIN'
+  })
+}
+
+export const refreshAll = (dispatch, address, shouldRefresh) => {
+  return createAction(dispatch, {
+    operation: () => ({
+      address,
+      shouldRefresh
+    }),
+    type: 'WALLET/REFRESH_BOTH'
   })
 }
 
