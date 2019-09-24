@@ -7,7 +7,6 @@ import * as Parser from './parser'
 import * as Polling from './polling'
 import * as ABI from './abi'
 import * as BigNumber from './bignumber'
-// import BackgroundTimer from './background'
 
 export {
   Price,

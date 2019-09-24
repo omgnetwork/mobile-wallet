@@ -7,6 +7,8 @@ import BackgroundTimer from 'react-native-background-timer'
 const getConfirmationsThreshold = tx => {
   if (tx.type === TransactionTypes.TYPE_CHILDCHAIN_DEPOSIT) {
     return Config.CHILDCHAIN_DEPOSIT_CONFIRMATION_BLOCKS
+  } else if (tx.type === TransactionTypes.TYPE_CHILDCHAIN_EXIT) {
+    return Config.CHILDCHAIN_EXIT_CONFIRMATION_BLOCKS
   } else {
     return Config.ROOTCHAIN_TRANSFER_CONFIRMATION_BLOCKS
   }
@@ -70,7 +72,7 @@ const useRootchainTracker = wallet => {
       } else {
         return {
           type: 'rootchain',
-          title: `${wallet.name} sent token on the Ethereum network`,
+          title: `${wallet.name} sent on the Ethereum network`,
           message: `${confirmedTx.value} ${confirmedTx.symbol}`,
           confirmedTx
         }
@@ -87,7 +89,6 @@ const useRootchainTracker = wallet => {
       const notificationPayload = buildNotification(confirmedTx)
       setNotification(notificationPayload)
     }
-    return false
   }, [buildNotification, pendingRootchainTxs, syncTransactions, verify])
 
   useEffect(() => {

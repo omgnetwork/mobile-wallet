@@ -21,10 +21,6 @@ const TransactionTracker = ({
   const primaryWallet = useRef(wallet)
 
   useEffect(() => {
-    primaryWallet.current = wallet
-  }, [wallet])
-
-  useEffect(() => {
     const notification = rootNotification || childNotification
     if (notification) {
       notificationService.sendNotification(notification)
@@ -68,15 +64,14 @@ const TransactionTracker = ({
     )
   }, [filterTxs])
 
-  const getTxs = useCallback(() => {
-    const rootTxs = getRootTxs()
-    const childTxs = getChildTxs()
-    return [rootTxs, childTxs]
-  }, [getChildTxs, getRootTxs])
+  useEffect(() => {
+    primaryWallet.current = wallet
+  }, [wallet])
 
   useEffect(() => {
     if (primaryWallet.current) {
-      const [rootTxs, childTxs] = getTxs()
+      const rootTxs = getRootTxs()
+      const childTxs = getChildTxs()
       if (Platform.OS === 'ios') {
         BackgroundTimer.start()
       }
@@ -92,7 +87,14 @@ const TransactionTracker = ({
         BackgroundTimer.stop()
       }
     }
-  }, [getTxs, pendingTxs, primaryWallet, setChildchainTxs, setRootchainTxs])
+  }, [
+    getChildTxs,
+    getRootTxs,
+    pendingTxs,
+    primaryWallet,
+    setChildchainTxs,
+    setRootchainTxs
+  ])
 
   return null
 }

@@ -30,7 +30,7 @@ const useChildchainTracker = wallet => {
     confirmedTx => {
       return {
         type: 'childchain',
-        title: `${wallet.name} sent token on the OmiseGO network`,
+        title: `${wallet.name} sent on OmiseGO network`,
         message: `${confirmedTx.value} ${confirmedTx.symbol}`,
         confirmedTx
       }
@@ -47,7 +47,6 @@ const useChildchainTracker = wallet => {
       const notificationPayload = buildNotification(confirmedTx)
       setNotification(notificationPayload)
     }
-    return false
   }, [buildNotification, syncTransactions, verify])
 
   useEffect(() => {
