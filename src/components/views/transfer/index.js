@@ -38,8 +38,13 @@ const Transfer = ({ navigation, theme, primaryWallet }) => {
           onPress={() => {
             navigation.goBack()
           }}
-          style={styles.icon}>
-          <OMGIcon name='x-mark' size={18} color={theme.colors.gray3} />
+          style={styles.iconBox}>
+          <OMGIcon
+            name='x-mark'
+            size={18}
+            color={theme.colors.gray3}
+            style={styles.icon}
+          />
         </OMGBox>
       </View>
       {primaryWallet ? (
@@ -68,8 +73,11 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: theme.colors.gray3
   }),
-  icon: {
+  iconBox: {
     padding: 16
+  },
+  icon: {
+    opacity: 1.0
   }
 })
 

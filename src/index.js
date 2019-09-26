@@ -6,6 +6,7 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import createStore from 'common/stores'
 import { settingActions } from 'common/actions'
 import Config from 'react-native-config'
+import { TransactionTracker } from 'common/tracker'
 import { OMGAlert } from 'components/widgets'
 import { notificationService } from 'common/services'
 import { colors } from 'common/styles'
@@ -45,6 +46,7 @@ const App = () => {
           <PersistGate persistor={persistor}>
             <Router />
             <OMGAlert />
+            <TransactionTracker />
           </PersistGate>
         </PaperProvider>
       </Provider>

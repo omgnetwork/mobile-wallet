@@ -1,12 +1,14 @@
 import * as walletActions from './walletActions'
 import * as settingActions from './settingActions'
 import * as actionCreators from './actionCreators'
-import * as rootchainActions from './rootchainActions'
-import * as childchainActions from './childchainActions'
+import * as ethereumActions from './ethereumActions'
+import * as plasmaActions from './plasmaActions'
+import * as transactionActions from './transactionActions'
 export {
   walletActions,
-  childchainActions,
+  plasmaActions,
   actionCreators,
   settingActions,
-  rootchainActions
+  ethereumActions,
+  transactionActions
 }

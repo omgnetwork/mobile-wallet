@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { View, StyleSheet, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-navigation'
+import { connect } from 'react-redux'
 import { OMGIcon, OMGBox, OMGText, OMGStatusBar } from 'components/widgets'
 
 const Deposit = ({ navigation, theme }) => {
@@ -32,8 +33,13 @@ const Deposit = ({ navigation, theme }) => {
           onPress={() => {
             navigation.goBack()
           }}
-          style={styles.icon}>
-          <OMGIcon name='x-mark' size={18} color={theme.colors.gray3} />
+          style={styles.iconBox}>
+          <OMGIcon
+            name='x-mark'
+            size={18}
+            color={theme.colors.gray3}
+            style={styles.icon}
+          />
         </OMGBox>
       </View>
       <ChildChainTransferNavigator navigation={navigation} />
@@ -56,9 +62,21 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: theme.colors.gray3
   }),
-  icon: {
+  iconBox: {
     padding: 16
+  },
+  icon: {
+    opacity: 1.0
   }
 })
 
-export default withTheme(Deposit)
+const mapStateToProps = (state, ownProps) => ({
+  primaryWallet: state.wallets.find(
+    w => w.address === state.setting.primaryWalletAddress
+  )
+})
+
+export default connect(
+  mapStateToProps,
+  null
+)(withTheme(Deposit))

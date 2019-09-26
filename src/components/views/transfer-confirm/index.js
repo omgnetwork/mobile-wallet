@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useReducer } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { Formatter, Rootchain } from 'common/utils'
+import { Formatter } from 'common/utils'
 import Config from 'react-native-config'
-import { notifySendToken } from 'common/notify'
-import { rootchainActions, childchainActions } from 'common/actions'
+import { Notify, ContractAddress } from 'common/constants'
+import { ethereumActions, plasmaActions } from 'common/actions'
 import {
   OMGBox,
   OMGButton,
@@ -31,52 +31,47 @@ const TransferConfirm = ({
   const tokenPrice = formatTokenPrice(token.balance, token.price)
   const [loadingVisible, setLoadingVisible] = useState(false)
   const [confirmBtnDisable, setConfirmBtnDisable] = useState(false)
+  const observedActions = [
+    ...Notify.transfer.actions,
+    ...Notify.deposit.actions
+  ]
 
   useEffect(() => {
-    if (
-      loading.success &&
-      notifySendToken.actions.indexOf(loading.action) > -1
-    ) {
-      navigation.navigate({
-        routeName: 'TransferPending',
-        params: {
-          token,
-          fromWallet,
-          toWallet,
-          pendingTx: pendingTxs.slice(-1).pop(),
-          fee
-        }
+    if (loading.success && observedActions.indexOf(loading.action) > -1) {
+      navigation.navigate('TransferPending', {
+        token,
+        fromWallet,
+        toWallet,
+        pendingTx: pendingTxs.slice(-1).pop(),
+        fee
       })
     }
   }, [
     fee,
     fromWallet,
-    loading.action,
-    loading.success,
+    loading,
     navigation,
+    observedActions,
     pendingTxs,
     toWallet,
     token
   ])
 
   useEffect(() => {
-    if (loading.show && notifySendToken.actions.indexOf(loading.action) > -1) {
+    if (loading.show && observedActions.indexOf(loading.action) > -1) {
       setLoadingVisible(true)
-    } else if (
-      !loading.show &&
-      notifySendToken.actions.indexOf(loading.action) > -1
-    ) {
+    } else if (!loading.show && observedActions.indexOf(loading.action) > -1) {
       setLoadingVisible(false)
     } else {
       loadingVisible
     }
-  }, [loading.action, loading.show, loadingVisible])
+  }, [loading.action, loading.show, loadingVisible, observedActions])
 
   useEffect(() => {
     const isPendingChildchainTransaction =
       pendingTxs.find(tx => tx.type === 'CHILDCHAIN_SEND_TOKEN') !== undefined
     const isChildchainTransaction =
-      !isRootchain && toWallet.address !== Config.CHILDCHAIN_CONTRACT_ADDRESS
+      !isRootchain && toWallet.address !== Config.PLASMA_CONTRACT_ADDRESS
 
     setConfirmBtnDisable(
       isPendingChildchainTransaction && isChildchainTransaction
@@ -302,24 +297,18 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 })
 
 const getAction = (token, fee, wallet, provider, toAddress, isRootchain) => {
-  const TO_CHILDCHAIN = toAddress === Config.CHILDCHAIN_CONTRACT_ADDRESS
-  const ETH_TOKEN = token.contractAddress === Rootchain.ETH_ADDRESS
+  const TO_CHILDCHAIN = toAddress === Config.PLASMA_CONTRACT_ADDRESS
+  const ETH_TOKEN = token.contractAddress === ContractAddress.ETH_ADDRESS
   if (TO_CHILDCHAIN && ETH_TOKEN) {
-    return childchainActions.depositEth(wallet, provider, token, fee)
+    return plasmaActions.depositEth(wallet, provider, token, fee)
   } else if (TO_CHILDCHAIN && !ETH_TOKEN) {
-    return childchainActions.depositErc20(wallet, provider, token, fee)
+    return plasmaActions.depositErc20(wallet, provider, token, fee)
   } else if (!isRootchain) {
-    return childchainActions.transfer(provider, wallet, toAddress, token, fee)
+    return plasmaActions.transfer(provider, wallet, toAddress, token, fee)
   } else if (ETH_TOKEN) {
-    return rootchainActions.sendEthToken(
-      token,
-      fee,
-      wallet,
-      provider,
-      toAddress
-    )
+    return ethereumActions.sendEthToken(token, fee, wallet, provider, toAddress)
   } else {
-    return rootchainActions.sendErc20Token(
+    return ethereumActions.sendErc20Token(
       token,
       fee,
       wallet,

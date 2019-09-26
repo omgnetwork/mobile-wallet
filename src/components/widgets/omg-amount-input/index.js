@@ -18,7 +18,7 @@ const OMGAmountInput = ({
       <OMGImage
         style={styles.logo}
         source={{
-          uri: `https://api.adorable.io/avatars/285/${token.tokenSymbol}.png`
+          uri: `https://api.adorable.io/avatars/285/${token.contractAddress}.png`
         }}
       />
       <OMGTextInput

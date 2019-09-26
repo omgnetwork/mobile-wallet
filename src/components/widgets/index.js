@@ -9,6 +9,7 @@ import OMGBox from './omg-box'
 import OMGButton from './omg-button'
 import OMGDrawerContent from './omg-drawer-content'
 import OMGEmpty from './omg-empty'
+import OMGExitWarning from './omg-exit-warning'
 import OMGFeeInput from './omg-fee-input'
 import OMGFeeSelect from './omg-fee-select'
 import OMGMenu from './omg-menu'
@@ -43,6 +44,7 @@ export {
   OMGButton,
   OMGDrawerContent,
   OMGEmpty,
+  OMGExitWarning,
   OMGFeeInput,
   OMGFeeSelect,
   OMGIcon,

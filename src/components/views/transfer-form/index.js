@@ -16,7 +16,7 @@ import {
 
 const fees = [
   {
-    id: 1,
+    id: '1',
     speed: 'Fast',
     estimateTime: 'Less than 2 minute',
     amount: '10',
@@ -24,7 +24,7 @@ const fees = [
     price: '0.047'
   },
   {
-    id: 2,
+    id: '2',
     speed: 'Standard',
     estimateTime: 'Less than 5 minutes',
     amount: '4',
@@ -32,7 +32,7 @@ const fees = [
     price: '0.019'
   },
   {
-    id: 3,
+    id: '3',
     speed: 'Safe low',
     estimateTime: 'Less than 30 minutes',
     amount: '1.5',
@@ -55,6 +55,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
       ? wallet.rootchainAssets[0]
       : wallet.childchainAssets[0]
   )
+  const addressRef = useRef(selectedAddress || testAddress)
   const textRef = useRef(defaultAmount)
 
   const submit = () => {
@@ -65,7 +66,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
         isRootchain: isRootchain,
         toWallet: {
           name: isDeposit ? 'Plasma Contract' : 'Another wallet',
-          address: selectedAddress || testAddress
+          address: addressRef.current
         },
         fee: selectedFee
       })
@@ -110,8 +111,8 @@ const TransferForm = ({ wallet, theme, navigation }) => {
               />
             ) : (
               <OMGAddressInput
-                address={selectedAddress || testAddress}
                 style={styles.addressInput}
+                inputRef={addressRef}
                 onPress={() => navigation.navigate('TransferScanner')}
               />
             )}

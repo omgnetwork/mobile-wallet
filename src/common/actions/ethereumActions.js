@@ -1,11 +1,6 @@
-import {
-  rootchainService,
-  walletService,
-  notificationService
-} from '../services'
+import { ethereumService, walletService } from '../services'
 import { createAsyncAction } from './actionCreators'
 import { Datetime } from 'common/utils'
-import Config from 'react-native-config'
 
 export const sendErc20Token = (token, fee, fromWallet, provider, toAddress) => {
   const asyncAction = async () => {
@@ -13,7 +8,7 @@ export const sendErc20Token = (token, fee, fromWallet, provider, toAddress) => {
       fromWallet.address,
       provider
     )
-    const tx = await rootchainService.sendErc20Token(
+    const tx = await ethereumService.sendErc20Token(
       token,
       fee,
       blockchainWallet,
@@ -45,7 +40,7 @@ export const sendEthToken = (token, fee, fromWallet, provider, toAddress) => {
       provider
     )
 
-    const tx = await rootchainService.sendEthToken(
+    const tx = await ethereumService.sendEthToken(
       token,
       fee,
       blockchainWallet,
@@ -67,34 +62,5 @@ export const sendEthToken = (token, fee, fromWallet, provider, toAddress) => {
   return createAsyncAction({
     type: 'ROOTCHAIN/SEND_ETH_TOKEN',
     operation: asyncAction
-  })
-}
-
-export const subscribeTransaction = (provider, wallet, tx) => {
-  const asyncAction = async () => {
-    const txReceipt = await rootchainService.subscribeTransaction(
-      provider,
-      tx,
-      Config.ROOTCHAIN_TRANSFER_CONFIRMATION_BLOCKS
-    )
-
-    console.log(txReceipt)
-    notificationService.sendNotification({
-      title: `${wallet.name} sent`,
-      message: `${tx.value} ${tx.symbol}`
-    })
-
-    return {
-      hash: tx.hash,
-      from: tx.from,
-      nonce: tx.nonce,
-      gasPrice: tx.gasPrice.toString()
-    }
-  }
-
-  return createAsyncAction({
-    type: 'ROOTCHAIN/WAIT_SENDING',
-    operation: asyncAction,
-    isBackgroundTask: true
   })
 }

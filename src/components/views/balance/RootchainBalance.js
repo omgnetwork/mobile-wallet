@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
-import { walletActions } from 'common/actions'
+import { walletActions, plasmaActions, ethereumActions } from 'common/actions'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
 import { Formatter, Datetime } from 'common/utils'
@@ -9,36 +9,32 @@ import { OMGItemToken, OMGAssetHeader, OMGAssetList } from 'components/widgets'
 
 const RootchainBalance = ({
   theme,
-  primaryWallet,
-  primaryWalletAddress,
+  pendingTxs,
   provider,
-  loadAssets,
+  dispatchLoadAssets,
+  wallet,
   loading,
-  setShouldRefreshWallet
+  dispatchRefreshRootchain
 }) => {
   const [totalBalance, setTotalBalance] = useState(0.0)
   const currency = 'USD'
 
   useEffect(() => {
-    if (provider && primaryWallet.shouldRefresh) {
-      loadAssets(
-        provider,
-        primaryWalletAddress,
-        primaryWallet.updatedBlock || '0'
-      )
-      setShouldRefreshWallet(primaryWalletAddress, false)
+    if (provider && wallet.shouldRefresh) {
+      dispatchLoadAssets(provider, wallet.address, wallet.updatedBlock || '0')
+      dispatchRefreshRootchain(wallet.address, false)
     }
   }, [
-    loadAssets,
-    primaryWalletAddress,
+    dispatchLoadAssets,
+    pendingTxs,
     provider,
-    primaryWallet,
-    setShouldRefreshWallet
+    dispatchRefreshRootchain,
+    wallet
   ])
 
   useEffect(() => {
-    if (primaryWallet.rootchainAssets) {
-      const totalPrices = primaryWallet.rootchainAssets.reduce((acc, asset) => {
+    if (wallet.rootchainAssets) {
+      const totalPrices = wallet.rootchainAssets.reduce((acc, asset) => {
         const parsedAmount = parseFloat(asset.balance)
         const tokenPrice = parsedAmount * asset.price
         return tokenPrice + acc
@@ -46,7 +42,7 @@ const RootchainBalance = ({
 
       setTotalBalance(totalPrices)
     }
-  }, [primaryWallet])
+  }, [wallet.rootchainAssets])
 
   return (
     <Fragment>
@@ -59,18 +55,13 @@ const RootchainBalance = ({
         network={Config.ETHERSCAN_NETWORK}
       />
       <OMGAssetList
-        data={primaryWallet.rootchainAssets || []}
+        data={wallet.rootchainAssets || []}
         keyExtractor={item => item.contractAddress}
-        updatedAt={Datetime.format(primaryWallet.updatedAt, 'LTS')}
+        updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
         loading={loading.show}
         style={styles.list}
         renderItem={({ item }) => (
-          <OMGItemToken
-            key={item.contractAddress}
-            symbol={item.tokenSymbol}
-            balance={formatTokenBalance(item.balance)}
-            price={formatTokenPrice(item.balance, item.price)}
-          />
+          <OMGItemToken key={item.contractAddress} token={item} />
         )}
       />
     </Fragment>
@@ -93,35 +84,20 @@ const formatTotalBalance = balance => {
   })
 }
 
-const formatTokenBalance = amount => {
-  return Formatter.format(amount, {
-    commify: true,
-    maxDecimal: 3,
-    ellipsize: false
-  })
-}
-
-const formatTokenPrice = (amount, price) => {
-  const parsedAmount = parseFloat(amount)
-  const tokenPrice = parsedAmount * price
-  return Formatter.format(tokenPrice, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
-  })
-}
-
 const mapStateToProps = (state, ownProps) => ({
+  pendingTxs: state.transaction.pendingTxs,
   loading: state.loading,
   provider: state.setting.provider,
-  primaryWalletAddress: state.setting.primaryWalletAddress
+  wallet: state.wallets.find(
+    wallet => wallet.address === state.setting.primaryWalletAddress
+  )
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  loadAssets: (provider, address, lastBlockNumber) =>
+  dispatchLoadAssets: (provider, address, lastBlockNumber) =>
     dispatch(walletActions.loadAssets(provider, address, lastBlockNumber)),
-  setShouldRefreshWallet: (address, shouldRefresh) =>
-    walletActions.setShouldRefreshWallet(dispatch, address, shouldRefresh)
+  dispatchRefreshRootchain: (address, shouldRefresh) =>
+    walletActions.refreshRootchain(dispatch, address, shouldRefresh)
 })
 
 export default connect(

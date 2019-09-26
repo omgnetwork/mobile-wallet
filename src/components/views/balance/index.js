@@ -3,10 +3,10 @@ import { connect } from 'react-redux'
 import { StyleSheet, View, Dimensions, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import RootchainBalance from './rootchain-balance'
-import ChildchainBalance from './childchain-balance'
+import RootchainBalance from './RootchainBalance'
+import ChildchainBalance from './ChildchainBalance'
 import LinearGradient from 'react-native-linear-gradient'
-import ShowQR from './show-qr'
+import ShowQR from './ShowQR'
 import {
   OMGEmpty,
   OMGViewPager,

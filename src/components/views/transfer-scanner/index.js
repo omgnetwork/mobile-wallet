@@ -17,7 +17,7 @@ const TransferScanner = ({ theme, navigation }) => {
   const [rendering, setRendering] = useState(true)
   const camera = useRef(null)
   const [address, setAddress] = useState(null)
-  const [rootchainScanner, setRootChainScanner] = useState(rootchain)
+  const [isRootchain, setIsRootchain] = useState(rootchain)
 
   const overlayColorAnim = useRef(new Animated.Value(0))
 
@@ -32,9 +32,9 @@ const TransferScanner = ({ theme, navigation }) => {
   const navigateNext = useCallback(() => {
     navigation.navigate('TransferForm', {
       address: address && address.replace('ethereum:', ''),
-      rootchain: rootchainScanner
+      rootchain: isRootchain
     })
-  }, [address, navigation, rootchainScanner])
+  }, [address, navigation, isRootchain])
 
   useEffect(() => {
     if (address) {
@@ -71,6 +71,20 @@ const TransferScanner = ({ theme, navigation }) => {
     }
   }, [navigation, theme.colors.white])
 
+  const pendingChildchainComponent = (
+    <View style={styles.unableView}>
+      <OMGIcon
+        style={styles.unableIcon(theme)}
+        name='pending'
+        size={16}
+        color={theme.colors.gray2}
+      />
+      <OMGText style={styles.unableText(theme)}>
+        Unable to Transfer,{'\n'}There's a pending transaction
+      </OMGText>
+    </View>
+  )
+
   const TopMarker = ({ textAboveLine, textBelowLine, onPressSwitch }) => {
     return (
       <Fragment>
@@ -88,45 +102,49 @@ const TransferScanner = ({ theme, navigation }) => {
     )
   }
 
+  const cameraComponent = (
+    <OMGQRScanner
+      showMarker={true}
+      onReceiveQR={e => setAddress(e.data)}
+      cameraRef={camera}
+      renderPendingChildchain={pendingChildchainComponent}
+      cameraStyle={styles.cameraContainer}
+      overlayColorAnim={overlayColorAnim}
+      isRootchain={isRootchain}
+      notAuthorizedView={
+        <OMGText style={styles.notAuthorizedView}>
+          Enable the camera permission to scan a QR code.
+        </OMGText>
+      }
+      renderTop={
+        <TopMarker
+          textAboveLine={
+            isRootchain
+              ? 'Sending on \nEthereum Rootchain'
+              : 'Sending on \nPlasma Childchain'
+          }
+          textBelowLine={
+            isRootchain
+              ? 'Switch to Plasma Childchain'
+              : 'Switch to Ethereum Rootchain'
+          }
+          onPressSwitch={() => {
+            setIsRootchain(!isRootchain)
+            transitionOverlay(isRootchain)
+          }}
+        />
+      }
+      renderBottom={
+        <OMGButton style={styles.button} onPress={navigateNext}>
+          Or, Send Manually
+        </OMGButton>
+      }
+    />
+  )
+
   return (
     <View style={styles.contentContainer(theme)}>
-      {rendering && (
-        <OMGQRScanner
-          showMarker={true}
-          onReceiveQR={e => setAddress(e.data)}
-          cameraRef={camera}
-          cameraStyle={styles.cameraContainer}
-          overlayColorAnim={overlayColorAnim}
-          notAuthorizedView={
-            <OMGText style={styles.notAuthorizedView}>
-              Enable the camera permission to scan a QR code.
-            </OMGText>
-          }
-          renderTop={
-            <TopMarker
-              textAboveLine={
-                rootchainScanner
-                  ? 'Sending on \nEthereum Rootchain'
-                  : 'Sending on \nPlasma Childchain'
-              }
-              textBelowLine={
-                rootchainScanner
-                  ? 'Switch to Plasma Childchain'
-                  : 'Switch to Ethereum Rootchain'
-              }
-              onPressSwitch={() => {
-                setRootChainScanner(!rootchainScanner)
-                transitionOverlay(rootchainScanner)
-              }}
-            />
-          }
-          renderBottom={
-            <OMGButton style={styles.button} onPress={navigateNext}>
-              Or, Send Manually
-            </OMGButton>
-          }
-        />
-      )}
+      {rendering && cameraComponent}
     </View>
   )
 }
@@ -176,7 +194,31 @@ const styles = StyleSheet.create({
   }),
   notAuthorizedView: {
     textAlign: 'center'
-  }
+  },
+  unableView: {
+    flexDirection: 'column',
+    backgroundColor: 'rgba(33, 118, 255, 0.50)',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  unableText: theme => ({
+    color: theme.colors.gray2,
+    marginTop: 24,
+    textAlign: 'center'
+  }),
+  unableIcon: theme => ({
+    width: 24,
+    height: 24,
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    paddingTop: 2,
+    textAlign: 'center',
+    borderWidth: 1,
+    borderRadius: 12,
+    borderColor: theme.colors.gray6
+  })
 })
 
 export default withNavigation(withTheme(TransferScanner))

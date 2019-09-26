@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { connect } from 'react-redux'
+import { ContractAddress } from 'common/constants'
 import QRCodeScanner from 'react-native-qrcode-scanner'
 import { View, StyleSheet, Dimensions, Animated } from 'react-native'
 import Svg, { Rect, Path } from 'react-native-svg'
@@ -16,8 +18,25 @@ const OMGQRScanner = props => {
     borderColor,
     borderStrokeWidth,
     overlayColorAnim,
-    cameraRef
+    cameraRef,
+    isRootchain,
+    renderPendingChildchain,
+    pendingChildchain
   } = props
+
+  const shouldRenderQRMarker = isRootchain || !pendingChildchain
+  const renderQRMarker = (
+    <QRMarker borderColor={borderColor} borderStrokeWidth={borderStrokeWidth} />
+  )
+  const renderContent = shouldRenderQRMarker
+    ? renderQRMarker
+    : renderPendingChildchain
+
+  const handleOnRead = e => {
+    if (shouldRenderQRMarker) {
+      props.onReceiveQR(e)
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -29,7 +48,7 @@ const OMGQRScanner = props => {
         }}
         ref={cameraRef}
         reactivate={reactivate}
-        onRead={props.onReceiveQR || (e => console.log(e.data))}
+        onRead={handleOnRead}
         pendingAuthorizationView={
           <OMGText style={styles.loadingText}>Loading...</OMGText>
         }
@@ -40,14 +59,11 @@ const OMGQRScanner = props => {
             </Animated.View>
             <View style={styles.scannerContainer}>
               <Animated.View style={styles.sideOverlay(overlayColorAnim)} />
-              <QRMarker
-                borderColor={borderColor}
-                borderStrokeWidth={borderStrokeWidth}
-              />
+              {renderContent}
               <Animated.View style={styles.sideOverlay(overlayColorAnim)} />
             </View>
             <Animated.View style={styles.bottomContainer(overlayColorAnim)}>
-              {renderBottom}
+              {shouldRenderQRMarker && renderBottom}
             </Animated.View>
           </View>
         }
@@ -141,4 +157,14 @@ const styles = StyleSheet.create({
   }
 })
 
-export default OMGQRScanner
+const mapStateToProps = (state, ownProps) => ({
+  pendingChildchain:
+    state.transaction.pendingTxs.find(
+      tx => tx.type === 'CHILDCHAIN_SEND_TOKEN'
+    ) !== undefined
+})
+
+export default connect(
+  mapStateToProps,
+  null
+)(OMGQRScanner)

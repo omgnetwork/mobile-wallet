@@ -2,7 +2,7 @@ import React, { useState, Fragment, useEffect } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
-import { childchainActions, walletActions } from 'common/actions'
+import { plasmaActions, walletActions } from 'common/actions'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
 import { Formatter, Datetime } from 'common/utils'
@@ -24,11 +24,13 @@ const ChildchainBalance = ({
 }) => {
   const currency = 'USD'
   const [totalBalance, setTotalBalance] = useState(0.0)
+  const disabledChildchainAction =
+    !wallet.childchainAssets || wallet.childchainAssets.length === 0
 
   useEffect(() => {
     if (wallet.shouldRefreshChildchain && wallet.rootchainAssets) {
       dispatchLoadAssets(wallet)
-      dispatchInvalidatePendingTxs(wallet, pendingTxs)
+      // dispatchInvalidatePendingTxs(wallet, pendingTxs)
       dispatchSetShouldRefreshChildchain(wallet.address, false)
     }
   }, [
@@ -51,17 +53,6 @@ const ChildchainBalance = ({
     }
   }, [wallet.childchainAssets])
 
-  useEffect(() => {
-    const resubscribeTxs = pendingTxs.filter(
-      pendingTx =>
-        pendingTx.resubscribe && pendingTx.type === 'CHILDCHAIN_SEND_TOKEN'
-    )
-
-    resubscribeTxs.forEach(tx => {
-      dispatchSubscribeChildchainTransaction(wallet, tx)
-    })
-  }, [dispatchSubscribeChildchainTransaction, pendingTxs, wallet])
-
   return (
     <Fragment>
       <OMGAssetHeader
@@ -77,16 +68,13 @@ const ChildchainBalance = ({
         updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
         style={styles.list}
         renderItem={({ item }) => (
-          <OMGItemToken
-            key={item.contractAddress}
-            symbol={item.tokenSymbol}
-            balance={formatTokenBalance(item.balance)}
-            price={formatTokenPrice(item.balance, item.price)}
-          />
+          <OMGItemToken key={item.contractAddress} token={item} />
         )}
       />
       <OMGAssetFooter
+        disabled={disabledChildchainAction}
         onPressDeposit={() => navigation.navigate('TransferDeposit')}
+        onPressExit={() => navigation.navigate('TransferExit')}
       />
     </Fragment>
   )
@@ -108,24 +96,6 @@ const formatTotalBalance = balance => {
   })
 }
 
-const formatTokenBalance = amount => {
-  return Formatter.format(amount, {
-    commify: true,
-    maxDecimal: 3,
-    ellipsize: false
-  })
-}
-
-const formatTokenPrice = (amount, price) => {
-  const parsedAmount = parseFloat(amount)
-  const tokenPrice = parsedAmount * price
-  return Formatter.format(tokenPrice, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
-  })
-}
-
 const mapStateToProps = (state, ownProps) => ({
   pendingTxs: state.transaction.pendingTxs,
   loading: state.loading,
@@ -135,20 +105,10 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchInvalidatePendingTxs: (wallet, pendingTxs) =>
-    dispatch(childchainActions.invalidatePendingTx(pendingTxs, wallet.address)),
   dispatchLoadAssets: wallet =>
-    dispatch(
-      childchainActions.fetchAssets(wallet.rootchainAssets, wallet.address)
-    ),
+    dispatch(plasmaActions.fetchAssets(wallet.rootchainAssets, wallet.address)),
   dispatchSetShouldRefreshChildchain: (address, shouldRefreshChildchain) =>
-    walletActions.setShouldRefreshChildchain(
-      dispatch,
-      address,
-      shouldRefreshChildchain
-    ),
-  dispatchSubscribeChildchainTransaction: (wallet, tx) =>
-    dispatch(childchainActions.waitWatcherRecordTransaction(wallet, tx))
+    walletActions.refreshChildchain(dispatch, address, shouldRefreshChildchain)
 })
 
 export default connect(

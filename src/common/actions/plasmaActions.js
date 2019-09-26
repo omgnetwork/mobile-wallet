@@ -1,17 +1,15 @@
 import { createAsyncAction } from './actionCreators'
-import {
-  childchainService,
-  walletService,
-  rootchainService,
-  notificationService
-} from 'common/services'
+import { plasmaService, walletService } from 'common/services'
 import { Datetime } from 'common/utils'
-import Config from 'react-native-config'
 
 export const fetchAssets = (rootchainAssets, address) => {
   const asyncAction = async () => {
-    const assets = await childchainService.fetchAssets(rootchainAssets, address)
-    return { address, childchainAssets: assets }
+    const result = await plasmaService.fetchAssets(rootchainAssets, address)
+    return {
+      address,
+      childchainAssets: result.childchainAssets,
+      lastUtxoPos: result.lastUtxoPos
+    }
   }
   return createAsyncAction({
     type: 'CHILDCHAIN/LOAD_ASSETS',
@@ -19,27 +17,11 @@ export const fetchAssets = (rootchainAssets, address) => {
   })
 }
 
-export const invalidatePendingTx = (pendingTxs, address) => {
-  const asyncAction = async () => {
-    const resolvedTxs = await childchainService.getResolvedPendingTxs(
-      pendingTxs,
-      address
-    )
-
-    return { resolvedPendingTxs: resolvedTxs }
-  }
-  return createAsyncAction({
-    type: 'CHILDCHAIN/INVALIDATE_PENDING_TXS',
-    operation: asyncAction,
-    isBackgroundTask: true
-  })
-}
-
 export const depositEth = (wallet, provider, token, fee) => {
   const asyncAction = async () => {
     const blockchainWallet = await walletService.get(wallet.address, provider)
 
-    const transactionReceipt = await childchainService.depositEth(
+    const transactionReceipt = await plasmaService.depositEth(
       blockchainWallet.address,
       blockchainWallet.privateKey,
       token.balance,
@@ -51,6 +33,7 @@ export const depositEth = (wallet, provider, token, fee) => {
       from: wallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
+      contractAddress: token.contractAddress,
       gasPrice: fee.amount,
       type: 'CHILDCHAIN_DEPOSIT',
       createdAt: Datetime.now()
@@ -69,7 +52,7 @@ export const transfer = (provider, fromWallet, toAddress, token, fee) => {
       provider
     )
 
-    const transactionReceipt = await childchainService.transfer(
+    const transactionReceipt = await plasmaService.transfer(
       blockchainWallet,
       toAddress,
       token,
@@ -83,6 +66,7 @@ export const transfer = (provider, fromWallet, toAddress, token, fee) => {
       from: fromWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
+      contractAddress: token.contractAddress,
       gasPrice: fee.amount,
       type: 'CHILDCHAIN_SEND_TOKEN',
       createdAt: Datetime.now()
@@ -99,7 +83,7 @@ export const depositErc20 = (wallet, provider, token, fee) => {
   const asyncAction = async () => {
     const blockchainWallet = await walletService.get(wallet.address, provider)
 
-    const transactionReceipt = await childchainService.depositErc20(
+    const transactionReceipt = await plasmaService.depositErc20(
       blockchainWallet.address,
       blockchainWallet.privateKey,
       token,
@@ -111,6 +95,7 @@ export const depositErc20 = (wallet, provider, token, fee) => {
       from: wallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
+      contractAddress: token.contractAddress,
       gasPrice: fee.amount,
       type: 'CHILDCHAIN_DEPOSIT',
       createdAt: Datetime.now()
@@ -122,53 +107,50 @@ export const depositErc20 = (wallet, provider, token, fee) => {
   })
 }
 
-export const waitDeposit = (provider, wallet, tx) => {
+export const exit = (wallet, provider, token, fee) => {
   const asyncAction = async () => {
-    const txReceipt = await rootchainService.subscribeTransaction(
-      provider,
-      tx,
-      Config.CHILDCHAIN_DEPOSIT_CONFIRMATION_BLOCKS
-    )
-    console.log(txReceipt)
-
-    notificationService.sendNotification({
-      title: `${wallet.name} deposited`,
-      message: `${tx.value} ${tx.symbol}`
-    })
+    const blockchainWallet = await walletService.get(wallet.address, provider)
+    const exitReceipt = await plasmaService.exit(blockchainWallet, token, fee)
 
     return {
-      hash: tx.hash,
-      from: tx.from,
-      gasPrice: tx.gasPrice.toString()
+      hash: exitReceipt.transactionHash,
+      from: wallet.address,
+      value: token.balance,
+      symbol: token.tokenSymbol,
+      contractAddress: token.contractAddress,
+      gasPrice: fee.amount,
+      type: 'CHILDCHAIN_EXIT',
+      createdAt: Datetime.now()
     }
   }
   return createAsyncAction({
-    type: 'CHILDCHAIN/WAIT_DEPOSITING',
-    operation: asyncAction,
-    isBackgroundTask: true
+    type: 'CHILDCHAIN/EXIT',
+    operation: asyncAction
   })
 }
 
-export const waitWatcherRecordTransaction = (wallet, tx) => {
+export const processExits = (wallet, provider, token, fee) => {
   const asyncAction = async () => {
-    await childchainService.wait(
-      Number(Config.CHILDCHAIN_WATCHER_WAIT_DURATION || '40000')
+    const blockchainWallet = await walletService.get(wallet.address, provider)
+    const exitReceipt = await plasmaService.processExits(
+      blockchainWallet,
+      token,
+      fee
     )
-
-    notificationService.sendNotification({
-      title: `${wallet.name} sent`,
-      message: `${tx.value} ${tx.symbol}`
-    })
-
     return {
-      hash: tx.hash,
-      from: tx.from,
-      gasPrice: tx.gasPrice.toString()
+      hash: exitReceipt.transactionHash,
+      from: wallet.address,
+      value: token.balance,
+      symbol: token.tokenSymbol,
+      contractAddress: token.contractAddress,
+      gasPrice: fee.amount,
+      type: 'CHILDCHAIN_PROCESS_EXIT',
+      createdAt: Datetime.now()
     }
   }
+
   return createAsyncAction({
-    type: 'CHILDCHAIN/WAIT_SENDING',
-    operation: asyncAction,
-    isBackgroundTask: true
+    type: 'CHILDCHAIN/PROCESS_EXIT',
+    operation: asyncAction
   })
 }

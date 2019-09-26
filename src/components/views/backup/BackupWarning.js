@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { View, StyleSheet } from 'react-native'
-import { Rootchain } from 'common/utils'
+import { Ethereum } from 'common/blockchain'
 import { walletStorage } from 'common/storages'
 import BackupImage from './assets/backup.svg'
 import BackupIcon1 from './assets/backup-ic1.svg'
 import BackupIcon2 from './assets/backup-ic2.svg'
 import BackupIcon3 from './assets/backup-ic3.svg'
-import BackupModal from './backup-modal'
+import BackupModal from './BackupModal'
 import { OMGButton, OMGText } from 'components/widgets'
 
 const SuggestionItem = ({ renderImage, text, style, theme }) => {
@@ -52,7 +52,7 @@ const BackupWarning = ({ theme, navigation }) => {
       navigateToBackupTranscribe()
     } else {
       requestAnimationFrame(async () => {
-        setMnemonic(Rootchain.generateMnemonic())
+        setMnemonic(Ethereum.generateMnemonic())
       })
     }
   }

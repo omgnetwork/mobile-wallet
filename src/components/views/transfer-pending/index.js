@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, Linking } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Formatter } from 'common/utils'
-import { rootchainActions, childchainActions } from 'common/actions'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
 import {
@@ -16,47 +15,17 @@ import {
 } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const TransferPending = ({
-  theme,
-  navigation,
-  wallet,
-  provider,
-  dispatchSubscribeTransaction,
-  dispatchSubscribeDeposit,
-  dispatchSubscribeChildchainTransaction
-}) => {
+const TransferPending = ({ theme, navigation }) => {
   const pendingTx = navigation.getParam('pendingTx')
   const token = navigation.getParam('token')
   const fromWallet = navigation.getParam('fromWallet')
   const toWallet = navigation.getParam('toWallet')
   const fee = navigation.getParam('fee')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
-  const [subscribed, setSubscribed] = useState(false)
 
   const handleOnBackPressedAndroid = () => {
     return true
   }
-
-  useEffect(() => {
-    if (!subscribed) {
-      if (pendingTx && pendingTx.type === 'ROOTCHAIN_SEND') {
-        dispatchSubscribeTransaction(provider, wallet, pendingTx)
-      } else if (pendingTx && pendingTx.type === 'CHILDCHAIN_DEPOSIT') {
-        dispatchSubscribeDeposit(provider, wallet, pendingTx)
-      } else if (pendingTx && pendingTx.type === 'CHILDCHAIN_SEND_TOKEN') {
-        dispatchSubscribeChildchainTransaction(wallet, pendingTx)
-      }
-      setSubscribed(true)
-    }
-  }, [
-    pendingTx,
-    provider,
-    dispatchSubscribeTransaction,
-    wallet,
-    dispatchSubscribeDeposit,
-    subscribed,
-    dispatchSubscribeChildchainTransaction
-  ])
 
   return (
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
@@ -127,7 +96,7 @@ const TransferPending = ({
           <OMGButton
             style={styles.button}
             onPress={() => {
-              navigation.navigate({ routeName: 'Balance' })
+              navigation.navigate('Balance')
             }}>
             Done
           </OMGButton>
@@ -279,16 +248,7 @@ const mapStateToProps = (state, ownProps) => ({
   )
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchSubscribeDeposit: (provider, wallet, tx) =>
-    dispatch(childchainActions.waitDeposit(provider, wallet, tx)),
-  dispatchSubscribeTransaction: (provider, wallet, tx) =>
-    dispatch(rootchainActions.subscribeTransaction(provider, wallet, tx)),
-  dispatchSubscribeChildchainTransaction: (wallet, tx) =>
-    dispatch(childchainActions.waitWatcherRecordTransaction(wallet, tx))
-})
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(withNavigation(withTheme(TransferPending)))
