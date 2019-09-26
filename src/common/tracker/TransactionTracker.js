@@ -15,25 +15,30 @@ const TransactionTracker = ({
   dispatchRefreshChildchain,
   dispatchRefreshAll
 }) => {
-  const [rootNotification, setRootchainTxs] = useRootchainTracker(wallet)
-  const [childNotification, setChildchainTxs] = useChildchainTracker(wallet)
-
   const primaryWallet = useRef(wallet)
+  const [rootNotification, setRootchainTxs] = useRootchainTracker(primaryWallet)
+  const [childNotification, setChildchainTxs] = useChildchainTracker(
+    primaryWallet
+  )
 
   useEffect(() => {
     const notification = rootNotification || childNotification
     if (notification) {
+      if (!pendingTxs.find(tx => tx.hash === notification.confirmedTx.hash)) {
+        console.log('Out of sync!', notification)
+        return
+      }
       notificationService.sendNotification(notification)
       dispatchInvalidatePendingTx(notification.confirmedTx)
       switch (notification.type) {
         case 'childchain':
-          return dispatchRefreshChildchain(wallet.address)
+          return dispatchRefreshChildchain(primaryWallet.current.address)
         case 'rootchain':
-          return dispatchRefreshRootchain(wallet.address)
+          return dispatchRefreshRootchain(primaryWallet.current.address)
         case 'all':
-          return dispatchRefreshAll(wallet.address)
+          return dispatchRefreshAll(primaryWallet.current.address)
         default:
-          return dispatchRefreshAll(wallet.address)
+          return dispatchRefreshAll(primaryWallet.current.address)
       }
     }
   }, [
@@ -41,9 +46,10 @@ const TransactionTracker = ({
     childNotification,
     dispatchInvalidatePendingTx,
     dispatchRefreshRootchain,
-    wallet.address,
+    primaryWallet,
     dispatchRefreshChildchain,
-    dispatchRefreshAll
+    dispatchRefreshAll,
+    pendingTxs
   ])
 
   const filterTxs = useCallback(filterFunc => pendingTxs.filter(filterFunc), [

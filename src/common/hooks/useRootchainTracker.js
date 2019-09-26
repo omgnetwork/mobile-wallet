@@ -19,33 +19,33 @@ const useRootchainTracker = wallet => {
   const [notification, setNotification] = useState(null)
 
   const syncTransactions = useCallback(() => {
-    return ethereumService.getTxs(wallet.address, wallet.updatedBlock)
-  }, [wallet.address, wallet.updatedBlock])
+    return ethereumService.getTxs(wallet.current.address, '0')
+  }, [wallet])
 
   const verify = useCallback(
     currentRootchainTxs => {
-      const pendingTxsHash = pendingRootchainTxs.map(
-        pendingTx => pendingTx.hash
-      )
-      const resolvedPendingTx = currentRootchainTxs.find(
-        tx => pendingTxsHash.indexOf(tx.hash) > -1
+      const currentRootchainTxsHash = currentRootchainTxs.map(tx => tx.hash)
+      const resolvedPendingTxs = pendingRootchainTxs.filter(
+        pendingTx => currentRootchainTxsHash.indexOf(pendingTx.hash) > -1
       )
 
-      if (resolvedPendingTx) {
-        const pendingTx = pendingRootchainTxs.find(
-          tx => tx.hash === resolvedPendingTx.hash
-        )
+      if (resolvedPendingTxs.length) {
+        const completedTxs = resolvedPendingTxs.filter(pendingTx => {
+          const rootchainTx = currentRootchainTxs.find(
+            tx => tx.hash === pendingTx.hash
+          )
+          const confirmationsThreshold = getConfirmationsThreshold(rootchainTx)
 
-        const confirmationsThreshold = getConfirmationsThreshold(pendingTx)
+          const confirmations = Number(rootchainTx.confirmations)
 
-        const confirmations = Number(resolvedPendingTx.confirmations)
+          console.log(confirmations)
 
-        console.log(confirmations)
+          const hasEnoughConfimations = confirmations >= confirmationsThreshold
 
-        const hasEnoughConfimations = confirmations >= confirmationsThreshold
-
-        console.log('have enough confirmations yet?', hasEnoughConfimations)
-        return hasEnoughConfimations && pendingTx
+          console.log('have enough confirmations yet?', hasEnoughConfimations)
+          return hasEnoughConfimations
+        })
+        return completedTxs
       } else {
         return false
       }
@@ -58,36 +58,47 @@ const useRootchainTracker = wallet => {
       if (confirmedTx.type === TransactionTypes.TYPE_CHILDCHAIN_DEPOSIT) {
         return {
           type: 'all',
-          title: `${wallet.name} deposited`,
+          title: `${wallet.current.name} deposited`,
           message: `${confirmedTx.value} ${confirmedTx.symbol}`,
           confirmedTx
         }
       } else if (confirmedTx.type === TransactionTypes.TYPE_CHILDCHAIN_EXIT) {
         return {
           type: 'childchain',
-          title: `${wallet.name} started to exit`,
+          title: `${wallet.current.name} started to exit`,
           message: `${confirmedTx.value} ${confirmedTx.symbol}`,
           confirmedTx
         }
       } else {
         return {
           type: 'rootchain',
-          title: `${wallet.name} sent on the Ethereum network`,
+          title: `${wallet.current.name} sent on the Ethereum network`,
           message: `${confirmedTx.value} ${confirmedTx.symbol}`,
           confirmedTx
         }
       }
     },
-    [wallet.name]
+    [wallet]
   )
 
   const track = useCallback(async () => {
     if (!pendingRootchainTxs.length) return
     const currentRootchainTxs = await syncTransactions()
-    const confirmedTx = verify(currentRootchainTxs)
-    if (confirmedTx) {
-      const notificationPayload = buildNotification(confirmedTx)
-      setNotification(notificationPayload)
+    const confirmedTxs = verify(currentRootchainTxs)
+    if (confirmedTxs && confirmedTxs.length) {
+      const notificationPayloads = confirmedTxs.map(confirmedTx =>
+        buildNotification(confirmedTx)
+      )
+
+      const confirmedTxHashes = confirmedTxs.map(tx => tx.hash)
+      notificationPayloads.forEach(payload => {
+        setNotification(payload)
+        setPendingRootchainTxs(
+          pendingRootchainTxs.filter(
+            tx => confirmedTxHashes.indexOf(tx.hash) === -1
+          )
+        )
+      })
     }
   }, [buildNotification, pendingRootchainTxs, syncTransactions, verify])
 

@@ -1,10 +1,5 @@
 import { createAsyncAction } from './actionCreators'
-import {
-  plasmaService,
-  walletService,
-  ethereumService,
-  notificationService
-} from 'common/services'
+import { plasmaService, walletService } from 'common/services'
 import { Datetime } from 'common/utils'
 
 export const fetchAssets = (rootchainAssets, address) => {

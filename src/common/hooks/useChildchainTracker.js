@@ -7,8 +7,8 @@ const useChildchainTracker = wallet => {
   const [notification, setNotification] = useState(null)
 
   const syncTransactions = useCallback(() => {
-    return plasmaService.getTxs(wallet.address)
-  }, [wallet.address])
+    return plasmaService.getTxs(wallet.current.address)
+  }, [wallet])
 
   const verify = useCallback(
     currentWatcherTxs => {
@@ -30,12 +30,12 @@ const useChildchainTracker = wallet => {
     confirmedTx => {
       return {
         type: 'childchain',
-        title: `${wallet.name} sent on OmiseGO network`,
+        title: `${wallet.current.name} sent on OmiseGO network`,
         message: `${confirmedTx.value} ${confirmedTx.symbol}`,
         confirmedTx
       }
     },
-    [wallet.name]
+    [wallet]
   )
 
   const track = useCallback(async () => {
