@@ -34,7 +34,7 @@ const useRootchainTracker = wallet => {
           const rootchainTx = currentRootchainTxs.find(
             tx => tx.hash === pendingTx.hash
           )
-          const confirmationsThreshold = getConfirmationsThreshold(rootchainTx)
+          const confirmationsThreshold = getConfirmationsThreshold(pendingTx)
 
           const confirmations = Number(rootchainTx.confirmations)
 
