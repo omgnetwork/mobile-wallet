@@ -49,8 +49,7 @@ const TransferConfirm = ({
   }, [
     fee,
     fromWallet,
-    loading.action,
-    loading.success,
+    loading,
     navigation,
     observedActions,
     pendingTxs,

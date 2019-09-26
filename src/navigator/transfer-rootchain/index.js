@@ -49,7 +49,8 @@ export default createStackNavigator(
       screen: SendReceiveNavigator
     },
     TransferConfirm: {
-      screen: Views.TransferConfirm
+      screen: Views.TransferConfirm,
+      navigationOptions: () => ({ gesturesEnabled: false })
     }
   },
   {

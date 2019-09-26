@@ -12,7 +12,8 @@ export default createStackNavigator(
       }
     },
     TransferConfirm: {
-      screen: Views.TransferConfirm
+      screen: Views.TransferConfirm,
+      navigationOptions: () => ({ gesturesEnabled: false })
     }
   },
   {
