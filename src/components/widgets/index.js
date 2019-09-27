@@ -13,6 +13,8 @@ import OMGExitWarning from './omg-exit-warning'
 import OMGFeeInput from './omg-fee-input'
 import OMGFeeSelect from './omg-fee-select'
 import OMGMenu from './omg-menu'
+import OMGMenuIcon from './omg-menu-icon'
+import OMGMenuImage from './omg-menu-image'
 import OMGMnemonicConfirmBox from './omg-mnemonic-confirm-box'
 import OMGIcon from './omg-icon'
 import OMGImage from './omg-image'
@@ -52,6 +54,8 @@ export {
   OMGItemWallet,
   OMGItemToken,
   OMGMenu,
+  OMGMenuIcon,
+  OMGMenuImage,
   OMGMnemonicConfirmBox,
   OMGQRCode,
   OMGQRScanner,

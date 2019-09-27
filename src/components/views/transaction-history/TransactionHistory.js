@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import { View, StyleSheet, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
@@ -7,10 +8,11 @@ import {
   OMGBox,
   OMGText,
   OMGStatusBar,
-  OMGEmpty
+  OMGMenuIcon,
+  OMGMenuImage
 } from 'components/widgets'
 
-const TransactionHistory = ({ theme, navigation }) => {
+const TransactionHistory = ({ theme, navigation, wallet }) => {
   useEffect(() => {
     function didFocus() {
       StatusBar.setBarStyle('dark-content')
@@ -30,7 +32,24 @@ const TransactionHistory = ({ theme, navigation }) => {
         barStyle={'dark-content'}
         backgroundColor={theme.colors.white}
       />
-      <OMGText>Transaction History</OMGText>
+      <OMGText style={styles.title(theme)}>History</OMGText>
+      <OMGMenuImage
+        style={styles.menuItem}
+        title='Transactions'
+        description={wallet.name}
+      />
+      <OMGMenuIcon
+        style={styles.menuItem}
+        iconName='download'
+        title='Deposit'
+        description='To Plasma Chain'
+      />
+      <OMGMenuIcon
+        style={styles.menuItem}
+        iconName='upload'
+        title='Exit'
+        description='From Plasma Chain'
+      />
     </SafeAreaView>
   )
 }
@@ -46,7 +65,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   title: theme => ({
-    flex: 1,
     fontSize: 18,
     textTransform: 'uppercase',
     color: theme.colors.gray3
@@ -55,8 +73,9 @@ const styles = StyleSheet.create({
     padding: 16,
     marginRight: -16
   },
-  menuContainer: {},
-  menuItem: {},
+  menuItem: {
+    marginTop: 16
+  },
   divider: theme => ({
     backgroundColor: theme.colors.black1,
     height: 1,
@@ -64,4 +83,15 @@ const styles = StyleSheet.create({
   })
 })
 
-export default withNavigation(withTheme(TransactionHistory))
+const mapStateToProps = (state, ownProps) => ({
+  provider: state.setting.provider,
+  loading: state.loading,
+  wallet: state.wallets.find(
+    wallet => wallet.address === state.setting.primaryWalletAddress
+  )
+})
+
+export default connect(
+  mapStateToProps,
+  null
+)(withNavigation(withTheme(TransactionHistory)))
