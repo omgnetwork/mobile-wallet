@@ -13,21 +13,26 @@ import Exit from './exit'
 import ExitForm from './exit/ExitForm'
 import ExitConfirm from './exit/ExitConfirm'
 import ExitPending from './exit/ExitPending'
-import History from './history'
 import ImportWallet from './import-wallet'
 import ImportWalletMnemonic from './import-wallet/Mnemonic'
 import ImportWalletSuccess from './import-wallet/ImportSuccess'
 import ManageWallet from './manage-wallet'
 import Preview from './preview'
 import Setting from './setting'
-import Transfer from './transfer'
-import TransferConfirm from './transfer-confirm'
-import TransferForm from './transfer-form'
-import TransferPending from './transfer-pending'
-import TransferReceive from './transfer-receive'
-import TransferScanner from './transfer-scanner'
-import TransferSelectBalance from './transfer-select-balance'
-import TransferSelectFee from './transfer-select-fee'
+import {
+  TransactionHistory,
+  TransactionHistoryFilter
+} from './transaction-history'
+import {
+  TransferContainer as Transfer,
+  TransferConfirm,
+  TransferForm,
+  TransferPending,
+  TransferReceive,
+  TransferScanner,
+  TransferSelectBalance,
+  TransferSelectFee
+} from './transfer'
 import Wallets from './wallets'
 import WarpPortal from './warp-portal'
 
@@ -47,7 +52,6 @@ export {
   ExitForm,
   ExitConfirm,
   ExitPending,
-  History,
   ImportWallet,
   ImportWalletMnemonic,
   ImportWalletSuccess,
@@ -62,6 +66,8 @@ export {
   TransferScanner,
   TransferSelectBalance,
   TransferSelectFee,
+  TransactionHistory,
+  TransactionHistoryFilter,
   Wallets,
   WarpPortal
 }
