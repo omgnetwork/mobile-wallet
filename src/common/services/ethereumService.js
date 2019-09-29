@@ -1,14 +1,9 @@
 import { Ethereum } from 'common/blockchain'
 
-export const sendErc20Token = (token, fee, fromWallet, toAddress) => {
+export const sendErc20Token = (wallet, options) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const pendingTransaction = await Ethereum.sendErc20Token(
-        token,
-        fee,
-        fromWallet,
-        toAddress
-      )
+      const pendingTransaction = await Ethereum.sendErc20Token(wallet, options)
       resolve(pendingTransaction)
     } catch (err) {
       reject(err)
@@ -16,15 +11,10 @@ export const sendErc20Token = (token, fee, fromWallet, toAddress) => {
   })
 }
 
-export const sendEthToken = (token, fee, fromWallet, toAddress) => {
+export const sendEthToken = (wallet, options) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const pendingTransaction = await Ethereum.sendEthToken(
-        token,
-        fee,
-        fromWallet,
-        toAddress
-      )
+      const pendingTransaction = await Ethereum.sendEthToken(wallet, options)
       resolve(pendingTransaction)
     } catch (err) {
       reject(err)
@@ -32,10 +22,10 @@ export const sendEthToken = (token, fee, fromWallet, toAddress) => {
   })
 }
 
-export const getERC20Txs = (address, lastBlockNumber) => {
+export const getERC20Txs = (address, options) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await Ethereum.getERC20Txs(address, lastBlockNumber)
+      const response = await Ethereum.getERC20Txs(address, options)
       const currentRootchainTxs = response.data.result
       resolve(currentRootchainTxs)
     } catch (err) {
@@ -44,12 +34,11 @@ export const getERC20Txs = (address, lastBlockNumber) => {
   })
 }
 
-export const getTxs = (address, lastBlockNumber) => {
+export const getTxs = (address, options) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await Ethereum.getTxs(address, lastBlockNumber)
+      const response = await Ethereum.getTxs(address, options)
       const currentRootchainTxs = response.data.result
-      console.log(currentRootchainTxs)
       resolve(currentRootchainTxs)
     } catch (err) {
       reject(err)

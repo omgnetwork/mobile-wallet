@@ -1,30 +1,45 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, StatusBar } from 'react-native'
+import { StyleSheet, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { withNavigation, SafeAreaView } from 'react-navigation'
+import { withNavigationFocus, SafeAreaView } from 'react-navigation'
+import { transactionActions } from 'common/actions'
 import {
-  OMGIcon,
-  OMGBox,
   OMGText,
+  OMGEmpty,
   OMGStatusBar,
   OMGMenuIcon,
-  OMGMenuImage
+  OMGMenuImage,
+  OMGItemTransaction
 } from 'components/widgets'
 
-const TransactionHistory = ({ theme, navigation, wallet }) => {
+const TransactionHistory = ({
+  theme,
+  navigation,
+  wallet,
+  provider,
+  loading,
+  isFocused,
+  dispatchFetchTxHistory
+}) => {
   useEffect(() => {
-    function didFocus() {
+    if (isFocused) {
       StatusBar.setBarStyle('dark-content')
       StatusBar.setBackgroundColor(theme.colors.white)
+      const options = {
+        page: 1,
+        limit: 100
+      }
+      dispatchFetchTxHistory(wallet.address, provider, options)
     }
-
-    const didFocusSubscription = navigation.addListener('didFocus', didFocus)
-
-    return () => {
-      didFocusSubscription.remove()
-    }
-  }, [navigation, theme.colors.white])
+  }, [
+    isFocused,
+    dispatchFetchTxHistory,
+    navigation,
+    provider,
+    theme.colors.white,
+    wallet.address
+  ])
 
   return (
     <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
@@ -49,6 +64,14 @@ const TransactionHistory = ({ theme, navigation, wallet }) => {
         iconName='upload'
         title='Exit'
         description='From Plasma Chain'
+      />
+      <OMGText style={styles.subheader(theme)} weight='bold'>
+        Recent
+      </OMGText>
+      <OMGEmpty
+        loading={loading.show && loading.action === 'TRANSACTION_ALL'}
+        text='Empty Transactions'
+        style={styles.loading}
       />
     </SafeAreaView>
   )
@@ -80,7 +103,20 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.black1,
     height: 1,
     opacity: 0.3
-  })
+  }),
+  subheader: theme => ({
+    color: theme.colors.primary,
+    textTransform: 'uppercase',
+    marginTop: 30
+  }),
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    opacity: 0.4,
+    fontSize: 18,
+    textTransform: 'uppercase'
+  }
 })
 
 const mapStateToProps = (state, ownProps) => ({
@@ -91,7 +127,14 @@ const mapStateToProps = (state, ownProps) => ({
   )
 })
 
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatchFetchTxHistory: (address, provider, options) =>
+    dispatch(
+      transactionActions.fetchTransactionHistory(address, provider, options)
+    )
+})
+
 export default connect(
   mapStateToProps,
-  null
-)(withNavigation(withTheme(TransactionHistory)))
+  mapDispatchToProps
+)(withNavigationFocus(withTheme(TransactionHistory)))

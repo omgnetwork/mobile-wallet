@@ -33,6 +33,7 @@ import OMGTextInputBox from './omg-text-input-box'
 import OMGTokenInput from './omg-token-input'
 import OMGTokenSelect from './omg-token-select'
 import OMGViewPager from './omg-view-pager'
+import OMGItemTransaction from './omg-item-transaction'
 import OMGWalletAddress from './omg-wallet-address'
 
 export {
@@ -53,6 +54,7 @@ export {
   OMGImage,
   OMGItemWallet,
   OMGItemToken,
+  OMGItemTransaction,
   OMGMenu,
   OMGMenuIcon,
   OMGMenuImage,

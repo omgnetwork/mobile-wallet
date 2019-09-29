@@ -4,6 +4,7 @@ import * as priceService from './priceService'
 import * as ethereumService from './ethereumService'
 import * as notificationService from './notificationService'
 import * as plasmaService from './plasmaService'
+import * as transactionService from './transactionService'
 
 export {
   walletService,
@@ -11,5 +12,6 @@ export {
   priceService,
   ethereumService,
   notificationService,
-  plasmaService
+  plasmaService,
+  transactionService
 }

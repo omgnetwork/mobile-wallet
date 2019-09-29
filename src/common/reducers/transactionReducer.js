@@ -1,4 +1,7 @@
-export const transactionReducer = (state = { pendingTxs: [] }, action) => {
+export const transactionReducer = (
+  state = { pendingTxs: [], transactions: [] },
+  action
+) => {
   switch (action.type) {
     case 'ROOTCHAIN/SEND_ETH_TOKEN/SUCCESS':
     case 'ROOTCHAIN/SEND_ERC20_TOKEN/SUCCESS':
@@ -16,7 +19,9 @@ export const transactionReducer = (state = { pendingTxs: [] }, action) => {
       }
     case 'WALLET/DELETE_ALL/OK':
     case 'SETTING/SET_PRIMARY_ADDRESS/OK':
-      return { pendingTxs: [] }
+      return { transactions: [], pendingTxs: [] }
+    case 'TRANSACTION/ALL/SUCCESS':
+      return { ...state, transactions: action.data.transactions }
     default:
       return state
   }
