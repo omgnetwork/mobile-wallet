@@ -1189,6 +1189,30 @@ export const plasmaAbi = () => {
       ],
       name: 'InFlightExitFinalized',
       type: 'event'
+    },
+    {
+      // Extra method from erc20 abi
+      name: 'approve',
+      type: 'function',
+      constant: false,
+      inputs: [
+        {
+          name: '_spender',
+          type: 'address'
+        },
+        {
+          name: '_value',
+          type: 'uint256'
+        }
+      ],
+      outputs: [
+        {
+          name: '',
+          type: 'bool'
+        }
+      ],
+      payable: false,
+      stateMutability: 'nonpayable'
     }
   ]
 }

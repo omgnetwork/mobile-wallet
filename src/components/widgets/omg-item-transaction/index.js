@@ -1,15 +1,16 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { Formatter, BigNumber } from 'common/utils'
+import { Formatter, Datetime } from 'common/utils'
 import OMGText from '../omg-text'
 import OMGIcon from '../omg-icon'
 
-const OMGItemTransaction = ({ theme, tx, style, key }) => {
+const OMGItemTransaction = ({ theme, tx, style, key, address }) => {
+  const iconName = tx.to === address ? 'arrow-down' : 'arrow-up'
   return (
     <View style={{ ...styles.container(theme), ...style }} key={key}>
       <View style={styles.logo(theme)}>
-        <OMGIcon name='files' size={14} />
+        <OMGIcon name={iconName} size={14} />
       </View>
       <OMGText
         style={styles.hash(theme)}
@@ -21,7 +22,12 @@ const OMGItemTransaction = ({ theme, tx, style, key }) => {
         <OMGText style={styles.amount(theme)}>
           {formatTokenBalance(tx.value, tx.tokenDecimal)} {tx.tokenSymbol}
         </OMGText>
-        <OMGText style={styles.date(theme)} />
+        <OMGText style={styles.date(theme)}>
+          {Datetime.format(
+            Datetime.fromTimestamp(tx.timestamp),
+            'MMM DD, HH:mm a'
+          )}
+        </OMGText>
       </View>
     </View>
   )
@@ -29,6 +35,7 @@ const OMGItemTransaction = ({ theme, tx, style, key }) => {
 
 const formatTokenBalance = (value, tokenDecimal) => {
   const balance = Formatter.formatUnits(value, tokenDecimal)
+  console.log(balance)
   return Formatter.format(balance, {
     commify: true,
     maxDecimal: 3,
@@ -39,16 +46,12 @@ const formatTokenBalance = (value, tokenDecimal) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.backgroundDisabled,
-    borderColor: theme.colors.gray4,
-    borderRadius: theme.roundness,
-    borderWidth: 1,
-    padding: 12,
+    paddingVertical: 12,
     alignItems: 'center'
   }),
   logo: theme => ({
-    width: 24,
-    height: 24,
+    width: 40,
+    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: theme.colors.black4,
@@ -65,7 +68,7 @@ const styles = StyleSheet.create({
   }),
   rightContainer: {
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     justifyContent: 'center'
   },
   amount: theme => ({
@@ -73,8 +76,7 @@ const styles = StyleSheet.create({
   }),
   date: theme => ({
     color: theme.colors.gray2,
-    fontSize: 8,
-    marginTop: 8
+    fontSize: 8
   })
 })
 

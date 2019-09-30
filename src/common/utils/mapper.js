@@ -55,11 +55,12 @@ const mapRootchainErc20Tx = tx => {
 }
 
 const mapChildchainEthTx = (direction, tx) => {
+  const splitted = direction.from === direction.to
   return {
     hash: tx.txhash,
     network: 'omisego',
     confirmations: null,
-    type: 'transfer',
+    type: splitted ? 'split' : 'transfer',
     from: direction.from,
     to: direction.to,
     contractAddress: ContractAddress.ETH_ADDRESS,
@@ -74,12 +75,13 @@ const mapChildchainEthTx = (direction, tx) => {
 const mapChildchainErc20Tx = (direction, tx, tokens) => {
   const usedToken = tx.results[tx.results.length - 1]
   const contractAddress = usedToken.currency
+  const splitted = direction.from === direction.to
   const token = Token.find(contractAddress, tokens)
   return {
     hash: tx.txhash,
     network: 'omisego',
     confirmations: null,
-    type: 'transfer',
+    type: splitted ? 'split' : 'transfer',
     from: direction.from,
     to: direction.to,
     contractAddress,
@@ -92,15 +94,20 @@ const mapChildchainErc20Tx = (direction, tx, tokens) => {
 }
 
 const mapInput = tx => {
-  if (tx.to !== ContractAddress.PLASMA_CONTRACT_ADDRESS) return 'transfer'
-  switch (Transaction.decodePlasmaInputMethod(tx.input)) {
+  const methodName = Transaction.decodePlasmaInputMethod(tx.input)
+  console.log(methodName)
+  switch (methodName) {
     case 'depositFrom':
+    case 'deposit':
       return 'deposit'
     case 'addToken':
       return 'unlockExit'
     case 'startStandardExit':
       return 'exit'
+    case 'approve':
+      return 'depositApprove'
     default:
+      console.log(methodName)
       return 'transfer'
   }
 }

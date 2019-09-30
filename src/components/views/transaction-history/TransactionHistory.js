@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, FlatList, StatusBar } from 'react-native'
+import { View, StyleSheet, FlatList, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigationFocus, SafeAreaView } from 'react-navigation'
 import { transactionActions } from 'common/actions'
@@ -25,6 +25,13 @@ const TransactionHistory = ({
 }) => {
   const [txs, setTxs] = useState([])
 
+  const renderSeparator = useCallback(
+    ({ leadingItem }) => {
+      return <View style={styles.divider(theme)} />
+    },
+    [theme]
+  )
+
   useEffect(() => {
     if (isFocused) {
       StatusBar.setBarStyle('dark-content')
@@ -46,7 +53,9 @@ const TransactionHistory = ({
 
   useEffect(() => {
     if (transactions.length) {
-      const recentTxs = transactions.slice(0, 5)
+      const recentTxs = transactions
+        .filter(tx => tx.type === 'transfer')
+        .slice(0, 5)
       console.log(recentTxs)
       setTxs(recentTxs)
     }
@@ -82,6 +91,10 @@ const TransactionHistory = ({
       <FlatList
         data={txs}
         keyExtractor={(tx, index) => tx.hash}
+        ItemSeparatorComponent={renderSeparator}
+        contentContainerStyle={
+          txs && txs.length ? styles.content : styles.emptyContent
+        }
         ListEmptyComponent={
           <OMGEmpty
             loading={loading.show && loading.action === 'TRANSACTION_ALL'}
@@ -90,18 +103,13 @@ const TransactionHistory = ({
           />
         }
         renderItem={({ item }) => (
-          <OMGItemTransaction tx={item} style={styles.itemTx} />
+          <OMGItemTransaction
+            tx={item}
+            style={styles.itemTx}
+            address={wallet.address}
+          />
         )}
       />
-      {/* {recentTxs && recentTxs.length ? (
-        recentTxs
-      ) : (
-        <OMGEmpty
-          loading={loading.show && loading.action === 'TRANSACTION_ALL'}
-          text='Empty Transactions'
-          style={styles.loading}
-        />
-      )} */}
     </SafeAreaView>
   )
 }
@@ -109,7 +117,6 @@ const TransactionHistory = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
     paddingVertical: 16
   },
   titleContainer: {
@@ -118,26 +125,38 @@ const styles = StyleSheet.create({
   },
   title: theme => ({
     fontSize: 18,
+    marginLeft: 16,
     textTransform: 'uppercase',
     color: theme.colors.gray3
   }),
   icon: {
-    padding: 16,
+    paddingTop: 8,
+    paddingBottom: 16,
     marginRight: -16
   },
   menuItem: {
-    marginTop: 16
+    marginTop: 16,
+    marginHorizontal: 16
   },
   divider: theme => ({
     backgroundColor: theme.colors.black1,
     height: 1,
-    opacity: 0.3
+    opacity: 0.4
   }),
   subheader: theme => ({
     color: theme.colors.primary,
     textTransform: 'uppercase',
+    marginLeft: 16,
+    marginBottom: 8,
     marginTop: 30
   }),
+  content: {
+    paddingHorizontal: 16
+  },
+  emptyContent: {
+    flexGrow: 1,
+    justifyContent: 'center'
+  },
   loading: {
     flex: 1,
     justifyContent: 'center',
@@ -146,9 +165,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textTransform: 'uppercase'
   },
-  itemTx: {
-    marginTop: 8
-  }
+  itemTx: {}
 })
 
 const mapStateToProps = (state, ownProps) => ({
