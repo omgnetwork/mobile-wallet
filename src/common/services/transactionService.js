@@ -66,6 +66,12 @@ const mergeTxs = async (txs, address, tokens) => {
     cachedErc20[tx.hash] = tx
   })
 
+  rootchainTxs.forEach(tx => {
+    if (cachedErc20[tx.hash]) {
+      cachedErc20[tx.hash] = { ...cachedErc20[tx.hash], input: tx.input }
+    }
+  })
+
   const mappedRootchainTxs = rootchainTxs.map(tx =>
     Mapper.mapRootchainTx(tx, cachedErc20)
   )

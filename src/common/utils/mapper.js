@@ -24,6 +24,7 @@ const mapRootchainEthTx = tx => {
   return {
     hash: tx.hash,
     network: 'ethereum',
+    type: mapInput(tx),
     confirmations: tx.confirmations,
     from: tx.from,
     to: tx.to,
@@ -40,6 +41,7 @@ const mapRootchainErc20Tx = tx => {
   return {
     hash: tx.hash,
     network: 'ethereum',
+    type: mapInput(tx),
     confirmations: tx.confirmations,
     from: tx.from,
     to: tx.to,
@@ -56,7 +58,8 @@ const mapChildchainEthTx = (direction, tx) => {
   return {
     hash: tx.txhash,
     network: 'omisego',
-    confirmations: '',
+    confirmations: null,
+    type: 'transfer',
     from: direction.from,
     to: direction.to,
     contractAddress: ContractAddress.ETH_ADDRESS,
@@ -75,7 +78,8 @@ const mapChildchainErc20Tx = (direction, tx, tokens) => {
   return {
     hash: tx.txhash,
     network: 'omisego',
-    confirmations: '',
+    confirmations: null,
+    type: 'transfer',
     from: direction.from,
     to: direction.to,
     contractAddress,
@@ -84,6 +88,20 @@ const mapChildchainErc20Tx = (direction, tx, tokens) => {
     tokenDecimal: token.tokenDecimal,
     value: usedToken.value,
     timestamp: tx.block.timestamp
+  }
+}
+
+const mapInput = tx => {
+  if (tx.to !== ContractAddress.PLASMA_CONTRACT_ADDRESS) return 'transfer'
+  switch (Transaction.decodePlasmaInputMethod(tx.input)) {
+    case 'depositFrom':
+      return 'deposit'
+    case 'addToken':
+      return 'unlockExit'
+    case 'startStandardExit':
+      return 'exit'
+    default:
+      return 'transfer'
   }
 }
 

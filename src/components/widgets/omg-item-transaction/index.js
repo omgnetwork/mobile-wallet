@@ -1,24 +1,39 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
+import { Formatter, BigNumber } from 'common/utils'
 import OMGText from '../omg-text'
 import OMGIcon from '../omg-icon'
 
-const OMGItemTransaction = ({ theme, tx, style }) => {
+const OMGItemTransaction = ({ theme, tx, style, key }) => {
   return (
-    <View style={{ ...styles.container(theme), ...style }}>
+    <View style={{ ...styles.container(theme), ...style }} key={key}>
       <View style={styles.logo(theme)}>
         <OMGIcon name='files' size={14} />
       </View>
-      <OMGText style={styles.text(theme)}>{tx.hash}</OMGText>
+      <OMGText
+        style={styles.hash(theme)}
+        numberOfLines={1}
+        ellipsizeMode='tail'>
+        {tx.hash}
+      </OMGText>
       <View style={styles.rightContainer}>
         <OMGText style={styles.amount(theme)}>
-          {tx.value} {tx.tokenSymbol}
+          {formatTokenBalance(tx.value, tx.tokenDecimal)} {tx.tokenSymbol}
         </OMGText>
         <OMGText style={styles.date(theme)} />
       </View>
     </View>
   )
+}
+
+const formatTokenBalance = (value, tokenDecimal) => {
+  const balance = Formatter.formatUnits(value, tokenDecimal)
+  return Formatter.format(balance, {
+    commify: true,
+    maxDecimal: 3,
+    ellipsize: false
+  })
 }
 
 const styles = StyleSheet.create({
@@ -41,15 +56,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: theme.roundness
   }),
-  address: theme => ({
-    color: theme.colors.gray2,
-    maxWidth: 128,
-    marginRight: 10
-  }),
-  text: theme => ({
+  hash: theme => ({
+    flex: 1,
     color: theme.colors.primary,
-    fontSize: 14,
-    flex: 1
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10
   }),
   rightContainer: {
     flexDirection: 'column',

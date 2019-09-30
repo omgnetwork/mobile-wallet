@@ -1,7 +1,6 @@
 import { ChildChain, RootChain, OmgUtil } from '@omisego/omg-js'
 import Config from 'react-native-config'
 import Web3 from 'web3'
-import axios from 'axios'
 
 const web3 = new Web3(
   new Web3.providers.HttpProvider(Config.WEB3_HTTP_PROVIDER),

@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, StatusBar } from 'react-native'
+import { StyleSheet, FlatList, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigationFocus, SafeAreaView } from 'react-navigation'
 import { transactionActions } from 'common/actions'
@@ -20,8 +20,11 @@ const TransactionHistory = ({
   provider,
   loading,
   isFocused,
-  dispatchFetchTxHistory
+  dispatchFetchTxHistory,
+  transactions
 }) => {
+  const [txs, setTxs] = useState([])
+
   useEffect(() => {
     if (isFocused) {
       StatusBar.setBarStyle('dark-content')
@@ -40,6 +43,14 @@ const TransactionHistory = ({
     theme.colors.white,
     wallet.address
   ])
+
+  useEffect(() => {
+    if (transactions.length) {
+      const recentTxs = transactions.slice(0, 5)
+      console.log(recentTxs)
+      setTxs(recentTxs)
+    }
+  }, [transactions])
 
   return (
     <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
@@ -68,11 +79,29 @@ const TransactionHistory = ({
       <OMGText style={styles.subheader(theme)} weight='bold'>
         Recent
       </OMGText>
-      <OMGEmpty
-        loading={loading.show && loading.action === 'TRANSACTION_ALL'}
-        text='Empty Transactions'
-        style={styles.loading}
+      <FlatList
+        data={txs}
+        keyExtractor={(tx, index) => tx.hash}
+        ListEmptyComponent={
+          <OMGEmpty
+            loading={loading.show && loading.action === 'TRANSACTION_ALL'}
+            text='Empty Transactions'
+            style={styles.loading}
+          />
+        }
+        renderItem={({ item }) => (
+          <OMGItemTransaction tx={item} style={styles.itemTx} />
+        )}
       />
+      {/* {recentTxs && recentTxs.length ? (
+        recentTxs
+      ) : (
+        <OMGEmpty
+          loading={loading.show && loading.action === 'TRANSACTION_ALL'}
+          text='Empty Transactions'
+          style={styles.loading}
+        />
+      )} */}
     </SafeAreaView>
   )
 }
@@ -116,12 +145,16 @@ const styles = StyleSheet.create({
     opacity: 0.4,
     fontSize: 18,
     textTransform: 'uppercase'
+  },
+  itemTx: {
+    marginTop: 8
   }
 })
 
 const mapStateToProps = (state, ownProps) => ({
   provider: state.setting.provider,
   loading: state.loading,
+  transactions: state.transaction.transactions,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   )
