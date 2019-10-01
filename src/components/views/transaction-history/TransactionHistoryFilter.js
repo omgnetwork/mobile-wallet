@@ -18,6 +18,7 @@ const TransactionHistoryFilter = ({
   loading
 }) => {
   const title = navigation.getParam('title')
+  const types = navigation.getParam('types')
   return (
     <SafeAreaView style={styles.container}>
       <OMGStatusBar
@@ -36,7 +37,7 @@ const TransactionHistoryFilter = ({
       </View>
       <OMGTransactionFilter
         transactions={transactions}
-        types={['all', 'in', 'out', 'failed']}
+        types={types}
         loading={loading}
         address={wallet.address}
       />

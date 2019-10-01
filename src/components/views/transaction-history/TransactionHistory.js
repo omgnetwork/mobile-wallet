@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
@@ -53,6 +53,27 @@ const TransactionHistory = ({
     }
   }, [transactions])
 
+  const handleClickTransactions = useCallback(() => {
+    navigation.navigate('TransactionHistoryFilter', {
+      title: 'Transactions',
+      types: ['all', 'in', 'out', 'failed']
+    })
+  }, [navigation])
+
+  const handleClickDeposit = useCallback(() => {
+    navigation.navigate('TransactionHistoryFilter', {
+      title: 'Deposit',
+      types: ['deposit']
+    })
+  }, [navigation])
+
+  const handleClickExit = useCallback(() => {
+    navigation.navigate('TransactionHistoryFilter', {
+      title: 'Exit',
+      types: ['exit']
+    })
+  }, [navigation])
+
   return (
     <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
       <OMGStatusBar
@@ -63,23 +84,21 @@ const TransactionHistory = ({
       <OMGMenuImage
         style={styles.menuItem}
         title='Transactions'
-        onPress={() =>
-          navigation.navigate('TransactionHistoryFilter', {
-            title: 'Transactions'
-          })
-        }
+        onPress={handleClickTransactions}
         description={wallet.name}
       />
       <OMGMenuIcon
         style={styles.menuItem}
         iconName='download'
         title='Deposit'
+        onPress={handleClickDeposit}
         description='To Plasma Chain'
       />
       <OMGMenuIcon
         style={styles.menuItem}
         iconName='upload'
         title='Exit'
+        onPress={handleClickExit}
         description='From Plasma Chain'
       />
       <OMGText style={styles.subheader(theme)} weight='bold'>

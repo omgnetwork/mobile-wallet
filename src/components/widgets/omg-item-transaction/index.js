@@ -1,17 +1,18 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { Formatter, Datetime, Transaction } from 'common/utils'
+import { Formatter, Datetime } from 'common/utils'
 import OMGText from '../omg-text'
 import OMGIcon from '../omg-icon'
 
-const OMGItemTransaction = ({ theme, tx, style, key, address }) => {
+const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
   const isError = tx.type === 'failed'
-  const iconName = Transaction.isReceiveTx(address, tx.to)
-    ? 'arrow-down'
-    : 'arrow-up'
+  const iconName = getIconName(tx.type)
   return (
-    <View style={{ ...styles.container(theme), ...style }} key={key}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={{ ...styles.container(theme), ...style }}
+      key={key}>
       <View style={styles.logo(theme, isError)}>
         <OMGIcon
           name={iconName}
@@ -39,8 +40,22 @@ const OMGItemTransaction = ({ theme, tx, style, key, address }) => {
           )}
         </OMGText>
       </View>
-    </View>
+    </TouchableOpacity>
   )
+}
+
+const getIconName = type => {
+  switch (type) {
+    case 'deposit':
+      return 'download'
+    case 'exit':
+      return 'upload'
+    case 'in':
+      return 'arrow-down'
+    case 'out':
+    default:
+      return 'arrow-up'
+  }
 }
 
 const formatTokenBalance = (value, tokenDecimal) => {

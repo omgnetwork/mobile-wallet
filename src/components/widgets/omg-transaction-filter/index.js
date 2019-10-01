@@ -31,19 +31,27 @@ const OMGTransactionFilter = ({
     })
   }, [activeType, theme, types])
 
+  const renderHeader = () => {
+    if (types.length > 1) {
+      return (
+        <ScrollView
+          horizontal={true}
+          contentContainerStyle={styles.optionContainer}>
+          {renderTypeOptions()}
+        </ScrollView>
+      )
+    } else {
+      return null
+    }
+  }
+
   return (
     <OMGTransactionList
       transactions={filteredTxs}
       loading={loading}
       address={address}
       style={style}
-      renderHeader={() => (
-        <ScrollView
-          horizontal={true}
-          contentContainerStyle={styles.optionContainer}>
-          {renderTypeOptions()}
-        </ScrollView>
-      )}
+      renderHeader={renderHeader}
     />
   )
 }

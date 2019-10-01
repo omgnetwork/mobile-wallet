@@ -95,12 +95,12 @@ const mapInput = (tx, address) => {
     case 'depositFrom':
     case 'deposit':
       return 'deposit'
+    case 'approve':
+      return 'depositApprove'
     case 'addToken':
       return 'unlockExit'
     case 'startStandardExit':
       return 'exit'
-    case 'approve':
-      return 'depositApprove'
     default:
       if (Transaction.isReceiveTx(address, tx.to)) {
         return 'in'
