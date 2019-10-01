@@ -19,7 +19,7 @@ const OMGTransactionList = ({
   )
 
   return (
-    <View style={style}>
+    <View style={{ ...styles.container, ...style }}>
       <FlatList
         ListHeaderComponent={renderHeader && renderHeader()}
         data={transactions}
@@ -46,6 +46,9 @@ const OMGTransactionList = ({
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
   content: {
     paddingHorizontal: 16
   },
