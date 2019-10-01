@@ -1,16 +1,15 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, FlatList, StatusBar } from 'react-native'
+import { StyleSheet, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigationFocus, SafeAreaView } from 'react-navigation'
 import { transactionActions } from 'common/actions'
 import {
   OMGText,
-  OMGEmpty,
   OMGStatusBar,
   OMGMenuIcon,
   OMGMenuImage,
-  OMGItemTransaction
+  OMGTransactionList
 } from 'components/widgets'
 
 const TransactionHistory = ({
@@ -24,13 +23,6 @@ const TransactionHistory = ({
   transactions
 }) => {
   const [txs, setTxs] = useState([])
-
-  const renderSeparator = useCallback(
-    ({ leadingItem }) => {
-      return <View style={styles.divider(theme)} />
-    },
-    [theme]
-  )
 
   useEffect(() => {
     if (isFocused) {
@@ -93,27 +85,10 @@ const TransactionHistory = ({
       <OMGText style={styles.subheader(theme)} weight='bold'>
         Recent
       </OMGText>
-      <FlatList
-        data={txs}
-        keyExtractor={(tx, index) => tx.hash}
-        ItemSeparatorComponent={renderSeparator}
-        contentContainerStyle={
-          txs && txs.length ? styles.content : styles.emptyContent
-        }
-        ListEmptyComponent={
-          <OMGEmpty
-            loading={loading.show && loading.action === 'TRANSACTION_ALL'}
-            text='Empty Transactions'
-            style={styles.loading}
-          />
-        }
-        renderItem={({ item }) => (
-          <OMGItemTransaction
-            tx={item}
-            style={styles.itemTx}
-            address={wallet.address}
-          />
-        )}
+      <OMGTransactionList
+        transactions={txs}
+        loading={loading}
+        address={wallet.address}
       />
     </SafeAreaView>
   )
@@ -143,34 +118,13 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginHorizontal: 16
   },
-  divider: theme => ({
-    backgroundColor: theme.colors.black1,
-    height: 1,
-    opacity: 0.4
-  }),
   subheader: theme => ({
     color: theme.colors.primary,
     textTransform: 'uppercase',
     marginLeft: 16,
     marginBottom: 8,
     marginTop: 30
-  }),
-  content: {
-    paddingHorizontal: 16
-  },
-  emptyContent: {
-    flexGrow: 1,
-    justifyContent: 'center'
-  },
-  loading: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    opacity: 0.4,
-    fontSize: 18,
-    textTransform: 'uppercase'
-  },
-  itemTx: {}
+  })
 })
 
 const mapStateToProps = (state, ownProps) => ({

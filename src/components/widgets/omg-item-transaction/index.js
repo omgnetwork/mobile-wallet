@@ -6,25 +6,33 @@ import OMGText from '../omg-text'
 import OMGIcon from '../omg-icon'
 
 const OMGItemTransaction = ({ theme, tx, style, key, address }) => {
+  const isError = tx.type === 'failed'
   const iconName = Transaction.isReceiveTx(address, tx.to)
     ? 'arrow-down'
     : 'arrow-up'
   return (
     <View style={{ ...styles.container(theme), ...style }} key={key}>
-      <View style={styles.logo(theme)}>
-        <OMGIcon name={iconName} size={14} />
+      <View style={styles.logo(theme, isError)}>
+        <OMGIcon
+          name={iconName}
+          size={14}
+          color={isError ? theme.colors.red : theme.colors.black4}
+        />
       </View>
-      <OMGText
-        style={styles.hash(theme)}
-        numberOfLines={1}
-        ellipsizeMode='tail'>
-        {tx.hash}
-      </OMGText>
+      <View style={styles.centerContainer}>
+        <OMGText
+          style={styles.textHash(theme)}
+          numberOfLines={1}
+          ellipsizeMode='tail'>
+          {tx.hash}
+        </OMGText>
+        {isError && <OMGText style={styles.subText(theme)}>Failed</OMGText>}
+      </View>
       <View style={styles.rightContainer}>
-        <OMGText style={styles.amount(theme)}>
+        <OMGText style={styles.textAmount(theme)}>
           {formatTokenBalance(tx.value, tx.tokenDecimal)} {tx.tokenSymbol}
         </OMGText>
-        <OMGText style={styles.date(theme)}>
+        <OMGText style={styles.textDate(theme)}>
           {Datetime.format(
             Datetime.fromTimestamp(tx.timestamp),
             'MMM DD, HH:mm a'
@@ -50,32 +58,39 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     alignItems: 'center'
   }),
-  logo: theme => ({
+  logo: (theme, error) => ({
     width: 40,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: theme.colors.black4,
+    borderColor: error ? theme.colors.red : theme.colors.black4,
     marginRight: 16,
     borderWidth: 1,
     borderRadius: theme.roundness
   }),
-  hash: theme => ({
+  centerContainer: {
     flex: 1,
-    color: theme.colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 24
-  }),
+    marginRight: 24,
+    flexDirection: 'column'
+  },
   rightContainer: {
     flexDirection: 'column',
     alignItems: 'flex-end',
     justifyContent: 'center'
   },
-  amount: theme => ({
+  textHash: theme => ({
+    color: theme.colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }),
+  subText: theme => ({
+    color: theme.colors.gray2,
+    fontSize: 10
+  }),
+  textAmount: theme => ({
     color: theme.colors.primary
   }),
-  date: theme => ({
+  textDate: theme => ({
     color: theme.colors.gray2,
     fontSize: 8
   })

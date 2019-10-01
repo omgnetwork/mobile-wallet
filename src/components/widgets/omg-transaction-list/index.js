@@ -4,7 +4,6 @@ import { withTheme } from 'react-native-paper'
 import { OMGEmpty, OMGItemTransaction } from 'components/widgets'
 
 const OMGTransactionList = ({
-  types,
   transactions,
   theme,
   loading,
@@ -22,7 +21,7 @@ const OMGTransactionList = ({
   return (
     <View style={style}>
       <FlatList
-        ListHeaderComponent={renderHeader()}
+        ListHeaderComponent={renderHeader && renderHeader()}
         data={transactions}
         keyExtractor={(tx, index) => tx.hash}
         ItemSeparatorComponent={renderSeparator}
