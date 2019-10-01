@@ -16,7 +16,7 @@ const OMGItemTransaction = ({ theme, tx, style, key, address }) => {
         <OMGIcon
           name={iconName}
           size={14}
-          color={isError ? theme.colors.red : theme.colors.black4}
+          color={isError ? theme.colors.red : theme.colors.black5}
         />
       </View>
       <View style={styles.centerContainer}>
