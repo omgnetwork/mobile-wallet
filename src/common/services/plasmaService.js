@@ -57,6 +57,7 @@ export const getTxs = (address, options) => {
       }))
       resolve(currentWatcherTxs)
     } catch (err) {
+      console.log(err)
       reject(err)
     }
   })

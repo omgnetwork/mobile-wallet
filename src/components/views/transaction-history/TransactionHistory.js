@@ -54,7 +54,7 @@ const TransactionHistory = ({
   useEffect(() => {
     if (transactions.length) {
       const recentTxs = transactions
-        .filter(tx => tx.type === 'transfer')
+        .filter(tx => tx.type === 'in' || tx.type === 'out')
         .slice(0, 5)
       console.log(recentTxs)
       setTxs(recentTxs)
@@ -71,6 +71,11 @@ const TransactionHistory = ({
       <OMGMenuImage
         style={styles.menuItem}
         title='Transactions'
+        onPress={() =>
+          navigation.navigate('TransactionHistoryFilter', {
+            title: 'Transactions'
+          })
+        }
         description={wallet.name}
       />
       <OMGMenuIcon

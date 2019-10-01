@@ -68,16 +68,20 @@ const mergeTxs = async (txs, address, tokens) => {
 
   rootchainTxs.forEach(tx => {
     if (cachedErc20[tx.hash]) {
-      cachedErc20[tx.hash] = { ...cachedErc20[tx.hash], input: tx.input }
+      cachedErc20[tx.hash] = {
+        ...cachedErc20[tx.hash],
+        input: tx.input,
+        success: tx.isError === '0'
+      }
     }
   })
 
   const mappedRootchainTxs = rootchainTxs.map(tx =>
-    Mapper.mapRootchainTx(tx, cachedErc20)
+    Mapper.mapRootchainTx(tx, address, cachedErc20)
   )
 
   const mappedChildchainTxs = childchainTxs.map(tx =>
-    Mapper.mapChildchainTx(tx, address, tokens)
+    Mapper.mapChildchainTx(tx, tokens)
   )
 
   return [...mappedRootchainTxs, ...mappedChildchainTxs].sort(

@@ -12,6 +12,7 @@ const useChildchainTracker = wallet => {
 
   const verify = useCallback(
     currentWatcherTxs => {
+      console.log(currentWatcherTxs)
       const pendingTxsHash = pendingChildchainTxs.map(
         pendingTx => pendingTx.hash
       )

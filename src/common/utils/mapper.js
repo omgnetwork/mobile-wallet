@@ -1,30 +1,29 @@
 import { ContractAddress } from 'common/constants'
 import { Transaction, Token } from 'common/utils'
 
-export const mapChildchainTx = (tx, address, tokens) => {
-  const direction = Transaction.getDirection(address, tx.metadata)
-  // Assume ERC20 transfer
-  if (tx.results.length > 1) {
-    return mapChildchainErc20Tx(direction, tx, tokens)
-  } else {
-    return mapChildchainEthTx(direction, tx)
-  }
+export const mapChildchainTx = (tx, tokens) => {
+  return mapChildchainToken(tx, tokens)
 }
 
-export const mapRootchainTx = (tx, cachedErc20Tx) => {
+export const mapRootchainTx = (tx, address, cachedErc20Tx) => {
   const erc20Tx = cachedErc20Tx[tx.hash]
   if (erc20Tx) {
-    return mapRootchainErc20Tx(erc20Tx)
+    return mapRootchainErc20Tx(erc20Tx, address)
   } else {
-    return mapRootchainEthTx(tx)
+    return mapRootchainEthTx(tx, address)
   }
 }
 
-const mapRootchainEthTx = tx => {
+export const mapCurrency = tx => {
+  const usedCurrency = tx.results[tx.results.length - 1]
+  return usedCurrency.currency
+}
+
+const mapRootchainEthTx = (tx, address) => {
   return {
     hash: tx.hash,
     network: 'ethereum',
-    type: mapInput(tx),
+    type: mapInput(tx, address),
     confirmations: tx.confirmations,
     from: tx.from,
     to: tx.to,
@@ -32,16 +31,16 @@ const mapRootchainEthTx = tx => {
     tokenName: 'Ether',
     tokenSymbol: 'ETH',
     tokenDecimal: '18',
-    value: tx.value,
+    value: typeof tx.value === 'string' ? tx.value : tx.value.toFixed(),
     timestamp: tx.timeStamp
   }
 }
 
-const mapRootchainErc20Tx = tx => {
+const mapRootchainErc20Tx = (tx, address) => {
   return {
     hash: tx.hash,
     network: 'ethereum',
-    type: mapInput(tx),
+    type: mapInput(tx, address),
     confirmations: tx.confirmations,
     from: tx.from,
     to: tx.to,
@@ -49,53 +48,49 @@ const mapRootchainErc20Tx = tx => {
     tokenName: tx.tokenName,
     tokenSymbol: tx.tokenSymbol,
     tokenDecimal: tx.tokenDecimal,
-    value: tx.value,
+    value: typeof tx.value === 'string' ? tx.value : tx.value.toFixed(),
     timestamp: tx.timeStamp
   }
 }
 
-const mapChildchainEthTx = (direction, tx) => {
-  const splitted = direction.from === direction.to
-  return {
-    hash: tx.txhash,
-    network: 'omisego',
-    confirmations: null,
-    type: splitted ? 'split' : 'transfer',
-    from: direction.from,
-    to: direction.to,
-    contractAddress: ContractAddress.ETH_ADDRESS,
-    tokenName: 'Ether',
-    tokenSymbol: 'ETH',
-    tokenDecimal: 18,
-    value: tx.results[0].value,
-    timestamp: tx.block.timestamp
-  }
-}
-
-const mapChildchainErc20Tx = (direction, tx, tokens) => {
-  const usedToken = tx.results[tx.results.length - 1]
-  const contractAddress = usedToken.currency
-  const splitted = direction.from === direction.to
+const mapChildchainToken = (tx, tokens) => {
+  const sentToken = mapChildchainOutput(tx.results)
+  const contractAddress = sentToken.currency
   const token = Token.find(contractAddress, tokens)
   return {
     hash: tx.txhash,
     network: 'omisego',
     confirmations: null,
-    type: splitted ? 'split' : 'transfer',
-    from: direction.from,
-    to: direction.to,
+    type: 'out',
+    from: null,
+    to: null,
     contractAddress,
     tokenName: token.tokenName,
     tokenSymbol: token.tokenSymbol,
     tokenDecimal: token.tokenDecimal,
-    value: usedToken.value,
+    value:
+      typeof sentToken.value === 'string'
+        ? sentToken.value
+        : sentToken.value.toFixed(),
     timestamp: tx.block.timestamp
   }
 }
 
-const mapInput = tx => {
+const mapChildchainOutput = results => {
+  const erc20Token = results
+    .reverse()
+    .find(result => result.currency !== ContractAddress.ETH_ADDRESS)
+  if (erc20Token) {
+    return erc20Token
+  } else {
+    return results[0]
+  }
+}
+
+const mapInput = (tx, address) => {
   const methodName = Transaction.decodePlasmaInputMethod(tx.input)
-  console.log(methodName)
+
+  if (tx.isError === '1') return 'failed'
   switch (methodName) {
     case 'depositFrom':
     case 'deposit':
@@ -107,12 +102,10 @@ const mapInput = tx => {
     case 'approve':
       return 'depositApprove'
     default:
-      console.log(methodName)
-      return 'transfer'
+      if (Transaction.isReceiveTx(address, tx.to)) {
+        return 'in'
+      } else {
+        return 'out'
+      }
   }
-}
-
-export const mapCurrency = tx => {
-  const usedCurrency = tx.results[tx.results.length - 1]
-  return usedCurrency.currency
 }

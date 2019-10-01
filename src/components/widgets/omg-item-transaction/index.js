@@ -1,12 +1,14 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { Formatter, Datetime } from 'common/utils'
+import { Formatter, Datetime, Transaction } from 'common/utils'
 import OMGText from '../omg-text'
 import OMGIcon from '../omg-icon'
 
 const OMGItemTransaction = ({ theme, tx, style, key, address }) => {
-  const iconName = tx.to === address ? 'arrow-down' : 'arrow-up'
+  const iconName = Transaction.isReceiveTx(address, tx.to)
+    ? 'arrow-down'
+    : 'arrow-up'
   return (
     <View style={{ ...styles.container(theme), ...style }} key={key}>
       <View style={styles.logo(theme)}>
@@ -35,7 +37,6 @@ const OMGItemTransaction = ({ theme, tx, style, key, address }) => {
 
 const formatTokenBalance = (value, tokenDecimal) => {
   const balance = Formatter.formatUnits(value, tokenDecimal)
-  console.log(balance)
   return Formatter.format(balance, {
     commify: true,
     maxDecimal: 3,
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
     color: theme.colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10
+    marginRight: 24
   }),
   rightContainer: {
     flexDirection: 'column',

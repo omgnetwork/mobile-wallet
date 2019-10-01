@@ -56,8 +56,7 @@ export const transfer = (provider, fromWallet, toAddress, token, fee) => {
       blockchainWallet,
       toAddress,
       token,
-      fee,
-      `from:${fromWallet.address}&to:${toAddress}`
+      fee
     )
 
     console.log(transactionReceipt)

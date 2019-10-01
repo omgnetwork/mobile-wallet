@@ -1,5 +1,6 @@
 import { Plasma } from 'common/clients'
 import { ABI, Transaction } from 'common/utils'
+import { Buffer } from 'buffer'
 
 export const getBalances = address => {
   return Plasma.childchain.getBalance(address)
@@ -169,7 +170,8 @@ export const submitTx = signedTx => {
 }
 
 export const getTxs = (address, options) => {
-  const { blknum, limit } = options
+  const { blknum, limit } = options || { blknum: '0', limit: 10 }
+  console.log(options)
   return Plasma.childchain.getTransactions({
     address: address,
     limit: limit || 10,

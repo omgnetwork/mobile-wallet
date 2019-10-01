@@ -17,27 +17,7 @@ export const decodePlasmaInputMethod = input => {
   return plasmaInputDecoder.decodeData(input).method
 }
 
-export const getDirection = (address, metadata) => {
-  const defaultMetadata = {
-    from: address,
-    to: address
-  }
-  if (metadata === Plasma.transaction.NULL_METADATA) {
-    return defaultMetadata
-  } else {
-    const decodedMetadata = decodeMetadata(metadata)
-    const isMobileWalletMetadata = decodedMetadata.indexOf('from') === 0
-
-    if (isMobileWalletMetadata) {
-      const from = decodedMetadata.split('&')[0].split(':')[1]
-      const to = decodedMetadata.split('&')[1].split(':')[1]
-
-      return {
-        from,
-        to
-      }
-    } else {
-      return defaultMetadata
-    }
-  }
+export const isReceiveTx = (walletAddress, toAddress) => {
+  if (!toAddress) return false
+  return walletAddress.toLowerCase() === toAddress.toLowerCase()
 }

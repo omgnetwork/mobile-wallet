@@ -1,38 +1,73 @@
 import React from 'react'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, StyleSheet } from 'react-native'
+import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import {
-  OMGIcon,
-  OMGBox,
   OMGText,
+  OMGIcon,
   OMGStatusBar,
-  OMGEmpty
+  OMGTransactionFilter
 } from 'components/widgets'
 
-const TransactionHistoryFilter = ({ theme, navigation }) => {
+const TransactionHistoryFilter = ({
+  theme,
+  navigation,
+  transactions,
+  wallet,
+  loading
+}) => {
+  const title = navigation.getParam('title')
   return (
     <SafeAreaView style={styles.container}>
       <OMGStatusBar
         barStyle={'dark-content'}
         backgroundColor={theme.colors.white}
       />
-      <OMGText>Transaction History Filter</OMGText>
+      <View style={styles.header}>
+        <OMGIcon
+          name='chevron-left'
+          size={18}
+          color={theme.colors.gray3}
+          style={styles.headerIcon}
+          onPress={() => navigation.goBack()}
+        />
+        <OMGText style={styles.headerTitle(theme)}>{title}</OMGText>
+      </View>
+      <OMGTransactionFilter
+        transactions={transactions}
+        types={['all', 'in', 'out', 'failed']}
+        loading={loading}
+        address={wallet.address}
+      />
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingHorizontal: 16
+    flex: 1
   },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center'
   },
+  header: {
+    marginHorizontal: 16,
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+  headerIcon: {
+    padding: 8,
+    marginLeft: -8
+  },
+  headerTitle: theme => ({
+    fontSize: 18,
+    color: theme.colors.gray3,
+    marginLeft: 8,
+    textTransform: 'uppercase'
+  }),
   title: theme => ({
-    flex: 1,
     fontSize: 18,
     textTransform: 'uppercase',
     color: theme.colors.gray3
@@ -40,14 +75,18 @@ const styles = StyleSheet.create({
   icon: {
     padding: 16,
     marginRight: -16
-  },
-  menuContainer: {},
-  menuItem: {},
-  divider: theme => ({
-    backgroundColor: theme.colors.black1,
-    height: 1,
-    opacity: 0.3
-  })
+  }
 })
 
-export default withNavigation(withTheme(TransactionHistoryFilter))
+const mapStateToProps = (state, ownProps) => ({
+  loading: state.loading,
+  transactions: state.transaction.transactions,
+  wallet: state.wallets.find(
+    wallet => wallet.address === state.setting.primaryWalletAddress
+  )
+})
+
+export default connect(
+  mapStateToProps,
+  null
+)(withNavigation(withTheme(TransactionHistoryFilter)))
