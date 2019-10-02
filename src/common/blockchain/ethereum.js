@@ -36,13 +36,22 @@ export const getERC20Balance = (provider, contractAddress, accountAddress) => {
   return contract.balanceOf(accountAddress)
 }
 
+export const getERC20Details = (provider, contractAddress) => {
+  const abi = ABI.erc20Abi()
+  const contract = new ethers.Contract(contractAddress, abi, provider)
+  return [contract.name(), contract.symbol(), contract.decimals()]
+}
+
 // Transaction Management
-export const getERC20Txs = (address, lastBlockNumber) => {
+export const getERC20Txs = (address, options) => {
+  const { lastBlockNumber, limit, page } = options
   return axios.get(Config.ETHERSCAN_API_URL, {
     params: {
       module: 'account',
-      sort: 'asc',
+      sort: 'desc',
       apikey: Config.ETHERSCAN_API_KEY,
+      offset: limit || 0,
+      page: page || 1,
       address: address,
       action: 'tokentx',
       startblock: lastBlockNumber || '0',
@@ -51,13 +60,16 @@ export const getERC20Txs = (address, lastBlockNumber) => {
   })
 }
 
-export const getTxs = (address, lastBlockNumber) => {
+export const getTxs = (address, options) => {
+  const { lastBlockNumber, limit, page } = options
   return axios.get(Config.ETHERSCAN_API_URL, {
     params: {
       module: 'account',
-      sort: 'asc',
+      sort: 'desc',
       apikey: Config.ETHERSCAN_API_KEY,
       address: address,
+      offset: limit || 0,
+      page: page || 1,
       action: 'txlist',
       startblock: lastBlockNumber || '0',
       endblock: '99999999'
@@ -65,7 +77,9 @@ export const getTxs = (address, lastBlockNumber) => {
   })
 }
 
-export const sendEthToken = (token, fee, wallet, toAddress) => {
+// Send tokens
+export const sendEthToken = (wallet, options) => {
+  const { fee, token, toAddress } = options
   return wallet.sendTransaction({
     to: toAddress,
     value: ethers.utils.parseEther(token.balance),
@@ -74,7 +88,8 @@ export const sendEthToken = (token, fee, wallet, toAddress) => {
   })
 }
 
-export const sendErc20Token = (token, fee, wallet, toAddress) => {
+export const sendErc20Token = (wallet, options) => {
+  const { fee, token, toAddress } = options
   const abi = ABI.erc20Abi()
   const contract = new ethers.Contract(token.contractAddress, abi, wallet)
 
@@ -83,12 +98,12 @@ export const sendErc20Token = (token, fee, wallet, toAddress) => {
     token.numberOfDecimals
   )
 
-  const options = {
+  const gasOptions = {
     gasLimit: Number(Config.ROOTCHAIN_GAS_LIMIT),
     gasPrice: Parser.parseUnits(fee.amount, 'gwei')
   }
 
-  return contract.transfer(toAddress, numberOfTokens, options)
+  return contract.transfer(toAddress, numberOfTokens, gasOptions)
 }
 
 export const subscribeTx = (provider, tx, confirmations) => {

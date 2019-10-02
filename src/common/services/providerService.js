@@ -23,8 +23,6 @@ export const getTransactionHistory = (address, lastBlockNumber) => {
     try {
       const response = await Ethereum.getERC20Txs(address, lastBlockNumber)
 
-      console.log(response)
-
       const formattedTxHistory = response.data.result.map(tx => {
         return {
           hash: tx.hash,

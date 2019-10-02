@@ -92,7 +92,18 @@ export const walletsReducer = (state = [], action) => {
           return wallet
         }
       })
-
+    case 'SETTING/SET_PRIMARY_ADDRESS/OK':
+      return state.map(wallet => {
+        if (wallet.address === action.data.primaryWalletAddress) {
+          return {
+            ...wallet,
+            shouldRefresh: true,
+            shouldRefreshChildchain: true
+          }
+        } else {
+          return wallet
+        }
+      })
     default:
       return state
   }

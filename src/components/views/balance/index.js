@@ -61,7 +61,7 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
               onPress={() => {
                 navigation.navigate('ManageWallet')
               }}>
-              Manage wallet
+              Manage wallet margin: '0'
             </OMGButton>
           </View>
         ) : (

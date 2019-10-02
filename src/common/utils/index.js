@@ -7,6 +7,9 @@ import * as Parser from './parser'
 import * as Polling from './polling'
 import * as ABI from './abi'
 import * as BigNumber from './bignumber'
+import * as Transaction from './transaction'
+import * as Token from './token'
+import * as Mapper from './mapper'
 
 export {
   Price,
@@ -15,7 +18,10 @@ export {
   Parser,
   Polling,
   Datetime,
+  Mapper,
   Notification,
   ABI,
-  BigNumber
+  BigNumber,
+  Transaction,
+  Token
 }

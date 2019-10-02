@@ -6,6 +6,7 @@ import ImportWalletNavigator from './import-wallet'
 import BackupWalletNavigator from './backup-wallet'
 import CreateWalletNavigator from './create-wallet'
 import ManageWalletNavigator from './manage-wallet'
+import TransactionHistoryNavigator from './transaction-history'
 import WarpPortal from './warp-portal'
 import * as Views from 'components/views'
 
@@ -24,7 +25,8 @@ export const AppNavigator = Home(
     ImportWalletNavigator,
     CreateWalletNavigator,
     BackupWalletNavigator
-  )
+  ),
+  TransactionHistoryNavigator
 )
 
 export const WarpPortalNavigator = WarpPortal

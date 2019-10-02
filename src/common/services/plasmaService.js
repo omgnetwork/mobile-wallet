@@ -47,21 +47,29 @@ export const fetchAssets = (rootchainAssets, address) => {
   })
 }
 
-export const getTxs = address => {
+export const getTxs = (address, options) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const transactions = await Plasma.getTxs(address, 0, 10)
+      const transactions = await Plasma.getTxs(address, options)
       const currentWatcherTxs = transactions.map(tx => ({
+        ...tx,
         hash: tx.txhash
       }))
       resolve(currentWatcherTxs)
     } catch (err) {
+      console.log(err)
       reject(err)
     }
   })
 }
 
-export const transfer = (fromBlockchainWallet, toAddress, token, fee) => {
+export const transfer = (
+  fromBlockchainWallet,
+  toAddress,
+  token,
+  fee,
+  metadata
+) => {
   return new Promise(async (resolve, reject) => {
     try {
       const payments = Plasma.createPayment(
@@ -77,7 +85,8 @@ export const transfer = (fromBlockchainWallet, toAddress, token, fee) => {
       const createdTransactions = await Plasma.createTx(
         fromBlockchainWallet.address,
         payments,
-        childchainFee
+        childchainFee,
+        metadata
       )
 
       const transaction = createdTransactions.transactions[0]
@@ -168,7 +177,8 @@ export const exit = (blockchainWallet, token, fee) => {
         blockchainWallet,
         blockchainWallet.address,
         token,
-        fee
+        fee,
+        null
       )
 
       const unlockReceipt = await Plasma.unlockTokenExitable(

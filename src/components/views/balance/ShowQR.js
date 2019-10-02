@@ -1,10 +1,11 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, TouchableOpacity, StyleSheet, Image } from 'react-native'
 import { withTheme } from 'react-native-paper'
+import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { OMGQRCode, OMGBackground, OMGText } from 'components/widgets'
 
-const ShowQR = ({ theme, primaryWallet, primaryWalletAddress }) => {
+const ShowQR = ({ theme, primaryWallet, primaryWalletAddress, navigation }) => {
   return (
     <OMGBackground style={styles.container(theme)}>
       <View style={styles.titleContainer}>
@@ -24,9 +25,12 @@ const ShowQR = ({ theme, primaryWallet, primaryWalletAddress }) => {
           displayText={primaryWalletAddress}
         />
       </View>
-      <OMGText style={styles.bottomText(theme)}>
-        View Transaction History
-      </OMGText>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('TransactionHistory')}>
+        <OMGText style={styles.bottomText(theme)}>
+          View Transaction History
+        </OMGText>
+      </TouchableOpacity>
     </OMGBackground>
   )
 }
@@ -76,4 +80,4 @@ const mapStateToProps = (state, ownProps) => ({
 export default connect(
   mapStateToProps,
   null
-)(withTheme(ShowQR))
+)(withNavigation(withTheme(ShowQR)))

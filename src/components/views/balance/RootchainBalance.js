@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
-import { walletActions, plasmaActions, ethereumActions } from 'common/actions'
+import { walletActions } from 'common/actions'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
 import { Formatter, Datetime } from 'common/utils'

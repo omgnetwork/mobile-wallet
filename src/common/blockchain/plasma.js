@@ -1,5 +1,6 @@
 import { Plasma } from 'common/clients'
-import { ABI } from 'common/utils'
+import { ABI, Transaction } from 'common/utils'
+import { Buffer } from 'buffer'
 
 export const getBalances = address => {
   return Plasma.childchain.getBalance(address)
@@ -132,12 +133,16 @@ export const processExits = (contractAddress, options) => {
 }
 
 // Transaction management
-export const createTx = (fromAddress, payments, fee) => {
+export const createTx = (fromAddress, payments, fee, metadata) => {
+  const encodedMetadata =
+    (metadata && Transaction.encodeMetadata(metadata)) ||
+    Plasma.transaction.NULL_METADATA
+
   return Plasma.childchain.createTransaction(
     fromAddress,
     payments,
     fee,
-    Plasma.transaction.NULL_METADATA
+    encodedMetadata
   )
 }
 
@@ -164,9 +169,12 @@ export const submitTx = signedTx => {
   return Plasma.childchain.submitTransaction(signedTx)
 }
 
-export const getTxs = (address, blknum, limit) => {
+export const getTxs = (address, options) => {
+  const { blknum, limit } = options || { blknum: '0', limit: 10 }
+  console.log(options)
   return Plasma.childchain.getTransactions({
     address: address,
-    limit: limit || 10
+    limit: limit || 10,
+    page: 1
   })
 }

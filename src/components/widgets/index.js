@@ -13,6 +13,8 @@ import OMGExitWarning from './omg-exit-warning'
 import OMGFeeInput from './omg-fee-input'
 import OMGFeeSelect from './omg-fee-select'
 import OMGMenu from './omg-menu'
+import OMGMenuIcon from './omg-menu-icon'
+import OMGMenuImage from './omg-menu-image'
 import OMGMnemonicConfirmBox from './omg-mnemonic-confirm-box'
 import OMGIcon from './omg-icon'
 import OMGImage from './omg-image'
@@ -31,7 +33,10 @@ import OMGTextInputBox from './omg-text-input-box'
 import OMGTokenInput from './omg-token-input'
 import OMGTokenSelect from './omg-token-select'
 import OMGViewPager from './omg-view-pager'
+import OMGItemTransaction from './omg-item-transaction'
 import OMGWalletAddress from './omg-wallet-address'
+import OMGTransactionFilter from './omg-transaction-filter'
+import OMGTransactionList from './omg-transaction-list'
 
 export {
   OMGAddressInput,
@@ -51,7 +56,10 @@ export {
   OMGImage,
   OMGItemWallet,
   OMGItemToken,
+  OMGItemTransaction,
   OMGMenu,
+  OMGMenuIcon,
+  OMGMenuImage,
   OMGMnemonicConfirmBox,
   OMGQRCode,
   OMGQRScanner,
@@ -67,5 +75,7 @@ export {
   OMGTokenInput,
   OMGTokenSelect,
   OMGViewPager,
-  OMGWalletAddress
+  OMGWalletAddress,
+  OMGTransactionFilter,
+  OMGTransactionList
 }

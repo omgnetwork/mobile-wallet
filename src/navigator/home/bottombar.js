@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native'
 import * as Views from 'components/views'
 import { OMGText, OMGIcon, OMGBox } from 'components/widgets'
 
-export default RootChainTransferNavigator =>
+export default (RootChainTransferNavigator, TransactionHistoryNavigator) =>
   createBottomTabNavigator(
     {
       Balance: {
@@ -19,7 +19,7 @@ export default RootChainTransferNavigator =>
           tabBarIcon: ({ focused, tintColor }) => (
             <OMGIcon
               name='token'
-              size={24}
+              size={28}
               color={tintColor}
               style={styles.icon(focused)}
             />
@@ -55,7 +55,7 @@ export default RootChainTransferNavigator =>
         }
       },
       History: {
-        screen: Views.History,
+        screen: TransactionHistoryNavigator,
         navigationOptions: {
           tabBarLabel: ({ focused, tintColor }) => (
             <OMGText style={styles.textTabBar(focused, tintColor)}>
@@ -65,7 +65,7 @@ export default RootChainTransferNavigator =>
           tabBarIcon: ({ focused, tintColor }) => (
             <OMGIcon
               name='time'
-              size={24}
+              size={28}
               color={tintColor}
               style={styles.icon(focused)}
             />
@@ -85,10 +85,14 @@ export default RootChainTransferNavigator =>
           fontSize: 12,
           opacity: 0.7
         },
+        tabStyle: {
+          marginTop: 16
+        },
         style: {
           backgroundColor: '#04070d',
+          marginTop: 0,
           height: 88,
-          paddingBottom: 8
+          paddingTop: 0
         }
       }
     }
@@ -99,15 +103,18 @@ const styles = StyleSheet.create({
     opacity: focused ? 1.0 : 0.7,
     color: tintColor,
     fontSize: 12,
-    paddingBottom: 8,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginTop: 16,
+    marginBottom: 8
   }),
   icon: focused => ({
     opacity: focused ? 1.0 : 0.7
   }),
   iconBox: {
-    padding: 8,
-    borderRadius: 20,
+    width: 48,
+    height: 48,
+    padding: 12,
+    borderRadius: 24,
     backgroundColor: '#FFFFFF'
   }
 })

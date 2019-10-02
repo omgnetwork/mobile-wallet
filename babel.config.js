@@ -13,6 +13,7 @@ module.exports = {
         root: ['./src'],
         extensions: ['.ios.js', '.android.js', '.js', '.json']
       }
-    ]
+    ],
+    'babel-plugin-react-native-nodeify-hack'
   ]
 }

@@ -8,12 +8,9 @@ export const sendErc20Token = (token, fee, fromWallet, provider, toAddress) => {
       fromWallet.address,
       provider
     )
-    const tx = await ethereumService.sendErc20Token(
-      token,
-      fee,
-      blockchainWallet,
-      toAddress
-    )
+    const options = { token, fee, toAddress }
+
+    const tx = await ethereumService.sendErc20Token(blockchainWallet, options)
 
     return {
       hash: tx.hash,
@@ -40,12 +37,13 @@ export const sendEthToken = (token, fee, fromWallet, provider, toAddress) => {
       provider
     )
 
-    const tx = await ethereumService.sendEthToken(
+    const options = {
       token,
       fee,
-      blockchainWallet,
       toAddress
-    )
+    }
+
+    const tx = await ethereumService.sendEthToken(blockchainWallet, options)
 
     return {
       hash: tx.hash,
