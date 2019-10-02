@@ -26,7 +26,7 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
               numberOfLines={1}
               ellipsizeMode='tail'
               style={styles.detailItemAddressText(theme)}>
-              {tx.from}
+              {tx.from || 'Unidentified'}
             </OMGText>
           </TouchableOpacity>
           <OMGText style={styles.detailItemValueText(theme)}>
@@ -46,7 +46,7 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
               numberOfLines={1}
               ellipsizeMode='tail'
               style={styles.detailItemAddressText(theme)}>
-              {tx.to}
+              {tx.to || 'Unidentified'}
             </OMGText>
           </TouchableOpacity>
           <OMGText style={styles.detailItemValueText(theme)}>
