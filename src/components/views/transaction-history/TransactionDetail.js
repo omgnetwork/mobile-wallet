@@ -16,6 +16,7 @@ import TransactionDetailFromTo from './TransactionDetailFromTo'
 
 const TransactionDetail = ({ navigation, theme }) => {
   const tx = navigation.getParam('transaction')
+
   return (
     <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
       <OMGStatusBar

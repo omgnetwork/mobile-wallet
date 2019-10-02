@@ -22,7 +22,7 @@ const OMGTransactionFilter = ({
   const renderTypeOptions = useCallback(() => {
     return types.map(type => {
       return (
-        <TouchableOpacity onPress={() => setActiveType(type)}>
+        <TouchableOpacity onPress={() => setActiveType(type)} key={type}>
           <View style={styles.option(theme, type === activeType)}>
             <OMGText style={styles.optionText(theme)}>{type}</OMGText>
           </View>

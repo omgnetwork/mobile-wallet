@@ -19,6 +19,7 @@ const TransactionHistoryFilter = ({
 }) => {
   const title = navigation.getParam('title')
   const types = navigation.getParam('types')
+
   return (
     <SafeAreaView style={styles.container}>
       <OMGStatusBar
