@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
   title: theme => ({
     fontSize: 18,
     marginLeft: 16,
+    marginTop: 8,
     textTransform: 'uppercase',
     color: theme.colors.gray3
   }),

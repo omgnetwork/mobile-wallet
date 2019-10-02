@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
   },
   detailItem: {
     marginTop: 8,
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center'
   },

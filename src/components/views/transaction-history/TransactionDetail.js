@@ -32,7 +32,7 @@ const TransactionDetail = ({ navigation, theme }) => {
         />
         <OMGText style={styles.headerTitle(theme)}>Transaction Details</OMGText>
       </View>
-      <ScrollView containContainerStyle={styles.scrollViewContainer}>
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <TransactionDetailHash
           hash={tx.hash}
           style={styles.addressContainer}
@@ -71,15 +71,17 @@ const Divider = ({ theme }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 16
+    flex: 1
   },
   scrollViewContainer: {
-    flex: 1
+    flexDirection: 'column',
+    paddingHorizontal: 16,
+    paddingBottom: 16
   },
   header: {
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    paddingHorizontal: 16
   },
   headerIcon: {
     padding: 8,
