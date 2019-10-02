@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { withTheme } from 'react-native-paper'
+import { withNavigation } from 'react-navigation'
 import { OMGEmpty, OMGItemTransaction } from 'components/widgets'
 
 const OMGTransactionList = ({
@@ -9,7 +10,8 @@ const OMGTransactionList = ({
   loading,
   renderHeader,
   address,
-  style
+  style,
+  navigation
 }) => {
   const renderSeparator = useCallback(
     ({ leadingItem }) => {
@@ -17,6 +19,12 @@ const OMGTransactionList = ({
     },
     [theme]
   )
+
+  const handleClickTx = useCallback(transaction => {
+    navigation.navigate('TransactionDetail', {
+      transaction
+    })
+  })
 
   return (
     <View style={{ ...styles.container, ...style }}>
@@ -38,7 +46,11 @@ const OMGTransactionList = ({
           />
         }
         renderItem={({ item }) => (
-          <OMGItemTransaction tx={item} address={address} />
+          <OMGItemTransaction
+            tx={item}
+            address={address}
+            onPress={handleClickTx}
+          />
         )}
       />
     </View>
@@ -71,4 +83,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withTheme(OMGTransactionList)
+export default withNavigation(withTheme(OMGTransactionList))

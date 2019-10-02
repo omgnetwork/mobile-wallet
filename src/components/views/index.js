@@ -21,7 +21,8 @@ import Preview from './preview'
 import Setting from './setting'
 import {
   TransactionHistory,
-  TransactionHistoryFilter
+  TransactionHistoryFilter,
+  TransactionDetail
 } from './transaction-history'
 import {
   TransferContainer as Transfer,
@@ -68,6 +69,7 @@ export {
   TransferSelectFee,
   TransactionHistory,
   TransactionHistoryFilter,
+  TransactionDetail,
   Wallets,
   WarpPortal
 }

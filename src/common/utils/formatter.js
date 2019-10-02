@@ -1,8 +1,16 @@
 import 'ethers/dist/shims.js'
 import { ethers } from 'ethers'
+import { Datetime, BigNumber } from 'common/utils'
 
 export const formatEther = wei => {
   return ethers.utils.formatEther(wei)
+}
+
+export const formatGasFee = (gasUsed, gasPriceWei) => {
+  const bigNumberGasPriceWei = BigNumber.create(gasPriceWei)
+  const bigNumberGasUsed = BigNumber.create(gasUsed)
+  const bigNumberGasFee = bigNumberGasPriceWei.mul(bigNumberGasUsed)
+  return formatUnits(bigNumberGasFee, 18)
 }
 
 export const formatUnits = (amount, numberOfDecimals) => {
@@ -42,4 +50,14 @@ export const formatEllipsize = (number, ellipsize) => {
     return number + '...'
   }
   return number
+}
+
+export const formatTimeStamp = (timestamp, formatToken) => {
+  const datetime = Datetime.fromTimestamp(timestamp)
+  return Datetime.format(datetime, formatToken)
+}
+
+export const formatTimeStampFromNow = timestamp => {
+  const datetime = Datetime.fromTimestamp(timestamp)
+  return datetime.fromNow()
 }

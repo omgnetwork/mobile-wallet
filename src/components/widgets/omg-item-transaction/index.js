@@ -10,8 +10,8 @@ const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
   const iconName = getIconName(tx.type)
   return (
     <TouchableOpacity
-      onPress={onPress}
-      style={{ ...styles.container(theme), ...style }}
+      onPress={() => onPress && onPress(tx)}
+      style={{ ...styles.container, ...style }}
       key={key}>
       <View style={styles.logo(theme, isError)}>
         <OMGIcon
@@ -68,11 +68,11 @@ const formatTokenBalance = (value, tokenDecimal) => {
 }
 
 const styles = StyleSheet.create({
-  container: theme => ({
+  container: {
     flexDirection: 'row',
     paddingVertical: 12,
     alignItems: 'center'
-  }),
+  },
   logo: (theme, error) => ({
     width: 40,
     height: 40,
