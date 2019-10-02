@@ -1,25 +1,34 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import React, { useCallback } from 'react'
+import { View, StyleSheet, Linking, TouchableOpacity } from 'react-native'
 import { OMGIcon, OMGText } from 'components/widgets'
 import { Formatter } from 'common/utils'
+import Config from 'react-native-config'
 
 const Divider = ({ theme }) => {
   return <View style={styles.divider(theme)} />
 }
 
 const TransactionDetailFromTo = ({ theme, tx, style }) => {
+  const handleClickAddress = useCallback(address => {
+    Linking.openURL(`${Config.ETHERSCAN_ADDRESS_URL}${address}`)
+  }, [])
+
   return (
     <View style={{ ...styles.container(theme), ...style }}>
       <View style={styles.detailContainer}>
         <OMGText style={styles.title(theme)}>From</OMGText>
         <View style={styles.detailItem}>
           <OMGIcon name='wallet' size={14} />
-          <OMGText
-            numberOfLines={1}
-            ellipsizeMode='tail'
-            style={styles.detailItemAddressText(theme)}>
-            {tx.from}
-          </OMGText>
+          <TouchableOpacity
+            style={styles.detailItemAddress}
+            onPress={() => handleClickAddress(tx.from)}>
+            <OMGText
+              numberOfLines={1}
+              ellipsizeMode='tail'
+              style={styles.detailItemAddressText(theme)}>
+              {tx.from}
+            </OMGText>
+          </TouchableOpacity>
           <OMGText style={styles.detailItemValueText(theme)}>
             {formatTokenBalance(tx.value, tx.tokenDecimal)} {tx.tokenSymbol}
           </OMGText>
@@ -30,12 +39,16 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
         <OMGText style={styles.title(theme)}>To</OMGText>
         <View style={styles.detailItem}>
           <OMGIcon name='wallet' size={14} />
-          <OMGText
-            numberOfLines={1}
-            ellipsizeMode='tail'
-            style={styles.detailItemAddressText(theme)}>
-            {tx.to}
-          </OMGText>
+          <TouchableOpacity
+            style={styles.detailItemAddress}
+            onPress={() => handleClickAddress(tx.to)}>
+            <OMGText
+              numberOfLines={1}
+              ellipsizeMode='tail'
+              style={styles.detailItemAddressText(theme)}>
+              {tx.to}
+            </OMGText>
+          </TouchableOpacity>
           <OMGText style={styles.detailItemValueText(theme)}>
             {formatTokenBalance(tx.value, tx.tokenDecimal)} {tx.tokenSymbol}
           </OMGText>
@@ -68,14 +81,17 @@ const styles = StyleSheet.create({
   },
   detailItem: {
     marginTop: 8,
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center'
   },
-  detailItemAddressText: theme => ({
+  detailItemAddress: {
     flex: 1,
     marginRight: 36,
-    color: theme.colors.blue4,
     marginLeft: 6
+  },
+  detailItemAddressText: theme => ({
+    color: theme.colors.blue4
   }),
   detailItemValueText: theme => ({
     color: theme.colors.black2

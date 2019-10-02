@@ -57,6 +57,8 @@ const TransactionDetail = ({ navigation, theme }) => {
             }}>
             <OMGText style={styles.linkText(theme)}>Etherscan.io</OMGText>
           </TouchableOpacity>
+          <View style={styles.filler} />
+          <OMGIcon name='export' color={theme.colors.black2} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -106,7 +108,8 @@ const styles = StyleSheet.create({
   }),
   etherscanContainer: {
     marginTop: 16,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   etherscanText: theme => ({
     marginRight: 4,
@@ -114,7 +117,10 @@ const styles = StyleSheet.create({
   }),
   linkText: theme => ({
     color: theme.colors.blue4
-  })
+  }),
+  filler: {
+    flex: 1
+  }
 })
 
 export default withNavigation(withTheme(TransactionDetail))
