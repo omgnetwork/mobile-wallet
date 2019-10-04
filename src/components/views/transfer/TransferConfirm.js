@@ -33,6 +33,7 @@ const TransferConfirm = ({
   const [confirmBtnDisable, setConfirmBtnDisable] = useState(false)
   const observedActions = [
     ...Notify.transfer.actions,
+    ...Notify.transferChildchain.actions,
     ...Notify.deposit.actions
   ]
 
