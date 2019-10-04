@@ -47,7 +47,7 @@ const TransactionHistory = ({
     if (transactions.length) {
       const recentTxs = transactions
         .filter(
-          tx => tx.type === 'in' || tx.type === 'out' || tx.type === 'deposit'
+          tx => ['in', 'out', 'unidentified', 'deposit'].indexOf(tx.type) > -1
         )
         .slice(0, 5)
       console.log(recentTxs)
@@ -58,7 +58,7 @@ const TransactionHistory = ({
   const handleClickTransactions = useCallback(() => {
     navigation.navigate('TransactionHistoryFilter', {
       title: 'Transactions',
-      types: ['all', 'in', 'out', 'failed']
+      types: ['all', 'in', 'out', 'unidentified', 'failed']
     })
   }, [navigation])
 

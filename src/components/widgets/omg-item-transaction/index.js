@@ -52,9 +52,12 @@ const getIconName = type => {
       return 'upload'
     case 'in':
       return 'arrow-down'
+    case 'failed':
     case 'out':
-    default:
       return 'arrow-up'
+    case 'unidentified':
+    default:
+      return 'transaction'
   }
 }
 

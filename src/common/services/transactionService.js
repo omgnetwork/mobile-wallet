@@ -83,7 +83,7 @@ const mergeTxs = async (txs, address, tokens) => {
   )
 
   const mappedChildchainTxs = childchainTxs.map(tx =>
-    Mapper.mapChildchainTx(tx, tokens)
+    Mapper.mapChildchainTx(tx, tokens, address)
   )
 
   return [...mappedRootchainTxs, ...mappedChildchainTxs].sort(
