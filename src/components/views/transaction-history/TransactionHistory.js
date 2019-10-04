@@ -46,7 +46,9 @@ const TransactionHistory = ({
   useEffect(() => {
     if (transactions.length) {
       const recentTxs = transactions
-        .filter(tx => tx.type === 'in' || tx.type === 'out')
+        .filter(
+          tx => tx.type === 'in' || tx.type === 'out' || tx.type === 'deposit'
+        )
         .slice(0, 5)
       console.log(recentTxs)
       setTxs(recentTxs)

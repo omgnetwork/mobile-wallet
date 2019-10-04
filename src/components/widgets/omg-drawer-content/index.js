@@ -1,59 +1,19 @@
 import React from 'react'
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { SafeAreaView, withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
+import Config from 'react-native-config'
 import { colors } from 'common/styles'
-import { OMGText, OMGIcon } from 'components/widgets'
+import { OMGText } from 'components/widgets'
+import OMGDrawerContentItem from './OMGDrawerContentItem'
 import { settingActions } from 'common/actions'
-
-const OMGDrawerWalletItem = ({ wallet, primary, onWalletPress }) => {
-  return (
-    <TouchableOpacity
-      style={walletItemStyles.container}
-      onPress={() => onWalletPress(wallet)}>
-      <Image
-        style={walletItemStyles.logo}
-        source={{
-          uri: `https://api.adorable.io/avatars/285/${wallet.address}.png`
-        }}
-      />
-      <OMGText style={walletItemStyles.name}>{wallet.name}</OMGText>
-      {primary && (
-        <OMGIcon
-          name='check-mark'
-          size={14}
-          style={walletItemStyles.iconRight}
-        />
-      )}
-    </TouchableOpacity>
-  )
-}
-
-const walletItemStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingVertical: 12,
-    alignItems: 'center'
-  },
-  logo: {
-    width: 24,
-    height: 24
-  },
-  name: {
-    flex: 1,
-    marginLeft: 16,
-    color: colors.gray3
-  },
-  iconRight: {
-    marginRight: 30
-  }
-})
 
 const OMGDrawerContent = ({
   navigation,
   dispatchSetPrimaryWalletAddress,
   primaryWallet,
+  theme,
   wallets
 }) => {
   const handleWalletPress = wallet => {
@@ -79,7 +39,7 @@ const OMGDrawerContent = ({
           </OMGText>
 
           {wallets.map(wallet => (
-            <OMGDrawerWalletItem
+            <OMGDrawerContentItem
               wallet={wallet}
               key={wallet.address}
               onWalletPress={handleWalletPress}
@@ -100,6 +60,24 @@ const OMGDrawerContent = ({
           onPress={handleManageWalletPress}>
           <OMGText style={styles.settingItemText}>Manage Wallets</OMGText>
         </TouchableOpacity>
+        <View style={styles.expander} />
+        <View style={styles.environment}>
+          <OMGText weight='bold' style={styles.environmentTitleText(theme)}>
+            ENVIRONMENT INFO
+          </OMGText>
+          <OMGText style={styles.environmentItemText(theme)}>
+            Ethereum Network:{' '}
+            <OMGText weight='bold'>{Config.ETHERSCAN_NETWORK}</OMGText>
+          </OMGText>
+          <OMGText style={styles.environmentItemText(theme)}>
+            Watcher URL:{' '}
+            <OMGText weight='bold'>{Config.CHILDCHAIN_WATCHER_URL}</OMGText>
+          </OMGText>
+          <OMGText style={styles.environmentItemText(theme)}>
+            Plasma Contract:{' '}
+            <OMGText weight='bold'>{Config.PLASMA_CONTRACT_ADDRESS}</OMGText>
+          </OMGText>
+        </View>
       </View>
     </SafeAreaView>
   )
@@ -116,6 +94,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   settingContainer: {
+    flex: 1,
     marginTop: 16,
     flexDirection: 'column'
   },
@@ -127,7 +106,22 @@ const styles = StyleSheet.create({
   },
   settingItem: {
     paddingVertical: 12
-  }
+  },
+  expander: {
+    flex: 1
+  },
+  environment: {
+    marginBottom: 24,
+    marginTop: 16
+  },
+  environmentTitleText: theme => ({
+    opacity: 0.5,
+    color: theme.colors.gray3
+  }),
+  environmentItemText: theme => ({
+    marginTop: 8,
+    opacity: 0.5
+  })
 })
 
 const mapStateToProps = (state, ownProps) => ({

@@ -65,7 +65,7 @@ const useRootchainTracker = wallet => {
       } else if (confirmedTx.type === TransactionTypes.TYPE_CHILDCHAIN_EXIT) {
         return {
           type: 'childchain',
-          title: `${wallet.current.name} started to exit`,
+          title: `${wallet.current.name} prepared to exit`,
           message: `${confirmedTx.value} ${confirmedTx.symbol}`,
           confirmedTx
         }
