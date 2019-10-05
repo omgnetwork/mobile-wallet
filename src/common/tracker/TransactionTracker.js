@@ -25,7 +25,6 @@ const TransactionTracker = ({
     const notification = rootNotification || childNotification
     if (notification) {
       if (!pendingTxs.find(tx => tx.hash === notification.confirmedTx.hash)) {
-        console.log('Out of sync!', notification)
         return
       }
       notificationService.sendNotification(notification)
