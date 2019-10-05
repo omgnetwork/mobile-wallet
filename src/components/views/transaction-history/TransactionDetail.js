@@ -33,8 +33,33 @@ const TransactionDetail = ({ navigation, theme }) => {
     }
   }, [tx])
 
+  const handleTxClick = useCallback(() => {
+    if (Validator.isOmiseGOTransaction(transaction)) {
+      Linking.openURL(
+        `${Config.BLOCK_EXPLORER_URL}/transaction/${transaction.hash}`
+      )
+    } else {
+      Linking.openURL(`${Config.ETHERSCAN_TX_URL}${transaction.hash}`)
+    }
+  }, [transaction])
+
+  const renderExternalLink = useCallback(() => {
+    const linkTitle = Validator.isOmiseGOTransaction(transaction)
+      ? 'Block Explorer'
+      : 'Etherscan'
+    return (
+      <View style={styles.etherscanContainer}>
+        <OMGText style={styles.etherscanText(theme)}>More on</OMGText>
+        <TouchableOpacity onPress={handleTxClick}>
+          <OMGText style={styles.linkText(theme)}>{linkTitle}</OMGText>
+        </TouchableOpacity>
+        <View style={styles.filler} />
+        <OMGIcon name='export' color={theme.colors.black2} />
+      </View>
+    )
+  }, [handleTxClick, theme, transaction])
+
   const renderTransactionDetail = useCallback(() => {
-    console.log(transaction)
     return (
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <TransactionDetailHash
@@ -53,20 +78,10 @@ const TransactionDetail = ({ navigation, theme }) => {
           style={styles.fromToContainer}
         />
         <Divider theme={theme} />
-        <View style={styles.etherscanContainer}>
-          <OMGText style={styles.etherscanText(theme)}>More on</OMGText>
-          <TouchableOpacity
-            onPress={() => {
-              Linking.openURL(`${Config.ETHERSCAN_TX_URL}${transaction.hash}`)
-            }}>
-            <OMGText style={styles.linkText(theme)}>Etherscan.io</OMGText>
-          </TouchableOpacity>
-          <View style={styles.filler} />
-          <OMGIcon name='export' color={theme.colors.black2} />
-        </View>
+        {renderExternalLink()}
       </ScrollView>
     )
-  }, [theme, transaction])
+  }, [renderExternalLink, theme, transaction])
 
   const renderTransactionLoading = useCallback(() => {
     return <OMGEmpty loading={transaction === null} />

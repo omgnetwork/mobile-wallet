@@ -22,3 +22,7 @@ export const isValidAmount = amount => {
 export const isValidTransaction = transaction => {
   return transaction && transaction.from && transaction.to
 }
+
+export const isOmiseGOTransaction = transaction => {
+  return transaction.network === 'omisego'
+}

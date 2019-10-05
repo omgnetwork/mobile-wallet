@@ -9,9 +9,16 @@ const Divider = ({ theme }) => {
 }
 
 const TransactionDetailFromTo = ({ theme, tx, style }) => {
-  const handleClickAddress = useCallback(address => {
-    Linking.openURL(`${Config.ETHERSCAN_ADDRESS_URL}${address}`)
-  }, [])
+  const handleAddressClick = useCallback(
+    address => {
+      if (tx.network === 'omisego') {
+        Linking.openURL(`${Config.BLOCK_EXPLORER_URL}/address/${address}`)
+      } else {
+        Linking.openURL(`${Config.ETHERSCAN_ADDRESS_URL}${address}`)
+      }
+    },
+    [tx.network]
+  )
 
   return (
     <View style={{ ...styles.container(theme), ...style }}>
@@ -21,7 +28,7 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
           <OMGIcon name='wallet' size={14} />
           <TouchableOpacity
             style={styles.detailItemAddress}
-            onPress={() => handleClickAddress(tx.from)}>
+            onPress={() => handleAddressClick(tx.from)}>
             <OMGText
               numberOfLines={1}
               ellipsizeMode='tail'
@@ -41,7 +48,7 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
           <OMGIcon name='wallet' size={14} />
           <TouchableOpacity
             style={styles.detailItemAddress}
-            onPress={() => handleClickAddress(tx.to)}>
+            onPress={() => handleAddressClick(tx.to)}>
             <OMGText
               numberOfLines={1}
               ellipsizeMode='tail'
