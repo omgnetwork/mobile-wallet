@@ -42,6 +42,8 @@ target 'PlasmaWallet' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   target 'PlasmaWalletTests' do
     inherit! :search_paths
     # Pods for testing

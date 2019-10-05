@@ -11,6 +11,7 @@ import { OMGAlert } from 'components/widgets'
 import { notificationService } from 'common/services'
 import { colors } from 'common/styles'
 import { PersistGate } from 'redux-persist/integration/react'
+import SplashScreen from 'react-native-splash-screen'
 
 YellowBox.ignoreWarnings(['Warning:', 'Setting', '`setBackgroundColor`'])
 const initialState = {
@@ -30,6 +31,7 @@ const App = () => {
     }
 
     syncStorageToStore()
+    SplashScreen.hide()
   }, [])
 
   const theme = {

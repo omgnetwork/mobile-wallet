@@ -12,6 +12,7 @@
 #import <React/RCTRootView.h>
 #import <RNCPushNotificationIOS.h>
 #import <UserNotifications/UserNotifications.h>
+#import "RNSplashScreen.h"
 
 @implementation AppDelegate
 
@@ -33,6 +34,7 @@
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   center.delegate = self;
 
+  [RNSplashScreen show];
   return YES;
 }
 
