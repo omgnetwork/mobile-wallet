@@ -2,6 +2,7 @@ import * as Price from './price'
 import * as Storage from './storage'
 import * as Datetime from './datetime'
 import * as Formatter from './formatter'
+import * as Alerter from './alerter'
 import * as Notification from './notification'
 import * as Parser from './parser'
 import * as Polling from './polling'
@@ -15,6 +16,7 @@ import * as Validator from './validator'
 
 export {
   Address,
+  Alerter,
   Price,
   Storage,
   Formatter,

@@ -1,19 +1,20 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useFlashMessage } from 'common/hooks'
-import FlashMessage, { showMessage } from 'react-native-flash-message'
-import { Notify } from 'common/constants'
+import FlashMessage from 'react-native-flash-message'
+import { ActionAlert } from 'common/constants'
+import { Alerter } from 'common/utils'
 
 const OMGAlert = ({ loading, error, style }) => {
   const message = useFlashMessage({
     loading,
     error,
-    notifiers: Object.values(Notify)
+    notifiers: Object.values(ActionAlert)
   })
 
   useEffect(() => {
     if (message) {
-      showMessage(message)
+      Alerter.show(message)
     }
   }, [message])
 

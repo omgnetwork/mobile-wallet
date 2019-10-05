@@ -3,7 +3,8 @@ import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
-import { showMessage } from 'react-native-flash-message'
+import { Alerter } from 'common/utils'
+import { Alert } from 'common/constants'
 import { OMGButton, OMGText, OMGTextInputBox } from 'components/widgets'
 
 const CreateWalletForm = ({ wallets, navigation }) => {
@@ -12,20 +13,13 @@ const CreateWalletForm = ({ wallets, navigation }) => {
   const navigateNext = () => {
     if (walletNameRef.current) {
       if (wallets.find(wallet => wallet.name === walletNameRef.current)) {
-        return showMessage({
-          type: 'danger',
-          message:
-            'Cannot add the wallet. The wallet name has already been taken.'
-        })
+        return Alerter.show(Alert.FAILED_ADD_DUPLICATED_WALLET)
       }
       navigation.navigate('CreateWalletBackupWarning', {
         name: walletNameRef.current
       })
     } else {
-      showMessage({
-        type: 'danger',
-        message: 'The wallet name should not be empty.'
-      })
+      return Alerter.show(Alert.FAILED_ADD_EMPTY_WALLET_NAME)
     }
   }
 

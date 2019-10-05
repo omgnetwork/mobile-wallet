@@ -5,7 +5,7 @@ import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Formatter } from 'common/utils'
 import Config from 'react-native-config'
-import { Notify, ContractAddress } from 'common/constants'
+import { ActionAlert, ContractAddress } from 'common/constants'
 import { ethereumActions, plasmaActions } from 'common/actions'
 import {
   OMGBox,
@@ -32,9 +32,9 @@ const TransferConfirm = ({
   const [loadingVisible, setLoadingVisible] = useState(false)
   const [confirmBtnDisable, setConfirmBtnDisable] = useState(false)
   const observedActions = [
-    ...Notify.transfer.actions,
-    ...Notify.transferChildchain.actions,
-    ...Notify.deposit.actions
+    ...ActionAlert.transfer.actions,
+    ...ActionAlert.transferChildchain.actions,
+    ...ActionAlert.deposit.actions
   ]
 
   useEffect(() => {

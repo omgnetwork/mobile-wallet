@@ -5,7 +5,7 @@ import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { Formatter } from 'common/utils'
 import { plasmaActions } from 'common/actions'
-import { Notify } from 'common/constants'
+import { ActionAlert } from 'common/constants'
 import { OMGText, OMGIcon, OMGButton, OMGExitWarning } from 'components/widgets'
 
 const exitFee = {
@@ -35,11 +35,11 @@ const ExitConfirm = ({
   }
 
   useEffect(() => {
-    if (loading.show && Notify.exit.actions.indexOf(loading.action) > -1) {
+    if (loading.show && ActionAlert.exit.actions.indexOf(loading.action) > -1) {
       setLoadingVisible(true)
     } else if (
       !loading.show &&
-      Notify.exit.actions.indexOf(loading.action) > -1
+      ActionAlert.exit.actions.indexOf(loading.action) > -1
     ) {
       setLoadingVisible(false)
     } else {
@@ -48,7 +48,10 @@ const ExitConfirm = ({
   }, [loading.action, loading.show, loadingVisible])
 
   useEffect(() => {
-    if (loading.success && Notify.exit.actions.indexOf(loading.action) > -1) {
+    if (
+      loading.success &&
+      ActionAlert.exit.actions.indexOf(loading.action) > -1
+    ) {
       navigation.navigate('ExitPending', {
         token,
         pendingTx: pendingTxs.slice(-1).pop()
