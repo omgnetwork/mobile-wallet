@@ -10,8 +10,11 @@ import * as BigNumber from './bignumber'
 import * as Transaction from './transaction'
 import * as Token from './token'
 import * as Mapper from './mapper'
+import * as Address from './address'
+import * as Validator from './validator'
 
 export {
+  Address,
   Price,
   Storage,
   Formatter,
@@ -23,5 +26,6 @@ export {
   ABI,
   BigNumber,
   Transaction,
-  Token
+  Token,
+  Validator
 }

@@ -1,6 +1,5 @@
 import { Plasma } from 'common/clients'
 import { ABI, Transaction } from 'common/utils'
-import { Buffer } from 'buffer'
 
 export const getBalances = address => {
   return Plasma.childchain.getBalance(address)

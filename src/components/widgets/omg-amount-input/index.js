@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, StyleSheet, Platform } from 'react-native'
+import React, { Fragment } from 'react'
+import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import OMGImage from '../omg-image'
 import OMGText from '../omg-text'
@@ -11,30 +11,36 @@ const OMGAmountInput = ({
   inputRef,
   defaultValue,
   style,
-  callback
+  callback,
+  showError
 }) => {
   return (
-    <View style={{ ...styles.container(theme), ...style }}>
-      <OMGImage
-        style={styles.logo}
-        source={{
-          uri: `https://api.adorable.io/avatars/285/${token.contractAddress}.png`
-        }}
-      />
-      <OMGTextInput
-        style={styles.text(theme)}
-        placeholder='00.00'
-        callback={callback}
-        inputRef={inputRef}
-        hideUnderline={true}
-        defaultValue={defaultValue}
-        keyboardType='decimal-pad'
-        lines={1}
-      />
-      <View style={styles.rightContainer}>
-        <OMGText style={styles.symbol(theme)}>{token.tokenSymbol}</OMGText>
+    <Fragment>
+      <View style={{ ...styles.container(theme), ...style }}>
+        <OMGImage
+          style={styles.logo}
+          source={{
+            uri: `https://api.adorable.io/avatars/285/${token.contractAddress}.png`
+          }}
+        />
+        <OMGTextInput
+          style={styles.text(theme)}
+          placeholder='00.00'
+          callback={callback}
+          inputRef={inputRef}
+          hideUnderline={true}
+          defaultValue={defaultValue}
+          keyboardType='decimal-pad'
+          lines={1}
+        />
+        <View style={styles.rightContainer}>
+          <OMGText style={styles.symbol(theme)}>{token.tokenSymbol}</OMGText>
+        </View>
       </View>
-    </View>
+      {showError && (
+        <OMGText style={styles.errorText(theme)}>Invalid amount</OMGText>
+      )}
+    </Fragment>
   )
 }
 
@@ -66,6 +72,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: 16
   },
+  errorText: theme => ({
+    color: theme.colors.red2,
+    marginTop: 8
+  }),
   symbol: theme => ({
     color: theme.colors.gray2
   })

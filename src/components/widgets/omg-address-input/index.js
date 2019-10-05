@@ -1,30 +1,38 @@
-import React from 'react'
-import { TouchableOpacity, View, StyleSheet, Platform } from 'react-native'
+import React, { Fragment } from 'react'
+import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import OMGImage from '../omg-image'
 import OMGIcon from '../omg-icon'
 import OMGTextInput from '../omg-text-input'
+import OMGText from '../omg-text'
 
-const OMGAddressInput = ({ theme, style, onPress, inputRef }) => {
+const OMGAddressInput = ({ theme, style, onPress, inputRef, showError }) => {
   return (
-    <View style={{ ...styles.container(theme), ...style }}>
-      <OMGImage
-        style={styles.logo(theme)}
-        source={{
-          uri: `https://api.adorable.io/avatars/285/${inputRef.current}.png`
-        }}
-      />
-      <OMGTextInput
-        style={styles.text(theme)}
-        defaultValue={inputRef.current}
-        inputRef={inputRef}
-        placeholder='Paste address'
-        hideUnderline={true}
-      />
-      <TouchableOpacity style={styles.rightContainer(theme)} onPress={onPress}>
-        <OMGIcon name='qr' size={24} color={theme.colors.gray3} />
-      </TouchableOpacity>
-    </View>
+    <Fragment>
+      <View style={{ ...styles.container(theme), ...style }}>
+        <OMGImage
+          style={styles.logo(theme)}
+          source={{
+            uri: `https://api.adorable.io/avatars/285/${inputRef.current}.png`
+          }}
+        />
+        <OMGTextInput
+          style={styles.text(theme)}
+          defaultValue={inputRef.current}
+          inputRef={inputRef}
+          placeholder='Paste address'
+          hideUnderline={true}
+        />
+        <TouchableOpacity
+          style={styles.rightContainer(theme)}
+          onPress={onPress}>
+          <OMGIcon name='qr' size={24} color={theme.colors.gray3} />
+        </TouchableOpacity>
+      </View>
+      {showError && (
+        <OMGText style={styles.errorText(theme)}>Invalid address</OMGText>
+      )}
+    </Fragment>
   )
 }
 
@@ -57,6 +65,10 @@ const styles = StyleSheet.create({
     color: theme.colors.primary,
     fontSize: 14,
     flex: 1
+  }),
+  errorText: theme => ({
+    color: theme.colors.red2,
+    marginTop: 8
   }),
   rightContainer: theme => ({
     width: 50,
