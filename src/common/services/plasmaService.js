@@ -63,6 +63,21 @@ export const getTxs = (address, options) => {
   })
 }
 
+export const getTx = transactionHash => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const transaction = await Plasma.getTx(transactionHash)
+      console.log(transaction)
+      resolve({
+        hash: transaction.txhash,
+        ...transaction
+      })
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
 export const transfer = (
   fromBlockchainWallet,
   toAddress,

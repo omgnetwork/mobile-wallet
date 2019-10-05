@@ -26,6 +26,23 @@ export const mapChildchainTx = (tx, tokens, address) => {
   }
 }
 
+export const mapChildchainTxDetail = (oldTx, newTx) => {
+  const fromAddress = newTx.inputs[0].owner
+  const targetUtxo =
+    newTx.outputs.find(utxo => utxo.owner !== fromAddress) || newTx.outputs[0]
+  const toAddress = targetUtxo.owner
+  return {
+    ...oldTx,
+    contractAddress: targetUtxo.currency,
+    from: fromAddress,
+    to: toAddress,
+    value:
+      typeof targetUtxo.amount === 'string'
+        ? targetUtxo.amount
+        : targetUtxo.amount.toFixed()
+  }
+}
+
 export const mapRootchainTx = (tx, address, cachedErc20Tx) => {
   const erc20Tx = cachedErc20Tx[tx.hash]
   if (erc20Tx) {

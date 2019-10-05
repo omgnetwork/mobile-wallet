@@ -1,6 +1,19 @@
 import { ethereumService, plasmaService } from 'common/services'
 import { Mapper, Token } from 'common/utils'
 
+export const getPlasmaTx = oldTransaction => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const transaction = await plasmaService.getTx(oldTransaction.hash)
+      const mergedTx = Mapper.mapChildchainTxDetail(oldTransaction, transaction)
+      resolve(mergedTx)
+    } catch (err) {
+      console.log(err)
+      reject(err)
+    }
+  })
+}
+
 export const getTxs = (address, provider, options) => {
   const { page, limit, lastEthBlockNumber, lastOMGBlockNumber } = options
   return new Promise(async (resolve, reject) => {

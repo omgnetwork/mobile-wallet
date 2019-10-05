@@ -177,3 +177,7 @@ export const getTxs = (address, options) => {
     page: 1
   })
 }
+
+export const getTx = transactionHash => {
+  return Plasma.childchain.getTransaction(transactionHash)
+}

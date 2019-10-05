@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import {
   View,
   StyleSheet,
@@ -8,14 +8,69 @@ import {
 } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
-import { OMGStatusBar, OMGText, OMGIcon } from 'components/widgets'
+import { OMGStatusBar, OMGText, OMGIcon, OMGEmpty } from 'components/widgets'
 import Config from 'react-native-config'
+import { Validator } from 'common/utils'
+import { transactionService } from 'common/services'
 import TransactionDetailHash from './TransactionDetailHash'
 import TransactionDetailInfoSuccess from './TransactionDetailInfoSuccess'
 import TransactionDetailFromTo from './TransactionDetailFromTo'
 
 const TransactionDetail = ({ navigation, theme }) => {
   const tx = navigation.getParam('transaction')
+  const [transaction, setTransaction] = useState(null)
+
+  useEffect(() => {
+    async function getPlasmaTx() {
+      const plasmaTx = await transactionService.getPlasmaTx(tx)
+      setTransaction(plasmaTx)
+    }
+
+    if (!Validator.isValidTransaction(tx)) {
+      getPlasmaTx()
+    } else {
+      setTransaction(tx)
+    }
+  }, [tx])
+
+  const renderTransactionDetail = useCallback(() => {
+    console.log(transaction)
+    return (
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <TransactionDetailHash
+          hash={transaction.hash}
+          style={styles.addressContainer}
+          theme={theme}
+        />
+        <TransactionDetailInfoSuccess
+          tx={transaction}
+          theme={theme}
+          style={styles.infoContainer}
+        />
+        <TransactionDetailFromTo
+          tx={transaction}
+          theme={theme}
+          style={styles.fromToContainer}
+        />
+        <Divider theme={theme} />
+        <View style={styles.etherscanContainer}>
+          <OMGText style={styles.etherscanText(theme)}>More on</OMGText>
+          <TouchableOpacity
+            onPress={() => {
+              Linking.openURL(`${Config.ETHERSCAN_TX_URL}${transaction.hash}`)
+            }}>
+            <OMGText style={styles.linkText(theme)}>Etherscan.io</OMGText>
+          </TouchableOpacity>
+          <View style={styles.filler} />
+          <OMGIcon name='export' color={theme.colors.black2} />
+        </View>
+      </ScrollView>
+    )
+  }, [theme, transaction])
+
+  const renderTransactionLoading = useCallback(() => {
+    return <OMGEmpty loading={transaction === null} />
+  }, [transaction])
 
   return (
     <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
@@ -33,35 +88,7 @@ const TransactionDetail = ({ navigation, theme }) => {
         />
         <OMGText style={styles.headerTitle(theme)}>Transaction Details</OMGText>
       </View>
-      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-        <TransactionDetailHash
-          hash={tx.hash}
-          style={styles.addressContainer}
-          theme={theme}
-        />
-        <TransactionDetailInfoSuccess
-          tx={tx}
-          theme={theme}
-          style={styles.infoContainer}
-        />
-        <TransactionDetailFromTo
-          tx={tx}
-          theme={theme}
-          style={styles.fromToContainer}
-        />
-        <Divider theme={theme} />
-        <View style={styles.etherscanContainer}>
-          <OMGText style={styles.etherscanText(theme)}>More on</OMGText>
-          <TouchableOpacity
-            onPress={() => {
-              Linking.openURL(`${Config.ETHERSCAN_TX_URL}${tx.hash}`)
-            }}>
-            <OMGText style={styles.linkText(theme)}>Etherscan.io</OMGText>
-          </TouchableOpacity>
-          <View style={styles.filler} />
-          <OMGIcon name='export' color={theme.colors.black2} />
-        </View>
-      </ScrollView>
+      {transaction ? renderTransactionDetail() : renderTransactionLoading()}
     </SafeAreaView>
   )
 }

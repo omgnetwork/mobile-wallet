@@ -20,11 +20,14 @@ const OMGTransactionList = ({
     [theme]
   )
 
-  const handleClickTx = useCallback(transaction => {
-    navigation.navigate('TransactionDetail', {
-      transaction
-    })
-  })
+  const handleClickTx = useCallback(
+    async transaction => {
+      navigation.navigate('TransactionDetail', {
+        transaction
+      })
+    },
+    [navigation]
+  )
 
   return (
     <View style={{ ...styles.container, ...style }}>
