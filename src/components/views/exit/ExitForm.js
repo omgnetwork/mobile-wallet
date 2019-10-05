@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useCallback, useRef } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
@@ -9,6 +9,7 @@ import {
   OMGExitWarning,
   OMGButton
 } from 'components/widgets'
+import { Validator } from 'common/utils'
 import { withNavigation } from 'react-navigation'
 
 const ExitForm = ({ wallet, theme, navigation }) => {
@@ -17,15 +18,19 @@ const ExitForm = ({ wallet, theme, navigation }) => {
     'selectedToken',
     wallet.childchainAssets[0]
   )
-  const textRef = useRef(defaultAmount)
+  const amountRef = useRef(defaultAmount)
+  const [showErrorAmount, setShowErrorAmount] = useState(false)
 
-  const navigateNext = () => {
-    if (textRef.current) {
+  const navigateNext = useCallback(() => {
+    if (Validator.isValidAmount(amountRef.current)) {
+      setShowErrorAmount(false)
       navigation.navigate('ExitConfirm', {
-        token: { ...selectedToken, balance: textRef.current }
+        token: { ...selectedToken, balance: amountRef.current }
       })
+    } else {
+      setShowErrorAmount(true)
     }
-  }
+  }, [navigation, selectedToken])
 
   return (
     <View style={styles.container}>
@@ -38,7 +43,7 @@ const ExitForm = ({ wallet, theme, navigation }) => {
         onPress={() =>
           navigation.navigate('TransferSelectBalance', {
             currentToken: selectedToken,
-            lastAmount: textRef.current,
+            lastAmount: amountRef.current,
             assets: wallet.childchainAssets,
             exit: true
           })
@@ -46,7 +51,8 @@ const ExitForm = ({ wallet, theme, navigation }) => {
       />
       <OMGAmountInput
         token={selectedToken}
-        inputRef={textRef}
+        inputRef={amountRef}
+        showError={showErrorAmount}
         defaultValue={navigation.getParam('lastAmount')}
         style={styles.amountInput}
       />

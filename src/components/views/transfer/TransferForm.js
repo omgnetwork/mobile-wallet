@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
@@ -61,7 +61,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
   const [showErrorAddress, setShowErrorAddress] = useState(false)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
 
-  const submit = () => {
+  const submit = useCallback(() => {
     if (!Validator.isValidAddress(addressRef.current)) {
       setShowErrorAddress(true)
     } else if (!Validator.isValidAmount(amountRef.current)) {
@@ -80,7 +80,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
         fee: selectedFee
       })
     }
-  }
+  }, [isDeposit, isRootchain, navigation, selectedFee, selectedToken, wallet])
 
   return (
     <SafeAreaView style={styles.container(theme)}>
