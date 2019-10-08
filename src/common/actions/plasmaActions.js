@@ -117,6 +117,7 @@ export const exit = (wallet, provider, token, fee) => {
       from: wallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
+      exitId: exitReceipt.exitId,
       contractAddress: token.contractAddress,
       gasPrice: fee.amount,
       type: 'CHILDCHAIN_EXIT',
@@ -134,8 +135,8 @@ export const processExits = (wallet, provider, token, fee) => {
     const blockchainWallet = await walletService.get(wallet.address, provider)
     const exitReceipt = await plasmaService.processExits(
       blockchainWallet,
-      token,
-      fee
+      0,
+      token
     )
     return {
       hash: exitReceipt.transactionHash,

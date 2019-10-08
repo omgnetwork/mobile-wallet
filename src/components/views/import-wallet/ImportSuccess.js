@@ -19,8 +19,10 @@ const ImportSuccess = ({ theme, navigation, dispatchSetPrimaryWallet }) => {
           style={styles.button(theme)}
           textStyle={styles.buttonText(theme)}
           onPress={() => {
-            dispatchSetPrimaryWallet(wallet)
             navigation.navigate('Balance')
+            requestAnimationFrame(() => {
+              dispatchSetPrimaryWallet(wallet)
+            })
           }}>
           Open Wallet
         </OMGButton>

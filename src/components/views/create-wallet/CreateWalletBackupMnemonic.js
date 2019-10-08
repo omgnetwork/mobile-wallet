@@ -11,7 +11,7 @@ const CreateWalletBackupMnemonic = ({ theme, navigation }) => {
   const phrases = mnemonic.split(' ')
 
   const mnemonicPhrases = phrases.map(text => {
-    return <OMGTextChip text={text} style={styles.chip} />
+    return <OMGTextChip text={text} style={styles.chip} key={text} />
   })
 
   const navigateNext = () => {

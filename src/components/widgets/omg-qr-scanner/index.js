@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-import { ContractAddress } from 'common/constants'
 import QRCodeScanner from 'react-native-qrcode-scanner'
 import { View, StyleSheet, Dimensions, Animated } from 'react-native'
 import Svg, { Rect, Path } from 'react-native-svg'

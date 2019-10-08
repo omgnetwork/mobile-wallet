@@ -2,24 +2,44 @@ import { useEffect, useRef, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { Platform } from 'react-native'
 import { TransactionTypes } from 'common/constants'
-import { useRootchainTracker, useChildchainTracker } from 'common/hooks'
+import {
+  useRootchainTracker,
+  useChildchainTracker,
+  useExitTracker
+} from 'common/hooks'
 import { walletActions, transactionActions } from 'common/actions'
-import { notificationService } from 'common/services'
+import { notificationService, walletService } from 'common/services'
 import BackgroundTimer from 'react-native-background-timer'
 
 const TransactionTracker = ({
   wallet,
+  provider,
   pendingTxs,
+  // pendingExits,
   dispatchInvalidatePendingTx,
+  dispatchInvalidatePendingExitTx,
   dispatchRefreshRootchain,
   dispatchRefreshChildchain,
   dispatchRefreshAll
 }) => {
+  const blockchainWallet = useRef(null)
   const primaryWallet = useRef(wallet)
   const [rootNotification, setRootchainTxs] = useRootchainTracker(primaryWallet)
   const [childNotification, setChildchainTxs] = useChildchainTracker(
     primaryWallet
   )
+  // const [exitNotification, setExitTxs] = useExitTracker(blockchainWallet)
+
+  // useEffect(() => {
+  //   async function setBlockchainWallet() {
+  //     blockchainWallet.current = await walletService.get(
+  //       wallet.address,
+  //       provider
+  //     )
+  //   }
+
+  //   setBlockchainWallet()
+  // }, [provider, wallet])
 
   useEffect(() => {
     const notification = rootNotification || childNotification
@@ -27,13 +47,21 @@ const TransactionTracker = ({
       if (!pendingTxs.find(tx => tx.hash === notification.confirmedTx.hash)) {
         return
       }
+
+      if (notification.type === 'exit') {
+        dispatchInvalidatePendingExitTx(notification.confirmedTx)
+      } else {
+        dispatchInvalidatePendingTx(notification.confirmedTx)
+      }
       notificationService.sendNotification(notification)
-      dispatchInvalidatePendingTx(notification.confirmedTx)
+
       switch (notification.type) {
         case 'childchain':
           return dispatchRefreshChildchain(primaryWallet.current.address)
         case 'rootchain':
           return dispatchRefreshRootchain(primaryWallet.current.address)
+        case 'exit':
+          return dispatchRefreshAll(primaryWallet.current.address)
         case 'all':
           return dispatchRefreshAll(primaryWallet.current.address)
         default:
@@ -48,7 +76,8 @@ const TransactionTracker = ({
     primaryWallet,
     dispatchRefreshChildchain,
     dispatchRefreshAll,
-    pendingTxs
+    pendingTxs,
+    dispatchInvalidatePendingExitTx
   ])
 
   const filterTxs = useCallback(filterFunc => pendingTxs.filter(filterFunc), [
@@ -83,9 +112,11 @@ const TransactionTracker = ({
 
       setRootchainTxs(rootTxs)
       setChildchainTxs(childTxs)
+      // setExitTxs(pendingExits)
     } else {
       setRootchainTxs([])
       setChildchainTxs([])
+      // setExitTxs([])
     }
     return () => {
       if (Platform.OS === 'ios') {
@@ -108,12 +139,16 @@ const mapStateToProps = (state, ownProps) => ({
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
+  provider: state.setting.provider,
   pendingTxs: state.transaction.pendingTxs
+  // pendingExits: state.transaction.pendingExits
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchInvalidatePendingTx: resolvedPendingTx =>
     transactionActions.invalidatePendingTx(dispatch, resolvedPendingTx),
+  dispatchInvalidatePendingExitTx: resolvedPendingTx =>
+    transactionActions.invalidatePendingExitTx(dispatch, resolvedPendingTx),
   dispatchRefreshRootchain: address =>
     walletActions.refreshRootchain(dispatch, address, true),
   dispatchRefreshChildchain: address =>

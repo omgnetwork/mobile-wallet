@@ -103,6 +103,8 @@ PODS:
     - React-fishhook (= 0.60.4)
   - ReactNativePermissions (1.2.0):
     - React
+  - RNBackgroundFetch (2.0.8):
+    - React
   - RNCAsyncStorage (1.6.1):
     - React
   - RNCPushNotificationIOS (1.0.2):
@@ -149,6 +151,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-RCTWebSocket (from `../node_modules/react-native/Libraries/WebSocket`)
   - ReactNativePermissions (from `../node_modules/react-native-permissions`)
+  - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -221,6 +224,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/WebSocket"
   ReactNativePermissions:
     :path: "../node_modules/react-native-permissions"
+  RNBackgroundFetch:
+    :path: "../node_modules/react-native-background-fetch"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCPushNotificationIOS:
@@ -269,6 +274,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: dabb8d59bb47e1d9124b3f77bfdc1b33d42b0a74
   React-RCTWebSocket: f32b93e0953d7c07fd5dd45305406282cfdc95cf
   ReactNativePermissions: a8da737c35e77bf4ea1d4102d881b406fb791125
+  RNBackgroundFetch: 8c4f77f83c398c659bce82af2f0a885079417b9e
   RNCAsyncStorage: e99188b8a89ea0edddc82d8831cd5142f4550fdc
   RNCPushNotificationIOS: e063e649fa697b77869c05fd18e370799285db4f
   RNGestureHandler: 311e3b1cef021a7c9ef31e97e7dc31970cc6288d
@@ -278,6 +284,6 @@ SPEC CHECKSUMS:
   RNVectorIcons: 66af4d5c8ff4f584c7b7cd9c4b0780920f27fce2
   yoga: 88c514f310aff89b94a14c5fbf44b95735af0cb7
 
-PODFILE CHECKSUM: a90586dca8e26512d1193882723339c0e66281e9
+PODFILE CHECKSUM: ac8ae58e7c7bfccef79bf07ea300a69c02f11068
 
 COCOAPODS: 1.5.3

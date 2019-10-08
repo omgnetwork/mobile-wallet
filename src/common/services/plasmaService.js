@@ -226,26 +226,26 @@ export const exit = (blockchainWallet, token, fee) => {
         }
       )
 
-      console.log('Exit receipt', startExitReceipt)
-      resolve(startExitReceipt)
+      resolve({ ...startExitReceipt, exitId: exitData.utxo_pos })
     } catch (err) {
       reject(err)
     }
   })
 }
 
-export const processExits = (blockchainWallet, token, fee) => {
+export const processExits = (blockchainWallet, exitId, contractAddress) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const receipt = await Plasma.processExits(token.contractAddress, {
-        gasPrice: Parser.parseUnits(fee.amount, fee.symbol),
-        gas: 500000,
+      const receipt = await Plasma.processExits(contractAddress, exitId, {
+        gasPrice: Parser.parseUnits('20', 'Gwei'),
+        gas: 1000000,
         from: blockchainWallet.address,
         privateKey: blockchainWallet.privateKey
       })
 
       resolve(receipt)
     } catch (err) {
+      console.log(err)
       reject(err)
     }
   })

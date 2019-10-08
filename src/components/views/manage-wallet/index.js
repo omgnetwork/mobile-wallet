@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import React, { useEffect } from 'react'
+import { View, StyleSheet, TouchableOpacity, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import {
@@ -34,6 +34,19 @@ const menuStyles = StyleSheet.create({
 })
 
 const ManageWallet = ({ theme, navigation }) => {
+  useEffect(() => {
+    function didFocus() {
+      StatusBar.setBarStyle('dark-content')
+      StatusBar.setBackgroundColor(theme.colors.white)
+    }
+
+    const didFocusSubscription = navigation.addListener('didFocus', didFocus)
+
+    return () => {
+      didFocusSubscription.remove()
+    }
+  }, [navigation, theme.colors.white])
+
   return (
     <SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
       <OMGStatusBar
