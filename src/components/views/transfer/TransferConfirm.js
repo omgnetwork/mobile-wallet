@@ -18,7 +18,7 @@ import {
 const TransferConfirm = ({
   theme,
   navigation,
-  provider,
+  blockchainWallet,
   dispatchSendToken,
   pendingTxs,
   loading
@@ -83,8 +83,7 @@ const TransferConfirm = ({
     dispatchSendToken(
       token,
       fee,
-      fromWallet,
-      provider,
+      blockchainWallet,
       toWallet.address,
       isRootchain
     )
@@ -287,33 +286,33 @@ const mapStateToProps = (state, ownProps) => ({
   pendingTxs: state.transaction.pendingTxs,
   provider: state.setting.provider,
   loading: state.loading,
+  blockchainWallet: state.setting.blockchainWallet,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   )
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchSendToken: (token, fee, wallet, provider, toAddress, isRootchain) =>
-    dispatch(getAction(token, fee, wallet, provider, toAddress, isRootchain))
+  dispatchSendToken: (token, fee, blockchainWallet, toAddress, isRootchain) =>
+    dispatch(getAction(token, fee, blockchainWallet, toAddress, isRootchain))
 })
 
-const getAction = (token, fee, wallet, provider, toAddress, isRootchain) => {
+const getAction = (token, fee, blockchainWallet, toAddress, isRootchain) => {
   const TO_CHILDCHAIN = toAddress === Config.PLASMA_CONTRACT_ADDRESS
   const ETH_TOKEN = token.contractAddress === ContractAddress.ETH_ADDRESS
   if (TO_CHILDCHAIN && ETH_TOKEN) {
-    return plasmaActions.depositEth(wallet, provider, token, fee)
+    return plasmaActions.depositEth(blockchainWallet, token, fee)
   } else if (TO_CHILDCHAIN && !ETH_TOKEN) {
-    return plasmaActions.depositErc20(wallet, provider, token, fee)
+    return plasmaActions.depositErc20(blockchainWallet, token, fee)
   } else if (!isRootchain) {
-    return plasmaActions.transfer(provider, wallet, toAddress, token, fee)
+    return plasmaActions.transfer(blockchainWallet, toAddress, token, fee)
   } else if (ETH_TOKEN) {
-    return ethereumActions.sendEthToken(token, fee, wallet, provider, toAddress)
+    return ethereumActions.sendEthToken(token, fee, blockchainWallet, toAddress)
   } else {
     return ethereumActions.sendErc20Token(
       token,
       fee,
-      wallet,
-      provider,
+      blockchainWallet,
       toAddress
     )
   }

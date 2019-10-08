@@ -7,7 +7,7 @@ import createStore from 'common/stores'
 import { settingActions } from 'common/actions'
 import Config from 'react-native-config'
 import { TransactionTracker } from 'common/tracker'
-import { OMGAlert } from 'components/widgets'
+import { OMGAlert, OMGInitializing } from 'components/widgets'
 import { notificationService } from 'common/services'
 import { colors } from 'common/styles'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -46,9 +46,11 @@ const App = () => {
       <Provider store={store}>
         <PaperProvider theme={theme}>
           <PersistGate persistor={persistor}>
-            <Router />
-            <OMGAlert />
-            <TransactionTracker />
+            <OMGInitializing>
+              <Router />
+              <OMGAlert />
+              <TransactionTracker />
+            </OMGInitializing>
           </PersistGate>
         </PaperProvider>
       </Provider>

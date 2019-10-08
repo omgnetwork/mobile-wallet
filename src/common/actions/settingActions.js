@@ -12,6 +12,20 @@ export const setProvider = providerName => {
   })
 }
 
+export const setBlockchainWallet = (wallet, provider) => {
+  const asyncAction = async () => {
+    const blockchainWallet = await walletService.get(wallet.address, provider)
+    return {
+      blockchainWallet
+    }
+  }
+
+  return createAsyncAction({
+    operation: asyncAction,
+    type: 'SETTING/SET_BLOCKCHAIN_WALLET'
+  })
+}
+
 export const syncProviderToStore = providerName => {
   const asyncAction = async () => {
     const provider = await providerService.create(providerName)

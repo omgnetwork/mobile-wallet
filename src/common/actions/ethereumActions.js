@@ -1,13 +1,9 @@
-import { ethereumService, walletService } from '../services'
+import { ethereumService } from '../services'
 import { createAsyncAction } from './actionCreators'
 import { Datetime } from 'common/utils'
 
-export const sendErc20Token = (token, fee, fromWallet, provider, toAddress) => {
+export const sendErc20Token = (token, fee, blockchainWallet, toAddress) => {
   const asyncAction = async () => {
-    const blockchainWallet = await walletService.get(
-      fromWallet.address,
-      provider
-    )
     const options = { token, fee, toAddress }
 
     const tx = await ethereumService.sendErc20Token(blockchainWallet, options)
@@ -30,13 +26,8 @@ export const sendErc20Token = (token, fee, fromWallet, provider, toAddress) => {
   })
 }
 
-export const sendEthToken = (token, fee, fromWallet, provider, toAddress) => {
+export const sendEthToken = (token, fee, blockchainWallet, toAddress) => {
   const asyncAction = async () => {
-    const blockchainWallet = await walletService.get(
-      fromWallet.address,
-      provider
-    )
-
     const options = {
       token,
       fee,

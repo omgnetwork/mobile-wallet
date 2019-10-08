@@ -10,7 +10,13 @@ export const settingReducer = (state = {}, action) => {
     case 'SETTING/SET_PRIMARY_ADDRESS/OK':
       return {
         ...state,
-        primaryWalletAddress: action.data.primaryWalletAddress
+        primaryWalletAddress: action.data.primaryWalletAddress,
+        blockchainWallet: null
+      }
+    case 'SETTING/SET_BLOCKCHAIN_WALLET/SUCCESS':
+      return {
+        ...state,
+        blockchainWallet: action.data.blockchainWallet
       }
     default:
       return state
