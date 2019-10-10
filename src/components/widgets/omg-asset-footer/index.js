@@ -8,19 +8,19 @@ const OMGAssetFooter = ({
   style,
   onPressDeposit,
   onPressExit,
-  disabled
+  enableDeposit,
+  enableExit
 }) => {
   return (
     <OMGBackground style={{ ...styles.container(theme), ...style }}>
       <TouchableOpacity style={styles.subfooter} onPress={onPressDeposit}>
-        <OMGText style={styles.subfooterText(theme, false)}>DEPOSIT</OMGText>
+        <OMGText style={styles.subfooterText(theme, enableDeposit)}>
+          DEPOSIT
+        </OMGText>
       </TouchableOpacity>
       <View style={styles.divider(theme)} />
-      <TouchableOpacity
-        style={styles.subfooter}
-        disabled={disabled}
-        onPress={onPressExit}>
-        <OMGText style={styles.subfooterText(theme, disabled)}>EXIT</OMGText>
+      <TouchableOpacity style={styles.subfooter} onPress={onPressExit}>
+        <OMGText style={styles.subfooterText(theme, enableExit)}>EXIT</OMGText>
       </TouchableOpacity>
     </OMGBackground>
   )
@@ -54,10 +54,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 13
   },
-  subfooterText: (theme, disabled) => ({
+  subfooterText: (theme, enabled) => ({
     fontSize: 14,
     color: theme.colors.black4,
-    opacity: disabled ? 0.4 : 1.0,
+    opacity: enabled ? 1.0 : 0.4,
     marginRight: 4
   }),
   divider: theme => ({

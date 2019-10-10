@@ -12,3 +12,18 @@ export const FAILED_ADD_EMPTY_WALLET_NAME = {
   type: 'danger',
   message: 'The wallet name should not be empty'
 }
+
+export const CANNOT_DEPOSIT_PENDING_TRANSACTION = {
+  type: 'warning',
+  message: 'Please wait until the pending transaction completed.'
+}
+
+export const CANNOT_EXIT_PENDING_TRANSACTION = {
+  type: 'warning',
+  message: 'Please wait until the pending transaction completed.'
+}
+
+export const CANNOT_EXIT_NOT_ENOUGH_ASSETS = {
+  type: 'warning',
+  message: "There're no assets to exit."
+}
