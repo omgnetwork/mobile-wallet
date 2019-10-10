@@ -2,10 +2,11 @@ import React, { useCallback, useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, View } from 'react-native'
 import { withTheme } from 'react-native-paper'
+import { withNavigation } from 'react-navigation'
 import { settingActions } from 'common/actions'
 import { OMGEmpty, OMGText } from 'components/widgets'
 
-const OMGInitializing = ({
+const Initializer = ({
   children,
   theme,
   blockchainWallet,
@@ -14,40 +15,52 @@ const OMGInitializing = ({
   dispatchSetPrimaryWallet,
   dispatchSetBlockchainWallet,
   provider,
+  navigation,
   wallets
 }) => {
-  // useEffect(() => {
-  //   if (shouldGetBlockchainWallet(wallet, blockchainWallet)) {
-  //     dispatchSetBlockchainWallet(wallet, provider)
-  //   }
-  // }, [blockchainWallet, dispatchSetBlockchainWallet, provider, wallet])
-  const shouldGetBlockchainWallet = () => {
-    return wallet && !blockchainWallet && wallet.shouldRefresh
-  }
-
-  const shouldSetPrimaryWallet = () => {
-    return !wallet && wallets.length > 0
-  }
+  useEffect(() => {
+    if (shouldGetBlockchainWallet(wallet, blockchainWallet)) {
+      dispatchSetBlockchainWallet(wallet, provider)
+    } else if (shouldSetPrimaryWallet(wallet, wallets)) {
+      dispatchSetPrimaryWallet(wallets[0], wallets)
+    } else {
+      navigation.navigate('MainContent')
+    }
+  }, [
+    blockchainWallet,
+    dispatchSetBlockchainWallet,
+    dispatchSetPrimaryWallet,
+    navigation,
+    provider,
+    wallet,
+    wallets
+  ])
 
   const renderChildren = () => {
-    console.log(loading)
-    // if (shouldGetBlockchainWallet(wallet, blockchainWallet)) {
-    //   return (
-    //     <View style={styles.container}>
-    //       <OMGText style={styles.text(theme)} weight='bold'>
-    //         Loading wallet...
-    //       </OMGText>
-    //       <OMGEmpty loading={true} style={styles.empty} />
-    //     </View>
-    //   )
-    // } else {
-    return children
-    // }
+    if (shouldGetBlockchainWallet(wallet, blockchainWallet)) {
+      return (
+        <View style={styles.container}>
+          <OMGText style={styles.text(theme)} weight='bold'>
+            Loading wallet...
+          </OMGText>
+          <OMGEmpty loading={true} style={styles.empty} />
+        </View>
+      )
+    } else {
+      null
+    }
   }
 
   return <Fragment>{renderChildren()}</Fragment>
 }
 
+const shouldGetBlockchainWallet = (wallet, blockchainWallet) => {
+  return wallet && !blockchainWallet && wallet.shouldRefresh
+}
+
+const shouldSetPrimaryWallet = (wallet, wallets) => {
+  return !wallet && wallets.length > 0
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -83,4 +96,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTheme(OMGInitializing))
+)(withNavigation(withTheme(Initializer)))

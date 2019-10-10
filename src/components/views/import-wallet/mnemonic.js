@@ -1,13 +1,12 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
-import { walletActions, settingActions } from 'common/actions'
+import { walletActions } from 'common/actions'
 import { OMGText, OMGTextInputBox, OMGButton } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 
 const Mnemonic = ({
-  dispatchSetPrimaryWallet,
   dispatchImportWalletByMnemonic,
   loading,
   provider,
@@ -18,32 +17,25 @@ const Mnemonic = ({
   const mnemonicRef = useRef(null)
   const walletNameRef = useRef(null)
 
-  const importWallet = () => {
+  const importWallet = useCallback(() => {
     dispatchImportWalletByMnemonic(
       wallets,
       mnemonicRef.current.toLowerCase(),
       provider,
       walletNameRef.current
     )
-  }
+  }, [dispatchImportWalletByMnemonic, provider, wallets])
 
   useEffect(() => {
+    console.log(wallets)
+    console.log(loading)
     if (loading.success && loading.action === 'WALLET_IMPORT') {
       const latestWallet = wallets.slice(-1).pop()
-      if (wallets.length === 1) {
-        dispatchSetPrimaryWallet(latestWallet)
-      }
       navigation.navigate('ImportWalletSuccess', {
         wallet: latestWallet
       })
     }
-  }, [
-    dispatchSetPrimaryWallet,
-    loading.action,
-    loading.success,
-    navigation,
-    wallets
-  ])
+  }, [loading, loading.action, loading.success, navigation, wallets])
 
   return (
     <View style={styles.mnemonicContainer}>
@@ -122,8 +114,6 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchSetPrimaryWallet: wallet =>
-    settingActions.setPrimaryAddress(dispatch, wallet.address),
   dispatchImportWalletByMnemonic: (wallets, mnemonic, provider, name) =>
     dispatch(walletActions.importByMnemonic(wallets, mnemonic, provider, name))
 })

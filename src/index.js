@@ -46,11 +46,9 @@ const App = () => {
       <Provider store={store}>
         <PaperProvider theme={theme}>
           <PersistGate persistor={persistor}>
-            <OMGInitializing>
-              <Router />
-              <OMGAlert />
-              <TransactionTracker />
-            </OMGInitializing>
+            <Router />
+            <OMGAlert />
+            <TransactionTracker />
           </PersistGate>
         </PaperProvider>
       </Provider>

@@ -175,9 +175,9 @@ export const importByMnemonic = (wallets, mnemonic, provider, name) => {
 
       await walletStorage.setMnemonic({ address, mnemonic })
 
-      const newWallet = { address, name, balance, shouldRefresh: true }
+      const newWallet = { address, name, balance }
 
-      resolve(newWallet)
+      resolve({ wallet: newWallet, blockchainWallet: connectedProviderWallet })
     } catch (err) {
       reject(err)
     }

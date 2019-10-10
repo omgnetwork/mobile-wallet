@@ -13,6 +13,8 @@ export const settingReducer = (state = {}, action) => {
         primaryWalletAddress: action.data.primaryWalletAddress,
         blockchainWallet: null
       }
+    case 'WALLET/CREATE/SUCCESS':
+    case 'WALLET/IMPORT/SUCCESS':
     case 'SETTING/SET_BLOCKCHAIN_WALLET/SUCCESS':
       return {
         ...state,
