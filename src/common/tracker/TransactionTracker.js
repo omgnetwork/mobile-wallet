@@ -13,36 +13,25 @@ import BackgroundTimer from 'react-native-background-timer'
 
 const TransactionTracker = ({
   wallet,
-  provider,
+  blockchainWallet,
   pendingTxs,
-  // pendingExits,
+  pendingExits,
   dispatchInvalidatePendingTx,
   dispatchInvalidatePendingExitTx,
   dispatchRefreshRootchain,
   dispatchRefreshChildchain,
   dispatchRefreshAll
 }) => {
-  const blockchainWallet = useRef(null)
   const primaryWallet = useRef(wallet)
   const [rootNotification, setRootchainTxs] = useRootchainTracker(primaryWallet)
   const [childNotification, setChildchainTxs] = useChildchainTracker(
     primaryWallet
   )
-  // const [exitNotification, setExitTxs] = useExitTracker(blockchainWallet)
-
-  // useEffect(() => {
-  //   async function setBlockchainWallet() {
-  //     blockchainWallet.current = await walletService.get(
-  //       wallet.address,
-  //       provider
-  //     )
-  //   }
-
-  //   setBlockchainWallet()
-  // }, [provider, wallet])
+  const [exitNotification, setExitTxs] = useExitTracker(blockchainWallet)
 
   useEffect(() => {
-    const notification = rootNotification || childNotification
+    const notification =
+      rootNotification || childNotification || exitNotification
     if (notification) {
       if (!pendingTxs.find(tx => tx.hash === notification.confirmedTx.hash)) {
         return
@@ -77,7 +66,8 @@ const TransactionTracker = ({
     dispatchRefreshChildchain,
     dispatchRefreshAll,
     pendingTxs,
-    dispatchInvalidatePendingExitTx
+    dispatchInvalidatePendingExitTx,
+    exitNotification
   ])
 
   const filterTxs = useCallback(filterFunc => pendingTxs.filter(filterFunc), [
@@ -112,11 +102,11 @@ const TransactionTracker = ({
 
       setRootchainTxs(rootTxs)
       setChildchainTxs(childTxs)
-      // setExitTxs(pendingExits)
+      setExitTxs(pendingExits)
     } else {
       setRootchainTxs([])
       setChildchainTxs([])
-      // setExitTxs([])
+      setExitTxs([])
     }
     return () => {
       if (Platform.OS === 'ios') {
@@ -126,9 +116,11 @@ const TransactionTracker = ({
   }, [
     getChildTxs,
     getRootTxs,
+    pendingExits,
     pendingTxs,
     primaryWallet,
     setChildchainTxs,
+    setExitTxs,
     setRootchainTxs
   ])
 
@@ -139,9 +131,10 @@ const mapStateToProps = (state, ownProps) => ({
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
+  blockchainWallet: state.setting.blockchainWallet,
   provider: state.setting.provider,
-  pendingTxs: state.transaction.pendingTxs
-  // pendingExits: state.transaction.pendingExits
+  pendingTxs: state.transaction.pendingTxs,
+  pendingExits: state.transaction.pendingExits
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

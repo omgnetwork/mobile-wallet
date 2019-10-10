@@ -31,7 +31,7 @@ const useExitTracker = blockchainWallet => {
     const readyExitTxs = getExitReadyTxs()
     const pendingProcessExits = readyExitTxs.map(tx => {
       return plasmaService.processExits(
-        blockchainWallet.current,
+        blockchainWallet,
         tx.exitId,
         tx.contractAddress
       )
@@ -71,21 +71,21 @@ const useExitTracker = blockchainWallet => {
     }
   }, [buildNotification, processExit, verify])
 
-  // useEffect(() => {
-  //   let intervalId
-  //   if (pendingExitTxs.length) {
-  //     intervalId = BackgroundTimer.setInterval(() => {
-  //       console.log('track')
-  //       track()
-  //     }, INTERVAL_PERIOD)
-  //   }
+  useEffect(() => {
+    let intervalId
+    if (pendingExitTxs.length) {
+      intervalId = BackgroundTimer.setInterval(() => {
+        console.log('track')
+        track()
+      }, INTERVAL_PERIOD)
+    }
 
-  //   return () => {
-  //     if (intervalId) {
-  //       BackgroundTimer.clearInterval(intervalId)
-  //     }
-  //   }
-  // }, [INTERVAL_PERIOD, pendingExitTxs, track])
+    return () => {
+      if (intervalId) {
+        BackgroundTimer.clearInterval(intervalId)
+      }
+    }
+  }, [INTERVAL_PERIOD, pendingExitTxs, track])
 
   return [notification, setPendingExitTxs]
 }

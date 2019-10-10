@@ -20,8 +20,7 @@ const exitFee = {
 const ExitConfirm = ({
   theme,
   navigation,
-  primaryWallet,
-  provider,
+  blockchainWallet,
   loading,
   pendingTxs,
   dispatchExit
@@ -31,7 +30,7 @@ const ExitConfirm = ({
   const [loadingVisible, setLoadingVisible] = useState(false)
 
   const exit = () => {
-    dispatchExit(primaryWallet, provider, token, exitFee)
+    dispatchExit(blockchainWallet, token, exitFee)
   }
 
   useEffect(() => {
@@ -178,17 +177,15 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  primaryWallet: state.wallets.find(
-    w => w.address === state.setting.primaryWalletAddress
-  ),
+  blockchainWallet: state.setting.blockchainWallet,
   pendingTxs: state.transaction.pendingTxs,
   loading: state.loading,
   provider: state.setting.provider
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchExit: (wallet, provider, token, fee) =>
-    dispatch(plasmaActions.exit(wallet, provider, token, exitFee))
+  dispatchExit: (blockchainWallet, token, fee) =>
+    dispatch(plasmaActions.exit(blockchainWallet, token, exitFee))
 })
 
 export default connect(
