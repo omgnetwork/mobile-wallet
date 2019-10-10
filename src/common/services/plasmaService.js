@@ -188,23 +188,19 @@ export const exit = (blockchainWallet, token, fee) => {
   return new Promise(async (resolve, reject) => {
     try {
       // Prepare UTXO with exact desired amount to be transferred.
-      const receipt = await transfer(
+      await transfer(
         blockchainWallet,
         blockchainWallet.address,
         token,
         fee,
         null
       )
-
-      const unlockReceipt = await Plasma.unlockTokenExitable(
-        token.contractAddress,
-        {
-          gasPrice: Parser.parseUnits(fee.amount, fee.symbol),
-          gas: 500000,
-          from: blockchainWallet.address,
-          privateKey: blockchainWallet.privateKey
-        }
-      )
+      await Plasma.unlockTokenExitable(token.contractAddress, {
+        gasPrice: Parser.parseUnits(fee.amount, fee.symbol),
+        gas: 500000,
+        from: blockchainWallet.address,
+        privateKey: blockchainWallet.privateKey
+      })
 
       const desiredAmount = Parser.parseUnits(token.balance, token.tokenDecimal)
 

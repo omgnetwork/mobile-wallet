@@ -8,6 +8,7 @@ import { OMGEmpty, OMGText } from 'components/widgets'
 
 const Initializer = ({
   theme,
+  children,
   blockchainWallet,
   wallet,
   dispatchSetPrimaryWallet,
@@ -17,12 +18,12 @@ const Initializer = ({
   wallets
 }) => {
   useEffect(() => {
-    if (shouldGetBlockchainWallet(wallet, blockchainWallet)) {
+    if (wallets.length === 0 || (wallet && provider && blockchainWallet)) {
+      navigation.navigate('MainContent')
+    } else if (shouldGetBlockchainWallet(wallet, blockchainWallet, provider)) {
       dispatchSetBlockchainWallet(wallet, provider)
     } else if (shouldSetPrimaryWallet(wallet, wallets)) {
       dispatchSetPrimaryWallet(wallets[0], wallets)
-    } else {
-      navigation.navigate('MainContent')
     }
   }, [
     blockchainWallet,
@@ -35,7 +36,11 @@ const Initializer = ({
   ])
 
   const renderChildren = () => {
-    if (shouldGetBlockchainWallet(wallet, blockchainWallet)) {
+    if (wallets.length === 0) {
+      return <Fragment>{children}</Fragment>
+    } else if (wallet && blockchainWallet && provider) {
+      return <Fragment>{children}</Fragment>
+    } else {
       return (
         <View style={styles.container}>
           <OMGText style={styles.text(theme)} weight='bold'>
@@ -44,16 +49,14 @@ const Initializer = ({
           <OMGEmpty loading={true} style={styles.empty} />
         </View>
       )
-    } else {
-      null
     }
   }
 
-  return <Fragment>{renderChildren()}</Fragment>
+  return renderChildren()
 }
 
-const shouldGetBlockchainWallet = (wallet, blockchainWallet) => {
-  return wallet && !blockchainWallet && wallet.shouldRefresh
+const shouldGetBlockchainWallet = (wallet, blockchainWallet, provider) => {
+  return wallet && provider && !blockchainWallet && wallet.shouldRefresh
 }
 
 const shouldSetPrimaryWallet = (wallet, wallets) => {
