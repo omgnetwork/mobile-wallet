@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { settingActions } from 'common/actions'
 import { OMGEmpty, OMGText } from 'components/widgets'
@@ -22,12 +22,12 @@ const OMGInitializing = ({
   const renderChildren = useCallback(() => {
     if (shouldShowLoading(wallet, blockchainWallet)) {
       return (
-        <Fragment>
+        <View style={styles.container}>
           <OMGText style={styles.text(theme)} weight='bold'>
-            Initializing the wallet...
+            Loading wallet...
           </OMGText>
           <OMGEmpty loading={true} style={styles.empty} />
-        </Fragment>
+        </View>
       )
     } else {
       return children
@@ -42,12 +42,17 @@ const shouldShowLoading = (wallet, blockchainWallet) => {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column'
+  },
   text: theme => ({
-    color: theme.colors.white
+    color: theme.colors.primary
   }),
   empty: {
-    marginTop: 16
+    flex: 0
   }
 })
 

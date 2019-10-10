@@ -81,7 +81,7 @@ export const depositErc20 = (blockchainWallet, token, fee) => {
 
     return {
       hash: transactionReceipt.transactionHash,
-      from: wallet.address,
+      from: blockchainWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
       contractAddress: token.contractAddress,
