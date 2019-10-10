@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, Fragment } from 'react'
+import React, { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, View } from 'react-native'
 import { withTheme } from 'react-native-paper'
@@ -7,11 +7,9 @@ import { settingActions } from 'common/actions'
 import { OMGEmpty, OMGText } from 'components/widgets'
 
 const Initializer = ({
-  children,
   theme,
   blockchainWallet,
   wallet,
-  loading,
   dispatchSetPrimaryWallet,
   dispatchSetBlockchainWallet,
   provider,

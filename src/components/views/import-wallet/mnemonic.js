@@ -11,7 +11,6 @@ const Mnemonic = ({
   loading,
   provider,
   wallets,
-  theme,
   navigation
 }) => {
   const mnemonicRef = useRef(null)
@@ -27,8 +26,6 @@ const Mnemonic = ({
   }, [dispatchImportWalletByMnemonic, provider, wallets])
 
   useEffect(() => {
-    console.log(wallets)
-    console.log(loading)
     if (loading.success && loading.action === 'WALLET_IMPORT') {
       const latestWallet = wallets.slice(-1).pop()
       navigation.navigate('ImportWalletSuccess', {
