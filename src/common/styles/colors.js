@@ -9,6 +9,7 @@ export default {
   blue2: '#2176ff',
   blue3: '#dbe9ff',
   blue4: '#0f3aaa',
+  blue5: '#1a56f0',
   black1: '#d0d6e2',
   black2: '#858b9a',
   black3: '#3c414d',
@@ -29,5 +30,6 @@ export default {
   yellow2: '#fff7e5',
   yellow3: '#ffb300',
   red: '#ffbab5',
-  red2: '#ff0033'
+  red2: '#ff0033',
+  red3: '#fc7166'
 }

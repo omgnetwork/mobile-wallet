@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, View, Dimensions, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
@@ -8,17 +8,52 @@ import ChildchainBalance from './ChildchainBalance'
 import LinearGradient from 'react-native-linear-gradient'
 import ShowQR from './ShowQR'
 import {
-  OMGEmpty,
+  OMGBottomSheet,
   OMGViewPager,
   OMGText,
   OMGIcon,
   OMGStatusBar,
   OMGButton
 } from 'components/widgets'
+import { transactionActions } from 'common/actions'
 
 const pageWidth = Dimensions.get('window').width - 56
 
-const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
+const Balance = ({
+  theme,
+  primaryWallet,
+  navigation,
+  wallets,
+  pendingTxs,
+  feedbackCompleteTx,
+  dispatchInvalidateFeedbackCompleteTx
+}) => {
+  const formatFeedbackTx = useCallback(
+    transaction => {
+      if (!transaction) return null
+      if (transaction.pending) {
+        return {
+          title: 'Pending transaction...',
+          subtitle: transaction.tx.hash,
+          iconName: 'pending',
+          iconColor: theme.colors.yellow3
+        }
+      } else {
+        return {
+          title: 'Successfully transferred!',
+          subtitle: transaction.tx.hash,
+          iconName: 'success',
+          iconColor: theme.colors.green2
+        }
+      }
+    },
+    [theme.colors.green2, theme.colors.yellow3]
+  )
+  const feedbackTx = selectFeedbackTx(pendingTxs, feedbackCompleteTx)
+  const feedbackDetail = formatFeedbackTx(feedbackTx)
+
+  const [showFeedbackBottomSheet, setShowFeedbackBottomSheet] = useState(true)
+
   useEffect(() => {
     function didFocus() {
       StatusBar.setBarStyle('light-content')
@@ -31,6 +66,20 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
       didFocusSubscription.remove()
     }
   }, [navigation, primaryWallet, theme.colors.black5])
+
+  useEffect(() => {
+    if (feedbackCompleteTx) {
+      setShowFeedbackBottomSheet(true)
+    }
+  }, [feedbackCompleteTx])
+
+  const handleOnPressCloseBottomSheet = useCallback(() => {
+    if (feedbackCompleteTx) {
+      dispatchInvalidateFeedbackCompleteTx()
+    } else {
+      setShowFeedbackBottomSheet(false)
+    }
+  }, [dispatchInvalidateFeedbackCompleteTx, feedbackCompleteTx])
 
   const drawerNavigation = navigation.dangerouslyGetParent()
 
@@ -78,8 +127,29 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
           </OMGViewPager>
         )}
       </LinearGradient>
+      <OMGBottomSheet
+        style={styles.bottomSheet}
+        show={
+          feedbackTx && (feedbackTx.pending ? showFeedbackBottomSheet : true)
+        }
+        iconName={feedbackDetail && feedbackDetail.iconName}
+        iconColor={feedbackDetail && feedbackDetail.iconColor}
+        textTitle={feedbackDetail && feedbackDetail.title}
+        textSubtitle={feedbackDetail && feedbackDetail.subtitle}
+        onPressClose={handleOnPressCloseBottomSheet}
+      />
     </SafeAreaView>
   )
+}
+
+const selectFeedbackTx = (pendingTxs, feedbackCompleteTx) => {
+  if (pendingTxs.length > 0) {
+    return { tx: pendingTxs[0], pending: true }
+  } else if (feedbackCompleteTx) {
+    return { tx: feedbackCompleteTx, pending: false }
+  } else {
+    return null
+  }
 }
 
 const styles = StyleSheet.create({
@@ -123,12 +193,15 @@ const styles = StyleSheet.create({
   emptyButton: {
     flex: 1,
     justifyContent: 'center'
-  }
+  },
+  bottomSheet: {}
 })
 
 const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
   wallets: state.wallets,
+  pendingTxs: state.transaction.pendingTxs,
+  feedbackCompleteTx: state.transaction.feedbackCompleteTx,
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
   ),
@@ -136,7 +209,12 @@ const mapStateToProps = (state, ownProps) => ({
   primaryWalletAddress: state.setting.primaryWalletAddress
 })
 
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatchInvalidateFeedbackCompleteTx: () =>
+    transactionActions.invalidateFeedbackCompleteTx(dispatch)
+})
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withTheme(Balance))

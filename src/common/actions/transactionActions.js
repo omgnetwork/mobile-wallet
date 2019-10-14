@@ -19,6 +19,13 @@ export const invalidatePendingExitTx = (dispatch, resolvedTx) => {
   })
 }
 
+export const invalidateFeedbackCompleteTx = dispatch => {
+  return createAction(dispatch, {
+    type: 'TRANSACTION/INVALIDATE_FEEDBACK_COMPLETE_TX',
+    operation: () => ({})
+  })
+}
+
 export const fetchTransactionHistory = (address, provider, options) => {
   const asyncAction = async () => {
     const transactions = await transactionService.getTxs(
