@@ -1,8 +1,9 @@
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, View, Dimensions, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
+import { useProgressiveFeedback } from 'common/hooks'
 import RootchainBalance from './RootchainBalance'
 import ChildchainBalance from './ChildchainBalance'
 import LinearGradient from 'react-native-linear-gradient'
@@ -28,31 +29,13 @@ const Balance = ({
   feedbackCompleteTx,
   dispatchInvalidateFeedbackCompleteTx
 }) => {
-  const formatFeedbackTx = useCallback(
-    transaction => {
-      if (!transaction) return null
-      if (transaction.pending) {
-        return {
-          title: 'Pending transaction...',
-          subtitle: transaction.tx.hash,
-          iconName: 'pending',
-          iconColor: theme.colors.yellow3
-        }
-      } else {
-        return {
-          title: 'Successfully transferred!',
-          subtitle: transaction.tx.hash,
-          iconName: 'success',
-          iconColor: theme.colors.green2
-        }
-      }
-    },
-    [theme.colors.green2, theme.colors.yellow3]
-  )
-  const feedbackTx = selectFeedbackTx(pendingTxs, feedbackCompleteTx)
-  const feedbackDetail = formatFeedbackTx(feedbackTx)
-
-  const [showFeedbackBottomSheet, setShowFeedbackBottomSheet] = useState(true)
+  const [
+    feedback,
+    visible,
+    setPendingTxs,
+    setCompleteFeedbackTx,
+    handleOnClose
+  ] = useProgressiveFeedback(theme, dispatchInvalidateFeedbackCompleteTx)
 
   useEffect(() => {
     function didFocus() {
@@ -68,18 +51,9 @@ const Balance = ({
   }, [navigation, primaryWallet, theme.colors.black5])
 
   useEffect(() => {
-    if (feedbackCompleteTx) {
-      setShowFeedbackBottomSheet(true)
-    }
-  }, [feedbackCompleteTx])
-
-  const handleOnPressCloseBottomSheet = useCallback(() => {
-    if (feedbackCompleteTx) {
-      dispatchInvalidateFeedbackCompleteTx()
-    } else {
-      setShowFeedbackBottomSheet(false)
-    }
-  }, [dispatchInvalidateFeedbackCompleteTx, feedbackCompleteTx])
+    setPendingTxs(pendingTxs)
+    setCompleteFeedbackTx(feedbackCompleteTx)
+  }, [feedbackCompleteTx, pendingTxs, setCompleteFeedbackTx, setPendingTxs])
 
   const drawerNavigation = navigation.dangerouslyGetParent()
 
@@ -129,27 +103,15 @@ const Balance = ({
       </LinearGradient>
       <OMGBottomSheet
         style={styles.bottomSheet}
-        show={
-          feedbackTx && (feedbackTx.pending ? showFeedbackBottomSheet : true)
-        }
-        iconName={feedbackDetail && feedbackDetail.iconName}
-        iconColor={feedbackDetail && feedbackDetail.iconColor}
-        textTitle={feedbackDetail && feedbackDetail.title}
-        textSubtitle={feedbackDetail && feedbackDetail.subtitle}
-        onPressClose={handleOnPressCloseBottomSheet}
+        show={visible}
+        iconName={feedback.iconName}
+        iconColor={feedback.iconColor}
+        textTitle={feedback.title}
+        textSubtitle={feedback.subtitle}
+        onPressClose={handleOnClose}
       />
     </SafeAreaView>
   )
-}
-
-const selectFeedbackTx = (pendingTxs, feedbackCompleteTx) => {
-  if (pendingTxs.length > 0) {
-    return { tx: pendingTxs[0], pending: true }
-  } else if (feedbackCompleteTx) {
-    return { tx: feedbackCompleteTx, pending: false }
-  } else {
-    return null
-  }
 }
 
 const styles = StyleSheet.create({
