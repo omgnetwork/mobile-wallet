@@ -1,7 +1,10 @@
 import { useState, useCallback, useEffect } from 'react'
-
+import Config from 'react-native-config'
 const emptyFeedback = {
   title: null,
+  type: null,
+  hash: null,
+  pending: null,
   subTitle: null,
   iconName: null,
   iconColor: null
@@ -32,6 +35,9 @@ const useProgressiveFeedback = (
       if (transaction.pending) {
         return {
           title: 'Pending transaction...',
+          type: transaction.result.type,
+          hash: transaction.result.hash,
+          pending: transaction.pending,
           subtitle: transaction.result.hash,
           iconName: 'pending',
           iconColor: theme.colors.yellow3
@@ -39,6 +45,9 @@ const useProgressiveFeedback = (
       } else {
         return {
           title: 'Successfully transferred!',
+          type: transaction.result.type,
+          hash: transaction.result.hash,
+          pending: transaction.pending,
           subtitle: transaction.result.hash,
           iconName: 'success',
           iconColor: theme.colors.green2
@@ -56,6 +65,14 @@ const useProgressiveFeedback = (
     }
   }, [completeFeedbackTx, dispatchInvalidateFeedbackCompleteTx])
 
+  const getLearnMoreLink = useCallback(() => {
+    if (feedback.type === 'CHILDCHAIN_SEND_TOKEN') {
+      return `${Config.BLOCK_EXPLORER_URL}/transaction/${feedback.hash}`
+    } else {
+      return `${Config.ETHERSCAN_TX_URL}${feedback.hash}`
+    }
+  }, [feedback.hash, feedback.type])
+
   useEffect(() => {
     const feedbackTx = selectFeedbackTx()
     const formattedFeedback = formatFeedbackTx(feedbackTx)
@@ -69,7 +86,8 @@ const useProgressiveFeedback = (
     visible,
     setPendingTxs,
     setCompleteFeedbackTx,
-    handleOnClose
+    handleOnClose,
+    getLearnMoreLink
   ]
 }
 

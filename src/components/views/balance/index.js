@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, View, Dimensions, StatusBar } from 'react-native'
+import { StyleSheet, Linking, View, Dimensions, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
@@ -34,7 +34,8 @@ const Balance = ({
     visible,
     setPendingTxs,
     setCompleteFeedbackTx,
-    handleOnClose
+    handleOnClose,
+    getLearnMoreLink
   ] = useProgressiveFeedback(theme, dispatchInvalidateFeedbackCompleteTx)
 
   useEffect(() => {
@@ -49,6 +50,11 @@ const Balance = ({
       didFocusSubscription.remove()
     }
   }, [navigation, primaryWallet, theme.colors.black5])
+
+  const handleLearnMoreClick = useCallback(() => {
+    const externalURL = getLearnMoreLink()
+    Linking.openURL(externalURL)
+  }, [getLearnMoreLink])
 
   useEffect(() => {
     setPendingTxs(pendingTxs)
@@ -109,6 +115,8 @@ const Balance = ({
         textTitle={feedback.title}
         textSubtitle={feedback.subtitle}
         onPressClose={handleOnClose}
+        onPressLink={handleLearnMoreClick}
+        textLink={!feedback.pending && 'Learn more'}
       />
     </SafeAreaView>
   )
