@@ -63,7 +63,7 @@ workflows:
       - instrumentation-tests
     branches:
       only:
-        - /release.*
+        - /release*
       - hold:
           type: approval
           requires:
