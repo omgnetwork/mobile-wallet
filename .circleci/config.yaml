@@ -1,0 +1,73 @@
+version: 2
+
+defaults: &defaults
+  docker:
+    - image: circleci/android:api-28-alpha
+  environment:
+    JVM_OPTS: -Xmx3200m
+
+jobs:
+  instrumentation-tests:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Install fastlane
+          command: bundle install
+      - run:
+          name: Store service account
+          command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+      - run: 
+          name: Authorize to gcloud
+          command: gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json --project=${GOOGLE_PROJECT_ID}
+      - run:
+          name: Run the instrumentation tests in Firebase test lab
+          command: bundle exec fastlane instrumentation_tests
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }} 
+
+  deploy-internal:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Install fastlane
+          command: bundle install
+      - run:
+          name: Store the google play key
+          command: echo $GOOGLE_PLAY_KEY > gplay_key.json
+      - run:
+          name: Init fastlane supply
+          command: bundle exec fastlane supply init
+      - run:
+          name: Download CI data
+          command: ./ci/download_ci_data.sh
+      - run:
+          name: Deploy the app to the internal track
+          command: bundle exec fastlane deploy_internal
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }} 
+
+workflows:
+  version: 2
+  deploy-internal:
+    jobs:
+      - instrumentation-tests
+    branches:
+      only:
+        - /release*
+      - hold:
+          type: approval
+          requires:
+            - instrumentation-tests
+      - deploy-internal:
+          requires:
+            - hold
