@@ -16,6 +16,7 @@ import ExitPending from './exit/ExitPending'
 import ImportWallet from './import-wallet'
 import ImportWalletMnemonic from './import-wallet/Mnemonic'
 import ImportWalletSuccess from './import-wallet/ImportSuccess'
+import Initializer from './initializer'
 import ManageWallet from './manage-wallet'
 import Preview from './preview'
 import Setting from './setting'
@@ -56,6 +57,7 @@ export {
   ImportWallet,
   ImportWalletMnemonic,
   ImportWalletSuccess,
+  Initializer,
   ManageWallet,
   Preview,
   Setting,

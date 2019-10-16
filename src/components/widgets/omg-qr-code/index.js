@@ -5,15 +5,13 @@ import QRCode from 'react-native-qrcode-svg'
 import OMGIcon from '../omg-icon'
 import OMGBox from '../omg-box'
 import OMGText from '../omg-text'
-import { showMessage } from 'react-native-flash-message'
+import { Alert } from 'common/constants'
+import { Alerter } from 'common/utils'
 
 const OMGQRCode = ({ payload, displayText, size, theme, style }) => {
   const handleCopyClick = useCallback(() => {
     Clipboard.setString(displayText)
-    showMessage({
-      message: `Copied!`,
-      type: 'success'
-    })
+    Alerter.show(Alert.SUCCESS_COPIED_ADDRESS)
   }, [displayText])
   return (
     <View style={{ ...styles.container, ...style }}>

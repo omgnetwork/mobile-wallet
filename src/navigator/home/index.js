@@ -1,5 +1,5 @@
 import React from 'react'
-import { createStackNavigator } from 'react-navigation'
+import { createStackNavigator, createSwitchNavigator } from 'react-navigation'
 import * as Views from 'components/views'
 import BottomTabNavigator from './bottombar'
 import { OMGDrawerContent } from 'components/widgets'
@@ -24,6 +24,21 @@ const drawerNavigator = (TransferRootChain, TransactionHistoryNavigator) =>
     }
   )
 
+const MainNavigator = (TransferRootChain, TransactionHistoryNavigator) =>
+  createSwitchNavigator(
+    {
+      Initializer: Views.Initializer,
+      MainContent: drawerNavigator(
+        TransferRootChain,
+        TransactionHistoryNavigator
+      )
+    },
+    {
+      initialRouteName: 'Initializer',
+      headerMode: 'none'
+    }
+  )
+
 export default (
   TransferRootChain,
   TransferChildChain,
@@ -33,7 +48,7 @@ export default (
 ) =>
   createStackNavigator(
     {
-      Main: drawerNavigator(TransferRootChain, TransactionHistoryNavigator),
+      Main: MainNavigator(TransferRootChain, TransactionHistoryNavigator),
       ManageWallet: ManageWalletNavigator,
       TransferSelectBalance: {
         screen: Views.TransferSelectBalance

@@ -17,11 +17,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -37,10 +37,30 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Unused</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Unused</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Unused</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Unused</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Enable to scan the QR code</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Unused</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Unused</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string>Unused</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Unused</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Unused</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Unused</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Unused</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

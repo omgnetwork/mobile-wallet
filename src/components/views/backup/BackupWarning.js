@@ -52,7 +52,7 @@ const BackupWarning = ({ theme, navigation }) => {
       navigateToBackupTranscribe()
     } else {
       requestAnimationFrame(async () => {
-        setMnemonic(Ethereum.generateMnemonic())
+        setMnemonic(Ethereum.generateWalletMnemonic())
       })
     }
   }

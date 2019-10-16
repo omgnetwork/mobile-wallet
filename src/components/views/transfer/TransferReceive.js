@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { View, StyleSheet, Image, Clipboard } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
@@ -9,8 +9,14 @@ import {
   OMGBox,
   OMGIcon
 } from 'components/widgets'
+import { Alert } from 'common/constants'
+import { Alerter } from 'common/utils'
 
 const TransferReceive = ({ theme, primaryWallet, primaryWalletAddress }) => {
+  const handleCopyClick = useCallback(() => {
+    Clipboard.setString(primaryWalletAddress)
+    Alerter.show(Alert.SUCCESS_COPIED_ADDRESS)
+  }, [primaryWalletAddress])
   return (
     <OMGBackground style={styles.container(theme)}>
       <View style={styles.contentContainer(theme)}>
@@ -26,9 +32,7 @@ const TransferReceive = ({ theme, primaryWallet, primaryWalletAddress }) => {
           </OMGText>
           <View style={styles.walletAddress}>
             <OMGText style={styles.text(theme)}>{primaryWalletAddress}</OMGText>
-            <OMGBox
-              style={styles.icon(theme)}
-              onPress={() => Clipboard.setString(primaryWalletAddress)}>
+            <OMGBox style={styles.icon(theme)} onPress={handleCopyClick}>
               <OMGIcon name='copy' size={14} color={theme.colors.gray3} />
             </OMGBox>
           </View>

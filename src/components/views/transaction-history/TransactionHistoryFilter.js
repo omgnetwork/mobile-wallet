@@ -40,7 +40,7 @@ const TransactionHistoryFilter = ({
         transactions={transactions}
         types={types}
         loading={loading}
-        address={wallet.address}
+        address={wallet && wallet.address}
       />
     </SafeAreaView>
   )

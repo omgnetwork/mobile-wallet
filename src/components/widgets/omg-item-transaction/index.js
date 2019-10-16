@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { Formatter, Datetime } from 'common/utils'
@@ -8,6 +8,15 @@ import OMGIcon from '../omg-icon'
 const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
   const isError = tx.type === 'failed'
   const iconName = getIconName(tx.type)
+
+  const renderEthereumValue = useCallback(() => {
+    return `${formatTokenBalance(tx.value, tx.tokenDecimal)} ${tx.tokenSymbol}`
+  }, [tx.tokenDecimal, tx.tokenSymbol, tx.value])
+
+  const renderOmiseGOValue = useCallback(() => {
+    return `? ${tx.tokenSymbol}`
+  }, [tx.tokenSymbol])
+
   return (
     <TouchableOpacity
       onPress={() => onPress && onPress(tx)}
@@ -31,7 +40,9 @@ const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
       </View>
       <View style={styles.rightContainer}>
         <OMGText style={styles.textAmount(theme)}>
-          {formatTokenBalance(tx.value, tx.tokenDecimal)} {tx.tokenSymbol}
+          {tx.network === 'ethereum'
+            ? renderEthereumValue()
+            : renderOmiseGOValue()}
         </OMGText>
         <OMGText style={styles.textDate(theme)}>
           {Datetime.format(
@@ -52,9 +63,12 @@ const getIconName = type => {
       return 'upload'
     case 'in':
       return 'arrow-down'
+    case 'failed':
     case 'out':
-    default:
       return 'arrow-up'
+    case 'unidentified':
+    default:
+      return 'transaction'
   }
 }
 

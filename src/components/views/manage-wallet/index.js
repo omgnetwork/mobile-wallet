@@ -1,14 +1,10 @@
-import React from 'react'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
+import { View, StyleSheet, TouchableOpacity, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
-import {
-  OMGIcon,
-  OMGBox,
-  OMGText,
-  OMGStatusBar,
-  OMGEmpty
-} from 'components/widgets'
+import { OMGIcon, OMGText, OMGStatusBar, OMGButton } from 'components/widgets'
+import { walletActions } from 'common/actions'
 
 const ManageWalletMenu = ({ theme, title, style, onPress }) => {
   return (
@@ -33,9 +29,22 @@ const menuStyles = StyleSheet.create({
   iconRight: {}
 })
 
-const ManageWallet = ({ theme, navigation }) => {
+const ManageWallet = ({ theme, navigation, dispatchDeleteAll }) => {
+  useEffect(() => {
+    function didFocus() {
+      StatusBar.setBarStyle('dark-content')
+      StatusBar.setBackgroundColor(theme.colors.white)
+    }
+
+    const didFocusSubscription = navigation.addListener('didFocus', didFocus)
+
+    return () => {
+      didFocusSubscription.remove()
+    }
+  }, [navigation, theme.colors.white])
+
   return (
-    <SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
+    <SafeAreaView style={styles.container}>
       <OMGStatusBar
         barStyle={'dark-content'}
         backgroundColor={theme.colors.white}
@@ -73,6 +82,9 @@ const ManageWallet = ({ theme, navigation }) => {
         />
         <View style={styles.divider(theme)} />
       </View>
+      <OMGButton onPress={dispatchDeleteAll} style={styles.btnClearAll(theme)}>
+        DELETE ALL
+      </OMGButton>
     </SafeAreaView>
   )
 }
@@ -96,13 +108,25 @@ const styles = StyleSheet.create({
     padding: 16,
     marginRight: -16
   },
-  menuContainer: {},
+  menuContainer: { flex: 1 },
   menuItem: {},
   divider: theme => ({
     backgroundColor: theme.colors.black1,
     height: 1,
     opacity: 0.3
+  }),
+  btnClearAll: theme => ({
+    backgroundColor: theme.colors.red2,
+    color: theme.colors.white,
+    marginBottom: 32
   })
 })
 
-export default withNavigation(withTheme(ManageWallet))
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatchDeleteAll: () => walletActions.clear(dispatch)
+})
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withNavigation(withTheme(ManageWallet)))

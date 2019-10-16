@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
@@ -13,6 +13,7 @@ import {
   OMGAmountInput,
   OMGFeeInput
 } from 'components/widgets'
+import { Validator } from 'common/utils'
 
 const fees = [
   {
@@ -56,12 +57,20 @@ const TransferForm = ({ wallet, theme, navigation }) => {
       : wallet.childchainAssets[0]
   )
   const addressRef = useRef(selectedAddress || testAddress)
-  const textRef = useRef(defaultAmount)
+  const amountRef = useRef(defaultAmount)
+  const [showErrorAddress, setShowErrorAddress] = useState(false)
+  const [showErrorAmount, setShowErrorAmount] = useState(false)
 
-  const submit = () => {
-    if (textRef.current) {
+  const submit = useCallback(() => {
+    if (!Validator.isValidAddress(addressRef.current)) {
+      setShowErrorAddress(true)
+    } else if (!Validator.isValidAmount(amountRef.current)) {
+      setShowErrorAmount(true)
+    } else {
+      setShowErrorAddress(false)
+      setShowErrorAmount(false)
       navigation.navigate('TransferConfirm', {
-        token: { ...selectedToken, balance: textRef.current },
+        token: { ...selectedToken, balance: amountRef.current },
         fromWallet: wallet,
         isRootchain: isRootchain,
         toWallet: {
@@ -70,10 +79,8 @@ const TransferForm = ({ wallet, theme, navigation }) => {
         },
         fee: selectedFee
       })
-    } else {
-      // Warn to fill amount
     }
-  }
+  }, [isDeposit, isRootchain, navigation, selectedFee, selectedToken, wallet])
 
   return (
     <SafeAreaView style={styles.container(theme)}>
@@ -87,7 +94,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
               onPress={() =>
                 navigation.navigate('TransferSelectBalance', {
                   currentToken: selectedToken,
-                  lastAmount: textRef.current,
+                  lastAmount: amountRef.current,
                   assets:
                     isDeposit || isRootchain
                       ? wallet.rootchainAssets
@@ -113,6 +120,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
               <OMGAddressInput
                 style={styles.addressInput}
                 inputRef={addressRef}
+                showError={showErrorAddress}
                 onPress={() => navigation.navigate('TransferScanner')}
               />
             )}
@@ -121,7 +129,8 @@ const TransferForm = ({ wallet, theme, navigation }) => {
             <OMGText weight='bold'>Amount</OMGText>
             <OMGAmountInput
               token={selectedToken}
-              inputRef={textRef}
+              inputRef={amountRef}
+              showError={showErrorAmount}
               defaultValue={navigation.getParam('lastAmount')}
               style={styles.amountInput}
             />
@@ -133,7 +142,10 @@ const TransferForm = ({ wallet, theme, navigation }) => {
               style={styles.feeInput}
               onPress={() => {
                 navigation.navigate('TransferSelectFee', {
-                  currentToken: { ...selectedToken, balance: textRef.current },
+                  currentToken: {
+                    ...selectedToken,
+                    balance: amountRef.current
+                  },
                   currentFee: selectedFee,
                   fees: fees
                 })

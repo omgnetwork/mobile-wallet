@@ -17,10 +17,8 @@ export const fetchAssets = (rootchainAssets, address) => {
   })
 }
 
-export const depositEth = (wallet, provider, token, fee) => {
+export const depositEth = (blockchainWallet, token, fee) => {
   const asyncAction = async () => {
-    const blockchainWallet = await walletService.get(wallet.address, provider)
-
     const transactionReceipt = await plasmaService.depositEth(
       blockchainWallet.address,
       blockchainWallet.privateKey,
@@ -30,7 +28,7 @@ export const depositEth = (wallet, provider, token, fee) => {
 
     return {
       hash: transactionReceipt.transactionHash,
-      from: wallet.address,
+      from: blockchainWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
       contractAddress: token.contractAddress,
@@ -45,13 +43,8 @@ export const depositEth = (wallet, provider, token, fee) => {
   })
 }
 
-export const transfer = (provider, fromWallet, toAddress, token, fee) => {
+export const transfer = (blockchainWallet, toAddress, token, fee) => {
   const asyncAction = async () => {
-    const blockchainWallet = await walletService.get(
-      fromWallet.address,
-      provider
-    )
-
     const transactionReceipt = await plasmaService.transfer(
       blockchainWallet,
       toAddress,
@@ -59,11 +52,9 @@ export const transfer = (provider, fromWallet, toAddress, token, fee) => {
       fee
     )
 
-    console.log(transactionReceipt)
-
     return {
       hash: transactionReceipt.txhash,
-      from: fromWallet.address,
+      from: blockchainWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
       contractAddress: token.contractAddress,
@@ -79,10 +70,8 @@ export const transfer = (provider, fromWallet, toAddress, token, fee) => {
   })
 }
 
-export const depositErc20 = (wallet, provider, token, fee) => {
+export const depositErc20 = (blockchainWallet, token, fee) => {
   const asyncAction = async () => {
-    const blockchainWallet = await walletService.get(wallet.address, provider)
-
     const transactionReceipt = await plasmaService.depositErc20(
       blockchainWallet.address,
       blockchainWallet.privateKey,
@@ -92,7 +81,7 @@ export const depositErc20 = (wallet, provider, token, fee) => {
 
     return {
       hash: transactionReceipt.transactionHash,
-      from: wallet.address,
+      from: blockchainWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
       contractAddress: token.contractAddress,
@@ -107,16 +96,16 @@ export const depositErc20 = (wallet, provider, token, fee) => {
   })
 }
 
-export const exit = (wallet, provider, token, fee) => {
+export const exit = (blockchainWallet, token, fee) => {
   const asyncAction = async () => {
-    const blockchainWallet = await walletService.get(wallet.address, provider)
     const exitReceipt = await plasmaService.exit(blockchainWallet, token, fee)
 
     return {
       hash: exitReceipt.transactionHash,
-      from: wallet.address,
+      from: blockchainWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
+      exitId: exitReceipt.exitId,
       contractAddress: token.contractAddress,
       gasPrice: fee.amount,
       type: 'CHILDCHAIN_EXIT',
@@ -129,17 +118,16 @@ export const exit = (wallet, provider, token, fee) => {
   })
 }
 
-export const processExits = (wallet, provider, token, fee) => {
+export const processExits = (blockchainWallet, token, fee) => {
   const asyncAction = async () => {
-    const blockchainWallet = await walletService.get(wallet.address, provider)
     const exitReceipt = await plasmaService.processExits(
       blockchainWallet,
-      token,
-      fee
+      0,
+      token
     )
     return {
       hash: exitReceipt.transactionHash,
-      from: wallet.address,
+      from: blockchainWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
       contractAddress: token.contractAddress,

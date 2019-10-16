@@ -1,24 +1,43 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, View, Dimensions, StatusBar } from 'react-native'
+import { StyleSheet, Linking, View, Dimensions, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
+import { useProgressiveFeedback } from 'common/hooks'
 import RootchainBalance from './RootchainBalance'
 import ChildchainBalance from './ChildchainBalance'
 import LinearGradient from 'react-native-linear-gradient'
 import ShowQR from './ShowQR'
 import {
-  OMGEmpty,
+  OMGBottomSheet,
   OMGViewPager,
   OMGText,
   OMGIcon,
   OMGStatusBar,
   OMGButton
 } from 'components/widgets'
+import { transactionActions } from 'common/actions'
 
 const pageWidth = Dimensions.get('window').width - 56
 
-const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
+const Balance = ({
+  theme,
+  primaryWallet,
+  navigation,
+  wallets,
+  pendingTxs,
+  feedbackCompleteTx,
+  dispatchInvalidateFeedbackCompleteTx
+}) => {
+  const [
+    feedback,
+    visible,
+    setPendingTxs,
+    setCompleteFeedbackTx,
+    handleOnClose,
+    getLearnMoreLink
+  ] = useProgressiveFeedback(theme, dispatchInvalidateFeedbackCompleteTx)
+
   useEffect(() => {
     function didFocus() {
       StatusBar.setBarStyle('light-content')
@@ -31,6 +50,16 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
       didFocusSubscription.remove()
     }
   }, [navigation, primaryWallet, theme.colors.black5])
+
+  const handleLearnMoreClick = useCallback(() => {
+    const externalURL = getLearnMoreLink()
+    Linking.openURL(externalURL)
+  }, [getLearnMoreLink])
+
+  useEffect(() => {
+    setPendingTxs(pendingTxs)
+    setCompleteFeedbackTx(feedbackCompleteTx)
+  }, [feedbackCompleteTx, pendingTxs, setCompleteFeedbackTx, setPendingTxs])
 
   const drawerNavigation = navigation.dangerouslyGetParent()
 
@@ -61,7 +90,7 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
               onPress={() => {
                 navigation.navigate('ManageWallet')
               }}>
-              Manage wallet margin: '0'
+              Manage wallet
             </OMGButton>
           </View>
         ) : (
@@ -78,6 +107,17 @@ const Balance = ({ theme, primaryWallet, navigation, loading, wallets }) => {
           </OMGViewPager>
         )}
       </LinearGradient>
+      <OMGBottomSheet
+        style={styles.bottomSheet}
+        show={visible}
+        iconName={feedback.iconName}
+        iconColor={feedback.iconColor}
+        textTitle={feedback.title}
+        textSubtitle={feedback.subtitle}
+        onPressClose={handleOnClose}
+        onPressLink={handleLearnMoreClick}
+        textLink={!feedback.pending && 'Learn more'}
+      />
     </SafeAreaView>
   )
 }
@@ -123,12 +163,15 @@ const styles = StyleSheet.create({
   emptyButton: {
     flex: 1,
     justifyContent: 'center'
-  }
+  },
+  bottomSheet: {}
 })
 
 const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
   wallets: state.wallets,
+  pendingTxs: state.transaction.pendingTxs,
+  feedbackCompleteTx: state.transaction.feedbackCompleteTx,
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
   ),
@@ -136,7 +179,12 @@ const mapStateToProps = (state, ownProps) => ({
   primaryWalletAddress: state.setting.primaryWalletAddress
 })
 
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatchInvalidateFeedbackCompleteTx: () =>
+    transactionActions.invalidateFeedbackCompleteTx(dispatch)
+})
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withTheme(Balance))

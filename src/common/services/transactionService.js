@@ -1,6 +1,19 @@
 import { ethereumService, plasmaService } from 'common/services'
 import { Mapper, Token } from 'common/utils'
 
+export const getPlasmaTx = oldTransaction => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const transaction = await plasmaService.getTx(oldTransaction.hash)
+      const mergedTx = Mapper.mapChildchainTxDetail(oldTransaction, transaction)
+      resolve(mergedTx)
+    } catch (err) {
+      console.log(err)
+      reject(err)
+    }
+  })
+}
+
 export const getTxs = (address, provider, options) => {
   const { page, limit, lastEthBlockNumber, lastOMGBlockNumber } = options
   return new Promise(async (resolve, reject) => {
@@ -61,6 +74,8 @@ const mergeTxs = async (txs, address, tokens) => {
 
   const { rootchainTxs, rootchainErc20Txs, childchainTxs } = txs
 
+  console.log(childchainTxs)
+
   // Cache tx details
   rootchainErc20Txs.forEach(tx => {
     cachedErc20[tx.hash] = tx
@@ -81,7 +96,7 @@ const mergeTxs = async (txs, address, tokens) => {
   )
 
   const mappedChildchainTxs = childchainTxs.map(tx =>
-    Mapper.mapChildchainTx(tx, tokens)
+    Mapper.mapChildchainTx(tx, tokens, address)
   )
 
   return [...mappedRootchainTxs, ...mappedChildchainTxs].sort(

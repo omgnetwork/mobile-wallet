@@ -25,7 +25,7 @@ const TransactionHistory = ({
   const [txs, setTxs] = useState([])
 
   useEffect(() => {
-    if (isFocused) {
+    if (wallet && isFocused) {
       StatusBar.setBarStyle('dark-content')
       StatusBar.setBackgroundColor(theme.colors.white)
       const options = {
@@ -40,13 +40,15 @@ const TransactionHistory = ({
     navigation,
     provider,
     theme.colors.white,
-    wallet.address
+    wallet
   ])
 
   useEffect(() => {
     if (transactions.length) {
       const recentTxs = transactions
-        .filter(tx => tx.type === 'in' || tx.type === 'out')
+        .filter(
+          tx => ['in', 'out', 'unidentified', 'deposit'].indexOf(tx.type) > -1
+        )
         .slice(0, 5)
       console.log(recentTxs)
       setTxs(recentTxs)
@@ -56,7 +58,7 @@ const TransactionHistory = ({
   const handleClickTransactions = useCallback(() => {
     navigation.navigate('TransactionHistoryFilter', {
       title: 'Transactions',
-      types: ['all', 'in', 'out', 'failed']
+      types: ['all', 'in', 'out', 'unidentified', 'failed']
     })
   }, [navigation])
 
@@ -85,7 +87,7 @@ const TransactionHistory = ({
         style={styles.menuItem}
         title='Transactions'
         onPress={handleClickTransactions}
-        description={wallet.name}
+        description={wallet && wallet.name}
       />
       <OMGMenuIcon
         style={styles.menuItem}
@@ -107,7 +109,7 @@ const TransactionHistory = ({
       <OMGTransactionList
         transactions={txs}
         loading={loading}
-        address={wallet.address}
+        address={wallet && wallet.address}
       />
     </SafeAreaView>
   )

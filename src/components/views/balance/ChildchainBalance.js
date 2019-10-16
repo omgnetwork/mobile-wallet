@@ -1,36 +1,69 @@
-import React, { useState, Fragment, useEffect } from 'react'
+import React, { useState, Fragment, useEffect, useCallback } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
 import { plasmaActions, walletActions } from 'common/actions'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
-import { Formatter, Datetime } from 'common/utils'
+import { Formatter, Datetime, Alerter } from 'common/utils'
 import {
   OMGItemToken,
   OMGAssetHeader,
   OMGAssetList,
   OMGAssetFooter
 } from 'components/widgets'
+import { Alert } from 'common/constants'
 
 const ChildchainBalance = ({
   dispatchLoadAssets,
   dispatchInvalidatePendingTxs,
   dispatchSetShouldRefreshChildchain,
-  dispatchSubscribeChildchainTransaction,
   pendingTxs,
   wallet,
   navigation
 }) => {
   const currency = 'USD'
   const [totalBalance, setTotalBalance] = useState(0.0)
-  const disabledChildchainAction =
-    !wallet.childchainAssets || wallet.childchainAssets.length === 0
+
+  const hasPendingTransaction = pendingTxs.length > 0
+  const hasChildchainAssets =
+    wallet.childchainAssets && wallet.childchainAssets.length > 0
+
+  const shouldEnableDepositAction = useCallback(() => {
+    if (!hasPendingTransaction) {
+      return true
+    }
+    return false
+  }, [hasPendingTransaction])
+
+  const shouldEnableExitAction = useCallback(() => {
+    if (!hasPendingTransaction && hasChildchainAssets) {
+      return true
+    }
+    return false
+  }, [hasChildchainAssets, hasPendingTransaction])
+
+  const handleDepositClick = useCallback(() => {
+    if (!shouldEnableDepositAction()) {
+      Alerter.show(Alert.CANNOT_DEPOSIT_PENDING_TRANSACTION)
+    } else {
+      navigation.navigate('TransferDeposit')
+    }
+  }, [navigation, shouldEnableDepositAction])
+
+  const handleExitClick = useCallback(() => {
+    if (!shouldEnableExitAction() && !hasPendingTransaction) {
+      Alerter.show(Alert.CANNOT_EXIT_NOT_ENOUGH_ASSETS)
+    } else if (!shouldEnableExitAction()) {
+      Alerter.show(Alert.CANNOT_EXIT_PENDING_TRANSACTION)
+    } else {
+      navigation.navigate('TransferExit')
+    }
+  }, [hasPendingTransaction, navigation, shouldEnableExitAction])
 
   useEffect(() => {
     if (wallet.shouldRefreshChildchain && wallet.rootchainAssets) {
       dispatchLoadAssets(wallet)
-      // dispatchInvalidatePendingTxs(wallet, pendingTxs)
       dispatchSetShouldRefreshChildchain(wallet.address, false)
     }
   }, [
@@ -72,9 +105,10 @@ const ChildchainBalance = ({
         )}
       />
       <OMGAssetFooter
-        disabled={disabledChildchainAction}
-        onPressDeposit={() => navigation.navigate('TransferDeposit')}
-        onPressExit={() => navigation.navigate('TransferExit')}
+        enableDeposit={shouldEnableDepositAction()}
+        enableExit={shouldEnableExitAction()}
+        onPressDeposit={handleDepositClick}
+        onPressExit={handleExitClick}
       />
     </Fragment>
   )

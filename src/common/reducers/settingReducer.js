@@ -10,9 +10,24 @@ export const settingReducer = (state = {}, action) => {
     case 'SETTING/SET_PRIMARY_ADDRESS/OK':
       return {
         ...state,
-        primaryWalletAddress: action.data.primaryWalletAddress
+        primaryWalletAddress: action.data.primaryWalletAddress,
+        blockchainWallet: invalidateBlockchainWalletByAddress(
+          state.blockchainWallet,
+          action.data.primaryWalletAddress
+        )
+      }
+    case 'WALLET/CREATE/SUCCESS':
+    case 'WALLET/IMPORT/SUCCESS':
+    case 'SETTING/SET_BLOCKCHAIN_WALLET/SUCCESS':
+      return {
+        ...state,
+        blockchainWallet: action.data.blockchainWallet
       }
     default:
       return state
   }
+}
+
+const invalidateBlockchainWalletByAddress = (blockchainWallet, address) => {
+  return blockchainWallet.address === address ? blockchainWallet : null
 }

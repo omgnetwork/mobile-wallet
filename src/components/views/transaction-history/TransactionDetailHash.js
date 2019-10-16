@@ -1,15 +1,13 @@
 import React, { useCallback } from 'react'
 import { View, StyleSheet, Clipboard } from 'react-native'
 import { OMGIcon, OMGBox, OMGText } from 'components/widgets'
-import { showMessage } from 'react-native-flash-message'
+import { Alerter } from 'common/utils'
+import { Alert } from 'common/constants'
 
 const TransactionDetailHash = ({ theme, hash, style }) => {
   const handleCopyClick = useCallback(() => {
     Clipboard.setString(hash)
-    showMessage({
-      message: `Copied!`,
-      type: 'success'
-    })
+    Alerter.show(Alert.SUCCESS_COPIED_ADDRESS)
   }, [hash])
 
   return (

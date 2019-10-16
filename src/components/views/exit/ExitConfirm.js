@@ -5,7 +5,7 @@ import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { Formatter } from 'common/utils'
 import { plasmaActions } from 'common/actions'
-import { Notify } from 'common/constants'
+import { ActionAlert } from 'common/constants'
 import { OMGText, OMGIcon, OMGButton, OMGExitWarning } from 'components/widgets'
 
 const exitFee = {
@@ -20,8 +20,7 @@ const exitFee = {
 const ExitConfirm = ({
   theme,
   navigation,
-  primaryWallet,
-  provider,
+  blockchainWallet,
   loading,
   pendingTxs,
   dispatchExit
@@ -31,15 +30,15 @@ const ExitConfirm = ({
   const [loadingVisible, setLoadingVisible] = useState(false)
 
   const exit = () => {
-    dispatchExit(primaryWallet, provider, token, exitFee)
+    dispatchExit(blockchainWallet, token, exitFee)
   }
 
   useEffect(() => {
-    if (loading.show && Notify.exit.actions.indexOf(loading.action) > -1) {
+    if (loading.show && ActionAlert.exit.actions.indexOf(loading.action) > -1) {
       setLoadingVisible(true)
     } else if (
       !loading.show &&
-      Notify.exit.actions.indexOf(loading.action) > -1
+      ActionAlert.exit.actions.indexOf(loading.action) > -1
     ) {
       setLoadingVisible(false)
     } else {
@@ -48,7 +47,10 @@ const ExitConfirm = ({
   }, [loading.action, loading.show, loadingVisible])
 
   useEffect(() => {
-    if (loading.success && Notify.exit.actions.indexOf(loading.action) > -1) {
+    if (
+      loading.success &&
+      ActionAlert.exit.actions.indexOf(loading.action) > -1
+    ) {
       navigation.navigate('ExitPending', {
         token,
         pendingTx: pendingTxs.slice(-1).pop()
@@ -175,17 +177,15 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  primaryWallet: state.wallets.find(
-    w => w.address === state.setting.primaryWalletAddress
-  ),
+  blockchainWallet: state.setting.blockchainWallet,
   pendingTxs: state.transaction.pendingTxs,
   loading: state.loading,
   provider: state.setting.provider
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchExit: (wallet, provider, token, fee) =>
-    dispatch(plasmaActions.exit(wallet, provider, token, exitFee))
+  dispatchExit: (blockchainWallet, token, fee) =>
+    dispatch(plasmaActions.exit(blockchainWallet, token, exitFee))
 })
 
 export default connect(

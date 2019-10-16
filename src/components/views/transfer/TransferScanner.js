@@ -9,6 +9,10 @@ import { View, StyleSheet, Animated } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { OMGText, OMGIcon, OMGQRScanner, OMGButton } from 'components/widgets'
+import {
+  ROOTCHAIN_OVERLAY_COLOR,
+  CHILDCHAIN_OVERLAY_COLOR
+} from 'components/widgets/omg-qr-scanner'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Animator } from 'common/anims'
 
@@ -71,8 +75,8 @@ const TransferScanner = ({ theme, navigation }) => {
     }
   }, [navigation, theme.colors.white])
 
-  const pendingChildchainComponent = (
-    <View style={styles.unableView}>
+  const pendingTxComponent = (
+    <Animated.View style={styles.unableView(overlayColorAnim)}>
       <OMGIcon
         style={styles.unableIcon(theme)}
         name='pending'
@@ -82,7 +86,7 @@ const TransferScanner = ({ theme, navigation }) => {
       <OMGText style={styles.unableText(theme)}>
         Unable to Transfer,{'\n'}There's a pending transaction
       </OMGText>
-    </View>
+    </Animated.View>
   )
 
   const TopMarker = ({ textAboveLine, textBelowLine, onPressSwitch }) => {
@@ -107,10 +111,9 @@ const TransferScanner = ({ theme, navigation }) => {
       showMarker={true}
       onReceiveQR={e => setAddress(e.data)}
       cameraRef={camera}
-      renderPendingChildchain={pendingChildchainComponent}
+      renderPendingTx={pendingTxComponent}
       cameraStyle={styles.cameraContainer}
       overlayColorAnim={overlayColorAnim}
-      isRootchain={isRootchain}
       notAuthorizedView={
         <OMGText style={styles.notAuthorizedView}>
           Enable the camera permission to scan a QR code.
@@ -195,12 +198,15 @@ const styles = StyleSheet.create({
   notAuthorizedView: {
     textAlign: 'center'
   },
-  unableView: {
+  unableView: overlayColorAnim => ({
     flexDirection: 'column',
-    backgroundColor: 'rgba(33, 118, 255, 0.50)',
+    backgroundColor: overlayColorAnim.current.interpolate({
+      inputRange: [0, 1],
+      outputRange: [ROOTCHAIN_OVERLAY_COLOR, CHILDCHAIN_OVERLAY_COLOR]
+    }),
     alignItems: 'center',
     justifyContent: 'center'
-  },
+  }),
   unableText: theme => ({
     color: theme.colors.gray2,
     marginTop: 24,

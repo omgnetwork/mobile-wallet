@@ -19,7 +19,7 @@ const OMGMenuImage = ({ title, description, style, theme, onPress }) => {
         <OMGText style={styles.title(theme)} weight='bold'>
           {title}
         </OMGText>
-        <OMGText style={styles.description(theme)}>{description}</OMGText>
+        <OMGText style={styles.description(theme)}>{description || ''}</OMGText>
       </View>
       <OMGIcon name='chevron-right' size={24} />
     </TouchableOpacity>

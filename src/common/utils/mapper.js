@@ -1,8 +1,46 @@
 import { ContractAddress } from 'common/constants'
 import { Transaction, Token } from 'common/utils'
 
-export const mapChildchainTx = (tx, tokens) => {
-  return mapChildchainToken(tx, tokens)
+export const mapChildchainTx = (tx, tokens, address) => {
+  const sentToken = mapChildchainOutput(tx.results)
+  const contractAddress = sentToken.currency
+  const token = Token.find(contractAddress, tokens)
+  return {
+    hash: tx.txhash,
+    network: 'omisego',
+    confirmations: null,
+    type: mapInput(tx, address),
+    from: tx.from,
+    to: tx.to,
+    gas: '0',
+    gasPrice: '0',
+    contractAddress,
+    tokenName: token.tokenName,
+    tokenSymbol: token.tokenSymbol,
+    tokenDecimal: token.tokenDecimal,
+    value:
+      typeof sentToken.value === 'string'
+        ? sentToken.value
+        : sentToken.value.toFixed(),
+    timestamp: tx.block.timestamp
+  }
+}
+
+export const mapChildchainTxDetail = (oldTx, newTx) => {
+  const fromAddress = newTx.inputs[0].owner
+  const targetUtxo =
+    newTx.outputs.find(utxo => utxo.owner !== fromAddress) || newTx.outputs[0]
+  const toAddress = targetUtxo.owner
+  return {
+    ...oldTx,
+    contractAddress: targetUtxo.currency,
+    from: fromAddress,
+    to: toAddress,
+    value:
+      typeof targetUtxo.amount === 'string'
+        ? targetUtxo.amount
+        : targetUtxo.amount.toFixed()
+  }
 }
 
 export const mapRootchainTx = (tx, address, cachedErc20Tx) => {
@@ -57,31 +95,6 @@ const mapRootchainErc20Tx = (tx, address) => {
   }
 }
 
-const mapChildchainToken = (tx, tokens) => {
-  const sentToken = mapChildchainOutput(tx.results)
-  const contractAddress = sentToken.currency
-  const token = Token.find(contractAddress, tokens)
-  return {
-    hash: tx.txhash,
-    network: 'omisego',
-    confirmations: null,
-    type: 'out',
-    from: null,
-    to: null,
-    gas: '0',
-    gasPrice: '0',
-    contractAddress,
-    tokenName: token.tokenName,
-    tokenSymbol: token.tokenSymbol,
-    tokenDecimal: token.tokenDecimal,
-    value:
-      typeof sentToken.value === 'string'
-        ? sentToken.value
-        : sentToken.value.toFixed(),
-    timestamp: tx.block.timestamp
-  }
-}
-
 const mapChildchainOutput = results => {
   const erc20Token = results
     .reverse()
@@ -97,6 +110,8 @@ const mapInput = (tx, address) => {
   const methodName = Transaction.decodePlasmaInputMethod(tx.input)
 
   if (tx.isError === '1') return 'failed'
+  if (!tx.from) return 'unidentified'
+  if (!tx.to) return 'unidentified'
   switch (methodName) {
     case 'depositFrom':
     case 'deposit':

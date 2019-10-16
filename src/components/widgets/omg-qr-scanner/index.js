@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-import { ContractAddress } from 'common/constants'
 import QRCodeScanner from 'react-native-qrcode-scanner'
 import { View, StyleSheet, Dimensions, Animated } from 'react-native'
 import Svg, { Rect, Path } from 'react-native-svg'
 import OMGText from '../omg-text'
 
 const SCREEN_WIDTH = Dimensions.get('window').width
-const ROOTCHAIN_OVERLAY_COLOR = 'rgba(125, 85, 246, 0.50)'
-const CHILDCHAIN_OVERLAY_COLOR = 'rgba(33, 118, 255, 0.50)'
+export const ROOTCHAIN_OVERLAY_COLOR = 'rgba(125, 85, 246, 0.50)'
+export const CHILDCHAIN_OVERLAY_COLOR = 'rgba(33, 118, 255, 0.50)'
 
 const OMGQRScanner = props => {
   const {
@@ -19,21 +18,17 @@ const OMGQRScanner = props => {
     borderStrokeWidth,
     overlayColorAnim,
     cameraRef,
-    isRootchain,
-    renderPendingChildchain,
-    pendingChildchain
+    renderPendingTx,
+    pendingTx
   } = props
 
-  const shouldRenderQRMarker = isRootchain || !pendingChildchain
   const renderQRMarker = (
     <QRMarker borderColor={borderColor} borderStrokeWidth={borderStrokeWidth} />
   )
-  const renderContent = shouldRenderQRMarker
-    ? renderQRMarker
-    : renderPendingChildchain
+  const renderContent = pendingTx ? renderPendingTx : renderQRMarker
 
   const handleOnRead = e => {
-    if (shouldRenderQRMarker) {
+    if (!pendingTx) {
       props.onReceiveQR(e)
     }
   }
@@ -63,7 +58,7 @@ const OMGQRScanner = props => {
               <Animated.View style={styles.sideOverlay(overlayColorAnim)} />
             </View>
             <Animated.View style={styles.bottomContainer(overlayColorAnim)}>
-              {shouldRenderQRMarker && renderBottom}
+              {!pendingTx && renderBottom}
             </Animated.View>
           </View>
         }
@@ -158,10 +153,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  pendingChildchain:
-    state.transaction.pendingTxs.find(
-      tx => tx.type === 'CHILDCHAIN_SEND_TOKEN'
-    ) !== undefined
+  pendingTx: state.transaction.pendingTxs.length > 0
 })
 
 export default connect(

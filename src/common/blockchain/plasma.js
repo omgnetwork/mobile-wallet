@@ -1,6 +1,6 @@
 import { Plasma } from 'common/clients'
 import { ABI, Transaction } from 'common/utils'
-import { Buffer } from 'buffer'
+import { ContractAddress } from 'common/constants'
 
 export const getBalances = address => {
   return Plasma.childchain.getBalance(address)
@@ -118,6 +118,8 @@ export const standardExit = async (exitData, blockchainWallet, options) => {
 
 export const unlockTokenExitable = async (tokenContractAddress, options) => {
   try {
+    if (tokenContractAddress === ContractAddress.ETH_ADDRESS)
+      return Promise.resolve(true)
     const receipt = await Plasma.rootchain.addToken(
       tokenContractAddress,
       options
@@ -128,8 +130,8 @@ export const unlockTokenExitable = async (tokenContractAddress, options) => {
   }
 }
 
-export const processExits = (contractAddress, options) => {
-  return Plasma.rootchain.processExits(contractAddress, 0, 10, options)
+export const processExits = (contractAddress, exitId, options) => {
+  return Plasma.rootchain.processExits(contractAddress, exitId || 0, 1, options)
 }
 
 // Transaction management
@@ -177,4 +179,8 @@ export const getTxs = (address, options) => {
     limit: limit || 10,
     page: 1
   })
+}
+
+export const getTx = transactionHash => {
+  return Plasma.childchain.getTransaction(transactionHash)
 }
