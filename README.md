@@ -6,7 +6,8 @@ A Plasma educational app that allows you to manage your fund on the Ethereum net
 
 1. `npm install`
 2. `cd ios && pod install`
-3. Create `.env` file and fill the missing data into the following template:
+3. `cd android/app && keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000`
+4. Create `.env` file and fill the missing data into the following template:
 
 ```
 CHILDCHAIN_DEPOSIT_CONFIRMATION_BLOCKS=12
