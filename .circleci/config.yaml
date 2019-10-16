@@ -61,6 +61,9 @@ workflows:
   deploy-internal:
     jobs:
       - instrumentation-tests
+    branches:
+      only:
+        - /release.*
       - hold:
           type: approval
           requires:
