@@ -9,7 +9,7 @@
 
 # Add any project specific keep options here:
 
--keep class co.omisego.plasmawallet.BuildConfig { *; }
+-keep class network.omisego.plasmawallet.BuildConfig { *; }
 # React Native
 
 # Keep our interfaces so they can be used by other ProGuard rules.
