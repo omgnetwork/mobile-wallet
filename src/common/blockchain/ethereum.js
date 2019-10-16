@@ -4,7 +4,6 @@ import { Parser, ABI } from 'common/utils'
 import axios from 'axios'
 import Config from 'react-native-config'
 
-// Wallet Management
 export const importWalletMnemonic = mnemonic => {
   return ethers.Wallet.fromMnemonic(mnemonic)
 }
@@ -17,7 +16,6 @@ export const importWalletPrivateKey = privateKey => {
   return new ethers.Wallet(privateKey)
 }
 
-// Balance
 export const getEthBalance = address => {
   return axios.get(Config.ETHERSCAN_API_URL, {
     params: {
@@ -77,7 +75,6 @@ export const getTxs = (address, options) => {
   })
 }
 
-// Send tokens
 export const sendEthToken = (wallet, options) => {
   const { fee, token, toAddress } = options
   return wallet.sendTransaction({

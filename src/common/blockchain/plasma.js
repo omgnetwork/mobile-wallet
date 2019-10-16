@@ -1,6 +1,5 @@
 import { Plasma } from 'common/clients'
 import { ABI, Transaction } from 'common/utils'
-import { isObject } from 'util'
 import { ContractAddress } from 'common/constants'
 
 export const getBalances = address => {
