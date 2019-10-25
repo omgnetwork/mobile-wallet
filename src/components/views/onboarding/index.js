@@ -5,12 +5,37 @@ import { withTheme } from 'react-native-paper'
 import { Image, StyleSheet, View } from 'react-native'
 
 import Card from './Card'
+import Scroll from './Scroll'
+import ScrollElement from './ScrollElement'
+
+const scrollElements = [
+  {
+    large: 'Welcome to the Plasma Mobile Wallet',
+    small: 'Your official gateway to the OmiseGo network'
+  },
+  {
+    large: 'The OmiseGo network is Plasma',
+    small:
+      'It solves issues of affordability, speed and security for blockchain transactions.'
+  },
+  {
+    large:
+      "This is a tool to help you transact on the OmisegGo's Plasma network",
+    small:
+      'Set up and manage your wallets, monitor your activity, move ETH and beyond'
+  }
+].map((element, index) => {
+  return <ScrollElement element={element} key={index} />
+})
 
 const Onboarding = ({ navigation, theme }) => {
   return (
     <View style={styles.container(theme)}>
       <Image style={styles.logo} source={require('./omisego-logo.png')} />
 
+      <View style={styles.scroll}>
+        <Scroll elements={scrollElements} />
+      </View>
       <View>
         <Card
           color={theme.colors.black3}
