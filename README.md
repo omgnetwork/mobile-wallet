@@ -33,7 +33,9 @@ EXIT_PERIOD=<EXIT_PERIOD>
 1. `npm run start`
 2. `npm run ios` to run on iOS on the simulator or `npm run android` to run on the Android real device.
 
-## Release Android
+## Release
+
+### Android
 
 1. Get the credential files at [OmiseGO Drive](https://drive.google.com/drive/folders/1MMak_4mg5IZ-mv2zBOEok9FCYlMPqf2v?usp=sharing)
 2. Paste `release.jks` at `android/app/release.jks`
