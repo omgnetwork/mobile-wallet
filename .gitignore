@@ -60,3 +60,10 @@ buck-out/
 
 # ENV
 .env
+
+# Google Services
+google-services.json
+
+# Credentials
+keystore.properties
+release.keystore

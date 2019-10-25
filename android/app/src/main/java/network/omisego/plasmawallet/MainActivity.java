@@ -1,4 +1,4 @@
-package co.omisego.plasmawallet;
+package network.omisego.plasmawallet;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
