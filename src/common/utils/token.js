@@ -1,20 +1,14 @@
-import { ContractAddress } from 'common/constants'
 import { Ethereum } from 'common/blockchain'
 
 export const fetchTokens = (provider, contractAddresses) => {
   return new Promise(async (resolve, reject) => {
     const pendingTokenDetails = contractAddresses.map(contractAddress => {
-      if (contractAddress === ContractAddress.ETH_ADDRESS) {
-        return Promise.all([
-          Promise.resolve('Ether'),
-          Promise.resolve('ETH'),
-          Promise.resolve(18),
-          Promise.resolve(contractAddress)
-        ])
-      } else {
-        const tokenDetails = Ethereum.getERC20Details(provider, contractAddress)
-        return Promise.all([...tokenDetails, Promise.resolve(contractAddress)])
-      }
+      return new Promise(async (resolveToken, rejectToken) => {
+        const detail = await Promise.all(
+          Ethereum.getTokenDetail(provider, contractAddress)
+        )
+        resolveToken(detail)
+      })
     })
 
     const resolvedTokenDetails = await Promise.all(pendingTokenDetails)
