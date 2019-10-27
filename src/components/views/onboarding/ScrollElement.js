@@ -1,8 +1,10 @@
 import React from 'react'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { StyleSheet, View } from 'react-native'
+import { Dimensions, StyleSheet, View } from 'react-native'
 import { OMGText } from '../../widgets'
+
+const deviceWidth = Dimensions.get('window').width
 
 const ScrollElement = ({ theme, element }) => {
   return (
@@ -19,18 +21,22 @@ const ScrollElement = ({ theme, element }) => {
 
 const styles = StyleSheet.create({
   container: {
+    width: deviceWidth,
     justifyContent: 'center',
-    height: 100
+    height: 300
   },
   text: theme => ({
     color: theme.colors.white,
-    marginLeft: 20
+    paddingLeft: 10,
+    paddingRight: 10,
+    textAlign: 'center'
   }),
   subheader: {
-    fontSize: 12
+    fontSize: 20,
+    marginTop: 20
   },
   header: {
-    fontSize: 20
+    fontSize: 30
   }
 })
 

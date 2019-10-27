@@ -1,16 +1,40 @@
 import React from 'react'
 import { withNavigation, ScrollView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { Animated, StyleSheet, View } from 'react-native'
+import { Animated, Dimensions, StyleSheet, View } from 'react-native'
+
+const width = Dimensions.get('window').width
 
 const Scroll = ({ theme, elements }) => {
+  const scrollX = new Animated.Value(0)
+  const position = Animated.divide(scrollX, width)
+
   return (
     <View style={styles.container}>
       <View>
-        <ScrollView horizontal={true}>{elements}</ScrollView>
+        <ScrollView
+          style
+          horizontal={true}
+          pagingEnabled={true}
+          onScroll={Animated.event([
+            { nativeEvent: { contentOffset: { x: scrollX } } }
+          ])}
+          scrollEventThrottle={8}>
+          {elements}
+        </ScrollView>
         <View style={styles.scrollDots}>
           {elements.map((_, index) => {
-            return <Animated.View key={index} style={styles.dot(theme)} />
+            let opacity = position.interpolate({
+              inputRange: [index - 1, index, index + 1],
+              outputRange: [0.3, 1, 0.3],
+              extrapolate: 'clamp'
+            })
+            return (
+              <Animated.View
+                key={index}
+                style={[styles.dot(theme), { opacity }]}
+              />
+            )
           })}
         </View>
       </View>

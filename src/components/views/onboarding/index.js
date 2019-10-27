@@ -11,18 +11,17 @@ import ScrollElement from './ScrollElement'
 const scrollElements = [
   {
     large: 'Welcome to the Plasma Mobile Wallet',
-    small: 'Your official gateway to the OmiseGo network'
+    small: 'Your official gateway to the OmiseGo network.'
   },
   {
-    large: 'The OmiseGo network is Plasma',
+    large: 'The OmiseGo network turbocharges Ethereum',
     small:
       'It solves issues of affordability, speed and security for blockchain transactions.'
   },
   {
-    large:
-      "This is a tool to help you transact on the OmisegGo's Plasma network",
+    large: 'Get started on the OmiseGo network',
     small:
-      'Set up and manage your wallets, monitor your activity, move ETH and beyond'
+      'Manage your wallets, monitor your activity, transfer digital assets and more.'
   }
 ].map((element, index) => {
   return <ScrollElement element={element} key={index} />
