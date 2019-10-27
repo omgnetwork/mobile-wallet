@@ -69,3 +69,4 @@ google-services.json
 # Credentials
 keystore.properties
 release.keystore
+GoogleService-Info.plist
