@@ -1,12 +1,12 @@
 import React from 'react'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { OMGIcon, OMGText } from '../../widgets'
 
-const Card = ({ navigation, theme, color, header, description }) => {
+const Card = ({ theme, color, header, description, onPress }) => {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <View>
         <View style={{ ...styles.container, backgroundColor: color }}>
           <View>

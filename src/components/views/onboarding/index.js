@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withNavigation } from 'react-navigation'
+import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Image, StyleSheet, View } from 'react-native'
 
@@ -40,11 +40,13 @@ const Onboarding = ({ navigation, theme }) => {
           color={theme.colors.black3}
           header='Create New Wallet'
           description='With a new Ethereum address'
+          onPress={() => navigation.navigate('CreateWallet')}
         />
         <Card
           color={theme.colors.blue6}
           header='Sync Your Wallet'
           description='With your existing Ethereum address'
+          onPress={() => navigation.navigate('ImportWallet')}
         />
       </View>
     </View>
