@@ -41,4 +41,5 @@ EXIT_PERIOD=<EXIT_PERIOD>
 2. Paste `release.jks` at `android/app/release.jks`
 3. Paste `keystore.properties` at `android/keystore.properties`
 4. Paste `google-services.json` at `android/app/google-servies.json`
-5. Generate the release apk. `cd android && ./gradlew assembleRelease`
+5. Paste `GoogleService-Info.plist` at `ios/PlasmaWallet/wallet/GoogleService-Info.plist`
+6. Generate the release apk. `cd android && ./gradlew assembleRelease`
