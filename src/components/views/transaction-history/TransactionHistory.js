@@ -39,11 +39,11 @@ const TransactionHistory = ({
       limit: 100
     }
 
-    if (!fetching && !fetched) {
+    if (wallet && wallet.address && !fetching && !fetched) {
       dispatchFetchTxHistory(wallet.address, provider, options)
       setFetching(true)
     }
-  }, [fetching, dispatchFetchTxHistory, wallet.address, provider, fetched])
+  }, [fetching, dispatchFetchTxHistory, wallet, provider, fetched])
 
   useEffect(() => {
     if (wallet && isFocused) {
