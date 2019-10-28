@@ -25,6 +25,7 @@
 		C40F64AC230B9049007295E7 /* CircularStd-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 11B6B1BCA8A84A2DA3713B73 /* CircularStd-Book.otf */; };
 		C40F64AD230B9049007295E7 /* CircularStd-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D44BD1D7BCF3437781E6B52B /* CircularStd-Medium.otf */; };
 		C40F64AE230B9049007295E7 /* CircularStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 61288EB4BCED46B4AF9067AD /* CircularStd-Bold.otf */; };
+		C49E761123660727003B0D52 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */; };
 		C4AD05DB230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		C4AD05DC230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		C4AD05DD230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
@@ -88,6 +89,7 @@
 		BA5935DB2731D5C9AF8B6E7E /* Pods-PlasmaWallet-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlasmaWallet-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-PlasmaWallet-tvOS/Pods-PlasmaWallet-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		BC1DD938E1134B61908858B9 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		C11DBCE866F4431D9E86B747 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "PlasmaWallet/wallet/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C749D77E6D0F40D49422BC2E /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		D36851ED9F9C44CAA40E6779 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		D44BD1D7BCF3437781E6B52B /* CircularStd-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CircularStd-Medium.otf"; path = "../assets/fonts/CircularStd-Medium.otf"; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 		EB82659AE323480EB579CFDE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */,
 				4C5F7F477A74483B9CB8F24E /* AntDesign.ttf */,
 				6C4C0659C1234215AEED6DC6 /* Entypo.ttf */,
 				8700D8101AC24ABA8FB74AEE /* EvilIcons.ttf */,
@@ -298,6 +301,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				4B9D029C380F40A17FCB0B02 /* [CP] Copy Pods Resources */,
+				C49E760E2364A30C003B0D52 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -418,6 +422,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C40F64AB230B9049007295E7 /* CircularStd-Black.otf in Resources */,
+				C49E761123660727003B0D52 /* GoogleService-Info.plist in Resources */,
 				C40F64AC230B9049007295E7 /* CircularStd-Book.otf in Resources */,
 				C40F64AD230B9049007295E7 /* CircularStd-Medium.otf in Resources */,
 				C40F64AE230B9049007295E7 /* CircularStd-Bold.otf in Resources */,
@@ -593,6 +598,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C49E760E2364A30C003B0D52 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/Fabric/run\"\n";
+		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -744,7 +767,10 @@
 				CURRENT_PROJECT_VERSION = 12;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = KWTQ7XD7P6;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**",
+					"$(SRCROOT)/**",
+				);
 				INFOPLIST_FILE = PlasmaWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 0.0.1;
@@ -767,7 +793,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = KWTQ7XD7P6;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**",
+					"$(SRCROOT)/**",
+				);
 				INFOPLIST_FILE = PlasmaWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 0.0.1;

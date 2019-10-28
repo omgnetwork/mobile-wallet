@@ -43,7 +43,7 @@ const OMGTransactionList = ({
         }
         ListEmptyComponent={
           <OMGEmpty
-            loading={loading.show && loading.action === 'TRANSACTION_ALL'}
+            loading={loading}
             text='Empty Transactions'
             style={styles.empty}
           />

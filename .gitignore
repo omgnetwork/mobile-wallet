@@ -29,6 +29,8 @@ build/
 .gradle
 local.properties
 *.iml
+*.apk
+output.json
 
 # node.js
 #
@@ -67,3 +69,4 @@ google-services.json
 # Credentials
 keystore.properties
 release.keystore
+GoogleService-Info.plist

@@ -40,4 +40,6 @@ EXIT_PERIOD=<EXIT_PERIOD>
 1. Get the credential files at [OmiseGO Drive](https://drive.google.com/drive/folders/1MMak_4mg5IZ-mv2zBOEok9FCYlMPqf2v?usp=sharing)
 2. Paste `release.jks` at `android/app/release.jks`
 3. Paste `keystore.properties` at `android/keystore.properties`
-4. Generate the release apk. `cd android && ./gradlew bundleRelease`
+4. Paste `google-services.json` at `android/app/google-servies.json`
+5. Paste `GoogleService-Info.plist` at `ios/PlasmaWallet/wallet/GoogleService-Info.plist`
+6. Generate the release apk. `cd android && ./gradlew assembleRelease`
