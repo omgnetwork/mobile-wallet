@@ -13,6 +13,8 @@
 #import <RNCPushNotificationIOS.h>
 #import <UserNotifications/UserNotifications.h>
 #import "RNSplashScreen.h"
+@import UIKit;
+@import Firebase;
 
 @implementation AppDelegate
 
@@ -34,6 +36,7 @@
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   center.delegate = self;
   [RNSplashScreen show];
+  [FIRApp configure];
   return YES;
 }
 

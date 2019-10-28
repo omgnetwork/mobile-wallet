@@ -25,7 +25,7 @@
 		C40F64AC230B9049007295E7 /* CircularStd-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 11B6B1BCA8A84A2DA3713B73 /* CircularStd-Book.otf */; };
 		C40F64AD230B9049007295E7 /* CircularStd-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D44BD1D7BCF3437781E6B52B /* CircularStd-Medium.otf */; };
 		C40F64AE230B9049007295E7 /* CircularStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 61288EB4BCED46B4AF9067AD /* CircularStd-Bold.otf */; };
-		C49E76102365ACDB003B0D52 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */; };
+		C49E761123660727003B0D52 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */; };
 		C4AD05DB230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		C4AD05DC230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		C4AD05DD230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
@@ -422,7 +422,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C40F64AB230B9049007295E7 /* CircularStd-Black.otf in Resources */,
-				C49E76102365ACDB003B0D52 /* GoogleService-Info.plist in Resources */,
+				C49E761123660727003B0D52 /* GoogleService-Info.plist in Resources */,
 				C40F64AC230B9049007295E7 /* CircularStd-Book.otf in Resources */,
 				C40F64AD230B9049007295E7 /* CircularStd-Medium.otf in Resources */,
 				C40F64AE230B9049007295E7 /* CircularStd-Bold.otf in Resources */,
