@@ -2,6 +2,10 @@
 
 A Plasma educational app that allows you to manage your fund on the Ethereum network and OmiseGO network.
 
+## Before Installation
+
+Download all files at [OmiseGO Drive](https://drive.google.com/drive/folders/1MMak_4mg5IZ-mv2zBOEok9FCYlMPqf2v?usp=sharing)
+
 ## Installation
 
 1. `npm install`
@@ -28,6 +32,12 @@ BLOCK_EXPLORER_URL=<BLOCK_EXPLORER_URL>
 EXIT_PERIOD=<EXIT_PERIOD>
 ```
 
+5. From downloaded files,
+   - Copy `release.jks`, then paste at `android/app/release.jks`
+   - Copy `keystore.properties`, then paste at `android/keystore.properties`
+   - Copy `google-services.json`, then paste at `android/app/google-servies.json`
+   - Copy `GoogleService-Info.plist`, then paste at `ios/PlasmaWallet/wallet/GoogleService-Info.plist`
+
 ## Running
 
 1. `npm run start`
@@ -37,9 +47,8 @@ EXIT_PERIOD=<EXIT_PERIOD>
 
 ### Android
 
-1. Get the credential files at [OmiseGO Drive](https://drive.google.com/drive/folders/1MMak_4mg5IZ-mv2zBOEok9FCYlMPqf2v?usp=sharing)
-2. Paste `release.jks` at `android/app/release.jks`
-3. Paste `keystore.properties` at `android/keystore.properties`
-4. Paste `google-services.json` at `android/app/google-servies.json`
-5. Paste `GoogleService-Info.plist` at `ios/PlasmaWallet/wallet/GoogleService-Info.plist`
-6. Generate the release apk. `cd android && ./gradlew assembleRelease`
+Generate the release apk by running `cd android && ./gradlew assembleRelease`
+
+### iOS
+
+`TODO`
