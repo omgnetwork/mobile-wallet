@@ -37,6 +37,7 @@ import {
 } from './transfer'
 import Wallets from './wallets'
 import WarpPortal from './warp-portal'
+import Onboarding from './onboarding'
 
 export {
   Backup,
@@ -59,6 +60,7 @@ export {
   ImportWalletSuccess,
   Initializer,
   ManageWallet,
+  Onboarding,
   Preview,
   Setting,
   Transfer,
