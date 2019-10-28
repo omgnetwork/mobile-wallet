@@ -1,11 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withNavigation, SafeAreaView } from 'react-navigation'
+import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Image, StyleSheet, View } from 'react-native'
 
 import Card from './Card'
-import Scroll from './Scroll'
+import Scroll from '../../widgets/omg-scroll'
 import ScrollElement from './ScrollElement'
 
 const scrollElements = [
@@ -30,7 +30,10 @@ const scrollElements = [
 const Onboarding = ({ navigation, theme }) => {
   return (
     <View style={styles.container(theme)}>
-      <Image style={styles.logo} source={require('./omisego-logo.png')} />
+      <Image
+        style={styles.logo}
+        source={require('../../../../assets/omisego-logo.png')}
+      />
 
       <View style={styles.scroll}>
         <Scroll elements={scrollElements} />
