@@ -13,15 +13,14 @@ const Scroll = ({ theme, elements }) => {
     <View style={styles.container}>
       <View>
         <ScrollView
-          style
+          children={elements}
           horizontal={true}
           pagingEnabled={true}
           onScroll={Animated.event([
             { nativeEvent: { contentOffset: { x: scrollX } } }
           ])}
-          scrollEventThrottle={8}>
-          {elements}
-        </ScrollView>
+          scrollEventThrottle={8}
+        />
         <View style={styles.scrollDots}>
           {elements.map((_, index) => {
             let opacity = position.interpolate({
