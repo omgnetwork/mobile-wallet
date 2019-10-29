@@ -67,6 +67,12 @@ const WarpPortal = ({ navigation }) => {
           onPress={() => navigation.navigate('Onboarding')}>
           Onboarding
         </Button>
+        <Button
+          mode='outlined'
+          style={styles.button}
+          onPress={() => navigation.navigate('Modal')}>
+          Modal
+        </Button>
       </OMGBackground>
     </ScrollView>
   )

@@ -1,5 +1,6 @@
 import React from 'react'
 import * as Views from 'components/views'
+import * as Widgets from 'components/widgets'
 import { SafeAreaView } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation'
 import { OMGStatusBar, OMGIcon } from 'components/widgets'
@@ -90,6 +91,10 @@ const WarpPortalNavigator = createStackNavigator(
     Onboarding: {
       screen: Views.Onboarding,
       navigationOptions: () => ({ title: 'Onboarding' })
+    },
+    Modal: {
+      screen: Widgets.OMGModal,
+      navigationOptions: () => ({ title: 'Modal' })
     },
 
     WarpPortal: {

@@ -17,6 +17,7 @@ import OMGMenu from './omg-menu'
 import OMGMenuIcon from './omg-menu-icon'
 import OMGMenuImage from './omg-menu-image'
 import OMGMnemonicConfirmBox from './omg-mnemonic-confirm-box'
+import OMGModal from './omg-modal'
 import OMGIcon from './omg-icon'
 import OMGImage from './omg-image'
 import OMGItemWallet from './omg-item-wallet'
@@ -38,7 +39,6 @@ import OMGItemTransaction from './omg-item-transaction'
 import OMGWalletAddress from './omg-wallet-address'
 import OMGTransactionFilter from './omg-transaction-filter'
 import OMGTransactionList from './omg-transaction-list'
-
 export {
   OMGAddressInput,
   OMGAmountInput,
@@ -63,6 +63,7 @@ export {
   OMGMenuIcon,
   OMGMenuImage,
   OMGMnemonicConfirmBox,
+  OMGModal,
   OMGQRCode,
   OMGQRScanner,
   OMGPasswordTextInput,
