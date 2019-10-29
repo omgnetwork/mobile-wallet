@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { settingActions } from 'common/actions'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Image, StyleSheet, View } from 'react-native'
@@ -27,7 +28,15 @@ const scrollElements = [
   return <ScrollElement element={element} key={index} />
 })
 
-const Onboarding = ({ navigation, theme }) => {
+const Onboarding = ({
+  navigation,
+  theme,
+  dispatchSetSkipOnboarding,
+  skipOnboarding
+}) => {
+  const setSkipOnboarding = () => {
+    dispatchSetSkipOnboarding(true)
+  }
   return (
     <View style={styles.container(theme)}>
       <Image
@@ -36,7 +45,7 @@ const Onboarding = ({ navigation, theme }) => {
       />
 
       <View style={styles.scroll}>
-        <Scroll elements={scrollElements} />
+        <Scroll children={scrollElements} scrollEnd={setSkipOnboarding} />
       </View>
       <View>
         <Card
@@ -83,9 +92,15 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+  skipOnboarding: state.setting.skipOnboarding
+})
+const mapDispatchToProps = dispatch => ({
+  dispatchSetSkipOnboarding: skip =>
+    settingActions.setSkipOnboarding(dispatch, skip)
+})
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withNavigation(withTheme(Onboarding)))

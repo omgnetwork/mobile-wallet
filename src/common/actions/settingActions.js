@@ -44,3 +44,11 @@ export const setPrimaryAddress = (dispatch, address) => {
     type: 'SETTING/SET_PRIMARY_ADDRESS'
   })
 }
+
+export const setSkipOnboarding = (dispatch, skip) => {
+  const action = () => ({ skip: skip })
+  return createAction(dispatch, {
+    operation: action,
+    type: 'SETTING/SET_SKIP_ONBOARDING'
+  })
+}
