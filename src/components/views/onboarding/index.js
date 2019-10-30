@@ -35,7 +35,9 @@ const Onboarding = ({
   skipOnboarding
 }) => {
   const setSkipOnboarding = () => {
-    dispatchSetSkipOnboarding(true)
+    if (!skipOnboarding) {
+      dispatchSetSkipOnboarding(true)
+    }
   }
   return (
     <View style={styles.container(theme)}>
