@@ -25,11 +25,11 @@ const Start = ({
         <OMGButton
           style={styles.buttonLeft(theme)}
           textStyle={styles.buttonText(theme)}
-          children={buttonTextRight}
+          children={buttonTextLeft}
         />
 
         <OMGButton
-          children={'NO THANKS'}
+          children={buttonTextRight}
           style={styles.buttonRight(theme)}
           textStyle={styles.buttonText(theme)}
         />
