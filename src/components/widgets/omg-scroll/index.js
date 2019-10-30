@@ -5,24 +5,29 @@ import { Animated, Dimensions, StyleSheet, View } from 'react-native'
 
 const width = Dimensions.get('window').width
 
-const Scroll = ({ theme, elements }) => {
+const Scroll = ({ theme, children, scrollEnd = () => {} }) => {
   const scrollX = new Animated.Value(0)
   const position = Animated.divide(scrollX, width)
-
+  const handleScroll = event => {
+    Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }])(event)
+    const scrollPosition = Number(event.nativeEvent.contentOffset.x)
+    const end = width * (children.length - 1)
+    if (scrollPosition === end) {
+      scrollEnd()
+    }
+  }
   return (
     <View style={styles.container}>
       <View>
         <ScrollView
-          children={elements}
+          children={children}
           horizontal={true}
           pagingEnabled={true}
-          onScroll={Animated.event([
-            { nativeEvent: { contentOffset: { x: scrollX } } }
-          ])}
+          onScroll={event => handleScroll(event)}
           scrollEventThrottle={8}
         />
         <View style={styles.scrollDots}>
-          {elements.map((_, index) => {
+          {children.map((_, index) => {
             let opacity = position.interpolate({
               inputRange: [index - 1, index, index + 1],
               outputRange: [0.3, 1, 0.3],
