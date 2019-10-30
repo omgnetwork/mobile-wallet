@@ -38,6 +38,7 @@ import {
 import Wallets from './wallets'
 import WarpPortal from './warp-portal'
 import Onboarding from './onboarding'
+import * as Tour from './tour'
 
 export {
   Backup,
@@ -63,6 +64,7 @@ export {
   Onboarding,
   Preview,
   Setting,
+  Tour,
   Transfer,
   TransferConfirm,
   TransferForm,
