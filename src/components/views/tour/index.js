@@ -1,4 +1,5 @@
-import Start from './tourStart'
 import Screen from './Screen'
 import content from './content'
-export { content, Start, Screen }
+import Stages from './stages'
+
+export { content, Screen, Stages }
