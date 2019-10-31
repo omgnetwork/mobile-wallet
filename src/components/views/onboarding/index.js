@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { settingActions } from 'common/actions'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Image, StyleSheet, View } from 'react-native'
@@ -28,16 +27,16 @@ const scrollElements = [
   return <ScrollElement element={element} key={index} />
 })
 
-const Onboarding = ({
-  navigation,
-  theme,
-  dispatchSetSkipOnboarding,
-  skipOnboarding
-}) => {
-  const setSkipOnboarding = () => {
-    if (!skipOnboarding) {
-      dispatchSetSkipOnboarding(true)
-    }
+const Onboarding = ({ navigation, theme, wallets }) => {
+  if (wallets.length !== 0) {
+    navigation.navigate('Initializer')
+  }
+
+  const navigateCreateWallet = () => {
+    navigation.navigate('CreateWallet')
+  }
+  const navigateImportWallet = () => {
+    navigation.navigate('ImportWallet')
   }
   return (
     <View style={styles.container(theme)}>
@@ -47,20 +46,20 @@ const Onboarding = ({
       />
 
       <View style={styles.scroll}>
-        <Scroll children={scrollElements} scrollEnd={setSkipOnboarding} />
+        <Scroll children={scrollElements} />
       </View>
       <View>
         <Card
           color={theme.colors.black3}
           header='Create New Wallet'
           description='With a new Ethereum address'
-          onPress={() => navigation.navigate('CreateWallet')}
+          onPress={navigateCreateWallet}
         />
         <Card
           color={theme.colors.blue6}
           header='Sync Your Wallet'
           description='With your existing Ethereum address'
-          onPress={() => navigation.navigate('ImportWallet')}
+          onPress={navigateImportWallet}
         />
       </View>
     </View>
@@ -95,14 +94,10 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-  skipOnboarding: state.setting.skipOnboarding
-})
-const mapDispatchToProps = dispatch => ({
-  dispatchSetSkipOnboarding: skip =>
-    settingActions.setSkipOnboarding(dispatch, skip)
+  wallets: state.wallets
 })
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(withNavigation(withTheme(Onboarding)))
