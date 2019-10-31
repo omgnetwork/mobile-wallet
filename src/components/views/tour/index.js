@@ -1,4 +1,4 @@
 import Start from './tourStart'
-import Screen from './tourScreen'
+import Screen from './Screen'
 import content from './content'
 export { content, Start, Screen }
