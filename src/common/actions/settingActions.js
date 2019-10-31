@@ -45,10 +45,10 @@ export const setPrimaryAddress = (dispatch, address) => {
   })
 }
 
-export const setSkipOnboarding = (dispatch, skip) => {
+export const setSkipTour = (dispatch, skip) => {
   const action = () => ({ skip: skip })
   return createAction(dispatch, {
     operation: action,
-    type: 'SETTING/SET_SKIP_ONBOARDING'
+    type: 'SETTING/SET_SKIP_TOUR'
   })
 }

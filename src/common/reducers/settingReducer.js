@@ -23,8 +23,8 @@ export const settingReducer = (state = {}, action) => {
         ...state,
         blockchainWallet: action.data.blockchainWallet
       }
-    case 'SETTING/SET_SKIP_ONBOARDING/OK': {
-      return { ...state, skipOnboarding: action.data.skip }
+    case 'SETTING/SET_SKIP_TOUR/OK': {
+      return { ...state, skipTour: action.data.skip }
     }
     default:
       return state
