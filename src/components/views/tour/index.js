@@ -1,3 +1,4 @@
 import Start from './tourStart'
 import Screen from './tourScreen'
-export { Start, Screen }
+import content from './content'
+export { content, Start, Screen }
