@@ -5,7 +5,7 @@ import { withTheme } from 'react-native-paper'
 const OMGModal = ({
   theme,
   type,
-  arrowX = -50,
+  arrowX = 0,
   modalVisible,
   height,
   width,
