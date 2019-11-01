@@ -16,7 +16,11 @@ import SplashScreen from 'react-native-splash-screen'
 YellowBox.ignoreWarnings(['Warning:', 'Setting', '`setBackgroundColor`'])
 const initialState = {
   wallets: [],
-  setting: { provider: null, providerName: Config.ETHERSCAN_NETWORK }
+  setting: {
+    tourStage: 0,
+    provider: null,
+    providerName: Config.ETHERSCAN_NETWORK
+  }
 }
 const { store, persistor } = createStore(initialState)
 
