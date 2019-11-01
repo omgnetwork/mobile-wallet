@@ -45,3 +45,7 @@ To develop a new view component using the `warpNavigator`:
 2. Add new view route(s) for your component
 3. Add button(s) to be an entrance to new route at `src/components/views/warp-portal/index.js`
 4. In `src/router.js`, replace `AppNavigator` with `WarpPortalNavigator`
+
+### **Known Issues**
+
+- An error about auto-linking (e.g. `React Native CLI uses autolinking for native dependencies, but the following modules are linked manually`) when you `npm run ios` or `npm run android` does not cause known build issues. However, unlinking `react-native-background-fetch` as a result does. If you do this by mistake, run `react-native-link react-native-background-fetch` to link it again.
