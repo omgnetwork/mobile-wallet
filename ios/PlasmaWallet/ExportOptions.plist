@@ -6,15 +6,6 @@
 	<true/>
 	<key>destination</key>
 	<string>export</string>
-	<key>manifest</key>
-	<dict>
-		<key>appURL</key>
-		<string>https://google.com</string>
-		<key>displayImageURL</key>
-		<string>https://google.com</string>
-		<key>fullSizeImageURL</key>
-		<string>https://google.com</string>
-	</dict>
 	<key>method</key>
 	<string>ad-hoc</string>
 	<key>signingStyle</key>
