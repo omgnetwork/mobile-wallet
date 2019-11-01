@@ -32,3 +32,16 @@ EXIT_PERIOD=<EXIT_PERIOD>
 
 1. `npm run start`
 2. `npm run ios` to run on iOS on the simulator or `npm run android` to run on the Android real device.
+
+## Developer Notes
+
+### **Developing New Views**
+
+The `warpNavigator` is set up as a view component directory that you can use to develop without being bound to the application flow.
+
+To develop a new view component using the `warpNavigator`:
+
+1. Open the `src/navigator/warp-portal/index.js`
+2. Add new view route(s) for your component
+3. Add button(s) to be an entrance to new route at `src/components/views/warp-portal/index.js`
+4. In `src/router.js`, replace `AppNavigator` with `WarpPortalNavigator`
