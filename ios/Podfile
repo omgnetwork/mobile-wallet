@@ -65,13 +65,3 @@ post_install do |installer|
     end
   end
  end
-
-target 'PlasmaWallet-tvOS' do
-  # Pods for PlasmaWallet-tvOS
-
-  target 'PlasmaWallet-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-end
