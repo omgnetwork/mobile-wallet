@@ -20,8 +20,12 @@ const Start = ({
           style={[styles.text(theme), styles.header]}
           children={header}
         />
-        {paragraphs.map(paragraph => (
-          <OMGText style={styles.text(theme)} children={paragraph} />
+        {paragraphs.map((paragraph, index) => (
+          <OMGText
+            style={styles.text(theme)}
+            children={paragraph}
+            key={index}
+          />
         ))}
       </View>
       <View style={styles.bottom}>
