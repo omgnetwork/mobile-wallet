@@ -44,6 +44,7 @@ const Balance = ({
   ] = useProgressiveFeedback(theme, dispatchInvalidateFeedbackCompleteTx)
 
   const [tourModalVisible, setTourModalVisible] = useState(false)
+  const [currentScrollPage, setCurrentScrollPage] = useState(2)
 
   useEffect(() => {
     function didFocus() {
@@ -113,7 +114,7 @@ const Balance = ({
             </OMGButton>
           </View>
         ) : (
-          <OMGViewPager pageWidth={pageWidth}>
+          <OMGViewPager pageWidth={pageWidth} currentPage={currentScrollPage}>
             <View style={styles.firstPage}>
               <ChildchainBalance primaryWallet={primaryWallet} />
             </View>
@@ -127,6 +128,7 @@ const Balance = ({
               stage={tourStage}
               modalVisible={tourModalVisible}
               setModalVisible={setTourModalVisible}
+              setCurrentScrollPage={setCurrentScrollPage}
             />
           </OMGViewPager>
         )}
