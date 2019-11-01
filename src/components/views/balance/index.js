@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Linking, View, Dimensions, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
@@ -16,6 +16,9 @@ import {
   OMGStatusBar,
   OMGButton
 } from 'components/widgets'
+
+import { Tour } from 'components/views'
+
 import { transactionActions } from 'common/actions'
 
 const pageWidth = Dimensions.get('window').width - 56
@@ -27,7 +30,9 @@ const Balance = ({
   wallets,
   pendingTxs,
   feedbackCompleteTx,
-  dispatchInvalidateFeedbackCompleteTx
+  dispatchInvalidateFeedbackCompleteTx,
+  skipTour,
+  tourStage
 }) => {
   const [
     feedback,
@@ -38,6 +43,8 @@ const Balance = ({
     getLearnMoreLink
   ] = useProgressiveFeedback(theme, dispatchInvalidateFeedbackCompleteTx)
 
+  const [tourModalVisible, setTourModalVisible] = useState(false)
+
   useEffect(() => {
     function didFocus() {
       StatusBar.setBarStyle('light-content')
@@ -46,10 +53,23 @@ const Balance = ({
 
     const didFocusSubscription = navigation.addListener('didFocus', didFocus)
 
+    if (!skipTour) {
+      setTourModalVisible(true)
+    } else {
+      setTourModalVisible(false)
+    }
+
     return () => {
       didFocusSubscription.remove()
     }
-  }, [navigation, primaryWallet, theme.colors.black5])
+  }, [
+    navigation,
+    primaryWallet,
+    skipTour,
+    setTourModalVisible,
+    theme.colors.black5,
+    tourStage
+  ])
 
   const handleLearnMoreClick = useCallback(() => {
     const externalURL = getLearnMoreLink()
@@ -62,7 +82,6 @@ const Balance = ({
   }, [feedbackCompleteTx, pendingTxs, setCompleteFeedbackTx, setPendingTxs])
 
   const drawerNavigation = navigation.dangerouslyGetParent()
-
   return (
     <SafeAreaView style={styles.safeAreaView(theme)}>
       <OMGStatusBar
@@ -104,6 +123,11 @@ const Balance = ({
             <View style={styles.thirdPage}>
               <ShowQR primaryWallet={primaryWallet} />
             </View>
+            <Tour.Stages
+              stage={tourStage}
+              modalVisible={tourModalVisible}
+              setModalVisible={setTourModalVisible}
+            />
           </OMGViewPager>
         )}
       </LinearGradient>
@@ -164,7 +188,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center'
   },
-  bottomSheet: {}
+  modal: {
+    marginTop: 310
+  }
 })
 
 const mapStateToProps = (state, ownProps) => ({
@@ -176,7 +202,9 @@ const mapStateToProps = (state, ownProps) => ({
     w => w.address === state.setting.primaryWalletAddress
   ),
   provider: state.setting.provider,
-  primaryWalletAddress: state.setting.primaryWalletAddress
+  primaryWalletAddress: state.setting.primaryWalletAddress,
+  skipTour: state.setting.skipTour,
+  tourStage: state.setting.tourStage
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
