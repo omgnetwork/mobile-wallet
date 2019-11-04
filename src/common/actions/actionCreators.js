@@ -1,4 +1,4 @@
-import { CrashReporter } from 'reporters'
+import { CrashAnalytics } from 'common/analytics'
 
 export const createAsyncAction = ({
   operation: doAsyncAction,
@@ -17,7 +17,7 @@ export const createAsyncAction = ({
           `%c [ERROR] ${err.message}`,
           'font-weight: bold; color: #ff0000'
         )
-        // CrashReporter.reportError(err)
+        CrashAnalytics.reportError(actionType, err)
         dispatch({ type: `${actionType}/FAILED`, data: err })
       }
       const actionName = actionType.replace('/', '_')
@@ -34,7 +34,7 @@ export const createAction = (
     const result = doAction()
     dispatch({ type: `${actionType}/OK`, data: result })
   } catch (err) {
-    // CrashReporter.reportError(err)
+    CrashAnalytics.reportError(actionType, err)
     console.log(
       `%c [ERROR] ${err.message}`,
       'font-weight: bold; color: #ff0000'
