@@ -24,7 +24,7 @@ jobs:
           command: gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json --project=${GOOGLE_PROJECT_ID}
       - run:
           name: Run the instrumentation tests in Firebase test lab
-          command: bundle exec fastlane instrumentation_tests
+          command: cd ./android && bundle exec fastlane instrumentation_tests
       - save_cache:
           paths:
             - ~/.gradle
@@ -44,13 +44,13 @@ jobs:
           command: echo $GOOGLE_PLAY_KEY > gplay_key.json
       - run:
           name: Init fastlane supply
-          command: bundle exec fastlane supply init
+          command: cd ./android && bundle exec fastlane supply init
       #- run:
           #name: Download CI data
           #command: ./ci/download_ci_data.sh
       - run:
           name: Deploy the app to the internal track
-          command: bundle exec fastlane deploy_internal
+          command: cd ./android && bundle exec fastlane deploy_internal
       - save_cache:
           paths:
             - ~/.gradle
