@@ -38,13 +38,13 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Install fastlane
-          command: bundle install
+          command: cd ./android && bundle install
       - run:
           name: Store the google play key
           command: echo $GOOGLE_PLAY_KEY > gplay_key.json
       - run:
           name: Init fastlane supply
-          command: bundle exec fastlane supply init
+          command: cd ./android && bundle exec fastlane supply init
       #- run:
           #name: Download CI data
           #command: ./ci/download_ci_data.sh
