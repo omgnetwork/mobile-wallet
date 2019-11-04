@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:container/GTM-5VHN7FC.json">
+   </FileRef>
+   <FileRef
       location = "group:PlasmaWallet.xcodeproj">
    </FileRef>
    <FileRef
