@@ -45,9 +45,9 @@ jobs:
       - run:
           name: Init fastlane supply
           command: bundle exec fastlane supply init
-      - run:
-          name: Download CI data
-          command: ./ci/download_ci_data.sh
+      #- run:
+          #name: Download CI data
+          #command: ./ci/download_ci_data.sh
       - run:
           name: Deploy the app to the internal track
           command: bundle exec fastlane deploy_internal
@@ -63,7 +63,7 @@ workflows:
       - instrumentation-tests
     branches:
       only:
-        - /release*
+        - /.*/
       - hold:
           type: approval
           requires:
