@@ -37,7 +37,7 @@ EXIT_PERIOD=<EXIT_PERIOD>
    - Copy `keystore.properties`, then paste at `android/keystore.properties`
    - Copy `google-services.json`, then paste at `android/app/google-servies.json`
    - Copy `GoogleService-Info.plist`, then paste at `ios/PlasmaWallet/wallet/GoogleService-Info.plist`
-   - Copy `GTM-ContainerId.json`, then paste at `ios/container/GTM-ContainerId.json`. Note that `ContainerId` is an id for Google Tag Manager's container with 7-characters long.
+   - Copy `GTM-GTM-5VHN7FC.json`, then paste at `ios/container/GTM-GTM-5VHN7FC.json`.
 
 ## Running
 
