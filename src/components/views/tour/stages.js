@@ -43,9 +43,23 @@ const Stages = ({
     }
   }
 
-  const leftButtonCallback = {
-    0: () => {
-      setSkipTour(true)
+  const leftButtonCallback = () => {
+    setModalVisible(false)
+    const prevStage = stage === 0 ? 0 : stage - 1
+    setTourStageTracker(prevStage)
+    switch (stage) {
+      case 0: {
+        setSkipTour(true)
+        break
+      }
+      case 1: {
+        drawerNavigation.closeDrawer()
+        break
+      }
+      case 2: {
+        setCurrentScrollPage(2)
+        drawerNavigation.openDrawer()
+      }
     }
   }
 
@@ -60,7 +74,7 @@ const Stages = ({
         <Tour.Screen
           rightButtonText={content.buttonTextRight}
           leftButtonText={content.buttonTextLeft}
-          leftButtonCallback={leftButtonCallback[0]}
+          leftButtonCallback={leftButtonCallback}
           rightButtonCallback={rightButtonCallback}
           header={content.header}
           paragraphs={content.paragraphs}
