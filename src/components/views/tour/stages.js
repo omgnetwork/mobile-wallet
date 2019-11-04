@@ -49,97 +49,25 @@ const Stages = ({
     }
   }
 
-  switch (stage) {
-    case 0: {
-      return (
-        <OMGModal
-          modalVisible={modalVisible}
-          height={380}
-          width={pageWidth}
-          style={styles[0]}
-          content={
-            <Tour.Screen
-              rightButtonText={content.buttonTextRight}
-              leftButtonText={content.buttonTextLeft}
-              leftButtonCallback={leftButtonCallback[0]}
-              rightButtonCallback={rightButtonCallback}
-              header={content.header}
-              paragraphs={content.paragraphs}
-            />
-          }
+  return (
+    <OMGModal
+      type={content.modalType}
+      modalVisible={modalVisible}
+      height={380}
+      width={pageWidth}
+      style={styles[stage]}
+      content={
+        <Tour.Screen
+          rightButtonText={content.buttonTextRight}
+          leftButtonText={content.buttonTextLeft}
+          leftButtonCallback={leftButtonCallback[0]}
+          rightButtonCallback={rightButtonCallback}
+          header={content.header}
+          paragraphs={content.paragraphs}
         />
-      )
-    }
-
-    case 1: {
-      return (
-        <OMGModal
-          type='triangle-up'
-          modalVisible={modalVisible}
-          height={250}
-          width={0.9 * pageWidth}
-          style={styles[stage]}
-          content={
-            <Tour.Screen
-              rightButtonText={content.buttonTextRight}
-              leftButtonText={content.buttonTextLeft}
-              leftButtonCallback={leftButtonCallback[stage]}
-              rightButtonCallback={rightButtonCallback}
-              header={content.header}
-              paragraphs={content.paragraphs}
-            />
-          }
-        />
-      )
-    }
-    case 2: {
-      return (
-        <OMGModal
-          type='triangle-up'
-          modalVisible={modalVisible}
-          height={220}
-          width={0.9 * pageWidth}
-          style={styles[stage]}
-          content={
-            <Tour.Screen
-              rightButtonText={content.buttonTextRight}
-              leftButtonText={content.buttonTextLeft}
-              leftButtonCallback={leftButtonCallback[stage]}
-              rightButtonCallback={rightButtonCallback}
-              header={content.header}
-              paragraphs={content.paragraphs}
-            />
-          }
-        />
-      )
-    }
-
-    case 3: {
-      return (
-        <OMGModal
-          type='triangle-up'
-          modalVisible={modalVisible}
-          height={250}
-          width={0.9 * pageWidth}
-          style={styles[stage]}
-          content={
-            <Tour.Screen
-              rightButtonText={content.buttonTextRight}
-              leftButtonText={content.buttonTextLeft}
-              leftButtonCallback={leftButtonCallback[stage]}
-              rightButtonCallback={rightButtonCallback}
-              header={content.header}
-              paragraphs={content.paragraphs}
-            />
-          }
-        />
-      )
-    }
-
-    default: {
-      return null
-    }
-  }
+      }
+    />
+  )
 }
 
 const styles = StyleSheet.create({
@@ -157,8 +85,6 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state, ownProps) => ({})
-
 const mapDispatchToProps = (dispatch, ownProps) => ({
   setSkipTour: bool => {
     settingActions.setSkipTour(dispatch, bool)
@@ -169,6 +95,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 })
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(withNavigation(withTheme(Stages)))
