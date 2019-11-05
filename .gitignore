@@ -22,7 +22,6 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 *.xcarchive
-ios/container/**
 
 # Android/IntelliJ
 #
@@ -72,3 +71,5 @@ google-services.json
 keystore.properties
 release.keystore
 GoogleService-Info.plist
+android/app/src/main/assets/containers
+ios/container

@@ -37,7 +37,8 @@ EXIT_PERIOD=<EXIT_PERIOD>
    - Copy `keystore.properties`, then paste at `android/keystore.properties`
    - Copy `google-services.json`, then paste at `android/app/google-servies.json`
    - Copy `GoogleService-Info.plist`, then paste at `ios/PlasmaWallet/wallet/GoogleService-Info.plist`
-   - Copy `GTM-GTM-5VHN7FC.json`, then paste at `ios/container/GTM-GTM-5VHN7FC.json`.
+   - Copy `GTM-5VHN7FC.json`, then paste at `ios/container/GTM-5VHN7FC.json`.
+   - Copy `GTM-PGZXFH4.json`, then paste at `android/app/src/main/assets/containers/GTM-PGZXFH4.json`.
 
 ## Running
 
