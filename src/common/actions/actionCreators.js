@@ -17,8 +17,8 @@ export const createAsyncAction = ({
           `%c [ERROR] ${err.message}`,
           'font-weight: bold; color: #ff0000'
         )
-        CrashAnalytics.reportError(actionType, err)
         dispatch({ type: `${actionType}/FAILED`, data: err })
+        CrashAnalytics.recordError(actionType, err)
       }
       const actionName = actionType.replace('/', '_')
       dispatch({ type: `LOADING/${actionName}/IDLE` })
@@ -34,11 +34,11 @@ export const createAction = (
     const result = doAction()
     dispatch({ type: `${actionType}/OK`, data: result })
   } catch (err) {
-    CrashAnalytics.reportError(actionType, err)
     console.log(
       `%c [ERROR] ${err.message}`,
       'font-weight: bold; color: #ff0000'
     )
+    CrashAnalytics.recordError(actionType, err)
     dispatch({ type: `${actionType}/ERROR`, data: err })
   }
 }
