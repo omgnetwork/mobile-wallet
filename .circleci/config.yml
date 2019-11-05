@@ -24,7 +24,7 @@ jobs:
           command: gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json --project=${GOOGLE_PROJECT_ID}
       - run:
           name: Run the instrumentation tests in Firebase test lab
-          command: cd ./android && apt-get update && apt-get install npm -y && npm i @react-native-community/cli-platform-android && bundle exec fastlane instrumentation_tests
+          command: cd ./android && sudo apt-get update && sudo apt-get install npm -y && npm i @react-native-community/cli-platform-android && bundle exec fastlane instrumentation_tests
       - save_cache:
           paths:
             - ~/.gradle
