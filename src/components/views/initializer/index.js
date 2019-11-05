@@ -5,6 +5,7 @@ import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { settingActions } from 'common/actions'
 import { OMGEmpty, OMGText } from 'components/widgets'
+import { GoogleAnalytics } from 'common/analytics'
 
 const Initializer = ({
   theme,
@@ -20,6 +21,7 @@ const Initializer = ({
   useEffect(() => {
     if (wallets.length === 0 || (wallet && provider && blockchainWallet)) {
       navigation.navigate('MainContent')
+      GoogleAnalytics.sendEvent('view_balance', {})
     } else if (shouldGetBlockchainWallet(wallet, blockchainWallet, provider)) {
       dispatchSetBlockchainWallet(wallet, provider)
     } else if (shouldSetPrimaryWallet(wallet, wallets)) {

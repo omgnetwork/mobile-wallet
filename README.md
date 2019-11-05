@@ -37,6 +37,8 @@ EXIT_PERIOD=<EXIT_PERIOD>
    - Copy `keystore.properties`, then paste at `android/keystore.properties`
    - Copy `google-services.json`, then paste at `android/app/google-servies.json`
    - Copy `GoogleService-Info.plist`, then paste at `ios/PlasmaWallet/wallet/GoogleService-Info.plist`
+   - Copy `GTM-5VHN7FC.json`, then paste at `ios/container/GTM-5VHN7FC.json`.
+   - Copy `GTM-PGZXFH4.json`, then paste at `android/app/src/main/assets/containers/GTM-PGZXFH4.json`.
 
 ## Running
 
@@ -47,8 +49,8 @@ EXIT_PERIOD=<EXIT_PERIOD>
 
 ### Android
 
-Generate the release apk by running `cd android && ./gradlew assembleRelease`
+Generate the release apk by running `npm run build-android`. The generated apk file can be found at the `artifacts` folder.
 
 ### iOS
 
-`TODO`
+Generate the release ipa by running `npm run build-ios`. The generated ipa file can be found at the `artifacts` folder.

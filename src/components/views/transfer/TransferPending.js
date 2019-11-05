@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, Linking } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
@@ -14,6 +14,7 @@ import {
   OMGStatusBar
 } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { GoogleAnalytics } from 'common/analytics'
 
 const TransferPending = ({ theme, navigation }) => {
   const pendingTx = navigation.getParam('pendingTx')
@@ -26,6 +27,10 @@ const TransferPending = ({ theme, navigation }) => {
   const handleOnBackPressedAndroid = () => {
     return true
   }
+
+  useEffect(() => {
+    GoogleAnalytics.sendEvent('make_transaction', pendingTx)
+  }, [pendingTx, pendingTx.hash])
 
   return (
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
