@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Fragment, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
-import { walletActions } from 'common/actions'
+import { walletActions, ethereumActions } from 'common/actions'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
 import { Formatter, Datetime } from 'common/utils'
@@ -100,7 +100,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchLoadAssets: (provider, address, lastBlockNumber) =>
-    dispatch(walletActions.loadAssets(provider, address, lastBlockNumber)),
+    dispatch(ethereumActions.fetchAssets(provider, address, lastBlockNumber)),
   dispatchRefreshRootchain: (address, shouldRefresh) =>
     walletActions.refreshRootchain(dispatch, address, shouldRefresh)
 })

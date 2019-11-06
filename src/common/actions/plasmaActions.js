@@ -12,7 +12,7 @@ export const fetchAssets = (rootchainAssets, address) => {
     }
   }
   return createAsyncAction({
-    type: 'CHILDCHAIN/LOAD_ASSETS',
+    type: 'CHILDCHAIN/FETCH_ASSETS',
     operation: asyncAction
   })
 }

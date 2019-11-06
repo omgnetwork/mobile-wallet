@@ -53,24 +53,6 @@ export const getTransactionHistory = address => {
   })
 }
 
-export const loadAssets = (provider, address, lastBlockNumber) => {
-  const asyncAction = async () => {
-    const updatedAssets = await walletService.fetchAssets(
-      provider,
-      address,
-      lastBlockNumber
-    )
-
-    return updatedAssets
-  }
-
-  return createAsyncAction({
-    type: 'WALLET/LOAD_ASSETS',
-    operation: asyncAction,
-    isBackgroundTask: lastBlockNumber > 0
-  })
-}
-
 export const refreshRootchain = (dispatch, address, shouldRefresh) => {
   return createAction(dispatch, {
     operation: () => ({

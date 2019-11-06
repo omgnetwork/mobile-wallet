@@ -22,7 +22,7 @@ export const walletsReducer = (state = [], action) => {
           return wallet
         }
       })
-    case 'WALLET/LOAD_ASSETS/SUCCESS':
+    case 'ROOTCHAIN/FETCH_ASSETS/SUCCESS':
       return state.map(wallet => {
         if (wallet.address === action.data.address) {
           const rootchainAssets = wallet.rootchainAssets || []
@@ -40,7 +40,7 @@ export const walletsReducer = (state = [], action) => {
           return wallet
         }
       })
-    case 'CHILDCHAIN/LOAD_ASSETS/SUCCESS':
+    case 'CHILDCHAIN/FETCH_ASSETS/SUCCESS':
       return state.map(wallet => {
         if (wallet.address === action.data.address) {
           const childchainAssets = wallet.childchainAssets || []
