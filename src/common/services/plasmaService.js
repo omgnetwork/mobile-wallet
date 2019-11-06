@@ -1,4 +1,4 @@
-import { Formatter, Parser, Polling } from '../utils'
+import { Formatter, Parser, Polling, Datetime } from '../utils'
 import { Plasma } from 'common/blockchain'
 
 export const fetchAssets = (rootchainAssets, address) => {
@@ -39,7 +39,8 @@ export const fetchAssets = (rootchainAssets, address) => {
 
       resolve({
         lastUtxoPos: (utxos.length && utxos[0].utxo_pos.toString(10)) || '0',
-        childchainAssets
+        childchainAssets,
+        updatedAt: Datetime.now()
       })
     } catch (err) {
       reject(err)

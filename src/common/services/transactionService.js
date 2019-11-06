@@ -31,11 +31,13 @@ export const getTxs = (address, provider, options) => {
 
       const pendingEthereumTxs = ethereumService.getTxs(
         address,
-        queryRootchainOptions
+        queryRootchainOptions,
+        false
       )
-      const pendingEthereumERC20Txs = ethereumService.getERC20Txs(
+      const pendingEthereumERC20Txs = ethereumService.getTxs(
         address,
-        queryRootchainOptions
+        queryRootchainOptions,
+        true
       )
       const childchainTxs = await plasmaService.getTxs(
         address,

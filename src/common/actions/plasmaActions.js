@@ -1,5 +1,5 @@
 import { createAsyncAction } from './actionCreators'
-import { plasmaService, walletService } from 'common/services'
+import { plasmaService } from 'common/services'
 import { Datetime } from 'common/utils'
 
 export const fetchAssets = (rootchainAssets, address) => {
@@ -12,7 +12,7 @@ export const fetchAssets = (rootchainAssets, address) => {
     }
   }
   return createAsyncAction({
-    type: 'CHILDCHAIN/LOAD_ASSETS',
+    type: 'CHILDCHAIN/FETCH_ASSETS',
     operation: asyncAction
   })
 }
