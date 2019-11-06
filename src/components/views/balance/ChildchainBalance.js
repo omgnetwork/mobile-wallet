@@ -24,6 +24,7 @@ const ChildchainBalance = ({
 }) => {
   const currency = 'USD'
   const [totalBalance, setTotalBalance] = useState(0.0)
+  const [loading, setLoading] = useState(false)
 
   const hasPendingTransaction = pendingTxs.length > 0
   const hasChildchainAssets =
@@ -63,6 +64,7 @@ const ChildchainBalance = ({
 
   useEffect(() => {
     if (wallet.shouldRefreshChildchain && wallet.rootchainAssets) {
+      setLoading(true)
       dispatchLoadAssets(wallet)
       dispatchSetShouldRefreshChildchain(wallet.address, false)
     }
@@ -74,8 +76,13 @@ const ChildchainBalance = ({
     wallet
   ])
 
+  const handleReload = useCallback(() => {
+    dispatchSetShouldRefreshChildchain(wallet.address, true)
+  }, [dispatchSetShouldRefreshChildchain, wallet.address])
+
   useEffect(() => {
     if (wallet.childchainAssets) {
+      setLoading(false)
       const totalPrices = wallet.childchainAssets.reduce((acc, asset) => {
         const parsedAmount = parseFloat(asset.balance)
         const tokenPrice = parsedAmount * asset.price
@@ -99,6 +106,8 @@ const ChildchainBalance = ({
         data={wallet.childchainAssets || []}
         keyExtractor={item => item.contractAddress}
         updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
+        loading={loading}
+        handleReload={handleReload}
         style={styles.list}
         renderItem={({ item }) => (
           <OMGItemToken key={item.contractAddress} token={item} />

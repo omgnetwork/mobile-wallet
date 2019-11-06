@@ -50,6 +50,7 @@ export const walletsReducer = (state = [], action) => {
               childchainAssets,
               action.data.childchainAssets
             ),
+            updatedAt: action.data.updatedAt,
             shouldRefreshChildchain: false,
             lastUtxoPos: action.data.lastUtxoPos
           }
