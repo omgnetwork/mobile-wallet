@@ -11,6 +11,7 @@ const OMGAmountInput = ({
   inputRef,
   defaultValue,
   style,
+  errorMessage,
   callback,
   showError
 }) => {
@@ -38,7 +39,7 @@ const OMGAmountInput = ({
         </View>
       </View>
       {showError && (
-        <OMGText style={styles.errorText(theme)}>Invalid amount</OMGText>
+        <OMGText style={styles.errorText(theme)}>{errorMessage}</OMGText>
       )}
     </Fragment>
   )

@@ -19,6 +19,10 @@ export const isValidAmount = amount => {
   }
 }
 
+export const isEnoughToken = (sendAmount, tokenAmount) => {
+  return Number(sendAmount) <= Number(tokenAmount)
+}
+
 export const isValidTransaction = transaction => {
   return transaction && transaction.from && transaction.to
 }

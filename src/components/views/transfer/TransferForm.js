@@ -60,11 +60,18 @@ const TransferForm = ({ wallet, theme, navigation }) => {
   const amountRef = useRef(defaultAmount)
   const [showErrorAddress, setShowErrorAddress] = useState(false)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
+  const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
 
   const submit = useCallback(() => {
     if (!Validator.isValidAddress(addressRef.current)) {
       setShowErrorAddress(true)
     } else if (!Validator.isValidAmount(amountRef.current)) {
+      setErrorAmountMessage('Invalid amount')
+      setShowErrorAmount(true)
+    } else if (
+      !Validator.isEnoughToken(amountRef.current, selectedToken.balance)
+    ) {
+      setErrorAmountMessage('Not enough balance')
       setShowErrorAmount(true)
     } else {
       setShowErrorAddress(false)
@@ -131,6 +138,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
               token={selectedToken}
               inputRef={amountRef}
               showError={showErrorAmount}
+              errorMessage={errorAmountMessage}
               defaultValue={navigation.getParam('lastAmount')}
               style={styles.amountInput}
             />
