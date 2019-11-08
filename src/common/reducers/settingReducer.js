@@ -29,5 +29,6 @@ export const settingReducer = (state = {}, action) => {
 }
 
 const invalidateBlockchainWalletByAddress = (blockchainWallet, address) => {
+  if (!blockchainWallet) return null
   return blockchainWallet.address === address ? blockchainWallet : null
 }
