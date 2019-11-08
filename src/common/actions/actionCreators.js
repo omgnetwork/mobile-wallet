@@ -18,7 +18,7 @@ export const createAsyncAction = ({
           'font-weight: bold; color: #ff0000'
         )
         dispatch({ type: `${actionType}/FAILED`, data: err })
-        CrashAnalytics.recordError(actionType, err)
+        CrashAnalytics.log(err)
       }
       const actionName = actionType.replace('/', '_')
       dispatch({ type: `LOADING/${actionName}/IDLE` })
@@ -38,7 +38,8 @@ export const createAction = (
       `%c [ERROR] ${err.message}`,
       'font-weight: bold; color: #ff0000'
     )
-    CrashAnalytics.recordError(actionType, err)
+    console.log(err)
     dispatch({ type: `${actionType}/ERROR`, data: err })
+    CrashAnalytics.log(err)
   }
 }

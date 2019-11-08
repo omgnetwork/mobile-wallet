@@ -43,7 +43,6 @@ target 'PlasmaWallet' do
   pod 'Fabric', '~> 1.10.2'
   pod 'Crashlytics', '~> 3.14.0'
   pod 'Firebase/Analytics', '~> 5.0'
-  pod 'GoogleTagManager', '~> 7.0'
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
   target 'PlasmaWalletTests' do

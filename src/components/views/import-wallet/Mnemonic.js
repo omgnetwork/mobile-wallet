@@ -2,7 +2,12 @@ import React, { useEffect, useRef, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { walletActions } from 'common/actions'
-import { OMGText, OMGTextInputBox, OMGButton } from 'components/widgets'
+import {
+  OMGText,
+  OMGTextInputBox,
+  OMGButton,
+  OMGDismissKeyboard
+} from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 
@@ -35,33 +40,35 @@ const Mnemonic = ({
   }, [loading, loading.action, loading.success, navigation, wallets])
 
   return (
-    <View style={styles.mnemonicContainer}>
-      <OMGText style={styles.textBoxTitle} weight='bold'>
-        Mnemonic Phrase
-      </OMGText>
-      <OMGTextInputBox
-        style={styles.textBox}
-        inputRef={mnemonicRef}
-        disabled={loading.show}
-        lines={2}
-        placeholder='Enter mnemonic...'
-      />
-      <OMGText style={styles.textBoxTitle} weight='bold'>
-        Wallet Name
-      </OMGText>
-      <OMGTextInputBox
-        placeholder='Your wallet name'
-        style={styles.textBox}
-        inputRef={walletNameRef}
-        maxLength={20}
-        disabled={loading.show}
-      />
-      <View style={styles.buttonContainer}>
-        <OMGButton loading={loading.show} onPress={importWallet}>
-          Import
-        </OMGButton>
+    <OMGDismissKeyboard>
+      <View style={styles.mnemonicContainer}>
+        <OMGText style={styles.textBoxTitle} weight='bold'>
+          Mnemonic Phrase
+        </OMGText>
+        <OMGTextInputBox
+          style={styles.textBox}
+          inputRef={mnemonicRef}
+          disabled={loading.show}
+          lines={2}
+          placeholder='Enter mnemonic...'
+        />
+        <OMGText style={styles.textBoxTitle} weight='bold'>
+          Wallet Name
+        </OMGText>
+        <OMGTextInputBox
+          placeholder='Your wallet name'
+          style={styles.textBox}
+          inputRef={walletNameRef}
+          maxLength={20}
+          disabled={loading.show}
+        />
+        <View style={styles.buttonContainer}>
+          <OMGButton loading={loading.show} onPress={importWallet}>
+            Import
+          </OMGButton>
+        </View>
       </View>
-    </View>
+    </OMGDismissKeyboard>
   )
 }
 
