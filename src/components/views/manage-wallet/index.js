@@ -46,7 +46,7 @@ const ManageWallet = ({ theme, navigation, dispatchDeleteAll }) => {
   return (
     <SafeAreaView style={styles.container}>
       <OMGStatusBar
-        barStyle={'dark-content'}
+        barStyle='dark-content'
         backgroundColor={theme.colors.white}
       />
       <View style={styles.titleContainer}>
