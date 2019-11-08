@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-around',
     padding: 16,
+    backgroundColor: theme.colors.white,
     borderRadius: theme.roundness
   }),
   logo: theme => ({
