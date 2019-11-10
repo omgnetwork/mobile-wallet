@@ -1,28 +1,28 @@
-import React, { useEffect, useState, Fragment } from 'react'
+import React, { useEffect, useState, Fragment, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
-import { walletActions } from 'common/actions'
+import { walletActions, ethereumActions } from 'common/actions'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
 import { Formatter, Datetime } from 'common/utils'
 import { OMGItemToken, OMGAssetHeader, OMGAssetList } from 'components/widgets'
 
 const RootchainBalance = ({
-  theme,
   pendingTxs,
   provider,
   dispatchLoadAssets,
   wallet,
-  loading,
   dispatchRefreshRootchain
 }) => {
   const [totalBalance, setTotalBalance] = useState(0.0)
+  const [loading, setLoading] = useState(false)
   const currency = 'USD'
 
   useEffect(() => {
     if (provider && wallet.shouldRefresh) {
       dispatchLoadAssets(provider, wallet.address, wallet.updatedBlock || '0')
       dispatchRefreshRootchain(wallet.address, false)
+      setLoading(true)
     }
   }, [
     dispatchLoadAssets,
@@ -34,6 +34,7 @@ const RootchainBalance = ({
 
   useEffect(() => {
     if (wallet.rootchainAssets) {
+      setLoading(false)
       const totalPrices = wallet.rootchainAssets.reduce((acc, asset) => {
         const parsedAmount = parseFloat(asset.balance)
         const tokenPrice = parsedAmount * asset.price
@@ -44,12 +45,16 @@ const RootchainBalance = ({
     }
   }, [wallet.rootchainAssets])
 
+  const handleReload = useCallback(() => {
+    dispatchRefreshRootchain(wallet.address, true)
+  }, [dispatchRefreshRootchain, wallet.address])
+
   return (
     <Fragment>
       <OMGAssetHeader
         amount={formatTotalBalance(totalBalance)}
         currency={currency}
-        loading={loading.show}
+        loading={loading}
         rootchain={true}
         blockchain={'Ethereum'}
         network={Config.ETHERSCAN_NETWORK}
@@ -58,7 +63,8 @@ const RootchainBalance = ({
         data={wallet.rootchainAssets || []}
         keyExtractor={item => item.contractAddress}
         updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
-        loading={loading.show}
+        loading={loading}
+        handleReload={handleReload}
         style={styles.list}
         renderItem={({ item }) => (
           <OMGItemToken key={item.contractAddress} token={item} />
@@ -86,7 +92,6 @@ const formatTotalBalance = balance => {
 
 const mapStateToProps = (state, ownProps) => ({
   pendingTxs: state.transaction.pendingTxs,
-  loading: state.loading,
   provider: state.setting.provider,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
@@ -95,7 +100,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchLoadAssets: (provider, address, lastBlockNumber) =>
-    dispatch(walletActions.loadAssets(provider, address, lastBlockNumber)),
+    dispatch(ethereumActions.fetchAssets(provider, address, lastBlockNumber)),
   dispatchRefreshRootchain: (address, shouldRefresh) =>
     walletActions.refreshRootchain(dispatch, address, shouldRefresh)
 })

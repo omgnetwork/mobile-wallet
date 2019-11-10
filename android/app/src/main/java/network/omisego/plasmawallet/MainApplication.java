@@ -1,26 +1,13 @@
-package co.omisego.plasmawallet;
+package network.omisego.plasmawallet;
 
 import android.app.Application;
-import android.util.Log;
-
 import com.facebook.react.PackageList;
-import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
-import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.ReactApplication;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import com.swmansion.reanimated.ReanimatedPackage;
-import com.bitgo.randombytes.RandomBytesPackage;
-import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
-import org.reactnative.camera.RNCameraPackage;
-import com.BV.LinearGradient.LinearGradientPackage;
-import com.horcrux.svg.SvgPackage;
-import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
-import br.com.classapp.RNSensitiveInfo.RNSensitiveInfoPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
+import io.invertase.firebase.RNFirebasePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
+import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
 
 import java.util.List;
 
@@ -36,8 +23,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
+      packages.add(new RNFirebaseAnalyticsPackage());
       // Packages that cannot be autolinked yet can be added manually here, for example:
-      // packages.add(new MyReactNativePackage());
       return packages;
     }
 

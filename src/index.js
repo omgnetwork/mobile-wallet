@@ -14,6 +14,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import SplashScreen from 'react-native-splash-screen'
 
 YellowBox.ignoreWarnings(['Warning:', 'Setting', '`setBackgroundColor`'])
+
 const initialState = {
   wallets: [],
   setting: {

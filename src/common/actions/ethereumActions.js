@@ -53,3 +53,21 @@ export const sendEthToken = (token, fee, blockchainWallet, toAddress) => {
     operation: asyncAction
   })
 }
+
+export const fetchAssets = (provider, address, lastBlockNumber) => {
+  const asyncAction = async () => {
+    const updatedAssets = await ethereumService.fetchAssets(
+      provider,
+      address,
+      lastBlockNumber
+    )
+
+    return updatedAssets
+  }
+
+  return createAsyncAction({
+    type: 'ROOTCHAIN/FETCH_ASSETS',
+    operation: asyncAction,
+    isBackgroundTask: lastBlockNumber > 0
+  })
+}

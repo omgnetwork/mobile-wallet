@@ -2,6 +2,10 @@
 
 A Plasma educational app that allows you to manage your fund on the Ethereum network and OmiseGO network.
 
+## Before Installation
+
+Download all files at [OmiseGO Drive](https://drive.google.com/drive/folders/1MMak_4mg5IZ-mv2zBOEok9FCYlMPqf2v?usp=sharing)
+
 ## Installation
 
 1. `npm install`
@@ -28,10 +32,28 @@ BLOCK_EXPLORER_URL=<BLOCK_EXPLORER_URL>
 EXIT_PERIOD=<EXIT_PERIOD>
 ```
 
+5. From downloaded files,
+   - Copy `release.jks`, then paste at `android/app/release.jks`
+   - Copy `keystore.properties`, then paste at `android/keystore.properties`
+   - Copy `google-services.json`, then paste at `android/app/google-servies.json`
+   - Copy `GoogleService-Info.plist`, then paste at `ios/PlasmaWallet/wallet/GoogleService-Info.plist`
+   - Copy `GTM-5VHN7FC.json`, then paste at `ios/container/GTM-5VHN7FC.json`.
+   - Copy `GTM-PGZXFH4.json`, then paste at `android/app/src/main/assets/containers/GTM-PGZXFH4.json`.
+
 ## Running
 
 1. `npm run start`
 2. `npm run ios` to run on iOS on the simulator or `npm run android` to run on the Android real device.
+
+## Release
+
+### Android
+
+Generate the release apk by running `npm run build-android`. The generated apk file can be found at the `artifacts` folder.
+
+### iOS
+
+Generate the release ipa by running `npm run build-ios`. The generated ipa file can be found at the `artifacts` folder.
 
 ## Developer Notes
 

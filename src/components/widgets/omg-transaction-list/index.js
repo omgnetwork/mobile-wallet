@@ -31,31 +31,31 @@ const OMGTransactionList = ({
 
   return (
     <View style={{ ...styles.container, ...style }}>
-      <FlatList
-        ListHeaderComponent={renderHeader && renderHeader()}
-        data={transactions}
-        keyExtractor={(tx, index) => tx.hash}
-        ItemSeparatorComponent={renderSeparator}
-        contentContainerStyle={
-          transactions && transactions.length
-            ? styles.content
-            : styles.emptyContent
-        }
-        ListEmptyComponent={
-          <OMGEmpty
-            loading={loading.show && loading.action === 'TRANSACTION_ALL'}
-            text='Empty Transactions'
-            style={styles.empty}
-          />
-        }
-        renderItem={({ item }) => (
-          <OMGItemTransaction
-            tx={item}
-            address={address}
-            onPress={handleClickTx}
-          />
-        )}
-      />
+      {loading.show ? (
+        <OMGEmpty loading={true} />
+      ) : (
+        <FlatList
+          ListHeaderComponent={renderHeader && renderHeader()}
+          data={transactions}
+          keyExtractor={(tx, index) => tx.hash}
+          ItemSeparatorComponent={renderSeparator}
+          contentContainerStyle={
+            transactions && transactions.length
+              ? styles.content
+              : styles.emptyContent
+          }
+          ListEmptyComponent={
+            <OMGEmpty text='Empty Transactions' style={styles.empty} />
+          }
+          renderItem={({ item }) => (
+            <OMGItemTransaction
+              tx={item}
+              address={address}
+              onPress={handleClickTx}
+            />
+          )}
+        />
+      )}
     </View>
   )
 }

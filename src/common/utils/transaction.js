@@ -1,5 +1,4 @@
 import { transaction } from '@omisego/omg-js-util'
-import { Plasma } from 'common/clients'
 import { ABI } from 'common/utils'
 import InputDataDecoder from 'ethereum-input-data-decoder'
 

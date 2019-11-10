@@ -21,6 +21,7 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+*.xcarchive
 
 # Android/IntelliJ
 #
@@ -29,6 +30,8 @@ build/
 .gradle
 local.properties
 *.iml
+*.apk
+output.json
 
 # node.js
 #
@@ -60,3 +63,13 @@ buck-out/
 
 # ENV
 .env
+
+# Google Services
+google-services.json
+
+# Credentials
+keystore.properties
+release.keystore
+GoogleService-Info.plist
+android/app/src/main/assets/containers
+ios/container

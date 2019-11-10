@@ -22,17 +22,33 @@ const TransactionHistory = ({
   dispatchFetchTxHistory,
   transactions
 }) => {
+  const [fetched, setFetched] = useState(false)
+  const [fetching, setFetching] = useState(false)
   const [txs, setTxs] = useState([])
+
+  useEffect(() => {
+    if (loading.action === 'TRANSACTION_ALL' && !loading.show) {
+      setFetching(false)
+      setFetched(true)
+    }
+  }, [loading.action, loading.show, loading.success])
+
+  useEffect(() => {
+    const options = {
+      page: 1,
+      limit: 100
+    }
+
+    if (wallet && wallet.address && !fetching && !fetched) {
+      dispatchFetchTxHistory(wallet.address, provider, options)
+      setFetching(true)
+    }
+  }, [fetching, dispatchFetchTxHistory, wallet, provider, fetched])
 
   useEffect(() => {
     if (wallet && isFocused) {
       StatusBar.setBarStyle('dark-content')
       StatusBar.setBackgroundColor(theme.colors.white)
-      const options = {
-        page: 1,
-        limit: 100
-      }
-      dispatchFetchTxHistory(wallet.address, provider, options)
     }
   }, [
     isFocused,
@@ -40,7 +56,9 @@ const TransactionHistory = ({
     navigation,
     provider,
     theme.colors.white,
-    wallet
+    wallet,
+    loading.action,
+    fetching
   ])
 
   useEffect(() => {
@@ -108,7 +126,7 @@ const TransactionHistory = ({
       </OMGText>
       <OMGTransactionList
         transactions={txs}
-        loading={loading}
+        loading={fetching}
         address={wallet && wallet.address}
       />
     </SafeAreaView>

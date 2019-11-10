@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'io.fabric'
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 import com.android.build.OutputFile
@@ -81,6 +82,11 @@ project.ext.react = [
     enableHermes: false,  // clean and rebuild if changing
 ]
 
+// Load Keystore credentials
+def keystorePropertiesFile= rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 apply from: "../../node_modules/react-native/react.gradle"
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
@@ -130,11 +136,12 @@ android {
     }
 
     defaultConfig {
-        applicationId "co.omisego.plasmawallet"
+        applicationId "network.omisego.plasmawallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
+        multiDexEnabled true
         missingDimensionStrategy "react-native-camera", "general"
     }
     splits {
@@ -152,6 +159,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('release.keystore')
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storePassword keystoreProperties['storePassword']
+        }
     }
     buildTypes {
         debug {
@@ -160,7 +173,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -191,6 +204,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-firebase')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-gesture-handler')
     implementation project(':react-native-reanimated')
@@ -209,6 +223,11 @@ dependencies {
     implementation project(':react-native-vector-icons')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
+      transitive = true
+    }
+    implementation 'com.google.android.gms:play-services-tagmanager:17.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
 
 //    if (enableHermes) {
 //      def hermesPath = "../../node_modules/hermesvm/android/";
@@ -227,4 +246,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-// apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'

@@ -1,6 +1,7 @@
 import 'ethers/dist/shims.js'
 import { ethers } from 'ethers'
 import { Parser, ABI } from 'common/utils'
+import { ContractAddress } from 'common/constants/'
 import axios from 'axios'
 import Config from 'react-native-config'
 
@@ -34,10 +35,24 @@ export const getERC20Balance = (provider, contractAddress, accountAddress) => {
   return contract.balanceOf(accountAddress)
 }
 
-export const getERC20Details = (provider, contractAddress) => {
+export const getTokenDetail = (provider, contractAddress) => {
   const abi = ABI.erc20Abi()
   const contract = new ethers.Contract(contractAddress, abi, provider)
-  return [contract.name(), contract.symbol(), contract.decimals()]
+  if (contractAddress === ContractAddress.ETH_ADDRESS) {
+    return [
+      Promise.resolve('Ether'),
+      Promise.resolve('ETH'),
+      Promise.resolve(18),
+      Promise.resolve(contractAddress)
+    ]
+  } else {
+    return [
+      contract.name(),
+      contract.symbol(),
+      contract.decimals(),
+      Promise.resolve(contractAddress)
+    ]
+  }
 }
 
 // Transaction Management
@@ -107,10 +122,6 @@ export const subscribeTx = (provider, tx, confirmations) => {
   return provider.waitForTransaction(tx.hash, confirmations)
 }
 
-// Provider
 export const createProvider = providerName => {
-  return new ethers.providers.EtherscanProvider(
-    providerName,
-    Config.ETHERSCAN_API_KEY
-  )
+  return ethers.getDefaultProvider(providerName)
 }
