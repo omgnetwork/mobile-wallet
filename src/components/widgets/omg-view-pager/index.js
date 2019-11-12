@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useCallback } from 'react'
 import { StyleSheet, ScrollView, Platform } from 'react-native'
 
-const OMGViewPager = ({ children, pageWidth, currentPage }) => {
-  const scrollView = useRef(null)
+const OMGViewPager = ({ children, pageWidth, currentPage, onPageChanged }) => {
   const middlePageOffset = pageWidth - 16
+  const snapOffsets = [0, middlePageOffset, pageWidth * 2 - 32]
   const scroll = useRef(null)
 
   const scrollTo = useCallback(
@@ -14,10 +14,22 @@ const OMGViewPager = ({ children, pageWidth, currentPage }) => {
     [pageWidth]
   )
 
+  const handleOnScroll = useCallback(
+    event => {
+      const currentOffset = event.nativeEvent.contentOffset.x
+      const page = snapOffsets.indexOf(currentOffset)
+
+      if (page > -1) {
+        onPageChanged(page)
+      }
+    },
+    [onPageChanged, snapOffsets]
+  )
+
   useEffect(() => {
-    if (scrollView.current && Platform.OS === 'android') {
+    if (scroll.current && Platform.OS === 'android') {
       setTimeout(() => {
-        scrollView.current.scrollTo({
+        scroll.current.scrollTo({
           x: middlePageOffset,
           y: 0,
           animated: false
@@ -35,7 +47,8 @@ const OMGViewPager = ({ children, pageWidth, currentPage }) => {
       contentContainerStyle={styles.container}
       contentOffset={{ x: middlePageOffset }}
       snapToAlignment='center'
-      snapToOffsets={[0, middlePageOffset, pageWidth * 2]}
+      onScroll={handleOnScroll}
+      snapToOffsets={snapOffsets}
       decelerationRate='fast'
       showsHorizontalScrollIndicator={false}
       horizontal={true}>
