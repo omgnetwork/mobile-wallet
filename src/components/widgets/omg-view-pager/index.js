@@ -1,10 +1,11 @@
-import React, { useRef, useEffect, useCallback } from 'react'
+import React, { useRef, useEffect, useCallback, useState } from 'react'
 import { StyleSheet, ScrollView, Platform } from 'react-native'
 
 const OMGViewPager = ({ children, pageWidth, currentPage, onPageChanged }) => {
   const middlePageOffset = pageWidth - 16
   const snapOffsets = [0, middlePageOffset, pageWidth * 2 - 32]
   const scroll = useRef(null)
+  const [lastPage, setLastPage] = useState(-1)
 
   const scrollTo = useCallback(
     page => {
@@ -19,11 +20,12 @@ const OMGViewPager = ({ children, pageWidth, currentPage, onPageChanged }) => {
       const currentOffset = event.nativeEvent.contentOffset.x
       const page = snapOffsets.indexOf(currentOffset)
 
-      if (page > -1) {
+      if (page > -1 && page !== lastPage) {
         onPageChanged(page)
+        setLastPage(page)
       }
     },
-    [onPageChanged, snapOffsets]
+    [lastPage, onPageChanged, snapOffsets]
   )
 
   useEffect(() => {
@@ -47,6 +49,7 @@ const OMGViewPager = ({ children, pageWidth, currentPage, onPageChanged }) => {
       contentContainerStyle={styles.container}
       contentOffset={{ x: middlePageOffset }}
       snapToAlignment='center'
+      scrollEventThrottle={0}
       onScroll={handleOnScroll}
       snapToOffsets={snapOffsets}
       decelerationRate='fast'
