@@ -2,7 +2,7 @@
 // {
 //   "onboarding": {
 //     "enabled": true,
-//     "viewedPages": ["plasma-wallet", "ethereum-wallet"],
+//     "currentPage": "plasma-wallet",
 //     "viewedPopups": ["plasma-wallet", "ethereum-wallet", "childchain-network", "rootchain-network"],
 //     "currentPopup": {
 //       "position_y": 100,
@@ -13,19 +13,18 @@
 
 export const onboardingReducer = (state = {}, action) => {
   switch (action.type) {
-    case 'ONBOARDING/ENABLED/OK':
+    case 'ONBOARDING/SET_ENABLED/OK':
       return action.data.enabled
         ? { ...state, enabled: true }
         : {
             enabled: false,
-            viewedPages: [],
-            viewedPopups: [],
-            currentPopup: {}
+            currentPage: null,
+            viewedPopups: []
           }
-    case 'ONBOARDING/ADD_VIEWED_PAGE/OK':
+    case 'ONBOARDING/SET_CURRENT_PAGE/OK':
       return {
         ...state,
-        viewedPages: [...state.viewedPages, action.data.page]
+        currentPage: action.data.page
       }
     case 'ONBOARDING/ADD_VIEWED_POPUP/OK':
       return {

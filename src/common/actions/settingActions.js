@@ -53,10 +53,10 @@ export const setSkipTour = (dispatch, skip) => {
   })
 }
 
-export const setTourStageTracker = (dispatch, stage) => {
+export const setTour = (dispatch, stage) => {
   const action = () => ({ stage: stage })
   return createAction(dispatch, {
     operation: action,
-    type: 'SETTING/SET_TOUR_STAGE_TRACKER'
+    type: 'SETTING/SET_TOUR_STEP'
   })
 }

@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import rootReducer from '../reducers'
+import Config from 'react-native-config'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistStore, persistReducer, createTransform } from 'redux-persist'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
@@ -26,13 +27,25 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-export default initialStore => {
-  const store = createStore(
-    persistedReducer,
-    initialStore,
-    composeWithDevTools(applyMiddleware(thunk))
-  )
-  const persistor = persistStore(store)
-
-  return { store, persistor }
+const initialState = {
+  wallets: [],
+  setting: {
+    tourStage: 0,
+    provider: null,
+    providerName: Config.ETHERSCAN_NETWORK
+  },
+  onboarding: {
+    enabled: false,
+    currentPage: null,
+    viewedPopups: [],
+    currentPopup: {}
+  }
 }
+
+export const store = createStore(
+  persistedReducer,
+  initialState,
+  composeWithDevTools(applyMiddleware(thunk))
+)
+
+export const persistor = persistStore(store)

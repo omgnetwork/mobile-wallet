@@ -26,7 +26,7 @@ export const settingReducer = (state = {}, action) => {
     case 'SETTING/SET_SKIP_TOUR/OK': {
       return { ...state, skipTour: action.data.skip }
     }
-    case 'SETTING/SET_TOUR_STAGE_TRACKER/OK': {
+    case 'SETTING/SET_TOUR_STEP/OK': {
       return { ...state, tourStage: action.data.stage }
     }
     default:
