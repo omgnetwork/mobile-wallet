@@ -4,10 +4,10 @@ import * as Widgets from 'components/widgets'
 import { SafeAreaView } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation'
 import { OMGStatusBar, OMGIcon } from 'components/widgets'
-import TransferChildchainNavigator from '../transfer-childchain'
+import TransferChildchainNavigator from '../deposit'
 import ImportWalletNavigator from '../import-wallet'
 import CreateWalletNavigator from '../create-wallet'
-import TransferRootChainNavigator from '../transfer-rootchain'
+import TransferRootChainNavigator from '../transfer'
 
 Views.ImportWallet.router = ImportWalletNavigator.router
 Views.CreateWallet.router = CreateWalletNavigator.router

@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native'
 import * as Views from 'components/views'
 import { OMGText, OMGIcon, OMGBox } from 'components/widgets'
 
-export default (RootChainTransferNavigator, TransactionHistoryNavigator) =>
+export default (TransferNavigator, TransactionHistoryNavigator) =>
   createBottomTabNavigator(
     {
       Balance: {
@@ -29,7 +29,7 @@ export default (RootChainTransferNavigator, TransactionHistoryNavigator) =>
       Transfer: {
         screen: Views.Transfer,
         params: {
-          navigator: RootChainTransferNavigator
+          navigator: TransferNavigator
         },
         navigationOptions: {
           tabBarLabel: ({ focused, tintColor }) => (

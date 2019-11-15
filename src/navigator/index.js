@@ -1,6 +1,7 @@
-import Home from './home'
-import TransferChildChainNavigator from './transfer-childchain'
-import TransferRootChainNavigator from './transfer-rootchain'
+import { createStackNavigator, createSwitchNavigator } from 'react-navigation'
+import createMainDrawerNavigator from './main'
+import DepositNavigator from './deposit'
+import TransferNavigator from './transfer'
 import ExitNavigator from './exit'
 import ImportWalletNavigator from './import-wallet'
 import BackupWalletNavigator from './backup-wallet'
@@ -10,23 +11,71 @@ import TransactionHistoryNavigator from './transaction-history'
 import WarpPortal from './warp-portal'
 import * as Views from 'components/views'
 
-Views.Transfer.router = TransferRootChainNavigator.router
-Views.Deposit.router = TransferChildChainNavigator.router
+const MainDrawerNavigator = createMainDrawerNavigator(
+  TransferNavigator,
+  TransactionHistoryNavigator
+)
+
+Views.Main.router = MainDrawerNavigator.router
+Views.Transfer.router = TransferNavigator.router
+Views.Deposit.router = DepositNavigator.router
 Views.Exit.router = ExitNavigator.router
 Views.ImportWallet.router = ImportWalletNavigator.router
 Views.CreateWallet.router = CreateWalletNavigator.router
 Views.Backup.router = BackupWalletNavigator.router
 
-export const AppNavigator = Home(
-  TransferRootChainNavigator,
-  TransferChildChainNavigator,
-  ExitNavigator,
-  ManageWalletNavigator(
-    ImportWalletNavigator,
-    CreateWalletNavigator,
-    BackupWalletNavigator
-  ),
-  TransactionHistoryNavigator
+const InitializationNavigator = createSwitchNavigator(
+  {
+    Initializer: Views.Initializer,
+    MainContent: {
+      screen: Views.Main,
+      params: {
+        navigator: MainDrawerNavigator
+      }
+    }
+  },
+  {
+    initialRouteName: 'Initializer',
+    headerMode: 'none'
+  }
 )
 
+export const AppNavigator = createStackNavigator(
+  {
+    Main: InitializationNavigator,
+    ManageWallet: ManageWalletNavigator(
+      ImportWalletNavigator,
+      CreateWalletNavigator,
+      BackupWalletNavigator
+    ),
+    TransferSelectBalance: {
+      screen: Views.TransferSelectBalance
+    },
+    TransferSelectFee: {
+      screen: Views.TransferSelectFee
+    },
+    TransferPending: {
+      screen: Views.TransferPending,
+      navigationOptions: () => ({ gesturesEnabled: false })
+    },
+    TransferDeposit: {
+      screen: Views.Deposit,
+      params: {
+        navigator: DepositNavigator
+      }
+    },
+    TransferExit: {
+      screen: Views.Exit,
+      params: {
+        navigator: ExitNavigator
+      }
+    },
+    ExitPending: Views.ExitPending
+  },
+  {
+    initialRouteName: 'Main',
+    initialRouteKey: 'Root',
+    headerMode: 'none'
+  }
+)
 export const WarpPortalNavigator = WarpPortal
