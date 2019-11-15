@@ -1,9 +1,11 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Linking, View, Dimensions, StatusBar } from 'react-native'
+import { StyleSheet, Linking, View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
+import { Dimensions } from 'common/utils'
+
 import RootchainBalance from './RootchainBalance'
 import ChildchainBalance from './ChildchainBalance'
 import LinearGradient from 'react-native-linear-gradient'
@@ -17,11 +19,9 @@ import {
   OMGButton
 } from 'components/widgets'
 
-import { Tour } from 'components/views'
+import { transactionActions, onboardingActions } from 'common/actions'
 
-import { transactionActions } from 'common/actions'
-
-const pageWidth = Dimensions.get('window').width - 56
+const pageWidth = Dimensions.windowWidth - 56
 
 const Balance = ({
   theme,
@@ -31,8 +31,8 @@ const Balance = ({
   pendingTxs,
   feedbackCompleteTx,
   dispatchInvalidateFeedbackCompleteTx,
-  skipTour,
-  tourStage
+  dispatchSetCurrentPage,
+  currentPage
 }) => {
   const [
     feedback,
@@ -43,9 +43,6 @@ const Balance = ({
     getLearnMoreLink
   ] = useProgressiveFeedback(theme, dispatchInvalidateFeedbackCompleteTx)
 
-  const [tourModalVisible, setTourModalVisible] = useState(false)
-  const [currentScrollPage, setCurrentScrollPage] = useState(2)
-
   useEffect(() => {
     function didFocus() {
       StatusBar.setBarStyle('light-content')
@@ -54,23 +51,31 @@ const Balance = ({
 
     const didFocusSubscription = navigation.addListener('didFocus', didFocus)
 
-    if (!skipTour) {
-      setTourModalVisible(true)
-    } else {
-      setTourModalVisible(false)
-    }
-
     return () => {
       didFocusSubscription.remove()
     }
-  }, [
-    navigation,
-    primaryWallet,
-    skipTour,
-    setTourModalVisible,
-    theme.colors.black5,
-    tourStage
-  ])
+  }, [navigation, primaryWallet, theme.colors.black5])
+
+  const handleOnPageChanged = useCallback(
+    page => {
+      switch (page) {
+        case 1: {
+          return dispatchSetCurrentPage(currentPage, 'childchain-balance')
+        }
+        case 2: {
+          return dispatchSetCurrentPage(currentPage, 'rootchain-balance')
+        }
+        case 3: {
+          return dispatchSetCurrentPage(currentPage, 'address-qr')
+        }
+      }
+    },
+    [currentPage, dispatchSetCurrentPage]
+  )
+
+  useEffect(() => {
+    dispatchSetCurrentPage(null, 'childchain-balance')
+  }, [dispatchSetCurrentPage])
 
   const handleLearnMoreClick = useCallback(() => {
     const externalURL = getLearnMoreLink()
@@ -114,7 +119,9 @@ const Balance = ({
             </OMGButton>
           </View>
         ) : (
-          <OMGViewPager pageWidth={pageWidth} currentPage={currentScrollPage}>
+          <OMGViewPager
+            pageWidth={pageWidth}
+            onPageChanged={handleOnPageChanged}>
             <View style={styles.firstPage}>
               <ChildchainBalance primaryWallet={primaryWallet} />
             </View>
@@ -124,12 +131,6 @@ const Balance = ({
             <View style={styles.thirdPage}>
               <ShowQR primaryWallet={primaryWallet} />
             </View>
-            <Tour.Stages
-              stage={tourStage}
-              modalVisible={tourModalVisible}
-              setModalVisible={setTourModalVisible}
-              setCurrentScrollPage={setCurrentScrollPage}
-            />
           </OMGViewPager>
         )}
       </LinearGradient>
@@ -155,7 +156,8 @@ const styles = StyleSheet.create({
   }),
   topContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    paddingHorizontal: 12
   },
   topTitleLeft: theme => ({
     fontSize: 18,
@@ -166,7 +168,6 @@ const styles = StyleSheet.create({
   topIconRight: {},
   container: {
     flex: 1,
-    paddingHorizontal: 12,
     paddingVertical: 20
   },
   firstPage: {
@@ -205,13 +206,15 @@ const mapStateToProps = (state, ownProps) => ({
   ),
   provider: state.setting.provider,
   primaryWalletAddress: state.setting.primaryWalletAddress,
-  skipTour: state.setting.skipTour,
-  tourStage: state.setting.tourStage
+  currentPage: state.onboarding.currentPage
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchInvalidateFeedbackCompleteTx: () =>
-    transactionActions.invalidateFeedbackCompleteTx(dispatch)
+    transactionActions.invalidateFeedbackCompleteTx(dispatch),
+  dispatchSetCurrentPage: (currentPage, page) => {
+    onboardingActions.setCurrentPage(dispatch, currentPage, page)
+  }
 })
 
 export default connect(
