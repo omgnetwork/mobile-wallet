@@ -17,6 +17,7 @@ import ImportWallet from './import-wallet'
 import ImportWalletMnemonic from './import-wallet/Mnemonic'
 import ImportWalletSuccess from './import-wallet/ImportSuccess'
 import Initializer from './initializer'
+import Main from './main'
 import ManageWallet from './manage-wallet'
 import Preview from './preview'
 import Setting from './setting'
@@ -37,7 +38,8 @@ import {
 } from './transfer'
 import Wallets from './wallets'
 import WarpPortal from './warp-portal'
-import Onboarding from './onboarding'
+import Onboarding from './get-started'
+import OnboardingTourGuide from './onboarding'
 import * as Tour from './tour'
 
 export {
@@ -60,8 +62,10 @@ export {
   ImportWalletMnemonic,
   ImportWalletSuccess,
   Initializer,
+  Main,
   ManageWallet,
   Onboarding,
+  OnboardingTourGuide,
   Preview,
   Setting,
   Tour,
