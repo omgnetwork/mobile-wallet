@@ -17,7 +17,7 @@ const Stages = ({
   setModalVisible,
   setCurrentScrollPage,
   setSkipTour,
-  setTourStageTracker
+  setTourStep
 }) => {
   const pageWidth = Dimensions.get('window').width
   const content = Tour.content[stage]
@@ -25,7 +25,7 @@ const Stages = ({
 
   const rightButtonCallback = () => {
     setModalVisible(false)
-    setTourStageTracker(stage + 1)
+    setTourStep(stage + 1)
     switch (stage) {
       case 0: {
         drawerNavigation.openDrawer()
@@ -46,7 +46,7 @@ const Stages = ({
   const leftButtonCallback = () => {
     setModalVisible(false)
     const prevStage = stage === 0 ? 0 : stage - 1
-    setTourStageTracker(prevStage)
+    setTourStep(prevStage)
     switch (stage) {
       case 0: {
         setSkipTour(true)
@@ -103,8 +103,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   setSkipTour: bool => {
     settingActions.setSkipTour(dispatch, bool)
   },
-  setTourStageTracker: stage => {
-    settingActions.setTourStageTracker(dispatch, stage)
+  setTourStep: stage => {
+    settingActions.setTour(dispatch, stage)
   }
 })
 

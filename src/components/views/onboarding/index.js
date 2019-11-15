@@ -1,103 +1,127 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
+import { onboardingActions } from 'common/actions'
+import * as ContentSelector from './contentSelector'
 import { connect } from 'react-redux'
-import { withNavigation } from 'react-navigation'
-import { withTheme } from 'react-native-paper'
-import { Image, StyleSheet, View } from 'react-native'
+import {
+  OMGOnboardingSheet,
+  OMGOnboardingSheetWithButton,
+  OMGOnboardingPopup
+} from 'components/widgets'
 
-import Card from './Card'
-import Scroll from '../../widgets/omg-scroll'
-import ScrollElement from './ScrollElement'
+const OnboardingTourGuide = ({
+  enabledOnboarding,
+  currentPage,
+  currentPopup,
+  viewedPopups,
+  dispatchEnableOnboarding,
+  dispatchAddViewedPopup
+}) => {
+  const [tourVisible, setTourVisible] = useState(true)
+  const [tourContent, setTourContent] = useState(null)
 
-const scrollElements = [
-  {
-    large: 'Welcome to the Plasma Mobile Wallet',
-    small: 'Your official gateway to the OmiseGo network.'
-  },
-  {
-    large: 'The OmiseGo network turbocharges Ethereum',
-    small:
-      'It solves issues of affordability, speed and security for blockchain transactions.'
-  },
-  {
-    large: 'Get started on the OmiseGo network',
-    small:
-      'Manage your wallets, monitor your activity, transfer digital assets and more.'
-  }
-].map((element, index) => {
-  return <ScrollElement element={element} key={index} />
-})
-
-const Onboarding = ({ navigation, theme, wallets }) => {
-  if (wallets.length !== 0) {
-    navigation.navigate('Initializer')
-  }
-
-  const navigateCreateWallet = () => {
-    navigation.navigate('CreateWallet')
-  }
-  const navigateImportWallet = () => {
-    navigation.navigate('ImportWallet')
-  }
-  return (
-    <View style={styles.container(theme)}>
-      <Image
-        style={styles.logo}
-        source={require('../../../../assets/omisego-logo.png')}
-      />
-
-      <View style={styles.scroll}>
-        <Scroll children={scrollElements} />
-      </View>
-      <View>
-        <Card
-          color={theme.colors.black3}
-          header='Create New Wallet'
-          description='With a new Ethereum address'
-          onPress={navigateCreateWallet}
-        />
-        <Card
-          color={theme.colors.blue6}
-          header='Sync Your Wallet'
-          description='With your existing Ethereum address'
-          onPress={navigateImportWallet}
-        />
-      </View>
-    </View>
+  const handleEnableOnboardingAction = useCallback(
+    enabled => {
+      dispatchEnableOnboarding(enabled)
+      setTourVisible(false)
+    },
+    [dispatchEnableOnboarding]
   )
+
+  const handleDismissButtonAction = useCallback(() => {
+    dispatchAddViewedPopup(viewedPopups, currentPopup.name)
+    setTourVisible(false)
+  }, [currentPopup.name, dispatchAddViewedPopup, viewedPopups])
+
+  useEffect(() => {
+    const content = ContentSelector.select(
+      currentPage,
+      viewedPopups,
+      enabledOnboarding
+    )
+    setTourContent(content)
+  }, [currentPage, enabledOnboarding, viewedPopups])
+
+  useEffect(() => {
+    if (tourContent) {
+      setTourVisible(true)
+    } else {
+      setTourVisible(false)
+    }
+    return () => {
+      setTourVisible(false)
+    }
+  }, [tourContent])
+
+  useEffect(() => {
+    if (
+      currentPage !== 'childchain-balance' &&
+      currentPopup.name === 'plasmaWallet'
+    ) {
+      dispatchAddViewedPopup(viewedPopups, currentPopup.name)
+    } else if (
+      currentPage !== 'rootchain-balance' &&
+      currentPopup.name === 'ethereumWallet'
+    ) {
+      dispatchAddViewedPopup(viewedPopups, currentPopup.name)
+    }
+  }, [currentPage, currentPopup.name, dispatchAddViewedPopup, viewedPopups])
+
+  const shouldRenderButtons =
+    tourContent &&
+    (tourContent.buttonTextDismiss || tourContent.buttonTextConfirm)
+
+  if (tourContent) {
+    if (tourContent.isPopup) {
+      return (
+        <OMGOnboardingPopup
+          content={tourContent}
+          visible={tourVisible}
+          onPressedDismiss={handleDismissButtonAction}
+        />
+      )
+    } else if (shouldRenderButtons) {
+      if (tourContent.tourName === 'welcome') {
+        return (
+          <OMGOnboardingSheetWithButton
+            content={tourContent}
+            visible={tourVisible}
+            onPressedConfirm={() => handleEnableOnboardingAction(true)}
+            onPressedDismiss={() => handleEnableOnboardingAction(false)}
+          />
+        )
+      } else {
+        return (
+          <OMGOnboardingSheetWithButton
+            content={tourContent}
+            visible={tourVisible}
+            onPressedDismiss={handleDismissButtonAction}
+          />
+        )
+      }
+    } else {
+      return <OMGOnboardingSheet content={tourContent} visible={tourVisible} />
+    }
+  }
+  return null
 }
 
-const styles = StyleSheet.create({
-  container: theme => ({
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    backgroundColor: theme.colors.black5
-  }),
-  logo: {
-    width: 150,
-    height: 52,
-    marginTop: 60,
-    marginLeft: 30
-  },
-  scroll: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 20
-  },
-  scrollPoints: theme => ({
-    height: 10,
-    width: 10,
-    backgroundColor: theme.colors.black4,
-    margin: 8,
-    borderRadius: 5
-  })
+const mapStateToProps = (state, ownProps) => ({
+  enabledOnboarding: state.onboarding.enabled,
+  currentPage: state.onboarding.currentPage,
+  currentPopup: state.onboarding.currentPopup,
+  viewedPopups: state.onboarding.viewedPopups
 })
 
-const mapStateToProps = state => ({
-  wallets: state.wallets
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatchEnableOnboarding: enabled => {
+    onboardingActions.setEnableOnboarding(dispatch, enabled)
+  },
+  dispatchAddViewedPopup: (viewedPopups, popup) => {
+    onboardingActions.addViewedPopup(dispatch, viewedPopups, popup)
+  }
 })
 
 export default connect(
   mapStateToProps,
-  null
-)(withNavigation(withTheme(Onboarding)))
+  mapDispatchToProps
+)(OnboardingTourGuide)
