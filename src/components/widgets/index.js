@@ -19,6 +19,11 @@ import OMGMenuIcon from './omg-menu-icon'
 import OMGMenuImage from './omg-menu-image'
 import OMGMnemonicConfirmBox from './omg-mnemonic-confirm-box'
 import OMGModal from './omg-modal'
+import {
+  OMGOnboardingSheetWithButton,
+  OMGOnboardingSheet,
+  OMGOnboardingPopup
+} from './omg-onboarding'
 import OMGIcon from './omg-icon'
 import OMGImage from './omg-image'
 import OMGItemWallet from './omg-item-wallet'
@@ -40,6 +45,7 @@ import OMGItemTransaction from './omg-item-transaction'
 import OMGWalletAddress from './omg-wallet-address'
 import OMGTransactionFilter from './omg-transaction-filter'
 import OMGTransactionList from './omg-transaction-list'
+import OMGTourPopup from './omg-tour-popup'
 export {
   OMGAddressInput,
   OMGAmountInput,
@@ -66,6 +72,9 @@ export {
   OMGMenuImage,
   OMGMnemonicConfirmBox,
   OMGModal,
+  OMGOnboardingSheetWithButton,
+  OMGOnboardingSheet,
+  OMGOnboardingPopup,
   OMGQRCode,
   OMGQRScanner,
   OMGPasswordTextInput,
@@ -82,5 +91,6 @@ export {
   OMGViewPager,
   OMGWalletAddress,
   OMGTransactionFilter,
-  OMGTransactionList
+  OMGTransactionList,
+  OMGTourPopup
 }
