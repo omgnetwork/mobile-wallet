@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
 import { Dimensions } from 'common/utils'
-
+import { usePositionMeasurement } from 'common/hooks'
 import RootchainBalance from './RootchainBalance'
 import ChildchainBalance from './ChildchainBalance'
 import LinearGradient from 'react-native-linear-gradient'
@@ -22,6 +22,12 @@ import {
 import { transactionActions, onboardingActions } from 'common/actions'
 
 const pageWidth = Dimensions.windowWidth - 56
+const middlePageOffset = pageWidth - 16
+const viewPagerSnapOffsets = [
+  0,
+  Math.round(middlePageOffset),
+  Math.round(pageWidth * 2 - 32)
+]
 
 const Balance = ({
   theme,
@@ -32,6 +38,7 @@ const Balance = ({
   feedbackCompleteTx,
   dispatchInvalidateFeedbackCompleteTx,
   dispatchSetCurrentPage,
+  dispatchAddAnchoredComponent,
   currentPage
 }) => {
   const [
@@ -42,6 +49,18 @@ const Balance = ({
     handleOnClose,
     getLearnMoreLink
   ] = useProgressiveFeedback(theme, dispatchInvalidateFeedbackCompleteTx)
+
+  const onboardingPlasmaBlockchainLabelRef = usePositionMeasurement(
+    'PlasmaBlockchainLabel',
+    dispatchAddAnchoredComponent,
+    viewPagerSnapOffsets[0]
+  )
+
+  const onboardingEthereumBlockchainLabelRef = usePositionMeasurement(
+    'EthereumBlockchainLabel',
+    dispatchAddAnchoredComponent,
+    viewPagerSnapOffsets[1]
+  )
 
   useEffect(() => {
     function didFocus() {
@@ -120,13 +139,19 @@ const Balance = ({
           </View>
         ) : (
           <OMGViewPager
-            pageWidth={pageWidth}
+            snapOffsets={viewPagerSnapOffsets}
             onPageChanged={handleOnPageChanged}>
             <View style={styles.firstPage}>
-              <ChildchainBalance primaryWallet={primaryWallet} />
+              <ChildchainBalance
+                primaryWallet={primaryWallet}
+                anchoredComponentRef={onboardingPlasmaBlockchainLabelRef}
+              />
             </View>
             <View style={styles.secondPage}>
-              <RootchainBalance primaryWallet={primaryWallet} />
+              <RootchainBalance
+                primaryWallet={primaryWallet}
+                anchoredComponentRef={onboardingEthereumBlockchainLabelRef}
+              />
             </View>
             <View style={styles.thirdPage}>
               <ShowQR primaryWallet={primaryWallet} />
@@ -214,7 +239,13 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     transactionActions.invalidateFeedbackCompleteTx(dispatch),
   dispatchSetCurrentPage: (currentPage, page) => {
     onboardingActions.setCurrentPage(dispatch, currentPage, page)
-  }
+  },
+  dispatchAddAnchoredComponent: (anchoredComponentName, position) =>
+    onboardingActions.addAnchoredComponent(
+      dispatch,
+      anchoredComponentName,
+      position
+    )
 })
 
 export default connect(

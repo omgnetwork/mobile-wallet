@@ -64,7 +64,7 @@ export const ROOTCHAIN_POPUP = {
   buttonText: 'GOT IT',
   isPopup: true,
   arrowDirection: 'up',
-  positionTop: 220,
+  anchoredTo: 'EthereumBlockchainLabel',
   shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) => {
     return (
       enabledOnboarding &&
@@ -83,7 +83,7 @@ export const CHILDCHAIN_POPUP = {
   buttonText: 'GOT IT',
   isPopup: true,
   arrowDirection: 'up',
-  positionTop: 220,
+  anchoredTo: 'PlasmaBlockchainLabel',
   shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) => {
     return (
       enabledOnboarding &&

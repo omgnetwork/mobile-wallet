@@ -15,6 +15,7 @@ import {
 import { Alert } from 'common/constants'
 
 const ChildchainBalance = ({
+  anchoredComponentRef,
   dispatchLoadAssets,
   dispatchInvalidatePendingTxs,
   dispatchSetShouldRefreshChildchain,
@@ -101,6 +102,7 @@ const ChildchainBalance = ({
         rootchain={false}
         loading={loading}
         blockchain={'Plasma'}
+        anchoredRef={anchoredComponentRef}
         network={Config.OMISEGO_NETWORK}
       />
       <OMGAssetList

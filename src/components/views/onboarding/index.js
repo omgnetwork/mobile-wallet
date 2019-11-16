@@ -13,6 +13,7 @@ const OnboardingTourGuide = ({
   currentPage,
   currentPopup,
   viewedPopups,
+  anchoredComponents,
   dispatchEnableOnboarding,
   dispatchAddViewedPopup
 }) => {
@@ -71,11 +72,13 @@ const OnboardingTourGuide = ({
     (tourContent.buttonTextDismiss || tourContent.buttonTextConfirm)
 
   if (tourContent) {
-    if (tourContent.isPopup) {
+    const position = anchoredComponents[tourContent.anchoredTo]
+    if (tourContent.isPopup && position) {
       return (
         <OMGOnboardingPopup
           content={tourContent}
           visible={tourVisible}
+          position={position}
           onPressedDismiss={handleDismissButtonAction}
         />
       )
@@ -109,7 +112,8 @@ const mapStateToProps = (state, ownProps) => ({
   enabledOnboarding: state.onboarding.enabled,
   currentPage: state.onboarding.currentPage,
   currentPopup: state.onboarding.currentPopup,
-  viewedPopups: state.onboarding.viewedPopups
+  viewedPopups: state.onboarding.viewedPopups,
+  anchoredComponents: state.onboarding.anchoredComponents
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

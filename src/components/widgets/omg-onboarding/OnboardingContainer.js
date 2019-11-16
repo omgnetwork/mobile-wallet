@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { Slide } from 'common/anims'
 import { onboardingActions } from 'common/actions'
 
-const pageWidth = Dimensions.windowWidth - 80
+const marginToAnchoredComponent = 8
 
 const OMGOnboardingContainer = ({
   theme,
@@ -14,7 +14,7 @@ const OMGOnboardingContainer = ({
   visible,
   isModal,
   isPopup,
-  positionTop,
+  position,
   arrowDirection,
   tourName,
   currentPopup,
@@ -68,7 +68,7 @@ const OMGOnboardingContainer = ({
       <View>
         <Modal animationType='fade' transparent={true} visible={visible}>
           <View style={styles.popupModalContainer}>
-            <View style={styles.popupContainer(positionTop)}>
+            <View style={styles.popupContainer(position)}>
               {renderArrowWithContent()}
             </View>
           </View>
@@ -120,12 +120,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  popupContainer: top => ({
-    width: pageWidth,
+  popupContainer: position => ({
+    width: position.width,
     flexDirection: 'column',
     position: 'absolute',
     alignItems: 'center',
-    top: top || 0
+    left: position.left,
+    top: position.bottom + marginToAnchoredComponent || 0
   }),
   popupArrow: (theme, arrowDirection) => ({
     width: 0,

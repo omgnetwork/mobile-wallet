@@ -4,8 +4,8 @@
 //     "enabled": true,
 //     "currentPage": "plasma-wallet",
 //     "viewedPopups": ["plasma-wallet", "ethereum-wallet", "childchain-network", "rootchain-network"],
+//     "anchoredComponents": {}
 //     "currentPopup": {
-//       "position_y": 100,
 //       "name": "ethereum-wallet"
 //     }
 //   }
@@ -35,6 +35,18 @@ export const onboardingReducer = (state = {}, action) => {
       return {
         ...state,
         currentPopup: action.data
+      }
+    case 'ONBOARDING/ADD_ANCHORED_COMPONENT/OK':
+      const updatedAnchoredComponents = { ...state.anchoredComponents }
+      updatedAnchoredComponents[action.data.name] = {
+        top: action.data.top,
+        bottom: action.data.bottom,
+        width: action.data.width,
+        left: action.data.left
+      }
+      return {
+        ...state,
+        anchoredComponents: updatedAnchoredComponents
       }
     default:
       return state

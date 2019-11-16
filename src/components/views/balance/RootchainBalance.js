@@ -12,7 +12,8 @@ const RootchainBalance = ({
   provider,
   dispatchLoadAssets,
   wallet,
-  dispatchRefreshRootchain
+  dispatchRefreshRootchain,
+  anchoredComponentRef
 }) => {
   const [totalBalance, setTotalBalance] = useState(0.0)
   const [loading, setLoading] = useState(false)
@@ -57,6 +58,7 @@ const RootchainBalance = ({
         loading={loading}
         rootchain={true}
         blockchain={'Ethereum'}
+        anchoredRef={anchoredComponentRef}
         network={Config.ETHERSCAN_NETWORK}
       />
       <OMGAssetList

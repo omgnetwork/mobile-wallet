@@ -4,14 +4,20 @@ import { StyleSheet, View } from 'react-native'
 import { OMGButton, OMGText } from 'components/widgets'
 import OnboardingContainer from './OnboardingContainer'
 
-const OMGOnboardingPopup = ({ theme, content, visible, onPressedDismiss }) => {
+const OMGOnboardingPopup = ({
+  theme,
+  content,
+  visible,
+  onPressedDismiss,
+  position
+}) => {
   return (
     <OnboardingContainer
       visible={visible}
       isPopup={true}
       tourName={content.tourName}
       arrowDirection={content.arrowDirection}
-      positionTop={content.positionTop}>
+      position={position}>
       <View style={styles.container(theme)}>
         <OMGText weight='bold' style={styles.title(theme)}>
           {content.title}

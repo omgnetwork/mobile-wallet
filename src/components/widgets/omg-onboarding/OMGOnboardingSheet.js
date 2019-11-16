@@ -6,7 +6,6 @@ import { OMGText } from 'components/widgets'
 import * as TourImages from './assets'
 
 const OMGOnboardingSheet = ({ theme, content, visible }) => {
-  console.log(content)
   const ImageCenter = TourImages[content.imageCenterName]
   const ImageBottom = TourImages[content.imageBottomName]
 

@@ -19,9 +19,7 @@ export const setCurrentPage = (dispatch, currentPage, page) => {
 }
 
 export const addViewedPopup = (dispatch, viewedPopups, popup) => {
-  console.log(viewedPopups, popup)
   if (!popup || viewedPopups.indexOf(popup) > -1) return
-  console.log(viewedPopups.indexOf(popup) > -1)
   const action = () => ({ popup })
   return createAction(dispatch, {
     operation: action,
@@ -34,5 +32,14 @@ export const setCurrentPopup = (dispatch, name, position) => {
   return createAction(dispatch, {
     operation: action,
     type: 'ONBOARDING/SET_CURRENT_POPUP'
+  })
+}
+
+export const addAnchoredComponent = (dispatch, name, position) => {
+  const { top, bottom, width, left } = position
+  const action = () => ({ name, top, bottom, width, left })
+  return createAction(dispatch, {
+    operation: action,
+    type: 'ONBOARDING/ADD_ANCHORED_COMPONENT'
   })
 }
