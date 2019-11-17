@@ -1,11 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import QRCodeScanner from 'react-native-qrcode-scanner'
-import { View, StyleSheet, Dimensions, Animated } from 'react-native'
+import { View, StyleSheet, Animated } from 'react-native'
 import Svg, { Rect, Path } from 'react-native-svg'
-import OMGText from '../omg-text'
+import { Dimensions } from 'common/utils'
+import { OMGText } from 'components/widgets'
 
-const SCREEN_WIDTH = Dimensions.get('window').width
+const SCREEN_WIDTH = Dimensions.windowWidth
 export const ROOTCHAIN_OVERLAY_COLOR = 'rgba(125, 85, 246, 0.50)'
 export const CHILDCHAIN_OVERLAY_COLOR = 'rgba(33, 118, 255, 0.50)'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { withNavigation, SwitchActions } from 'react-navigation'
+import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { StyleSheet, Dimensions } from 'react-native'
 

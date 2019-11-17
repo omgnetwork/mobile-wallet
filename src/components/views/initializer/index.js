@@ -19,7 +19,9 @@ const Initializer = ({
   wallets
 }) => {
   useEffect(() => {
-    if (wallets.length === 0 || (wallet && provider && blockchainWallet)) {
+    if (wallets.length === 0) {
+      navigation.navigate('Welcome')
+    } else if (wallet && provider && blockchainWallet) {
       navigation.navigate('MainContent')
       GoogleAnalytics.sendEvent('view_balance', {})
     } else if (shouldGetBlockchainWallet(wallet, blockchainWallet, provider)) {
@@ -75,7 +77,8 @@ const styles = StyleSheet.create({
     color: theme.colors.primary
   }),
   empty: {
-    flex: 0
+    flex: 0,
+    paddingVertical: 16
   }
 })
 

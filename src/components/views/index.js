@@ -38,7 +38,7 @@ import {
 } from './transfer'
 import Wallets from './wallets'
 import WarpPortal from './warp-portal'
-import Onboarding from './get-started'
+import Welcome from './welcome'
 import OnboardingTourGuide from './onboarding'
 import * as Tour from './tour'
 
@@ -64,7 +64,6 @@ export {
   Initializer,
   Main,
   ManageWallet,
-  Onboarding,
   OnboardingTourGuide,
   Preview,
   Setting,
@@ -81,5 +80,6 @@ export {
   TransactionHistoryFilter,
   TransactionDetail,
   Wallets,
-  WarpPortal
+  WarpPortal,
+  Welcome
 }

@@ -8,6 +8,7 @@ import BackupWalletNavigator from './backup-wallet'
 import CreateWalletNavigator from './create-wallet'
 import ManageWalletNavigator from './manage-wallet'
 import TransactionHistoryNavigator from './transaction-history'
+import createWelcomeNavigator from './welcome'
 import WarpPortal from './warp-portal'
 import * as Views from 'components/views'
 
@@ -24,9 +25,15 @@ Views.ImportWallet.router = ImportWalletNavigator.router
 Views.CreateWallet.router = CreateWalletNavigator.router
 Views.Backup.router = BackupWalletNavigator.router
 
+const WelcomeNavigator = createWelcomeNavigator(
+  ImportWalletNavigator,
+  CreateWalletNavigator
+)
+
 const InitializationNavigator = createSwitchNavigator(
   {
     Initializer: Views.Initializer,
+    Welcome: WelcomeNavigator,
     MainContent: {
       screen: Views.Main,
       params: {

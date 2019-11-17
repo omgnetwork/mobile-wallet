@@ -1,33 +1,25 @@
 import React from 'react'
 import { withNavigation, ScrollView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { Animated, Dimensions, StyleSheet, View } from 'react-native'
+import { Animated, StyleSheet, View } from 'react-native'
+import { Dimensions } from 'common/utils'
 
-const width = Dimensions.get('window').width
+const width = Dimensions.windowWidth
 
-const Scroll = ({ theme, children, scrollEnd = () => {} }) => {
+const OMGDotViewPager = ({ theme, children }) => {
   const scrollX = new Animated.Value(0)
   const position = Animated.divide(scrollX, width)
-  const handleScroll = event => {
-    Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }])(event)
-    const scrollPosition = Number(event.nativeEvent.contentOffset.x)
-    const end = width * (children.length - 1)
-    if (scrollPosition === end) {
-      scrollEnd()
-    }
-  }
   return (
     <View style={styles.container}>
       <View>
         <ScrollView
-          children={children}
           horizontal={true}
           pagingEnabled={true}
-          onScroll={event => handleScroll(event)}
-          scrollEventThrottle={8}
-        />
+          scrollEventThrottle={8}>
+          {children}
+        </ScrollView>
         <View style={styles.scrollDots}>
-          {children.map((_, index) => {
+          {/* {[...Array(3)].map((_, index) => {
             let opacity = position.interpolate({
               inputRange: [index - 1, index, index + 1],
               outputRange: [0.3, 1, 0.3],
@@ -39,7 +31,7 @@ const Scroll = ({ theme, children, scrollEnd = () => {} }) => {
                 style={[styles.dot(theme), { opacity }]}
               />
             )
-          })}
+          })} */}
         </View>
       </View>
     </View>
@@ -63,4 +55,4 @@ const styles = StyleSheet.create({
   })
 })
 
-export default withNavigation(withTheme(Scroll))
+export default withNavigation(withTheme(OMGDotViewPager))

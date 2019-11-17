@@ -4,7 +4,7 @@ import { withNavigation } from 'react-navigation'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { OMGIcon, OMGText } from '../../widgets'
 
-const Card = ({ theme, color, header, description, onPress }) => {
+const CardMenu = ({ theme, color, header, description, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View>
@@ -48,4 +48,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withNavigation(withTheme(Card))
+export default withNavigation(withTheme(CardMenu))

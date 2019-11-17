@@ -8,6 +8,7 @@ import OMGBackground from './omg-background'
 import OMGBottomSheet from './omg-bottom-sheet'
 import OMGBox from './omg-box'
 import OMGButton from './omg-button'
+import OMGDotViewPager from './omg-dot-view-pager'
 import OMGDismissKeyboard from './omg-dismiss-keyboard'
 import OMGDrawerContent from './omg-drawer-content'
 import OMGEmpty from './omg-empty'
@@ -56,6 +57,7 @@ export {
   OMGBottomSheet,
   OMGBox,
   OMGButton,
+  OMGDotViewPager,
   OMGDismissKeyboard,
   OMGDrawerContent,
   OMGEmpty,

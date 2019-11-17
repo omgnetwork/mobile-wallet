@@ -88,9 +88,9 @@ const WarpPortalNavigator = createStackNavigator(
       screen: Views.Wallets,
       navigationOptions: () => ({ title: 'Wallets' })
     },
-    Onboarding: {
-      screen: Views.Onboarding,
-      navigationOptions: () => ({ title: 'Onboarding' })
+    Welcome: {
+      screen: Views.Welcome,
+      navigationOptions: () => ({ title: 'Welcome' })
     },
     Modal: {
       screen: Widgets.OMGModal,

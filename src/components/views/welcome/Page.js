@@ -1,19 +1,18 @@
 import React from 'react'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { Dimensions, StyleSheet, View } from 'react-native'
-import { OMGText } from '../../widgets'
+import { StyleSheet, View } from 'react-native'
+import { OMGText } from 'components/widgets'
+import { Dimensions } from 'common/utils'
 
-const deviceWidth = Dimensions.get('window').width
-
-const ScrollElement = ({ theme, element }) => {
+const Page = ({ theme, textTitle, textContent }) => {
   return (
     <View style={styles.container}>
       <OMGText style={[styles.text(theme), styles.header]} weight='bold'>
-        {element.large}
+        {textTitle}
       </OMGText>
       <OMGText style={[styles.text(theme), styles.subheader]}>
-        {element.small}
+        {textContent}
       </OMGText>
     </View>
   )
@@ -21,7 +20,7 @@ const ScrollElement = ({ theme, element }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: deviceWidth,
+    width: Dimensions.windowWidth,
     justifyContent: 'center',
     height: 300
   },
@@ -40,4 +39,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withNavigation(withTheme(ScrollElement))
+export default withNavigation(withTheme(Page))

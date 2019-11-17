@@ -2,7 +2,6 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
-import { onboardingActions } from 'common/actions'
 import { OnboardingTourGuide } from 'components/views'
 
 const MainContainer = ({ navigation }) => {

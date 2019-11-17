@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, TouchableOpacity, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
@@ -26,6 +26,11 @@ const ManageWallet = ({
       didFocusSubscription.remove()
     }
   }, [currentPage, dispatchSetCurrentPage, navigation, theme.colors.white])
+
+  const handleDeleteAll = useCallback(() => {
+    navigation.navigate('Welcome')
+    dispatchDeleteAll()
+  }, [dispatchDeleteAll, navigation])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -66,7 +71,7 @@ const ManageWallet = ({
         />
         <View style={styles.divider(theme)} />
       </View>
-      <OMGButton onPress={dispatchDeleteAll} style={styles.btnClearAll(theme)}>
+      <OMGButton onPress={handleDeleteAll} style={styles.btnClearAll(theme)}>
         DELETE ALL
       </OMGButton>
     </SafeAreaView>

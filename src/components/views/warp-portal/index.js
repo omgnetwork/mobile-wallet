@@ -64,8 +64,8 @@ const WarpPortal = ({ navigation }) => {
         <Button
           mode='outlined'
           style={styles.button}
-          onPress={() => navigation.navigate('Onboarding')}>
-          Onboarding
+          onPress={() => navigation.navigate('Welcome')}>
+          Welcome
         </Button>
         <Button
           mode='outlined'
