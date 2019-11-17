@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Linking, View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
@@ -35,6 +35,7 @@ const Balance = ({
   navigation,
   wallets,
   pendingTxs,
+  loading,
   feedbackCompleteTx,
   dispatchInvalidateFeedbackCompleteTx,
   dispatchSetCurrentPage,
@@ -50,13 +51,19 @@ const Balance = ({
     getLearnMoreLink
   ] = useProgressiveFeedback(theme, dispatchInvalidateFeedbackCompleteTx)
 
-  const onboardingPlasmaBlockchainLabelRef = usePositionMeasurement(
+  const [
+    plasmaBlockchainLabelRef,
+    measurePlasmaBlockchainLabel
+  ] = usePositionMeasurement(
     'PlasmaBlockchainLabel',
     dispatchAddAnchoredComponent,
     viewPagerSnapOffsets[0]
   )
 
-  const onboardingEthereumBlockchainLabelRef = usePositionMeasurement(
+  const [
+    ethereumBlockchainLabelRef,
+    measureEthereumBlockchainLabel
+  ] = usePositionMeasurement(
     'EthereumBlockchainLabel',
     dispatchAddAnchoredComponent,
     viewPagerSnapOffsets[1]
@@ -74,6 +81,13 @@ const Balance = ({
       didFocusSubscription.remove()
     }
   }, [navigation, primaryWallet, theme.colors.black5])
+
+  useEffect(() => {
+    if (loading.action === 'ROOTCHAIN_FETCH_ASSETS' && loading.show) {
+      measurePlasmaBlockchainLabel()
+      measureEthereumBlockchainLabel()
+    }
+  }, [loading, measureEthereumBlockchainLabel, measurePlasmaBlockchainLabel])
 
   const handleOnPageChanged = useCallback(
     page => {
@@ -93,8 +107,8 @@ const Balance = ({
   )
 
   useEffect(() => {
-    dispatchSetCurrentPage(null, 'childchain-balance')
-  }, [dispatchSetCurrentPage])
+    if (primaryWallet) dispatchSetCurrentPage(null, 'childchain-balance')
+  }, [dispatchSetCurrentPage, primaryWallet])
 
   const handleLearnMoreClick = useCallback(() => {
     const externalURL = getLearnMoreLink()
@@ -144,13 +158,13 @@ const Balance = ({
             <View style={styles.firstPage}>
               <ChildchainBalance
                 primaryWallet={primaryWallet}
-                anchoredComponentRef={onboardingPlasmaBlockchainLabelRef}
+                anchoredComponentRef={plasmaBlockchainLabelRef}
               />
             </View>
             <View style={styles.secondPage}>
               <RootchainBalance
                 primaryWallet={primaryWallet}
-                anchoredComponentRef={onboardingEthereumBlockchainLabelRef}
+                anchoredComponentRef={ethereumBlockchainLabelRef}
               />
             </View>
             <View style={styles.thirdPage}>
@@ -214,7 +228,8 @@ const styles = StyleSheet.create({
   },
   emptyButton: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginHorizontal: 16
   },
   modal: {
     marginTop: 310

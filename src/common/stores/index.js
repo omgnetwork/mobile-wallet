@@ -38,7 +38,7 @@ const initialState = {
     enabled: false,
     currentPage: null,
     viewedPopups: [],
-    currentPopup: {},
+    currentPopup: null,
     anchoredComponents: {}
   }
 }

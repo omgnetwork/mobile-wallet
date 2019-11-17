@@ -32,11 +32,11 @@ const OMGOnboardingContainer = ({
       }
     }
 
-    if (visible && currentPopup.name !== tourName) {
-      dispatchSetCurrentPopup(tourName, 0)
+    if (visible && currentPopup !== tourName) {
+      dispatchSetCurrentPopup(tourName)
     }
   }, [
-    currentPopup.name,
+    currentPopup,
     dispatchSetCurrentPopup,
     isModal,
     isPopup,
@@ -151,8 +151,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchSetCurrentPopup: (popup, positionY) => {
-    onboardingActions.setCurrentPopup(dispatch, popup, positionY)
+  dispatchSetCurrentPopup: popup => {
+    onboardingActions.setCurrentPopup(dispatch, popup)
   }
 })
 

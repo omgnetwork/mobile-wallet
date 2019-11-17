@@ -17,7 +17,7 @@ const persistSettingConfig = {
 const persistOnboardingConfig = {
   key: 'onboarding',
   storage: Storage,
-  whitelist: ['enabled']
+  whitelist: ['enabled', 'viewedPopups']
 }
 
 export default combineReducers({

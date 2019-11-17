@@ -14,6 +14,7 @@ const OnboardingTourGuide = ({
   currentPopup,
   viewedPopups,
   anchoredComponents,
+  hasWallet,
   dispatchEnableOnboarding,
   dispatchAddViewedPopup
 }) => {
@@ -29,18 +30,20 @@ const OnboardingTourGuide = ({
   )
 
   const handleDismissButtonAction = useCallback(() => {
-    dispatchAddViewedPopup(viewedPopups, currentPopup.name)
+    dispatchAddViewedPopup(viewedPopups, currentPopup)
     setTourVisible(false)
-  }, [currentPopup.name, dispatchAddViewedPopup, viewedPopups])
+  }, [currentPopup, dispatchAddViewedPopup, viewedPopups])
 
   useEffect(() => {
-    const content = ContentSelector.select(
-      currentPage,
-      viewedPopups,
-      enabledOnboarding
-    )
-    setTourContent(content)
-  }, [currentPage, enabledOnboarding, viewedPopups])
+    if (hasWallet) {
+      const content = ContentSelector.select(
+        currentPage,
+        viewedPopups,
+        enabledOnboarding
+      )
+      setTourContent(content)
+    }
+  }, [currentPage, enabledOnboarding, hasWallet, viewedPopups])
 
   useEffect(() => {
     if (tourContent) {
@@ -56,22 +59,23 @@ const OnboardingTourGuide = ({
   useEffect(() => {
     if (
       currentPage !== 'childchain-balance' &&
-      currentPopup.name === 'plasmaWallet'
+      currentPopup === 'plasmaWallet'
     ) {
-      dispatchAddViewedPopup(viewedPopups, currentPopup.name)
+      dispatchAddViewedPopup(viewedPopups, currentPopup)
     } else if (
       currentPage !== 'rootchain-balance' &&
-      currentPopup.name === 'ethereumWallet'
+      currentPopup === 'ethereumWallet'
     ) {
-      dispatchAddViewedPopup(viewedPopups, currentPopup.name)
+      dispatchAddViewedPopup(viewedPopups, currentPopup)
     }
-  }, [currentPage, currentPopup.name, dispatchAddViewedPopup, viewedPopups])
+  }, [currentPage, currentPopup, dispatchAddViewedPopup, viewedPopups])
 
   const shouldRenderButtons =
     tourContent &&
     (tourContent.buttonTextDismiss || tourContent.buttonTextConfirm)
 
   if (tourContent) {
+    console.log(tourContent)
     const position = anchoredComponents[tourContent.anchoredTo]
     if (tourContent.isPopup && position) {
       return (
@@ -101,7 +105,7 @@ const OnboardingTourGuide = ({
           />
         )
       }
-    } else {
+    } else if (!tourContent.isPopup) {
       return <OMGOnboardingSheet content={tourContent} visible={tourVisible} />
     }
   }
@@ -109,6 +113,7 @@ const OnboardingTourGuide = ({
 }
 
 const mapStateToProps = (state, ownProps) => ({
+  hasWallet: state.wallets.length > 0,
   enabledOnboarding: state.onboarding.enabled,
   currentPage: state.onboarding.currentPage,
   currentPopup: state.onboarding.currentPopup,

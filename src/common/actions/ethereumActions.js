@@ -67,7 +67,6 @@ export const fetchAssets = (provider, address, lastBlockNumber) => {
 
   return createAsyncAction({
     type: 'ROOTCHAIN/FETCH_ASSETS',
-    operation: asyncAction,
-    isBackgroundTask: lastBlockNumber > 0
+    operation: asyncAction
   })
 }

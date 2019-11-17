@@ -27,8 +27,8 @@ export const addViewedPopup = (dispatch, viewedPopups, popup) => {
   })
 }
 
-export const setCurrentPopup = (dispatch, name, position) => {
-  const action = () => ({ name, position })
+export const setCurrentPopup = (dispatch, name) => {
+  const action = () => ({ name })
   return createAction(dispatch, {
     operation: action,
     type: 'ONBOARDING/SET_CURRENT_POPUP'

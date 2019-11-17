@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 
 const usePositionMeasurement = (
   anchoredComponentName,
@@ -6,7 +6,8 @@ const usePositionMeasurement = (
   offset
 ) => {
   const anchoredComponentRef = useRef(null)
-  useEffect(() => {
+
+  const measure = useCallback(() => {
     if (anchoredComponentRef.current) {
       setTimeout(() => {
         anchoredComponentRef.current.measure(
@@ -24,7 +25,7 @@ const usePositionMeasurement = (
     }
   }, [anchoredComponentName, dispatchAddAnchoredComponent, offset])
 
-  return anchoredComponentRef
+  return [anchoredComponentRef, measure]
 }
 
 export default usePositionMeasurement

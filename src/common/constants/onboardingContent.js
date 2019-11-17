@@ -6,7 +6,8 @@ export const WELCOME_BOTTOM_SHEET = {
   buttonTextConfirm: 'TAKE A TOUR',
   buttonTextDismiss: 'NO, THANKS',
   isModal: true,
-  shouldDisplay: enabledOnboarding => !enabledOnboarding
+  shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) =>
+    enabledOnboarding === null && currentPage === 'childchain-balance'
 }
 
 export const PLASMA_WALLET_BOTTOM_SHEET = {

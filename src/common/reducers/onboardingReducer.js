@@ -17,8 +17,10 @@ export const onboardingReducer = (state = {}, action) => {
       return action.data.enabled
         ? { ...state, enabled: true }
         : {
+            ...state,
             enabled: false,
             currentPage: null,
+            currentPopup: null,
             viewedPopups: []
           }
     case 'ONBOARDING/SET_CURRENT_PAGE/OK':
@@ -34,7 +36,7 @@ export const onboardingReducer = (state = {}, action) => {
     case 'ONBOARDING/SET_CURRENT_POPUP/OK':
       return {
         ...state,
-        currentPopup: action.data
+        currentPopup: action.data.name
       }
     case 'ONBOARDING/ADD_ANCHORED_COMPONENT/OK':
       const updatedAnchoredComponents = { ...state.anchoredComponents }
@@ -47,6 +49,14 @@ export const onboardingReducer = (state = {}, action) => {
       return {
         ...state,
         anchoredComponents: updatedAnchoredComponents
+      }
+    case 'WALLET/DELETE_ALL/OK':
+      return {
+        ...state,
+        enabled: null,
+        currentPage: null,
+        currentPopup: null,
+        viewedPopups: []
       }
     default:
       return state

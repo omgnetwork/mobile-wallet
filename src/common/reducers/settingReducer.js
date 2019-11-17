@@ -23,12 +23,12 @@ export const settingReducer = (state = {}, action) => {
         ...state,
         blockchainWallet: action.data.blockchainWallet
       }
-    case 'SETTING/SET_SKIP_TOUR/OK': {
-      return { ...state, skipTour: action.data.skip }
-    }
-    case 'SETTING/SET_TOUR_STEP/OK': {
-      return { ...state, tourStage: action.data.stage }
-    }
+    case 'WALLET/DELETE_ALL/OK':
+      return {
+        ...state,
+        primaryWalletAddress: null,
+        blockchainWallet: null
+      }
     default:
       return state
   }

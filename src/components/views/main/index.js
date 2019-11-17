@@ -1,11 +1,11 @@
-import React, { useCallback, useState } from 'react'
+import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
 import { onboardingActions } from 'common/actions'
 import { OnboardingTourGuide } from 'components/views'
 
-const MainContainer = ({ navigation, dispatchEnableOnboarding }) => {
+const MainContainer = ({ navigation }) => {
   const MainDrawerNavigator = navigation.getParam('navigator')
 
   return (
@@ -28,13 +28,7 @@ const mapStateToProps = (state, ownProps) => ({
   )
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchEnableOnboarding: enabled => {
-    onboardingActions.setEnableOnboarding(dispatch, enabled)
-  }
-})
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(withTheme(MainContainer))
