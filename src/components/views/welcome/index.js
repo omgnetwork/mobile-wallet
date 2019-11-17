@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import React from 'react'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Image, StyleSheet, View } from 'react-native'
@@ -26,7 +25,7 @@ const PageItems = [
   return <Page textTitle={item.title} textContent={item.content} key={index} />
 })
 
-const Welcome = ({ navigation, theme, hasWallet }) => {
+const Welcome = ({ navigation, theme }) => {
   const navigateCreateWallet = () => {
     navigation.navigate('WelcomeCreateWallet')
   }
@@ -88,11 +87,4 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = state => ({
-  hasWallet: state.wallets.length > 0
-})
-
-export default connect(
-  mapStateToProps,
-  null
-)(withNavigation(withTheme(Welcome)))
+export default withNavigation(withTheme(Welcome))
