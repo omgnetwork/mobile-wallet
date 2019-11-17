@@ -44,7 +44,7 @@ export const getTxs = (address, provider, options) => {
         queryChildchainOptions
       )
 
-      const currencies = childchainTxs.map(Mapper.mapCurrency)
+      const currencies = childchainTxs.map(Mapper.mapTxCurrency)
 
       const contractAddresses = Array.from(new Set(currencies))
 

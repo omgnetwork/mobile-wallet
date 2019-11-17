@@ -2,9 +2,9 @@ import { createAsyncAction } from './actionCreators'
 import { plasmaService } from 'common/services'
 import { Datetime } from 'common/utils'
 
-export const fetchAssets = (rootchainAssets, address) => {
+export const fetchAssets = (provider, address) => {
   const asyncAction = async () => {
-    const result = await plasmaService.fetchAssets(rootchainAssets, address)
+    const result = await plasmaService.fetchAssets(provider, address)
     return {
       address,
       childchainAssets: result.childchainAssets,

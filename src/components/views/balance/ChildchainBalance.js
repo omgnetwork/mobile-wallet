@@ -21,6 +21,7 @@ const ChildchainBalance = ({
   dispatchSetShouldRefreshChildchain,
   pendingTxs,
   wallet,
+  provider,
   navigation
 }) => {
   const currency = 'USD'
@@ -64,18 +65,12 @@ const ChildchainBalance = ({
   }, [hasPendingTransaction, navigation, shouldEnableExitAction])
 
   useEffect(() => {
-    if (wallet.shouldRefreshChildchain && wallet.rootchainAssets) {
+    if (wallet.shouldRefreshChildchain) {
       setLoading(true)
-      dispatchLoadAssets(wallet)
+      dispatchLoadAssets(provider, wallet)
       dispatchSetShouldRefreshChildchain(wallet.address, false)
     }
-  }, [
-    dispatchInvalidatePendingTxs,
-    dispatchLoadAssets,
-    dispatchSetShouldRefreshChildchain,
-    pendingTxs,
-    wallet
-  ])
+  }, [dispatchLoadAssets, dispatchSetShouldRefreshChildchain, provider, wallet])
 
   const handleReload = useCallback(() => {
     dispatchSetShouldRefreshChildchain(wallet.address, true)
@@ -143,6 +138,7 @@ const formatTotalBalance = balance => {
 }
 
 const mapStateToProps = (state, ownProps) => ({
+  provider: state.setting.provider,
   pendingTxs: state.transaction.pendingTxs,
   loading: state.loading,
   wallet: state.wallets.find(
@@ -151,8 +147,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchLoadAssets: wallet =>
-    dispatch(plasmaActions.fetchAssets(wallet.rootchainAssets, wallet.address)),
+  dispatchLoadAssets: (provider, wallet) =>
+    dispatch(plasmaActions.fetchAssets(provider, wallet.address)),
   dispatchSetShouldRefreshChildchain: (address, shouldRefreshChildchain) =>
     walletActions.refreshChildchain(dispatch, address, shouldRefreshChildchain)
 })

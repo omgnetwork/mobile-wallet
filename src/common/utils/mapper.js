@@ -52,10 +52,12 @@ export const mapRootchainTx = (tx, address, cachedErc20Tx) => {
   }
 }
 
-export const mapCurrency = tx => {
+export const mapTxCurrency = tx => {
   const usedCurrency = tx.results[tx.results.length - 1]
   return usedCurrency.currency
 }
+
+export const mapAssetCurrency = asset => asset.currency
 
 const mapRootchainEthTx = (tx, address) => {
   return {
