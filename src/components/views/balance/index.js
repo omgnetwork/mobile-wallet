@@ -92,8 +92,11 @@ const Balance = ({
 
   useEffect(() => {
     if (loading.action === 'ROOTCHAIN_FETCH_ASSETS' && loading.show) {
-      measurePlasmaBlockchainLabel()
-      measureEthereumBlockchainLabel({ offset: -viewPagerSnapOffsets[1] })
+      measurePlasmaBlockchainLabel({ widthOffset: 30, offset: -15 })
+      measureEthereumBlockchainLabel({
+        offset: -viewPagerSnapOffsets[1] - 8,
+        widthOffset: 16
+      })
       measureDepositButton({
         offset: -viewPagerSnapOffsets[1] + 8,
         widthOffset: -16

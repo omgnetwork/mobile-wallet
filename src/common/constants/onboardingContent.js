@@ -157,6 +157,7 @@ export const EXIT_POPUP = {
   isPopup: true,
   arrowDirection: 'down',
   anchoredTo: 'ExitButton',
+  imageBottomName: 'TourExit',
   shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) => {
     return (
       enabledOnboarding &&

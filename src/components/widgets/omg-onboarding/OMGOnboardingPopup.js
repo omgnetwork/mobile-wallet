@@ -3,6 +3,7 @@ import { withTheme } from 'react-native-paper'
 import { StyleSheet, View } from 'react-native'
 import { OMGButton, OMGText } from 'components/widgets'
 import OnboardingContainer from './OnboardingContainer'
+import * as TourImages from './assets'
 
 const OMGOnboardingPopup = ({
   theme,
@@ -11,6 +12,8 @@ const OMGOnboardingPopup = ({
   onPressedDismiss,
   position
 }) => {
+  const ImageBottom = TourImages[content.imageBottomName]
+
   const TextContent = content.paragraphs.map((paragraph, key) => {
     return (
       <OMGText style={styles.text(theme)} key={key}>
@@ -32,6 +35,8 @@ const OMGOnboardingPopup = ({
         </OMGText>
         <View style={styles.textContainer}>{TextContent}</View>
         <View style={styles.buttonContainer}>
+          {ImageBottom && <ImageBottom width={148} />}
+          <View style={styles.expand} />
           <OMGButton
             style={styles.button(theme)}
             onPress={onPressedDismiss}
@@ -50,8 +55,7 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.blue5,
     borderRadius: theme.roundness,
     backgroundColor: theme.colors.blue5,
-    flexDirection: 'column',
-    alignItems: 'flex-end'
+    flexDirection: 'column'
   }),
   title: theme => ({
     alignSelf: 'flex-start',
@@ -64,11 +68,16 @@ const styles = StyleSheet.create({
     color: theme.colors.white3,
     marginTop: 20
   }),
+  expand: {
+    flex: 1
+  },
   buttonContainer: {
+    flexDirection: 'row',
     marginTop: 20
   },
   button: theme => ({
     width: 80,
+    alignSelf: 'flex-end',
     borderRadius: theme.roundness,
     borderWidth: 1,
     borderColor: theme.colors.white,
