@@ -1,11 +1,19 @@
 import React, { useEffect, useState, Fragment, useCallback } from 'react'
 import { connect } from 'react-redux'
+import { withNavigation } from 'react-navigation'
+
 import { StyleSheet } from 'react-native'
 import { walletActions, ethereumActions } from 'common/actions'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
-import { Formatter, Datetime } from 'common/utils'
-import { OMGItemToken, OMGAssetHeader, OMGAssetList } from 'components/widgets'
+import { Formatter, Datetime, Alerter } from 'common/utils'
+import {
+  OMGItemToken,
+  OMGAssetHeader,
+  OMGAssetList,
+  OMGAssetFooter
+} from 'components/widgets'
+import { Alert } from 'common/constants'
 
 const RootchainBalance = ({
   pendingTxs,
@@ -13,10 +21,14 @@ const RootchainBalance = ({
   dispatchLoadAssets,
   wallet,
   dispatchRefreshRootchain,
-  anchoredComponentRef
+  blockchainLabelRef,
+  depositButtonRef,
+  navigation
 }) => {
   const [totalBalance, setTotalBalance] = useState(0.0)
   const [loading, setLoading] = useState(false)
+  const hasPendingTransaction = pendingTxs.length > 0
+
   const currency = 'USD'
 
   useEffect(() => {
@@ -33,6 +45,21 @@ const RootchainBalance = ({
     wallet
   ])
 
+  const shouldEnableDepositAction = useCallback(() => {
+    if (!hasPendingTransaction) {
+      return true
+    }
+    return false
+  }, [hasPendingTransaction])
+
+  const handleDepositClick = useCallback(() => {
+    if (shouldEnableDepositAction()) {
+      Alerter.show(Alert.CANNOT_DEPOSIT_PENDING_TRANSACTION)
+    } else {
+      navigation.navigate('TransferDeposit')
+    }
+  }, [navigation, shouldEnableDepositAction])
+
   useEffect(() => {
     if (wallet.rootchainAssets) {
       setLoading(false)
@@ -44,7 +71,7 @@ const RootchainBalance = ({
 
       setTotalBalance(totalPrices)
     }
-  }, [wallet.rootchainAssets])
+  }, [wallet])
 
   const handleReload = useCallback(() => {
     dispatchRefreshRootchain(wallet.address, true)
@@ -58,7 +85,7 @@ const RootchainBalance = ({
         loading={loading}
         rootchain={true}
         blockchain={'Ethereum'}
-        anchoredRef={anchoredComponentRef}
+        anchoredRef={blockchainLabelRef}
         network={Config.ETHERSCAN_NETWORK}
       />
       <OMGAssetList
@@ -71,6 +98,13 @@ const RootchainBalance = ({
         renderItem={({ item }) => (
           <OMGItemToken key={item.contractAddress} token={item} />
         )}
+      />
+      <OMGAssetFooter
+        enableDeposit={shouldEnableDepositAction()}
+        showExit={false}
+        depositText='DEPOSIT TO PLASMA'
+        footerRef={depositButtonRef}
+        onPressDeposit={handleDepositClick}
       />
     </Fragment>
   )
@@ -110,4 +144,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTheme(RootchainBalance))
+)(withNavigation(withTheme(RootchainBalance)))

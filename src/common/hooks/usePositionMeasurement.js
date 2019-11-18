@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useRef, useCallback } from 'react'
 
 const usePositionMeasurement = (
   anchoredComponentName,
@@ -12,7 +12,6 @@ const usePositionMeasurement = (
       setTimeout(() => {
         anchoredComponentRef.current.measure(
           (fx, fy, width, height, px, py) => {
-            console.log(fx, fy, width, height, px, py)
             dispatchAddAnchoredComponent(anchoredComponentName, {
               top: Math.round(py),
               bottom: Math.round(py + height),

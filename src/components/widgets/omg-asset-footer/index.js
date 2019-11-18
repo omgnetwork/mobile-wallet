@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { OMGBackground, OMGText } from 'components/widgets'
+import { OMGText } from 'components/widgets'
 
 const OMGAssetFooter = ({
   theme,
@@ -9,20 +9,29 @@ const OMGAssetFooter = ({
   onPressDeposit,
   onPressExit,
   enableDeposit,
-  enableExit
+  enableExit,
+  depositText = 'DEPOSIT',
+  footerRef,
+  showExit
 }) => {
   return (
-    <OMGBackground style={{ ...styles.container(theme), ...style }}>
+    <View style={{ ...styles.container(theme), ...style }} ref={footerRef}>
       <TouchableOpacity style={styles.subfooter} onPress={onPressDeposit}>
         <OMGText style={styles.subfooterText(theme, enableDeposit)}>
-          DEPOSIT
+          {depositText}
         </OMGText>
       </TouchableOpacity>
-      <View style={styles.divider(theme)} />
-      <TouchableOpacity style={styles.subfooter} onPress={onPressExit}>
-        <OMGText style={styles.subfooterText(theme, enableExit)}>EXIT</OMGText>
-      </TouchableOpacity>
-    </OMGBackground>
+      {showExit && (
+        <>
+          <View style={styles.divider(theme)} />
+          <TouchableOpacity style={styles.subfooter} onPress={onPressExit}>
+            <OMGText style={styles.subfooterText(theme, enableExit)}>
+              EXIT
+            </OMGText>
+          </TouchableOpacity>
+        </>
+      )}
+    </View>
   )
 }
 

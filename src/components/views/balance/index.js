@@ -69,6 +69,12 @@ const Balance = ({
     viewPagerSnapOffsets[1]
   )
 
+  const [depositButtonRef, measureDepositButton] = usePositionMeasurement(
+    'DepositButton',
+    dispatchAddAnchoredComponent,
+    viewPagerSnapOffsets[1]
+  )
+
   useEffect(() => {
     function didFocus() {
       StatusBar.setBarStyle('light-content')
@@ -86,8 +92,14 @@ const Balance = ({
     if (loading.action === 'ROOTCHAIN_FETCH_ASSETS' && loading.show) {
       measurePlasmaBlockchainLabel()
       measureEthereumBlockchainLabel()
+      measureDepositButton()
     }
-  }, [loading, measureEthereumBlockchainLabel, measurePlasmaBlockchainLabel])
+  }, [
+    loading,
+    measureDepositButton,
+    measureEthereumBlockchainLabel,
+    measurePlasmaBlockchainLabel
+  ])
 
   const handleOnPageChanged = useCallback(
     page => {
@@ -158,13 +170,14 @@ const Balance = ({
             <View style={styles.firstPage}>
               <ChildchainBalance
                 primaryWallet={primaryWallet}
-                anchoredComponentRef={plasmaBlockchainLabelRef}
+                blockchainLabelRef={plasmaBlockchainLabelRef}
               />
             </View>
             <View style={styles.secondPage}>
               <RootchainBalance
                 primaryWallet={primaryWallet}
-                anchoredComponentRef={ethereumBlockchainLabelRef}
+                blockchainLabelRef={ethereumBlockchainLabelRef}
+                depositButtonRef={depositButtonRef}
               />
             </View>
             <View style={styles.thirdPage}>

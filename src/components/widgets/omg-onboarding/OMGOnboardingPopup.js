@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { withTheme } from 'react-native-paper'
 import { StyleSheet, View } from 'react-native'
 import { OMGButton, OMGText } from 'components/widgets'
@@ -11,18 +11,26 @@ const OMGOnboardingPopup = ({
   onPressedDismiss,
   position
 }) => {
+  const TextContent = content.paragraphs.map((paragraph, key) => {
+    return (
+      <OMGText style={styles.text(theme)} key={key}>
+        {paragraph}
+      </OMGText>
+    )
+  })
+
   return (
     <OnboardingContainer
       visible={visible}
       isPopup={true}
-      tourName={content.tourName}
+      tourKey={content.key}
       arrowDirection={content.arrowDirection}
       position={position}>
       <View style={styles.container(theme)}>
         <OMGText weight='bold' style={styles.title(theme)}>
           {content.title}
         </OMGText>
-        <OMGText style={styles.text(theme)}>{content.text}</OMGText>
+        <View style={styles.textContainer}>{TextContent}</View>
         <View style={styles.buttonContainer}>
           <OMGButton
             style={styles.button(theme)}
@@ -49,6 +57,9 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     color: theme.colors.white
   }),
+  textContainer: {
+    justifyContent: 'flex-start'
+  },
   text: theme => ({
     color: theme.colors.white3,
     marginTop: 20

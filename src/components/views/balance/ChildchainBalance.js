@@ -15,9 +15,8 @@ import {
 import { Alert } from 'common/constants'
 
 const ChildchainBalance = ({
-  anchoredComponentRef,
+  blockchainLabelRef,
   dispatchLoadAssets,
-  dispatchInvalidatePendingTxs,
   dispatchSetShouldRefreshChildchain,
   pendingTxs,
   wallet,
@@ -40,11 +39,11 @@ const ChildchainBalance = ({
   }, [hasPendingTransaction])
 
   const shouldEnableExitAction = useCallback(() => {
-    if (!hasPendingTransaction && hasChildchainAssets) {
+    if (!hasPendingTransaction) {
       return true
     }
     return false
-  }, [hasChildchainAssets, hasPendingTransaction])
+  }, [hasPendingTransaction])
 
   const handleDepositClick = useCallback(() => {
     if (!shouldEnableDepositAction()) {
@@ -97,7 +96,7 @@ const ChildchainBalance = ({
         rootchain={false}
         loading={loading}
         blockchain={'Plasma'}
-        anchoredRef={anchoredComponentRef}
+        anchoredRef={blockchainLabelRef}
         network={Config.OMISEGO_NETWORK}
       />
       <OMGAssetList
@@ -114,6 +113,7 @@ const ChildchainBalance = ({
       <OMGAssetFooter
         enableDeposit={shouldEnableDepositAction()}
         enableExit={shouldEnableExitAction()}
+        showExit={hasChildchainAssets}
         onPressDeposit={handleDepositClick}
         onPressExit={handleExitClick}
       />

@@ -68,7 +68,6 @@ const TransactionHistory = ({
           tx => ['in', 'out', 'unidentified', 'deposit'].indexOf(tx.type) > -1
         )
         .slice(0, 5)
-      console.log(recentTxs)
       setTxs(recentTxs)
     }
   }, [transactions])

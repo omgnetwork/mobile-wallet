@@ -76,8 +76,6 @@ const mergeTxs = async (txs, address, tokens) => {
 
   const { rootchainTxs, rootchainErc20Txs, childchainTxs } = txs
 
-  console.log(childchainTxs)
-
   // Cache tx details
   rootchainErc20Txs.forEach(tx => {
     cachedErc20[tx.hash] = tx

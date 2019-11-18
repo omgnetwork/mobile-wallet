@@ -1,7 +1,7 @@
+import React from 'react'
 import OnboardingContainer from './OnboardingContainer'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import React from 'react'
 import { OMGText } from 'components/widgets'
 import * as TourImages from './assets'
 
@@ -9,8 +9,10 @@ const OMGOnboardingSheet = ({ theme, content, visible }) => {
   const ImageCenter = TourImages[content.imageCenterName]
   const ImageBottom = TourImages[content.imageBottomName]
 
+  console.log(content)
+
   return (
-    <OnboardingContainer visible={visible} tourName={content.tourName}>
+    <OnboardingContainer visible={visible} tourKey={content.key}>
       <OMGText style={styles.title(theme)} weight='bold'>
         {content.title}
       </OMGText>

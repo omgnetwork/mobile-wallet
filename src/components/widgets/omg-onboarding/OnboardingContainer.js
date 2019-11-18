@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { View, StyleSheet, Modal, Animated } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { Dimensions } from 'common/utils'
@@ -16,7 +16,7 @@ const OMGOnboardingContainer = ({
   isPopup,
   position,
   arrowDirection,
-  tourName,
+  tourKey,
   currentPopup,
   dispatchSetCurrentPopup
 }) => {
@@ -32,8 +32,8 @@ const OMGOnboardingContainer = ({
       }
     }
 
-    if (visible && currentPopup !== tourName) {
-      dispatchSetCurrentPopup(tourName)
+    if (visible && currentPopup !== tourKey) {
+      dispatchSetCurrentPopup(tourKey)
     }
   }, [
     currentPopup,
@@ -41,7 +41,7 @@ const OMGOnboardingContainer = ({
     isModal,
     isPopup,
     offBottom,
-    tourName,
+    tourKey,
     visible
   ])
 
@@ -68,7 +68,13 @@ const OMGOnboardingContainer = ({
       <View>
         <Modal animationType='fade' transparent={true} visible={visible}>
           <View style={styles.popupModalContainer}>
-            <View style={styles.popupContainer(position)}>
+            <View
+              style={[
+                styles.popupContainer(position),
+                arrowDirection === 'up'
+                  ? styles.popupBelow(position)
+                  : styles.popupAbove(position)
+              ]}>
               {renderArrowWithContent()}
             </View>
           </View>
@@ -125,7 +131,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     position: 'absolute',
     alignItems: 'center',
-    left: position.left,
+    left: position.left
+  }),
+  popupAbove: position => ({
+    bottom:
+      Dimensions.windowHeight - position.top + marginToAnchoredComponent || 0
+  }),
+  popupBelow: position => ({
     top: position.bottom + marginToAnchoredComponent || 0
   }),
   popupArrow: (theme, arrowDirection) => ({

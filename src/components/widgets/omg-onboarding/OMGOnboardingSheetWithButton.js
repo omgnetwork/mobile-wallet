@@ -1,7 +1,7 @@
+import React from 'react'
 import OnboardingContainer from './OnboardingContainer'
 import { StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import React from 'react'
 import { OMGText, OMGButton } from 'components/widgets'
 
 const OMGOnboardingSheetWithButton = ({
@@ -11,15 +11,20 @@ const OMGOnboardingSheetWithButton = ({
   onPressedDismiss,
   visible
 }) => {
+  const TextContent = content.paragraphs.map((paragraph, index) => {
+    return (
+      <OMGText style={styles.content(theme)} key={index}>
+        {paragraph}
+      </OMGText>
+    )
+  })
+
   return (
-    <OnboardingContainer
-      visible={visible}
-      isModal={true}
-      tourName={content.tourName}>
+    <OnboardingContainer visible={visible} isModal={true} tourKey={content.key}>
       <OMGText style={styles.title(theme)} weight='bold'>
         {content.title}
       </OMGText>
-      <OMGText style={styles.content(theme)}>{content.text}</OMGText>
+      {TextContent}
       {content.buttonTextConfirm && (
         <OMGButton
           style={styles.buttonConfirm(theme)}

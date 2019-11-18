@@ -14,6 +14,7 @@ const OnboardingTourGuide = ({
   currentPopup,
   viewedPopups,
   anchoredComponents,
+  rootchainAssets,
   hasWallet,
   dispatchEnableOnboarding,
   dispatchAddViewedPopup
@@ -39,11 +40,12 @@ const OnboardingTourGuide = ({
       const content = ContentSelector.select(
         currentPage,
         viewedPopups,
-        enabledOnboarding
+        enabledOnboarding,
+        rootchainAssets
       )
       setTourContent(content)
     }
-  }, [currentPage, enabledOnboarding, hasWallet, viewedPopups])
+  }, [currentPage, enabledOnboarding, hasWallet, rootchainAssets, viewedPopups])
 
   useEffect(() => {
     if (tourContent) {
@@ -59,12 +61,12 @@ const OnboardingTourGuide = ({
   useEffect(() => {
     if (
       currentPage !== 'childchain-balance' &&
-      currentPopup === 'plasmaWallet'
+      currentPopup === 'PLASMA_WALLET_BOTTOM_SHEET'
     ) {
       dispatchAddViewedPopup(viewedPopups, currentPopup)
     } else if (
       currentPage !== 'rootchain-balance' &&
-      currentPopup === 'ethereumWallet'
+      currentPopup === 'ETHEREUM_WALLET_BOTTOM_SHEET'
     ) {
       dispatchAddViewedPopup(viewedPopups, currentPopup)
     }
@@ -75,7 +77,6 @@ const OnboardingTourGuide = ({
     (tourContent.buttonTextDismiss || tourContent.buttonTextConfirm)
 
   if (tourContent) {
-    console.log(tourContent)
     const position = anchoredComponents[tourContent.anchoredTo]
     if (tourContent.isPopup && position) {
       return (
@@ -87,7 +88,7 @@ const OnboardingTourGuide = ({
         />
       )
     } else if (shouldRenderButtons) {
-      if (tourContent.tourName === 'welcome') {
+      if (tourContent.key === 'WELCOME_BOTTOM_SHEET') {
         return (
           <OMGOnboardingSheetWithButton
             content={tourContent}
@@ -114,6 +115,11 @@ const OnboardingTourGuide = ({
 
 const mapStateToProps = (state, ownProps) => ({
   hasWallet: state.wallets.length > 0,
+  rootchainAssets: state.setting.primaryWalletAddress
+    ? state.wallets.find(
+        wallet => wallet.address == state.setting.primaryWalletAddress
+      ).rootchainAssets
+    : [],
   enabledOnboarding: state.onboarding.enabled,
   currentPage: state.onboarding.currentPage,
   currentPopup: state.onboarding.currentPopup,

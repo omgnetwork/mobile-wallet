@@ -3,6 +3,7 @@ import { NavigationActions } from 'react-navigation'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import { StyleSheet } from 'react-native'
 import * as Views from 'components/views'
+import { Dimensions } from 'common/utils'
 import { OMGText, OMGIcon, OMGBox } from 'components/widgets'
 
 export default (TransferNavigator, TransactionHistoryNavigator) =>
@@ -91,7 +92,7 @@ export default (TransferNavigator, TransactionHistoryNavigator) =>
         style: {
           backgroundColor: '#04070d',
           marginTop: 0,
-          height: 88,
+          height: Dimensions.bottomBarHeight,
           paddingTop: 0
         }
       }
