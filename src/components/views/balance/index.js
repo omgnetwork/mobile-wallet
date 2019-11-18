@@ -56,8 +56,7 @@ const Balance = ({
     measurePlasmaBlockchainLabel
   ] = usePositionMeasurement(
     'PlasmaBlockchainLabel',
-    dispatchAddAnchoredComponent,
-    viewPagerSnapOffsets[0]
+    dispatchAddAnchoredComponent
   )
 
   const [
@@ -65,14 +64,17 @@ const Balance = ({
     measureEthereumBlockchainLabel
   ] = usePositionMeasurement(
     'EthereumBlockchainLabel',
-    dispatchAddAnchoredComponent,
-    viewPagerSnapOffsets[1]
+    dispatchAddAnchoredComponent
   )
 
   const [depositButtonRef, measureDepositButton] = usePositionMeasurement(
     'DepositButton',
-    dispatchAddAnchoredComponent,
-    viewPagerSnapOffsets[1]
+    dispatchAddAnchoredComponent
+  )
+
+  const [exitButtonRef, measureExitButton] = usePositionMeasurement(
+    'ExitButton',
+    dispatchAddAnchoredComponent
   )
 
   useEffect(() => {
@@ -91,13 +93,22 @@ const Balance = ({
   useEffect(() => {
     if (loading.action === 'ROOTCHAIN_FETCH_ASSETS' && loading.show) {
       measurePlasmaBlockchainLabel()
-      measureEthereumBlockchainLabel()
-      measureDepositButton()
+      measureEthereumBlockchainLabel({ offset: -viewPagerSnapOffsets[1] })
+      measureDepositButton({
+        offset: -viewPagerSnapOffsets[1] + 8,
+        widthOffset: -16
+      })
+      measureExitButton({
+        arrowDirection: 'right',
+        widthOffset: -16,
+        offset: 8
+      })
     }
   }, [
     loading,
     measureDepositButton,
     measureEthereumBlockchainLabel,
+    measureExitButton,
     measurePlasmaBlockchainLabel
   ])
 
@@ -119,8 +130,8 @@ const Balance = ({
   )
 
   useEffect(() => {
-    if (primaryWallet) dispatchSetCurrentPage(null, 'childchain-balance')
-  }, [dispatchSetCurrentPage, primaryWallet])
+    dispatchSetCurrentPage(null, 'childchain-balance')
+  }, [dispatchSetCurrentPage])
 
   const handleLearnMoreClick = useCallback(() => {
     const externalURL = getLearnMoreLink()
@@ -171,6 +182,7 @@ const Balance = ({
               <ChildchainBalance
                 primaryWallet={primaryWallet}
                 blockchainLabelRef={plasmaBlockchainLabelRef}
+                exitButtonRef={exitButtonRef}
               />
             </View>
             <View style={styles.secondPage}>

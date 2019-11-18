@@ -146,3 +146,23 @@ export const TRANSFER_POPUP = {
     )
   }
 }
+
+export const EXIT_POPUP = {
+  title: 'Exit',
+  key: 'EXIT_POPUP',
+  paragraphs: [
+    'You can move funds back to the Root Chain whenever you want to. All exit fees on the blockchain are paid in ETH.'
+  ],
+  buttonText: 'GOT IT',
+  isPopup: true,
+  arrowDirection: 'down',
+  anchoredTo: 'ExitButton',
+  shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) => {
+    return (
+      enabledOnboarding &&
+      currentPage === 'childchain-balance' &&
+      viewedPopups.includes('TRANSFER_POPUP') &&
+      !viewedPopups.includes('EXIT_POPUP')
+    )
+  }
+}

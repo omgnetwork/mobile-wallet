@@ -16,6 +16,7 @@ import { Alert } from 'common/constants'
 
 const ChildchainBalance = ({
   blockchainLabelRef,
+  exitButtonRef,
   dispatchLoadAssets,
   dispatchSetShouldRefreshChildchain,
   pendingTxs,
@@ -113,6 +114,7 @@ const ChildchainBalance = ({
       <OMGAssetFooter
         enableDeposit={shouldEnableDepositAction()}
         enableExit={shouldEnableExitAction()}
+        footerRef={exitButtonRef}
         showExit={hasChildchainAssets}
         onPressDeposit={handleDepositClick}
         onPressExit={handleExitClick}

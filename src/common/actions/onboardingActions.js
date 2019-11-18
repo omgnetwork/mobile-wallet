@@ -36,8 +36,8 @@ export const setCurrentPopup = (dispatch, name) => {
 }
 
 export const addAnchoredComponent = (dispatch, name, position) => {
-  const { top, bottom, width, left } = position
-  const action = () => ({ name, top, bottom, width, left })
+  const { top, bottom, width, left, arrowOffset } = position
+  const action = () => ({ name, top, bottom, width, left, arrowOffset })
   return createAction(dispatch, {
     operation: action,
     type: 'ONBOARDING/ADD_ANCHORED_COMPONENT'

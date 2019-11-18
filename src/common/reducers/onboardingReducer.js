@@ -44,7 +44,8 @@ export const onboardingReducer = (state = {}, action) => {
         top: action.data.top,
         bottom: action.data.bottom,
         width: action.data.width,
-        left: action.data.left
+        left: action.data.left,
+        arrowOffset: action.data.arrowOffset
       }
       return {
         ...state,

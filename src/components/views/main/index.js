@@ -14,7 +14,8 @@ const MainContainer = ({ navigation, dispatchAddAnchoredComponent }) => {
       top: Dimensions.windowHeight - Dimensions.bottomBarHeight - 32,
       bottom: 0,
       left: 16,
-      width: Dimensions.windowWidth - 32
+      width: Dimensions.windowWidth - 32,
+      arrowOffset: 0
     })
   }, [dispatchAddAnchoredComponent])
 

@@ -51,13 +51,25 @@ const OMGOnboardingContainer = ({
         return (
           <>
             {children}
-            <View style={styles.popupArrow(theme, arrowDirection)} />
+            <View
+              style={styles.popupArrow(
+                theme,
+                arrowDirection,
+                position.arrowOffset
+              )}
+            />
           </>
         )
       } else {
         return (
           <>
-            <View style={styles.popupArrow(theme, arrowDirection)} />
+            <View
+              style={styles.popupArrow(
+                theme,
+                arrowDirection,
+                position.arrowOffset
+              )}
+            />
             {children}
           </>
         )
@@ -140,7 +152,7 @@ const styles = StyleSheet.create({
   popupBelow: position => ({
     top: position.bottom + marginToAnchoredComponent || 0
   }),
-  popupArrow: (theme, arrowDirection) => ({
+  popupArrow: (theme, arrowDirection, arrowOffset = 0) => ({
     width: 0,
     height: 0,
     backgroundColor: 'transparent',
@@ -148,6 +160,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 15,
     borderRightWidth: 15,
     borderBottomWidth: 15,
+    left: arrowOffset,
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
     borderBottomColor: theme.colors.blue5,
