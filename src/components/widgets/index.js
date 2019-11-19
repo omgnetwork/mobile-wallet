@@ -47,7 +47,6 @@ import OMGItemTransaction from './omg-item-transaction'
 import OMGWalletAddress from './omg-wallet-address'
 import OMGTransactionFilter from './omg-transaction-filter'
 import OMGTransactionList from './omg-transaction-list'
-import OMGTourPopup from './omg-tour-popup'
 export {
   OMGAddressInput,
   OMGAmountInput,
@@ -95,6 +94,5 @@ export {
   OMGViewPager,
   OMGWalletAddress,
   OMGTransactionFilter,
-  OMGTransactionList,
-  OMGTourPopup
+  OMGTransactionList
 }
