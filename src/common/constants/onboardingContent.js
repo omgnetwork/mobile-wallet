@@ -122,6 +122,7 @@ export const DEPOSIT_POPUP = {
       currentPage === 'rootchain-balance' &&
       viewedPopups.includes('ROOTCHAIN_POPUP') &&
       !viewedPopups.includes('DEPOSIT_POPUP') &&
+      rootchainAssets &&
       rootchainAssets.length > 0
     )
   }
@@ -164,6 +165,25 @@ export const EXIT_POPUP = {
       currentPage === 'childchain-balance' &&
       viewedPopups.includes('TRANSFER_POPUP') &&
       !viewedPopups.includes('EXIT_POPUP')
+    )
+  }
+}
+
+export const TRANSACTION_HISTORY_MENU_POPUP = {
+  title: 'Keep track of your activities',
+  key: 'TRANSACTION_HISTORY_MENU_POPUP',
+  paragraphs: [
+    `"History" lets you view past transactions on all your wallets. You can also view every deposit and exit you've made on the child chain.`
+  ],
+  buttonText: 'GOT IT',
+  isPopup: true,
+  arrowDirection: 'up',
+  anchoredTo: 'TransactionHistoryMenu',
+  shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) => {
+    return (
+      enabledOnboarding &&
+      currentPage === 'transaction-history' &&
+      !viewedPopups.includes('TRANSACTION_HISTORY_MENU_POPUP')
     )
   }
 }
