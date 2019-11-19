@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="41px" viewBox="0 0 26 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>ETH</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Hi-Res-_Change-color" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Transfer_Send_Rootchain" transform="translate(-73.000000, -213.000000)" stroke="#FFFFFF" stroke-width="2">
+            <g id="Group-5" transform="translate(65.000000, 208.000000)">
+                <g id="Group-6" transform="translate(9.000000, 0.000000)">
+                    <g id="ETH" transform="translate(0.000000, 6.000000)">
+                        <polygon id="Path-4" points="0 19.7058824 12 1.24344979e-14 24 19.7058824 12 38.8235294"></polygon>
+                        <polyline id="Path-5" points="24 19.7058824 12 26.9031043 0 19.7058824"></polyline>
+                        <polyline id="Path-6" points="12 0.705882353 12 26.9031043 12 38.8235294"></polyline>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

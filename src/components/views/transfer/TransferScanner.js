@@ -6,24 +6,36 @@ import React, {
   useRef
 } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
+import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
-import { OMGText, OMGIcon, OMGQRScanner, OMGButton } from 'components/widgets'
+import {
+  OMGText,
+  OMGIcon,
+  OMGQRScanner,
+  OMGButton,
+  OMGEmpty
+} from 'components/widgets'
 import {
   ROOTCHAIN_OVERLAY_COLOR,
   CHILDCHAIN_OVERLAY_COLOR
 } from 'components/widgets/omg-qr-scanner'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Animator } from 'common/anims'
+import * as BlockchainIcons from './assets'
 
-const TransferScanner = ({ theme, navigation }) => {
+const TransferScanner = ({ theme, navigation, wallet, pendingTx }) => {
   const rootchain = navigation.getParam('rootchain')
   const [rendering, setRendering] = useState(true)
   const camera = useRef(null)
   const [address, setAddress] = useState(null)
+  const [shouldDisabledSendButton, setShouldDisabledSendButton] = useState(
+    false
+  )
   const [isRootchain, setIsRootchain] = useState(rootchain)
-
   const overlayColorAnim = useRef(new Animated.Value(0))
+
+  const Icon = BlockchainIcons[isRootchain ? 'IconEth' : 'IconGo']
 
   const transitionOverlay = isRootChain => {
     if (isRootChain) {
@@ -75,6 +87,34 @@ const TransferScanner = ({ theme, navigation }) => {
     }
   }, [navigation, theme.colors.white])
 
+  const getEmptyStatePayload = useCallback(() => {
+    if (isRootchain && wallet.rootchainAssets.length === 0) {
+      return {
+        imageName: 'EmptyRootchainWallet',
+        text: 'Wallet is empty.\nShare wallet to receive fund.'
+      }
+    } else if (!isRootchain && wallet.childchainAssets.length === 0) {
+      return {
+        imageName: 'EmptyChildchainWallet',
+        text: 'Wallet is empty.\nStart using Plasma by deposit.'
+      }
+    }
+    return {}
+  }, [isRootchain, wallet])
+
+  useEffect(() => {
+    if (pendingTx) {
+      setShouldDisabledSendButton(true)
+    } else if (
+      wallet.rootchainAssets.length === 0 ||
+      wallet.childchainAssets.length === 0
+    ) {
+      setShouldDisabledSendButton(true)
+    } else {
+      setShouldDisabledSendButton(false)
+    }
+  }, [pendingTx, wallet])
+
   const pendingTxComponent = (
     <Animated.View style={styles.unableView(overlayColorAnim)}>
       <OMGIcon
@@ -89,11 +129,17 @@ const TransferScanner = ({ theme, navigation }) => {
     </Animated.View>
   )
 
+  const emptyComponent = (
+    <Animated.View style={styles.emptyView(overlayColorAnim)}>
+      <OMGEmpty {...getEmptyStatePayload()} />
+    </Animated.View>
+  )
+
   const TopMarker = ({ textAboveLine, textBelowLine, onPressSwitch }) => {
     return (
       <Fragment>
         <View style={styles.titleContainer(theme)}>
-          <OMGIcon color={theme.colors.white} size={40} name='on-chain' />
+          <Icon />
           <OMGText style={styles.title(theme)} weight='extra-bold'>
             {textAboveLine}
           </OMGText>
@@ -112,6 +158,7 @@ const TransferScanner = ({ theme, navigation }) => {
       onReceiveQR={e => setAddress(e.data)}
       cameraRef={camera}
       renderPendingTx={pendingTxComponent}
+      renderEmptyComponent={emptyComponent}
       cameraStyle={styles.cameraContainer}
       overlayColorAnim={overlayColorAnim}
       notAuthorizedView={
@@ -138,7 +185,10 @@ const TransferScanner = ({ theme, navigation }) => {
         />
       }
       renderBottom={
-        <OMGButton style={styles.button} onPress={navigateNext}>
+        <OMGButton
+          style={styles.button}
+          disabled={shouldDisabledSendButton}
+          onPress={navigateNext}>
           Or, Send Manually
         </OMGButton>
       }
@@ -207,6 +257,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   }),
+  emptyView: overlayColorAnim => ({
+    height: 240,
+    flexDirection: 'column',
+    backgroundColor: overlayColorAnim.current.interpolate({
+      inputRange: [0, 1],
+      outputRange: [ROOTCHAIN_OVERLAY_COLOR, CHILDCHAIN_OVERLAY_COLOR]
+    }),
+    alignItems: 'center',
+    justifyContent: 'center'
+  }),
   unableText: theme => ({
     color: theme.colors.gray2,
     marginTop: 24,
@@ -227,4 +287,14 @@ const styles = StyleSheet.create({
   })
 })
 
-export default withNavigation(withTheme(TransferScanner))
+const mapStateToProps = (state, ownProps) => ({
+  pendingTx: state.transaction.pendingTxs.length > 0,
+  wallet: state.wallets.find(
+    w => w.address === state.setting.primaryWalletAddress
+  )
+})
+
+export default connect(
+  mapStateToProps,
+  null
+)(withNavigation(withTheme(TransferScanner)))
