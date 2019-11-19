@@ -1,23 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { connect } from 'react-redux'
-import { onboardingActions } from 'common/actions'
 import { OnboardingTourGuide } from 'components/views'
-import { Dimensions } from 'common/utils'
 
-const MainContainer = ({ navigation, dispatchAddAnchoredComponent }) => {
+const MainContainer = ({ navigation }) => {
   const MainDrawerNavigator = navigation.getParam('navigator')
-
-  useEffect(() => {
-    dispatchAddAnchoredComponent('TransferButton', {
-      top: Dimensions.windowHeight - Dimensions.bottomBarHeight - 32,
-      bottom: 0,
-      left: 16,
-      width: Dimensions.windowWidth - 32,
-      arrowOffset: 0
-    })
-  }, [dispatchAddAnchoredComponent])
 
   return (
     <View style={styles.container}>
@@ -32,23 +19,4 @@ const styles = StyleSheet.create({
     flex: 1
   }
 })
-
-const mapStateToProps = (state, ownProps) => ({
-  primaryWallet: state.wallets.find(
-    w => w.address === state.setting.primaryWalletAddress
-  )
-})
-
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchAddAnchoredComponent: (anchoredComponentName, position) =>
-    onboardingActions.addAnchoredComponent(
-      dispatch,
-      anchoredComponentName,
-      position
-    )
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withTheme(MainContainer))
+export default withTheme(MainContainer)

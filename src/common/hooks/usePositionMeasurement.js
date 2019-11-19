@@ -8,16 +8,23 @@ const usePositionMeasurement = (
 
   const measure = useCallback(
     (options = {}) => {
-      const { arrowDirection, offset, widthOffset } = options
+      const {
+        arrowDirection,
+        offset,
+        topOffset,
+        widthOffset,
+        forceLeft,
+        forceWidth
+      } = options
       if (anchoredComponentRef.current) {
         setTimeout(() => {
           anchoredComponentRef.current.measure(
             (fx, fy, width, height, px, py) => {
               dispatchAddAnchoredComponent(anchoredComponentName, {
-                top: Math.round(py),
+                top: Math.round(py) + (topOffset || 0),
                 bottom: Math.round(py + height),
-                left: Math.round(px) + (offset || 0),
-                width: Math.round(width) + (widthOffset || 0),
+                left: forceLeft || Math.round(px) + (offset || 0),
+                width: forceWidth || Math.round(width) + (widthOffset || 0),
                 arrowOffset: getArrowOffset(arrowDirection, Math.round(width))
               })
             }

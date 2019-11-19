@@ -10,11 +10,13 @@ const OMGMenuIcon = ({
   iconName,
   style,
   theme,
+  menuRef,
   onPress
 }) => {
   return (
     <TouchableOpacity
       style={{ ...styles.container(theme), ...style }}
+      ref={menuRef}
       onPress={onPress}>
       <View style={styles.imageContainer(theme)}>
         <OMGIcon color={theme.colors.gray3} size={18} name={iconName} />

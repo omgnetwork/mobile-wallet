@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Linking, View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
@@ -76,6 +76,7 @@ const Balance = ({
     'ExitButton',
     dispatchAddAnchoredComponent
   )
+  const [measured, setMeasured] = useState(false)
 
   useEffect(() => {
     function didFocus() {
@@ -91,11 +92,14 @@ const Balance = ({
   }, [navigation, primaryWallet, theme.colors.black5])
 
   useEffect(() => {
-    if (loading.action === 'ROOTCHAIN_FETCH_ASSETS' && loading.show) {
-      measurePlasmaBlockchainLabel({ widthOffset: 30, offset: -15 })
+    if (
+      !measured &&
+      loading.action === 'ROOTCHAIN_FETCH_ASSETS' &&
+      loading.show
+    ) {
+      measurePlasmaBlockchainLabel()
       measureEthereumBlockchainLabel({
-        offset: -viewPagerSnapOffsets[1] - 8,
-        widthOffset: 16
+        offset: -viewPagerSnapOffsets[1]
       })
       measureDepositButton({
         offset: -viewPagerSnapOffsets[1] + 8,
@@ -106,13 +110,15 @@ const Balance = ({
         widthOffset: -16,
         offset: 8
       })
+      setMeasured(true)
     }
   }, [
     loading,
     measureDepositButton,
     measureEthereumBlockchainLabel,
     measureExitButton,
-    measurePlasmaBlockchainLabel
+    measurePlasmaBlockchainLabel,
+    measured
   ])
 
   const handleOnPageChanged = useCallback(

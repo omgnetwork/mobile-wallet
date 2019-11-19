@@ -35,7 +35,7 @@ const initialState = {
     providerName: Config.ETHERSCAN_NETWORK
   },
   onboarding: {
-    enabled: false,
+    enabled: null,
     currentPage: null,
     viewedPopups: [],
     currentPopup: null,

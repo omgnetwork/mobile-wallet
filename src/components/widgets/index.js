@@ -6,6 +6,7 @@ import OMGAssetList from './omg-asset-list'
 import OMGAssetFooter from './omg-asset-footer'
 import OMGBackground from './omg-background'
 import OMGBottomSheet from './omg-bottom-sheet'
+import OMGBottomTab from './omg-bottom-tab'
 import OMGBox from './omg-box'
 import OMGButton from './omg-button'
 import OMGDotViewPager from './omg-dot-view-pager'
@@ -55,6 +56,7 @@ export {
   OMGAssetFooter,
   OMGBackground,
   OMGBottomSheet,
+  OMGBottomTab,
   OMGBox,
   OMGButton,
   OMGDotViewPager,
