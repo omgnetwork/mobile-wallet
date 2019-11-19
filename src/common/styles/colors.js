@@ -1,7 +1,6 @@
 export default {
   primary: '#3c414d',
   primaryLight: '#5b626f',
-  primaryDarker: '#262a31',
   background: '#ffffff',
   backgroundDisabled: '#f7f8fa',
   purple: '#7d55f6',
@@ -16,6 +15,7 @@ export default {
   black3: '#3c414d',
   black4: '#e4e7ed',
   black5: '#000000',
+  black6: '#262a31',
   green1: '#dcfaf4',
   green2: '#0ebf9a',
   gray1: '#d8d8d8',

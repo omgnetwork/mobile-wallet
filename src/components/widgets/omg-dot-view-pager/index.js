@@ -9,17 +9,21 @@ const width = Dimensions.windowWidth
 const OMGDotViewPager = ({ theme, children }) => {
   const scrollX = new Animated.Value(0)
   const position = Animated.divide(scrollX, width)
+  const handleScroll = event => {
+    Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }])(event)
+  }
   return (
     <View style={styles.container}>
       <View>
         <ScrollView
           horizontal={true}
           pagingEnabled={true}
+          onScroll={handleScroll}
           scrollEventThrottle={8}>
           {children}
         </ScrollView>
         <View style={styles.scrollDots}>
-          {/* {[...Array(3)].map((_, index) => {
+          {[...Array(3)].map((_, index) => {
             let opacity = position.interpolate({
               inputRange: [index - 1, index, index + 1],
               outputRange: [0.3, 1, 0.3],
@@ -31,7 +35,7 @@ const OMGDotViewPager = ({ theme, children }) => {
                 style={[styles.dot(theme), { opacity }]}
               />
             )
-          })} */}
+          })}
         </View>
       </View>
     </View>
@@ -39,12 +43,10 @@ const OMGDotViewPager = ({ theme, children }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
+  container: {},
   scrollDots: {
     flexDirection: 'row',
-    justifyContent: 'center'
+    marginLeft: 30
   },
   dot: theme => ({
     height: 10,

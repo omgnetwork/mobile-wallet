@@ -17,7 +17,7 @@ const CardMenu = ({ theme, color, header, description, onPress }) => {
               {description}
             </OMGText>
           </View>
-          <OMGIcon name='chevron-right' size={28} style={styles.arrow(theme)} />
+          <OMGIcon name='chevron-right' size={24} style={styles.arrow(theme)} />
         </View>
       </View>
     </TouchableOpacity>
@@ -26,25 +26,25 @@ const CardMenu = ({ theme, color, header, description, onPress }) => {
 
 const styles = StyleSheet.create({
   arrow: theme => ({
-    marginRight: 20,
     color: theme.colors.white
   }),
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: 100
+    paddingHorizontal: 30,
+    paddingVertical: 44
   },
 
   text: theme => ({
-    color: theme.colors.white,
-    marginLeft: 20
+    color: theme.colors.white
   }),
   subheader: {
-    fontSize: 12
+    fontSize: 12,
+    opacity: 0.6
   },
   header: {
-    fontSize: 20
+    fontSize: 18
   }
 })
 

@@ -8,29 +8,41 @@ import Page from './Page'
 
 const PageItems = [
   {
-    title: 'Welcome to the Plasma Mobile Wallet',
-    content: 'Your official gateway to the OmiseGo network.'
+    title: 'Welcome to\nthe Plasma Wallet',
+    content: 'Official gateway to the OmiseGo network.',
+    image: 'Welcome1'
   },
   {
-    title: 'The OmiseGo network turbocharges Ethereum',
-    content:
-      'It solves issues of affordability, speed and security for blockchain transactions.'
+    title: 'Plasma makes blockchain faster, affordable, and more secure',
+    image: 'Welcome2'
   },
   {
-    title: 'Get started on the OmiseGo network',
+    title: "Learn to transact on OmiseGO's Plasma Scaling Solution",
     content:
-      'Manage your wallets, monitor your activity, transfer digital assets and more.'
+      'Set up and manage wallets, review your activity, move ETH, and more',
+    image: 'Welcome3'
   }
 ].map((item, index) => {
-  return <Page textTitle={item.title} textContent={item.content} key={index} />
+  return (
+    <Page
+      textTitle={item.title}
+      textContent={item.content}
+      image={item.image}
+      key={index}
+    />
+  )
 })
 
 const Welcome = ({ navigation, theme }) => {
   const navigateCreateWallet = () => {
-    navigation.navigate('WelcomeCreateWallet')
+    navigation.navigate('Disclaimer', {
+      destination: 'WelcomeCreateWallet'
+    })
   }
   const navigateImportWallet = () => {
-    navigation.navigate('WelcomeImportWallet')
+    navigation.navigate('Disclaimer', {
+      destination: 'WelcomeImportWallet'
+    })
   }
   return (
     <View style={styles.container(theme)}>
@@ -44,16 +56,16 @@ const Welcome = ({ navigation, theme }) => {
       </View>
       <View>
         <CardButton
-          color={theme.colors.black3}
-          header='Create New Wallet'
-          description='With a new Ethereum address'
-          onPress={navigateCreateWallet}
-        />
-        <CardButton
           color={theme.colors.blue6}
           header='Sync Your Wallet'
-          description='With your existing Ethereum address'
+          description='Use own Ethereum Address with this wallet'
           onPress={navigateImportWallet}
+        />
+        <CardButton
+          color={theme.colors.black6}
+          header='Create New Wallet'
+          description='Create wallet for the new Ethereum Address'
+          onPress={navigateCreateWallet}
         />
       </View>
     </View>
@@ -68,9 +80,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.black5
   }),
   logo: {
-    width: 150,
-    height: 52,
-    marginTop: 60,
+    width: 130,
+    height: 44,
+    marginTop: 70,
     marginLeft: 30
   },
   scroll: {

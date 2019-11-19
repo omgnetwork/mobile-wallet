@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="94px" height="92px" viewBox="0 0 94 92" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>Group 4</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Onboard_ONOV-2019" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Onboard_Network" transform="translate(-29.000000, -172.000000)">
+            <g id="Group-4" transform="translate(30.000000, 173.000000)">
+                <g id="Group-3-Copy" transform="translate(46.000000, 45.000000) scale(-1, -1) translate(-46.000000, -45.000000) " stroke="#FFFFFF" stroke-linecap="round" stroke-width="2">
+                    <line x1="76.875" y1="75.625" x2="64.75" y2="64.25" id="Line-Copy-2"></line>
+                    <path d="M31.3125,29.9375 L20.3029862,19.5469951 M12.5439408,12.2242012 L0.1875,0.5625" id="Shape"></path>
+                    <line x1="91.8056051" y1="89.667007" x2="85.4375" y2="83.5" id="Line-Copy-3"></line>
+                </g>
+                <g id="Group-3" transform="translate(20.000000, 20.000000)">
+                    <rect id="Rectangle" fill="#FFFFFF" x="0" y="0" width="50" height="50" rx="25"></rect>
+                    <g id="Group-6" transform="translate(20.000000, 17.000000)">
+                        <circle id="Oval" fill="#04070D" cx="5.5" cy="5.5" r="5.5"></circle>
+                        <line x1="5.5" y1="7" x2="5.5" y2="16" id="Line-2" stroke="#04070D" stroke-width="4" stroke-linecap="round"></line>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

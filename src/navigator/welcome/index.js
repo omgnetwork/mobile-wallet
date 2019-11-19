@@ -5,6 +5,7 @@ export default (ImportWalletNavigator, CreateWalletNavigator) =>
   createStackNavigator(
     {
       Welcome: Views.Welcome,
+      Disclaimer: Views.Disclaimer,
       WelcomeImportWallet: {
         screen: Views.ImportWallet,
         params: {

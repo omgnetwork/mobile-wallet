@@ -4,16 +4,20 @@ import { withTheme } from 'react-native-paper'
 import { StyleSheet, View } from 'react-native'
 import { OMGText } from 'components/widgets'
 import { Dimensions } from 'common/utils'
-
-const Page = ({ theme, textTitle, textContent }) => {
+import * as WelcomeImages from './assets'
+const Page = ({ theme, textTitle, textContent, image }) => {
+  const WelcomeImage = WelcomeImages[image]
   return (
     <View style={styles.container}>
+      <WelcomeImage style={styles.image} />
       <OMGText style={[styles.text(theme), styles.header]} weight='bold'>
         {textTitle}
       </OMGText>
-      <OMGText style={[styles.text(theme), styles.subheader]}>
-        {textContent}
-      </OMGText>
+      {textContent && (
+        <OMGText style={[styles.text(theme), styles.subheader]}>
+          {textContent}
+        </OMGText>
+      )}
     </View>
   )
 }
@@ -21,18 +25,18 @@ const Page = ({ theme, textTitle, textContent }) => {
 const styles = StyleSheet.create({
   container: {
     width: Dimensions.windowWidth,
-    justifyContent: 'center',
-    height: 300
+    padding: 30
   },
   text: theme => ({
+    marginTop: 48,
     color: theme.colors.white,
-    paddingLeft: 10,
-    paddingRight: 10,
-    textAlign: 'center'
+    textAlign: 'left'
   }),
+  image: {},
   subheader: {
-    fontSize: 20,
-    marginTop: 20
+    fontSize: 18,
+    marginTop: 10,
+    opacity: 0.6
   },
   header: {
     fontSize: 30
