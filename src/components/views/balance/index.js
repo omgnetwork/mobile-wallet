@@ -8,7 +8,6 @@ import { Dimensions } from 'common/utils'
 import { usePositionMeasurement } from 'common/hooks'
 import RootchainBalance from './RootchainBalance'
 import ChildchainBalance from './ChildchainBalance'
-import LinearGradient from 'react-native-linear-gradient'
 import ShowQR from './ShowQR'
 import {
   OMGBottomSheet,
@@ -80,8 +79,8 @@ const Balance = ({
 
   useEffect(() => {
     function didFocus() {
-      StatusBar.setBarStyle('light-content')
-      StatusBar.setBackgroundColor(theme.colors.black5)
+      StatusBar.setBarStyle('dark-content')
+      StatusBar.setBackgroundColor(theme.colors.gray4)
     }
 
     const didFocusSubscription = navigation.addListener('didFocus', didFocus)
@@ -89,7 +88,7 @@ const Balance = ({
     return () => {
       didFocusSubscription.remove()
     }
-  }, [navigation, primaryWallet, theme.colors.black5])
+  }, [navigation, primaryWallet, theme.colors.black5, theme.colors.gray4])
 
   useEffect(() => {
     if (
@@ -156,12 +155,10 @@ const Balance = ({
   return (
     <SafeAreaView style={styles.safeAreaView(theme)}>
       <OMGStatusBar
-        barStyle={'light-content'}
-        backgroundColor={theme.colors.black5}
+        barStyle={'dark-content'}
+        backgroundColor={theme.colors.gray4}
       />
-      <LinearGradient
-        style={styles.container}
-        colors={[theme.colors.black5, theme.colors.gray1]}>
+      <View style={styles.container(theme)}>
         <View style={styles.topContainer}>
           <OMGText style={styles.topTitleLeft(theme)}>
             {primaryWallet ? primaryWallet.name : 'Wallet not found'}
@@ -171,7 +168,7 @@ const Balance = ({
             size={24}
             name='hamburger'
             onPress={() => drawerNavigation.openDrawer()}
-            color={theme.colors.white}
+            color={theme.colors.primary}
           />
         </View>
         {!wallets || !primaryWallet ? (
@@ -206,7 +203,7 @@ const Balance = ({
             </View>
           </OMGViewPager>
         )}
-      </LinearGradient>
+      </View>
       <OMGBottomSheet
         style={styles.bottomSheet}
         show={visible}
@@ -225,7 +222,7 @@ const Balance = ({
 const styles = StyleSheet.create({
   safeAreaView: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.black5
+    backgroundColor: theme.colors.gray4
   }),
   topContainer: {
     flexDirection: 'row',
@@ -236,13 +233,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 16,
     textTransform: 'uppercase',
-    color: theme.colors.white
+    color: theme.colors.primary
   }),
   topIconRight: {},
-  container: {
+  container: theme => ({
     flex: 1,
-    paddingVertical: 20
-  },
+    paddingVertical: 20,
+    backgroundColor: theme.colors.gray4
+  }),
   firstPage: {
     width: pageWidth,
     marginRight: 8
