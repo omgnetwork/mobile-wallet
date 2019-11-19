@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="112px" height="80px" viewBox="0 0 112 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>Box</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Onboard_ONOV-2019" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="History_Empty-state" transform="translate(-132.000000, -499.000000)" stroke="#ABB2C2">
+            <g id="Empty-state" transform="translate(93.000000, 500.000000)">
+                <g id="Box" transform="translate(39.000000, 0.000000)">
+                    <polygon id="Rectangle" fill="#E4E7ED" stroke-linejoin="round" points="13.9001619 14.2521976 56.1313246 0 96.8232388 14.2521976 96.8232388 62.4281903 56.1313246 77.9230769 13.9001619 62.4281903"></polygon>
+                    <path d="M55.9991619,0.045 L55.9991619,77.875 L13.9001619,62.4281903 L13.9001619,14.2521976 L55.9991619,0.045 Z" id="Combined-Shape" fill="#FFFFFF" stroke-linejoin="round"></path>
+                    <polygon id="Rectangle" fill="#FFFFFF" stroke-linejoin="round" points="13.2909142 14.3498224 56 29.6153846 42.450298 46.7821083 0.683963896 29.7130094"></polygon>
+                    <polygon id="Rectangle-Copy-3" fill="#FFFFFF" stroke-linejoin="round" transform="translate(83.560976, 30.444142) scale(-1, 1) translate(-83.560976, -30.444142) " points="69.2047773 14.3498224 110.914098 29.3458272 97.3612945 46.5384615 56.2078542 30.2200386"></polygon>
+                    <polygon id="Rectangle-Copy-2" points="13.9001619 14.4212995 56.1313246 0 96.8232388 14.4212995 56.1313246 29.6153846"></polygon>
+                    <polyline id="Path" fill="#E4E7ED" stroke-linecap="round" stroke-linejoin="round" points="56.1313246 29.6153846 13.9001619 14.4212995 56.1313246 0"></polyline>
+                    <polyline id="Path-Copy" fill="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" transform="translate(77.115581, 14.807692) scale(-1, 1) translate(-77.115581, -14.807692) " points="98.2311627 29.6153846 56 14.4212995 98.2311627 0"></polyline>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

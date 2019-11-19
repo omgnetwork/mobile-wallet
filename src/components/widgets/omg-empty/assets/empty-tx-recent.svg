@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="106px" height="80px" viewBox="0 0 106 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>Box</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Onboard_ONOV-2019" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round">
+        <g id="Transactions_Empty" transform="translate(-135.000000, -340.000000)" stroke="#ABB2C2">
+            <g id="Empty-state" transform="translate(115.000000, 341.000000)">
+                <g id="Box" transform="translate(21.000000, 0.000000)">
+                    <polygon id="Rectangle" fill="#E4E7ED" points="7.90016189 14.2521976 50.1313246 0 90.8232388 14.2521976 90.8232388 62.4281903 50.1313246 77.9230769 7.90016189 62.4281903"></polygon>
+                    <path d="M49.9991619,0.045 L49.9991619,77.875 L7.90016189,62.4281903 L7.90016189,14.2521976 L49.9991619,0.045 Z" id="Combined-Shape" fill="#FFFFFF"></path>
+                    <polygon id="Rectangle-Copy-3" fill="#FFFFFF" transform="translate(77.103927, 30.395330) scale(-1, 1) translate(-77.103927, -30.395330) " points="63.3846154 14.2521976 104 29.3458272 90.4471964 46.5384615 50.2078542 29.3458272"></polygon>
+                    <polygon id="Rectangle-Copy-2" fill="#E4E7ED" points="7.90016189 14.4212995 50.1313246 0 90.8232388 14.4212995 50.1313246 29.6153846"></polygon>
+                    <polyline id="Path-Copy" fill="#FFFFFF" stroke-linecap="round" transform="translate(70.411619, 14.807692) scale(-1, 1) translate(-70.411619, -14.807692) " points="90.8232388 29.6153846 50 14.4212995 90.8232388 -8.41993142e-13"></polyline>
+                    <polygon id="Path" fill="#E4E7ED" points="7.75719547 15 0 24.9573796 7.75719547 24.9573796"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

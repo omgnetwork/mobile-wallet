@@ -50,6 +50,7 @@ const OMGTransactionFilter = ({
       transactions={filteredTxs}
       loading={loading}
       address={address}
+      type={types.length === 1 ? types[0] : 'all'}
       style={style}
       renderHeader={renderHeader}
     />

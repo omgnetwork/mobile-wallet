@@ -102,7 +102,11 @@ const ChildchainBalance = ({
       />
       <OMGAssetList
         data={wallet.childchainAssets || []}
+        hasRootchainAssets={
+          wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
+        }
         keyExtractor={item => item.contractAddress}
+        type='childchain'
         updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
         loading={loading}
         handleReload={handleReload}

@@ -161,6 +161,7 @@ const TransactionHistory = ({
       <OMGTransactionList
         transactions={txs}
         loading={fetching}
+        type='recent'
         address={wallet && wallet.address}
       />
     </SafeAreaView>

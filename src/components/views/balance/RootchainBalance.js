@@ -93,6 +93,7 @@ const RootchainBalance = ({
         keyExtractor={item => item.contractAddress}
         updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
         loading={loading}
+        type='rootchain'
         handleReload={handleReload}
         style={styles.list}
         renderItem={({ item }) => (

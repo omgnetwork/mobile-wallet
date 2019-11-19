@@ -1,16 +1,20 @@
 import React from 'react'
 import { View, ActivityIndicator, StyleSheet } from 'react-native'
+import { withTheme } from 'react-native-paper'
 import OMGText from '../omg-text'
+import * as EmptyImages from './assets'
 
-const OMGEmpty = ({ text, loading, style, textStyle, weight }) => {
+const OMGEmpty = ({ text, loading, style, textStyle, imageName, theme }) => {
+  const EmptyImage = EmptyImages[imageName]
   return (
     <View style={{ ...styles.container, ...style }}>
       {loading ? (
         <ActivityIndicator />
       ) : (
-        <OMGText weight={weight || 'normal'} style={textStyle}>
-          {text}
-        </OMGText>
+        <View style={{ ...styles.container, ...style }}>
+          {imageName && EmptyImage && <EmptyImage />}
+          <OMGText style={[styles.emptyText(theme), textStyle]}>{text}</OMGText>
+        </View>
       )}
     </View>
   )
@@ -19,10 +23,15 @@ const OMGEmpty = ({ text, loading, style, textStyle, weight }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 32
-  }
+    alignItems: 'center'
+  },
+  emptyText: theme => ({
+    color: theme.colors.gray2,
+    textAlign: 'center',
+    marginTop: 14
+  })
 })
 
-export default OMGEmpty
+export default withTheme(OMGEmpty)
