@@ -161,7 +161,6 @@ export const EXIT_POPUP = {
   imageBottomName: 'TourExit',
   shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) => {
     return (
-      enabledOnboarding &&
       currentPage === 'childchain-balance' &&
       viewedPopups.includes('TRANSFER_POPUP') &&
       !viewedPopups.includes('EXIT_POPUP')
