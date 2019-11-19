@@ -96,7 +96,7 @@ const TransferScanner = ({ theme, navigation, wallet, pendingTx }) => {
     } else if (!isRootchain && wallet.childchainAssets.length === 0) {
       return {
         imageName: 'EmptyChildchainWallet',
-        text: 'Wallet is empty.\nStart using Plasma by deposit.'
+        text: 'Wallet is empty.\nShare wallet to receive fund.'
       }
     }
     return {}

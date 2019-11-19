@@ -46,19 +46,21 @@ const RootchainBalance = ({
   ])
 
   const shouldEnableDepositAction = useCallback(() => {
-    if (!hasPendingTransaction) {
+    if (!hasPendingTransaction && wallet.rootchainAssets.length > 0) {
       return true
     }
     return false
-  }, [hasPendingTransaction])
+  }, [hasPendingTransaction, wallet.rootchainAssets.length])
 
   const handleDepositClick = useCallback(() => {
-    if (shouldEnableDepositAction()) {
+    if (hasPendingTransaction) {
       Alerter.show(Alert.CANNOT_DEPOSIT_PENDING_TRANSACTION)
+    } else if (wallet.rootchainAssets.length === 0) {
+      Alerter.show(Alert.FAILED_DEPOSIT_EMPTY_WALLET)
     } else {
       navigation.navigate('TransferDeposit')
     }
-  }, [navigation, shouldEnableDepositAction])
+  }, [hasPendingTransaction, navigation, wallet])
 
   useEffect(() => {
     if (wallet.rootchainAssets) {
