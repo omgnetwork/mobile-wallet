@@ -7,7 +7,7 @@ export default createStackNavigator(
     TransferForm: {
       screen: Views.TransferForm,
       params: {
-        address: Config.PLASMA_CONTRACT_ADDRESS,
+        address: Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS,
         isDeposit: true
       }
     },

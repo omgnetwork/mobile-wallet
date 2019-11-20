@@ -75,7 +75,7 @@ const OMGDrawerContent = ({
           </OMGText>
           <OMGText style={styles.environmentItemText(theme)}>
             Plasma Contract:{' '}
-            <OMGText weight='bold'>{Config.PLASMA_CONTRACT_ADDRESS}</OMGText>
+            <OMGText weight='bold'>{Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS}</OMGText>
           </OMGText>
         </View>
       </View>
