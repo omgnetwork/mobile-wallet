@@ -2,7 +2,7 @@ version: 2
 
 defaults: &defaults
   docker:
-    - image: circleci/android:api-28-alpha
+    - image: circleci/android:api-28
   environment:
     JVM_OPTS: -Xmx3200m
 
@@ -15,7 +15,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Install fastlane
-          command: bundle install
+          command: cd ./android && bundle install
       - run:
           name: Store service account
           command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
@@ -24,7 +24,7 @@ jobs:
           command: gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json --project=${GOOGLE_PROJECT_ID}
       - run:
           name: Run the instrumentation tests in Firebase test lab
-          command: bundle exec fastlane instrumentation_tests
+          command: cd ./android && sudo apt-get update && sudo apt-get install npm -y && npm i @react-native-community/cli-platform-android && bundle exec fastlane instrumentation_tests
       - save_cache:
           paths:
             - ~/.gradle
@@ -38,19 +38,19 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Install fastlane
-          command: bundle install
+          command: cd ./android && bundle install
       - run:
           name: Store the google play key
           command: echo $GOOGLE_PLAY_KEY > gplay_key.json
       - run:
           name: Init fastlane supply
-          command: bundle exec fastlane supply init
-      - run:
-          name: Download CI data
-          command: ./ci/download_ci_data.sh
+          command: cd ./android && bundle exec fastlane supply init
+      #- run:
+          #name: Download CI data
+          #command: ./ci/download_ci_data.sh
       - run:
           name: Deploy the app to the internal track
-          command: bundle exec fastlane deploy_internal
+          command: cd ./android && bundle exec fastlane deploy_internal
       - save_cache:
           paths:
             - ~/.gradle
@@ -61,9 +61,6 @@ workflows:
   deploy-internal:
     jobs:
       - instrumentation-tests
-    branches:
-      only:
-        - /release*
       - hold:
           type: approval
           requires:
