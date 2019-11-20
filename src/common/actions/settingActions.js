@@ -44,19 +44,3 @@ export const setPrimaryAddress = (dispatch, address) => {
     type: 'SETTING/SET_PRIMARY_ADDRESS'
   })
 }
-
-export const setSkipTour = (dispatch, skip) => {
-  const action = () => ({ skip: skip })
-  return createAction(dispatch, {
-    operation: action,
-    type: 'SETTING/SET_SKIP_TOUR'
-  })
-}
-
-export const setTour = (dispatch, stage) => {
-  const action = () => ({ stage: stage })
-  return createAction(dispatch, {
-    operation: action,
-    type: 'SETTING/SET_TOUR_STEP'
-  })
-}
