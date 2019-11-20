@@ -5,6 +5,7 @@ import { walletsReducer } from './walletReducer'
 import { transactionReducer } from './transactionReducer'
 import { settingReducer } from './settingReducer'
 import { persistReducer } from 'redux-persist'
+import { onboardingReducer } from './onboardingReducer'
 import Storage from '@react-native-community/async-storage'
 
 const persistSettingConfig = {
@@ -13,10 +14,17 @@ const persistSettingConfig = {
   whitelist: ['primaryWalletAddress']
 }
 
+const persistOnboardingConfig = {
+  key: 'onboarding',
+  storage: Storage,
+  whitelist: ['enabled', 'viewedPopups']
+}
+
 export default combineReducers({
   wallets: walletsReducer,
   loading: loadingReducer,
   transaction: transactionReducer,
+  onboarding: persistReducer(persistOnboardingConfig, onboardingReducer),
   setting: persistReducer(persistSettingConfig, settingReducer),
   error: errorReducer
 })

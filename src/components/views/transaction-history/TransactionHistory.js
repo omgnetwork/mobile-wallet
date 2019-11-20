@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { StyleSheet, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigationFocus, SafeAreaView } from 'react-navigation'
-import { transactionActions } from 'common/actions'
+import { onboardingActions, transactionActions } from 'common/actions'
 import {
   OMGText,
   OMGStatusBar,
@@ -11,6 +11,7 @@ import {
   OMGMenuImage,
   OMGTransactionList
 } from 'components/widgets'
+import { usePositionMeasurement } from 'common/hooks'
 
 const TransactionHistory = ({
   theme,
@@ -18,20 +19,40 @@ const TransactionHistory = ({
   wallet,
   provider,
   loading,
+  anchoredComponents,
   isFocused,
   dispatchFetchTxHistory,
+  dispatchAddAnchoredComponent,
+  dispatchSetCurrentPage,
+  currentPage,
+  transactionHistoryMenuPosition,
   transactions
 }) => {
   const [fetched, setFetched] = useState(false)
   const [fetching, setFetching] = useState(false)
+  const [measured, setMeasured] = useState(false)
   const [txs, setTxs] = useState([])
+
+  const [
+    transactionHistoryRef,
+    measureTransactionHistoryMenu
+  ] = usePositionMeasurement(
+    'TransactionHistoryMenu',
+    dispatchAddAnchoredComponent,
+    anchoredComponents
+  )
 
   useEffect(() => {
     if (loading.action === 'TRANSACTION_ALL' && !loading.show) {
       setFetching(false)
       setFetched(true)
     }
-  }, [loading.action, loading.show, loading.success])
+  }, [
+    loading.action,
+    loading.show,
+    loading.success,
+    measureTransactionHistoryMenu
+  ])
 
   useEffect(() => {
     const options = {
@@ -44,6 +65,13 @@ const TransactionHistory = ({
       setFetching(true)
     }
   }, [fetching, dispatchFetchTxHistory, wallet, provider, fetched])
+
+  useEffect(() => {
+    if (!measured) {
+      measureTransactionHistoryMenu()
+      setMeasured(true)
+    }
+  }, [measureTransactionHistoryMenu, measured])
 
   useEffect(() => {
     if (wallet && isFocused) {
@@ -62,13 +90,18 @@ const TransactionHistory = ({
   ])
 
   useEffect(() => {
+    if (isFocused) {
+      dispatchSetCurrentPage(currentPage, 'transaction-history')
+    }
+  }, [currentPage, dispatchSetCurrentPage, isFocused])
+
+  useEffect(() => {
     if (transactions.length) {
       const recentTxs = transactions
         .filter(
           tx => ['in', 'out', 'unidentified', 'deposit'].indexOf(tx.type) > -1
         )
         .slice(0, 5)
-      console.log(recentTxs)
       setTxs(recentTxs)
     }
   }, [transactions])
@@ -119,6 +152,7 @@ const TransactionHistory = ({
         iconName='upload'
         title='Exit'
         onPress={handleClickExit}
+        menuRef={transactionHistoryRef}
         description='From Plasma Chain'
       />
       <OMGText style={styles.subheader(theme)} weight='bold'>
@@ -171,15 +205,28 @@ const mapStateToProps = (state, ownProps) => ({
   provider: state.setting.provider,
   loading: state.loading,
   transactions: state.transaction.transactions,
+  anchoredComponents: state.onboarding.anchoredComponents,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
-  )
+  ),
+  currentPage: state.onboarding.currentPage,
+  transactionHistoryMenuPosition:
+    state.onboarding.anchoredComponents.TransactionHistoryMenu
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchFetchTxHistory: (address, provider, options) =>
     dispatch(
       transactionActions.fetchTransactionHistory(address, provider, options)
+    ),
+  dispatchSetCurrentPage: (currentPage, page) => {
+    onboardingActions.setCurrentPage(dispatch, currentPage, page)
+  },
+  dispatchAddAnchoredComponent: (anchoredComponentName, position) =>
+    onboardingActions.addAnchoredComponent(
+      dispatch,
+      anchoredComponentName,
+      position
     )
 })
 

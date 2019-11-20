@@ -1,11 +1,16 @@
 import React from 'react'
 import * as Views from 'components/views'
+import * as Widgets from 'components/widgets'
 import { SafeAreaView } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation'
 import { OMGStatusBar, OMGIcon } from 'components/widgets'
-import TransferChildchainNavigator from '../transfer-childchain'
-import TransferRootChainNavigator from '../transfer-rootchain'
+import TransferChildchainNavigator from '../deposit'
+import ImportWalletNavigator from '../import-wallet'
+import CreateWalletNavigator from '../create-wallet'
+import TransferRootChainNavigator from '../transfer'
 
+Views.ImportWallet.router = ImportWalletNavigator.router
+Views.CreateWallet.router = CreateWalletNavigator.router
 Views.Deposit.router = TransferChildchainNavigator.router
 Views.Transfer.router = TransferRootChainNavigator.router
 
@@ -26,10 +31,16 @@ const WarpPortalNavigator = createStackNavigator(
     },
     CreateWallet: {
       screen: Views.CreateWallet,
+      params: {
+        navigator: CreateWalletNavigator
+      },
       navigationOptions: () => ({ title: 'Create Wallet' })
     },
     ImportWallet: {
       screen: Views.ImportWallet,
+      params: {
+        navigator: ImportWalletNavigator
+      },
       navigationOptions: () => ({ title: 'Import Wallet' })
     },
     TransferReceive: {
@@ -77,6 +88,15 @@ const WarpPortalNavigator = createStackNavigator(
       screen: Views.Wallets,
       navigationOptions: () => ({ title: 'Wallets' })
     },
+    Welcome: {
+      screen: Views.Welcome,
+      navigationOptions: () => ({ title: 'Welcome' })
+    },
+    Modal: {
+      screen: Widgets.OMGModal,
+      navigationOptions: () => ({ title: 'Modal' })
+    },
+
     WarpPortal: {
       screen: Views.WarpPortal
     }

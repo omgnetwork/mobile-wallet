@@ -13,7 +13,7 @@
     "ios-archive": "xcodebuild archive -archivePath ios/PlasmaWallet/PlasmaWallet.xcarchive -workspace ios/PlasmaWallet.xcworkspace -scheme PlasmaWallet",
     "ios-export": "xcodebuild -exportArchive -archivePath ios/PlasmaWallet/PlasmaWallet.xcarchive -exportOptionsPlist ios/PlasmaWallet/ExportOptions.plist -exportPath ios/build",
     "fix": "eslint . --fix",
-    "postinstall": "rn-nodeify --install assert,stream,events,crypto,url,http,https,vm,os,fs,path,process --hack"
+    "postinstall": "rn-nodeify --install assert,stream,events,crypto,url,http,https,vm,os,fs,path,process --hack && node ./scripts/disableRequireCycleWarning.js"
   },
   "rnpm": {
     "assets": [

@@ -9,6 +9,7 @@ import CreateWalletBackupMnemonic from './create-wallet/CreateWalletBackupMnemon
 import CreateWalletMnemonicConfirm from './create-wallet/CreateWalletMnemonicConfirm'
 import CreateWalletMnemonicFailed from './create-wallet/CreateWalletMnemonicFailed'
 import Deposit from './deposit'
+import Disclaimer from './disclaimer'
 import Exit from './exit'
 import ExitForm from './exit/ExitForm'
 import ExitConfirm from './exit/ExitConfirm'
@@ -17,6 +18,7 @@ import ImportWallet from './import-wallet'
 import ImportWalletMnemonic from './import-wallet/Mnemonic'
 import ImportWalletSuccess from './import-wallet/ImportSuccess'
 import Initializer from './initializer'
+import Main from './main'
 import ManageWallet from './manage-wallet'
 import Preview from './preview'
 import Setting from './setting'
@@ -37,6 +39,8 @@ import {
 } from './transfer'
 import Wallets from './wallets'
 import WarpPortal from './warp-portal'
+import Welcome from './welcome'
+import OnboardingTourGuide from './onboarding'
 
 export {
   Backup,
@@ -50,6 +54,7 @@ export {
   CreateWalletMnemonicConfirm,
   CreateWalletMnemonicFailed,
   Deposit,
+  Disclaimer,
   Exit,
   ExitForm,
   ExitConfirm,
@@ -58,7 +63,9 @@ export {
   ImportWalletMnemonic,
   ImportWalletSuccess,
   Initializer,
+  Main,
   ManageWallet,
+  OnboardingTourGuide,
   Preview,
   Setting,
   Transfer,
@@ -73,5 +80,6 @@ export {
   TransactionHistoryFilter,
   TransactionDetail,
   Wallets,
-  WarpPortal
+  WarpPortal,
+  Welcome
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { withTheme, Text } from 'react-native-paper'
+import { withTheme } from 'react-native-paper'
 import { OMGBackground, OMGEmpty, OMGText } from 'components/widgets'
 
 const OMGAssetHeader = ({
@@ -11,6 +11,7 @@ const OMGAssetHeader = ({
   blockchain,
   network,
   rootchain,
+  anchoredRef,
   style
 }) => {
   return (
@@ -23,7 +24,7 @@ const OMGAssetHeader = ({
         )}
         <OMGText style={styles.balanceCurrency(theme)}>{currency}</OMGText>
       </View>
-      <View style={styles.footer(theme, rootchain)}>
+      <View style={styles.footer(theme, rootchain)} ref={anchoredRef}>
         <View style={styles.subfooter}>
           <OMGText style={styles.subfooterText1(theme)}>{blockchain}</OMGText>
           <OMGText style={styles.subfooterText2(theme)}>

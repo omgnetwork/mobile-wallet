@@ -61,6 +61,18 @@ const WarpPortal = ({ navigation }) => {
           onPress={() => navigation.navigate('Wallets')}>
           Wallet list
         </Button>
+        <Button
+          mode='outlined'
+          style={styles.button}
+          onPress={() => navigation.navigate('Welcome')}>
+          Welcome
+        </Button>
+        <Button
+          mode='outlined'
+          style={styles.button}
+          onPress={() => navigation.navigate('Modal')}>
+          Modal
+        </Button>
       </OMGBackground>
     </ScrollView>
   )

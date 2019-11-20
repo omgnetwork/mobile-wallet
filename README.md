@@ -54,3 +54,20 @@ Generate the release apk by running `npm run build-android`. The generated apk f
 ### iOS
 
 Generate the release ipa by running `npm run build-ios`. The generated ipa file can be found at the `artifacts` folder.
+
+## Developer Notes
+
+### **Developing New Views**
+
+The `warpNavigator` is set up as a view component directory that you can use to develop without being bound to the application flow.
+
+To develop a new view component using the `warpNavigator`:
+
+1. Open the `src/navigator/warp-portal/index.js`
+2. Add new view route(s) for your component
+3. Add button(s) to be an entrance to new route at `src/components/views/warp-portal/index.js`
+4. In `src/router.js`, replace `AppNavigator` with `WarpPortalNavigator`
+
+### **Known Issues**
+
+- An error about auto-linking (e.g. `React Native CLI uses autolinking for native dependencies, but the following modules are linked manually`) when you `npm run ios` or `npm run android` does not cause known build issues. However, unlinking `react-native-background-fetch` as a result does. If you do this by mistake, run `react-native-link react-native-background-fetch` to link it again.

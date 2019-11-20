@@ -1,27 +1,40 @@
-import React, { useRef, useEffect } from 'react'
-import { StyleSheet, ScrollView, Platform } from 'react-native'
+import React, { useRef, useCallback, useState } from 'react'
+import { StyleSheet, ScrollView } from 'react-native'
 
-const OMGViewPager = ({ children, pageWidth }) => {
-  const scrollView = useRef(null)
-  const middlePageOffset = pageWidth - 16
+const OMGViewPager = ({ children, snapOffsets, onPageChanged }) => {
+  const scroll = useRef(null)
+  const [lastPage, setLastPage] = useState(-1)
 
-  useEffect(() => {
-    if (scrollView.current && Platform.OS === 'android') {
-      setTimeout(() => {
-        scrollView.current.scrollTo({
-          x: middlePageOffset,
-          y: 0,
-          animated: false
-        })
-      }, 300)
-    }
-  }, [middlePageOffset])
+  // const scrollTo = useCallback(
+  //   page => {
+  //     const targetPosition = (page - 1) * pageWidth - 16
+  //     scroll.current.scrollTo({ x: targetPosition, y: 0 })
+  //   },
+  //   [pageWidth]
+  // )
+
+  const handleOnScroll = useCallback(
+    event => {
+      const currentOffset = Math.round(event.nativeEvent.contentOffset.x)
+      const page = snapOffsets.indexOf(currentOffset) + 1
+
+      if (page > 0 && page !== lastPage) {
+        onPageChanged(page)
+        setLastPage(page)
+      }
+    },
+    [lastPage, onPageChanged, snapOffsets]
+  )
+
   return (
     <ScrollView
+      ref={scroll}
       contentContainerStyle={styles.container}
-      contentOffset={{ x: middlePageOffset }}
+      contentOffset={{ x: 0 }}
       snapToAlignment='center'
-      snapToOffsets={[0, middlePageOffset, pageWidth * 2]}
+      scrollEventThrottle={0}
+      onScroll={handleOnScroll}
+      snapToOffsets={snapOffsets}
       decelerationRate='fast'
       showsHorizontalScrollIndicator={false}
       horizontal={true}>
@@ -31,7 +44,9 @@ const OMGViewPager = ({ children, pageWidth }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {}
+  container: {
+    paddingHorizontal: 12
+  }
 })
 
 export default OMGViewPager

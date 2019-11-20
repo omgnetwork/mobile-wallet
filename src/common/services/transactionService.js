@@ -44,7 +44,7 @@ export const getTxs = (address, provider, options) => {
         queryChildchainOptions
       )
 
-      const currencies = childchainTxs.map(Mapper.mapCurrency)
+      const currencies = childchainTxs.map(Mapper.mapTxCurrency)
 
       const contractAddresses = Array.from(new Set(currencies))
 
@@ -75,8 +75,6 @@ const mergeTxs = async (txs, address, tokens) => {
   const cachedErc20 = {}
 
   const { rootchainTxs, rootchainErc20Txs, childchainTxs } = txs
-
-  console.log(childchainTxs)
 
   // Cache tx details
   rootchainErc20Txs.forEach(tx => {

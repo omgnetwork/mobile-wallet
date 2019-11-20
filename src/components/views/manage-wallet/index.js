@@ -1,39 +1,23 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, TouchableOpacity, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { OMGIcon, OMGText, OMGStatusBar, OMGButton } from 'components/widgets'
-import { walletActions } from 'common/actions'
+import { walletActions, onboardingActions } from 'common/actions'
 
-const ManageWalletMenu = ({ theme, title, style, onPress }) => {
-  return (
-    <TouchableOpacity
-      style={{ ...menuStyles.container, ...style }}
-      onPress={onPress}>
-      <OMGText style={menuStyles.titleLeft(theme)}>{title}</OMGText>
-      <OMGIcon name='chevron-right' size={14} style={menuStyles.iconRight} />
-    </TouchableOpacity>
-  )
-}
-
-const menuStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingVertical: 16
-  },
-  titleLeft: theme => ({
-    flex: 1,
-    color: theme.colors.primary
-  }),
-  iconRight: {}
-})
-
-const ManageWallet = ({ theme, navigation, dispatchDeleteAll }) => {
+const ManageWallet = ({
+  theme,
+  navigation,
+  currentPage,
+  dispatchDeleteAll,
+  dispatchSetCurrentPage
+}) => {
   useEffect(() => {
     function didFocus() {
       StatusBar.setBarStyle('dark-content')
       StatusBar.setBackgroundColor(theme.colors.white)
+      dispatchSetCurrentPage(currentPage, 'manage-wallet')
     }
 
     const didFocusSubscription = navigation.addListener('didFocus', didFocus)
@@ -41,7 +25,12 @@ const ManageWallet = ({ theme, navigation, dispatchDeleteAll }) => {
     return () => {
       didFocusSubscription.remove()
     }
-  }, [navigation, theme.colors.white])
+  }, [currentPage, dispatchSetCurrentPage, navigation, theme.colors.white])
+
+  const handleDeleteAll = useCallback(() => {
+    navigation.navigate('Welcome')
+    dispatchDeleteAll()
+  }, [dispatchDeleteAll, navigation])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -82,12 +71,35 @@ const ManageWallet = ({ theme, navigation, dispatchDeleteAll }) => {
         />
         <View style={styles.divider(theme)} />
       </View>
-      <OMGButton onPress={dispatchDeleteAll} style={styles.btnClearAll(theme)}>
+      <OMGButton onPress={handleDeleteAll} style={styles.btnClearAll(theme)}>
         DELETE ALL
       </OMGButton>
     </SafeAreaView>
   )
 }
+
+const ManageWalletMenu = ({ theme, title, style, onPress }) => {
+  return (
+    <TouchableOpacity
+      style={{ ...menuStyles.container, ...style }}
+      onPress={onPress}>
+      <OMGText style={menuStyles.titleLeft(theme)}>{title}</OMGText>
+      <OMGIcon name='chevron-right' size={14} style={menuStyles.iconRight} />
+    </TouchableOpacity>
+  )
+}
+
+const menuStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    paddingVertical: 16
+  },
+  titleLeft: theme => ({
+    flex: 1,
+    color: theme.colors.primary
+  }),
+  iconRight: {}
+})
 
 const styles = StyleSheet.create({
   container: {
@@ -122,11 +134,18 @@ const styles = StyleSheet.create({
   })
 })
 
+const mapStateToProps = (state, ownProps) => ({
+  currentPage: state.onboarding.currentPage
+})
+
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchDeleteAll: () => walletActions.clear(dispatch)
+  dispatchDeleteAll: () => walletActions.clear(dispatch),
+  dispatchSetCurrentPage: (currentPage, page) => {
+    onboardingActions.setCurrentPage(dispatch, currentPage, page)
+  }
 })
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(withNavigation(withTheme(ManageWallet)))

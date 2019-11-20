@@ -1,27 +1,31 @@
 import React from 'react'
 import { NavigationActions } from 'react-navigation'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
-import { StyleSheet } from 'react-native'
 import * as Views from 'components/views'
-import { OMGText, OMGIcon, OMGBox } from 'components/widgets'
+import { Dimensions } from 'common/utils'
+import { OMGBottomTab } from 'components/widgets'
 
-export default (RootChainTransferNavigator, TransactionHistoryNavigator) =>
+export default (TransferNavigator, TransactionHistoryNavigator) =>
   createBottomTabNavigator(
     {
       Balance: {
         screen: Views.Balance,
         navigationOptions: {
           tabBarLabel: ({ focused, tintColor }) => (
-            <OMGText style={styles.textTabBar(focused, tintColor)}>
-              Balance
-            </OMGText>
+            <OMGBottomTab
+              type='tabBarLabel'
+              textButton='Balance'
+              focused={focused}
+              tintColor={tintColor}
+            />
           ),
           tabBarIcon: ({ focused, tintColor }) => (
-            <OMGIcon
-              name='token'
-              size={28}
-              color={tintColor}
-              style={styles.icon(focused)}
+            <OMGBottomTab
+              type='tabBarIcon'
+              iconName='token'
+              iconSize={28}
+              focused={focused}
+              tintColor={tintColor}
             />
           )
         }
@@ -29,19 +33,20 @@ export default (RootChainTransferNavigator, TransactionHistoryNavigator) =>
       Transfer: {
         screen: Views.Transfer,
         params: {
-          navigator: RootChainTransferNavigator
+          navigator: TransferNavigator
         },
         navigationOptions: {
           tabBarLabel: ({ focused, tintColor }) => (
-            <OMGText style={styles.textTabBar(focused, tintColor)}>
-              Transfer
-            </OMGText>
+            <OMGBottomTab
+              type='tabBarLabel'
+              textButton='Transfer'
+              focused={focused}
+              tintColor={tintColor}
+            />
           ),
           tabBarVisible: false,
           tabBarIcon: () => (
-            <OMGBox style={styles.iconBox}>
-              <OMGIcon name='qr' size={24} color='#04070d' />
-            </OMGBox>
+            <OMGBottomTab type='tabBarBigIcon' iconName='qr' iconSize={24} />
           ),
           tabBarOnPress: ({ navigation }) => {
             navigation.navigate({
@@ -58,16 +63,20 @@ export default (RootChainTransferNavigator, TransactionHistoryNavigator) =>
         screen: TransactionHistoryNavigator,
         navigationOptions: {
           tabBarLabel: ({ focused, tintColor }) => (
-            <OMGText style={styles.textTabBar(focused, tintColor)}>
-              History
-            </OMGText>
+            <OMGBottomTab
+              textButton='History'
+              focused={focused}
+              tintColor={tintColor}
+              type='tabBarLabel'
+            />
           ),
           tabBarIcon: ({ focused, tintColor }) => (
-            <OMGIcon
-              name='time'
-              size={28}
-              color={tintColor}
-              style={styles.icon(focused)}
+            <OMGBottomTab
+              type='tabBarIcon'
+              iconName='time'
+              iconSize={28}
+              focused={focused}
+              tintColor={tintColor}
             />
           )
         }
@@ -89,32 +98,11 @@ export default (RootChainTransferNavigator, TransactionHistoryNavigator) =>
           marginTop: 16
         },
         style: {
-          backgroundColor: '#04070d',
+          backgroundColor: '#3c414d',
           marginTop: 0,
-          height: 88,
+          height: Dimensions.bottomBarHeight,
           paddingTop: 0
         }
       }
     }
   )
-
-const styles = StyleSheet.create({
-  textTabBar: (focused, tintColor) => ({
-    opacity: focused ? 1.0 : 0.7,
-    color: tintColor,
-    fontSize: 12,
-    alignSelf: 'center',
-    marginTop: 16,
-    marginBottom: 8
-  }),
-  icon: focused => ({
-    opacity: focused ? 1.0 : 0.7
-  }),
-  iconBox: {
-    width: 48,
-    height: 48,
-    padding: 12,
-    borderRadius: 24,
-    backgroundColor: '#FFFFFF'
-  }
-})

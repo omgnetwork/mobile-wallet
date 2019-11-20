@@ -15,11 +15,13 @@ import {
 import { Alert } from 'common/constants'
 
 const ChildchainBalance = ({
+  blockchainLabelRef,
+  exitButtonRef,
   dispatchLoadAssets,
-  dispatchInvalidatePendingTxs,
   dispatchSetShouldRefreshChildchain,
   pendingTxs,
   wallet,
+  provider,
   navigation
 }) => {
   const currency = 'USD'
@@ -38,11 +40,11 @@ const ChildchainBalance = ({
   }, [hasPendingTransaction])
 
   const shouldEnableExitAction = useCallback(() => {
-    if (!hasPendingTransaction && hasChildchainAssets) {
+    if (!hasPendingTransaction) {
       return true
     }
     return false
-  }, [hasChildchainAssets, hasPendingTransaction])
+  }, [hasPendingTransaction])
 
   const handleDepositClick = useCallback(() => {
     if (!shouldEnableDepositAction()) {
@@ -63,18 +65,12 @@ const ChildchainBalance = ({
   }, [hasPendingTransaction, navigation, shouldEnableExitAction])
 
   useEffect(() => {
-    if (wallet.shouldRefreshChildchain && wallet.rootchainAssets) {
+    if (wallet.shouldRefreshChildchain) {
       setLoading(true)
-      dispatchLoadAssets(wallet)
+      dispatchLoadAssets(provider, wallet)
       dispatchSetShouldRefreshChildchain(wallet.address, false)
     }
-  }, [
-    dispatchInvalidatePendingTxs,
-    dispatchLoadAssets,
-    dispatchSetShouldRefreshChildchain,
-    pendingTxs,
-    wallet
-  ])
+  }, [dispatchLoadAssets, dispatchSetShouldRefreshChildchain, provider, wallet])
 
   const handleReload = useCallback(() => {
     dispatchSetShouldRefreshChildchain(wallet.address, true)
@@ -101,6 +97,7 @@ const ChildchainBalance = ({
         rootchain={false}
         loading={loading}
         blockchain={'Plasma'}
+        anchoredRef={blockchainLabelRef}
         network={Config.OMISEGO_NETWORK}
       />
       <OMGAssetList
@@ -117,6 +114,8 @@ const ChildchainBalance = ({
       <OMGAssetFooter
         enableDeposit={shouldEnableDepositAction()}
         enableExit={shouldEnableExitAction()}
+        footerRef={exitButtonRef}
+        showExit={hasChildchainAssets}
         onPressDeposit={handleDepositClick}
         onPressExit={handleExitClick}
       />
@@ -141,6 +140,7 @@ const formatTotalBalance = balance => {
 }
 
 const mapStateToProps = (state, ownProps) => ({
+  provider: state.setting.provider,
   pendingTxs: state.transaction.pendingTxs,
   loading: state.loading,
   wallet: state.wallets.find(
@@ -149,8 +149,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchLoadAssets: wallet =>
-    dispatch(plasmaActions.fetchAssets(wallet.rootchainAssets, wallet.address)),
+  dispatchLoadAssets: (provider, wallet) =>
+    dispatch(plasmaActions.fetchAssets(provider, wallet.address)),
   dispatchSetShouldRefreshChildchain: (address, shouldRefreshChildchain) =>
     walletActions.refreshChildchain(dispatch, address, shouldRefreshChildchain)
 })

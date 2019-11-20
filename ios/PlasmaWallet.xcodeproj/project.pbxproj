@@ -12,6 +12,7 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1610D17F5B6311C2051CA247 /* libPods-PlasmaWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 809514C376B63202ED1D56F8 /* libPods-PlasmaWallet.a */; };
 		169DCBB7A9BB75BAFAF8E21D /* libPods-PlasmaWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E72B8B633EF589084D1ECD6A /* libPods-PlasmaWalletTests.a */; };
 		1F856FFAE0AF45D49F1346DA /* TSBackgroundFetch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F34506AC4A0E41B88C8AED57 /* TSBackgroundFetch.framework */; };
 		26B581CA473E484FA264CAAE /* omgwallet.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76FF737E1E8C4AD9A2524175 /* omgwallet.ttf */; };
@@ -24,9 +25,9 @@
 		C40F64AD230B9049007295E7 /* CircularStd-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D44BD1D7BCF3437781E6B52B /* CircularStd-Medium.otf */; };
 		C40F64AE230B9049007295E7 /* CircularStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 61288EB4BCED46B4AF9067AD /* CircularStd-Bold.otf */; };
 		C49E761123660727003B0D52 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */; };
-		C4AD05DB230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		C4AD05DC230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		C4AD05DD230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DB230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DC230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DD230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		D6DD8AB8C90447CCBFFCC6A7 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2752A0B5F702467A8625AC5D /* RNBackgroundFetch+AppDelegate.m */; };
 /* End PBXBuildFile section */
 
@@ -113,6 +114,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F856FFAE0AF45D49F1346DA /* TSBackgroundFetch.framework in Frameworks */,
+				1610D17F5B6311C2051CA247 /* libPods-PlasmaWallet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -397,9 +399,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4AD05DB230AF9C30027E763 /* (null) in Resources */,
-				C4AD05DC230AF9C30027E763 /* (null) in Resources */,
-				C4AD05DD230AF9C30027E763 /* (null) in Resources */,
+				C4AD05DB230AF9C30027E763 /* BuildFile in Resources */,
+				C4AD05DC230AF9C30027E763 /* BuildFile in Resources */,
+				C4AD05DD230AF9C30027E763 /* BuildFile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

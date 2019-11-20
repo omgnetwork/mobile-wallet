@@ -13,6 +13,7 @@ const OMGButton = ({
   disabled,
   style,
   textStyle,
+  textWeight,
   children,
   onPress,
   loading,
@@ -29,10 +30,14 @@ const OMGButton = ({
         color='#ffffff'
         style={{ ...styles.icon }}
       />
-      <OMGText style={{ ...styles.text, ...textStyle }}>{children}</OMGText>
+      <OMGText style={{ ...styles.text, ...textStyle }} weight={textWeight}>
+        {children}
+      </OMGText>
     </Fragment>
   ) : (
-    <OMGText style={{ ...styles.text, ...textStyle }}>{children}</OMGText>
+    <OMGText style={{ ...styles.text, ...textStyle }} weight={textWeight}>
+      {children}
+    </OMGText>
   )
 
   useEffect(() => {

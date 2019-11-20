@@ -1,7 +1,7 @@
-import { Formatter, Parser, Polling, Datetime } from '../utils'
+import { Formatter, Parser, Polling, Datetime, Mapper, Token } from '../utils'
 import { Plasma } from 'common/blockchain'
 
-export const fetchAssets = (rootchainAssets, address) => {
+export const fetchAssets = (provider, address) => {
   return new Promise(async (resolve, reject) => {
     try {
       const [balances, utxos] = await Promise.all([
@@ -9,10 +9,12 @@ export const fetchAssets = (rootchainAssets, address) => {
         Plasma.getUtxos(address)
       ])
 
+      const currencies = balances.map(Mapper.mapAssetCurrency)
+      const contractAddresses = Array.from(new Set(currencies))
+      const tokens = await Token.fetchTokens(provider, contractAddresses)
+
       const childchainAssets = balances.map(balance => {
-        const token = rootchainAssets.find(
-          asset => balance.currency === asset.contractAddress
-        )
+        const token = tokens.find(t => balance.currency === t.contractAddress)
 
         if (token) {
           return {
@@ -20,7 +22,8 @@ export const fetchAssets = (rootchainAssets, address) => {
             balance: Formatter.formatUnits(
               balance.amount.toFixed(),
               token.tokenDecimal
-            )
+            ),
+            price: 1
           }
         } else {
           return {

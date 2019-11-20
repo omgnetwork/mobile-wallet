@@ -33,10 +33,10 @@ export const fetchAssets = (provider, address, lastBlockNumber) => {
 
       const pendingEthToken = fetchEthToken(pendingEthBalance, pendingEthPrice)
       const pendingERC20Tokens = fetchERC20Token(txHistory, provider, address)
-      const rootchainAssets = await Promise.all([
+      let rootchainAssets = (await Promise.all([
         pendingEthToken,
         ...pendingERC20Tokens
-      ])
+      ])).filter(token => token !== null)
 
       const updatedBlock =
         (txHistory.length && txHistory.slice(-1).pop().blockNumber) || 0
@@ -63,14 +63,18 @@ export const fetchEthToken = (pendingEthBalance, pendingEthPrice) => {
         pendingEthPrice
       ])
 
-      resolve({
-        tokenName: 'Ether',
-        tokenSymbol: 'ETH',
-        tokenDecimal: 18,
-        contractAddress: ContractAddress.ETH_ADDRESS,
-        balance: balance,
-        price: price
-      })
+      if (balance === '0.0') {
+        resolve(null)
+      } else {
+        resolve({
+          tokenName: 'Ether',
+          tokenSymbol: 'ETH',
+          tokenDecimal: 18,
+          contractAddress: ContractAddress.ETH_ADDRESS,
+          balance: balance,
+          price: price
+        })
+      }
     } catch (err) {
       console.log(err)
       reject(new Error(`Cannot fetch eth token.`))

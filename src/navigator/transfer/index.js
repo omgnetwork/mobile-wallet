@@ -55,7 +55,7 @@ export default createStackNavigator(
   },
   {
     initialRouteName: 'TransferTab',
-    initialRouteKey: 'RootChainTransferNavigator',
+    initialRouteKey: 'TransferNavigator',
     headerMode: 'none'
   }
 )

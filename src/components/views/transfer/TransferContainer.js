@@ -11,7 +11,7 @@ import {
   OMGEmpty
 } from 'components/widgets'
 const TransferContainer = ({ navigation, theme, primaryWallet }) => {
-  const RootChainTransferNavigator = navigation.getParam('navigator')
+  const TransferNavigator = navigation.getParam('navigator')
 
   useEffect(() => {
     function didFocus() {
@@ -48,7 +48,7 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
         </OMGBox>
       </View>
       {primaryWallet ? (
-        <RootChainTransferNavigator navigation={navigation} />
+        <TransferNavigator navigation={navigation} />
       ) : (
         <OMGEmpty
           text={'The wallet is not found. Try import a wallet first.'}

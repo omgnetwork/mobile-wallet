@@ -13,20 +13,22 @@ import * as Token from './token'
 import * as Mapper from './mapper'
 import * as Address from './address'
 import * as Validator from './validator'
+import * as Dimensions from './dimensions'
 
 export {
+  ABI,
   Address,
   Alerter,
-  Price,
-  Storage,
-  Formatter,
-  Parser,
-  Polling,
+  BigNumber,
   Datetime,
+  Dimensions,
+  Formatter,
   Mapper,
   Notification,
-  ABI,
-  BigNumber,
+  Parser,
+  Polling,
+  Price,
+  Storage,
   Transaction,
   Token,
   Validator

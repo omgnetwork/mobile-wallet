@@ -19,7 +19,7 @@ const ImportSuccess = ({ theme, navigation, dispatchSetPrimaryWallet }) => {
           style={styles.button(theme)}
           textStyle={styles.buttonText(theme)}
           onPress={() => {
-            navigation.navigate('Balance')
+            navigation.navigate('Initializer')
             requestAnimationFrame(() => {
               dispatchSetPrimaryWallet(wallet)
             })
