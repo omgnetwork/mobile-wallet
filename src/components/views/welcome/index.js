@@ -1,9 +1,9 @@
 import React from 'react'
-import { withNavigation } from 'react-navigation'
+import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Image, StyleSheet, View } from 'react-native'
-import CardButton from './CardButton'
-import { OMGDotViewPager } from 'components/widgets'
+import CardMenu from './CardMenu'
+import { OMGDotViewPager, OMGStatusBar } from 'components/widgets'
 import Page from './Page'
 
 const PageItems = [
@@ -45,30 +45,33 @@ const Welcome = ({ navigation, theme }) => {
     })
   }
   return (
-    <View style={styles.container(theme)}>
+    <SafeAreaView style={styles.container(theme)}>
+      <OMGStatusBar
+        barStyle={'light-content'}
+        backgroundColor={theme.colors.black5}
+      />
       <Image
         style={styles.logo}
         source={require('../../../../assets/omisego-logo.png')}
       />
-
       <View style={styles.scroll}>
         <OMGDotViewPager>{PageItems}</OMGDotViewPager>
       </View>
-      <View>
-        <CardButton
-          color={theme.colors.blue6}
-          header='Sync Your Wallet'
-          description='Use own Ethereum Address with this wallet'
-          onPress={navigateImportWallet}
-        />
-        <CardButton
-          color={theme.colors.black6}
-          header='Create New Wallet'
-          description='Create wallet for the new Ethereum Address'
-          onPress={navigateCreateWallet}
-        />
-      </View>
-    </View>
+      <CardMenu
+        style={styles.cardMenu}
+        color={theme.colors.blue6}
+        header='Sync Your Wallet'
+        description='Use own Ethereum Address with this wallet'
+        onPress={navigateImportWallet}
+      />
+      <CardMenu
+        style={styles.cardMenu}
+        color={theme.colors.black6}
+        header='Create New Wallet'
+        description='Create wallet for the new Ethereum Address'
+        onPress={navigateCreateWallet}
+      />
+    </SafeAreaView>
   )
 }
 
@@ -76,27 +79,24 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
-    backgroundColor: theme.colors.black5
+    backgroundColor: theme.colors.black5,
+    justifyContent: 'space-around'
   }),
   logo: {
     width: 130,
     height: 44,
-    marginTop: 70,
+    marginTop: 16,
     marginLeft: 30
   },
+  cardMenu: {
+    flex: 3
+  },
   scroll: {
+    flex: 10,
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 20
-  },
-  scrollPoints: theme => ({
-    height: 10,
-    width: 10,
-    backgroundColor: theme.colors.black4,
-    margin: 8,
-    borderRadius: 5
-  })
+    paddingBottom: 20
+  }
 })
 
 export default withNavigation(withTheme(Welcome))

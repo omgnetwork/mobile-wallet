@@ -10,33 +10,41 @@ const Page = ({ theme, textTitle, textContent, image }) => {
   return (
     <View style={styles.container}>
       <WelcomeImage style={styles.image} />
-      <OMGText style={[styles.text(theme), styles.header]} weight='bold'>
-        {textTitle}
-      </OMGText>
-      {textContent && (
-        <OMGText style={[styles.text(theme), styles.subheader]}>
-          {textContent}
+      <View style={styles.textContent}>
+        <OMGText style={[styles.text(theme), styles.header]} weight='bold'>
+          {textTitle}
         </OMGText>
-      )}
+        {textContent && (
+          <OMGText
+            style={[styles.text(theme), styles.subheader]}
+            weight='medium'>
+            {textContent}
+          </OMGText>
+        )}
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    justifyContent: 'space-evenly',
     width: Dimensions.windowWidth,
-    padding: 30
+    paddingHorizontal: 30,
+    marginBottom: 16
   },
   text: theme => ({
-    marginTop: 48,
     color: theme.colors.white,
     textAlign: 'left'
   }),
   image: {},
+  textContent: {},
   subheader: {
     fontSize: 18,
-    marginTop: 10,
-    opacity: 0.6
+    opacity: 0.6,
+    lineHeight: 25,
+    marginTop: 10
   },
   header: {
     fontSize: 30

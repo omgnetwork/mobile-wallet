@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { connect } from 'react-redux'
 import QRCodeScanner from 'react-native-qrcode-scanner'
 import { View, StyleSheet, Animated } from 'react-native'
 import Svg, { Rect, Path } from 'react-native-svg'
 import { Dimensions } from 'common/utils'
-import { OMGText } from 'components/widgets'
+import { OMGText, OMGEmpty } from 'components/widgets'
 
 const SCREEN_WIDTH = Dimensions.windowWidth
 export const ROOTCHAIN_OVERLAY_COLOR = 'rgba(125, 85, 246, 0.50)'
@@ -20,13 +20,34 @@ const OMGQRScanner = props => {
     overlayColorAnim,
     cameraRef,
     renderPendingTx,
-    pendingTx
+    renderEmptyComponent,
+    pendingTx,
+    wallet
   } = props
-
+  const hasRootchainAssets =
+    wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
+  const hasChildchainAssets =
+    wallet && wallet.childchainAssets && wallet.childchainAssets.length > 0
   const renderQRMarker = (
     <QRMarker borderColor={borderColor} borderStrokeWidth={borderStrokeWidth} />
   )
-  const renderContent = pendingTx ? renderPendingTx : renderQRMarker
+
+  const renderContent = useCallback(() => {
+    if (pendingTx) {
+      return renderPendingTx
+    } else if (!hasRootchainAssets || !hasChildchainAssets) {
+      return renderEmptyComponent
+    } else {
+      return renderQRMarker
+    }
+  }, [
+    hasChildchainAssets,
+    hasRootchainAssets,
+    pendingTx,
+    renderEmptyComponent,
+    renderPendingTx,
+    renderQRMarker
+  ])
 
   const handleOnRead = e => {
     if (!pendingTx) {
@@ -55,11 +76,11 @@ const OMGQRScanner = props => {
             </Animated.View>
             <View style={styles.scannerContainer}>
               <Animated.View style={styles.sideOverlay(overlayColorAnim)} />
-              {renderContent}
+              {renderContent()}
               <Animated.View style={styles.sideOverlay(overlayColorAnim)} />
             </View>
             <Animated.View style={styles.bottomContainer(overlayColorAnim)}>
-              {!pendingTx && renderBottom}
+              {renderBottom}
             </Animated.View>
           </View>
         }
@@ -154,7 +175,10 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  pendingTx: state.transaction.pendingTxs.length > 0
+  pendingTx: state.transaction.pendingTxs.length > 0,
+  wallet: state.wallets.find(
+    w => w.address === state.setting.primaryWalletAddress
+  )
 })
 
 export default connect(

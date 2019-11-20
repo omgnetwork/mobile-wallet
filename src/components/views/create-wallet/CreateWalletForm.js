@@ -2,12 +2,7 @@ import React, { useRef } from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
-import {
-  View,
-  TouchableWithoutFeedback,
-  StyleSheet,
-  Keyboard
-} from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { Alerter } from 'common/utils'
 import { Alert } from 'common/constants'
 import {

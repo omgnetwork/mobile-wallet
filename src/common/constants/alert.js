@@ -27,3 +27,8 @@ export const CANNOT_EXIT_NOT_ENOUGH_ASSETS = {
   type: 'warning',
   message: "There're no assets to exit."
 }
+
+export const FAILED_DEPOSIT_EMPTY_WALLET = {
+  type: 'warning',
+  message: "There's no assets to deposit."
+}

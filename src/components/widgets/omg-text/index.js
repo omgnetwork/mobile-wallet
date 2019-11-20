@@ -1,6 +1,5 @@
 import React from 'react'
-import { StyleSheet, Platform } from 'react-native'
-import { Text } from 'react-native-paper'
+import { StyleSheet, Platform, Text } from 'react-native'
 
 const OMGText = ({ children, weight, style, ellipsizeMode, numberOfLines }) => {
   return (
@@ -13,6 +12,7 @@ const OMGText = ({ children, weight, style, ellipsizeMode, numberOfLines }) => {
       ]}
       fontFamily={fontFamilySelector(weight)}
       ellipsizeMode={ellipsizeMode}
+      textBreakStrategy='simple'
       numberOfLines={numberOfLines}>
       {children}
     </Text>

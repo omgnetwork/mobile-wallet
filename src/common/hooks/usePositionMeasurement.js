@@ -18,17 +18,18 @@ const usePositionMeasurement = (
       } = options
       if (anchoredComponentRef.current) {
         setTimeout(() => {
-          anchoredComponentRef.current.measure(
-            (fx, fy, width, height, px, py) => {
-              dispatchAddAnchoredComponent(anchoredComponentName, {
-                top: Math.round(py) + (topOffset || 0),
-                bottom: Math.round(py + height),
-                left: forceLeft || Math.round(px) + (offset || 0),
-                width: forceWidth || Math.round(width) + (widthOffset || 0),
-                arrowOffset: getArrowOffset(arrowDirection, Math.round(width))
-              })
-            }
-          )
+          anchoredComponentRef.current &&
+            anchoredComponentRef.current.measure(
+              (fx, fy, width, height, px, py) => {
+                dispatchAddAnchoredComponent(anchoredComponentName, {
+                  top: Math.round(py) + (topOffset || 0),
+                  bottom: Math.round(py + height),
+                  left: forceLeft || Math.round(px) + (offset || 0),
+                  width: forceWidth || Math.round(width) + (widthOffset || 0),
+                  arrowOffset: getArrowOffset(arrowDirection, Math.round(width))
+                })
+              }
+            )
         }, 300)
       }
     },

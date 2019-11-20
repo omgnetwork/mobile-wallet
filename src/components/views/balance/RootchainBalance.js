@@ -28,7 +28,8 @@ const RootchainBalance = ({
   const [totalBalance, setTotalBalance] = useState(0.0)
   const [loading, setLoading] = useState(false)
   const hasPendingTransaction = pendingTxs.length > 0
-
+  const hasRootchainAssets =
+    wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
   const currency = 'USD'
 
   useEffect(() => {
@@ -46,19 +47,21 @@ const RootchainBalance = ({
   ])
 
   const shouldEnableDepositAction = useCallback(() => {
-    if (!hasPendingTransaction) {
+    if (!hasPendingTransaction && hasRootchainAssets) {
       return true
     }
     return false
-  }, [hasPendingTransaction])
+  }, [hasPendingTransaction, hasRootchainAssets])
 
   const handleDepositClick = useCallback(() => {
-    if (shouldEnableDepositAction()) {
+    if (hasPendingTransaction) {
       Alerter.show(Alert.CANNOT_DEPOSIT_PENDING_TRANSACTION)
+    } else if (!hasRootchainAssets) {
+      Alerter.show(Alert.FAILED_DEPOSIT_EMPTY_WALLET)
     } else {
       navigation.navigate('TransferDeposit')
     }
-  }, [navigation, shouldEnableDepositAction])
+  }, [hasPendingTransaction, hasRootchainAssets, navigation])
 
   useEffect(() => {
     if (wallet.rootchainAssets) {
@@ -93,6 +96,7 @@ const RootchainBalance = ({
         keyExtractor={item => item.contractAddress}
         updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
         loading={loading}
+        type='rootchain'
         handleReload={handleReload}
         style={styles.list}
         renderItem={({ item }) => (

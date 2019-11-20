@@ -7,12 +7,37 @@ import { OMGEmpty, OMGItemTransaction } from 'components/widgets'
 const OMGTransactionList = ({
   transactions,
   theme,
+  type,
   loading,
   renderHeader,
   address,
   style,
   navigation
 }) => {
+  const getEmptyStatePayload = useCallback(() => {
+    if (type === 'recent') {
+      return {
+        imageName: 'EmptyTxRecent',
+        text: 'No activity history, try\nReceive | Deposit | Transfer'
+      }
+    } else if (type === 'deposit') {
+      return {
+        imageName: 'EmptyTxDeposit',
+        text: 'No Deposit History.\nTry deposit.'
+      }
+    } else if (type === 'exit') {
+      return {
+        imageName: 'EmptyTxExit',
+        text: 'No Exits History.'
+      }
+    } else {
+      return {
+        imageName: 'EmptyTxAll',
+        text: 'No Transaction History\nTry transfer.'
+      }
+    }
+  }, [type])
+
   const renderSeparator = useCallback(
     ({ leadingItem }) => {
       return <View style={styles.divider(theme)} />
@@ -42,11 +67,9 @@ const OMGTransactionList = ({
           contentContainerStyle={
             transactions && transactions.length
               ? styles.content
-              : styles.emptyContent
+              : styles.emptyContent(theme)
           }
-          ListEmptyComponent={
-            <OMGEmpty text='Empty Transactions' style={styles.empty} />
-          }
+          ListEmptyComponent={<OMGEmpty {...getEmptyStatePayload()} />}
           renderItem={({ item }) => (
             <OMGItemTransaction
               tx={item}
@@ -67,23 +90,15 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 16
   },
-  emptyContent: {
+  emptyContent: theme => ({
     paddingHorizontal: 16,
     flexGrow: 1
-  },
+  }),
   divider: theme => ({
     backgroundColor: theme.colors.black1,
     height: 1,
     opacity: 0.3
-  }),
-  empty: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    opacity: 0.4,
-    fontSize: 18,
-    textTransform: 'uppercase'
-  }
+  })
 })
 
 export default withNavigation(withTheme(OMGTransactionList))

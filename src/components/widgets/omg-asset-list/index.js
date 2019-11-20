@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGBackground, OMGText, OMGEmpty } from 'components/widgets'
@@ -7,8 +7,10 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 const OMGAssetList = ({
   theme,
+  type,
   style,
   data,
+  hasRootchainAssets,
   renderItem,
   refreshControl,
   updatedAt,
@@ -16,6 +18,25 @@ const OMGAssetList = ({
   loading,
   handleReload
 }) => {
+  const getEmptyStatePayload = useCallback(() => {
+    if (type === 'rootchain') {
+      return {
+        imageName: 'EmptyRootchainWallet',
+        text: 'Wallet is empty.\nShare wallet to receive fund.'
+      }
+    } else if (type === 'childchain' && !hasRootchainAssets) {
+      return {
+        imageName: 'EmptyChildchainRootchainWallet',
+        text: 'Wallet is empty.\nStart using Plasma by deposit.'
+      }
+    } else {
+      return {
+        imageName: 'EmptyChildchainWallet',
+        text: 'Wallet is empty.\nShare wallet to receive fund.'
+      }
+    }
+  }, [hasRootchainAssets, type])
+
   return (
     <OMGBackground style={{ ...styles.container(theme), ...style }}>
       <View style={styles.header(theme)}>
@@ -40,14 +61,20 @@ const OMGAssetList = ({
       </View>
       <View style={styles.assetContainer(theme)}>
         {loading ? (
-          <OMGEmpty text='Empty assets' loading={true} />
+          <OMGEmpty
+            text='Empty assets'
+            loading={true}
+            {...getEmptyStatePayload()}
+          />
         ) : (
           <FlatList
             style={styles.assetList}
             data={data}
             refreshControl={refreshControl}
             keyExtractor={keyExtractor}
-            ListEmptyComponent={<OMGEmpty text='Empty assets' />}
+            ListEmptyComponent={
+              <OMGEmpty {...getEmptyStatePayload()} style={styles.emptyState} />
+            }
             contentContainerStyle={
               data && data.length
                 ? styles.contentContainer
@@ -69,8 +96,10 @@ const styles = StyleSheet.create({
   }),
   contentContainer: {},
   emptyContentContainer: {
-    flexGrow: 1,
-    justifyContent: 'center'
+    flexGrow: 1
+  },
+  emptyState: {
+    top: -12
   },
   header: theme => ({
     flexDirection: 'row',
@@ -86,6 +115,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   assetContainer: theme => ({
+    flex: 1,
+    flexDirection: 'column',
     backgroundColor: theme.colors.white,
     paddingVertical: 8
   }),

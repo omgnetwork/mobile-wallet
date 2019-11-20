@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="105px" height="76px" viewBox="0 0 105 76" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>Group 8</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Onboard_ONOV-2019" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Empty-wallet_After-dismiss-tooltip" transform="translate(-122.000000, -368.000000)">
+            <g id="Receive_Empty_Option1" transform="translate(93.000000, 369.000000)">
+                <g id="Group-9">
+                    <g id="Group-8" transform="translate(29.000000, 0.000000)">
+                        <path d="M17.25,0 L99.5,0 C101.709139,-4.05812251e-16 103.5,1.790861 103.5,4 L103.5,69.75 C103.5,71.959139 101.709139,73.75 99.5,73.75 L17.25,73.75 L17.25,73.75 L17.25,0 Z" id="Rectangle" stroke="#ABB2C2" fill="#E4E7ED"></path>
+                        <g id="ETH" transform="translate(49.000000, 21.000000)" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3">
+                            <polygon id="Path-4" points="0 19.7058824 12 1.24344979e-14 24 19.7058824 12 38.8235294"></polygon>
+                            <polyline id="Path-5" points="23.0769231 19.3846154 12 26.0282049 0.923076923 19.3846154"></polyline>
+                            <polyline id="Path-6" points="12 8.84625706e-13 12 24.182051 12 35.1855204"></polyline>
+                        </g>
+                        <path d="M17.25,73.75 L1,73.75 M1,0 L17.25,0" id="Shape" stroke="#ABB2C2"></path>
+                        <line x1="104.125" y1="9.375" x2="17.875" y2="9.375" id="Line-4" stroke="#FFFFFF" stroke-linecap="square"></line>
+                        <line x1="16.875" y1="9.375" x2="1.25" y2="9.375" id="Line-4-Copy" stroke="#E4E7ED" stroke-linecap="square"></line>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

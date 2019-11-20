@@ -88,7 +88,7 @@ const Balance = ({
     return () => {
       didFocusSubscription.remove()
     }
-  }, [navigation, primaryWallet, theme.colors.black5, theme.colors.gray4])
+  }, [navigation, primaryWallet, theme.colors.gray4])
 
   useEffect(() => {
     if (
