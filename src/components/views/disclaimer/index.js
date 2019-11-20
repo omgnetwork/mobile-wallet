@@ -16,7 +16,7 @@ const Disclaimer = ({ navigation, theme }) => {
   }, [navigation])
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} forceInset={{ top: 'never' }}>
       <OMGStatusBar
         barStyle={'light-content'}
         backgroundColor={theme.colors.black5}
@@ -28,7 +28,7 @@ const Disclaimer = ({ navigation, theme }) => {
           page :)
         </OMGText>
       </View>
-      <View style={styles.contentContainer(theme)}>
+      <ScrollView style={styles.contentContainer(theme)}>
         <OMGText style={styles.contentText1(theme)}>
           This wallet is your first official gateway to OmiseGO Network.
         </OMGText>
@@ -38,7 +38,7 @@ const Disclaimer = ({ navigation, theme }) => {
           on this wallet will be using ETH in real time and may incur
           transaction charges. Practice prudence with each transaction.
         </OMGText>
-      </View>
+      </ScrollView>
       <View style={styles.buttonContainer}>
         <OMGButton
           style={styles.confirmButton(theme)}
@@ -55,7 +55,7 @@ const Disclaimer = ({ navigation, theme }) => {
           DECLINE
         </OMGButton>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -77,26 +77,21 @@ const styles = StyleSheet.create({
     marginTop: 28
   }),
   contentContainer: theme => ({
-    flexDirection: 'column',
-    flex: 1,
     paddingHorizontal: 30,
-    backgroundColor: theme.colors.white
+    paddingVertical: 10
   }),
   buttonContainer: {
-    flexDirection: 'column',
     paddingHorizontal: 30,
-    alignItems: 'center',
-    paddingVertical: 16
+    paddingVertical: 8
   },
   contentText1: theme => ({
     color: theme.colors.primary,
-    fontSize: 18,
-    marginTop: 20
+    fontSize: 17
   }),
   contentText2: theme => ({
     color: theme.colors.primary,
-    fontSize: 18,
-    marginTop: 20
+    fontSize: 17,
+    marginTop: 10
   }),
   confirmButton: theme => ({
     backgroundColor: theme.colors.gray3,
@@ -107,7 +102,7 @@ const styles = StyleSheet.create({
   }),
   declineButton: theme => ({
     backgroundColor: 'transparent',
-    marginTop: 16
+    marginTop: 8
   }),
   declineButtonText: theme => ({
     color: theme.colors.gray3

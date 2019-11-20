@@ -79,12 +79,13 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.black5
+    backgroundColor: theme.colors.black5,
+    justifyContent: 'space-around'
   }),
   logo: {
     width: 130,
     height: 44,
-    marginTop: 40,
+    marginTop: 16,
     marginLeft: 30
   },
   cardMenu: {
