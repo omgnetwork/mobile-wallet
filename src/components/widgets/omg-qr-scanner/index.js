@@ -24,7 +24,10 @@ const OMGQRScanner = props => {
     pendingTx,
     wallet
   } = props
-
+  const hasRootchainAssets =
+    wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
+  const hasChildchainAssets =
+    wallet && wallet.childchainAssets && wallet.childchainAssets.length > 0
   const renderQRMarker = (
     <QRMarker borderColor={borderColor} borderStrokeWidth={borderStrokeWidth} />
   )
@@ -32,15 +35,19 @@ const OMGQRScanner = props => {
   const renderContent = useCallback(() => {
     if (pendingTx) {
       return renderPendingTx
-    } else if (
-      wallet.rootchainAssets.length === 0 ||
-      wallet.childchainAssets.length === 0
-    ) {
+    } else if (!hasRootchainAssets || !hasChildchainAssets) {
       return renderEmptyComponent
     } else {
       return renderQRMarker
     }
-  }, [pendingTx, renderEmptyComponent, renderPendingTx, renderQRMarker, wallet])
+  }, [
+    hasChildchainAssets,
+    hasRootchainAssets,
+    pendingTx,
+    renderEmptyComponent,
+    renderPendingTx,
+    renderQRMarker
+  ])
 
   const handleOnRead = e => {
     if (!pendingTx) {

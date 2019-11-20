@@ -14,7 +14,7 @@ const Page = ({ theme, textTitle, textContent, image }) => {
         {textTitle}
       </OMGText>
       {textContent && (
-        <OMGText style={[styles.text(theme), styles.subheader]}>
+        <OMGText style={[styles.text(theme), styles.subheader]} weight='medium'>
           {textContent}
         </OMGText>
       )}
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     padding: 30
   },
   text: theme => ({
-    marginTop: 48,
+    marginTop: 36,
     color: theme.colors.white,
     textAlign: 'left'
   }),
@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
   subheader: {
     fontSize: 18,
     marginTop: 10,
-    opacity: 0.6
+    opacity: 0.6,
+    lineHeight: 25
   },
   header: {
     fontSize: 30

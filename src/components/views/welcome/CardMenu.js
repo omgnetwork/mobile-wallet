@@ -4,22 +4,20 @@ import { withNavigation } from 'react-navigation'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { OMGIcon, OMGText } from '../../widgets'
 
-const CardMenu = ({ theme, color, header, description, onPress }) => {
+const CardMenu = ({ theme, color, header, description, onPress, style }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={{ ...styles.container, backgroundColor: color, ...style }}>
       <View>
-        <View style={{ ...styles.container, backgroundColor: color }}>
-          <View>
-            <OMGText style={[styles.text(theme), styles.header]} weight='bold'>
-              {header}
-            </OMGText>
-            <OMGText style={[styles.text(theme), styles.subheader]}>
-              {description}
-            </OMGText>
-          </View>
-          <OMGIcon name='chevron-right' size={24} style={styles.arrow(theme)} />
-        </View>
+        <OMGText style={[styles.text(theme), styles.header]} weight='bold'>
+          {header}
+        </OMGText>
+        <OMGText style={[styles.text(theme), styles.subheader]}>
+          {description}
+        </OMGText>
       </View>
+      <OMGIcon name='chevron-right' size={24} style={styles.arrow(theme)} />
     </TouchableOpacity>
   )
 }
@@ -32,8 +30,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 30,
-    paddingVertical: 44
+    paddingHorizontal: 30
   },
 
   text: theme => ({

@@ -33,10 +33,12 @@ const TransferScanner = ({ theme, navigation, wallet, pendingTx }) => {
     false
   )
   const [isRootchain, setIsRootchain] = useState(rootchain)
+  const hasRootchainAssets =
+    wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
+  const hasChildchainAssets =
+    wallet && wallet.childchainAssets && wallet.childchainAssets.length > 0
   const overlayColorAnim = useRef(new Animated.Value(0))
-
   const Icon = BlockchainIcons[isRootchain ? 'IconEth' : 'IconGo']
-
   const transitionOverlay = isRootChain => {
     if (isRootChain) {
       Animator.spring(overlayColorAnim, 1, 2000, false).start()
@@ -88,32 +90,29 @@ const TransferScanner = ({ theme, navigation, wallet, pendingTx }) => {
   }, [navigation, theme.colors.white])
 
   const getEmptyStatePayload = useCallback(() => {
-    if (isRootchain && wallet.rootchainAssets.length === 0) {
+    if (isRootchain && hasRootchainAssets) {
       return {
         imageName: 'EmptyRootchainWallet',
         text: 'Wallet is empty.\nShare wallet to receive fund.'
       }
-    } else if (!isRootchain && wallet.childchainAssets.length === 0) {
+    } else if (!isRootchain && !hasChildchainAssets) {
       return {
         imageName: 'EmptyChildchainWallet',
         text: 'Wallet is empty.\nShare wallet to receive fund.'
       }
     }
     return {}
-  }, [isRootchain, wallet])
+  }, [hasChildchainAssets, hasRootchainAssets, isRootchain])
 
   useEffect(() => {
     if (pendingTx) {
       setShouldDisabledSendButton(true)
-    } else if (
-      wallet.rootchainAssets.length === 0 ||
-      wallet.childchainAssets.length === 0
-    ) {
+    } else if (!hasRootchainAssets || !hasChildchainAssets) {
       setShouldDisabledSendButton(true)
     } else {
       setShouldDisabledSendButton(false)
     }
-  }, [pendingTx, wallet])
+  }, [hasChildchainAssets, hasRootchainAssets, pendingTx])
 
   const pendingTxComponent = (
     <Animated.View style={styles.unableView(overlayColorAnim)}>

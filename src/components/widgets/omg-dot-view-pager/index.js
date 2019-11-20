@@ -14,29 +14,27 @@ const OMGDotViewPager = ({ theme, children }) => {
   }
   return (
     <View style={styles.container}>
-      <View>
-        <ScrollView
-          horizontal={true}
-          pagingEnabled={true}
-          onScroll={handleScroll}
-          scrollEventThrottle={8}>
-          {children}
-        </ScrollView>
-        <View style={styles.scrollDots}>
-          {[...Array(3)].map((_, index) => {
-            let opacity = position.interpolate({
-              inputRange: [index - 1, index, index + 1],
-              outputRange: [0.3, 1, 0.3],
-              extrapolate: 'clamp'
-            })
-            return (
-              <Animated.View
-                key={index}
-                style={[styles.dot(theme), { opacity }]}
-              />
-            )
-          })}
-        </View>
+      <ScrollView
+        horizontal={true}
+        pagingEnabled={true}
+        onScroll={handleScroll}
+        scrollEventThrottle={8}>
+        {children}
+      </ScrollView>
+      <View style={styles.scrollDots}>
+        {[...Array(3)].map((_, index) => {
+          let opacity = position.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [0.3, 1, 0.3],
+            extrapolate: 'clamp'
+          })
+          return (
+            <Animated.View
+              key={index}
+              style={[styles.dot(theme), { opacity }]}
+            />
+          )
+        })}
       </View>
     </View>
   )
@@ -46,13 +44,14 @@ const styles = StyleSheet.create({
   container: {},
   scrollDots: {
     flexDirection: 'row',
-    marginLeft: 30
+    marginLeft: 30,
+    marginBottom: 10
   },
   dot: theme => ({
     height: 10,
     width: 10,
     backgroundColor: theme.colors.black4,
-    margin: 8,
+    marginRight: 16,
     borderRadius: 5
   })
 })

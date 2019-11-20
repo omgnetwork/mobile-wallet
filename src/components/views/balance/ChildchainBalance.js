@@ -27,17 +27,18 @@ const ChildchainBalance = ({
   const currency = 'USD'
   const [totalBalance, setTotalBalance] = useState(0.0)
   const [loading, setLoading] = useState(false)
-
   const hasPendingTransaction = pendingTxs.length > 0
+  const hasRootchainAssets =
+    wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
   const hasChildchainAssets =
-    wallet.childchainAssets && wallet.childchainAssets.length > 0
+    wallet && wallet.childchainAssets && wallet.childchainAssets.length > 0
 
   const shouldEnableDepositAction = useCallback(() => {
-    if (!hasPendingTransaction && wallet.rootchainAssets.length > 0) {
+    if (!hasPendingTransaction && hasRootchainAssets) {
       return true
     }
     return false
-  }, [hasPendingTransaction, wallet.rootchainAssets.length])
+  }, [hasPendingTransaction, hasRootchainAssets])
 
   const shouldEnableExitAction = useCallback(() => {
     if (!hasPendingTransaction) {
@@ -49,12 +50,12 @@ const ChildchainBalance = ({
   const handleDepositClick = useCallback(() => {
     if (hasPendingTransaction) {
       Alerter.show(Alert.CANNOT_DEPOSIT_PENDING_TRANSACTION)
-    } else if (wallet.rootchainAssets.length === 0) {
+    } else if (!hasRootchainAssets) {
       Alerter.show(Alert.FAILED_DEPOSIT_EMPTY_WALLET)
     } else {
       navigation.navigate('TransferDeposit')
     }
-  }, [hasPendingTransaction, navigation, wallet])
+  }, [hasPendingTransaction, hasRootchainAssets, navigation])
 
   const handleExitClick = useCallback(() => {
     if (!shouldEnableExitAction() && !hasPendingTransaction) {
@@ -104,9 +105,7 @@ const ChildchainBalance = ({
       />
       <OMGAssetList
         data={wallet.childchainAssets || []}
-        hasRootchainAssets={
-          wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
-        }
+        hasRootchainAssets={hasRootchainAssets}
         keyExtractor={item => item.contractAddress}
         type='childchain'
         updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
