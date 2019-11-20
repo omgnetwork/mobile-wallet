@@ -17,6 +17,7 @@ const OMGDotViewPager = ({ theme, children }) => {
       <ScrollView
         horizontal={true}
         pagingEnabled={true}
+        showsHorizontalScrollIndicator={false}
         onScroll={handleScroll}
         scrollEventThrottle={8}>
         {children}
