@@ -30,7 +30,6 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 const initialState = {
   wallets: [],
   setting: {
-    tourStage: 0,
     provider: null,
     providerName: Config.ETHERSCAN_NETWORK
   },
