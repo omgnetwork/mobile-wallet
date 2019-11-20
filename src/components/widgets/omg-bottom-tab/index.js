@@ -24,7 +24,6 @@ const OMGBottomTab = ({
 
   useEffect(() => {
     if (type === 'tabBarBigIcon' && currentPage === 'childchain-balance') {
-      console.log('measure')
       measureTransfer({
         forceLeft: 28,
         forceWidth: Dimensions.windowWidth - 56,
