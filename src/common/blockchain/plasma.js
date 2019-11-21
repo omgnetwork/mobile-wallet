@@ -36,7 +36,7 @@ export const createFee = amount => ({
 })
 
 // Deposit
-export const depositEth = (address, privateKey, weiAmount, options) => {
+export const depositEth = (address, privateKey, weiAmount, options = {}) => {
   const depositTransaction = Plasma.transaction.encodeDeposit(
     address,
     weiAmount,
@@ -173,7 +173,6 @@ export const submitTx = signedTx => {
 
 export const getTxs = (address, options) => {
   const { blknum, limit } = options || { blknum: '0', limit: 10 }
-  console.log(options)
   return Plasma.childchain.getTransactions({
     address: address,
     limit: limit || 10,

@@ -72,7 +72,8 @@ const TransferConfirm = ({
     const isPendingChildchainTransaction =
       pendingTxs.find(tx => tx.type === 'CHILDCHAIN_SEND_TOKEN') !== undefined
     const isChildchainTransaction =
-      !isRootchain && toWallet.address !== Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
+      !isRootchain &&
+      toWallet.address !== Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
 
     setConfirmBtnDisable(
       isPendingChildchainTransaction && isChildchainTransaction

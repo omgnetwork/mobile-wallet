@@ -9,8 +9,6 @@ const OMGOnboardingSheet = ({ theme, content, visible }) => {
   const ImageCenter = TourImages[content.imageCenterName]
   const ImageBottom = TourImages[content.imageBottomName]
 
-  console.log(content)
-
   return (
     <OnboardingContainer visible={visible} tourKey={content.key}>
       <OMGText style={styles.title(theme)} weight='bold'>
