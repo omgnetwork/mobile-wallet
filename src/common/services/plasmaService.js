@@ -1,5 +1,6 @@
 import { Formatter, Parser, Polling, Datetime, Mapper, Token } from '../utils'
 import { Plasma } from 'common/blockchain'
+import Config from 'react-native-config'
 
 export const fetchAssets = (provider, address) => {
   return new Promise(async (resolve, reject) => {
@@ -152,14 +153,11 @@ export const transfer = (
 export const depositEth = (address, privateKey, amount, fee) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const weiAmount = Parser.parseUnits(amount, 'ether')
+      const weiAmount = Parser.parseUnits(amount, 'ether').toString(10)
       const transactionReceipt = await Plasma.depositEth(
         address,
         privateKey,
-        weiAmount,
-        {
-          gasPrice: Parser.parseUnits(fee.amount, fee.symbol)
-        }
+        weiAmount
       )
       resolve(transactionReceipt)
     } catch (err) {
@@ -178,7 +176,8 @@ export const depositErc20 = (address, privateKey, token, fee) => {
         weiAmount,
         token.contractAddress,
         {
-          gasPrice: Parser.parseUnits(fee.amount, fee.symbol)
+          gasPrice: Parser.parseUnits(fee.amount, fee.symbol),
+          gasLimit: Number(Config.ROOTCHAIN_GAS_LIMIT)
         }
       )
       resolve(transactionReceipt)
