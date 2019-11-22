@@ -17,13 +17,12 @@ export const fetchAssets = (provider, address) => {
   })
 }
 
-export const depositEth = (blockchainWallet, token, fee) => {
+export const depositEth = (blockchainWallet, token) => {
   const asyncAction = async () => {
     const transactionReceipt = await plasmaService.depositEth(
       blockchainWallet.address,
       blockchainWallet.privateKey,
-      token.balance,
-      fee
+      token.balance
     )
 
     return {
@@ -32,7 +31,8 @@ export const depositEth = (blockchainWallet, token, fee) => {
       value: token.balance,
       symbol: token.tokenSymbol,
       contractAddress: token.contractAddress,
-      gasPrice: fee.amount,
+      gasPrice: transactionReceipt.gasPrice,
+      gasUsed: transactionReceipt.gasUsed,
       type: 'CHILDCHAIN_DEPOSIT',
       createdAt: Datetime.now()
     }
@@ -70,13 +70,12 @@ export const transfer = (blockchainWallet, toAddress, token, fee) => {
   })
 }
 
-export const depositErc20 = (blockchainWallet, token, fee) => {
+export const depositErc20 = (blockchainWallet, token) => {
   const asyncAction = async () => {
     const transactionReceipt = await plasmaService.depositErc20(
       blockchainWallet.address,
       blockchainWallet.privateKey,
-      token,
-      fee
+      token
     )
 
     return {
@@ -85,7 +84,8 @@ export const depositErc20 = (blockchainWallet, token, fee) => {
       value: token.balance,
       symbol: token.tokenSymbol,
       contractAddress: token.contractAddress,
-      gasPrice: fee.amount,
+      gasPrice: transactionReceipt.gasPrice,
+      gasUsed: transactionReceipt.gasUsed,
       type: 'CHILDCHAIN_DEPOSIT',
       createdAt: Datetime.now()
     }
