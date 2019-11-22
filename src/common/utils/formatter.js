@@ -6,11 +6,25 @@ export const formatEther = wei => {
   return ethers.utils.formatEther(wei)
 }
 
+// Output in ETH unit
 export const formatGasFee = (gasUsed, gasPriceWei) => {
   const bigNumberGasPriceWei = BigNumber.create(gasPriceWei)
   const bigNumberGasUsed = BigNumber.create(gasUsed)
   const bigNumberGasFee = bigNumberGasPriceWei.mul(bigNumberGasUsed)
   return formatUnits(bigNumberGasFee, 18)
+}
+
+// Output in USD
+export const formatGasFeeUsd = (gasUsed, gasPriceWei, usdEth) => {
+  const bigNumberGasPriceWei = BigNumber.create(gasPriceWei)
+  const bigNumberGasUsed = BigNumber.create(gasUsed)
+  const bigNumberGasFee = bigNumberGasPriceWei.mul(bigNumberGasUsed)
+  const gasFeeString = formatUnits(bigNumberGasFee, 18)
+  return format(gasFeeString * usdEth, {
+    commify: true,
+    maxDecimal: 3,
+    eliipsize: false
+  })
 }
 
 export const formatUnits = (amount, numberOfDecimals) => {

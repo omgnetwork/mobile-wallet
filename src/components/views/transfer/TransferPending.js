@@ -21,8 +21,13 @@ const TransferPending = ({ theme, navigation }) => {
   const token = navigation.getParam('token')
   const fromWallet = navigation.getParam('fromWallet')
   const toWallet = navigation.getParam('toWallet')
-  const fee = navigation.getParam('fee')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
+  const gasFee = Formatter.formatGasFee(pendingTx.gasUsed, pendingTx.gasPrice)
+  const gasFeeUsd = Formatter.formatGasFeeUsd(
+    pendingTx.gasUsed,
+    pendingTx.gasPrice,
+    token.price
+  )
 
   const handleOnBackPressedAndroid = () => {
     return true
@@ -81,10 +86,10 @@ const TransferPending = ({ theme, navigation }) => {
                 <OMGText style={styles.sentTitle}>Fee</OMGText>
                 <View style={styles.sentDetail}>
                   <OMGText style={styles.sentDetailFirstline(theme)}>
-                    {fee.amount} {fee.symbol}
+                    {gasFee} ETH
                   </OMGText>
                   <OMGText style={styles.sentDetailSecondline(theme)}>
-                    0.047 USD
+                    {gasFeeUsd} USD
                   </OMGText>
                 </View>
               </View>
@@ -93,7 +98,7 @@ const TransferPending = ({ theme, navigation }) => {
           <View style={styles.totalContainer(theme)}>
             <OMGText style={styles.totalText(theme)}>Total</OMGText>
             <OMGText style={styles.totalText(theme)}>
-              {formatTotalPrice(tokenPrice, 0.047)} USD
+              {formatTotalPrice(tokenPrice, gasFeeUsd)} USD
             </OMGText>
           </View>
         </View>

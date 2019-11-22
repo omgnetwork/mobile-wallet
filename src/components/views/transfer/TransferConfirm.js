@@ -39,11 +39,12 @@ const TransferConfirm = ({
 
   useEffect(() => {
     if (loading.success && observedActions.indexOf(loading.action) > -1) {
+      const lastPendingTx = pendingTxs.slice(-1).pop()
       navigation.navigate('TransferPending', {
         token,
         fromWallet,
         toWallet,
-        pendingTx: pendingTxs.slice(-1).pop(),
+        pendingTx: lastPendingTx,
         fee
       })
     }

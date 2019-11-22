@@ -35,7 +35,7 @@ const TransactionDetailInfoSuccess = ({ theme, tx, style }) => {
       <View style={styles.infoItem}>
         <OMGText style={styles.infoItemLabel(theme)}>TXN Fee</OMGText>
         <OMGText style={styles.infoItemValue(theme)} weight='bold'>
-          {Formatter.formatGasFee(tx.gas, tx.gasPrice)} ETH
+          {Formatter.formatGasFee(tx.gasUsed, tx.gasPrice)} ETH
         </OMGText>
       </View>
     </View>
