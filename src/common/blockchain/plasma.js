@@ -65,7 +65,6 @@ export const depositEth = async (
     weiAmount,
     depositOptions
   )
-  console.log('receipt', receipt)
 
   return receiptWithGasPrice(receipt, depositGasPrice)
 }
