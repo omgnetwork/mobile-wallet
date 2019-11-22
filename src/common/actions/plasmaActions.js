@@ -1,6 +1,6 @@
 import { createAsyncAction } from './actionCreators'
 import { plasmaService } from 'common/services'
-import { Datetime } from 'common/utils'
+import { Datetime, Parser } from 'common/utils'
 
 export const fetchAssets = (provider, address) => {
   const asyncAction = async () => {
@@ -43,33 +43,6 @@ export const depositEth = (blockchainWallet, token) => {
   })
 }
 
-export const transfer = (blockchainWallet, toAddress, token, fee) => {
-  const asyncAction = async () => {
-    const transactionReceipt = await plasmaService.transfer(
-      blockchainWallet,
-      toAddress,
-      token,
-      fee
-    )
-
-    return {
-      hash: transactionReceipt.txhash,
-      from: blockchainWallet.address,
-      value: token.balance,
-      symbol: token.tokenSymbol,
-      contractAddress: token.contractAddress,
-      gasPrice: fee.amount,
-      type: 'CHILDCHAIN_SEND_TOKEN',
-      createdAt: Datetime.now()
-    }
-  }
-
-  return createAsyncAction({
-    type: 'CHILDCHAIN/SEND_TOKEN',
-    operation: asyncAction
-  })
-}
-
 export const depositErc20 = (blockchainWallet, token) => {
   const asyncAction = async () => {
     const transactionReceipt = await plasmaService.depositErc20(
@@ -92,6 +65,34 @@ export const depositErc20 = (blockchainWallet, token) => {
   }
   return createAsyncAction({
     type: 'CHILDCHAIN/DEPOSIT_ERC20_TOKEN',
+    operation: asyncAction
+  })
+}
+
+export const transfer = (blockchainWallet, toAddress, token, fee) => {
+  const asyncAction = async () => {
+    const transactionReceipt = await plasmaService.transfer(
+      blockchainWallet,
+      toAddress,
+      token,
+      fee
+    )
+
+    return {
+      hash: transactionReceipt.txhash,
+      from: blockchainWallet.address,
+      value: token.balance,
+      symbol: token.tokenSymbol,
+      contractAddress: token.contractAddress,
+      gasUsed: 1,
+      gasPrice: Parser.parseUnits(fee.amount, 'gwei').toString(10),
+      type: 'CHILDCHAIN_SEND_TOKEN',
+      createdAt: Datetime.now()
+    }
+  }
+
+  return createAsyncAction({
+    type: 'CHILDCHAIN/SEND_TOKEN',
     operation: asyncAction
   })
 }

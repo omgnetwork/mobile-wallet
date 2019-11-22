@@ -1,7 +1,7 @@
 import { Formatter, Parser, Polling, Datetime, Mapper, Token } from '../utils'
 import { Plasma } from 'common/blockchain'
+import { priceService } from 'common/services'
 import Config from 'react-native-config'
-import { Gas } from 'common/constants'
 
 export const fetchAssets = (provider, address) => {
   return new Promise(async (resolve, reject) => {
@@ -15,32 +15,41 @@ export const fetchAssets = (provider, address) => {
       const contractAddresses = Array.from(new Set(currencies))
       const tokens = await Token.fetchTokens(provider, contractAddresses)
 
-      const childchainAssets = balances.map(balance => {
-        const token = tokens.find(t => balance.currency === t.contractAddress)
+      const pendingChildchainAssets = balances.map(balance => {
+        return new Promise(async (resolveBalance, rejectBalance) => {
+          const token = tokens.find(t => balance.currency === t.contractAddress)
 
-        if (token) {
-          return {
-            ...token,
-            balance: Formatter.formatUnits(
-              balance.amount.toFixed(),
-              token.tokenDecimal
-            ),
-            price: 1
+          const tokenPrice = await priceService.fetchPriceUsd(
+            token.contractAddress,
+            Config.ETHERSCAN_NETWORK
+          )
+
+          if (token) {
+            resolveBalance({
+              ...token,
+              balance: Formatter.formatUnits(
+                balance.amount.toFixed(),
+                token.tokenDecimal
+              ),
+              price: tokenPrice
+            })
+          } else {
+            resolveBalance({
+              tokenName: 'UNK',
+              tokenSymbol: 'Unknown',
+              tokenDecimal: 18,
+              contractAddress: '0x123456',
+              balance: Formatter.formatUnits(
+                balance.amount.toFixed(),
+                token.tokenDecimal
+              ),
+              price: tokenPrice
+            })
           }
-        } else {
-          return {
-            tokenName: 'UNK',
-            tokenSymbol: 'Unknown',
-            tokenDecimal: 18,
-            contractAddress: '0x123456',
-            balance: Formatter.formatUnits(
-              balance.amount.toFixed(),
-              token.tokenDecimal
-            ),
-            price: 1
-          }
-        }
+        })
       })
+
+      const childchainAssets = await Promise.all(pendingChildchainAssets)
 
       resolve({
         lastUtxoPos: (utxos.length && utxos[0].utxo_pos.toString(10)) || '0',
