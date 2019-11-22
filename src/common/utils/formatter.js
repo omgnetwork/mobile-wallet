@@ -6,7 +6,7 @@ export const formatEther = wei => {
   return ethers.utils.formatEther(wei)
 }
 
-// Output in ETH unit
+// Output in ETH
 export const formatGasFee = (gasUsed, gasPriceWei) => {
   const bigNumberGasPriceWei = BigNumber.create(gasPriceWei)
   const bigNumberGasUsed = BigNumber.create(gasUsed)
