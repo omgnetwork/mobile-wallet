@@ -99,7 +99,7 @@ export const depositErc20 = async (
     depositGasPrice
   )
 
-  await approveErc20(web3, approveOptions, privateKey)
+  const approveReceipt = await approveErc20(web3, approveOptions, privateKey)
 
   // SEND DEPOSIT TRANSACTION 👇
 
@@ -121,7 +121,7 @@ export const depositErc20 = async (
     depositOptions
   )
 
-  return receiptWithGasPrice(receipt, depositGasPrice)
+  return receiptWithGasPrice(receipt, depositGasPrice, approveReceipt.gasUsed)
 }
 
 const approveErc20 = async (web3, approveOptions, ownerPrivateKey) => {
@@ -133,14 +133,14 @@ const approveErc20 = async (web3, approveOptions, ownerPrivateKey) => {
   return web3.eth.sendSignedTransaction(signedApproveTx.rawTransaction)
 }
 
-const receiptWithGasPrice = (txReceipt, gasPrice) => {
+const receiptWithGasPrice = (txReceipt, gasPrice, additionalGasUsed = 0) => {
   return {
     transactionHash: txReceipt.transactionHash,
     from: txReceipt.from,
     to: txReceipt.to,
     blockNumber: txReceipt.blockNumber,
     blockHash: txReceipt.blockHash,
-    gasUsed: txReceipt.gasUsed,
+    gasUsed: txReceipt.gasUsed + additionalGasUsed,
     gasPrice: gasPrice
   }
 }
