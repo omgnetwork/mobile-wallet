@@ -1,3 +1,7 @@
+import { ContractAddress } from 'common/constants'
+
+const USD_PER_ETH = 162.45 // $162.45 Price at 2019/11/22
+
 export const fetchPriceUsd = (contractAddress, network) => {
   // mainnet
   if (network === 'homestead') {
@@ -7,9 +11,16 @@ export const fetchPriceUsd = (contractAddress, network) => {
       price: 1
     })
   } else {
-    return Promise.resolve({
-      contractAddress,
-      price: 1
-    })
+    if (contractAddress === ContractAddress.ETH_ADDRESS) {
+      return Promise.resolve({
+        contractAddress,
+        price: USD_PER_ETH
+      })
+    } else {
+      return Promise.resolve({
+        contractAddress,
+        price: 1
+      })
+    }
   }
 }
