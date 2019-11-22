@@ -84,7 +84,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
           name: isDeposit ? 'Plasma Contract' : 'Another wallet',
           address: addressRef.current
         },
-        fee: selectedFee
+        fee: isDeposit ? null : selectedFee
       })
     }
   }, [isDeposit, isRootchain, navigation, selectedFee, selectedToken, wallet])
@@ -143,7 +143,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
               style={styles.amountInput}
             />
           </OMGBox>
-          <OMGBox style={styles.feeContainer}>
+          <OMGBox style={styles.feeContainer(isDeposit)}>
             <OMGText weight='bold'>Transaction Fee</OMGText>
             <OMGFeeInput
               fee={selectedFee}
@@ -191,9 +191,10 @@ const styles = StyleSheet.create({
   amountContainer: {
     flexDirection: 'column'
   },
-  feeContainer: {
+  feeContainer: isDeposit => ({
+    display: isDeposit ? 'none' : 'flex',
     flexDirection: 'column'
-  },
+  }),
   tokenInput: {
     marginTop: 16
   },

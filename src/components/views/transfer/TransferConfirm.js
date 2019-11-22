@@ -136,18 +136,18 @@ const TransferConfirm = ({
             style={styles.walletAddress}
           />
         </OMGBox>
-        <View style={styles.transactionFeeContainer}>
+        <View style={styles.transactionFeeContainer(fee)}>
           <OMGText weight='bold' style={styles.subtitle(theme)}>
             Transaction Fee
           </OMGText>
           <View style={styles.feeContainer}>
             <OMGText style={styles.feeAmount(theme)}>
-              {fee.amount} {fee.symbol}
+              {fee && fee.amount} {fee && fee.symbol}
             </OMGText>
             <OMGText style={styles.feeWorth(theme)}>0.047 USD</OMGText>
           </View>
         </View>
-        <View style={styles.totalContainer(theme)}>
+        <View style={styles.totalContainer(theme, fee)}>
           <OMGText style={styles.totalText(theme)}>Max Total</OMGText>
           <OMGText style={styles.totalText(theme)}>
             {formatTotalPrice(tokenPrice, 0.047)} USD
@@ -225,18 +225,20 @@ const styles = StyleSheet.create({
     marginTop: 16,
     paddingLeft: 16
   },
-  transactionFeeContainer: {
+  transactionFeeContainer: fee => ({
+    display: fee ? 'flex' : 'none',
     flexDirection: 'column',
     marginTop: 16,
     paddingHorizontal: 16
-  },
+  }),
   feeContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginLeft: 8,
     marginTop: 16
   },
-  totalContainer: theme => ({
+  totalContainer: (theme, fee) => ({
+    display: fee ? 'flex' : 'none',
     marginTop: 16,
     padding: 16,
     flexDirection: 'row',
