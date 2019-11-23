@@ -1,7 +1,7 @@
 import 'ethers/dist/shims.js'
 import { ethers } from 'ethers'
 import { Parser, ABI } from 'common/utils'
-import { ContractAddress } from 'common/constants/'
+import { ContractAddress, Gas } from 'common/constants/'
 import axios from 'axios'
 import Config from 'react-native-config'
 
@@ -95,7 +95,7 @@ export const sendEthToken = (wallet, options) => {
   return wallet.sendTransaction({
     to: toAddress,
     value: ethers.utils.parseEther(token.balance),
-    gasLimit: Number(Config.ROOTCHAIN_GAS_LIMIT),
+    gasLimit: Gas.LIMIT,
     gasPrice: Parser.parseUnits(fee.amount, 'gwei')
   })
 }
@@ -111,7 +111,7 @@ export const sendErc20Token = (wallet, options) => {
   )
 
   const gasOptions = {
-    gasLimit: Number(Config.ROOTCHAIN_GAS_LIMIT),
+    gasLimit: Gas.LIMIT,
     gasPrice: Parser.parseUnits(fee.amount, 'gwei')
   }
 

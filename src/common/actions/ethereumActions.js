@@ -34,16 +34,22 @@ export const sendEthToken = (token, fee, blockchainWallet, toAddress) => {
       toAddress
     }
 
-    const tx = await ethereumService.sendEthToken(blockchainWallet, options)
+    const receipt = await ethereumService.sendEthToken(
+      blockchainWallet,
+      options
+    )
+
+    console.log(receipt)
 
     return {
-      hash: tx.hash,
-      from: tx.from,
-      nonce: tx.nonce,
+      hash: receipt.hash,
+      from: receipt.from,
+      nonce: receipt.nonce,
       value: token.balance,
       type: 'ROOTCHAIN_SEND',
       symbol: token.tokenSymbol,
-      gasPrice: tx.gasPrice.toString(),
+      gasUsed: null,
+      gasPrice: receipt.gasPrice.toString(),
       createdAt: Datetime.now()
     }
   }

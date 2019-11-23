@@ -150,8 +150,8 @@ export const sendErc20Token = (wallet, options) => {
 export const sendEthToken = (wallet, options) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const pendingTransaction = await Ethereum.sendEthToken(wallet, options)
-      resolve(pendingTransaction)
+      const transactionResponse = await Ethereum.sendEthToken(wallet, options)
+      resolve(transactionResponse)
     } catch (err) {
       reject(err)
     }
