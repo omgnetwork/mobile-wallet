@@ -4,7 +4,7 @@ import { withTheme } from 'react-native-paper'
 import OMGImage from '../omg-image'
 import OMGIcon from '../omg-icon'
 import OMGText from '../omg-text'
-import { Formatter } from 'common/utils'
+import { BlockchainRenderer } from 'common/blockchain'
 
 const OMGTokenInput = ({ theme, token, style, onPress }) => {
   return (
@@ -20,20 +20,13 @@ const OMGTokenInput = ({ theme, token, style, onPress }) => {
       <OMGText style={styles.text(theme)}>{token.tokenSymbol}</OMGText>
       <View style={styles.rightContainer}>
         <OMGText style={styles.amount(theme)}>
-          {formatTokenBalance(token.balance)} {token.tokenSymbol}
+          {BlockchainRenderer.renderTokenBalance(token.balance, 3)}{' '}
+          {token.tokenSymbol}
         </OMGText>
         <OMGIcon name='chevron-right' size={14} color={theme.colors.gray3} />
       </View>
     </TouchableOpacity>
   )
-}
-
-const formatTokenBalance = amount => {
-  return Formatter.format(amount, {
-    commify: true,
-    maxDecimal: 6,
-    ellipsize: false
-  })
 }
 
 const styles = StyleSheet.create({

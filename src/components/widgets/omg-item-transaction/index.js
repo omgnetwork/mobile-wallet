@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { Formatter, Datetime } from 'common/utils'
+import { Datetime } from 'common/utils'
+import { BlockchainRenderer } from 'common/blockchain'
 import OMGText from '../omg-text'
 import OMGIcon from '../omg-icon'
 
@@ -10,7 +11,10 @@ const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
   const iconName = getIconName(tx.type)
 
   const renderEthereumValue = useCallback(() => {
-    return `${formatTokenBalance(tx.value, tx.tokenDecimal)} ${tx.tokenSymbol}`
+    return `${BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+      tx.value,
+      tx.tokenDecimal
+    )} ${tx.tokenSymbol}`
   }, [tx.tokenDecimal, tx.tokenSymbol, tx.value])
 
   const renderOmiseGOValue = useCallback(() => {
@@ -70,15 +74,6 @@ const getIconName = type => {
     default:
       return 'transaction'
   }
-}
-
-const formatTokenBalance = (value, tokenDecimal) => {
-  const balance = Formatter.formatUnits(value, tokenDecimal)
-  return Formatter.format(balance, {
-    commify: true,
-    maxDecimal: 3,
-    ellipsize: false
-  })
 }
 
 const styles = StyleSheet.create({

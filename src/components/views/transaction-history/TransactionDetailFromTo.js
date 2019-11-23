@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { View, StyleSheet, Linking, TouchableOpacity } from 'react-native'
 import { OMGIcon, OMGText } from 'components/widgets'
-import { Formatter } from 'common/utils'
+import { BlockchainRenderer } from 'common/blockchain'
 import Config from 'react-native-config'
 
 const Divider = ({ theme }) => {
@@ -37,7 +37,11 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
             </OMGText>
           </TouchableOpacity>
           <OMGText style={styles.detailItemValueText(theme)}>
-            {formatTokenBalance(tx.value, tx.tokenDecimal)} {tx.tokenSymbol}
+            {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+              tx.value,
+              tx.tokenDecimal
+            )}{' '}
+            {tx.tokenSymbol}
           </OMGText>
         </View>
       </View>
@@ -57,21 +61,16 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
             </OMGText>
           </TouchableOpacity>
           <OMGText style={styles.detailItemValueText(theme)}>
-            {formatTokenBalance(tx.value, tx.tokenDecimal)} {tx.tokenSymbol}
+            {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+              tx.value,
+              tx.tokenDecimal
+            )}{' '}
+            {tx.tokenSymbol}
           </OMGText>
         </View>
       </View>
     </View>
   )
-}
-
-const formatTokenBalance = (value, tokenDecimal) => {
-  const balance = Formatter.formatUnits(value, tokenDecimal)
-  return Formatter.format(balance, {
-    commify: true,
-    maxDecimal: 3,
-    ellipsize: false
-  })
 }
 
 const styles = StyleSheet.create({

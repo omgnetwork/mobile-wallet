@@ -2,6 +2,7 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { OMGText } from 'components/widgets'
 import { Formatter } from 'common/utils'
+import { BlockchainRenderer } from 'common/blockchain'
 
 const TransactionDetailInfoSuccess = ({ theme, tx, style }) => {
   const textExactDatetime = Formatter.formatTimeStamp(
@@ -28,14 +29,18 @@ const TransactionDetailInfoSuccess = ({ theme, tx, style }) => {
           Total Value Transacted
         </OMGText>
         <OMGText style={styles.infoItemValue(theme)} weight='bold'>
-          {formatTokenBalance(tx.value, tx.tokenDecimal)} {tx.tokenSymbol}
+          {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+            tx.value,
+            tx.tokenDecimal
+          )}{' '}
+          {tx.tokenSymbol}
         </OMGText>
       </View>
       <Divider theme={theme} />
       <View style={styles.infoItem}>
         <OMGText style={styles.infoItemLabel(theme)}>TXN Fee</OMGText>
         <OMGText style={styles.infoItemValue(theme)} weight='bold'>
-          {Formatter.formatGasFee(tx.gasUsed, tx.gasPrice)} ETH
+          {BlockchainRenderer.renderGasFee(tx.gasUsed, tx.gasPrice)} ETH
         </OMGText>
       </View>
     </View>
@@ -44,15 +49,6 @@ const TransactionDetailInfoSuccess = ({ theme, tx, style }) => {
 
 const Divider = ({ theme }) => {
   return <View style={styles.divider(theme)} />
-}
-
-const formatTokenBalance = (value, tokenDecimal) => {
-  const balance = Formatter.formatUnits(value, tokenDecimal)
-  return Formatter.format(balance, {
-    commify: true,
-    maxDecimal: 3,
-    ellipsize: false
-  })
 }
 
 const styles = StyleSheet.create({

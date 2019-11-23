@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
-import { Formatter } from 'common/utils'
+import { BlockchainRenderer } from 'common/blockchain'
 import { plasmaActions } from 'common/actions'
 import { ActionAlert } from 'common/constants'
 import { OMGText, OMGIcon, OMGButton, OMGExitWarning } from 'components/widgets'
@@ -26,7 +26,11 @@ const ExitConfirm = ({
   dispatchExit
 }) => {
   const token = navigation.getParam('token')
-  const tokenPrice = formatTokenPrice(token.balance, token.price)
+  const tokenBalance = BlockchainRenderer.renderTokenBalance(token.balance)
+  const tokenPrice = BlockchainRenderer.renderTokenPrice(
+    token.balance,
+    token.price
+  )
   const [loadingVisible, setLoadingVisible] = useState(false)
 
   const exit = () => {
@@ -75,9 +79,7 @@ const ExitConfirm = ({
           <OMGText style={styles.edit}>Edit</OMGText>
         </View>
         <View style={styles.amountContainer(theme)}>
-          <OMGText style={styles.tokenBalance(theme)}>
-            {formatTokenBalance(token.balance)}
-          </OMGText>
+          <OMGText style={styles.tokenBalance(theme)}>{tokenBalance}</OMGText>
           <View style={styles.balanceContainer}>
             <OMGText style={styles.tokenSymbol(theme)}>
               {token.tokenSymbol}
@@ -97,33 +99,6 @@ const ExitConfirm = ({
       </View>
     </SafeAreaView>
   )
-}
-
-const formatTokenPrice = (amount, price) => {
-  const parsedAmount = parseFloat(amount)
-  const tokenPrice = parsedAmount * price
-  return Formatter.format(tokenPrice, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
-  })
-}
-
-const formatTokenBalance = amount => {
-  return Formatter.format(amount, {
-    commify: true,
-    maxDecimal: 3,
-    ellipsize: false
-  })
-}
-
-const formatTotalPrice = (tokenPrice, feePrice) => {
-  const totalPrice = parseFloat(tokenPrice) + parseFloat(feePrice)
-  return Formatter.format(totalPrice, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
-  })
 }
 
 const styles = StyleSheet.create({

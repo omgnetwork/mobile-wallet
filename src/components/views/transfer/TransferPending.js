@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { View, StyleSheet, Linking } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { Formatter, BigNumber } from 'common/utils'
+import { BlockchainRenderer } from 'common/blockchain'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
 import {
@@ -18,7 +18,7 @@ import {
 import { Gas } from 'common/constants'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { GoogleAnalytics } from 'common/analytics'
-import * as BlockchainTextHelper from './blockchainTextHelper'
+import * as TransferTextHelper from './transferTextHelper'
 
 const TransferPending = ({ theme, navigation }) => {
   const pendingTx = navigation.getParam('pendingTx')
@@ -27,17 +27,20 @@ const TransferPending = ({ theme, navigation }) => {
   const toWallet = navigation.getParam('toWallet')
   const isDeposit = navigation.getParam('isDeposit')
   const isRootchain = navigation.getParam('isRootchain')
-  const tokenPrice = formatTokenPrice(token.balance, token.price)
+  const tokenPrice = BlockchainRenderer.renderTokenPrice(
+    token.balance,
+    token.price
+  )
   const gasDetailAvailable = pendingTx.gasUsed && pendingTx.gasPrice
   const gasFee = useCallback(() => {
-    return Formatter.formatGasFee(
+    return BlockchainRenderer.renderGasFee(
       pendingTx.gasUsed || Gas.MINIMUM_GAS_USED,
       pendingTx.gasPrice
     )
   }, [pendingTx])
 
   const gasFeeUsd = useCallback(() => {
-    return Formatter.formatGasFeeUsd(
+    return BlockchainRenderer.renderGasFeeUsd(
       pendingTx.gasUsed || Gas.MINIMUM_GAS_USED,
       pendingTx.gasPrice,
       token.price
@@ -70,7 +73,7 @@ const TransferPending = ({ theme, navigation }) => {
           </View>
           <OMGBlockchainLabel
             style={styles.blockchainLabel}
-            actionText={BlockchainTextHelper.getBlockchainTextActionLabel(
+            actionText={TransferTextHelper.getBlockchainTextActionLabel(
               'TransferPending',
               isDeposit
             )}
@@ -105,7 +108,8 @@ const TransferPending = ({ theme, navigation }) => {
                 <OMGText style={styles.sentTitle}>Amount</OMGText>
                 <View style={styles.sentDetail}>
                   <OMGText style={styles.sentDetailFirstline(theme)}>
-                    {formatTokenBalance(token.balance)} {token.tokenSymbol}
+                    {BlockchainRenderer.renderTokenBalance(token.balance)}{' '}
+                    {token.tokenSymbol}
                   </OMGText>
                   <OMGText style={styles.sentDetailSecondline(theme)}>
                     {tokenPrice} USD
@@ -132,7 +136,7 @@ const TransferPending = ({ theme, navigation }) => {
           <View style={styles.totalContainer(theme)}>
             <OMGText style={styles.totalText(theme)}>Total</OMGText>
             <OMGText style={styles.totalText(theme)}>
-              {formatTotalPrice(tokenPrice, gasFeeUsd())} USD
+              {BlockchainRenderer.renderTotalPrice(tokenPrice, gasFeeUsd())} USD
             </OMGText>
           </View>
           <OMGButton
@@ -157,32 +161,6 @@ const TransferPending = ({ theme, navigation }) => {
       </SafeAreaView>
     </AndroidBackHandler>
   )
-}
-
-const formatTokenBalance = amount => {
-  return Formatter.format(amount, {
-    commify: true,
-    maxDecimal: 18,
-    ellipsize: false
-  })
-}
-
-const formatTokenPrice = (amount, price) => {
-  const tokenPrice = BigNumber.multiply(amount, price)
-  return Formatter.format(tokenPrice, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
-  })
-}
-
-const formatTotalPrice = (tokenPrice, feePrice) => {
-  const totalPrice = BigNumber.plus(tokenPrice, feePrice)
-  return Formatter.format(totalPrice, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
-  })
 }
 
 const styles = StyleSheet.create({

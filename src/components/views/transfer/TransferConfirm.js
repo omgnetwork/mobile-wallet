@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
+import { BlockchainRenderer, BlockchainCalculator } from 'common/blockchain'
 import { withTheme } from 'react-native-paper'
-import { Formatter, BigNumber, Parser } from 'common/utils'
+import { BigNumber } from 'common/utils'
 import Config from 'react-native-config'
 import { ActionAlert, ContractAddress, Gas } from 'common/constants'
 import { ethereumActions, plasmaActions } from 'common/actions'
@@ -15,7 +16,7 @@ import {
   OMGWalletAddress,
   OMGBlockchainLabel
 } from 'components/widgets'
-import * as BlockchainTextHelper from './blockchainTextHelper'
+import * as TransferTextHelper from './transferTextHelper'
 
 const TransferConfirm = ({
   theme,
@@ -32,16 +33,28 @@ const TransferConfirm = ({
   const fee = navigation.getParam('fee')
   const isRootchain = navigation.getParam('isRootchain')
   const isDeposit = navigation.getParam('isDeposit')
-  const tokenPrice = formatTokenPrice(token.balance, token.price)
-  const feeEth = formatFee(fee && fee.amount)
-  const estimatedTotalFee = BigNumber.multiply(
-    feeEth,
-    isRootchain ? Gas.MINIMUM_GAS_USED : 1
+
+  const tokenBalance = BlockchainRenderer.renderTokenBalance(token.balance)
+  const tokenPrice = BlockchainRenderer.renderTokenPrice(
+    token.balance,
+    token.price
   )
-  const feePrice = formatTokenPrice(
+  const feeEth = BlockchainRenderer.renderFeeEth(fee && fee.amount)
+  const estimatedTotalFee = BlockchainCalculator.calculateEstimatedTotalFee(
+    isRootchain,
+    feeEth
+  )
+  const feePrice = BlockchainRenderer.renderTokenPrice(
     estimatedTotalFee,
-    (ethToken && ethToken.price) || 0
+    ethToken && ethToken.price
   )
+  const totalPrice = BlockchainRenderer.renderTotalPrice(tokenPrice, feePrice)
+
+  const blockchainLabelActionText = TransferTextHelper.getBlockchainTextActionLabel(
+    'TransferConfirm',
+    isDeposit
+  )
+
   const [loadingVisible, setLoadingVisible] = useState(false)
   const [confirmBtnDisable, setConfirmBtnDisable] = useState(false)
   const observedActions = [
@@ -127,10 +140,7 @@ const TransferConfirm = ({
           </View>
           <OMGBlockchainLabel
             style={styles.blockchainLabel}
-            actionText={BlockchainTextHelper.getBlockchainTextActionLabel(
-              'TransferConfirm',
-              isDeposit
-            )}
+            actionText={blockchainLabelActionText}
             isRootchain={isRootchain}
           />
           <View style={styles.amountContainer(theme)}>
@@ -138,7 +148,7 @@ const TransferConfirm = ({
               style={styles.tokenBalance(theme)}
               ellipsizeMode='middle'
               numberOfLines={1}>
-              {formatTokenBalance(token.balance)}
+              {tokenBalance}
             </OMGText>
             <View style={styles.balanceContainer}>
               <OMGText style={styles.tokenSymbol(theme)}>
@@ -174,9 +184,7 @@ const TransferConfirm = ({
               Transaction Fee
             </OMGText>
             <View style={styles.feeContainer(theme)}>
-              <OMGText style={styles.feeAmount(theme)}>
-                {fee && formatFee(fee.amount)} ETH
-              </OMGText>
+              <OMGText style={styles.feeAmount(theme)}>{feeEth} ETH</OMGText>
               <OMGText style={styles.feeWorth(theme)}>{feePrice} USD</OMGText>
             </View>
           </View>
@@ -184,9 +192,7 @@ const TransferConfirm = ({
         <View style={styles.buttonContainer}>
           <View style={styles.totalContainer(fee)}>
             <OMGText style={styles.totalText(theme)}>Max Total</OMGText>
-            <OMGText style={styles.totalText(theme)}>
-              {formatTotalPrice(tokenPrice, feePrice)} USD
-            </OMGText>
+            <OMGText style={styles.totalText(theme)}>{totalPrice} USD</OMGText>
           </View>
           <OMGButton
             style={styles.button}
@@ -199,38 +205,6 @@ const TransferConfirm = ({
       </ScrollView>
     </SafeAreaView>
   )
-}
-
-const formatFee = gweiFee => {
-  if (!gweiFee) return '0'
-  const weiFee = Parser.parseUnits(gweiFee, 'gwei')
-  return Formatter.formatUnits(weiFee, 'ether')
-}
-
-const formatTokenBalance = amount => {
-  return Formatter.format(amount, {
-    commify: true,
-    maxDecimal: 18,
-    ellipsize: false
-  })
-}
-
-const formatTokenPrice = (amount, price) => {
-  const tokenPrice = BigNumber.multiply(amount, price)
-  return Formatter.format(tokenPrice, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
-  })
-}
-
-const formatTotalPrice = (tokenPrice, feePrice) => {
-  const totalPrice = BigNumber.plus(tokenPrice, feePrice)
-  return Formatter.format(totalPrice, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
-  })
 }
 
 const styles = StyleSheet.create({

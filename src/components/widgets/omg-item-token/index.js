@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { Image, StyleSheet, View, Animated } from 'react-native'
 import { Animator } from 'common/anims'
 import OMGText from '../omg-text'
-import { Formatter } from 'common/utils'
+import { BlockchainRenderer } from 'common/blockchain'
 import { withTheme } from 'react-native-paper'
 
 const OMGItemToken = ({ token, style, onPress, theme }) => {
@@ -10,8 +10,8 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
   const shadowAnim = useRef(new Animated.Value(0))
   const shadowOpacity = useRef(new Animated.Value(0))
   const balanceOpacity = useRef(new Animated.Value(1.0))
-  const balance = formatTokenBalance(token.balance)
-  const price = formatTokenPrice(token.balance, token.price)
+  const balance = BlockchainRenderer.renderTokenBalance(token.balance, 3)
+  const price = BlockchainRenderer.renderTokenPrice(token.balance, token.price)
   const [currentBalance, setCurrentBalance] = useState(balance)
   const [currentPrice, setCurrentPrice] = useState(price)
 
@@ -73,24 +73,6 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
       </Animated.View>
     </Animated.View>
   )
-}
-
-const formatTokenBalance = amount => {
-  return Formatter.format(amount, {
-    commify: true,
-    maxDecimal: 3,
-    ellipsize: false
-  })
-}
-
-const formatTokenPrice = (amount, price) => {
-  const parsedAmount = parseFloat(amount)
-  const tokenPrice = parsedAmount * price
-  return Formatter.format(tokenPrice, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
-  })
 }
 
 const styles = StyleSheet.create({
