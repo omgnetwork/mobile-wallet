@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { View, StyleSheet, Linking } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { Formatter } from 'common/utils'
+import { Formatter, BigNumber } from 'common/utils'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
 import {
@@ -85,7 +85,9 @@ const TransferPending = ({ theme, navigation }) => {
               address={fromWallet.address}
               style={styles.walletAddress}
             />
-            <OMGText style={styles.subtitle(theme)} weight='bold'>
+            <OMGText
+              style={[styles.subtitle(theme), styles.marginSubtitle]}
+              weight='bold'>
               To
             </OMGText>
             <OMGWalletAddress
@@ -160,14 +162,13 @@ const TransferPending = ({ theme, navigation }) => {
 const formatTokenBalance = amount => {
   return Formatter.format(amount, {
     commify: true,
-    maxDecimal: 3,
+    maxDecimal: 18,
     ellipsize: false
   })
 }
 
 const formatTokenPrice = (amount, price) => {
-  const parsedAmount = parseFloat(amount)
-  const tokenPrice = parsedAmount * price
+  const tokenPrice = BigNumber.multiply(amount, price)
   return Formatter.format(tokenPrice, {
     commify: true,
     maxDecimal: 2,
@@ -176,7 +177,7 @@ const formatTokenPrice = (amount, price) => {
 }
 
 const formatTotalPrice = (tokenPrice, feePrice) => {
-  const totalPrice = parseFloat(tokenPrice) + parseFloat(feePrice)
+  const totalPrice = BigNumber.plus(tokenPrice, feePrice)
   return Formatter.format(totalPrice, {
     commify: true,
     maxDecimal: 2,
@@ -200,8 +201,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   blockchainLabel: {
-    marginTop: 30,
-    marginBottom: 16
+    marginTop: 30
   },
   addressContainer: {
     paddingLeft: 16
@@ -212,8 +212,7 @@ const styles = StyleSheet.create({
   },
   totalContainer: theme => ({
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16
+    justifyContent: 'space-between'
   }),
   subHeaderTitle: {
     fontSize: 14
@@ -237,6 +236,9 @@ const styles = StyleSheet.create({
   subtitle: theme => ({
     color: theme.colors.gray3
   }),
+  marginSubtitle: {
+    marginTop: 16
+  },
   walletAddress: {
     marginTop: 12,
     flexDirection: 'row'
@@ -249,7 +251,7 @@ const styles = StyleSheet.create({
   },
   sentContentContainer: theme => ({
     justifyContent: 'space-between',
-    backgroundColor: theme.colors.backgroundDisabled,
+    backgroundColor: theme.colors.white3,
     borderRadius: theme.roundness,
     padding: 12,
     marginTop: 8

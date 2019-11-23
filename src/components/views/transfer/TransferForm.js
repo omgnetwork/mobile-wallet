@@ -47,7 +47,7 @@ const fees = [
 const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
 
 const TransferForm = ({ wallet, theme, navigation }) => {
-  const selectedFee = navigation.getParam('selectedFee', fees[0])
+  const selectedFee = navigation.getParam('selectedFee', fees[2])
   const selectedAddress = navigation.getParam('address')
   const defaultAmount = navigation.getParam('lastAmount')
   const isDeposit = navigation.getParam('isDeposit')
