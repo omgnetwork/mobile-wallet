@@ -11,7 +11,8 @@ import {
   OMGButton,
   OMGText,
   OMGWalletAddress,
-  OMGStatusBar
+  OMGStatusBar,
+  OMGIcon
 } from 'components/widgets'
 import { Gas } from 'common/constants'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -56,7 +57,12 @@ const TransferPending = ({ theme, navigation }) => {
         />
         <View style={styles.contentContainer}>
           <View style={styles.headerContainer}>
-            <OMGText style={styles.title(theme)}>Pending Transaction</OMGText>
+            <View style={styles.icon(theme)}>
+              <OMGIcon name='pending' size={24} color={theme.colors.white} />
+            </View>
+            <OMGText style={styles.title(theme)} weight='bold'>
+              Pending Transaction
+            </OMGText>
           </View>
           <OMGBox style={styles.addressContainer}>
             <OMGText style={styles.subtitle(theme)} weight='bold'>
@@ -179,7 +185,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginTop: 16,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center'
   },
   addressContainer: {
@@ -200,8 +205,16 @@ const styles = StyleSheet.create({
   },
   title: theme => ({
     fontSize: 18,
-    textTransform: 'uppercase',
-    color: theme.colors.gray3
+    color: theme.colors.gray3,
+    marginLeft: 16
+  }),
+  icon: theme => ({
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.yellow3
   }),
   edit: {
     marginLeft: 8
