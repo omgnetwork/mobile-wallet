@@ -12,8 +12,10 @@ import {
   OMGButton,
   OMGText,
   OMGIcon,
-  OMGWalletAddress
+  OMGWalletAddress,
+  OMGBlockchainLabel
 } from 'components/widgets'
+import * as BlockchainTextHelper from './blockchainTextHelper'
 
 const TransferConfirm = ({
   theme,
@@ -28,6 +30,7 @@ const TransferConfirm = ({
   const toWallet = navigation.getParam('toWallet')
   const fee = navigation.getParam('fee')
   const isRootchain = navigation.getParam('isRootchain')
+  const isDeposit = navigation.getParam('isDeposit')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
   const [loadingVisible, setLoadingVisible] = useState(false)
   const [confirmBtnDisable, setConfirmBtnDisable] = useState(false)
@@ -44,6 +47,8 @@ const TransferConfirm = ({
         token,
         fromWallet,
         toWallet,
+        isDeposit,
+        isRootchain,
         pendingTx: lastPendingTx,
         fee
       })
@@ -51,6 +56,8 @@ const TransferConfirm = ({
   }, [
     fee,
     fromWallet,
+    isDeposit,
+    isRootchain,
     loading,
     navigation,
     observedActions,
@@ -107,6 +114,14 @@ const TransferConfirm = ({
           />
           <OMGText style={styles.edit}>Edit</OMGText>
         </View>
+        <OMGBlockchainLabel
+          style={styles.blockchainLabel}
+          actionText={BlockchainTextHelper.getBlockchainTextActionLabel(
+            'TransferConfirm',
+            isDeposit
+          )}
+          isRootchain={isRootchain}
+        />
         <View style={styles.amountContainer(theme)}>
           <OMGText style={styles.tokenBalance(theme)}>
             {formatTokenBalance(token.balance)}
@@ -208,8 +223,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
+  blockchainLabel: {
+    marginTop: 16
+  },
   amountContainer: theme => ({
-    marginTop: 16,
     padding: 20,
     backgroundColor: theme.colors.gray4,
     flexDirection: 'row',

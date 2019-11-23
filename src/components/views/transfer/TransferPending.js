@@ -12,17 +12,21 @@ import {
   OMGText,
   OMGWalletAddress,
   OMGStatusBar,
-  OMGIcon
+  OMGIcon,
+  OMGBlockchainLabel
 } from 'components/widgets'
 import { Gas } from 'common/constants'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { GoogleAnalytics } from 'common/analytics'
+import * as BlockchainTextHelper from './blockchainTextHelper'
 
 const TransferPending = ({ theme, navigation }) => {
   const pendingTx = navigation.getParam('pendingTx')
   const token = navigation.getParam('token')
   const fromWallet = navigation.getParam('fromWallet')
   const toWallet = navigation.getParam('toWallet')
+  const isDeposit = navigation.getParam('isDeposit')
+  const isRootchain = navigation.getParam('isRootchain')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
   const gasDetailAvailable = pendingTx.gasUsed && pendingTx.gasPrice
   const gasFee = useCallback(() => {
@@ -64,6 +68,14 @@ const TransferPending = ({ theme, navigation }) => {
               Pending Transaction
             </OMGText>
           </View>
+          <OMGBlockchainLabel
+            style={styles.blockchainLabel}
+            actionText={BlockchainTextHelper.getBlockchainTextActionLabel(
+              'TransferPending',
+              isDeposit
+            )}
+            isRootchain={isRootchain}
+          />
           <OMGBox style={styles.addressContainer}>
             <OMGText style={styles.subtitle(theme)} weight='bold'>
               From
@@ -187,8 +199,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
+  blockchainLabel: {
+    marginTop: 30,
+    marginBottom: 16
+  },
   addressContainer: {
-    marginTop: 16,
     paddingLeft: 16
   },
   bottomContainer: {
@@ -220,7 +235,6 @@ const styles = StyleSheet.create({
     marginLeft: 8
   },
   subtitle: theme => ({
-    marginTop: 8,
     color: theme.colors.gray3
   }),
   walletAddress: {

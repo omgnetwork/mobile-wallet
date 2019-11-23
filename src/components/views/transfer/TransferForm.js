@@ -11,9 +11,11 @@ import {
   OMGTokenInput,
   OMGWalletAddress,
   OMGAmountInput,
-  OMGFeeInput
+  OMGFeeInput,
+  OMGBlockchainLabel
 } from 'components/widgets'
 import { Validator } from 'common/utils'
+import * as BlockchainTextHelper from './blockchainTextHelper'
 
 const fees = [
   {
@@ -80,6 +82,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
         token: { ...selectedToken, balance: amountRef.current },
         fromWallet: wallet,
         isRootchain: isRootchain,
+        isDeposit: isDeposit,
         toWallet: {
           name: isDeposit ? 'Plasma Contract' : 'Another wallet',
           address: addressRef.current
@@ -93,6 +96,13 @@ const TransferForm = ({ wallet, theme, navigation }) => {
     <SafeAreaView style={styles.container(theme)}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.formContainer}>
+          <OMGBlockchainLabel
+            actionText={BlockchainTextHelper.getBlockchainTextActionLabel(
+              'TransferForm',
+              isDeposit
+            )}
+            isRootchain={isRootchain}
+          />
           <OMGBox style={styles.fromContainer}>
             <OMGText weight='bold'>From</OMGText>
             <OMGTokenInput
