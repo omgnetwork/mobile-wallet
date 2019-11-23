@@ -37,7 +37,7 @@ const TransferScanner = ({ theme, navigation, wallet, pendingTx }) => {
     wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
   const hasChildchainAssets =
     wallet && wallet.childchainAssets && wallet.childchainAssets.length > 0
-  const overlayColorAnim = useRef(new Animated.Value(0))
+  const overlayColorAnim = useRef(new Animated.Value(rootchain ? 0 : 1))
   const Icon = BlockchainIcons[isRootchain ? 'IconEth' : 'IconGo']
   const transitionOverlay = isRootChain => {
     if (isRootChain) {

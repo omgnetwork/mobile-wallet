@@ -139,7 +139,11 @@ const TransferForm = ({ wallet, theme, navigation }) => {
                 style={styles.addressInput}
                 inputRef={addressRef}
                 showError={showErrorAddress}
-                onPress={() => navigation.navigate('TransferScanner')}
+                onPress={() =>
+                  navigation.navigate('TransferScanner', {
+                    rootchain: isRootchain
+                  })
+                }
               />
             )}
           </OMGBox>
