@@ -90,7 +90,7 @@ const TransferScanner = ({ theme, navigation, wallet, pendingTx }) => {
   }, [navigation, theme.colors.white])
 
   const getEmptyStatePayload = useCallback(() => {
-    if (isRootchain && hasRootchainAssets) {
+    if (isRootchain && !hasRootchainAssets) {
       return {
         imageName: 'EmptyRootchainWallet',
         text: 'Wallet is empty.\nShare wallet to receive fund.'
