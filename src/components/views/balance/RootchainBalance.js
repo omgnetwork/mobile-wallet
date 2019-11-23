@@ -27,6 +27,7 @@ const RootchainBalance = ({
 }) => {
   const [totalBalance, setTotalBalance] = useState(0.0)
   const [loading, setLoading] = useState(false)
+  const [shouldShowLoading, setShouldShowLoading] = useState(true)
   const hasPendingTransaction = pendingTxs.length > 0
   const hasRootchainAssets =
     wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
@@ -34,9 +35,9 @@ const RootchainBalance = ({
 
   useEffect(() => {
     if (provider && wallet.shouldRefresh) {
+      setLoading(true)
       dispatchLoadAssets(provider, wallet.address, wallet.updatedBlock || '0')
       dispatchRefreshRootchain(wallet.address, false)
-      setLoading(true)
     }
   }, [
     dispatchLoadAssets,
@@ -66,6 +67,7 @@ const RootchainBalance = ({
   useEffect(() => {
     if (wallet.rootchainAssets) {
       setLoading(false)
+      setShouldShowLoading(false)
       const totalPrices = wallet.rootchainAssets.reduce((acc, asset) => {
         const parsedAmount = parseFloat(asset.balance)
         const tokenPrice = parsedAmount * asset.price
@@ -74,10 +76,11 @@ const RootchainBalance = ({
 
       setTotalBalance(totalPrices)
     }
-  }, [wallet])
+  }, [wallet.rootchainAssets])
 
   const handleReload = useCallback(() => {
     dispatchRefreshRootchain(wallet.address, true)
+    setShouldShowLoading(true)
   }, [dispatchRefreshRootchain, wallet.address])
 
   return (
@@ -95,7 +98,7 @@ const RootchainBalance = ({
         data={wallet.rootchainAssets || []}
         keyExtractor={item => item.contractAddress}
         updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
-        loading={loading}
+        loading={shouldShowLoading && loading}
         type='rootchain'
         handleReload={handleReload}
         style={styles.list}

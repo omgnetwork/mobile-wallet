@@ -61,11 +61,7 @@ const OMGAssetList = ({
       </View>
       <View style={styles.assetContainer(theme)}>
         {loading ? (
-          <OMGEmpty
-            text='Empty assets'
-            loading={true}
-            {...getEmptyStatePayload()}
-          />
+          <OMGEmpty loading={true} />
         ) : (
           <FlatList
             style={styles.assetList}

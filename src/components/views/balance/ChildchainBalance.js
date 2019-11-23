@@ -27,6 +27,7 @@ const ChildchainBalance = ({
   const currency = 'USD'
   const [totalBalance, setTotalBalance] = useState(0.0)
   const [loading, setLoading] = useState(false)
+  const [shouldShowLoading, setShouldShowLoading] = useState(true)
   const hasPendingTransaction = pendingTxs.length > 0
   const hasRootchainAssets =
     wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
@@ -77,11 +78,13 @@ const ChildchainBalance = ({
 
   const handleReload = useCallback(() => {
     dispatchSetShouldRefreshChildchain(wallet.address, true)
+    setShouldShowLoading(true)
   }, [dispatchSetShouldRefreshChildchain, wallet.address])
 
   useEffect(() => {
     if (wallet.childchainAssets) {
       setLoading(false)
+      setShouldShowLoading(false)
       const totalPrices = wallet.childchainAssets.reduce((acc, asset) => {
         const parsedAmount = parseFloat(asset.balance)
         const tokenPrice = parsedAmount * asset.price
@@ -109,7 +112,7 @@ const ChildchainBalance = ({
         keyExtractor={item => item.contractAddress}
         type='childchain'
         updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
-        loading={loading}
+        loading={shouldShowLoading && loading}
         handleReload={handleReload}
         style={styles.list}
         renderItem={({ item }) => (
