@@ -1,5 +1,6 @@
 import { ContractAddress } from 'common/constants'
 import { Transaction, Token } from 'common/utils'
+import BigNumber from 'bignumber.js'
 
 export const mapChildchainTx = (tx, tokens, address) => {
   const sentToken = mapChildchainOutput(tx.results)
@@ -31,11 +32,31 @@ export const mapChildchainTxDetail = (oldTx, newTx) => {
   const targetUtxo =
     newTx.outputs.find(utxo => utxo.owner !== fromAddress) || newTx.outputs[0]
   const toAddress = targetUtxo.owner
+
+  const accumulateEthAmount = (acc, input) => {
+    if (input.currency === ContractAddress.ETH_ADDRESS) {
+      return acc.plus(input.amount)
+    } else {
+      return acc
+    }
+  }
+  const totalEthInput = newTx.inputs.reduce(
+    accumulateEthAmount,
+    new BigNumber(0)
+  )
+  const totalEthOutput = newTx.outputs.reduce(
+    accumulateEthAmount,
+    new BigNumber(0)
+  )
+  const gasPrice = totalEthInput.minus(totalEthOutput).toString(10)
+
   return {
     ...oldTx,
     contractAddress: targetUtxo.currency,
     from: fromAddress,
     to: toAddress,
+    gasUsed: 1,
+    gasPrice: gasPrice,
     value:
       typeof targetUtxo.amount === 'string'
         ? targetUtxo.amount
