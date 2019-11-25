@@ -1,13 +1,13 @@
 import { useEffect, useCallback, useState } from 'react'
-import { TransactionTypes } from 'common/constants'
+import { TransactionActionTypes } from 'common/constants'
 import Config from 'react-native-config'
 import { ethereumService } from 'common/services'
 import BackgroundTimer from 'react-native-background-timer'
 
 const getConfirmationsThreshold = tx => {
-  if (tx.type === TransactionTypes.TYPE_CHILDCHAIN_DEPOSIT) {
+  if (tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT) {
     return Config.CHILDCHAIN_DEPOSIT_CONFIRMATION_BLOCKS
-  } else if (tx.type === TransactionTypes.TYPE_CHILDCHAIN_EXIT) {
+  } else if (tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_EXIT) {
     return Config.CHILDCHAIN_EXIT_CONFIRMATION_BLOCKS
   } else {
     return Config.ROOTCHAIN_TRANSFER_CONFIRMATION_BLOCKS
@@ -55,14 +55,19 @@ const useRootchainTracker = wallet => {
 
   const buildNotification = useCallback(
     confirmedTx => {
-      if (confirmedTx.type === TransactionTypes.TYPE_CHILDCHAIN_DEPOSIT) {
+      if (
+        confirmedTx.actionType ===
+        TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT
+      ) {
         return {
           type: 'all',
           title: `${wallet.current.name} deposited`,
           message: `${confirmedTx.value} ${confirmedTx.symbol}`,
           confirmedTx
         }
-      } else if (confirmedTx.type === TransactionTypes.TYPE_CHILDCHAIN_EXIT) {
+      } else if (
+        confirmedTx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_EXIT
+      ) {
         return {
           type: 'childchain',
           title: `${wallet.current.name} prepared to exit`,

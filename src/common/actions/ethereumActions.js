@@ -1,5 +1,6 @@
 import { ethereumService } from '../services'
 import { createAsyncAction } from './actionCreators'
+import { TransactionActionTypes } from 'common/constants'
 import { Datetime } from 'common/utils'
 
 export const sendErc20Token = (token, fee, blockchainWallet, toAddress) => {
@@ -18,7 +19,7 @@ export const sendErc20Token = (token, fee, blockchainWallet, toAddress) => {
       from: from,
       nonce: nonce,
       value: token.balance,
-      type: 'ROOTCHAIN_SEND',
+      actionType: TransactionActionTypes.TYPE_ROOTCHAIN_SEND,
       symbol: token.tokenSymbol,
       gasPrice: gasPrice.toString(),
       createdAt: Datetime.now()
@@ -49,7 +50,7 @@ export const sendEthToken = (token, fee, blockchainWallet, toAddress) => {
       from: from,
       nonce: nonce,
       value: token.balance,
-      type: 'ROOTCHAIN_SEND',
+      actionType: TransactionActionTypes.TYPE_ROOTCHAIN_SEND,
       symbol: token.tokenSymbol,
       gasUsed: null,
       gasPrice: gasPrice.toString(),

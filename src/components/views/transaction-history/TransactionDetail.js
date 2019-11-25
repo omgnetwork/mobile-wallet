@@ -8,7 +8,13 @@ import {
 } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
-import { OMGStatusBar, OMGText, OMGIcon, OMGEmpty } from 'components/widgets'
+import {
+  OMGStatusBar,
+  OMGText,
+  OMGIcon,
+  OMGEmpty,
+  OMGBlockchainLabel
+} from 'components/widgets'
 import Config from 'react-native-config'
 import { Validator } from 'common/utils'
 import { transactionService } from 'common/services'
@@ -18,6 +24,7 @@ import TransactionDetailFromTo from './TransactionDetailFromTo'
 
 const TransactionDetail = ({ navigation, theme }) => {
   const tx = navigation.getParam('transaction')
+
   const [transaction, setTransaction] = useState(null)
 
   useEffect(() => {
@@ -67,6 +74,7 @@ const TransactionDetail = ({ navigation, theme }) => {
           style={styles.addressContainer}
           theme={theme}
         />
+        <OMGBlockchainLabel style={styles.blockchainLabel} />
         <TransactionDetailInfoSuccess
           tx={transaction}
           theme={theme}

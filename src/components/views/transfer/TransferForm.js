@@ -15,7 +15,7 @@ import {
   OMGBlockchainLabel
 } from 'components/widgets'
 import { Validator } from 'common/utils'
-import * as TransferTextHelper from './transferTextHelper'
+import * as BlockchainLabel from './blockchainLabel'
 
 const fees = [
   {
@@ -58,7 +58,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
       ? wallet.rootchainAssets[0]
       : wallet.childchainAssets[0]
   )
-  const blockchainLabelActionText = TransferTextHelper.getBlockchainTextActionLabel(
+  const blockchainLabelActionText = BlockchainLabel.getBlockchainTextActionLabel(
     'TransferForm',
     isDeposit
   )

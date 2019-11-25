@@ -15,10 +15,10 @@ import {
   OMGIcon,
   OMGBlockchainLabel
 } from 'components/widgets'
-import { Gas } from 'common/constants'
+import { Gas, TransactionActionTypes } from 'common/constants'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { GoogleAnalytics } from 'common/analytics'
-import * as TransferTextHelper from './transferTextHelper'
+import * as BlockchainLabel from './blockchainLabel'
 
 const TransferPending = ({ theme, navigation }) => {
   const pendingTx = navigation.getParam('pendingTx')
@@ -73,7 +73,7 @@ const TransferPending = ({ theme, navigation }) => {
           </View>
           <OMGBlockchainLabel
             style={styles.blockchainLabel}
-            actionText={TransferTextHelper.getBlockchainTextActionLabel(
+            actionText={BlockchainLabel.getBlockchainTextActionLabel(
               'TransferPending',
               isDeposit
             )}
@@ -146,7 +146,8 @@ const TransferPending = ({ theme, navigation }) => {
             }}>
             Done
           </OMGButton>
-          {pendingTx.type !== 'CHILDCHAIN_SEND_TOKEN' && (
+          {pendingTx.actionType !==
+            TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN && (
             <TouchableOpacity
               style={styles.trackEtherscanButton}
               onPress={() => {

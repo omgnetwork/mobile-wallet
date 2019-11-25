@@ -1,14 +1,14 @@
 import { useEffect, useRef, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { Platform } from 'react-native'
-import { TransactionTypes } from 'common/constants'
+import { TransactionActionTypes } from 'common/constants'
 import {
   useRootchainTracker,
   useChildchainTracker,
   useExitTracker
 } from 'common/hooks'
 import { walletActions, transactionActions } from 'common/actions'
-import { notificationService, walletService } from 'common/services'
+import { notificationService } from 'common/services'
 import BackgroundTimer from 'react-native-background-timer'
 
 const TransactionTracker = ({
@@ -77,14 +77,16 @@ const TransactionTracker = ({
   const getRootTxs = useCallback(() => {
     return filterTxs(
       pendingTx =>
-        pendingTx.type !== TransactionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
+        pendingTx.actionType !==
+        TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
     )
   }, [filterTxs])
 
   const getChildTxs = useCallback(() => {
     return filterTxs(
       pendingTx =>
-        pendingTx.type === TransactionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
+        pendingTx.actionType ===
+        TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
     )
   }, [filterTxs])
 

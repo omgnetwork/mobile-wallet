@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import Config from 'react-native-config'
+import { TransactionActionTypes } from 'common/constants'
+
 const emptyFeedback = {
   title: null,
   type: null,
@@ -35,7 +37,7 @@ const useProgressiveFeedback = (
       if (transaction.pending) {
         return {
           title: 'Pending transaction...',
-          type: transaction.result.type,
+          actionType: transaction.result.actionType,
           hash: transaction.result.hash,
           pending: transaction.pending,
           subtitle: transaction.result.hash,
@@ -45,7 +47,7 @@ const useProgressiveFeedback = (
       } else {
         return {
           title: 'Successfully transferred!',
-          type: transaction.result.type,
+          actionType: transaction.result.actionType,
           hash: transaction.result.hash,
           pending: transaction.pending,
           subtitle: transaction.result.hash,
@@ -66,12 +68,14 @@ const useProgressiveFeedback = (
   }, [completeFeedbackTx, dispatchInvalidateFeedbackCompleteTx])
 
   const getLearnMoreLink = useCallback(() => {
-    if (feedback.type === 'CHILDCHAIN_SEND_TOKEN') {
+    if (
+      feedback.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
+    ) {
       return `${Config.BLOCK_EXPLORER_URL}/transaction/${feedback.hash}`
     } else {
       return `${Config.ETHERSCAN_TX_URL}${feedback.hash}`
     }
-  }, [feedback.hash, feedback.type])
+  }, [feedback.actionType, feedback.hash])
 
   useEffect(() => {
     const feedbackTx = selectFeedbackTx()

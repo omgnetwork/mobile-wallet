@@ -10,7 +10,7 @@ export const mapChildchainTx = (tx, tokens, address) => {
     hash: tx.txhash,
     network: 'omisego',
     confirmations: null,
-    type: mapInput(tx, address),
+    type: mapTransactionType(tx, address),
     from: tx.from,
     to: tx.to,
     gas: '0',
@@ -84,7 +84,7 @@ const mapRootchainEthTx = (tx, address) => {
   return {
     hash: tx.hash,
     network: 'ethereum',
-    type: mapInput(tx, address),
+    type: mapTransactionType(tx, address),
     confirmations: tx.confirmations,
     from: tx.from,
     to: tx.to,
@@ -104,7 +104,7 @@ const mapRootchainErc20Tx = (tx, address) => {
   return {
     hash: tx.hash,
     network: 'ethereum',
-    type: mapInput(tx, address),
+    type: mapTransactionType(tx, address),
     confirmations: tx.confirmations,
     from: tx.from,
     to: tx.to,
@@ -131,7 +131,7 @@ const mapChildchainOutput = results => {
   }
 }
 
-const mapInput = (tx, address) => {
+const mapTransactionType = (tx, address) => {
   const methodName = Transaction.decodePlasmaInputMethod(tx.input)
 
   if (tx.isError === '1') return 'failed'

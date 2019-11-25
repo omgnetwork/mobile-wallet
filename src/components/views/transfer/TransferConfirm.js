@@ -4,9 +4,12 @@ import { View, StyleSheet, ScrollView } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { BlockchainRenderer, BlockchainCalculator } from 'common/blockchain'
 import { withTheme } from 'react-native-paper'
-import { BigNumber } from 'common/utils'
 import Config from 'react-native-config'
-import { ActionAlert, ContractAddress, Gas } from 'common/constants'
+import {
+  ActionAlert,
+  ContractAddress,
+  TransactionActionTypes
+} from 'common/constants'
 import { ethereumActions, plasmaActions } from 'common/actions'
 import {
   OMGBox,
@@ -16,7 +19,7 @@ import {
   OMGWalletAddress,
   OMGBlockchainLabel
 } from 'components/widgets'
-import * as TransferTextHelper from './transferTextHelper'
+import * as BlockchainLabel from './blockchainLabel'
 
 const TransferConfirm = ({
   theme,
@@ -50,7 +53,7 @@ const TransferConfirm = ({
   )
   const totalPrice = BlockchainRenderer.renderTotalPrice(tokenPrice, feePrice)
 
-  const blockchainLabelActionText = TransferTextHelper.getBlockchainTextActionLabel(
+  const blockchainLabelActionText = BlockchainLabel.getBlockchainTextActionLabel(
     'TransferConfirm',
     isDeposit
   )
@@ -101,7 +104,10 @@ const TransferConfirm = ({
 
   useEffect(() => {
     const isPendingChildchainTransaction =
-      pendingTxs.find(tx => tx.type === 'CHILDCHAIN_SEND_TOKEN') !== undefined
+      pendingTxs.find(
+        tx =>
+          tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
+      ) !== undefined
     const isChildchainTransaction =
       !isRootchain &&
       toWallet.address !== Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
