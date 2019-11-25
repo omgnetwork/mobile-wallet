@@ -9,6 +9,7 @@
     "android": "react-native run-android",
     "build-android": "cd android && ./gradlew assembleRelease && cd .. && mkdir -p artifacts && cp android/app/build/outputs/apk/release/*.apk artifacts/",
     "build-ios": "npm run ios-archive && npm run ios-export && mkdir -p artifacts && cp ios/build/Apps/PlasmaWallet.ipa artifacts/",
+    "clean-ios": "cd ios && pod deintegrate && pod install && cd ..",
     "ios": "react-native run-ios --simulator='iPhone 7'",
     "ios-archive": "xcodebuild archive -archivePath ios/PlasmaWallet/PlasmaWallet.xcarchive -workspace ios/PlasmaWallet.xcworkspace -scheme PlasmaWallet",
     "ios-export": "xcodebuild -exportArchive -archivePath ios/PlasmaWallet/PlasmaWallet.xcarchive -exportOptionsPlist ios/PlasmaWallet/ExportOptions.plist -exportPath ios/build",
