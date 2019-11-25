@@ -693,7 +693,7 @@
 			baseConfigurationReference = 2013144B639117F17949F805 /* Pods-PlasmaWallet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 19;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = KWTQ7XD7P6;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -705,7 +705,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = "0.2-alpha1";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -723,7 +723,7 @@
 			baseConfigurationReference = C4E004F233574ADE274A7A0E /* Pods-PlasmaWallet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 19;
 				DEVELOPMENT_TEAM = KWTQ7XD7P6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**",
@@ -734,7 +734,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = "0.2-alpha1";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
