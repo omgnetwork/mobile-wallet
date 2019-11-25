@@ -13,7 +13,7 @@
     "ios-archive": "xcodebuild archive -archivePath ios/PlasmaWallet/PlasmaWallet.xcarchive -workspace ios/PlasmaWallet.xcworkspace -scheme PlasmaWallet",
     "ios-export": "xcodebuild -exportArchive -archivePath ios/PlasmaWallet/PlasmaWallet.xcarchive -exportOptionsPlist ios/PlasmaWallet/ExportOptions.plist -exportPath ios/build",
     "fix": "eslint . --fix",
-    "postinstall": "rn-nodeify --install assert,stream,events,crypto,url,http,https,vm,os,fs,path,process,net,zlib,_stream_transform,tls --hack && node ./scripts/disableRequireCycleWarning.js"
+    "postinstall": "rn-nodeify --install assert,stream,events,crypto,url,http,https,vm,os,fs,path,process,net,zlib,_stream_transform,tls --hack && node ./scripts/disableRequireCycleWarning.js && npx jetify"
   },
   "rnpm": {
     "assets": [
@@ -96,6 +96,7 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.0",
     "jest": "^24.8.0",
+    "jetifier": "^1.6.4",
     "metro-react-native-babel-preset": "^0.55.0",
     "prettier": "1.18.2",
     "react-test-renderer": "16.8.6",
