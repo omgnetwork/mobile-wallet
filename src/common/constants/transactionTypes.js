@@ -1,0 +1,7 @@
+export const TYPE_RECEIVED = 'in'
+export const TYPE_SENT = 'out'
+export const TYPE_DEPOSIT = 'deposit'
+export const TYPE_EXIT = 'exit'
+export const TYPE_FAILED = 'failed'
+export const TYPE_ALL = 'all'
+export const TYPE_UNIDENTIFIED = 'unidentified'

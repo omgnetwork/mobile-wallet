@@ -2,12 +2,13 @@ import React, { useCallback } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { Datetime } from 'common/utils'
+import { TransactionTypes } from 'common/constants'
 import { BlockchainRenderer } from 'common/blockchain'
 import OMGText from '../omg-text'
 import OMGIcon from '../omg-icon'
 
 const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
-  const isError = tx.type === 'failed'
+  const isError = tx.type === TransactionTypes.TYPE_FAILED
   const iconName = getIconName(tx.type)
 
   const renderEthereumValue = useCallback(() => {
@@ -61,16 +62,16 @@ const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
 
 const getIconName = type => {
   switch (type) {
-    case 'deposit':
+    case TransactionTypes.TYPE_DEPOSIT:
       return 'download'
-    case 'exit':
+    case TransactionTypes.TYPE_EXIT:
       return 'upload'
-    case 'in':
+    case TransactionTypes.TYPE_RECEIVED:
       return 'arrow-down'
-    case 'failed':
-    case 'out':
+    case TransactionTypes.TYPE_FAILED:
+    case TransactionTypes.TYPE_SENT:
       return 'arrow-up'
-    case 'unidentified':
+    case TransactionTypes.TYPE_UNIDENTIFIED:
     default:
       return 'transaction'
   }

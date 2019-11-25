@@ -4,6 +4,7 @@ import { StyleSheet, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigationFocus, SafeAreaView } from 'react-navigation'
 import { onboardingActions, transactionActions } from 'common/actions'
+import { TransactionTypes } from 'common/constants'
 import {
   OMGText,
   OMGStatusBar,
@@ -99,7 +100,13 @@ const TransactionHistory = ({
     if (transactions.length) {
       const recentTxs = transactions
         .filter(
-          tx => ['in', 'out', 'unidentified', 'deposit'].indexOf(tx.type) > -1
+          tx =>
+            [
+              TransactionTypes.TYPE_RECEIVED,
+              TransactionTypes.TYPE_SENT,
+              TransactionTypes.TYPE_DEPOSIT,
+              TransactionTypes.TYPE_UNIDENTIFIED
+            ].indexOf(tx.type) > -1
         )
         .slice(0, 5)
       setTxs(recentTxs)
@@ -109,21 +116,27 @@ const TransactionHistory = ({
   const handleClickTransactions = useCallback(() => {
     navigation.navigate('TransactionHistoryFilter', {
       title: 'Transactions',
-      types: ['all', 'in', 'out', 'unidentified', 'failed']
+      types: [
+        TransactionTypes.TYPE_ALL,
+        TransactionTypes.TYPE_RECEIVED,
+        TransactionTypes.TYPE_SENT,
+        TransactionTypes.TYPE_DEPOSIT,
+        TransactionTypes.TYPE_UNIDENTIFIED
+      ]
     })
   }, [navigation])
 
   const handleClickDeposit = useCallback(() => {
     navigation.navigate('TransactionHistoryFilter', {
       title: 'Deposit',
-      types: ['deposit']
+      types: [TransactionTypes.TYPE_DEPOSIT]
     })
   }, [navigation])
 
   const handleClickExit = useCallback(() => {
     navigation.navigate('TransactionHistoryFilter', {
       title: 'Exit',
-      types: ['exit']
+      types: [TransactionTypes.TYPE_EXIT]
     })
   }, [navigation])
 

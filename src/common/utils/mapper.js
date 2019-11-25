@@ -1,5 +1,6 @@
 import { ContractAddress } from 'common/constants'
 import { Transaction, Token } from 'common/utils'
+import { TransactionTypes } from 'common/constants'
 import BigNumber from 'bignumber.js'
 
 export const mapChildchainTx = (tx, tokens, address) => {
@@ -134,24 +135,24 @@ const mapChildchainOutput = results => {
 const mapTransactionType = (tx, address) => {
   const methodName = Transaction.decodePlasmaInputMethod(tx.input)
 
-  if (tx.isError === '1') return 'failed'
-  if (!tx.from) return 'unidentified'
-  if (!tx.to) return 'unidentified'
+  if (tx.isError === '1') return TransactionTypes.TYPE_FAILED
+  if (!tx.from) return TransactionTypes.TYPE_UNIDENTIFIED
+  if (!tx.to) return TransactionTypes.TYPE_UNIDENTIFIED
   switch (methodName) {
     case 'depositFrom':
     case 'deposit':
-      return 'deposit'
+      return TransactionTypes.TYPE_DEPOSIT
     case 'approve':
       return 'depositApprove'
     case 'addToken':
       return 'unlockExit'
     case 'startStandardExit':
-      return 'exit'
+      return TransactionTypes.TYPE_EXIT
     default:
       if (Transaction.isReceiveTx(address, tx.to)) {
-        return 'in'
+        return TransactionTypes.TYPE_RECEIVED
       } else {
-        return 'out'
+        return TransactionTypes.TYPE_SENT
       }
   }
 }
