@@ -21,6 +21,8 @@ import { transactionService } from 'common/services'
 import TransactionDetailHash from './TransactionDetailHash'
 import TransactionDetailInfoSuccess from './TransactionDetailInfoSuccess'
 import TransactionDetailFromTo from './TransactionDetailFromTo'
+import * as BlockchainLabels from './blockchainLabels'
+import { BlockchainNetworkType, TransactionTypes } from 'common/constants'
 
 const TransactionDetail = ({ navigation, theme }) => {
   const tx = navigation.getParam('transaction')
@@ -74,7 +76,17 @@ const TransactionDetail = ({ navigation, theme }) => {
           style={styles.addressContainer}
           theme={theme}
         />
-        <OMGBlockchainLabel style={styles.blockchainLabel} />
+        <OMGBlockchainLabel
+          style={styles.blockchainLabel(theme)}
+          isRootchain={
+            transaction.network ===
+              BlockchainNetworkType.TYPE_ETHEREUM_NETWORK &&
+            transaction.type !== TransactionTypes.TYPE_DEPOSIT
+          }
+          actionText={BlockchainLabels.getBlockchainTextActionLabel(
+            transaction
+          )}
+        />
         <TransactionDetailInfoSuccess
           tx={transaction}
           theme={theme}
@@ -124,6 +136,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  blockchainLabel: theme => ({
+    marginTop: 16,
+    borderRadius: theme.roundness
+  }),
   scrollViewContainer: {
     flexDirection: 'column',
     paddingHorizontal: 16,
@@ -148,7 +164,7 @@ const styles = StyleSheet.create({
     marginTop: 16
   },
   infoContainer: {
-    marginTop: 8
+    marginTop: 16
   },
   fromToContainer: {
     marginTop: 16
