@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { Datetime } from 'common/utils'
-import { TransactionTypes } from 'common/constants'
+import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
 import { BlockchainRenderer } from 'common/blockchain'
 import OMGText from '../omg-text'
 import OMGIcon from '../omg-icon'
@@ -45,7 +45,7 @@ const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
       </View>
       <View style={styles.rightContainer}>
         <OMGText style={styles.textAmount(theme)}>
-          {tx.network === 'ethereum'
+          {tx.network === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
             ? renderEthereumValue()
             : renderOmiseGOValue()}
         </OMGText>

@@ -1,6 +1,6 @@
 import { ContractAddress } from 'common/constants'
 import { Transaction, Token } from 'common/utils'
-import { TransactionTypes } from 'common/constants'
+import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
 import BigNumber from 'bignumber.js'
 
 export const mapChildchainTx = (tx, tokens, address) => {
@@ -9,7 +9,7 @@ export const mapChildchainTx = (tx, tokens, address) => {
   const token = Token.find(contractAddress, tokens)
   return {
     hash: tx.txhash,
-    network: 'omisego',
+    network: BlockchainNetworkType.TYPE_OMISEGO_NETWORK,
     confirmations: null,
     type: mapTransactionType(tx, address),
     from: tx.from,
@@ -84,7 +84,7 @@ export const mapAssetCurrency = asset => asset.currency
 const mapRootchainEthTx = (tx, address) => {
   return {
     hash: tx.hash,
-    network: 'ethereum',
+    network: BlockchainNetworkType.TYPE_ETHEREUM_NETWORK,
     type: mapTransactionType(tx, address),
     confirmations: tx.confirmations,
     from: tx.from,
@@ -104,7 +104,7 @@ const mapRootchainEthTx = (tx, address) => {
 const mapRootchainErc20Tx = (tx, address) => {
   return {
     hash: tx.hash,
-    network: 'ethereum',
+    network: BlockchainNetworkType.TYPE_ETHEREUM_NETWORK,
     type: mapTransactionType(tx, address),
     confirmations: tx.confirmations,
     from: tx.from,
