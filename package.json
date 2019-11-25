@@ -1,6 +1,6 @@
 {
   "name": "PlasmaWallet",
-  "version": "0.0.1",
+  "version": "0.2-alpha1",
   "private": true,
   "scripts": {
     "start": "react-native start",
