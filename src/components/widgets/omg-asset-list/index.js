@@ -24,9 +24,9 @@ const OMGAssetList = ({
         imageName: 'EmptyRootchainWallet',
         text: 'Wallet is empty.\nShare wallet to receive fund.'
       }
-    } else if (type === 'childchain' && !hasRootchainAssets) {
+    } else if (type === 'childchain' && hasRootchainAssets) {
       return {
-        imageName: 'EmptyChildchainRootchainWallet',
+        imageName: 'EmptyOnlyChildchainWallet',
         text: 'Wallet is empty.\nStart using Plasma by deposit.'
       }
     } else {

@@ -48,7 +48,7 @@ const OMGTransactionFilter = ({
   return (
     <OMGTransactionList
       transactions={filteredTxs}
-      loading={loading}
+      loading={loading.show}
       address={address}
       type={types.length === 1 ? types[0] : 'all'}
       style={style}
