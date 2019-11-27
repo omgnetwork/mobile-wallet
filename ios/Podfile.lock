@@ -116,19 +116,19 @@ PODS:
   - React-jsinspector (0.60.4)
   - react-native-background-timer (2.1.1):
     - React
-  - react-native-camera (3.1.2):
+  - react-native-camera (3.11.1):
     - React
-    - react-native-camera/RCT (= 3.1.2)
-    - react-native-camera/RN (= 3.1.2)
-  - react-native-camera/RCT (3.1.2):
+    - react-native-camera/RCT (= 3.11.1)
+    - react-native-camera/RN (= 3.11.1)
+  - react-native-camera/RCT (3.11.1):
     - React
-  - react-native-camera/RN (3.1.2):
+  - react-native-camera/RN (3.11.1):
     - React
   - react-native-config (0.11.7):
     - React
   - react-native-randombytes (3.5.3):
     - React
-  - react-native-sensitive-info (5.4.2):
+  - react-native-sensitive-info (5.5.3):
     - React
   - react-native-splash-screen (3.2.0):
     - React
@@ -156,13 +156,13 @@ PODS:
   - React-RCTWebSocket (0.60.4):
     - React-Core (= 0.60.4)
     - React-fishhook (= 0.60.4)
-  - ReactNativePermissions (1.2.0):
+  - ReactNativePermissions (1.2.1):
     - React
   - RNBackgroundFetch (2.7.1):
     - React
-  - RNCAsyncStorage (1.6.1):
+  - RNCAsyncStorage (1.6.3):
     - React
-  - RNCPushNotificationIOS (1.0.2):
+  - RNCPushNotificationIOS (1.0.3):
     - React
   - RNFirebase (5.5.6):
     - Firebase/Core
@@ -173,13 +173,13 @@ PODS:
     - Fabric
     - Firebase/Core
     - React
-  - RNGestureHandler (1.4.1):
+  - RNGestureHandler (1.5.1):
     - React
-  - RNReanimated (1.2.0):
+  - RNReanimated (1.4.0):
     - React
   - RNScreens (1.0.0-alpha.23):
     - React
-  - RNSVG (9.6.2):
+  - RNSVG (9.13.3):
     - React
   - RNVectorIcons (6.6.0):
     - React
@@ -233,7 +233,7 @@ DEPENDENCIES:
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - boost-for-react-native
     - Crashlytics
     - Fabric
@@ -351,10 +351,10 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 7549641e48bafae7bfee3f3ea19bf4901639c5de
   React-jsinspector: 73f24a02fa684ed6a2b828ba116874a2191ded88
   react-native-background-timer: 0d34748e53a972507c66963490c775321a88f6f2
-  react-native-camera: d3bd7765a32c0584cea34b688e45e75652b067d2
+  react-native-camera: b7ad0c9648c3ea83f58a3ef4f815ab4acd88dc7e
   react-native-config: 55548054279d92e0e4566ea15a8b9b81028ec342
   react-native-randombytes: 991545e6eaaf700b4ee384c291ef3d572e0b2ca8
-  react-native-sensitive-info: 3f19d44983c9efcd5cc0693b775795d0b1667f20
+  react-native-sensitive-info: c93d905f8d875daead38e5affc100390544584bd
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   React-RCTActionSheet: 9f71d7ae3e8fb10e08d162cbf14c621349dbfab3
   React-RCTAnimation: 981d8c95b0e30918a9832ccac32af83562a27fae
@@ -366,19 +366,19 @@ SPEC CHECKSUMS:
   React-RCTText: e0f224898b13af9aa036ea7cb3d438daa68c1044
   React-RCTVibration: 0bea40cd51bd089bd591a8f74c86e91fdf2666c5
   React-RCTWebSocket: 163873f4cdd5f1058a9483443404fc3801581cb6
-  ReactNativePermissions: f0aec11433d43d45953c678b6982921d83ad94c8
+  ReactNativePermissions: e7db6c38a2f3fb8f26dbfdcaeb5c5e9364657a6d
   RNBackgroundFetch: 08bdaaa13a5aa71cdce42068def5602ed1e982c2
-  RNCAsyncStorage: 621bad7a889b5bf1583a52547f2dcd3a4d1ff15e
-  RNCPushNotificationIOS: 7bcc4071d6f25c4d441cbef42a097462f4e30208
+  RNCAsyncStorage: 6b57de0f6cb0dcfd17521af1681fa39001d3efff
+  RNCPushNotificationIOS: 5403d137a49c55f0dc2273be8473873e934359cd
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
-  RNGestureHandler: 4cb47a93019c1a201df2644413a0a1569a51c8aa
-  RNReanimated: 1b52415c4302f198cb581282a0166690bad62c43
+  RNGestureHandler: 7add966bb5d90ee8cf38d4341f87814474357972
+  RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNScreens: f28b48b8345f2f5f39ed6195518291515032a788
-  RNSVG: ff9b094e39dd4a437ebe17d1c7ceed286e75f426
+  RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   TcpSockets: 8d839b9b14f6f344d98e4642ded13ab3112b462d
   yoga: c2c050f6ae6e222534760cc82f559b89214b67e2
 
-PODFILE CHECKSUM: 8676af763417f940488015f2cf2aabe97d84a8a0
+PODFILE CHECKSUM: 2ccb954205e1d50d3fc9e7e5c09d8be6eb3a4b9b
 
 COCOAPODS: 1.8.4
