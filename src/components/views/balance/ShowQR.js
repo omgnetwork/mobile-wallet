@@ -3,11 +3,11 @@ import { View, TouchableOpacity, StyleSheet, Image } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
-import { OMGQRCode, OMGBackground, OMGText } from 'components/widgets'
+import { OMGQRCode, OMGText } from 'components/widgets'
 
 const ShowQR = ({ theme, primaryWallet, primaryWalletAddress, navigation }) => {
   return (
-    <OMGBackground style={styles.container(theme)}>
+    <View style={styles.container(theme)}>
       <View style={styles.titleContainer}>
         <Image
           style={styles.logo(theme)}
@@ -31,7 +31,7 @@ const ShowQR = ({ theme, primaryWallet, primaryWalletAddress, navigation }) => {
           View Transaction History
         </OMGText>
       </TouchableOpacity>
-    </OMGBackground>
+    </View>
   )
 }
 

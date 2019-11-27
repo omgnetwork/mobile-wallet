@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { OMGBackground, OMGText, OMGEmpty } from 'components/widgets'
+import { OMGText, OMGEmpty } from 'components/widgets'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
@@ -38,7 +38,7 @@ const OMGAssetList = ({
   }, [hasRootchainAssets, type])
 
   return (
-    <OMGBackground style={{ ...styles.container(theme), ...style }}>
+    <View style={{ ...styles.container(theme), ...style }}>
       <View style={styles.header(theme)}>
         <OMGText style={styles.title(theme)} weight='bold'>
           ASSETS
@@ -80,7 +80,7 @@ const OMGAssetList = ({
           />
         )}
       </View>
-    </OMGBackground>
+    </View>
   )
 }
 
