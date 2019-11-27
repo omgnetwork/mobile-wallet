@@ -6,7 +6,6 @@ import * as EmptyImages from './assets'
 
 const OMGEmpty = ({ text, loading, style, textStyle, imageName, theme }) => {
   const EmptyImage = EmptyImages[imageName]
-  console.log(text)
   return (
     <View style={{ ...styles.container, ...style }}>
       {loading ? (

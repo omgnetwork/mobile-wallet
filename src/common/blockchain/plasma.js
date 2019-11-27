@@ -1,6 +1,7 @@
 import { Plasma } from 'common/clients'
-import { ABI, Transaction } from 'common/utils'
-import { ContractAddress } from 'common/constants'
+import { ABI, Transaction, Parser, Formatter } from 'common/utils'
+import { ContractAddress, Gas } from 'common/constants'
+import { TxOptions } from 'common/blockchain'
 
 export const getBalances = address => {
   return Plasma.childchain.getBalance(address)
@@ -35,70 +36,112 @@ export const createFee = amount => ({
   amount: Number(amount)
 })
 
-// Deposit
-export const depositEth = (address, privateKey, weiAmount, options) => {
-  const depositTransaction = Plasma.transaction.encodeDeposit(
+export const depositEth = async (
+  address,
+  privateKey,
+  weiAmount,
+  options = {}
+) => {
+  const web3 = Plasma.rootchain.web3
+  const defaultGasPrice = await web3.eth.getGasPrice()
+  const depositGas = options.gas || Gas.LIMIT
+  const depositGasPrice = options.gasPrice || defaultGasPrice
+
+  const encodedDepositTx = Plasma.transaction.encodeDeposit(
     address,
     weiAmount,
     Plasma.transaction.ETH_CURRENCY
   )
 
-  const txOptions = {
-    from: address,
+  const depositOptions = TxOptions.createDepositOptions(
+    address,
     privateKey,
-    ...options
-  }
+    depositGas,
+    depositGasPrice
+  )
 
-  return Plasma.rootchain.depositEth(depositTransaction, weiAmount, txOptions)
+  const receipt = await Plasma.rootchain.depositEth(
+    encodedDepositTx,
+    weiAmount,
+    depositOptions
+  )
+
+  return receiptWithGasPrice(receipt, depositGasPrice)
 }
 
 export const depositErc20 = async (
   address,
   privateKey,
   weiAmount,
-  contractAddress,
-  options
+  tokenContractAddress,
+  options = {}
 ) => {
   const web3 = Plasma.rootchain.web3
-  const plasmaContractAddress = Plasma.rootchain.plasmaContractAddress
-  const erc20Contract = new web3.eth.Contract(ABI.erc20Abi(), contractAddress)
+  const erc20VaultAddress = await Plasma.rootchain.getErc20VaultAddress()
+  const erc20Contract = new web3.eth.Contract(
+    ABI.erc20Abi(),
+    tokenContractAddress
+  )
+  const defaultGasPrice = await web3.eth.getGasPrice()
+  const depositGas = options.gas || Gas.LIMIT
+  const depositGasPrice = options.gasPrice || defaultGasPrice
 
-  const nonce = await web3.eth.getTransactionCount(address)
+  // SEND ERC20 APPROVAL TRANSACTION 👇
 
-  const txDetails = {
-    from: address,
-    to: contractAddress,
-    nonce: nonce,
-    data: erc20Contract.methods
-      .approve(plasmaContractAddress, weiAmount)
-      .encodeABI(),
-    gasPrice: options.gasPrice
-  }
-
-  const gas = await web3.eth.estimateGas(txDetails)
-
-  const signedTx = await web3.eth.accounts.signTransaction(
-    {
-      ...txDetails,
-      gas
-    },
-    privateKey
+  const approveOptions = TxOptions.createApproveErc20Options(
+    address,
+    tokenContractAddress,
+    erc20Contract,
+    erc20VaultAddress,
+    weiAmount,
+    depositGas,
+    depositGasPrice
   )
 
-  await web3.eth.sendSignedTransaction(signedTx.rawTransaction)
+  const approveReceipt = await approveErc20(web3, approveOptions, privateKey)
 
-  const depositTransaction = Plasma.transaction.encodeDeposit(
+  // SEND DEPOSIT TRANSACTION 👇
+
+  const encodedDepositTx = Plasma.transaction.encodeDeposit(
     address,
     weiAmount,
-    contractAddress
+    tokenContractAddress
   )
 
-  const txOptions = {
-    from: address,
-    privateKey
-  }
+  const depositOptions = TxOptions.createDepositOptions(
+    address,
+    privateKey,
+    depositGas,
+    depositGasPrice
+  )
 
-  return Plasma.rootchain.depositToken(depositTransaction, txOptions)
+  const receipt = await Plasma.rootchain.depositToken(
+    encodedDepositTx,
+    depositOptions
+  )
+
+  return receiptWithGasPrice(receipt, depositGasPrice, approveReceipt.gasUsed)
+}
+
+const approveErc20 = async (web3, approveOptions, ownerPrivateKey) => {
+  const signedApproveTx = await web3.eth.accounts.signTransaction(
+    approveOptions,
+    ownerPrivateKey
+  )
+
+  return web3.eth.sendSignedTransaction(signedApproveTx.rawTransaction)
+}
+
+const receiptWithGasPrice = (txReceipt, gasPrice, additionalGasUsed = 0) => {
+  return {
+    transactionHash: txReceipt.transactionHash,
+    from: txReceipt.from,
+    to: txReceipt.to,
+    blockNumber: txReceipt.blockNumber,
+    blockHash: txReceipt.blockHash,
+    gasUsed: txReceipt.gasUsed + additionalGasUsed,
+    gasPrice: gasPrice
+  }
 }
 
 // Exit
@@ -110,8 +153,7 @@ export const standardExit = async (exitData, blockchainWallet, options) => {
     {
       privateKey: blockchainWallet.privateKey,
       from: blockchainWallet.address,
-      gas: 1000000,
-      gasPrice: 10000000000
+      gas: options.gasLimit || Gas.LIMIT
     }
   )
 }
@@ -173,7 +215,6 @@ export const submitTx = signedTx => {
 
 export const getTxs = (address, options) => {
   const { blknum, limit } = options || { blknum: '0', limit: 10 }
-  console.log(options)
   return Plasma.childchain.getTransactions({
     address: address,
     limit: limit || 10,

@@ -1,5 +1,7 @@
 import { Formatter, Parser, Polling, Datetime, Mapper, Token } from '../utils'
 import { Plasma } from 'common/blockchain'
+import Config from 'react-native-config'
+import { Gas } from 'common/constants'
 
 export const fetchAssets = (provider, address) => {
   return new Promise(async (resolve, reject) => {
@@ -149,17 +151,14 @@ export const transfer = (
   })
 }
 
-export const depositEth = (address, privateKey, amount, fee) => {
+export const depositEth = (address, privateKey, amount) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const weiAmount = Parser.parseUnits(amount, 'ether')
+      const weiAmount = Parser.parseUnits(amount, 'ether').toString(10)
       const transactionReceipt = await Plasma.depositEth(
         address,
         privateKey,
-        weiAmount,
-        {
-          gasPrice: Parser.parseUnits(fee.amount, fee.symbol)
-        }
+        weiAmount
       )
       resolve(transactionReceipt)
     } catch (err) {
@@ -168,18 +167,18 @@ export const depositEth = (address, privateKey, amount, fee) => {
   })
 }
 
-export const depositErc20 = (address, privateKey, token, fee) => {
+export const depositErc20 = (address, privateKey, token) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const weiAmount = Parser.parseUnits(token.balance, token.tokenDecimal)
+      const weiAmount = Parser.parseUnits(
+        token.balance,
+        token.tokenDecimal
+      ).toString(10)
       const transactionReceipt = await Plasma.depositErc20(
         address,
         privateKey,
         weiAmount,
-        token.contractAddress,
-        {
-          gasPrice: Parser.parseUnits(fee.amount, fee.symbol)
-        }
+        token.contractAddress
       )
       resolve(transactionReceipt)
     } catch (err) {
