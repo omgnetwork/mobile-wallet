@@ -1,5 +1,6 @@
 import { createAsyncAction } from './actionCreators'
 import { plasmaService } from 'common/services'
+import { TransactionActionTypes } from 'common/constants'
 import { Datetime, Parser } from 'common/utils'
 
 export const fetchAssets = (provider, address) => {
@@ -37,7 +38,7 @@ export const depositEth = (blockchainWallet, token) => {
       contractAddress: token.contractAddress,
       gasPrice: gasPrice,
       gasUsed: gasUsed,
-      type: 'CHILDCHAIN_DEPOSIT',
+      actionType: TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT,
       createdAt: Datetime.now()
     }
   }
@@ -67,7 +68,7 @@ export const depositErc20 = (blockchainWallet, token) => {
       contractAddress: token.contractAddress,
       gasPrice: gasPrice,
       gasUsed: gasUsed,
-      type: 'CHILDCHAIN_DEPOSIT',
+      actionType: TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT,
       createdAt: Datetime.now()
     }
   }
@@ -94,7 +95,7 @@ export const transfer = (blockchainWallet, toAddress, token, fee) => {
       contractAddress: token.contractAddress,
       gasUsed: 1,
       gasPrice: Parser.parseUnits(fee.amount, 'gwei').toString(10),
-      type: 'CHILDCHAIN_SEND_TOKEN',
+      actionType: TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN,
       createdAt: Datetime.now()
     }
   }
@@ -117,7 +118,7 @@ export const exit = (blockchainWallet, token, fee) => {
       exitId: exitReceipt.exitId,
       contractAddress: token.contractAddress,
       gasPrice: fee.amount,
-      type: 'CHILDCHAIN_EXIT',
+      actionType: TransactionActionTypes.TYPE_CHILDCHAIN_EXIT,
       createdAt: Datetime.now()
     }
   }
@@ -141,7 +142,7 @@ export const processExits = (blockchainWallet, token, fee) => {
       symbol: token.tokenSymbol,
       contractAddress: token.contractAddress,
       gasPrice: fee.amount,
-      type: 'CHILDCHAIN_PROCESS_EXIT',
+      type: TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT,
       createdAt: Datetime.now()
     }
   }

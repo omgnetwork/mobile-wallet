@@ -1,5 +1,6 @@
 import 'ethers/dist/shims.js'
 import { ethers } from 'ethers'
+import { BlockchainNetworkType } from 'common/constants'
 
 export const isValidAddress = address => {
   try {
@@ -28,5 +29,5 @@ export const isValidTransaction = transaction => {
 }
 
 export const isOmiseGOTransaction = transaction => {
-  return transaction.network === 'omisego'
+  return transaction.network === BlockchainNetworkType.TYPE_OMISEGO_NETWORK
 }

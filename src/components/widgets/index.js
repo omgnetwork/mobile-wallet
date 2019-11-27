@@ -8,6 +8,7 @@ import OMGBackground from './omg-background'
 import OMGBottomSheet from './omg-bottom-sheet'
 import OMGBottomTab from './omg-bottom-tab'
 import OMGBox from './omg-box'
+import OMGBlockchainLabel from './omg-blockchain-label'
 import OMGButton from './omg-button'
 import OMGDotViewPager from './omg-dot-view-pager'
 import OMGDismissKeyboard from './omg-dismiss-keyboard'
@@ -54,6 +55,7 @@ export {
   OMGAssetList,
   OMGAssetFooter,
   OMGBackground,
+  OMGBlockchainLabel,
   OMGBottomSheet,
   OMGBottomTab,
   OMGBox,

@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import Config from 'react-native-config'
+import { TransactionActionTypes } from 'common/constants'
+
 const emptyFeedback = {
   title: null,
   type: null,
@@ -32,23 +34,24 @@ const useProgressiveFeedback = (
   const formatFeedbackTx = useCallback(
     transaction => {
       if (!transaction) return emptyFeedback
+      const { actionType, hash } = transaction.result
       if (transaction.pending) {
         return {
           title: 'Pending transaction...',
-          type: transaction.result.type,
-          hash: transaction.result.hash,
-          pending: transaction.pending,
-          subtitle: transaction.result.hash,
+          actionType: actionType,
+          hash: hash,
+          pending: true,
+          subtitle: hash,
           iconName: 'pending',
           iconColor: theme.colors.yellow3
         }
       } else {
         return {
           title: 'Successfully transferred!',
-          type: transaction.result.type,
-          hash: transaction.result.hash,
-          pending: transaction.pending,
-          subtitle: transaction.result.hash,
+          actionType: actionType,
+          hash: hash,
+          pending: false,
+          subtitle: hash,
           iconName: 'success',
           iconColor: theme.colors.green2
         }
@@ -66,12 +69,14 @@ const useProgressiveFeedback = (
   }, [completeFeedbackTx, dispatchInvalidateFeedbackCompleteTx])
 
   const getLearnMoreLink = useCallback(() => {
-    if (feedback.type === 'CHILDCHAIN_SEND_TOKEN') {
+    if (
+      feedback.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
+    ) {
       return `${Config.BLOCK_EXPLORER_URL}/transaction/${feedback.hash}`
     } else {
       return `${Config.ETHERSCAN_TX_URL}${feedback.hash}`
     }
-  }, [feedback.hash, feedback.type])
+  }, [feedback.actionType, feedback.hash])
 
   useEffect(() => {
     const feedbackTx = selectFeedbackTx()

@@ -139,8 +139,8 @@ android {
         applicationId "network.omisego.plasmawallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "0.1"
+        versionCode 3
+        versionName "0.2-alpha1"
         multiDexEnabled true
         missingDimensionStrategy "react-native-camera", "general"
     }
@@ -228,7 +228,6 @@ dependencies {
     }
     implementation 'com.google.android.gms:play-services-tagmanager:17.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
-
 //    if (enableHermes) {
 //      def hermesPath = "../../node_modules/hermesvm/android/";
 //      debugImplementation files(hermesPath + "hermes-debug.aar")

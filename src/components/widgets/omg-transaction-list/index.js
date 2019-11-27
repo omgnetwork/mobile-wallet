@@ -56,7 +56,7 @@ const OMGTransactionList = ({
 
   return (
     <View style={{ ...styles.container, ...style }}>
-      {loading.show ? (
+      {loading ? (
         <OMGEmpty loading={true} />
       ) : (
         <FlatList

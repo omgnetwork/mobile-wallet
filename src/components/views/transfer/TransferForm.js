@@ -11,9 +11,11 @@ import {
   OMGTokenInput,
   OMGWalletAddress,
   OMGAmountInput,
-  OMGFeeInput
+  OMGFeeInput,
+  OMGBlockchainLabel
 } from 'components/widgets'
 import { Validator } from 'common/utils'
+import * as BlockchainLabel from './blockchainLabel'
 
 const fees = [
   {
@@ -45,7 +47,7 @@ const fees = [
 const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
 
 const TransferForm = ({ wallet, theme, navigation }) => {
-  const selectedFee = navigation.getParam('selectedFee', fees[0])
+  const selectedFee = navigation.getParam('selectedFee', fees[2])
   const selectedAddress = navigation.getParam('address')
   const defaultAmount = navigation.getParam('lastAmount')
   const isDeposit = navigation.getParam('isDeposit')
@@ -55,6 +57,10 @@ const TransferForm = ({ wallet, theme, navigation }) => {
     isDeposit || isRootchain
       ? wallet.rootchainAssets[0]
       : wallet.childchainAssets[0]
+  )
+  const blockchainLabelActionText = BlockchainLabel.getBlockchainTextActionLabel(
+    'TransferForm',
+    isDeposit
   )
   const addressRef = useRef(selectedAddress || testAddress)
   const amountRef = useRef(defaultAmount)
@@ -80,6 +86,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
         token: { ...selectedToken, balance: amountRef.current },
         fromWallet: wallet,
         isRootchain: isRootchain,
+        isDeposit: isDeposit,
         toWallet: {
           name: isDeposit ? 'Plasma Contract' : 'Another wallet',
           address: addressRef.current
@@ -93,6 +100,10 @@ const TransferForm = ({ wallet, theme, navigation }) => {
     <SafeAreaView style={styles.container(theme)}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.formContainer}>
+          <OMGBlockchainLabel
+            actionText={blockchainLabelActionText}
+            isRootchain={isRootchain}
+          />
           <OMGBox style={styles.fromContainer}>
             <OMGText weight='bold'>From</OMGText>
             <OMGTokenInput
@@ -128,7 +139,11 @@ const TransferForm = ({ wallet, theme, navigation }) => {
                 style={styles.addressInput}
                 inputRef={addressRef}
                 showError={showErrorAddress}
-                onPress={() => navigation.navigate('TransferScanner')}
+                onPress={() =>
+                  navigation.navigate('TransferScanner', {
+                    rootchain: isRootchain
+                  })
+                }
               />
             )}
           </OMGBox>

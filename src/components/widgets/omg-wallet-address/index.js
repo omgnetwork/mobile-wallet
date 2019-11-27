@@ -7,7 +7,8 @@ import OMGIcon from '../omg-icon'
 import Config from 'react-native-config'
 
 const OMGWalletAddress = ({ theme, name, address, style }) => {
-  const IS_CHILDCHAIN_ADDRESS = address === Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
+  const IS_CHILDCHAIN_ADDRESS =
+    address === Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
   return (
     <View style={{ ...styles.container(theme), ...style }}>
       {IS_CHILDCHAIN_ADDRESS ? (
@@ -39,7 +40,7 @@ const OMGWalletAddress = ({ theme, name, address, style }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.backgroundDisabled,
+    backgroundColor: theme.colors.white3,
     borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,

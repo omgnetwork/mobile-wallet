@@ -1,4 +1,4 @@
-import EmptyChildchainRootchainWallet from './empty-childchain-rootchain-wallet'
+import EmptyOnlyChildchainWallet from './empty-only-childchain-wallet'
 import EmptyChildchainWallet from './empty-childchain-wallet'
 import EmptyRootchainWallet from './empty-rootchain-wallet'
 import EmptyTxRecent from './empty-tx-recent'
@@ -7,7 +7,7 @@ import EmptyTxAll from './empty-tx-all'
 import EmptyTxExit from './empty-tx-exit'
 
 export {
-  EmptyChildchainRootchainWallet,
+  EmptyOnlyChildchainWallet,
   EmptyChildchainWallet,
   EmptyRootchainWallet,
   EmptyTxRecent,

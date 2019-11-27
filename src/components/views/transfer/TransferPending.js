@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { View, StyleSheet, Linking } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { Formatter } from 'common/utils'
+import { BlockchainRenderer } from 'common/blockchain'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
 import {
@@ -12,28 +12,35 @@ import {
   OMGText,
   OMGWalletAddress,
   OMGStatusBar,
-  OMGIcon
+  OMGIcon,
+  OMGBlockchainLabel
 } from 'components/widgets'
-import { Gas } from 'common/constants'
+import { Gas, TransactionActionTypes } from 'common/constants'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { GoogleAnalytics } from 'common/analytics'
+import * as BlockchainLabel from './blockchainLabel'
 
 const TransferPending = ({ theme, navigation }) => {
   const pendingTx = navigation.getParam('pendingTx')
   const token = navigation.getParam('token')
   const fromWallet = navigation.getParam('fromWallet')
   const toWallet = navigation.getParam('toWallet')
-  const tokenPrice = formatTokenPrice(token.balance, token.price)
+  const isDeposit = navigation.getParam('isDeposit')
+  const isRootchain = navigation.getParam('isRootchain')
+  const tokenPrice = BlockchainRenderer.renderTokenPrice(
+    token.balance,
+    token.price
+  )
   const gasDetailAvailable = pendingTx.gasUsed && pendingTx.gasPrice
   const gasFee = useCallback(() => {
-    return Formatter.formatGasFee(
+    return BlockchainRenderer.renderGasFee(
       pendingTx.gasUsed || Gas.MINIMUM_GAS_USED,
       pendingTx.gasPrice
     )
   }, [pendingTx])
 
   const gasFeeUsd = useCallback(() => {
-    return Formatter.formatGasFeeUsd(
+    return BlockchainRenderer.renderGasFeeUsd(
       pendingTx.gasUsed || Gas.MINIMUM_GAS_USED,
       pendingTx.gasPrice,
       token.price
@@ -64,6 +71,14 @@ const TransferPending = ({ theme, navigation }) => {
               Pending Transaction
             </OMGText>
           </View>
+          <OMGBlockchainLabel
+            style={styles.blockchainLabel}
+            actionText={BlockchainLabel.getBlockchainTextActionLabel(
+              'TransferPending',
+              isDeposit
+            )}
+            isRootchain={isRootchain}
+          />
           <OMGBox style={styles.addressContainer}>
             <OMGText style={styles.subtitle(theme)} weight='bold'>
               From
@@ -73,7 +88,9 @@ const TransferPending = ({ theme, navigation }) => {
               address={fromWallet.address}
               style={styles.walletAddress}
             />
-            <OMGText style={styles.subtitle(theme)} weight='bold'>
+            <OMGText
+              style={[styles.subtitle(theme), styles.marginSubtitle]}
+              weight='bold'>
               To
             </OMGText>
             <OMGWalletAddress
@@ -91,7 +108,8 @@ const TransferPending = ({ theme, navigation }) => {
                 <OMGText style={styles.sentTitle}>Amount</OMGText>
                 <View style={styles.sentDetail}>
                   <OMGText style={styles.sentDetailFirstline(theme)}>
-                    {formatTokenBalance(token.balance)} {token.tokenSymbol}
+                    {BlockchainRenderer.renderTokenBalance(token.balance)}{' '}
+                    {token.tokenSymbol}
                   </OMGText>
                   <OMGText style={styles.sentDetailSecondline(theme)}>
                     {tokenPrice} USD
@@ -118,7 +136,7 @@ const TransferPending = ({ theme, navigation }) => {
           <View style={styles.totalContainer(theme)}>
             <OMGText style={styles.totalText(theme)}>Total</OMGText>
             <OMGText style={styles.totalText(theme)}>
-              {formatTotalPrice(tokenPrice, gasFeeUsd())} USD
+              {BlockchainRenderer.renderTotalPrice(tokenPrice, gasFeeUsd())} USD
             </OMGText>
           </View>
           <OMGButton
@@ -128,7 +146,8 @@ const TransferPending = ({ theme, navigation }) => {
             }}>
             Done
           </OMGButton>
-          {pendingTx.type !== 'CHILDCHAIN_SEND_TOKEN' && (
+          {pendingTx.actionType !==
+            TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN && (
             <TouchableOpacity
               style={styles.trackEtherscanButton}
               onPress={() => {
@@ -145,33 +164,6 @@ const TransferPending = ({ theme, navigation }) => {
   )
 }
 
-const formatTokenBalance = amount => {
-  return Formatter.format(amount, {
-    commify: true,
-    maxDecimal: 3,
-    ellipsize: false
-  })
-}
-
-const formatTokenPrice = (amount, price) => {
-  const parsedAmount = parseFloat(amount)
-  const tokenPrice = parsedAmount * price
-  return Formatter.format(tokenPrice, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
-  })
-}
-
-const formatTotalPrice = (tokenPrice, feePrice) => {
-  const totalPrice = parseFloat(tokenPrice) + parseFloat(feePrice)
-  return Formatter.format(totalPrice, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
-  })
-}
-
 const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
@@ -182,13 +174,12 @@ const styles = StyleSheet.create({
     flex: 1
   },
   headerContainer: {
-    paddingHorizontal: 16,
-    marginTop: 16,
+    padding: 16,
     flexDirection: 'row',
     alignItems: 'center'
   },
+  blockchainLabel: {},
   addressContainer: {
-    marginTop: 16,
     paddingLeft: 16
   },
   bottomContainer: {
@@ -197,8 +188,7 @@ const styles = StyleSheet.create({
   },
   totalContainer: theme => ({
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16
+    justifyContent: 'space-between'
   }),
   subHeaderTitle: {
     fontSize: 14
@@ -220,9 +210,11 @@ const styles = StyleSheet.create({
     marginLeft: 8
   },
   subtitle: theme => ({
-    marginTop: 8,
     color: theme.colors.gray3
   }),
+  marginSubtitle: {
+    marginTop: 16
+  },
   walletAddress: {
     marginTop: 12,
     flexDirection: 'row'
@@ -235,7 +227,7 @@ const styles = StyleSheet.create({
   },
   sentContentContainer: theme => ({
     justifyContent: 'space-between',
-    backgroundColor: theme.colors.backgroundDisabled,
+    backgroundColor: theme.colors.white3,
     borderRadius: theme.roundness,
     padding: 12,
     marginTop: 8

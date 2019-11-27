@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, Linking } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { Formatter } from 'common/utils'
-import { ethereumActions, plasmaActions } from 'common/actions'
+import { BlockchainRenderer } from 'common/blockchain'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
 import { OMGButton, OMGText, OMGStatusBar, OMGIcon } from 'components/widgets'
@@ -13,7 +12,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 const ExitPending = ({ theme, navigation }) => {
   const pendingTx = navigation.getParam('pendingTx')
   const token = navigation.getParam('token')
-  const tokenPrice = formatTokenPrice(token.balance, token.price)
+  const tokenPrice = BlockchainRenderer.renderTokenPrice(
+    token.balance,
+    token.price
+  )
+  const tokenBalance = BlockchainRenderer.renderTokenBalance(token.balance)
   const handleOnBackPressedAndroid = () => {
     return true
   }
@@ -39,7 +42,7 @@ const ExitPending = ({ theme, navigation }) => {
           </OMGText>
           <View style={styles.amountContainer(theme)}>
             <OMGText style={styles.tokenBalance(theme)}>
-              {formatTokenBalance(token.balance)} {token.tokenSymbol}
+              {tokenBalance} {token.tokenSymbol}
             </OMGText>
             <OMGText style={styles.tokenPrice(theme)}>{tokenPrice} USD</OMGText>
           </View>
@@ -66,24 +69,6 @@ const ExitPending = ({ theme, navigation }) => {
       </SafeAreaView>
     </AndroidBackHandler>
   )
-}
-
-const formatTokenBalance = amount => {
-  return Formatter.format(amount, {
-    commify: true,
-    maxDecimal: 3,
-    ellipsize: false
-  })
-}
-
-const formatTokenPrice = (amount, price) => {
-  const parsedAmount = parseFloat(amount)
-  const tokenPrice = parsedAmount * price
-  return Formatter.format(tokenPrice, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
-  })
 }
 
 const styles = StyleSheet.create({

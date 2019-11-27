@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { OMGBackground, OMGEmpty, OMGText } from 'components/widgets'
+import { OMGEmpty, OMGText } from 'components/widgets'
 
 const OMGAssetHeader = ({
   theme,
@@ -15,7 +15,7 @@ const OMGAssetHeader = ({
   style
 }) => {
   return (
-    <OMGBackground style={{ ...styles.container(theme), ...style }}>
+    <View style={{ ...styles.container(theme), ...style }}>
       <View style={styles.balance}>
         {loading ? (
           <OMGEmpty style={styles.loading} loading={loading} />
@@ -37,7 +37,7 @@ const OMGAssetHeader = ({
           <OMGText style={styles.subfooterText2(theme)}>Network</OMGText>
         </View>
       </View>
-    </OMGBackground>
+    </View>
   )
 }
 

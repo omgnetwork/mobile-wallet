@@ -1,8 +1,9 @@
 import React, { useCallback } from 'react'
 import { View, StyleSheet, Linking, TouchableOpacity } from 'react-native'
 import { OMGIcon, OMGText } from 'components/widgets'
-import { Formatter } from 'common/utils'
+import { BlockchainRenderer } from 'common/blockchain'
 import Config from 'react-native-config'
+import { BlockchainNetworkType } from 'common/constants'
 
 const Divider = ({ theme }) => {
   return <View style={styles.divider(theme)} />
@@ -11,7 +12,7 @@ const Divider = ({ theme }) => {
 const TransactionDetailFromTo = ({ theme, tx, style }) => {
   const handleAddressClick = useCallback(
     address => {
-      if (tx.network === 'omisego') {
+      if (tx.network === BlockchainNetworkType.TYPE_OMISEGO_NETWORK) {
         Linking.openURL(`${Config.BLOCK_EXPLORER_URL}/address/${address}`)
       } else {
         Linking.openURL(`${Config.ETHERSCAN_ADDRESS_URL}${address}`)
@@ -37,7 +38,11 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
             </OMGText>
           </TouchableOpacity>
           <OMGText style={styles.detailItemValueText(theme)}>
-            {formatTokenBalance(tx.value, tx.tokenDecimal)} {tx.tokenSymbol}
+            {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+              tx.value,
+              tx.tokenDecimal
+            )}{' '}
+            {tx.tokenSymbol}
           </OMGText>
         </View>
       </View>
@@ -57,21 +62,16 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
             </OMGText>
           </TouchableOpacity>
           <OMGText style={styles.detailItemValueText(theme)}>
-            {formatTokenBalance(tx.value, tx.tokenDecimal)} {tx.tokenSymbol}
+            {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+              tx.value,
+              tx.tokenDecimal
+            )}{' '}
+            {tx.tokenSymbol}
           </OMGText>
         </View>
       </View>
     </View>
   )
-}
-
-const formatTokenBalance = (value, tokenDecimal) => {
-  const balance = Formatter.formatUnits(value, tokenDecimal)
-  return Formatter.format(balance, {
-    commify: true,
-    maxDecimal: 3,
-    ellipsize: false
-  })
 }
 
 const styles = StyleSheet.create({

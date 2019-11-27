@@ -2,9 +2,9 @@ import React, { Fragment } from 'react'
 import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import OMGImage from '../omg-image'
-import OMGIcon from '../omg-icon'
 import OMGTextInput from '../omg-text-input'
 import OMGText from '../omg-text'
+import ScanQRIcon from './assets/scan-qr-icon.svg'
 
 const OMGAddressInput = ({ theme, style, onPress, inputRef, showError }) => {
   return (
@@ -26,7 +26,7 @@ const OMGAddressInput = ({ theme, style, onPress, inputRef, showError }) => {
         <TouchableOpacity
           style={styles.rightContainer(theme)}
           onPress={onPress}>
-          <OMGIcon name='qr' size={24} color={theme.colors.gray3} />
+          <ScanQRIcon size={24} color={theme.colors.gray3} />
         </TouchableOpacity>
       </View>
       {showError && (

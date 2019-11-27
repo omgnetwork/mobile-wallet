@@ -2,7 +2,6 @@ export default {
   primary: '#3c414d',
   primaryLight: '#5b626f',
   background: '#ffffff',
-  backgroundDisabled: '#f7f8fa',
   purple: '#7d55f6',
   blue1: '#ebf3ff',
   blue2: '#2176ff',

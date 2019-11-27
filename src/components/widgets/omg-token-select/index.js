@@ -1,10 +1,9 @@
 import React from 'react'
 import { Image, StyleSheet, View, TouchableOpacity } from 'react-native'
-import OMGBox from '../omg-box'
 import OMGText from '../omg-text'
 import OMGIcon from '../omg-icon'
 import { withTheme } from 'react-native-paper'
-import { Formatter } from 'common/utils'
+import { BlockchainRenderer } from 'common/blockchain'
 
 const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
   return (
@@ -25,10 +24,10 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
           style={styles.balance(theme)}
           ellipsizeMode='tail'
           numberOfLines={1}>
-          {formatTokenBalance(token.balance)}
+          {BlockchainRenderer.renderTokenBalance(token.balance, 3)}
         </OMGText>
         <OMGText style={styles.fiatValue(theme)}>
-          {formatTokenPrice(token.balance, token.price)} USD
+          {BlockchainRenderer.renderTokenPrice(token.balance, token.price)} USD
         </OMGText>
       </View>
       <View style={styles.sectionSelect}>
@@ -38,24 +37,6 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
       </View>
     </TouchableOpacity>
   )
-}
-
-const formatTokenBalance = amount => {
-  return Formatter.format(amount, {
-    commify: true,
-    maxDecimal: 3,
-    ellipsize: false
-  })
-}
-
-const formatTokenPrice = (amount, price) => {
-  const parsedAmount = parseFloat(amount)
-  const tokenPrice = parsedAmount * price
-  return Formatter.format(tokenPrice, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
-  })
 }
 
 const styles = StyleSheet.create({

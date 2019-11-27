@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { OMGBackground, OMGText, OMGEmpty } from 'components/widgets'
+import { OMGText, OMGEmpty } from 'components/widgets'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
@@ -24,9 +24,9 @@ const OMGAssetList = ({
         imageName: 'EmptyRootchainWallet',
         text: 'Wallet is empty.\nShare wallet to receive fund.'
       }
-    } else if (type === 'childchain' && !hasRootchainAssets) {
+    } else if (type === 'childchain' && hasRootchainAssets) {
       return {
-        imageName: 'EmptyChildchainRootchainWallet',
+        imageName: 'EmptyOnlyChildchainWallet',
         text: 'Wallet is empty.\nStart using Plasma by deposit.'
       }
     } else {
@@ -38,7 +38,7 @@ const OMGAssetList = ({
   }, [hasRootchainAssets, type])
 
   return (
-    <OMGBackground style={{ ...styles.container(theme), ...style }}>
+    <View style={{ ...styles.container(theme), ...style }}>
       <View style={styles.header(theme)}>
         <OMGText style={styles.title(theme)} weight='bold'>
           ASSETS
@@ -61,11 +61,7 @@ const OMGAssetList = ({
       </View>
       <View style={styles.assetContainer(theme)}>
         {loading ? (
-          <OMGEmpty
-            text='Empty assets'
-            loading={true}
-            {...getEmptyStatePayload()}
-          />
+          <OMGEmpty loading={true} />
         ) : (
           <FlatList
             style={styles.assetList}
@@ -84,7 +80,7 @@ const OMGAssetList = ({
           />
         )}
       </View>
-    </OMGBackground>
+    </View>
   )
 }
 

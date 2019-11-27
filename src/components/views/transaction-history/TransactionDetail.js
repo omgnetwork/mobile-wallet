@@ -8,16 +8,25 @@ import {
 } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
-import { OMGStatusBar, OMGText, OMGIcon, OMGEmpty } from 'components/widgets'
+import {
+  OMGStatusBar,
+  OMGText,
+  OMGIcon,
+  OMGEmpty,
+  OMGBlockchainLabel
+} from 'components/widgets'
 import Config from 'react-native-config'
 import { Validator } from 'common/utils'
 import { transactionService } from 'common/services'
 import TransactionDetailHash from './TransactionDetailHash'
 import TransactionDetailInfoSuccess from './TransactionDetailInfoSuccess'
 import TransactionDetailFromTo from './TransactionDetailFromTo'
+import * as BlockchainLabels from './blockchainLabels'
+import { BlockchainNetworkType, TransactionTypes } from 'common/constants'
 
 const TransactionDetail = ({ navigation, theme }) => {
   const tx = navigation.getParam('transaction')
+
   const [transaction, setTransaction] = useState(null)
 
   useEffect(() => {
@@ -66,6 +75,17 @@ const TransactionDetail = ({ navigation, theme }) => {
           hash={transaction.hash}
           style={styles.addressContainer}
           theme={theme}
+        />
+        <OMGBlockchainLabel
+          style={styles.blockchainLabel(theme)}
+          isRootchain={
+            transaction.network ===
+              BlockchainNetworkType.TYPE_ETHEREUM_NETWORK &&
+            transaction.type !== TransactionTypes.TYPE_DEPOSIT
+          }
+          actionText={BlockchainLabels.getBlockchainTextActionLabel(
+            transaction
+          )}
         />
         <TransactionDetailInfoSuccess
           tx={transaction}
@@ -116,6 +136,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  blockchainLabel: theme => ({
+    borderRadius: theme.roundness
+  }),
+  addressContainer: {
+    paddingVertical: 16
+  },
   scrollViewContainer: {
     flexDirection: 'column',
     paddingHorizontal: 16,
@@ -136,11 +162,8 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     textTransform: 'uppercase'
   }),
-  addressContainer: {
-    marginTop: 16
-  },
   infoContainer: {
-    marginTop: 8
+    marginTop: 16
   },
   fromToContainer: {
     marginTop: 16

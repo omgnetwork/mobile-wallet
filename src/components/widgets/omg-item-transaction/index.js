@@ -1,16 +1,21 @@
 import React, { useCallback } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { Formatter, Datetime } from 'common/utils'
+import { Datetime } from 'common/utils'
+import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
+import { BlockchainRenderer } from 'common/blockchain'
 import OMGText from '../omg-text'
 import OMGIcon from '../omg-icon'
 
 const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
-  const isError = tx.type === 'failed'
+  const isError = tx.type === TransactionTypes.TYPE_FAILED
   const iconName = getIconName(tx.type)
 
   const renderEthereumValue = useCallback(() => {
-    return `${formatTokenBalance(tx.value, tx.tokenDecimal)} ${tx.tokenSymbol}`
+    return `${BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+      tx.value,
+      tx.tokenDecimal
+    )} ${tx.tokenSymbol}`
   }, [tx.tokenDecimal, tx.tokenSymbol, tx.value])
 
   const renderOmiseGOValue = useCallback(() => {
@@ -40,7 +45,7 @@ const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
       </View>
       <View style={styles.rightContainer}>
         <OMGText style={styles.textAmount(theme)}>
-          {tx.network === 'ethereum'
+          {tx.network === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
             ? renderEthereumValue()
             : renderOmiseGOValue()}
         </OMGText>
@@ -57,28 +62,19 @@ const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
 
 const getIconName = type => {
   switch (type) {
-    case 'deposit':
+    case TransactionTypes.TYPE_DEPOSIT:
       return 'download'
-    case 'exit':
+    case TransactionTypes.TYPE_EXIT:
       return 'upload'
-    case 'in':
+    case TransactionTypes.TYPE_RECEIVED:
       return 'arrow-down'
-    case 'failed':
-    case 'out':
+    case TransactionTypes.TYPE_FAILED:
+    case TransactionTypes.TYPE_SENT:
       return 'arrow-up'
-    case 'unidentified':
+    case TransactionTypes.TYPE_UNIDENTIFIED:
     default:
       return 'transaction'
   }
-}
-
-const formatTokenBalance = (value, tokenDecimal) => {
-  const balance = Formatter.formatUnits(value, tokenDecimal)
-  return Formatter.format(balance, {
-    commify: true,
-    maxDecimal: 3,
-    ellipsize: false
-  })
 }
 
 const styles = StyleSheet.create({
