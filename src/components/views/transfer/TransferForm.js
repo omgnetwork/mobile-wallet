@@ -19,7 +19,7 @@ const fees = [
   {
     id: '1',
     speed: 'Fast',
-    estimateTime: 'Less than 2 minute',
+    estimateTime: 'Less than 30 seconds',
     amount: '10',
     symbol: 'Gwei',
     price: '0.047'
@@ -27,16 +27,16 @@ const fees = [
   {
     id: '2',
     speed: 'Standard',
-    estimateTime: 'Less than 5 minutes',
-    amount: '4',
+    estimateTime: 'Less than 3 minutes',
+    amount: '3',
     symbol: 'Gwei',
     price: '0.019'
   },
   {
     id: '3',
     speed: 'Safe low',
-    estimateTime: 'Less than 30 minutes',
-    amount: '1.5',
+    estimateTime: 'Less than 10 minutes',
+    amount: '1',
     symbol: 'Gwei',
     price: '0.007'
   }

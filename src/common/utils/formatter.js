@@ -20,7 +20,7 @@ export const formatGasFeeUsd = (gasUsed, gasPriceWei, usdEth) => {
   const bigNumberGasUsed = BigNumber.create(gasUsed)
   const bigNumberGasFee = bigNumberGasPriceWei.mul(bigNumberGasUsed)
   const gasFeeString = formatUnits(bigNumberGasFee, 18)
-  return format(gasFeeString * usdEth, {
+  return format(BigNumber.multiply(gasFeeString, usdEth), {
     commify: true,
     maxDecimal: 3,
     eliipsize: false

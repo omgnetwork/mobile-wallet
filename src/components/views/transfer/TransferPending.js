@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, Linking } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
@@ -11,8 +11,10 @@ import {
   OMGButton,
   OMGText,
   OMGWalletAddress,
-  OMGStatusBar
+  OMGStatusBar,
+  OMGIcon
 } from 'components/widgets'
+import { Gas } from 'common/constants'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { GoogleAnalytics } from 'common/analytics'
 
@@ -22,12 +24,21 @@ const TransferPending = ({ theme, navigation }) => {
   const fromWallet = navigation.getParam('fromWallet')
   const toWallet = navigation.getParam('toWallet')
   const tokenPrice = formatTokenPrice(token.balance, token.price)
-  const gasFee = Formatter.formatGasFee(pendingTx.gasUsed, pendingTx.gasPrice)
-  const gasFeeUsd = Formatter.formatGasFeeUsd(
-    pendingTx.gasUsed,
-    pendingTx.gasPrice,
-    token.price
-  )
+  const gasDetailAvailable = pendingTx.gasUsed && pendingTx.gasPrice
+  const gasFee = useCallback(() => {
+    return Formatter.formatGasFee(
+      pendingTx.gasUsed || Gas.MINIMUM_GAS_USED,
+      pendingTx.gasPrice
+    )
+  }, [pendingTx])
+
+  const gasFeeUsd = useCallback(() => {
+    return Formatter.formatGasFeeUsd(
+      pendingTx.gasUsed || Gas.MINIMUM_GAS_USED,
+      pendingTx.gasPrice,
+      token.price
+    )
+  }, [pendingTx, token])
 
   const handleOnBackPressedAndroid = () => {
     return true
@@ -46,7 +57,12 @@ const TransferPending = ({ theme, navigation }) => {
         />
         <View style={styles.contentContainer}>
           <View style={styles.headerContainer}>
-            <OMGText style={styles.title(theme)}>Pending Transaction</OMGText>
+            <View style={styles.icon(theme)}>
+              <OMGIcon name='pending' size={24} color={theme.colors.white} />
+            </View>
+            <OMGText style={styles.title(theme)} weight='bold'>
+              Pending Transaction
+            </OMGText>
           </View>
           <OMGBox style={styles.addressContainer}>
             <OMGText style={styles.subtitle(theme)} weight='bold'>
@@ -71,7 +87,7 @@ const TransferPending = ({ theme, navigation }) => {
               Sent
             </OMGText>
             <View style={styles.sentContentContainer(theme)}>
-              <View style={styles.sentSection}>
+              <View style={styles.sentSection1}>
                 <OMGText style={styles.sentTitle}>Amount</OMGText>
                 <View style={styles.sentDetail}>
                   <OMGText style={styles.sentDetailFirstline(theme)}>
@@ -82,27 +98,29 @@ const TransferPending = ({ theme, navigation }) => {
                   </OMGText>
                 </View>
               </View>
-              <View style={styles.sentSection}>
-                <OMGText style={styles.sentTitle}>Fee</OMGText>
+              <View style={styles.sentSection2}>
+                <OMGText style={styles.sentTitle}>
+                  {gasDetailAvailable ? '' : 'Estimated '}Fee
+                </OMGText>
                 <View style={styles.sentDetail}>
                   <OMGText style={styles.sentDetailFirstline(theme)}>
-                    {gasFee} ETH
+                    {gasFee()} ETH
                   </OMGText>
                   <OMGText style={styles.sentDetailSecondline(theme)}>
-                    {gasFeeUsd} USD
+                    {gasFeeUsd()} USD
                   </OMGText>
                 </View>
               </View>
             </View>
           </View>
+        </View>
+        <View style={styles.bottomContainer}>
           <View style={styles.totalContainer(theme)}>
             <OMGText style={styles.totalText(theme)}>Total</OMGText>
             <OMGText style={styles.totalText(theme)}>
-              {formatTotalPrice(tokenPrice, gasFeeUsd)} USD
+              {formatTotalPrice(tokenPrice, gasFeeUsd())} USD
             </OMGText>
           </View>
-        </View>
-        <View style={styles.bottomContainer}>
           <OMGButton
             style={styles.button}
             onPress={() => {
@@ -167,33 +185,36 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginTop: 16,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center'
   },
   addressContainer: {
     marginTop: 16,
     paddingLeft: 16
   },
-  totalContainer: theme => ({
-    marginTop: 16,
-    padding: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: theme.colors.gray4
-  }),
   bottomContainer: {
-    justifyContent: 'flex-end',
-    alignItems: 'center',
     marginVertical: 16,
     paddingHorizontal: 16
   },
+  totalContainer: theme => ({
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16
+  }),
   subHeaderTitle: {
     fontSize: 14
   },
   title: theme => ({
     fontSize: 18,
-    textTransform: 'uppercase',
-    color: theme.colors.gray3
+    color: theme.colors.gray3,
+    marginLeft: 16
+  }),
+  icon: theme => ({
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.yellow3
   }),
   edit: {
     marginLeft: 8
@@ -226,7 +247,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'flex-end'
   },
-  sentSection: {
+  sentSection1: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  sentSection2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -245,8 +271,12 @@ const styles = StyleSheet.create({
     marginTop: 16
   },
   trackEtherscanText: theme => ({
-    color: theme.colors.gray3
-  })
+    color: theme.colors.gray3,
+    textAlign: 'center'
+  }),
+  button: {
+    marginTop: 40
+  }
 })
 
 const mapStateToProps = (state, ownProps) => ({

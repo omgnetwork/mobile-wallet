@@ -6,16 +6,21 @@ export const sendErc20Token = (token, fee, blockchainWallet, toAddress) => {
   const asyncAction = async () => {
     const options = { token, fee, toAddress }
 
-    const tx = await ethereumService.sendErc20Token(blockchainWallet, options)
+    const {
+      hash,
+      from,
+      nonce,
+      gasPrice
+    } = await ethereumService.sendErc20Token(blockchainWallet, options)
 
     return {
-      hash: tx.hash,
-      from: tx.from,
-      nonce: tx.nonce,
+      hash: hash,
+      from: from,
+      nonce: nonce,
       value: token.balance,
       type: 'ROOTCHAIN_SEND',
       symbol: token.tokenSymbol,
-      gasPrice: tx.gasPrice.toString(),
+      gasPrice: gasPrice.toString(),
       createdAt: Datetime.now()
     }
   }
@@ -34,16 +39,20 @@ export const sendEthToken = (token, fee, blockchainWallet, toAddress) => {
       toAddress
     }
 
-    const tx = await ethereumService.sendEthToken(blockchainWallet, options)
+    const { hash, from, nonce, gasPrice } = await ethereumService.sendEthToken(
+      blockchainWallet,
+      options
+    )
 
     return {
-      hash: tx.hash,
-      from: tx.from,
-      nonce: tx.nonce,
+      hash: hash,
+      from: from,
+      nonce: nonce,
       value: token.balance,
       type: 'ROOTCHAIN_SEND',
       symbol: token.tokenSymbol,
-      gasPrice: tx.gasPrice.toString(),
+      gasUsed: null,
+      gasPrice: gasPrice.toString(),
       createdAt: Datetime.now()
     }
   }
