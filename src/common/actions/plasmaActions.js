@@ -19,20 +19,24 @@ export const fetchAssets = (provider, address) => {
 
 export const depositEth = (blockchainWallet, token) => {
   const asyncAction = async () => {
-    const transactionReceipt = await plasmaService.depositEth(
+    const {
+      transactionHash,
+      gasPrice,
+      gasUsed
+    } = await plasmaService.depositEth(
       blockchainWallet.address,
       blockchainWallet.privateKey,
       token.balance
     )
 
     return {
-      hash: transactionReceipt.transactionHash,
+      hash: transactionHash,
       from: blockchainWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
       contractAddress: token.contractAddress,
-      gasPrice: transactionReceipt.gasPrice,
-      gasUsed: transactionReceipt.gasUsed,
+      gasPrice: gasPrice,
+      gasUsed: gasUsed,
       type: 'CHILDCHAIN_DEPOSIT',
       createdAt: Datetime.now()
     }
@@ -45,20 +49,24 @@ export const depositEth = (blockchainWallet, token) => {
 
 export const depositErc20 = (blockchainWallet, token) => {
   const asyncAction = async () => {
-    const transactionReceipt = await plasmaService.depositErc20(
+    const {
+      transactionHash,
+      gasPrice,
+      gasUsed
+    } = await plasmaService.depositErc20(
       blockchainWallet.address,
       blockchainWallet.privateKey,
       token
     )
 
     return {
-      hash: transactionReceipt.transactionHash,
+      hash: transactionHash,
       from: blockchainWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
       contractAddress: token.contractAddress,
-      gasPrice: transactionReceipt.gasPrice,
-      gasUsed: transactionReceipt.gasUsed,
+      gasPrice: gasPrice,
+      gasUsed: gasUsed,
       type: 'CHILDCHAIN_DEPOSIT',
       createdAt: Datetime.now()
     }
@@ -71,7 +79,7 @@ export const depositErc20 = (blockchainWallet, token) => {
 
 export const transfer = (blockchainWallet, toAddress, token, fee) => {
   const asyncAction = async () => {
-    const transactionReceipt = await plasmaService.transfer(
+    const { txhash } = await plasmaService.transfer(
       blockchainWallet,
       toAddress,
       token,
@@ -79,7 +87,7 @@ export const transfer = (blockchainWallet, toAddress, token, fee) => {
     )
 
     return {
-      hash: transactionReceipt.txhash,
+      hash: txhash,
       from: blockchainWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
@@ -121,13 +129,13 @@ export const exit = (blockchainWallet, token, fee) => {
 
 export const processExits = (blockchainWallet, token, fee) => {
   const asyncAction = async () => {
-    const exitReceipt = await plasmaService.processExits(
+    const { transactionHash } = await plasmaService.processExits(
       blockchainWallet,
       0,
       token
     )
     return {
-      hash: exitReceipt.transactionHash,
+      hash: transactionHash,
       from: blockchainWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
