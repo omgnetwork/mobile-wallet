@@ -137,9 +137,11 @@ const styles = StyleSheet.create({
     flex: 1
   },
   blockchainLabel: theme => ({
-    marginTop: 16,
     borderRadius: theme.roundness
   }),
+  addressContainer: {
+    paddingVertical: 16
+  },
   scrollViewContainer: {
     flexDirection: 'column',
     paddingHorizontal: 16,
@@ -160,9 +162,6 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     textTransform: 'uppercase'
   }),
-  addressContainer: {
-    marginTop: 16
-  },
   infoContainer: {
     marginTop: 16
   },

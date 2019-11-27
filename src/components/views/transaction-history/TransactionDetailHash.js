@@ -25,7 +25,6 @@ const TransactionDetailHash = ({ theme, hash, style }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.gray4,
     padding: 10,
     borderRadius: theme.roundness
   }),
