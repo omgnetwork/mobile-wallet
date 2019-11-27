@@ -174,14 +174,11 @@ const styles = StyleSheet.create({
     flex: 1
   },
   headerContainer: {
-    paddingHorizontal: 16,
-    marginTop: 16,
+    padding: 16,
     flexDirection: 'row',
     alignItems: 'center'
   },
-  blockchainLabel: {
-    marginTop: 30
-  },
+  blockchainLabel: {},
   addressContainer: {
     paddingLeft: 16
   },
