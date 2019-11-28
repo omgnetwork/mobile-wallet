@@ -59,7 +59,7 @@
     "react-native-modal": "^11.3.1",
     "react-native-os": "^1.2.5",
     "react-native-paper": "^3.0.0-alpha.2",
-    "react-native-permissions": "^1.2.0",
+    "react-native-permissions": "^1.2.1",
     "react-native-push-notification": "^3.1.9",
     "react-native-qrcode-scanner": "^1.2.3",
     "react-native-qrcode-svg": "^5.1.2",
@@ -87,15 +87,10 @@
     "web3": "^1.2.2"
   },
   "devDependencies": {
-<<<<<<< HEAD
-    "@babel/core": "^7.5.5",
-    "@babel/runtime": "^7.5.5",
-    "@react-native-community/cli-platform-ios": "^2.9.0",
-=======
     "@babel/core": "^7.6.2",
     "@babel/preset-env": "^7.7.4",
     "@babel/runtime": "^7.6.2",
->>>>>>> b2ff624... Setup everything
+    "@react-native-community/cli-platform-ios": "^3.0.0",
     "@react-native-community/eslint-config": "^0.0.5",
     "babel-jest": "^24.9.0",
     "babel-plugin-module-resolver": "^3.2.0",
@@ -111,13 +106,9 @@
     "metro-react-native-babel-preset": "^0.56.0",
     "metro-react-native-babel-transformer": "^0.57.0",
     "prettier": "1.18.2",
-<<<<<<< HEAD
     "react-native-clean-project": "^3.3.0",
-    "react-test-renderer": "16.8.6",
-=======
     "react-test-renderer": "16.9.0",
     "react-transform-hmr": "^1.0.4",
->>>>>>> b2ff624... Setup everything
     "redux-devtools-extension": "^2.13.8",
     "rn-nodeify": "^10.1.0"
   },

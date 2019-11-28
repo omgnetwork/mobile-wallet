@@ -1,6 +1,6 @@
 import 'ethers/dist/shims.js'
 import { ethers } from 'ethers'
-import { Parser, ABI } from 'common/utils'
+import { Parser, ContractABI } from 'common/utils'
 import { ContractAddress, Gas } from 'common/constants/'
 import axios from 'axios'
 import Config from 'react-native-config'
@@ -30,13 +30,13 @@ export const getEthBalance = address => {
 }
 
 export const getERC20Balance = (provider, contractAddress, accountAddress) => {
-  const abi = ABI.erc20Abi()
+  const abi = ContractABI.erc20Abi()
   const contract = new ethers.Contract(contractAddress, abi, provider)
   return contract.balanceOf(accountAddress)
 }
 
 export const getTokenDetail = (provider, contractAddress) => {
-  const abi = ABI.erc20Abi()
+  const abi = ContractABI.erc20Abi()
   const contract = new ethers.Contract(contractAddress, abi, provider)
   if (contractAddress === ContractAddress.ETH_ADDRESS) {
     return [
@@ -102,7 +102,7 @@ export const sendEthToken = (wallet, options) => {
 
 export const sendErc20Token = (wallet, options) => {
   const { fee, token, toAddress } = options
-  const abi = ABI.erc20Abi()
+  const abi = ContractABI.erc20Abi()
   const contract = new ethers.Contract(token.contractAddress, abi, wallet)
 
   const numberOfTokens = Parser.parseUnits(
