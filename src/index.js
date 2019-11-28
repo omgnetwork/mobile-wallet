@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from 'react'
-// import { YellowBox } from 'react-native'
+import { YellowBox } from 'react-native'
 import { Provider } from 'react-redux'
 import Router from 'router'
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
@@ -13,7 +13,7 @@ import { colors } from 'common/styles'
 import { PersistGate } from 'redux-persist/integration/react'
 import SplashScreen from 'react-native-splash-screen'
 
-// YellowBox.ignoreWarnings(['Warning:', 'Setting', '`setBackgroundColor`'])
+YellowBox.ignoreWarnings(['Warning:', 'Setting', '`setBackgroundColor`'])
 
 const App = () => {
   useEffect(() => {
