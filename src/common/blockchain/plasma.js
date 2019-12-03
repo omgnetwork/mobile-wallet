@@ -21,6 +21,20 @@ export const getUtxos = (address, options) => {
     .then(utxos => utxos.sort((a, b) => b.utxo_pos - a.utxo_pos))
 }
 
+export const getExitableUtxos = (address, options) => {
+  const { currency, lastUtxoPos } = options || {}
+
+  return Plasma.childchain
+    .getUtxos(address)
+    .then(utxos =>
+      currency ? utxos.filter(utxo => utxo.currency === currency) : utxos
+    )
+    .then(utxos =>
+      utxos.filter(utxo => utxo.utxo_pos.toString(10) > (lastUtxoPos || 0))
+    )
+    .then(utxos => utxos.sort((a, b) => b.utxo_pos - a.utxo_pos))
+}
+
 export const createPayment = (address, tokenContractAddress, amount) => {
   return [
     {
@@ -144,21 +158,36 @@ const receiptWithGasPrice = (txReceipt, gasPrice, additionalGasUsed = 0) => {
   }
 }
 
-// Exit
-export const standardExit = async (exitData, blockchainWallet, options) => {
-  return Plasma.rootchain.startStandardExit(
-    exitData.utxo_pos,
-    exitData.txbytes,
-    exitData.proof,
-    {
+export const standardExit = (exitData, blockchainWallet, options) => {
+  return Plasma.rootchain.startStandardExit({
+    outputId: exitData.utxo_pos,
+    outputTx: exitData.txbytes,
+    inclusionProof: exitData.proof,
+    txOptions: {
       privateKey: blockchainWallet.privateKey,
       from: blockchainWallet.address,
       gas: options.gasLimit || Gas.LIMIT
     }
-  )
+  })
 }
 
-export const unlockTokenExitable = async (tokenContractAddress, options) => {
+export const isDepositUtxo = utxo => {
+  return utxo.blknum % 1000 !== 0
+}
+
+export const getStandardExitId = (utxoToExit, exitData) => {
+  return Plasma.rootchain.getStandardExitId({
+    txBytes: exitData.txbytes,
+    utxoPos: exitData.utxo_pos,
+    isDeposit: isDepositUtxo(utxoToExit)
+  })
+}
+
+export const hasToken = tokenContractAddress => {
+  return Plasma.rootchain.hasToken(tokenContractAddress)
+}
+
+export const addToken = async (tokenContractAddress, options) => {
   try {
     if (tokenContractAddress === ContractAddress.ETH_ADDRESS)
       return Promise.resolve(true)
@@ -182,12 +211,12 @@ export const createTx = (fromAddress, payments, fee, metadata) => {
     (metadata && Transaction.encodeMetadata(metadata)) ||
     Plasma.transaction.NULL_METADATA
 
-  return Plasma.childchain.createTransaction(
-    fromAddress,
+  return Plasma.childchain.createTransaction({
+    owner: fromAddress,
     payments,
     fee,
-    encodedMetadata
-  )
+    metadata: encodedMetadata
+  })
 }
 
 export const getTypedData = tx => {

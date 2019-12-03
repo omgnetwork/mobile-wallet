@@ -10,7 +10,10 @@ const web3 = new Web3(
   }
 )
 
-const rootchain = new RootChain(web3, Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS)
+const rootchain = new RootChain({
+  web3: web3,
+  plasmaContractAddress: Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
+})
 const childchain = new ChildChain({ watcherUrl: Config.CHILDCHAIN_WATCHER_URL })
 
 export const Plasma = {

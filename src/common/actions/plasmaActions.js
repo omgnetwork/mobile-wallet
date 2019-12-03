@@ -108,14 +108,18 @@ export const transfer = (blockchainWallet, toAddress, token, fee) => {
 
 export const exit = (blockchainWallet, token, fee) => {
   const asyncAction = async () => {
-    const exitReceipt = await plasmaService.exit(blockchainWallet, token, fee)
+    const { transactionHash, exitId } = await plasmaService.exit(
+      blockchainWallet,
+      token,
+      fee
+    )
 
     return {
-      hash: exitReceipt.transactionHash,
+      hash: transactionHash,
       from: blockchainWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
-      exitId: exitReceipt.exitId,
+      exitId: exitId,
       contractAddress: token.contractAddress,
       gasPrice: fee.amount,
       actionType: TransactionActionTypes.TYPE_CHILDCHAIN_EXIT,

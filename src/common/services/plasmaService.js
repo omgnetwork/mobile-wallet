@@ -1,5 +1,6 @@
 import { Formatter, Parser, Polling, Datetime, Mapper, Token } from '../utils'
 import { Plasma } from 'common/blockchain'
+import { Gas } from 'common/constants'
 import { priceService } from 'common/services'
 import Config from 'react-native-config'
 
@@ -136,6 +137,7 @@ export const transfer = (
       }
 
       const typedData = Plasma.getTypedData(sanitizedTransaction)
+
       const signatures = Plasma.signTx(
         typedData,
         fromBlockchainWallet.privateKey
@@ -200,6 +202,8 @@ export const exit = (blockchainWallet, token, fee) => {
   return new Promise(async (resolve, reject) => {
     try {
       // Prepare UTXO with exact desired amount to be transferred.
+
+      console.log('split or merge?')
       await transfer(
         blockchainWallet,
         blockchainWallet.address,
@@ -207,14 +211,22 @@ export const exit = (blockchainWallet, token, fee) => {
         fee,
         null
       )
-      await Plasma.unlockTokenExitable(token.contractAddress, {
-        gasPrice: Parser.parseUnits(fee.amount, fee.symbol),
-        gas: 500000,
-        from: blockchainWallet.address,
-        privateKey: blockchainWallet.privateKey
-      })
+
+      const hasToken = await Plasma.hasToken(token.contractAddress)
+
+      console.log('hasToken', hasToken)
+
+      if (!hasToken) {
+        console.log('Add token to the exit queue')
+        await Plasma.addToken(token.contractAddress, {
+          from: blockchainWallet.address,
+          privateKey: blockchainWallet.privateKey
+        })
+      }
 
       const desiredAmount = Parser.parseUnits(token.balance, token.tokenDecimal)
+
+      console.log('Wait for merge/split utxo...')
 
       // Wait for found matched UTXO after merge or split.
       const selectedUtxo = await subscribeExit(
@@ -223,18 +235,30 @@ export const exit = (blockchainWallet, token, fee) => {
         token
       )
 
-      const exitData = await Plasma.getExitData(selectedUtxo)
+      console.log('Found selected utxo to exit', selectedUtxo)
 
-      const startExitReceipt = await Plasma.standardExit(
+      const utxo = {
+        ...selectedUtxo,
+        amount: selectedUtxo.toString(10)
+      }
+
+      const exitData = await Plasma.getExitData(utxo)
+
+      console.log('start to exit!', exitData)
+
+      const { transactionHash } = await Plasma.standardExit(
         exitData,
         blockchainWallet,
-        {
-          gas: 1000000,
-          gasPrice: Parser.parseUnits(fee.amount, fee.symbol)
-        }
+        {}
       )
 
-      resolve({ ...startExitReceipt, exitId: exitData.utxo_pos })
+      console.log('Exit!', transactionHash)
+
+      const exitId = await Plasma.getStandardExitId(utxo, exitData)
+
+      console.log('Exit Id', exitId)
+
+      resolve({ transactionHash, exitId })
     } catch (err) {
       reject(err)
     }
@@ -245,8 +269,7 @@ export const processExits = (blockchainWallet, exitId, contractAddress) => {
   return new Promise(async (resolve, reject) => {
     try {
       const receipt = await Plasma.processExits(contractAddress, exitId, {
-        gasPrice: Parser.parseUnits('20', 'Gwei'),
-        gas: 1000000,
+        gas: Gas.LIMIT,
         from: blockchainWallet.address,
         privateKey: blockchainWallet.privateKey
       })
@@ -263,9 +286,11 @@ export const processExits = (blockchainWallet, exitId, contractAddress) => {
 export const subscribeExit = (desiredAmount, blockchainWallet, token) => {
   return Polling.poll(async () => {
     // Reload UTXOs
-    const utxos = await Plasma.getUtxos(blockchainWallet.address, {
+    const utxos = await Plasma.getExitableUtxos(blockchainWallet.address, {
       currency: token.contractAddress
     })
+
+    console.log(utxos)
 
     // Find the correct one
     const selectedUtxo = utxos.find(utxo =>
