@@ -15,7 +15,6 @@ const TransactionTracker = ({
   wallet,
   blockchainWallet,
   pendingTxs,
-  pendingExits,
   dispatchInvalidatePendingTx,
   dispatchInvalidatePendingExitTx,
   dispatchRefreshRootchain,
@@ -104,11 +103,9 @@ const TransactionTracker = ({
 
       setRootchainTxs(rootTxs)
       setChildchainTxs(childTxs)
-      setExitTxs(pendingExits)
     } else {
       setRootchainTxs([])
       setChildchainTxs([])
-      setExitTxs([])
     }
     return () => {
       if (Platform.OS === 'ios') {
@@ -118,11 +115,9 @@ const TransactionTracker = ({
   }, [
     getChildTxs,
     getRootTxs,
-    pendingExits,
     pendingTxs,
     primaryWallet,
     setChildchainTxs,
-    setExitTxs,
     setRootchainTxs
   ])
 
@@ -135,8 +130,7 @@ const mapStateToProps = (state, ownProps) => ({
   ),
   blockchainWallet: state.setting.blockchainWallet,
   provider: state.setting.provider,
-  pendingTxs: state.transaction.pendingTxs,
-  pendingExits: state.transaction.pendingExits
+  pendingTxs: state.transaction.pendingTxs
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
