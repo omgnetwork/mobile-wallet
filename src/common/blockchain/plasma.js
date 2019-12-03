@@ -1,5 +1,5 @@
 import { Plasma } from 'common/clients'
-import { ABI, Transaction, Parser, Formatter } from 'common/utils'
+import { ContractABI, Transaction } from 'common/utils'
 import { ContractAddress, Gas } from 'common/constants'
 import { TxOptions } from 'common/blockchain'
 
@@ -79,7 +79,7 @@ export const depositErc20 = async (
   const web3 = Plasma.rootchain.web3
   const erc20VaultAddress = await Plasma.rootchain.getErc20VaultAddress()
   const erc20Contract = new web3.eth.Contract(
-    ABI.erc20Abi(),
+    ContractABI.erc20Abi(),
     tokenContractAddress
   )
   const defaultGasPrice = await web3.eth.getGasPrice()

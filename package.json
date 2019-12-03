@@ -15,7 +15,7 @@
     "build-ios": "npm run ios-archive && npm run ios-export && mkdir -p artifacts && cp ios/build/Apps/PlasmaWallet.ipa artifacts/",
     "ios-archive": "xcodebuild archive -archivePath ios/PlasmaWallet/PlasmaWallet.xcarchive -workspace ios/PlasmaWallet.xcworkspace -scheme PlasmaWallet",
     "ios-export": "xcodebuild -exportArchive -archivePath ios/PlasmaWallet/PlasmaWallet.xcarchive -exportOptionsPlist ios/PlasmaWallet/ExportOptions.plist -exportPath ios/build",
-    "postinstall": "rn-nodeify --install assert,stream,events,crypto,url,http,https,vm,os,fs,path,process,net,zlib,_stream_transform,tls --hack && node ./scripts/disableRequireCycleWarning.js && npx jetify"
+    "postinstall": "rn-nodeify --install assert,stream,events,crypto,url,http,https,vm,os,fs,path,process,net,zlib,_stream_transform,tls --hack && npx jetify"
   },
   "rnpm": {
     "assets": [
@@ -44,8 +44,8 @@
     "metro-minify-terser": "^0.56.0",
     "moment": "^2.24.0",
     "path-browserify": "0.0.0",
-    "react": "16.8.6",
-    "react-native": "0.60.4",
+    "react": "16.9.0",
+    "react-native": "0.61.5",
     "react-native-background-fetch": "^2.7.1",
     "react-native-background-timer": "^2.1.1",
     "react-native-camera": "^3.1.2",
@@ -59,7 +59,7 @@
     "react-native-modal": "^11.3.1",
     "react-native-os": "^1.2.5",
     "react-native-paper": "^3.0.0-alpha.2",
-    "react-native-permissions": "^1.2.0",
+    "react-native-permissions": "^1.2.1",
     "react-native-push-notification": "^3.1.9",
     "react-native-qrcode-scanner": "^1.2.3",
     "react-native-qrcode-svg": "^5.1.2",
@@ -87,28 +87,30 @@
     "web3": "^1.2.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/runtime": "^7.5.5",
-    "@react-native-community/cli-platform-ios": "^2.9.0",
+    "@babel/core": "^7.6.2",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/runtime": "^7.6.2",
+    "@react-native-community/cli-platform-ios": "^3.0.0",
     "@react-native-community/eslint-config": "^0.0.5",
-    "babel-jest": "^24.8.0",
+    "babel-jest": "^24.9.0",
     "babel-plugin-module-resolver": "^3.2.0",
-    "eslint": "^6.1.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.0.0",
     "eslint-import-resolver-babel-module": "^5.1.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.0",
-    "jest": "^24.8.0",
+    "jest": "^24.9.0",
     "jetifier": "^1.6.4",
-    "metro-react-native-babel-preset": "^0.55.0",
+    "metro-config": "^0.57.0",
+    "metro-react-native-babel-preset": "^0.56.0",
+    "metro-react-native-babel-transformer": "^0.57.0",
     "prettier": "1.18.2",
     "react-native-clean-project": "^3.3.0",
-    "react-test-renderer": "16.8.6",
+    "react-test-renderer": "16.9.0",
+    "react-transform-hmr": "^1.0.4",
     "redux-devtools-extension": "^2.13.8",
     "rn-nodeify": "^10.1.0"
-  },
-  "jest": {
-    "preset": "react-native"
   },
   "react-native": {
     "_stream_transform": "readable-stream/transform",
@@ -145,5 +147,27 @@
     "zlib": "browserify-zlib",
     "net": "react-native-tcp",
     "tls": false
+  },
+  "jest": {
+    "modulePaths": [
+      "./src",
+      "./node_modules"
+    ],
+    "globals": {
+      "NODE_ENV": "test"
+    },
+    "verbose": true,
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(js|jsx)?$": "babel-jest",
+      "^.+\\.js$": "./node_modules/react-native/jest/preprocessor.js"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!lodash-es)",
+      "node_modules/(?!react-native|react-navigation)/"
+    ],
+    "testEnvironment": "node"
   }
 }
