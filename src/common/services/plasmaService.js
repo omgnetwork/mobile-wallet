@@ -201,17 +201,7 @@ export const depositErc20 = (address, privateKey, token) => {
 export const exit = (blockchainWallet, token, fee) => {
   return new Promise(async (resolve, reject) => {
     try {
-      // Prepare UTXO with exact desired amount to be transferred.
-
-      console.log('split or merge?')
-      await transfer(
-        blockchainWallet,
-        blockchainWallet.address,
-        token,
-        fee,
-        null
-      )
-
+      // Check if the token has been unlocked
       const hasToken = await Plasma.hasToken(token.contractAddress)
 
       console.log('hasToken', hasToken)
@@ -226,23 +216,17 @@ export const exit = (blockchainWallet, token, fee) => {
 
       const desiredAmount = Parser.parseUnits(token.balance, token.tokenDecimal)
 
-      console.log('Wait for merge/split utxo...')
-
-      // Wait for found matched UTXO after merge or split.
-      const selectedUtxo = await subscribeExit(
+      // Prepare UTXO with exact desired amount to be transferred.
+      const utxoToExit = await createUtxoWithAmount(
         desiredAmount,
         blockchainWallet,
-        token
+        token,
+        fee
       )
 
-      console.log('Found selected utxo to exit', selectedUtxo)
+      console.log('utxoToExit', utxoToExit)
 
-      const utxo = {
-        ...selectedUtxo,
-        amount: selectedUtxo.toString(10)
-      }
-
-      const exitData = await Plasma.getExitData(utxo)
+      const exitData = await Plasma.getExitData(utxoToExit)
 
       console.log('start to exit!', exitData)
 
@@ -254,7 +238,7 @@ export const exit = (blockchainWallet, token, fee) => {
 
       console.log('Exit!', transactionHash)
 
-      const exitId = await Plasma.getStandardExitId(utxo, exitData)
+      const exitId = await Plasma.getStandardExitId(utxoToExit, exitData)
 
       console.log('Exit Id', exitId)
 
@@ -282,25 +266,52 @@ export const processExits = (blockchainWallet, exitId, contractAddress) => {
   })
 }
 
-// Subscribe exit
-export const subscribeExit = (desiredAmount, blockchainWallet, token) => {
-  return Polling.poll(async () => {
-    // Reload UTXOs
-    const utxos = await Plasma.getExitableUtxos(blockchainWallet.address, {
-      currency: token.contractAddress
-    })
+const getOrCreateUtxoWithAmount = async (
+  desiredAmount,
+  blockchainWallet,
+  token,
+  fee
+) => {
+  return (
+    // Right now `getUtxos` includes exited utxos, so let's waiting for https://github.com/omisego/elixir-omg/issues/1151
+    (await getUtxoByAmount(desiredAmount, blockchainWallet, token)) ||
+    (await createUtxoWithAmount(desiredAmount, blockchainWallet, token, fee))
+  )
+}
 
-    console.log(utxos)
+export const createUtxoWithAmount = async (
+  desiredAmount,
+  blockchainWallet,
+  token,
+  fee
+) => {
+  await transfer(blockchainWallet, blockchainWallet.address, token, fee, null)
 
-    // Find the correct one
-    const selectedUtxo = utxos.find(utxo =>
-      utxo.amount.isEqualTo(desiredAmount)
-    )
+  console.log('Wait for merge/split utxo...')
 
-    if (selectedUtxo) {
+  // Wait for found matched UTXO after merge or split.
+  const selectedUtxo = await waitForExitUtxo(
+    desiredAmount,
+    blockchainWallet,
+    token
+  )
+
+  console.log('Found selected utxo to exit', selectedUtxo)
+
+  return {
+    ...selectedUtxo,
+    amount: selectedUtxo.toString(10)
+  }
+}
+
+export const waitForExitUtxo = (desiredAmount, blockchainWallet, token) => {
+  return Polling.pollUntilSuccess(async () => {
+    const utxo = getUtxoByAmount(desiredAmount, blockchainWallet, token)
+
+    if (utxo) {
       return {
         success: true,
-        data: selectedUtxo
+        data: utxo
       }
     } else {
       return {
@@ -308,4 +319,12 @@ export const subscribeExit = (desiredAmount, blockchainWallet, token) => {
       }
     }
   }, 5000)
+}
+
+const getUtxoByAmount = async (amount, blockchainWallet, token) => {
+  const utxos = await Plasma.getExitableUtxos(blockchainWallet.address, {
+    currency: token.contractAddress
+  })
+
+  return utxos.find(utxo => utxo.amount.isEqualTo(amount))
 }
