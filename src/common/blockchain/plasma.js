@@ -21,20 +21,6 @@ export const getUtxos = (address, options) => {
     .then(utxos => utxos.sort((a, b) => b.utxo_pos - a.utxo_pos))
 }
 
-export const getExitableUtxos = (address, options) => {
-  const { currency, lastUtxoPos } = options || {}
-
-  return Plasma.childchain
-    .getUtxos(address)
-    .then(utxos =>
-      currency ? utxos.filter(utxo => utxo.currency === currency) : utxos
-    )
-    .then(utxos =>
-      utxos.filter(utxo => utxo.utxo_pos.toString(10) > (lastUtxoPos || 0))
-    )
-    .then(utxos => utxos.sort((a, b) => b.utxo_pos - a.utxo_pos))
-}
-
 export const createPayment = (address, tokenContractAddress, amount) => {
   return [
     {
@@ -91,7 +77,7 @@ export const depositErc20 = async (
   options = {}
 ) => {
   const web3 = Plasma.rootchain.web3
-  const erc20VaultAddress = await Plasma.rootchain.getErc20VaultAddress()
+  const { address: erc20VaultAddress } = await Plasma.rootchain.getErc20Vault()
   const erc20Contract = new web3.eth.Contract(
     ContractABI.erc20Abi(),
     tokenContractAddress
@@ -129,10 +115,10 @@ export const depositErc20 = async (
     depositGasPrice
   )
 
-  const receipt = await Plasma.rootchain.depositToken(
-    encodedDepositTx,
-    depositOptions
-  )
+  const receipt = await Plasma.rootchain.depositToken({
+    depositTx: encodedDepositTx,
+    txOptions: depositOptions
+  })
 
   return receiptWithGasPrice(receipt, depositGasPrice, approveReceipt.gasUsed)
 }
@@ -191,10 +177,10 @@ export const addToken = async (tokenContractAddress, options) => {
   try {
     if (tokenContractAddress === ContractAddress.ETH_ADDRESS)
       return Promise.resolve(true)
-    const receipt = await Plasma.rootchain.addToken(
-      tokenContractAddress,
-      options
-    )
+    const receipt = await Plasma.rootchain.addToken({
+      token: tokenContractAddress,
+      txOptions: options
+    })
     return Promise.resolve(receipt)
   } catch (err) {
     return Promise.resolve(true)

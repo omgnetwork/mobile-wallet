@@ -296,17 +296,19 @@ export const createUtxoWithAmount = async (
     token
   )
 
+  if (!selectedUtxo) return null
+
   console.log('Found selected utxo to exit', selectedUtxo)
 
   return {
     ...selectedUtxo,
-    amount: selectedUtxo.toString(10)
+    amount: selectedUtxo.amount.toString(10)
   }
 }
 
 export const waitForExitUtxo = (desiredAmount, blockchainWallet, token) => {
   return Polling.pollUntilSuccess(async () => {
-    const utxo = getUtxoByAmount(desiredAmount, blockchainWallet, token)
+    const utxo = await getUtxoByAmount(desiredAmount, blockchainWallet, token)
 
     if (utxo) {
       return {
@@ -322,7 +324,7 @@ export const waitForExitUtxo = (desiredAmount, blockchainWallet, token) => {
 }
 
 const getUtxoByAmount = async (amount, blockchainWallet, token) => {
-  const utxos = await Plasma.getExitableUtxos(blockchainWallet.address, {
+  const utxos = await Plasma.getUtxos(blockchainWallet.address, {
     currency: token.contractAddress
   })
 
