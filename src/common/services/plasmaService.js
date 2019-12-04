@@ -204,8 +204,6 @@ export const exit = (blockchainWallet, token, fee) => {
       // Check if the token has been unlocked
       const hasToken = await Plasma.hasToken(token.contractAddress)
 
-      console.log('hasToken', hasToken)
-
       if (!hasToken) {
         console.log('Add token to the exit queue')
         await Plasma.addToken(token.contractAddress, {
@@ -224,11 +222,7 @@ export const exit = (blockchainWallet, token, fee) => {
         fee
       )
 
-      console.log('utxoToExit', utxoToExit)
-
       const exitData = await Plasma.getExitData(utxoToExit)
-
-      console.log('start to exit!', exitData)
 
       const { transactionHash } = await Plasma.standardExit(
         exitData,
@@ -236,11 +230,7 @@ export const exit = (blockchainWallet, token, fee) => {
         {}
       )
 
-      console.log('Exit!', transactionHash)
-
       const exitId = await Plasma.getStandardExitId(utxoToExit, exitData)
-
-      console.log('Exit Id', exitId)
 
       resolve({ transactionHash, exitId })
     } catch (err) {
