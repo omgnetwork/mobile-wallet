@@ -83,7 +83,6 @@ export const getTx = transactionHash => {
   return new Promise(async (resolve, reject) => {
     try {
       const transaction = await Plasma.getTx(transactionHash)
-      console.log(transaction)
       resolve({
         hash: transaction.txhash,
         ...transaction
@@ -283,8 +282,6 @@ export const createUtxoWithAmount = async (
 ) => {
   await transfer(blockchainWallet, blockchainWallet.address, token, fee, null)
 
-  console.log('Wait for merge/split utxo...')
-
   // Wait for found matched UTXO after merge or split.
   const selectedUtxo = await waitForExitUtxo(
     desiredAmount,
@@ -293,8 +290,6 @@ export const createUtxoWithAmount = async (
   )
 
   if (!selectedUtxo) return null
-
-  console.log('Found selected utxo to exit', selectedUtxo)
 
   return {
     ...selectedUtxo,
