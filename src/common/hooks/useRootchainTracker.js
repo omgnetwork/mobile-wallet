@@ -122,7 +122,7 @@ const useRootchainTracker = wallet => {
     }
   }, [pendingRootchainTxs, track])
 
-  return [notification, setPendingRootchainTxs]
+  return [notification, setNotification, setPendingRootchainTxs]
 }
 
 export default useRootchainTracker

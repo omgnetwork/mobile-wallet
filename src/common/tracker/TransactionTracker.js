@@ -23,10 +23,16 @@ const TransactionTracker = ({
   dispatchRefreshAll
 }) => {
   const primaryWallet = useRef(wallet)
-  const [rootNotification, setRootchainTxs] = useRootchainTracker(primaryWallet)
-  const [childNotification, setChildchainTxs] = useChildchainTracker(
-    primaryWallet
-  )
+  const [
+    rootNotification,
+    setRootNotification,
+    setRootchainTxs
+  ] = useRootchainTracker(primaryWallet)
+  const [
+    childNotification,
+    setChildNotification,
+    setChildchainTxs
+  ] = useChildchainTracker(primaryWallet)
 
   useEffect(() => {
     const notification = rootNotification || childNotification
@@ -48,6 +54,9 @@ const TransactionTracker = ({
 
       dispatchInvalidatePendingTx(confirmedTx)
       notificationService.sendNotification(notification)
+
+      setRootNotification(null)
+      setChildNotification(null)
 
       switch (notification.type) {
         case 'childchain':
@@ -71,7 +80,9 @@ const TransactionTracker = ({
     dispatchRefreshChildchain,
     dispatchRefreshAll,
     pendingTxs,
-    dispatchAddStartedExitTx
+    dispatchAddStartedExitTx,
+    setRootNotification,
+    setChildNotification
   ])
 
   const filterTxs = useCallback(filterFunc => pendingTxs.filter(filterFunc), [
