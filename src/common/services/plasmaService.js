@@ -205,7 +205,6 @@ export const exit = (blockchainWallet, token, fee) => {
       const hasToken = await Plasma.hasToken(token.contractAddress)
 
       if (!hasToken) {
-        console.log('Add token to the exit queue')
         await Plasma.addToken(token.contractAddress, {
           from: blockchainWallet.address,
           privateKey: blockchainWallet.privateKey
