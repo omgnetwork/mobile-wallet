@@ -48,11 +48,9 @@ export const walletsReducer = (state = [], action) => {
           const childchainAssets = wallet.childchainAssets || []
           return {
             ...wallet,
-            childchainAssets:
-              wallet.plasmaFrameworkContractAddress ===
-              Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
-                ? mergeAssets(childchainAssets, action.data.childchainAssets)
-                : action.data.childchainAssets,
+            childchainAssets: fromSamePlasmaContract(wallet)
+              ? mergeAssets(childchainAssets, action.data.childchainAssets)
+              : action.data.childchainAssets,
             updatedAt: action.data.updatedAt,
             shouldRefreshChildchain: false,
             lastUtxoPos: action.data.lastUtxoPos,
@@ -138,4 +136,11 @@ const mergeAssets = (oldAssets, newAssets) => {
     )
     return newAsset || oldAsset
   })
+}
+
+const fromSamePlasmaContract = wallet => {
+  return (
+    wallet.plasmaFrameworkContractAddress ===
+    Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
+  )
 }
