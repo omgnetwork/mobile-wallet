@@ -34,10 +34,11 @@ const useProgressiveFeedback = (
   const formatFeedbackTx = useCallback(
     transaction => {
       if (!transaction) return emptyFeedback
-      const { actionType, hash } = transaction.result
+      const { actionType, hash, exitId } = transaction.result
+
       if (transaction.pending) {
         return {
-          title: 'Pending transaction...',
+          title: exitId ? 'Pending start exit...' : 'Pending transaction...',
           actionType: actionType,
           hash: hash,
           pending: true,
@@ -47,7 +48,9 @@ const useProgressiveFeedback = (
         }
       } else {
         return {
-          title: 'Successfully transferred!',
+          title: exitId
+            ? 'Successfully started exit'
+            : 'Successfully transferred!',
           actionType: actionType,
           hash: hash,
           pending: false,
