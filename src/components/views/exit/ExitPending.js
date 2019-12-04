@@ -6,6 +6,7 @@ import { withTheme } from 'react-native-paper'
 import { BlockchainRenderer } from 'common/blockchain'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
+import { Datetime } from 'common/utils'
 import {
   OMGButton,
   OMGText,
@@ -27,6 +28,8 @@ const ExitPending = ({ theme, navigation }) => {
   const handleOnBackPressedAndroid = () => {
     return true
   }
+
+  const processedAt = Datetime.add(Datetime.fromNow(), Config.EXIT_PERIOD * 2)
 
   return (
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
@@ -58,7 +61,10 @@ const ExitPending = ({ theme, navigation }) => {
             </OMGText>
             <OMGText style={styles.tokenPrice(theme)}>{tokenPrice} USD</OMGText>
           </View>
-          <OMGExitComplete style={styles.exitCompleteLabel} />
+          <OMGExitComplete
+            style={styles.exitCompleteLabel}
+            processedAt={processedAt}
+          />
         </View>
 
         <View style={styles.bottomContainer}>
