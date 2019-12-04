@@ -2,6 +2,7 @@ export const transactionReducer = (
   state = {
     pendingTxs: [],
     transactions: [],
+    startedExitTxs: [],
     feedbackCompleteTx: null
   },
   action
@@ -12,7 +13,7 @@ export const transactionReducer = (
     case 'CHILDCHAIN/SEND_TOKEN/SUCCESS':
     case 'CHILDCHAIN/DEPOSIT_ETH_TOKEN/SUCCESS':
     case 'CHILDCHAIN/DEPOSIT_ERC20_TOKEN/SUCCESS':
-      // case 'CHILDCHAIN/EXIT/SUCCESS':
+    case 'CHILDCHAIN/EXIT/SUCCESS':
       return {
         ...state,
         pendingTxs: [...state.pendingTxs, action.data],
@@ -31,7 +32,13 @@ export const transactionReducer = (
       return {
         transactions: [],
         pendingTxs: [],
+        startedExitTxs: [],
         feedbackCompleteTx: null
+      }
+    case 'TRANSACTION/ADD_STARTED_EXIT_TX/OK':
+      return {
+        ...state,
+        startedExitTxs: [...state.startedExitTxs, action.data.tx]
       }
     case 'TRANSACTION/INVALIDATE_FEEDBACK_COMPLETE_TX/OK':
       return {

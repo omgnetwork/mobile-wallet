@@ -7,6 +7,7 @@ import {
   useChildchainTracker,
   useExitTracker
 } from 'common/hooks'
+import { Transaction, Datetime } from 'common/utils'
 import { walletActions, transactionActions } from 'common/actions'
 import { notificationService } from 'common/services'
 import BackgroundTimer from 'react-native-background-timer'
@@ -15,8 +16,8 @@ const TransactionTracker = ({
   wallet,
   blockchainWallet,
   pendingTxs,
+  dispatchAddStartedExitTx,
   dispatchInvalidatePendingTx,
-  dispatchInvalidatePendingExitTx,
   dispatchRefreshRootchain,
   dispatchRefreshChildchain,
   dispatchRefreshAll
@@ -26,21 +27,26 @@ const TransactionTracker = ({
   const [childNotification, setChildchainTxs] = useChildchainTracker(
     primaryWallet
   )
-  const [exitNotification, setExitTxs] = useExitTracker(blockchainWallet)
 
   useEffect(() => {
-    const notification =
-      rootNotification || childNotification || exitNotification
+    const notification = rootNotification || childNotification
     if (notification) {
-      if (!pendingTxs.find(tx => tx.hash === notification.confirmedTx.hash)) {
+      const confirmedTx = pendingTxs.find(
+        tx => tx.hash === notification.confirmedTx.hash
+      )
+
+      if (!confirmedTx) {
         return
       }
 
-      if (notification.type === 'exit') {
-        dispatchInvalidatePendingExitTx(notification.confirmedTx)
-      } else {
-        dispatchInvalidatePendingTx(notification.confirmedTx)
+      if (Transaction.isExitTx(confirmedTx)) {
+        dispatchAddStartedExitTx({
+          ...confirmedTx,
+          startedExitAt: Datetime.now()
+        })
       }
+
+      dispatchInvalidatePendingTx(confirmedTx)
       notificationService.sendNotification(notification)
 
       switch (notification.type) {
@@ -65,8 +71,7 @@ const TransactionTracker = ({
     dispatchRefreshChildchain,
     dispatchRefreshAll,
     pendingTxs,
-    dispatchInvalidatePendingExitTx,
-    exitNotification
+    dispatchAddStartedExitTx
   ])
 
   const filterTxs = useCallback(filterFunc => pendingTxs.filter(filterFunc), [
@@ -134,10 +139,10 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatchAddStartedExitTx: tx =>
+    transactionActions.addStartedExitTx(dispatch, tx),
   dispatchInvalidatePendingTx: resolvedPendingTx =>
     transactionActions.invalidatePendingTx(dispatch, resolvedPendingTx),
-  dispatchInvalidatePendingExitTx: resolvedPendingTx =>
-    transactionActions.invalidatePendingExitTx(dispatch, resolvedPendingTx),
   dispatchRefreshRootchain: address =>
     walletActions.refreshRootchain(dispatch, address, true),
   dispatchRefreshChildchain: address =>

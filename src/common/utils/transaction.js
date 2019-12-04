@@ -20,3 +20,7 @@ export const isReceiveTx = (walletAddress, toAddress) => {
   if (!toAddress) return false
   return walletAddress.toLowerCase() === toAddress.toLowerCase()
 }
+
+export const isExitTx = tx => {
+  return tx.exitId ? true : false
+}

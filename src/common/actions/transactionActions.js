@@ -26,6 +26,15 @@ export const invalidateFeedbackCompleteTx = dispatch => {
   })
 }
 
+export const addStartedExitTx = (dispatch, tx) => {
+  return createAction(dispatch, {
+    type: 'TRANSACTION/ADD_STARTED_EXIT_TX',
+    operation: () => ({
+      tx
+    })
+  })
+}
+
 export const fetchTransactionHistory = (address, provider, options) => {
   const asyncAction = async () => {
     const transactions = await transactionService.getTxs(
