@@ -213,13 +213,21 @@ export const exit = (blockchainWallet, token, fee) => {
 
       const desiredAmount = Parser.parseUnits(token.balance, token.tokenDecimal)
 
-      // Prepare UTXO with exact desired amount to be transferred.
+      // For now `getUtxos` includes exited utxos, so after this issue https://github.com/omisego/elixir-omg/issues/1151 has been solved,
+      // we can then uncomment the function below to reduce unnecessary api call.
       const utxoToExit = await createUtxoWithAmount(
         desiredAmount,
         blockchainWallet,
         token,
         fee
       )
+
+      // const utxoToExit = await createUtxoWithAmount(
+      //   desiredAmount,
+      //   blockchainWallet,
+      //   token,
+      //   fee
+      // )
 
       const exitData = await Plasma.getExitData(utxoToExit)
 
@@ -262,7 +270,6 @@ const getOrCreateUtxoWithAmount = async (
   fee
 ) => {
   return (
-    // Right now `getUtxos` includes exited utxos, so let's waiting for https://github.com/omisego/elixir-omg/issues/1151
     (await getUtxoByAmount(desiredAmount, blockchainWallet, token)) ||
     (await createUtxoWithAmount(desiredAmount, blockchainWallet, token, fee))
   )
