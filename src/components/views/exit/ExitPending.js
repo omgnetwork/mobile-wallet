@@ -6,7 +6,14 @@ import { withTheme } from 'react-native-paper'
 import { BlockchainRenderer } from 'common/blockchain'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
-import { OMGButton, OMGText, OMGStatusBar, OMGIcon } from 'components/widgets'
+import {
+  OMGButton,
+  OMGText,
+  OMGBlockchainLabel,
+  OMGStatusBar,
+  OMGIcon,
+  OMGExitComplete
+} from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const ExitPending = ({ theme, navigation }) => {
@@ -28,15 +35,20 @@ const ExitPending = ({ theme, navigation }) => {
           barStyle='dark-content'
           backgroundColor={theme.colors.white}
         />
-        <View style={styles.contentContainer}>
+        <View style={styles.headerContainer}>
           <View style={styles.iconPending(theme)}>
             <OMGIcon name='pending' size={24} style={styles.icon(theme)} />
           </View>
-          <View style={styles.headerContainer}>
-            <OMGText style={styles.title(theme)} weight='bold'>
-              Pending Exit Transaction
-            </OMGText>
-          </View>
+          <OMGText style={styles.title(theme)} weight='bold'>
+            Pending Transaction
+          </OMGText>
+        </View>
+        <OMGBlockchainLabel
+          actionText='Sent to'
+          isRootchain={true}
+          style={styles.blockchainLabel}
+        />
+        <View style={styles.contentContainer}>
           <OMGText weight='bold' style={styles.amountText}>
             Amount
           </OMGText>
@@ -46,7 +58,9 @@ const ExitPending = ({ theme, navigation }) => {
             </OMGText>
             <OMGText style={styles.tokenPrice(theme)}>{tokenPrice} USD</OMGText>
           </View>
+          <OMGExitComplete style={styles.exitCompleteLabel} />
         </View>
+
         <View style={styles.bottomContainer}>
           <OMGButton
             style={styles.button(theme)}
@@ -79,17 +93,20 @@ const styles = StyleSheet.create({
   }),
   contentContainer: {
     flex: 1,
-    marginTop: 16,
-    padding: 16
+    paddingHorizontal: 16
   },
   iconPending: theme => ({
     width: 36,
     height: 36,
+    marginLeft: 16,
     borderRadius: 18,
     backgroundColor: theme.colors.yellow3,
     justifyContent: 'center',
     alignItems: 'center'
   }),
+  blockchainLabel: {
+    marginTop: 20
+  },
   icon: theme => ({
     color: theme.colors.white
   }),
@@ -104,7 +121,7 @@ const styles = StyleSheet.create({
     borderRadius: theme.roundness
   }),
   amountText: {
-    marginTop: 32
+    marginTop: 20
   },
   tokenBalance: theme => ({
     color: theme.colors.primary
@@ -113,7 +130,9 @@ const styles = StyleSheet.create({
     color: theme.colors.gray2
   }),
   headerContainer: {
-    marginTop: 32
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 28
   },
   addressContainer: {
     marginTop: 16,
@@ -127,8 +146,12 @@ const styles = StyleSheet.create({
   },
   title: theme => ({
     fontSize: 18,
+    marginLeft: 16,
     color: theme.colors.gray3
   }),
+  exitCompleteLabel: {
+    marginTop: 16
+  },
   button: theme => ({
     backgroundColor: theme.colors.white,
     borderColor: theme.colors.gray3,

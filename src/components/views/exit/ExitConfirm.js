@@ -6,7 +6,13 @@ import { withNavigation, SafeAreaView } from 'react-navigation'
 import { BlockchainRenderer } from 'common/blockchain'
 import { plasmaActions } from 'common/actions'
 import { ActionAlert } from 'common/constants'
-import { OMGText, OMGIcon, OMGButton, OMGExitWarning } from 'components/widgets'
+import {
+  OMGText,
+  OMGIcon,
+  OMGButton,
+  OMGExitWarning,
+  OMGBlockchainLabel
+} from 'components/widgets'
 
 const exitFee = {
   id: 3,
@@ -78,6 +84,11 @@ const ExitConfirm = ({
           />
           <OMGText style={styles.edit}>Edit</OMGText>
         </View>
+        <OMGBlockchainLabel
+          actionText='Sending to'
+          isRootchain={true}
+          style={styles.blockchainLabel}
+        />
         <View style={styles.amountContainer(theme)}>
           <OMGText style={styles.tokenBalance(theme)}>{tokenBalance}</OMGText>
           <View style={styles.balanceContainer}>
@@ -115,6 +126,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
+  balanceContainer: {},
   amountContainer: theme => ({
     marginTop: 16,
     padding: 20,
@@ -132,13 +144,15 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   edit: {
-    marginLeft: 8
+    marginLeft: 3,
+    opacity: 0.7
   },
   tokenBalance: theme => ({
     fontSize: 18,
     color: theme.colors.gray3
   }),
   tokenSymbol: theme => ({
+    textAlign: 'right',
     fontSize: 18,
     color: theme.colors.gray3
   }),
@@ -148,7 +162,10 @@ const styles = StyleSheet.create({
   subtitle: theme => ({
     marginTop: 8,
     color: theme.colors.gray3
-  })
+  }),
+  blockchainLabel: {
+    marginTop: 20
+  }
 })
 
 const mapStateToProps = (state, ownProps) => ({
