@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import Config from 'react-native-config'
 import { TransactionActionTypes } from 'common/constants'
+import { Transaction } from 'common/utils'
 
 const emptyFeedback = {
   title: null,
@@ -34,11 +35,13 @@ const useProgressiveFeedback = (
   const formatFeedbackTx = useCallback(
     transaction => {
       if (!transaction) return emptyFeedback
-      const { actionType, hash, exitId } = transaction.result
+      const { actionType, hash } = transaction.result
 
       if (transaction.pending) {
         return {
-          title: exitId ? 'Pending start exit...' : 'Pending transaction...',
+          title: Transaction.isExitTx(transaction.result)
+            ? 'Pending start exit...'
+            : 'Pending transaction...',
           actionType: actionType,
           hash: hash,
           pending: true,
@@ -48,7 +51,7 @@ const useProgressiveFeedback = (
         }
       } else {
         return {
-          title: exitId
+          title: Transaction.isExitTx(transaction.result)
             ? 'Successfully started exit'
             : 'Successfully transferred!',
           actionType: actionType,

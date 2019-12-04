@@ -38,7 +38,7 @@ export const transactionReducer = (
     case 'TRANSACTION/ADD_STARTED_EXIT_TX/OK':
       return {
         ...state,
-        startedExitTxs: [...state.startedExitTxs, action.data.tx]
+        startedExitTxs: [...state.startedExitTxs, action.data.exitTx]
       }
     case 'TRANSACTION/INVALIDATE_FEEDBACK_COMPLETE_TX/OK':
       return {

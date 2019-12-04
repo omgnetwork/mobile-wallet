@@ -26,11 +26,11 @@ export const invalidateFeedbackCompleteTx = dispatch => {
   })
 }
 
-export const addStartedExitTx = (dispatch, tx) => {
+export const addStartedExitTx = (dispatch, exitTx) => {
   return createAction(dispatch, {
     type: 'TRANSACTION/ADD_STARTED_EXIT_TX',
     operation: () => ({
-      tx
+      exitTx
     })
   })
 }
