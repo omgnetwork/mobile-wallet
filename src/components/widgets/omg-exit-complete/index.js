@@ -12,7 +12,8 @@ const OMGExitComplete = ({ theme, style, processedAt }) => {
       <OMGText style={styles.text(theme)}>
         Exit will be approximately completed on
         <OMGText weight='bold'>
-          ` {Datetime.format(processedAt, datetimeFormatToken)}. `
+          {' '}
+          {Datetime.format(processedAt, datetimeFormatToken)}.{' '}
         </OMGText>
         You can track the transaction status in the
         <OMGText weight='bold'> History </OMGText>

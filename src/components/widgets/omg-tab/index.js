@@ -1,5 +1,8 @@
 import React from 'react'
-import { View, Animated, TouchableOpacity, StyleSheet } from 'react-native'
+import Animated from 'react-native-reanimated'
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { Reanimated } from 'common/utils'
+const { color } = Animated
 
 const Tab = ({ focusAnim, title, onPress }) => {
   return (
@@ -17,7 +20,7 @@ const OMGTab = props => {
   return (
     <View style={styles.omgTab}>
       {navigationState.routes.map((route, index) => {
-        const focusAnim = position.interpolate({
+        const focusAnim = Animated.interpolate(position, {
           inputRange: [index - 1, index, index + 1],
           outputRange: [0, 1, 0]
         })
@@ -52,18 +55,20 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8,
     marginLeft: title === 'Send' ? 16 : 0,
     marginRight: title === 'Receive' ? 16 : 0,
-    backgroundColor: focusAnim.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['transparent', '#04070d']
-    })
+    backgroundColor: Reanimated.interpolateColors(
+      focusAnim,
+      [0, 1],
+      ['#FFFFFF', '#04070D']
+    )
   }),
   tabText: focusAnim => ({
     textAlign: 'center',
     textTransform: 'uppercase',
-    color: focusAnim.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['#3c414d', '#ffffff']
-    })
+    color: Reanimated.interpolateColors(
+      focusAnim,
+      [0, 1],
+      ['#3C414D', '#FFFFFF']
+    )
   }),
   tabBottomLine: {
     backgroundColor: '#04070d',

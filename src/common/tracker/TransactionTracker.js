@@ -16,6 +16,7 @@ const TransactionTracker = ({
   wallet,
   blockchainWallet,
   pendingTxs,
+  startedExitTxs,
   dispatchAddStartedExitTx,
   dispatchInvalidatePendingTx,
   dispatchRefreshRootchain,
@@ -33,6 +34,7 @@ const TransactionTracker = ({
     setChildNotification,
     setChildchainTxs
   ] = useChildchainTracker(primaryWallet)
+  const [exitNotification, setStartedExitTxs] = useExitTracker(blockchainWallet)
 
   useEffect(() => {
     const notification = rootNotification || childNotification
@@ -119,9 +121,11 @@ const TransactionTracker = ({
 
       setRootchainTxs(rootTxs)
       setChildchainTxs(childTxs)
+      setStartedExitTxs(startedExitTxs)
     } else {
       setRootchainTxs([])
       setChildchainTxs([])
+      setStartedExitTxs([])
     }
     return () => {
       if (Platform.OS === 'ios') {
@@ -146,7 +150,8 @@ const mapStateToProps = (state, ownProps) => ({
   ),
   blockchainWallet: state.setting.blockchainWallet,
   provider: state.setting.provider,
-  pendingTxs: state.transaction.pendingTxs
+  pendingTxs: state.transaction.pendingTxs,
+  startedExitTxs: state.transaction.startedExitTxs
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

@@ -1,25 +1,20 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { plasmaService } from 'common/services'
-import { Datetime } from 'common/utils'
+import { Datetime, Notification } from 'common/utils'
 import Config from 'react-native-config'
 import BackgroundTimer from 'react-native-background-timer'
 
 const useExitTracker = blockchainWallet => {
   // const INTERVAL_PERIOD = Config.EXIT_PERIOD / 2 + 5000
-  const INTERVAL_PERIOD = 20000
-  const [pendingExitTxs, setPendingExitTxs] = useState([])
-  const watchedExitTxs = useRef([])
+  const INTERVAL_PERIOD = 10000
+  const [startedExitTxs, setStartedExitTxs] = useState([])
   const [notification, setNotification] = useState(null)
 
-  useEffect(() => {
-    watchedExitTxs.current = pendingExitTxs
-  }, [pendingExitTxs])
-
   const getExitReadyTxs = () => {
-    return watchedExitTxs.current.filter(tx => {
+    return startedExitTxs.filter(tx => {
       const currentDatetime = Datetime.fromNow()
-      const createdAt = Datetime.fromString(tx.createdAt)
-      const exitableAt = Datetime.add(createdAt, Config.EXIT_PERIOD)
+      const startedExitAt = Datetime.fromString(tx.startedExitAt)
+      const exitableAt = Datetime.add(startedExitAt, Config.EXIT_PERIOD * 2)
       console.log('current datetime', currentDatetime.format())
       console.log('exitable At', exitableAt.format())
       console.log('exitable', currentDatetime.isSameOrAfter(exitableAt))
@@ -73,21 +68,23 @@ const useExitTracker = blockchainWallet => {
 
   useEffect(() => {
     let intervalId
-    if (pendingExitTxs.length) {
+    if (startedExitTxs.length) {
+      console.log('start tracking startedExitTxs')
       intervalId = BackgroundTimer.setInterval(() => {
-        console.log('track')
-        track()
+        console.log('track startedExitTxs')
+        // track()
       }, INTERVAL_PERIOD)
     }
 
     return () => {
       if (intervalId) {
+        console.log('stop tracking startedExitTxs')
         BackgroundTimer.clearInterval(intervalId)
       }
     }
-  }, [INTERVAL_PERIOD, pendingExitTxs, track])
+  }, [INTERVAL_PERIOD, startedExitTxs, track])
 
-  return [notification, setPendingExitTxs]
+  return [notification, setStartedExitTxs]
 }
 
 export default useExitTracker
