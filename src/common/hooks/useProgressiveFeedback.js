@@ -39,7 +39,7 @@ const useProgressiveFeedback = (
 
       if (transaction.pending) {
         return {
-          title: Transaction.isExitTx(transaction.result)
+          title: Transaction.isUnconfirmStartedExitTx(transaction.result)
             ? 'Pending start exit...'
             : 'Pending transaction...',
           actionType: actionType,
@@ -51,7 +51,7 @@ const useProgressiveFeedback = (
         }
       } else {
         return {
-          title: Transaction.isExitTx(transaction.result)
+          title: Transaction.isUnconfirmStartedExitTx(transaction.result)
             ? 'Successfully started exit'
             : 'Successfully transferred!',
           actionType: actionType,

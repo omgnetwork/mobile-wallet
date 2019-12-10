@@ -6,6 +6,7 @@ import * as OnboardingContent from './onboardingContent'
 import * as TransactionActionTypes from './transactionActionTypes'
 import * as TransactionTypes from './transactionTypes'
 import * as Gas from './gas'
+import * as NotificationMessages from './notificationMessages'
 
 export {
   Alert,
@@ -13,7 +14,8 @@ export {
   BlockchainNetworkType,
   ContractAddress,
   Gas,
+  OnboardingContent,
+  NotificationMessages,
   TransactionTypes,
-  TransactionActionTypes,
-  OnboardingContent
+  TransactionActionTypes
 }

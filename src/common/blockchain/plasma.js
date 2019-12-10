@@ -60,11 +60,13 @@ export const depositEth = async (
     depositGasPrice
   )
 
-  const receipt = await Plasma.rootchain.depositEth(
-    encodedDepositTx,
-    weiAmount,
-    depositOptions
-  )
+  console.log('before deposit..')
+
+  const receipt = await Plasma.rootchain.depositEth({
+    depositTx: encodedDepositTx,
+    amount: weiAmount,
+    txOptions: depositOptions
+  })
 
   return receiptWithGasPrice(receipt, depositGasPrice)
 }
@@ -157,6 +159,21 @@ export const standardExit = (exitData, blockchainWallet, options) => {
   })
 }
 
+export const waitForRootchainTransaction = ({
+  transactionHash,
+  intervalMs,
+  confirmationThreshold,
+  onCountdown = remaining => {}
+}) => {
+  return Plasma.utils.waitForRootchainTransaction({
+    web3: Plasma.rootchain.web3,
+    transactionHash,
+    checkIntervalMs: intervalMs,
+    blocksToWait: confirmationThreshold,
+    onCountdown: onCountdown
+  })
+}
+
 export const isDepositUtxo = utxo => {
   return utxo.blknum % 1000 !== 0
 }
@@ -187,8 +204,13 @@ export const addToken = async (tokenContractAddress, options) => {
   }
 }
 
-export const processExits = (contractAddress, exitId, options) => {
-  return Plasma.rootchain.processExits(contractAddress, exitId || 0, 1, options)
+export const processExits = (contractAddress, exitId, txOptions) => {
+  return Plasma.rootchain.processExits({
+    token: contractAddress,
+    exitId: exitId || 0,
+    maxExitsToProcess: 1,
+    txOptions
+  })
 }
 
 // Transaction management

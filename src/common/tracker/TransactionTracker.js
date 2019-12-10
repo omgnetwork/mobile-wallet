@@ -18,6 +18,7 @@ const TransactionTracker = ({
   pendingTxs,
   startedExitTxs,
   dispatchAddStartedExitTx,
+  dispatchUpdateStartedExitTxStatus,
   dispatchInvalidatePendingTx,
   dispatchRefreshRootchain,
   dispatchRefreshChildchain,
@@ -34,31 +35,44 @@ const TransactionTracker = ({
     setChildNotification,
     setChildchainTxs
   ] = useChildchainTracker(primaryWallet)
-  const [exitNotification, setStartedExitTxs] = useExitTracker(blockchainWallet)
+  const [
+    exitNotification,
+    setExitNotification,
+    setStartedExitTxs
+  ] = useExitTracker(blockchainWallet)
 
   useEffect(() => {
-    const notification = rootNotification || childNotification
+    const notification =
+      rootNotification || childNotification || exitNotification
     if (notification) {
-      const confirmedTx = pendingTxs.find(
-        tx => tx.hash === notification.confirmedTx.hash
-      )
+      const confirmedTx =
+        pendingTxs.find(tx => tx.hash === notification.confirmedTxs[0].hash) ||
+        startedExitTxs.find(tx => tx.hash === notification.confirmedTxs[0].hash)
 
       if (!confirmedTx) {
         return
       }
 
-      if (Transaction.isExitTx(confirmedTx)) {
+      if (Transaction.isUnconfirmStartedExitTx(confirmedTx)) {
         dispatchAddStartedExitTx({
           ...confirmedTx,
           startedExitAt: Datetime.now()
         })
       }
 
-      dispatchInvalidatePendingTx(confirmedTx)
+      notification.confirmedTxs.forEach(tx => {
+        if (Transaction.isReadyToProcessExitTx(tx)) {
+          dispatchUpdateStartedExitTxStatus(tx)
+        } else {
+          dispatchInvalidatePendingTx(tx)
+        }
+      })
+
       notificationService.sendNotification(notification)
 
       setRootNotification(null)
       setChildNotification(null)
+      setExitNotification(null)
 
       switch (notification.type) {
         case 'childchain':
@@ -84,7 +98,11 @@ const TransactionTracker = ({
     pendingTxs,
     dispatchAddStartedExitTx,
     setRootNotification,
-    setChildNotification
+    setChildNotification,
+    exitNotification,
+    setExitNotification,
+    dispatchUpdateStartedExitTxStatus,
+    startedExitTxs
   ])
 
   const filterTxs = useCallback(filterFunc => pendingTxs.filter(filterFunc), [
@@ -121,11 +139,19 @@ const TransactionTracker = ({
 
       setRootchainTxs(rootTxs)
       setChildchainTxs(childTxs)
-      setStartedExitTxs(startedExitTxs)
+      if (Platform.OS === 'ios') {
+        const confirmedStartedExitTxs = startedExitTxs.filter(
+          Transaction.isConfirmedStartedExitTx
+        )
+        console.log(confirmedStartedExitTxs)
+        setStartedExitTxs(confirmedStartedExitTxs)
+      }
     } else {
       setRootchainTxs([])
       setChildchainTxs([])
-      setStartedExitTxs([])
+      if (Platform.OS === 'ios') {
+        setStartedExitTxs([])
+      }
     }
     return () => {
       if (Platform.OS === 'ios') {
@@ -138,7 +164,9 @@ const TransactionTracker = ({
     pendingTxs,
     primaryWallet,
     setChildchainTxs,
-    setRootchainTxs
+    setRootchainTxs,
+    setStartedExitTxs,
+    startedExitTxs
   ])
 
   return null
@@ -157,6 +185,8 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchAddStartedExitTx: tx =>
     transactionActions.addStartedExitTx(dispatch, tx),
+  dispatchUpdateStartedExitTxStatus: tx =>
+    transactionActions.updateStartedExitTxStatus(dispatch, tx.hash, tx.status),
   dispatchInvalidatePendingTx: resolvedPendingTx =>
     transactionActions.invalidatePendingTx(dispatch, resolvedPendingTx),
   dispatchRefreshRootchain: address =>

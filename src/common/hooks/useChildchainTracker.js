@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { plasmaService } from 'common/services'
+import { NotificationMessages } from 'common/constants'
 import BackgroundTimer from 'react-native-background-timer'
 
 const useChildchainTracker = wallet => {
@@ -30,10 +31,13 @@ const useChildchainTracker = wallet => {
   const buildNotification = useCallback(
     confirmedTx => {
       return {
+        ...NotificationMessages(
+          wallet.current.name,
+          confirmedTx.value,
+          confirmedTx.symbol
+        ),
         type: 'childchain',
-        title: `${wallet.current.name} sent on OmiseGO network`,
-        message: `${confirmedTx.value} ${confirmedTx.symbol}`,
-        confirmedTx
+        confirmedTxs: [confirmedTx]
       }
     },
     [wallet]

@@ -36,9 +36,25 @@ export const transactionReducer = (
         feedbackCompleteTx: null
       }
     case 'TRANSACTION/ADD_STARTED_EXIT_TX/OK':
+      const startExitTxsSet = new Set(state.startExitTxs)
+      startExitTxsSet.add({ ...action.data.exitTx, status: 'started' })
       return {
         ...state,
-        startedExitTxs: [...state.startedExitTxs, action.data.exitTx]
+        startedExitTxs: Array.from(startExitTxsSet)
+      }
+    case 'TRANSACTION/UPDATE_STARTED_EXIT_TX/OK':
+      return {
+        ...state,
+        startedExitTxs: state.startedExitTxs.map(tx => {
+          if (tx.hash === action.data.hash) {
+            return {
+              ...tx,
+              status: action.data.status
+            }
+          } else {
+            return tx
+          }
+        })
       }
     case 'TRANSACTION/INVALIDATE_FEEDBACK_COMPLETE_TX/OK':
       return {

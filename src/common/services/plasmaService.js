@@ -221,6 +221,8 @@ export const exit = (blockchainWallet, token, fee) => {
         fee
       )
 
+      console.log(utxoToExit)
+
       // const utxoToExit = await createUtxoWithAmount(
       //   desiredAmount,
       //   blockchainWallet,
@@ -248,13 +250,27 @@ export const exit = (blockchainWallet, token, fee) => {
 export const processExits = (blockchainWallet, exitId, contractAddress) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const receipt = await Plasma.processExits(contractAddress, exitId, {
-        gas: Gas.LIMIT,
-        from: blockchainWallet.address,
-        privateKey: blockchainWallet.privateKey
+      const { transactionHash } = await Plasma.processExits(
+        contractAddress,
+        exitId,
+        {
+          gas: Gas.LIMIT,
+          from: blockchainWallet.address,
+          privateKey: blockchainWallet.privateKey
+        }
+      )
+
+      await Plasma.waitForRootchainTransaction({
+        transactionHash,
+        intervalMs: 15000,
+        confirmationThreshold: Config.CHILDCHAIN_EXIT_CONFIRMATION_BLOCKS,
+        onCountdown: remaining =>
+          console.log(
+            `Process exit confirmation is remaining by ${remaining} blocks`
+          )
       })
 
-      resolve(receipt)
+      resolve({ transactionHash })
     } catch (err) {
       console.log(err)
       reject(err)
@@ -281,6 +297,8 @@ export const createUtxoWithAmount = async (
   fee
 ) => {
   await transfer(blockchainWallet, blockchainWallet.address, token, fee, null)
+
+  console.log('transferred')
 
   // Wait for found matched UTXO after merge or split.
   const selectedUtxo = await waitForExitUtxo(

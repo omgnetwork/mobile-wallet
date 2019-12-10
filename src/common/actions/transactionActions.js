@@ -35,6 +35,16 @@ export const addStartedExitTx = (dispatch, exitTx) => {
   })
 }
 
+export const updateStartedExitTxStatus = (dispatch, hash, status) => {
+  return createAction(dispatch, {
+    type: 'TRANSACTION/UPDATE_STARTED_EXIT_TX',
+    operation: () => ({
+      hash,
+      status
+    })
+  })
+}
+
 export const fetchTransactionHistory = (address, provider, options) => {
   const asyncAction = async () => {
     const transactions = await transactionService.getTxs(

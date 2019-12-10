@@ -6,6 +6,7 @@ import { withTheme } from 'react-native-paper'
 import { BlockchainRenderer } from 'common/blockchain'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
+import { TaskScheduler } from 'common/native'
 import {
   OMGBox,
   OMGButton,

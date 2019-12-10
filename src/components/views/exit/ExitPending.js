@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, Linking } from 'react-native'
+import { View, StyleSheet, Linking, Platform } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { BlockchainRenderer } from 'common/blockchain'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
 import { Datetime } from 'common/utils'
+import { TaskScheduler } from 'common/native'
 import {
   OMGButton,
   OMGText,
@@ -30,6 +31,17 @@ const ExitPending = ({ theme, navigation }) => {
   }
 
   const processedAt = Datetime.add(Datetime.fromNow(), Config.EXIT_PERIOD * 2)
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      const time = TaskScheduler.bookTask(
+        pendingTx.hash,
+        'HeadlessProcessExit',
+        Config.EXIT_PERIOD * 2
+      )
+      console.log(time)
+    }
+  }, [pendingTx.hash])
 
   return (
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>

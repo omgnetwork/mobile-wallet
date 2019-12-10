@@ -132,27 +132,29 @@ export const exit = (blockchainWallet, token, fee) => {
   })
 }
 
-export const processExits = (blockchainWallet, token, fee) => {
+export const processExits = (blockchainWallet, transaction) => {
   const asyncAction = async () => {
+    const { value, symbol, contractAddress, gasPrice, exitId } = transaction
     const { transactionHash } = await plasmaService.processExits(
       blockchainWallet,
-      0,
-      token
+      exitId,
+      contractAddress
     )
     return {
       hash: transactionHash,
       from: blockchainWallet.address,
-      value: token.balance,
-      symbol: token.tokenSymbol,
-      contractAddress: token.contractAddress,
-      gasPrice: fee.amount,
-      type: TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT,
+      value,
+      symbol,
+      contractAddress,
+      gasPrice,
+      actionType: TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT,
       createdAt: Datetime.now()
     }
   }
 
   return createAsyncAction({
     type: 'CHILDCHAIN/PROCESS_EXIT',
-    operation: asyncAction
+    operation: asyncAction,
+    isBackgroundTask: true
   })
 }

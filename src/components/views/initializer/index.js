@@ -1,17 +1,20 @@
-import React, { useEffect, Fragment } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, AppRegistry, Platform } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
-import { settingActions } from 'common/actions'
+import { settingActions, transactionActions } from 'common/actions'
 import { OMGEmpty, OMGText } from 'components/widgets'
 import { GoogleAnalytics } from 'common/analytics'
+import { HeadlessProcessExit } from 'components/headless'
 
 const Initializer = ({
   theme,
   children,
   blockchainWallet,
   wallet,
+  startedExitTxs,
+  dispatchUpdateStartedExitTxStatus,
   dispatchSetPrimaryWallet,
   dispatchSetBlockchainWallet,
   provider,
@@ -23,6 +26,11 @@ const Initializer = ({
       navigation.navigate('Welcome')
     } else if (wallet && provider && blockchainWallet) {
       navigation.navigate('MainContent')
+
+      if (Platform.OS === 'android') {
+        registerHeadlessService()
+      }
+
       GoogleAnalytics.sendEvent('view_balance', {})
     } else if (shouldGetBlockchainWallet(wallet, blockchainWallet, provider)) {
       dispatchSetBlockchainWallet(wallet, provider)
@@ -35,15 +43,27 @@ const Initializer = ({
     dispatchSetPrimaryWallet,
     navigation,
     provider,
+    registerHeadlessService,
+    startedExitTxs,
     wallet,
     wallets
   ])
 
+  const registerHeadlessService = useCallback(() => {
+    AppRegistry.registerHeadlessTask('HeadlessProcessExit', () =>
+      HeadlessProcessExit.bind(
+        null,
+        startedExitTxs,
+        dispatchUpdateStartedExitTxStatus
+      )
+    )
+  }, [startedExitTxs, dispatchUpdateStartedExitTxStatus])
+
   const renderChildren = () => {
     if (wallets.length === 0) {
-      return <Fragment>{children}</Fragment>
+      return <>{children}</>
     } else if (wallet && blockchainWallet && provider) {
-      return <Fragment>{children}</Fragment>
+      return <>{children}</>
     } else {
       return (
         <View style={styles.container}>
@@ -89,14 +109,17 @@ const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
   wallets: state.wallets,
   provider: state.setting.provider,
-  blockchainWallet: state.setting.blockchainWallet
+  blockchainWallet: state.setting.blockchainWallet,
+  startedExitTxs: state.transaction.startedExitTxs
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchSetBlockchainWallet: (wallet, provider) =>
     dispatch(settingActions.setBlockchainWallet(wallet, provider)),
   dispatchSetPrimaryWallet: wallet =>
-    settingActions.setPrimaryAddress(dispatch, wallet.address)
+    settingActions.setPrimaryAddress(dispatch, wallet.address),
+  dispatchUpdateStartedExitTxStatus: (hash, status) =>
+    transactionActions.updateStartedExitTxStatus(hash, status)
 })
 
 export default connect(

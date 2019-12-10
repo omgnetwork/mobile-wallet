@@ -19,5 +19,6 @@ const childchain = new ChildChain({ watcherUrl: Config.CHILDCHAIN_WATCHER_URL })
 export const Plasma = {
   rootchain,
   childchain,
+  utils: OmgUtil,
   transaction: OmgUtil.transaction
 }

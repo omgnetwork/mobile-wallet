@@ -3,6 +3,7 @@ import { TransactionActionTypes } from 'common/constants'
 import Config from 'react-native-config'
 import { ethereumService } from 'common/services'
 import BackgroundTimer from 'react-native-background-timer'
+import { NotificationMessages } from 'common/constants'
 
 const getConfirmationsThreshold = tx => {
   if (tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT) {
@@ -60,26 +61,35 @@ const useRootchainTracker = wallet => {
         TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT
       ) {
         return {
+          ...NotificationMessages.NOTIFY_TRANSACTION_DEPOSITED(
+            wallet.current.name,
+            confirmedTx.value,
+            confirmedTx.symbol
+          ),
           type: 'all',
-          title: `${wallet.current.name} deposited`,
-          message: `${confirmedTx.value} ${confirmedTx.symbol}`,
-          confirmedTx
+          confirmedTxs: [confirmedTx]
         }
       } else if (
         confirmedTx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_EXIT
       ) {
         return {
+          ...NotificationMessages.NOTIFY_TRANSACTION_START_STANDARD_EXITED(
+            wallet.current.name,
+            confirmedTx.value,
+            confirmedTx.symbol
+          ),
           type: 'childchain',
-          title: `${wallet.current.name} prepared to exit`,
-          message: `${confirmedTx.value} ${confirmedTx.symbol}`,
-          confirmedTx
+          confirmedTxs: [confirmedTx]
         }
       } else {
         return {
+          ...NotificationMessages.NOTIFY_TRANSACTION_SENT_ETH_NETWORK(
+            wallet.current.name,
+            confirmedTx.value,
+            confirmedTx.symbol
+          ),
           type: 'rootchain',
-          title: `${wallet.current.name} sent on the Ethereum network`,
-          message: `${confirmedTx.value} ${confirmedTx.symbol}`,
-          confirmedTx
+          confirmedTxs: [confirmedTx]
         }
       }
     },
