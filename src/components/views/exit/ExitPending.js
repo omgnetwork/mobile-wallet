@@ -34,12 +34,11 @@ const ExitPending = ({ theme, navigation }) => {
 
   useEffect(() => {
     if (Platform.OS === 'android') {
-      const time = TaskScheduler.bookTask(
+      TaskScheduler.bookTask(
         pendingTx.hash,
         'HeadlessProcessExit',
         Config.EXIT_PERIOD * 2
       )
-      console.log(time)
     }
   }, [pendingTx.hash])
 

@@ -221,8 +221,6 @@ export const exit = (blockchainWallet, token, fee) => {
         fee
       )
 
-      console.log(utxoToExit)
-
       // const utxoToExit = await createUtxoWithAmount(
       //   desiredAmount,
       //   blockchainWallet,
@@ -297,8 +295,6 @@ export const createUtxoWithAmount = async (
   fee
 ) => {
   await transfer(blockchainWallet, blockchainWallet.address, token, fee, null)
-
-  console.log('transferred')
 
   // Wait for found matched UTXO after merge or split.
   const selectedUtxo = await waitForExitUtxo(

@@ -5,8 +5,8 @@ import { NotificationMessages } from 'common/constants'
 import BackgroundTimer from 'react-native-background-timer'
 
 const useExitTracker = blockchainWallet => {
-  // const INTERVAL_PERIOD = Config.EXIT_PERIOD / 2 + 5000
-  const INTERVAL_PERIOD = 10000
+  const EXIT_PERIOD = Config.EXIT_PERIOD * 2
+  const INTERVAL_PERIOD = 60000
   const [startedExitTxs, setStartedExitTxs] = useState([])
   const [notification, setNotification] = useState(null)
 
@@ -14,13 +14,10 @@ const useExitTracker = blockchainWallet => {
     return startedExitTxs.filter(tx => {
       const currentDatetime = Datetime.fromNow()
       const startedExitAt = Datetime.fromString(tx.startedExitAt)
-      const exitableAt = Datetime.add(startedExitAt, INTERVAL_PERIOD)
-      console.log('current datetime', currentDatetime.format())
-      console.log('exitable At', exitableAt.format())
-      console.log('exitable', currentDatetime.isSameOrAfter(exitableAt))
+      const exitableAt = Datetime.add(startedExitAt, EXIT_PERIOD)
       return currentDatetime.isSameOrAfter(exitableAt)
     })
-  }, [startedExitTxs])
+  }, [EXIT_PERIOD, startedExitTxs])
 
   // const processExit = useCallback(async () => {
   //   const readyExitTxs = getExitReadyTxs()
@@ -41,7 +38,6 @@ const useExitTracker = blockchainWallet => {
 
   const updateTransactionStatus = useCallback(() => {
     const readyToExitTxs = getExitReadyTxs()
-    console.log(readyToExitTxs)
     return readyToExitTxs.map(tx => {
       return {
         ...tx,
