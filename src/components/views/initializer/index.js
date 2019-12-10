@@ -1,20 +1,19 @@
-import React, { useEffect, useCallback } from 'react'
-import { connect } from 'react-redux'
-import { StyleSheet, View, AppRegistry, Platform } from 'react-native'
+import { settingActions, transactionActions } from 'common/actions'
+import { GoogleAnalytics } from 'common/analytics'
+import { store } from 'common/stores'
+import { HeadlessProcessExit } from 'components/headless'
+import { OMGEmpty, OMGText } from 'components/widgets'
+import React, { useCallback, useEffect } from 'react'
+import { AppRegistry, Platform, StyleSheet, View } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
-import { settingActions, transactionActions } from 'common/actions'
-import { OMGEmpty, OMGText } from 'components/widgets'
-import { GoogleAnalytics } from 'common/analytics'
-import { HeadlessProcessExit } from 'components/headless'
+import { connect } from 'react-redux'
 
 const Initializer = ({
   theme,
   children,
   blockchainWallet,
   wallet,
-  startedExitTxs,
-  dispatchUpdateStartedExitTxStatus,
   dispatchSetPrimaryWallet,
   dispatchSetBlockchainWallet,
   provider,
@@ -44,20 +43,15 @@ const Initializer = ({
     navigation,
     provider,
     registerHeadlessService,
-    startedExitTxs,
     wallet,
     wallets
   ])
 
   const registerHeadlessService = useCallback(() => {
     AppRegistry.registerHeadlessTask('HeadlessProcessExit', () =>
-      HeadlessProcessExit.bind(
-        null,
-        startedExitTxs,
-        dispatchUpdateStartedExitTxStatus
-      )
+      HeadlessProcessExit.bind(null, store)
     )
-  }, [startedExitTxs, dispatchUpdateStartedExitTxStatus])
+  }, [])
 
   const renderChildren = () => {
     if (wallets.length === 0) {
@@ -110,16 +104,14 @@ const mapStateToProps = (state, ownProps) => ({
   wallets: state.wallets,
   provider: state.setting.provider,
   blockchainWallet: state.setting.blockchainWallet,
-  startedExitTxs: state.transaction.startedExitTxs
+  pendingTxs: state.transaction.pendingTxs
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchSetBlockchainWallet: (wallet, provider) =>
     dispatch(settingActions.setBlockchainWallet(wallet, provider)),
   dispatchSetPrimaryWallet: wallet =>
-    settingActions.setPrimaryAddress(dispatch, wallet.address),
-  dispatchUpdateStartedExitTxStatus: (hash, status) =>
-    transactionActions.updateStartedExitTxStatus(hash, status)
+    settingActions.setPrimaryAddress(dispatch, wallet.address)
 })
 
 export default connect(

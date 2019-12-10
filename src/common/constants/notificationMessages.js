@@ -1,6 +1,6 @@
 export const NOTIFY_UTXO_IS_READY_TO_EXIT = (tokenValue, tokenSymbol) => ({
   title: `${tokenValue} ${tokenSymbol} is ready to exit`,
-  message: `The utxo will be processed soon.`
+  message: `The utxo will be processed within 24 hours.`
 })
 
 export const NOTIFY_TRANSACTION_SENT_ETH_NETWORK = (

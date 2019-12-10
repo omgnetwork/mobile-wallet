@@ -1,20 +1,29 @@
 import { Notification } from 'common/utils'
 import { NotificationMessages } from 'common/constants'
-
-export default async (
-  startedExitTxs,
-  dispatchUpdateStartedExitTxStatus,
-  taskData
-) => {
+import { transactionActions } from 'common/actions'
+export default async (store, taskData) => {
   try {
     const { taskId } = taskData
-    dispatchUpdateStartedExitTxStatus(taskId, 'ready')
+    const pendingTxs = store.getState().transaction.pendingTxs
+    const startedExitTxs = store.getState().transaction.startedExitTxs
+    const processExitReadyTx =
+      pendingTxs.find(tx => tx.hash === taskId) ||
+      startedExitTxs.find(tx => tx.hash === taskId)
 
-    const { value, symbol } = startedExitTxs.map(tx => tx.hash === taskId)
-    Notification.create(
-      NotificationMessages.NOTIFY_UTXO_IS_READY_TO_EXIT(value, symbol)
-    )
-    return Promise.resolve(taskId)
+    if (processExitReadyTx) {
+      const { value, symbol } = processExitReadyTx
+      transactionActions.updateStartedExitTxStatus(
+        store.dispatch,
+        taskId,
+        'ready'
+      )
+      Notification.create(
+        NotificationMessages.NOTIFY_UTXO_IS_READY_TO_EXIT(value, symbol)
+      )
+      return Promise.resolve(taskId)
+    } else {
+      return Promise.reject('The transaction is not found')
+    }
   } catch (err) {
     return Promise.reject(err)
   }
