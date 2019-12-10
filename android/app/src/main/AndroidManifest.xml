@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="network.omisego.plasmawallet">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -18,14 +19,17 @@
                 android:value="Transaction updates"/>
       <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_description"
                   android:value="Control whether to receive incoming transaction notification"/>
-      <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />
-      <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver">
+      <service android:name=".schedule.TaskSchedulerService" />
+      <receiver
+          android:name=".schedule.TaskSchedulerBroadcastReceiver"
+          android:directBootAware="true"
+          android:enabled="true"
+          android:exported="true">
           <intent-filter>
-            <action android:name="android.intent.action.BOOT_COMPLETED" />
+              <action android:name="android.intent.action.BOOT_COMPLETED"/>
+              <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
           </intent-filter>
       </receiver>
-      <service android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationRegistrationService"/>
-
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"

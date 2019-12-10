@@ -228,6 +228,7 @@ dependencies {
     }
     implementation 'com.google.android.gms:play-services-tagmanager:17.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.work:work-runtime:2.3.0-alpha03'
    if (enableHermes) {
        def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")
