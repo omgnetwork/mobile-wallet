@@ -12,8 +12,6 @@ export default {
     'https://rinkeby.infura.io/v3/510b6d5b3c56497b8070626a54f565a9',
   PLASMA_FRAMEWORK_CONTRACT_ADDRESS:
     '0x24e0b6b701c941824b3eedc041f50be6e15bfdeb',
-  ETH_VAULT_CONTRACT_ADDRESS: '0x9631a230eaf33b51012fca494e4030d852bb9386',
-  ERC_20_VAULT_CONTRACT_ADDRESS: '0x88d38a42946c62d32f159880fe2735c0149cca3f',
   CHILDCHAIN_WATCHER_URL: 'https://watcher-pre-lumphini.omg.network/',
   BLOCK_EXPLORER_URL: 'https://quest-pre-lumphini.omg.network',
   EXIT_PERIOD: 86400000

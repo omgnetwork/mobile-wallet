@@ -77,7 +77,7 @@ export const depositErc20 = async (
   options = {}
 ) => {
   const web3 = Plasma.rootchain.web3
-  const erc20VaultAddress = await Plasma.rootchain.getErc20VaultAddress()
+  const { address: erc20VaultAddress } = await Plasma.rootchain.getErc20Vault()
   const erc20Contract = new web3.eth.Contract(
     ContractABI.erc20Abi(),
     tokenContractAddress
@@ -115,10 +115,10 @@ export const depositErc20 = async (
     depositGasPrice
   )
 
-  const receipt = await Plasma.rootchain.depositToken(
-    encodedDepositTx,
-    depositOptions
-  )
+  const receipt = await Plasma.rootchain.depositToken({
+    depositTx: encodedDepositTx,
+    txOptions: depositOptions
+  })
 
   return receiptWithGasPrice(receipt, depositGasPrice, approveReceipt.gasUsed)
 }
@@ -144,28 +144,43 @@ const receiptWithGasPrice = (txReceipt, gasPrice, additionalGasUsed = 0) => {
   }
 }
 
-// Exit
-export const standardExit = async (exitData, blockchainWallet, options) => {
-  return Plasma.rootchain.startStandardExit(
-    exitData.utxo_pos,
-    exitData.txbytes,
-    exitData.proof,
-    {
+export const standardExit = (exitData, blockchainWallet, options) => {
+  return Plasma.rootchain.startStandardExit({
+    outputId: exitData.utxo_pos,
+    outputTx: exitData.txbytes,
+    inclusionProof: exitData.proof,
+    txOptions: {
       privateKey: blockchainWallet.privateKey,
       from: blockchainWallet.address,
       gas: options.gasLimit || Gas.LIMIT
     }
-  )
+  })
 }
 
-export const unlockTokenExitable = async (tokenContractAddress, options) => {
+export const isDepositUtxo = utxo => {
+  return utxo.blknum % 1000 !== 0
+}
+
+export const getStandardExitId = (utxoToExit, exitData) => {
+  return Plasma.rootchain.getStandardExitId({
+    txBytes: exitData.txbytes,
+    utxoPos: exitData.utxo_pos,
+    isDeposit: isDepositUtxo(utxoToExit)
+  })
+}
+
+export const hasToken = tokenContractAddress => {
+  return Plasma.rootchain.hasToken(tokenContractAddress)
+}
+
+export const addToken = async (tokenContractAddress, options) => {
   try {
     if (tokenContractAddress === ContractAddress.ETH_ADDRESS)
       return Promise.resolve(true)
-    const receipt = await Plasma.rootchain.addToken(
-      tokenContractAddress,
-      options
-    )
+    const receipt = await Plasma.rootchain.addToken({
+      token: tokenContractAddress,
+      txOptions: options
+    })
     return Promise.resolve(receipt)
   } catch (err) {
     return Promise.resolve(true)
@@ -182,12 +197,12 @@ export const createTx = (fromAddress, payments, fee, metadata) => {
     (metadata && Transaction.encodeMetadata(metadata)) ||
     Plasma.transaction.NULL_METADATA
 
-  return Plasma.childchain.createTransaction(
-    fromAddress,
+  return Plasma.childchain.createTransaction({
+    owner: fromAddress,
     payments,
     fee,
-    encodedMetadata
-  )
+    metadata: encodedMetadata
+  })
 }
 
 export const getTypedData = tx => {

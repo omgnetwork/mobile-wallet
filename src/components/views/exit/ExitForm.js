@@ -11,6 +11,7 @@ import {
 } from 'components/widgets'
 import { Validator } from 'common/utils'
 import { withNavigation } from 'react-navigation'
+import { OMGBlockchainLabel } from 'components/widgets'
 
 const ExitForm = ({ wallet, theme, navigation }) => {
   const defaultAmount = navigation.getParam('lastAmount')
@@ -20,45 +21,56 @@ const ExitForm = ({ wallet, theme, navigation }) => {
   )
   const amountRef = useRef(defaultAmount)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
+  const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
 
   const navigateNext = useCallback(() => {
-    if (Validator.isValidAmount(amountRef.current)) {
+    if (!Validator.isValidAmount(amountRef.current)) {
+      setErrorAmountMessage('Invalid amount')
+      setShowErrorAmount(true)
+    } else if (
+      !Validator.isEnoughToken(amountRef.current, selectedToken.balance)
+    ) {
+      setErrorAmountMessage('Not enough balance')
+      setShowErrorAmount(true)
+    } else {
       setShowErrorAmount(false)
       navigation.navigate('ExitConfirm', {
         token: { ...selectedToken, balance: amountRef.current }
       })
-    } else {
-      setShowErrorAmount(true)
     }
   }, [navigation, selectedToken])
 
   return (
     <View style={styles.container}>
-      <OMGText weight='bold' style={styles.title(theme)}>
-        Select Exit Amount
-      </OMGText>
-      <OMGTokenInput
-        token={selectedToken}
-        style={styles.tokenInput}
-        onPress={() =>
-          navigation.navigate('TransferSelectBalance', {
-            currentToken: selectedToken,
-            lastAmount: amountRef.current,
-            assets: wallet.childchainAssets,
-            exit: true
-          })
-        }
-      />
-      <OMGAmountInput
-        token={selectedToken}
-        inputRef={amountRef}
-        showError={showErrorAmount}
-        defaultValue={navigation.getParam('lastAmount')}
-        style={styles.amountInput}
-      />
-      <OMGExitWarning style={styles.textWarning} />
-      <View style={styles.buttonContainer}>
-        <OMGButton onPress={navigateNext}>Next</OMGButton>
+      <OMGBlockchainLabel actionText='Sending to' isRootchain={true} />
+      <View style={styles.contentContainer}>
+        <OMGText weight='bold' style={styles.title(theme)}>
+          Select Exit Amount
+        </OMGText>
+        <OMGTokenInput
+          token={selectedToken}
+          style={styles.tokenInput}
+          onPress={() =>
+            navigation.navigate('TransferSelectBalance', {
+              currentToken: selectedToken,
+              lastAmount: amountRef.current,
+              assets: wallet.childchainAssets,
+              exit: true
+            })
+          }
+        />
+        <OMGAmountInput
+          token={selectedToken}
+          inputRef={amountRef}
+          showError={showErrorAmount}
+          errorMessage={errorAmountMessage}
+          defaultValue={navigation.getParam('lastAmount')}
+          style={styles.amountInput}
+        />
+        <OMGExitWarning style={styles.textWarning} />
+        <View style={styles.buttonContainer}>
+          <OMGButton onPress={navigateNext}>Next</OMGButton>
+        </View>
       </View>
     </View>
   )
@@ -67,8 +79,12 @@ const ExitForm = ({ wallet, theme, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
     flexDirection: 'column'
+  },
+  contentContainer: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingBottom: 16
   },
   textWarning: {
     marginTop: 16,

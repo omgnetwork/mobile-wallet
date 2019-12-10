@@ -65,7 +65,7 @@ const useChildchainTracker = wallet => {
     }
   }, [pendingChildchainTxs, track])
 
-  return [notification, setPendingChildchainTxs]
+  return [notification, setNotification, setPendingChildchainTxs]
 }
 
 export default useChildchainTracker

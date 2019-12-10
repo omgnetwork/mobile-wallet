@@ -9,7 +9,7 @@ function delayRequest(sendRequest, interval, resolve) {
   }, interval || 5000)
 }
 
-export const poll = (sendRequest, interval) => {
+export const pollUntilSuccess = (sendRequest, interval) => {
   return new Promise((resolve, reject) => {
     delayRequest(sendRequest, interval, resolve)
   })

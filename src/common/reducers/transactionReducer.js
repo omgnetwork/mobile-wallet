@@ -1,8 +1,8 @@
 export const transactionReducer = (
   state = {
     pendingTxs: [],
-    pendingExits: [],
     transactions: [],
+    startedExitTxs: [],
     feedbackCompleteTx: null
   },
   action
@@ -25,17 +25,6 @@ export const transactionReducer = (
         feedbackCompleteTx: action.data.resolvedPendingTx,
         pendingTxs: state.pendingTxs.filter(
           pendingTx => pendingTx.hash !== action.data.resolvedPendingTx.hash
-        ),
-        pendingExits:
-          action.data.resolvedPendingTx.type === 'CHILDCHAIN_EXIT'
-            ? [...state.pendingExits, action.data.resolvedPendingTx]
-            : state.pendingExits
-      }
-    case 'TRANSACTION/INVALIDATE_PENDING_EXIT_TX/OK':
-      return {
-        ...state,
-        pendingExits: state.pendingExits.filter(
-          pendingTx => pendingTx.hash !== action.data.resolvedPendingTx.hash
         )
       }
     case 'WALLET/DELETE_ALL/OK':
@@ -43,8 +32,13 @@ export const transactionReducer = (
       return {
         transactions: [],
         pendingTxs: [],
-        pendingExits: [],
+        startedExitTxs: [],
         feedbackCompleteTx: null
+      }
+    case 'TRANSACTION/ADD_STARTED_EXIT_TX/OK':
+      return {
+        ...state,
+        startedExitTxs: [...state.startedExitTxs, action.data.exitTx]
       }
     case 'TRANSACTION/INVALIDATE_FEEDBACK_COMPLETE_TX/OK':
       return {

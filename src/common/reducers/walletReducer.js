@@ -1,3 +1,5 @@
+import Config from 'react-native-config'
+
 export const walletsReducer = (state = [], action) => {
   switch (action.type) {
     case 'WALLET/CREATE/SUCCESS':
@@ -46,13 +48,14 @@ export const walletsReducer = (state = [], action) => {
           const childchainAssets = wallet.childchainAssets || []
           return {
             ...wallet,
-            childchainAssets: mergeAssets(
-              childchainAssets,
-              action.data.childchainAssets
-            ),
+            childchainAssets: fromSamePlasmaContract(wallet)
+              ? mergeAssets(childchainAssets, action.data.childchainAssets)
+              : action.data.childchainAssets,
             updatedAt: action.data.updatedAt,
             shouldRefreshChildchain: false,
-            lastUtxoPos: action.data.lastUtxoPos
+            lastUtxoPos: action.data.lastUtxoPos,
+            plasmaFrameworkContractAddress:
+              Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
           }
         } else {
           return wallet
@@ -133,4 +136,11 @@ const mergeAssets = (oldAssets, newAssets) => {
     )
     return newAsset || oldAsset
   })
+}
+
+const fromSamePlasmaContract = wallet => {
+  return (
+    wallet.plasmaFrameworkContractAddress ===
+    Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
+  )
 }
