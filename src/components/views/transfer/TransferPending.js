@@ -22,7 +22,7 @@ import { GoogleAnalytics } from 'common/analytics'
 import * as BlockchainLabel from './blockchainLabel'
 
 const TransferPending = ({ theme, navigation }) => {
-  const pendingTx = navigation.getParam('pendingTx')
+  const unconfirmedTx = navigation.getParam('unconfirmedTx')
   const token = navigation.getParam('token')
   const fromWallet = navigation.getParam('fromWallet')
   const toWallet = navigation.getParam('toWallet')
@@ -32,29 +32,29 @@ const TransferPending = ({ theme, navigation }) => {
     token.balance,
     token.price
   )
-  const gasDetailAvailable = pendingTx.gasUsed && pendingTx.gasPrice
+  const gasDetailAvailable = unconfirmedTx.gasUsed && unconfirmedTx.gasPrice
   const gasFee = useCallback(() => {
     return BlockchainRenderer.renderGasFee(
-      pendingTx.gasUsed || Gas.MINIMUM_GAS_USED,
-      pendingTx.gasPrice
+      unconfirmedTx.gasUsed || Gas.MINIMUM_GAS_USED,
+      unconfirmedTx.gasPrice
     )
-  }, [pendingTx])
+  }, [unconfirmedTx])
 
   const gasFeeUsd = useCallback(() => {
     return BlockchainRenderer.renderGasFeeUsd(
-      pendingTx.gasUsed || Gas.MINIMUM_GAS_USED,
-      pendingTx.gasPrice,
+      unconfirmedTx.gasUsed || Gas.MINIMUM_GAS_USED,
+      unconfirmedTx.gasPrice,
       token.price
     )
-  }, [pendingTx, token])
+  }, [unconfirmedTx, token])
 
   const handleOnBackPressedAndroid = () => {
     return true
   }
 
   useEffect(() => {
-    GoogleAnalytics.sendEvent('make_transaction', pendingTx)
-  }, [pendingTx, pendingTx.hash])
+    GoogleAnalytics.sendEvent('make_transaction', unconfirmedTx)
+  }, [unconfirmedTx, unconfirmedTx.hash])
 
   return (
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
@@ -147,12 +147,12 @@ const TransferPending = ({ theme, navigation }) => {
             }}>
             Done
           </OMGButton>
-          {pendingTx.actionType !==
+          {unconfirmedTx.actionType !==
             TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN && (
             <TouchableOpacity
               style={styles.trackEtherscanButton}
               onPress={() => {
-                Linking.openURL(`${Config.ETHERSCAN_TX_URL}${pendingTx.hash}`)
+                Linking.openURL(`${Config.ETHERSCAN_TX_URL}${unconfirmedTx.hash}`)
               }}>
               <OMGText style={styles.trackEtherscanText(theme)}>
                 Track on Etherscan
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  pendingTxs: state.transaction.pendingTxs,
+  unconfirmedTxs: state.transaction.unconfirmedTxs,
   loading: state.loading,
   provider: state.setting.provider,
   wallet: state.wallets.find(

@@ -16,7 +16,7 @@ export const fetchAssets = (provider, address) => {
       const contractAddresses = Array.from(new Set(currencies))
       const tokens = await Token.fetchTokens(provider, contractAddresses)
 
-      const pendingChildchainAssets = balances.map(balance => {
+      const unconfirmedChildchainAssets = balances.map(balance => {
         return new Promise(async (resolveBalance, rejectBalance) => {
           const token = tokens.find(t => balance.currency === t.contractAddress)
 
@@ -50,7 +50,7 @@ export const fetchAssets = (provider, address) => {
         })
       })
 
-      const childchainAssets = await Promise.all(pendingChildchainAssets)
+      const childchainAssets = await Promise.all(unconfirmedChildchainAssets)
 
       resolve({
         lastUtxoPos: (utxos.length && utxos[0].utxo_pos.toString(10)) || '0',

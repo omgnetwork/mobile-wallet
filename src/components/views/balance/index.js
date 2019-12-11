@@ -33,7 +33,7 @@ const Balance = ({
   primaryWallet,
   navigation,
   wallets,
-  pendingTxs,
+  unconfirmedTxs,
   loading,
   feedbackCompleteTx,
   dispatchInvalidateFeedbackCompleteTx,
@@ -44,7 +44,7 @@ const Balance = ({
   const [
     feedback,
     visible,
-    setPendingTxs,
+    setUnconfirmedTxs,
     setCompleteFeedbackTx,
     handleOnClose,
     getLearnMoreLink
@@ -147,9 +147,9 @@ const Balance = ({
   }, [getLearnMoreLink])
 
   useEffect(() => {
-    setPendingTxs(pendingTxs)
+    setUnconfirmedTxs(unconfirmedTxs)
     setCompleteFeedbackTx(feedbackCompleteTx)
-  }, [feedbackCompleteTx, pendingTxs, setCompleteFeedbackTx, setPendingTxs])
+  }, [feedbackCompleteTx, unconfirmedTxs, setCompleteFeedbackTx, setUnconfirmedTxs])
 
   const drawerNavigation = navigation.dangerouslyGetParent()
   return (
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
   wallets: state.wallets,
-  pendingTxs: state.transaction.pendingTxs,
+  unconfirmedTxs: state.transaction.unconfirmedTxs,
   feedbackCompleteTx: state.transaction.feedbackCompleteTx,
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress

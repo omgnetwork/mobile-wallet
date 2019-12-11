@@ -19,18 +19,18 @@ const useProgressiveFeedback = (
 ) => {
   const [feedback, setFeedback] = useState(emptyFeedback)
   const [visible, setVisible] = useState(false)
-  const [pendingTxs, setPendingTxs] = useState([])
+  const [unconfirmedTxs, setUnconfirmedTxs] = useState([])
   const [completeFeedbackTx, setCompleteFeedbackTx] = useState(null)
 
   const selectFeedbackTx = useCallback(() => {
-    if (pendingTxs.length > 0) {
-      return { result: pendingTxs[0], pending: true }
+    if (unconfirmedTxs.length > 0) {
+      return { result: unconfirmedTxs[0], pending: true }
     } else if (completeFeedbackTx) {
       return { result: completeFeedbackTx, pending: false }
     } else {
       return null
     }
-  }, [completeFeedbackTx, pendingTxs])
+  }, [completeFeedbackTx, unconfirmedTxs])
 
   const formatFeedbackTx = useCallback(
     transaction => {
@@ -95,7 +95,7 @@ const useProgressiveFeedback = (
   return [
     feedback,
     visible,
-    setPendingTxs,
+    setUnconfirmedTxs,
     setCompleteFeedbackTx,
     handleOnClose,
     getLearnMoreLink

@@ -24,7 +24,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Animator } from 'common/anims'
 import * as BlockchainIcons from './assets'
 
-const TransferScanner = ({ theme, navigation, wallet, pendingTx }) => {
+const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   const rootchain = navigation.getParam('rootchain')
   const [rendering, setRendering] = useState(true)
   const camera = useRef(null)
@@ -105,16 +105,16 @@ const TransferScanner = ({ theme, navigation, wallet, pendingTx }) => {
   }, [hasChildchainAssets, hasRootchainAssets, isRootchain])
 
   useEffect(() => {
-    if (pendingTx) {
+    if (unconfirmedTx) {
       setShouldDisabledSendButton(true)
     } else if (!hasRootchainAssets || !hasChildchainAssets) {
       setShouldDisabledSendButton(true)
     } else {
       setShouldDisabledSendButton(false)
     }
-  }, [hasChildchainAssets, hasRootchainAssets, pendingTx])
+  }, [hasChildchainAssets, hasRootchainAssets, unconfirmedTx])
 
-  const pendingTxComponent = (
+  const unconfirmedTxComponent = (
     <Animated.View style={styles.unableView(overlayColorAnim)}>
       <OMGIcon
         style={styles.unableIcon(theme)}
@@ -156,7 +156,7 @@ const TransferScanner = ({ theme, navigation, wallet, pendingTx }) => {
       showMarker={true}
       onReceiveQR={e => setAddress(e.data)}
       cameraRef={camera}
-      renderPendingTx={pendingTxComponent}
+      renderUnconfirmedTx={unconfirmedTxComponent}
       renderEmptyComponent={emptyComponent}
       cameraStyle={styles.cameraContainer}
       overlayColorAnim={overlayColorAnim}
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  pendingTx: state.transaction.pendingTxs.length > 0,
+  unconfirmedTx: state.transaction.unconfirmedTxs.length > 0,
   wallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
   )

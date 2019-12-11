@@ -28,7 +28,7 @@ const ExitConfirm = ({
   navigation,
   blockchainWallet,
   loading,
-  pendingTx,
+  unconfirmedTx,
   dispatchExit
 }) => {
   const token = navigation.getParam('token')
@@ -63,7 +63,7 @@ const ExitConfirm = ({
     ) {
       navigation.navigate('ExitPending', {
         token,
-        pendingTx
+        unconfirmedTx
       })
     }
   })
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => ({
   blockchainWallet: state.setting.blockchainWallet,
-  pendingTx: state.transaction.pendingTxs.slice(-1).pop(),
+  unconfirmedTx: state.transaction.unconfirmedTxs.slice(-1).pop(),
   loading: state.loading,
   provider: state.setting.provider
 })

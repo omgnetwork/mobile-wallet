@@ -7,8 +7,8 @@ import { notificationService } from 'common/services'
 
 const ChildchainTransactionTracker = ({
   wallet,
-  pendingTxs,
-  dispatchInvalidatePendingTx,
+  unconfirmedTxs,
+  dispatchInvalidateUnconfirmedTx,
   dispatchRefreshChildchain
 }) => {
   const primaryWallet = useRef(wallet)
@@ -19,7 +19,7 @@ const ChildchainTransactionTracker = ({
   ] = useChildchainTracker(primaryWallet)
   useEffect(() => {
     if (childNotification) {
-      const confirmedTx = pendingTxs.find(
+      const confirmedTx = unconfirmedTxs.find(
         tx => tx.hash === childNotification.confirmedTxs[0].hash
       )
 
@@ -27,7 +27,7 @@ const ChildchainTransactionTracker = ({
         return
       }
 
-      dispatchInvalidatePendingTx(confirmedTx)
+      dispatchInvalidateUnconfirmedTx(confirmedTx)
 
       notificationService.sendNotification(childNotification)
 
@@ -37,20 +37,20 @@ const ChildchainTransactionTracker = ({
     }
   }, [
     childNotification,
-    dispatchInvalidatePendingTx,
+    dispatchInvalidateUnconfirmedTx,
     dispatchRefreshChildchain,
-    pendingTxs,
+    unconfirmedTxs,
     setChildNotification
   ])
 
-  const filterTxs = useCallback(filterFunc => pendingTxs.filter(filterFunc), [
-    pendingTxs
+  const filterTxs = useCallback(filterFunc => unconfirmedTxs.filter(filterFunc), [
+    unconfirmedTxs
   ])
 
   const getChildTxs = useCallback(() => {
     return filterTxs(
-      pendingTx =>
-        pendingTx.actionType ===
+      unconfirmedTx =>
+        unconfirmedTx.actionType ===
         TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
     )
   }, [filterTxs])
@@ -76,12 +76,12 @@ const mapStateToProps = (state, ownProps) => ({
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
   provider: state.setting.provider,
-  pendingTxs: state.transaction.pendingTxs
+  unconfirmedTxs: state.transaction.unconfirmedTxs
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchInvalidatePendingTx: resolvedPendingTx =>
-    transactionActions.invalidatePendingTx(dispatch, resolvedPendingTx),
+  dispatchInvalidateUnconfirmedTx: resolvedUnconfirmedTx =>
+    transactionActions.invalidateUnconfirmedTx(dispatch, resolvedUnconfirmedTx),
   dispatchRefreshChildchain: address =>
     walletActions.refreshChildchain(dispatch, address, true)
 })

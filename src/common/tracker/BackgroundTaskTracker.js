@@ -2,7 +2,7 @@ import { useEffect, useCallback, useRef } from 'react'
 import { connect } from 'react-redux'
 import BackgroundTimer from 'react-native-background-timer'
 
-const BackgroundTaskTracker = ({ wallet, pendingTxs, startedExitTxs }) => {
+const BackgroundTaskTracker = ({ wallet, unconfirmedTxs, startedExitTxs }) => {
   const primaryWallet = useRef(wallet)
   const isStarted = useRef(false)
   const startBackgroundTimer = useCallback(() => {
@@ -18,8 +18,8 @@ const BackgroundTaskTracker = ({ wallet, pendingTxs, startedExitTxs }) => {
   }, [])
 
   const hasInProgressTransaction = useCallback(() => {
-    return pendingTxs.length + startedExitTxs.length > 0
-  }, [pendingTxs, startedExitTxs])
+    return unconfirmedTxs.length + startedExitTxs.length > 0
+  }, [unconfirmedTxs, startedExitTxs])
 
   useEffect(() => {
     primaryWallet.current = wallet
@@ -43,7 +43,7 @@ const mapStateToProps = (state, ownProps) => ({
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
-  pendingTxs: state.transaction.pendingTxs,
+  unconfirmedTxs: state.transaction.unconfirmedTxs,
   startedExitTxs: state.transaction.startedExitTxs
 })
 

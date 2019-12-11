@@ -104,7 +104,7 @@ const mapStateToProps = (state, ownProps) => ({
   wallets: state.wallets,
   provider: state.setting.provider,
   blockchainWallet: state.setting.blockchainWallet,
-  pendingTxs: state.transaction.pendingTxs
+  unconfirmedTxs: state.transaction.unconfirmedTxs
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

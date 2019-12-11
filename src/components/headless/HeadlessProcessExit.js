@@ -4,10 +4,10 @@ import { transactionActions } from 'common/actions'
 export default async (store, taskData) => {
   try {
     const { taskId } = taskData
-    const pendingTxs = store.getState().transaction.pendingTxs
+    const unconfirmedTxs = store.getState().transaction.unconfirmedTxs
     const startedExitTxs = store.getState().transaction.startedExitTxs
     const processExitReadyTx =
-      pendingTxs.find(tx => tx.hash === taskId) ||
+      unconfirmedTxs.find(tx => tx.hash === taskId) ||
       startedExitTxs.find(tx => tx.hash === taskId)
 
     if (processExitReadyTx) {

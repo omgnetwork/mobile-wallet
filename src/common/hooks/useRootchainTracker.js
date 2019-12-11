@@ -16,7 +16,7 @@ const getConfirmationsThreshold = tx => {
 }
 
 const useRootchainTracker = wallet => {
-  const [pendingRootchainTxs, setPendingRootchainTxs] = useState([])
+  const [pendingRootchainTxs, setUnconfirmedRootchainTxs] = useState([])
   const [notification, setNotification] = useState(null)
 
   const syncTransactions = useCallback(() => {
@@ -26,16 +26,19 @@ const useRootchainTracker = wallet => {
   const verify = useCallback(
     currentRootchainTxs => {
       const currentRootchainTxsHash = currentRootchainTxs.map(tx => tx.hash)
-      const resolvedPendingTxs = pendingRootchainTxs.filter(
-        pendingTx => currentRootchainTxsHash.indexOf(pendingTx.hash) > -1
+      const resolvedUnconfirmedTxs = pendingRootchainTxs.filter(
+        unconfirmedTx =>
+          currentRootchainTxsHash.indexOf(unconfirmedTx.hash) > -1
       )
 
-      if (resolvedPendingTxs.length) {
-        const completedTxs = resolvedPendingTxs.filter(pendingTx => {
+      if (resolvedUnconfirmedTxs.length) {
+        const completedTxs = resolvedUnconfirmedTxs.filter(unconfirmedTx => {
           const rootchainTx = currentRootchainTxs.find(
-            tx => tx.hash === pendingTx.hash
+            tx => tx.hash === unconfirmedTx.hash
           )
-          const confirmationsThreshold = getConfirmationsThreshold(pendingTx)
+          const confirmationsThreshold = getConfirmationsThreshold(
+            unconfirmedTx
+          )
 
           const confirmations = Number(rootchainTx.confirmations)
 
@@ -108,7 +111,7 @@ const useRootchainTracker = wallet => {
       const confirmedTxHashes = confirmedTxs.map(tx => tx.hash)
       notificationPayloads.forEach(payload => {
         setNotification(payload)
-        setPendingRootchainTxs(
+        setUnconfirmedRootchainTxs(
           pendingRootchainTxs.filter(
             tx => confirmedTxHashes.indexOf(tx.hash) === -1
           )
@@ -132,7 +135,7 @@ const useRootchainTracker = wallet => {
     }
   }, [pendingRootchainTxs, track])
 
-  return [notification, setNotification, setPendingRootchainTxs]
+  return [notification, setNotification, setUnconfirmedRootchainTxs]
 }
 
 export default useRootchainTracker

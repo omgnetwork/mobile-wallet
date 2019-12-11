@@ -4,7 +4,7 @@ import { NotificationMessages } from 'common/constants'
 import BackgroundTimer from 'react-native-background-timer'
 
 const useChildchainTracker = wallet => {
-  const [pendingChildchainTxs, setPendingChildchainTxs] = useState([])
+  const [unconfirmedChildchainTxs, setUnconfirmedChildchainTxs] = useState([])
   const [notification, setNotification] = useState(null)
 
   const syncTransactions = useCallback(() => {
@@ -14,18 +14,20 @@ const useChildchainTracker = wallet => {
   const verify = useCallback(
     currentWatcherTxs => {
       console.log(currentWatcherTxs)
-      const pendingTxsHash = pendingChildchainTxs.map(
-        pendingTx => pendingTx.hash
+      const unconfirmedTxsHash = unconfirmedChildchainTxs.map(
+        unconfirmedTx => unconfirmedTx.hash
       )
-      const resolvedPendingTx = currentWatcherTxs.find(
-        tx => pendingTxsHash.indexOf(tx.hash) > -1
+      const resolvedUnconfirmedTx = currentWatcherTxs.find(
+        tx => unconfirmedTxsHash.indexOf(tx.hash) > -1
       )
 
-      console.log('have found yet?', resolvedPendingTx !== undefined)
+      console.log('have found yet?', resolvedUnconfirmedTx !== undefined)
 
-      return pendingChildchainTxs.find(tx => tx.hash === resolvedPendingTx.hash)
+      return unconfirmedChildchainTxs.find(
+        tx => tx.hash === resolvedUnconfirmedTx.hash
+      )
     },
-    [pendingChildchainTxs]
+    [unconfirmedChildchainTxs]
   )
 
   const buildNotification = useCallback(
@@ -56,7 +58,7 @@ const useChildchainTracker = wallet => {
 
   useEffect(() => {
     let intervalId
-    if (pendingChildchainTxs.length) {
+    if (unconfirmedChildchainTxs.length) {
       intervalId = BackgroundTimer.setInterval(() => {
         track()
       }, 5000)
@@ -67,9 +69,9 @@ const useChildchainTracker = wallet => {
         BackgroundTimer.clearInterval(intervalId)
       }
     }
-  }, [pendingChildchainTxs, track])
+  }, [unconfirmedChildchainTxs, track])
 
-  return [notification, setNotification, setPendingChildchainTxs]
+  return [notification, setNotification, setUnconfirmedChildchainTxs]
 }
 
 export default useChildchainTracker

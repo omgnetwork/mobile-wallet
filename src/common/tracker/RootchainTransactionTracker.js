@@ -8,9 +8,9 @@ import { notificationService } from 'common/services'
 
 const RootchainTransactionTracker = ({
   wallet,
-  pendingTxs,
+  unconfirmedTxs,
   dispatchAddStartedExitTx,
-  dispatchInvalidatePendingTx,
+  dispatchInvalidateUnconfirmedTx,
   dispatchRefreshRootchain,
   dispatchRefreshAll
 }) => {
@@ -23,7 +23,7 @@ const RootchainTransactionTracker = ({
 
   useEffect(() => {
     if (rootNotification) {
-      const confirmedTx = pendingTxs.find(
+      const confirmedTx = unconfirmedTxs.find(
         tx => tx.hash === rootNotification.confirmedTxs[0].hash
       )
 
@@ -38,7 +38,7 @@ const RootchainTransactionTracker = ({
         })
       }
 
-      dispatchInvalidatePendingTx(confirmedTx)
+      dispatchInvalidateUnconfirmedTx(confirmedTx)
 
       notificationService.sendNotification(rootNotification)
 
@@ -55,23 +55,23 @@ const RootchainTransactionTracker = ({
     }
   }, [
     rootNotification,
-    dispatchInvalidatePendingTx,
+    dispatchInvalidateUnconfirmedTx,
     dispatchRefreshRootchain,
     primaryWallet,
     dispatchRefreshAll,
-    pendingTxs,
+    unconfirmedTxs,
     dispatchAddStartedExitTx,
     setRootNotification
   ])
 
-  const filterTxs = useCallback(filterFunc => pendingTxs.filter(filterFunc), [
-    pendingTxs
+  const filterTxs = useCallback(filterFunc => unconfirmedTxs.filter(filterFunc), [
+    unconfirmedTxs
   ])
 
   const getRootTxs = useCallback(() => {
     return filterTxs(
-      pendingTx =>
-        pendingTx.actionType !==
+      unconfirmedTx =>
+        unconfirmedTx.actionType !==
         TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
     )
   }, [filterTxs])
@@ -87,7 +87,7 @@ const RootchainTransactionTracker = ({
     } else {
       setRootchainTxs([])
     }
-  }, [getRootTxs, pendingTxs, primaryWallet, setRootchainTxs])
+  }, [getRootTxs, unconfirmedTxs, primaryWallet, setRootchainTxs])
 
   return null
 }
@@ -97,14 +97,14 @@ const mapStateToProps = (state, ownProps) => ({
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
   provider: state.setting.provider,
-  pendingTxs: state.transaction.pendingTxs
+  unconfirmedTxs: state.transaction.unconfirmedTxs
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchAddStartedExitTx: tx =>
     transactionActions.addStartedExitTx(dispatch, tx),
-  dispatchInvalidatePendingTx: resolvedPendingTx =>
-    transactionActions.invalidatePendingTx(dispatch, resolvedPendingTx),
+  dispatchInvalidateUnconfirmedTx: resolvedUnconfirmedTx =>
+    transactionActions.invalidateUnconfirmedTx(dispatch, resolvedUnconfirmedTx),
   dispatchRefreshRootchain: address =>
     walletActions.refreshRootchain(dispatch, address, true),
   dispatchRefreshAll: address =>

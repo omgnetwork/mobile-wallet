@@ -19,9 +19,9 @@ const OMGQRScanner = props => {
     borderStrokeWidth,
     overlayColorAnim,
     cameraRef,
-    renderPendingTx,
+    renderUnconfirmedTx,
     renderEmptyComponent,
-    pendingTx,
+    unconfirmedTx,
     wallet
   } = props
   const hasRootchainAssets =
@@ -33,8 +33,8 @@ const OMGQRScanner = props => {
   )
 
   const renderContent = useCallback(() => {
-    if (pendingTx) {
-      return renderPendingTx
+    if (unconfirmedTx) {
+      return renderUnconfirmedTx
     } else if (!hasRootchainAssets || !hasChildchainAssets) {
       return renderEmptyComponent
     } else {
@@ -43,14 +43,14 @@ const OMGQRScanner = props => {
   }, [
     hasChildchainAssets,
     hasRootchainAssets,
-    pendingTx,
+    unconfirmedTx,
     renderEmptyComponent,
-    renderPendingTx,
+    renderUnconfirmedTx,
     renderQRMarker
   ])
 
   const handleOnRead = e => {
-    if (!pendingTx) {
+    if (!unconfirmedTx) {
       props.onReceiveQR(e)
     }
   }
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  pendingTx: state.transaction.pendingTxs.length > 0,
+  unconfirmedTx: state.transaction.unconfirmedTxs.length > 0,
   wallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
   )
