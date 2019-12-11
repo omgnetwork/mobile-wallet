@@ -64,9 +64,10 @@ const RootchainTransactionTracker = ({
     setRootNotification
   ])
 
-  const filterTxs = useCallback(filterFunc => unconfirmedTxs.filter(filterFunc), [
-    unconfirmedTxs
-  ])
+  const filterTxs = useCallback(
+    filterFunc => unconfirmedTxs.filter(filterFunc),
+    [unconfirmedTxs]
+  )
 
   const getRootTxs = useCallback(() => {
     return filterTxs(
