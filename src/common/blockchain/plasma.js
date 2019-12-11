@@ -190,15 +190,13 @@ export const hasToken = tokenContractAddress => {
 
 export const addToken = async (tokenContractAddress, options) => {
   try {
-    if (tokenContractAddress === ContractAddress.ETH_ADDRESS)
-      return Promise.resolve(true)
     const receipt = await Plasma.rootchain.addToken({
       token: tokenContractAddress,
       txOptions: options
     })
     return Promise.resolve(receipt)
   } catch (err) {
-    return Promise.resolve(true)
+    return Promise.reject(err)
   }
 }
 

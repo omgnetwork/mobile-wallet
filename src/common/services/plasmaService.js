@@ -203,6 +203,8 @@ export const exit = (blockchainWallet, token, fee) => {
       // Check if the token has been unlocked
       const hasToken = await Plasma.hasToken(token.contractAddress)
 
+      console.log(hasToken)
+
       if (!hasToken) {
         await Plasma.addToken(token.contractAddress, {
           from: blockchainWallet.address,
