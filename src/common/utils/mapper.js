@@ -75,7 +75,6 @@ export const mapRootchainTx = (tx, address, cachedErc20Tx) => {
 }
 
 export const mapTxCurrency = tx => {
-  console.log(tx)
   const usedCurrency = tx.outputs[tx.outputs.length - 1]
   return usedCurrency.currency
 }
