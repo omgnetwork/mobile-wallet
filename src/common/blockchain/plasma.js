@@ -204,14 +204,15 @@ export const addToken = async (tokenContractAddress, options) => {
   }
 }
 
-export const processExits = (contractAddress, exitId, txOptions) => {
-  return Plasma.rootchain.processExits({
-    token: contractAddress,
-    exitId: exitId || 0,
-    maxExitsToProcess: 1,
-    txOptions
-  })
-}
+// We're not using this right now but let's keep it because it still has potential to be used in the future.
+// export const processExits = (contractAddress, exitId, txOptions) => {
+//   return Plasma.rootchain.processExits({
+//     token: contractAddress,
+//     exitId: exitId || 0,
+//     maxExitsToProcess: 1,
+//     txOptions
+//   })
+// }
 
 // Transaction management
 export const createTx = (fromAddress, payments, fee, metadata) => {
