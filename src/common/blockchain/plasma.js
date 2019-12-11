@@ -60,8 +60,6 @@ export const depositEth = async (
     depositGasPrice
   )
 
-  console.log('before deposit..')
-
   const receipt = await Plasma.rootchain.depositEth({
     depositTx: encodedDepositTx,
     amount: weiAmount,

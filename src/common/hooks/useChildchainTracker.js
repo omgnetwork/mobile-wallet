@@ -31,7 +31,7 @@ const useChildchainTracker = wallet => {
   const buildNotification = useCallback(
     confirmedTx => {
       return {
-        ...NotificationMessages(
+        ...NotificationMessages.NOTIFY_TRANSACTION_SENT_OMG_NETWORK(
           wallet.current.name,
           confirmedTx.value,
           confirmedTx.symbol

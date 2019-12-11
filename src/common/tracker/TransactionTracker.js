@@ -143,7 +143,6 @@ const TransactionTracker = ({
         const confirmedStartedExitTxs = startedExitTxs.filter(
           Transaction.isConfirmedStartedExitTx
         )
-        console.log(confirmedStartedExitTxs)
         setStartedExitTxs(confirmedStartedExitTxs)
       }
     } else {
