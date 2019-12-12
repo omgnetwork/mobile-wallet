@@ -46,7 +46,7 @@ const OMGTransactionList = ({
   )
 
   const handleClickTx = useCallback(
-    async transaction => {
+    transaction => {
       navigation.navigate('TransactionDetail', {
         transaction
       })
