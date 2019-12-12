@@ -48,7 +48,11 @@ const ProcessExitTransactionTracker = ({
       const confirmedStartedExitTxs = getConfirmedStartedExitTxs()
       if (Platform.OS === 'android') {
         for (const { hash } of confirmedStartedExitTxs) {
-          TaskScheduler.bookTask(hash, 'HeadlessProcessExit', 60000)
+          TaskScheduler.bookTask(
+            hash,
+            'HeadlessProcessExit',
+            Config.EXIT_PERIOD * 2
+          )
         }
       } else {
         setStartedExitTxs(confirmedStartedExitTxs)
