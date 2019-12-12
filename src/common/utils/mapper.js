@@ -3,27 +3,28 @@ import { Transaction, Token } from 'common/utils'
 import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
 import BigNumber from 'bignumber.js'
 
-export const mapChildchainTx = (tx, tokens, address) => {
-  const sentToken = mapChildchainOutput(tx.outputs)
-  const contractAddress = sentToken.currency
+export const mapChildchainTx = (tx, tokens, walletAddress) => {
+  const input = mapInputTransfer(tx)
+  const output = mapOutputTransfer(input, tx.outputs)
+  const contractAddress = output.currency
   const token = Token.find(contractAddress, tokens)
   return {
     hash: tx.txhash,
     network: BlockchainNetworkType.TYPE_OMISEGO_NETWORK,
     confirmations: null,
-    type: mapTransactionType(tx, address),
-    from: tx.from,
-    to: tx.to,
-    gas: '0',
+    type: mapChildchainTransactionType(output, walletAddress),
+    from: input.owner,
+    to: output.owner,
+    gasUsed: 1,
     gasPrice: '0',
     contractAddress,
     tokenName: token.tokenName,
     tokenSymbol: token.tokenSymbol,
     tokenDecimal: token.tokenDecimal,
     value:
-      typeof sentToken.amount === 'string'
-        ? sentToken.amount
-        : sentToken.amount.toFixed(),
+      typeof output.amount === 'string'
+        ? output.amount
+        : output.amount.toFixed(),
     timestamp: tx.block.timestamp
   }
 }
@@ -74,9 +75,29 @@ export const mapRootchainTx = (tx, address, cachedErc20Tx) => {
   }
 }
 
-export const mapTxCurrency = tx => {
-  const usedCurrency = tx.outputs[tx.outputs.length - 1]
-  return usedCurrency.currency
+export const mapInputTransfer = tx => {
+  return tx.inputs.length === 1
+    ? tx.inputs[0]
+    : tx.inputs.find(input => !isInputGreaterThanOutput(input, tx.outputs))
+}
+
+export const mapOutputTransfer = (inputTransfer, outputs) => {
+  return outputs.find(output => output.owner !== inputTransfer.owner)
+}
+
+export const mapInputFee = tx => {
+  return tx.inputs.find(input => isInputGreaterThanOutput(input, tx.outputs))
+}
+
+const isInputGreaterThanOutput = (input, outputs) => {
+  const accumulateOutputAmount = outs =>
+    outs.reduce((acc, output) => acc.plus(output.amount), new BigNumber(0))
+
+  const sameCurrencyOutputs = outputs.filter(
+    output => output.currency === input.currency
+  )
+  const totalOutputAmount = accumulateOutputAmount(sameCurrencyOutputs)
+  return input.amount.gt(totalOutputAmount)
 }
 
 export const mapAssetCurrency = asset => asset.currency
@@ -85,7 +106,7 @@ const mapRootchainEthTx = (tx, address) => {
   return {
     hash: tx.hash,
     network: BlockchainNetworkType.TYPE_ETHEREUM_NETWORK,
-    type: mapTransactionType(tx, address),
+    type: mapRootchainTransactionType(tx, address),
     confirmations: tx.confirmations,
     from: tx.from,
     to: tx.to,
@@ -105,7 +126,7 @@ const mapRootchainErc20Tx = (tx, address) => {
   return {
     hash: tx.hash,
     network: BlockchainNetworkType.TYPE_ETHEREUM_NETWORK,
-    type: mapTransactionType(tx, address),
+    type: mapRootchainTransactionType(tx, address),
     confirmations: tx.confirmations,
     from: tx.from,
     to: tx.to,
@@ -121,23 +142,11 @@ const mapRootchainErc20Tx = (tx, address) => {
   }
 }
 
-const mapChildchainOutput = outputs => {
-  const erc20Token = outputs
-    .reverse()
-    .find(output => output.currency !== ContractAddress.ETH_ADDRESS)
-  if (erc20Token) {
-    return erc20Token
-  } else {
-    return outputs[0]
-  }
-}
-
-const mapTransactionType = (tx, address) => {
+const mapRootchainTransactionType = (tx, address) => {
   const methodName = Transaction.decodePlasmaInputMethod(tx.input)
-
-  if (tx.isError === '1') return TransactionTypes.TYPE_FAILED
-  if (!tx.from) return TransactionTypes.TYPE_UNIDENTIFIED
-  if (!tx.to) return TransactionTypes.TYPE_UNIDENTIFIED
+  if (tx.isError === '1') {
+    return TransactionTypes.TYPE_FAILED
+  }
   switch (methodName) {
     case 'depositFrom':
     case 'deposit':
@@ -154,5 +163,13 @@ const mapTransactionType = (tx, address) => {
       } else {
         return TransactionTypes.TYPE_SENT
       }
+  }
+}
+
+const mapChildchainTransactionType = (output, address) => {
+  if (Transaction.isReceiveTx(address, output.owner)) {
+    return TransactionTypes.TYPE_RECEIVED
+  } else {
+    return TransactionTypes.TYPE_SENT
   }
 }
