@@ -172,6 +172,10 @@ export const waitForRootchainTransaction = ({
   })
 }
 
+export const getErrorReason = hash => {
+  return Plasma.utils.ethErrorReason({ web3: Plasma.rootchain.web3, hash })
+}
+
 export const isDepositUtxo = utxo => {
   return utxo.blknum % 1000 !== 0
 }
