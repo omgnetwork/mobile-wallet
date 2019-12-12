@@ -24,7 +24,8 @@ export const transactionReducer = (
         ...state,
         feedbackCompleteTx: action.data.resolvedUnconfirmedTx,
         unconfirmedTxs: state.unconfirmedTxs.filter(
-          unconfirmedTx => unconfirmedTx.hash !== action.data.resolvedUnconfirmedTx.hash
+          unconfirmedTx =>
+            unconfirmedTx.hash !== action.data.resolvedUnconfirmedTx.hash
         )
       }
     case 'WALLET/DELETE_ALL/OK':
