@@ -121,7 +121,7 @@ const TransactionHistory = ({
         TransactionTypes.TYPE_RECEIVED,
         TransactionTypes.TYPE_SENT,
         TransactionTypes.TYPE_DEPOSIT,
-        TransactionTypes.TYPE_UNIDENTIFIED
+        TransactionTypes.TYPE_FAILED
       ]
     })
   }, [navigation])
