@@ -1,9 +1,12 @@
 import { useEffect, useRef, useCallback } from 'react'
+import { Platform } from 'react-native'
 import { connect } from 'react-redux'
+import Config from 'react-native-config'
 import { useExitTracker } from 'common/hooks'
 import { Transaction } from 'common/utils'
 import { transactionActions } from 'common/actions'
 import { notificationService } from 'common/services'
+import { TaskScheduler } from 'common/native'
 
 const ProcessExitTransactionTracker = ({
   wallet,
@@ -43,7 +46,13 @@ const ProcessExitTransactionTracker = ({
   useEffect(() => {
     if (primaryWallet.current) {
       const confirmedStartedExitTxs = getConfirmedStartedExitTxs()
-      setStartedExitTxs(confirmedStartedExitTxs)
+      if (Platform.OS === 'android') {
+        for (const { hash } of confirmedStartedExitTxs) {
+          TaskScheduler.bookTask(hash, 'HeadlessProcessExit', 60000)
+        }
+      } else {
+        setStartedExitTxs(confirmedStartedExitTxs)
+      }
     } else {
       setStartedExitTxs([])
     }

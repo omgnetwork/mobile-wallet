@@ -40,8 +40,8 @@ const App = () => {
         <>
           <RootchainTransactionTracker />
           <ChildchainTransactionTracker />
-          <BackgroundTaskTracker />
           <ProcessExitTransactionTracker />
+          <BackgroundTaskTracker />
         </>
       )
     } else {
@@ -49,6 +49,7 @@ const App = () => {
         <>
           <RootchainTransactionTracker />
           <ChildchainTransactionTracker />
+          <ProcessExitTransactionTracker />
         </>
       )
     }

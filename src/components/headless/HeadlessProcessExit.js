@@ -1,14 +1,17 @@
 import { Notification } from 'common/utils'
 import { NotificationMessages } from 'common/constants'
 import { transactionActions } from 'common/actions'
+import { Transaction } from 'common/utils'
 export default async (store, taskData) => {
   try {
     const { taskId } = taskData
-    const unconfirmedTxs = store.getState().transaction.unconfirmedTxs
     const startedExitTxs = store.getState().transaction.startedExitTxs
-    const processExitReadyTx =
-      unconfirmedTxs.find(tx => tx.hash === taskId) ||
-      startedExitTxs.find(tx => tx.hash === taskId)
+    const confirmedStartedExitTxs = startedExitTxs.filter(
+      Transaction.isConfirmedStartedExitTx
+    )
+    const processExitReadyTx = confirmedStartedExitTxs.find(
+      tx => tx.hash === taskId
+    )
 
     if (processExitReadyTx) {
       const { value, symbol } = processExitReadyTx
