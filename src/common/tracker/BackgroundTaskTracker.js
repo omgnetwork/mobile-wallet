@@ -8,12 +8,14 @@ const BackgroundTaskTracker = ({ wallet, unconfirmedTxs, startedExitTxs }) => {
   const startBackgroundTimer = useCallback(() => {
     if (!isStarted.current) {
       BackgroundTimer.start()
+      isStarted.current = true
     }
   }, [])
 
   const stopBackgroundTimer = useCallback(() => {
     if (isStarted.current) {
       BackgroundTimer.stop()
+      isStarted.current = false
     }
   }, [])
 
@@ -28,10 +30,8 @@ const BackgroundTaskTracker = ({ wallet, unconfirmedTxs, startedExitTxs }) => {
   useEffect(() => {
     if (primaryWallet.current && hasInProgressTransaction()) {
       startBackgroundTimer()
-      isStarted.current = true
     } else {
       stopBackgroundTimer()
-      isStarted.current = false
     }
     return stopBackgroundTimer
   }, [hasInProgressTransaction, startBackgroundTimer, stopBackgroundTimer])

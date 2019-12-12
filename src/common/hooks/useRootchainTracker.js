@@ -4,6 +4,7 @@ import Config from 'react-native-config'
 import { ethereumService } from 'common/services'
 import BackgroundTimer from 'react-native-background-timer'
 import { NotificationMessages } from 'common/constants'
+import { Plasma } from 'common/blockchain'
 
 const getConfirmationsThreshold = tx => {
   if (tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT) {
@@ -18,44 +19,6 @@ const getConfirmationsThreshold = tx => {
 const useRootchainTracker = wallet => {
   const [pendingRootchainTxs, setUnconfirmedRootchainTxs] = useState([])
   const [notification, setNotification] = useState(null)
-
-  const syncTransactions = useCallback(() => {
-    return ethereumService.getTxs(wallet.current.address, '0')
-  }, [wallet])
-
-  const verify = useCallback(
-    currentRootchainTxs => {
-      const currentRootchainTxsHash = currentRootchainTxs.map(tx => tx.hash)
-      const resolvedUnconfirmedTxs = pendingRootchainTxs.filter(
-        unconfirmedTx =>
-          currentRootchainTxsHash.indexOf(unconfirmedTx.hash) > -1
-      )
-
-      if (resolvedUnconfirmedTxs.length) {
-        const completedTxs = resolvedUnconfirmedTxs.filter(unconfirmedTx => {
-          const rootchainTx = currentRootchainTxs.find(
-            tx => tx.hash === unconfirmedTx.hash
-          )
-          const confirmationsThreshold = getConfirmationsThreshold(
-            unconfirmedTx
-          )
-
-          const confirmations = Number(rootchainTx.confirmations)
-
-          console.log(confirmations)
-
-          const hasEnoughConfimations = confirmations >= confirmationsThreshold
-
-          console.log('have enough confirmations yet?', hasEnoughConfimations)
-          return hasEnoughConfimations
-        })
-        return completedTxs
-      } else {
-        return false
-      }
-    },
-    [pendingRootchainTxs]
-  )
 
   const buildNotification = useCallback(
     confirmedTx => {
@@ -100,38 +63,34 @@ const useRootchainTracker = wallet => {
   )
 
   const track = useCallback(async () => {
-    if (!pendingRootchainTxs.length) return
-    const currentRootchainTxs = await syncTransactions()
-    const confirmedTxs = verify(currentRootchainTxs)
-    if (confirmedTxs && confirmedTxs.length) {
-      const notificationPayloads = confirmedTxs.map(confirmedTx =>
-        buildNotification(confirmedTx)
-      )
-
-      const confirmedTxHashes = confirmedTxs.map(tx => tx.hash)
-      notificationPayloads.forEach(payload => {
-        setNotification(payload)
-        setUnconfirmedRootchainTxs(
-          pendingRootchainTxs.filter(
-            tx => confirmedTxHashes.indexOf(tx.hash) === -1
-          )
+    const latestPendingTx = pendingRootchainTxs.slice(-1).pop()
+    const receipt = await Plasma.waitForRootchainTransaction({
+      transactionHash: latestPendingTx.hash,
+      intervalMs: 3000,
+      confirmationThreshold: getConfirmationsThreshold(latestPendingTx),
+      onCountdown: remaining =>
+        console.log(
+          `Process exit confirmation is remaining by ${remaining} blocks`
         )
-      })
+    })
+    if (receipt) {
+      const payload = buildNotification(latestPendingTx)
+      setNotification(payload)
+      setUnconfirmedRootchainTxs(pendingRootchainTxs.slice(0, -1))
     }
-  }, [buildNotification, pendingRootchainTxs, syncTransactions, verify])
+  }, [buildNotification, pendingRootchainTxs])
 
   useEffect(() => {
-    let intervalId
+    let id
     if (pendingRootchainTxs.length) {
-      intervalId = BackgroundTimer.setInterval(() => {
-        track()
-      }, 5000)
+      id = BackgroundTimer.setInterval(() => {
+        console.log('Keep alive')
+      }, 3000)
+      track()
     }
 
     return () => {
-      if (intervalId) {
-        BackgroundTimer.clearInterval(intervalId)
-      }
+      BackgroundTimer.clearInterval(id)
     }
   }, [pendingRootchainTxs, track])
 
