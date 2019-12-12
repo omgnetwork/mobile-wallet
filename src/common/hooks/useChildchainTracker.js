@@ -14,18 +14,14 @@ const useChildchainTracker = wallet => {
   const verify = useCallback(
     currentWatcherTxs => {
       console.log(currentWatcherTxs)
-      const unconfirmedTxsHash = unconfirmedChildchainTxs.map(
-        unconfirmedTx => unconfirmedTx.hash
-      )
-      const resolvedUnconfirmedTx = currentWatcherTxs.find(
-        tx => unconfirmedTxsHash.indexOf(tx.hash) > -1
+      const latestUnconfirmedTx = unconfirmedChildchainTxs.slice(-1).pop()
+      const confirmedTx = currentWatcherTxs.find(
+        tx => latestUnconfirmedTx.hash === tx.hash
       )
 
-      console.log('have found yet?', resolvedUnconfirmedTx !== undefined)
+      console.log('have found yet?', confirmedTx !== undefined)
 
-      return unconfirmedChildchainTxs.find(
-        tx => tx.hash === resolvedUnconfirmedTx.hash
-      )
+      return unconfirmedChildchainTxs.find(tx => tx.hash === confirmedTx.hash)
     },
     [unconfirmedChildchainTxs]
   )

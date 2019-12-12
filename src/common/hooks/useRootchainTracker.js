@@ -1,8 +1,6 @@
 import { useEffect, useCallback, useState } from 'react'
 import { TransactionActionTypes } from 'common/constants'
 import Config from 'react-native-config'
-import { ethereumService } from 'common/services'
-import BackgroundTimer from 'react-native-background-timer'
 import { NotificationMessages } from 'common/constants'
 import { Plasma } from 'common/blockchain'
 
@@ -81,16 +79,8 @@ const useRootchainTracker = wallet => {
   }, [buildNotification, pendingRootchainTxs])
 
   useEffect(() => {
-    let id
     if (pendingRootchainTxs.length) {
-      id = BackgroundTimer.setInterval(() => {
-        console.log('Keep alive')
-      }, 3000)
       track()
-    }
-
-    return () => {
-      BackgroundTimer.clearInterval(id)
     }
   }, [pendingRootchainTxs, track])
 

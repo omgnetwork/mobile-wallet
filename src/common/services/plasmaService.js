@@ -1,6 +1,5 @@
 import { Formatter, Parser, Polling, Datetime, Mapper, Token } from '../utils'
 import { Plasma } from 'common/blockchain'
-import { Gas } from 'common/constants'
 import { priceService } from 'common/services'
 import Config from 'react-native-config'
 
