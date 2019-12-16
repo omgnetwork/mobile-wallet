@@ -14,6 +14,7 @@ const TransactionHistoryFilter = ({
   theme,
   navigation,
   transactions,
+  startedExitTxs,
   wallet,
   loading
 }) => {
@@ -38,6 +39,7 @@ const TransactionHistoryFilter = ({
       </View>
       <OMGTransactionFilter
         transactions={transactions}
+        startedExitTxs={startedExitTxs}
         types={types}
         loading={loading}
         address={wallet && wallet.address}
@@ -83,6 +85,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
   transactions: state.transaction.transactions,
+  startedExitTxs: state.transaction.startedExitTxs,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   )

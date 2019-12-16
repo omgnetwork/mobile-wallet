@@ -44,6 +44,7 @@ export const getTxs = (address, provider, options) => {
         queryChildchainOptions
       )
 
+      console.log(childchainTxs)
 
       const pristineChildchainTxs = excludeSplittedTxs(childchainTxs)
 

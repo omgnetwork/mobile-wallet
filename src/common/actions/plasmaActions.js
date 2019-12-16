@@ -1,7 +1,8 @@
 import { createAsyncAction } from './actionCreators'
 import { plasmaService } from 'common/services'
-import { TransactionActionTypes } from 'common/constants'
+import { TransactionActionTypes, TransactionTypes } from 'common/constants'
 import { Datetime, Parser } from 'common/utils'
+import Config from 'react-native-config'
 
 export const fetchAssets = (provider, address) => {
   const asyncAction = async () => {
@@ -35,6 +36,7 @@ export const depositEth = (blockchainWallet, token) => {
       from: blockchainWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
+      tokenDecimal: token.tokenDecimal,
       contractAddress: token.contractAddress,
       gasPrice: gasPrice,
       gasUsed: gasUsed,
@@ -65,6 +67,7 @@ export const depositErc20 = (blockchainWallet, token) => {
       from: blockchainWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
+      tokenDecimal: token.tokenDecimal,
       contractAddress: token.contractAddress,
       gasPrice: gasPrice,
       gasUsed: gasUsed,
@@ -92,6 +95,7 @@ export const transfer = (blockchainWallet, toAddress, token, fee) => {
       from: blockchainWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
+      tokenDecimal: token.tokenDecimal,
       contractAddress: token.contractAddress,
       gasUsed: 1,
       gasPrice: Parser.parseUnits(fee.amount, 'gwei').toString(10),
@@ -108,21 +112,31 @@ export const transfer = (blockchainWallet, toAddress, token, fee) => {
 
 export const exit = (blockchainWallet, token, fee) => {
   const asyncAction = async () => {
-    const { transactionHash, exitId } = await plasmaService.exit(
-      blockchainWallet,
-      token,
-      fee
-    )
+    const {
+      transactionHash,
+      exitId,
+      blknum,
+      paymentExitGameAddress
+    } = await plasmaService.exit(blockchainWallet, token, fee)
 
     return {
       hash: transactionHash,
       from: blockchainWallet.address,
+      to: paymentExitGameAddress,
       value: token.balance,
+      smallestValue: Parser.parseUnits(
+        token.balance,
+        token.tokenDecimal
+      ).toString(),
       symbol: token.tokenSymbol,
       exitId: exitId,
+      childchainBlockNumber: blknum,
+      tokenDecimal: token.tokenDecimal,
       contractAddress: token.contractAddress,
-      gasPrice: fee.amount,
+      gasPrice: Parser.parseUnits(fee.amount, fee.symbol).toString(),
+      gasUsed: 1,
       actionType: TransactionActionTypes.TYPE_CHILDCHAIN_EXIT,
+      type: TransactionTypes.TYPE_EXIT,
       createdAt: Datetime.now()
     }
   }

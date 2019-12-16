@@ -64,10 +64,8 @@ const TransactionDetailInfo = ({ theme, tx, style }) => {
   const renderErrorReason = () => {
     return (
       <View style={styles.infoItem}>
-        <OMGText style={styles.infoItemLabel(theme, isFailed)}>
-          Error Reason
-        </OMGText>
-        <OMGText style={styles.infoItemValue(theme)} weight='bold'>
+        <OMGText style={styles.errorText(theme)}>Error</OMGText>
+        <OMGText style={styles.infoItemValue(theme)}>
           {renderReasonText()}
         </OMGText>
       </View>
@@ -110,7 +108,7 @@ const Divider = ({ theme }) => {
 
 const styles = StyleSheet.create({
   container: (theme, isFailed) => ({
-    backgroundColor: isFailed ? theme.colors.red : theme.colors.green1,
+    backgroundColor: isFailed ? theme.colors.red4 : theme.colors.green1,
     borderRadius: theme.roundness,
     paddingVertical: 16
   }),
@@ -138,8 +136,11 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginHorizontal: 10
   },
+  errorText: theme => ({
+    color: theme.colors.red5
+  }),
   infoItemLabel: (theme, isFailed) => ({
-    color: isFailed ? theme.colors.gray3 : theme.colors.gray2
+    color: isFailed ? theme.colors.gray5 : theme.colors.gray2
   }),
   infoItemValue: theme => ({
     color: theme.colors.primary

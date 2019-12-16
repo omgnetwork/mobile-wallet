@@ -4,14 +4,14 @@ export const select = (
   currentPage,
   viewedPopups,
   enabledOnboarding,
-  rootchainAssets
+  options
 ) => {
   const contentKey = Object.keys(OnboardingContent).find(key =>
     OnboardingContent[key].shouldDisplay(
       enabledOnboarding,
       currentPage,
       viewedPopups,
-      rootchainAssets
+      options
     )
   )
 

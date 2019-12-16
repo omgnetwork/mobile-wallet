@@ -23,15 +23,13 @@ const RootchainTransactionTracker = ({
 
   useEffect(() => {
     if (rootNotification) {
-      const confirmedTx = unconfirmedTxs.find(
-        tx => tx.hash === rootNotification.confirmedTxs[0].hash
-      )
-
+      const confirmedTx = rootNotification.confirmedTxs.slice(-1).pop()
       if (!confirmedTx) {
         return
       }
 
       if (Transaction.isUnconfirmStartedExitTx(confirmedTx)) {
+        console.log(confirmedTx)
         dispatchAddStartedExitTx({
           ...confirmedTx,
           startedExitAt: Datetime.now()

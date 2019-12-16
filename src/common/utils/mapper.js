@@ -1,6 +1,7 @@
 import { ContractAddress } from 'common/constants'
-import { Transaction, Token } from 'common/utils'
+import { Transaction, Token, Parser, Datetime } from 'common/utils'
 import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
+import Config from 'react-native-config'
 import BigNumber from 'bignumber.js'
 
 export const mapChildchainTx = (tx, tokens, walletAddress) => {
@@ -139,6 +140,17 @@ const mapRootchainErc20Tx = (tx, address) => {
     tokenDecimal: tx.tokenDecimal,
     value: typeof tx.value === 'string' ? tx.value : tx.value.toFixed(),
     timestamp: tx.timeStamp
+  }
+}
+
+export const mapStartedExitTx = tx => {
+  console.log('')
+  return {
+    ...tx,
+    gasUsed: tx.gasUsed.toString(),
+    value: tx.smallestValue,
+    tokenSymbol: tx.symbol.toString(),
+    timestamp: Datetime.toTimestamp(tx.startedExitAt)
   }
 }
 

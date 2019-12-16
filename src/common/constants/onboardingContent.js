@@ -115,7 +115,7 @@ export const DEPOSIT_POPUP = {
     enabledOnboarding,
     currentPage,
     viewedPopups,
-    rootchainAssets
+    { rootchainAssets }
   ) => {
     return (
       enabledOnboarding &&
@@ -138,12 +138,19 @@ export const TRANSFER_POPUP = {
   isPopup: true,
   arrowDirection: 'down',
   anchoredTo: 'TransferButton',
-  shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) => {
+  shouldDisplay: (
+    enabledOnboarding,
+    currentPage,
+    viewedPopups,
+    { childchainAssets }
+  ) => {
     return (
       enabledOnboarding &&
       currentPage === 'childchain-balance' &&
       viewedPopups.includes('CHILDCHAIN_POPUP') &&
-      !viewedPopups.includes('TRANSFER_POPUP')
+      !viewedPopups.includes('TRANSFER_POPUP') &&
+      childchainAssets &&
+      childchainAssets.length > 0
     )
   }
 }
@@ -159,11 +166,18 @@ export const EXIT_POPUP = {
   arrowDirection: 'down',
   anchoredTo: 'ExitButton',
   imageBottomName: 'TourExit',
-  shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) => {
+  shouldDisplay: (
+    enabledOnboarding,
+    currentPage,
+    viewedPopups,
+    { childchainAssets }
+  ) => {
     return (
       currentPage === 'childchain-balance' &&
       viewedPopups.includes('TRANSFER_POPUP') &&
-      !viewedPopups.includes('EXIT_POPUP')
+      !viewedPopups.includes('EXIT_POPUP') &&
+      childchainAssets &&
+      childchainAssets.length > 0
     )
   }
 }

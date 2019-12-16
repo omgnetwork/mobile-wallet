@@ -1,6 +1,6 @@
 import { Plasma } from 'common/clients'
 import { ContractABI, Transaction } from 'common/utils'
-import { ContractAddress, Gas } from 'common/constants'
+import { Gas } from 'common/constants'
 import { TxOptions } from 'common/blockchain'
 
 export const getBalances = address => {
@@ -172,6 +172,11 @@ export const waitForRootchainTransaction = ({
   })
 }
 
+export const getPaymentExitGameAddress = async () => {
+  const paymentExitGame = await Plasma.rootchain.getPaymentExitGame()
+  return paymentExitGame.address
+}
+
 export const getErrorReason = hash => {
   return Plasma.utils.ethErrorReason({ web3: Plasma.rootchain.web3, hash })
 }
@@ -219,6 +224,13 @@ export const createTx = (fromAddress, payments, fee, metadata) => {
   const encodedMetadata =
     (metadata && Transaction.encodeMetadata(metadata)) ||
     Plasma.transaction.NULL_METADATA
+
+  console.log({
+    owner: fromAddress,
+    payments,
+    fee,
+    metadata: encodedMetadata
+  })
 
   return Plasma.childchain.createTransaction({
     owner: fromAddress,

@@ -3,6 +3,7 @@ import { View, StyleSheet, FlatList } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { OMGEmpty, OMGItemTransaction } from 'components/widgets'
+import { TransactionTypes } from 'common/constants'
 
 const OMGTransactionList = ({
   transactions,
@@ -15,25 +16,30 @@ const OMGTransactionList = ({
   navigation
 }) => {
   const getEmptyStatePayload = useCallback(() => {
-    if (type === 'recent') {
+    if (type === TransactionTypes.TYPE_RECENT) {
       return {
         imageName: 'EmptyTxRecent',
-        text: 'No activity history, try\nReceive | Deposit | Transfer'
+        text: 'Empty activity history, try\nReceive | Deposit | Transfer'
       }
-    } else if (type === 'deposit') {
+    } else if (type === TransactionTypes.TYPE_DEPOSIT) {
       return {
         imageName: 'EmptyTxDeposit',
-        text: 'No Deposit History.\nTry deposit.'
+        text: 'Empty Deposit History.\nTry deposit.'
       }
-    } else if (type === 'exit') {
+    } else if (type === TransactionTypes.TYPE_EXIT) {
       return {
         imageName: 'EmptyTxExit',
-        text: 'No Exits History.'
+        text: 'Empty Exits History.'
+      }
+    } else if (type === TransactionTypes.TYPE_FAILED) {
+      return {
+        imageName: 'EmptyTxAll',
+        text: 'Empty Failed Transaction History.'
       }
     } else {
       return {
         imageName: 'EmptyTxAll',
-        text: 'No Transaction History\nTry transfer.'
+        text: 'Empty Transaction History\nTry transfer.'
       }
     }
   }, [type])

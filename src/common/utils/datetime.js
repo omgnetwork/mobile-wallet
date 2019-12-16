@@ -8,6 +8,10 @@ export const fromTimestamp = timestamp => {
   return moment.unix(timestamp)
 }
 
+export const toTimestamp = datetimeString => {
+  return fromString(datetimeString).format('X')
+}
+
 export const format = (datetime, token) => {
   return moment(datetime).format(token || 'LTS')
 }

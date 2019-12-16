@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import { onboardingActions } from 'common/actions'
+import { onboardingActions, transactionActions } from 'common/actions'
 import * as ContentSelector from './contentSelector'
 import { connect } from 'react-redux'
 import {
@@ -15,7 +15,9 @@ const OnboardingTourGuide = ({
   viewedPopups,
   anchoredComponents,
   rootchainAssets,
+  childchainAssets,
   hasWallet,
+  dispatchInvalidateFeedbackCompleteTx,
   dispatchEnableOnboarding,
   dispatchAddViewedPopup
 }) => {
@@ -41,11 +43,24 @@ const OnboardingTourGuide = ({
         currentPage,
         viewedPopups,
         enabledOnboarding,
-        rootchainAssets
+        { childchainAssets, rootchainAssets }
       )
+
+      if (content && content.key === 'EXIT_POPUP') {
+        dispatchInvalidateFeedbackCompleteTx()
+      }
+
       setTourContent(content)
     }
-  }, [currentPage, enabledOnboarding, hasWallet, rootchainAssets, viewedPopups])
+  }, [
+    childchainAssets,
+    currentPage,
+    dispatchInvalidateFeedbackCompleteTx,
+    enabledOnboarding,
+    hasWallet,
+    rootchainAssets,
+    viewedPopups
+  ])
 
   useEffect(() => {
     if (tourContent) {
@@ -117,8 +132,13 @@ const mapStateToProps = (state, ownProps) => ({
   hasWallet: state.wallets.length > 0,
   rootchainAssets: state.setting.primaryWalletAddress
     ? state.wallets.find(
-        wallet => wallet.address == state.setting.primaryWalletAddress
+        wallet => wallet.address === state.setting.primaryWalletAddress
       ).rootchainAssets
+    : [],
+  childchainAssets: state.setting.primaryWalletAddress
+    ? state.wallets.find(
+        wallet => wallet.address === state.setting.primaryWalletAddress
+      ).childchainAssets
     : [],
   enabledOnboarding: state.onboarding.enabled,
   currentPage: state.onboarding.currentPage,
@@ -133,7 +153,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   dispatchAddViewedPopup: (viewedPopups, popup) => {
     onboardingActions.addViewedPopup(dispatch, viewedPopups, popup)
-  }
+  },
+  dispatchInvalidateFeedbackCompleteTx: () =>
+    transactionActions.invalidateFeedbackCompleteTx(dispatch)
 })
 
 export default connect(
