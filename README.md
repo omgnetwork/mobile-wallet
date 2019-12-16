@@ -47,11 +47,11 @@ EXIT_PERIOD=<EXIT_PERIOD>
 
 ### Android
 
-Generate the release apk by running `npm run build-android`. The generated apk file can be found at the `artifacts` folder.
+[Go to Android release doc](docs/release-android.md)
 
 ### iOS
 
-Generate the release ipa by running `npm run build-ios`. The generated ipa file can be found at the `artifacts` folder.
+[Go to iOS release doc](docs/release-ios.md)
 
 ## Developer Notes
 
