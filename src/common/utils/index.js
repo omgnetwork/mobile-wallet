@@ -14,6 +14,7 @@ import * as Mapper from './mapper'
 import * as Address from './address'
 import * as Validator from './validator'
 import * as Dimensions from './dimensions'
+import * as Reanimated from './reanimated'
 
 export {
   Address,
@@ -31,5 +32,6 @@ export {
   Storage,
   Transaction,
   Token,
-  Validator
+  Validator,
+  Reanimated
 }

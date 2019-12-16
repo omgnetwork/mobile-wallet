@@ -1,6 +1,6 @@
 export const transactionReducer = (
   state = {
-    pendingTxs: [],
+    unconfirmedTxs: [],
     transactions: [],
     startedExitTxs: [],
     feedbackCompleteTx: null
@@ -16,29 +16,45 @@ export const transactionReducer = (
     case 'CHILDCHAIN/EXIT/SUCCESS':
       return {
         ...state,
-        pendingTxs: [...state.pendingTxs, action.data],
+        unconfirmedTxs: [...state.unconfirmedTxs, action.data],
         feedbackCompleteTx: null
       }
     case 'TRANSACTION/INVALIDATE_PENDING_TX/OK':
       return {
         ...state,
-        feedbackCompleteTx: action.data.resolvedPendingTx,
-        pendingTxs: state.pendingTxs.filter(
-          pendingTx => pendingTx.hash !== action.data.resolvedPendingTx.hash
+        feedbackCompleteTx: action.data.resolvedUnconfirmedTx,
+        unconfirmedTxs: state.unconfirmedTxs.filter(
+          unconfirmedTx => unconfirmedTx.hash !== action.data.resolvedUnconfirmedTx.hash
         )
       }
     case 'WALLET/DELETE_ALL/OK':
     case 'SETTING/SET_PRIMARY_ADDRESS/OK':
       return {
         transactions: [],
-        pendingTxs: [],
+        unconfirmedTxs: [],
         startedExitTxs: [],
         feedbackCompleteTx: null
       }
     case 'TRANSACTION/ADD_STARTED_EXIT_TX/OK':
+      const startExitTxsSet = new Set(state.startExitTxs)
+      startExitTxsSet.add({ ...action.data.exitTx, status: 'started' })
       return {
         ...state,
-        startedExitTxs: [...state.startedExitTxs, action.data.exitTx]
+        startedExitTxs: Array.from(startExitTxsSet)
+      }
+    case 'TRANSACTION/UPDATE_STARTED_EXIT_TX/OK':
+      return {
+        ...state,
+        startedExitTxs: state.startedExitTxs.map(tx => {
+          if (tx.hash === action.data.hash) {
+            return {
+              ...tx,
+              status: action.data.status
+            }
+          } else {
+            return tx
+          }
+        })
       }
     case 'TRANSACTION/INVALIDATE_FEEDBACK_COMPLETE_TX/OK':
       return {

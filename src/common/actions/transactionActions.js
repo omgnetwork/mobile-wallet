@@ -1,11 +1,11 @@
 import { createAction, createAsyncAction } from './actionCreators'
 import { transactionService } from 'common/services'
 
-export const invalidatePendingTx = (dispatch, resolvedTx) => {
+export const invalidateUnconfirmedTx = (dispatch, resolvedTx) => {
   return createAction(dispatch, {
     type: 'TRANSACTION/INVALIDATE_PENDING_TX',
     operation: () => ({
-      resolvedPendingTx: resolvedTx
+      resolvedUnconfirmedTx: resolvedTx
     })
   })
 }
@@ -14,7 +14,7 @@ export const invalidatePendingExitTx = (dispatch, resolvedTx) => {
   return createAction(dispatch, {
     type: 'TRANSACTION/INVALIDATE_PENDING_EXIT_TX',
     operation: () => ({
-      resolvedPendingTx: resolvedTx
+      resolvedUnconfirmedTx: resolvedTx
     })
   })
 }
@@ -31,6 +31,16 @@ export const addStartedExitTx = (dispatch, exitTx) => {
     type: 'TRANSACTION/ADD_STARTED_EXIT_TX',
     operation: () => ({
       exitTx
+    })
+  })
+}
+
+export const updateStartedExitTxStatus = (dispatch, hash, status) => {
+  return createAction(dispatch, {
+    type: 'TRANSACTION/UPDATE_STARTED_EXIT_TX',
+    operation: () => ({
+      hash,
+      status
     })
   })
 }

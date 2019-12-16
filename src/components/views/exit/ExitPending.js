@@ -18,7 +18,7 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const ExitPending = ({ theme, navigation }) => {
-  const pendingTx = navigation.getParam('pendingTx')
+  const unconfirmedTx = navigation.getParam('unconfirmedTx')
   const token = navigation.getParam('token')
   const tokenPrice = BlockchainRenderer.renderTokenPrice(
     token.balance,
@@ -79,7 +79,7 @@ const ExitPending = ({ theme, navigation }) => {
           <TouchableOpacity
             style={styles.trackEtherscanButton}
             onPress={() => {
-              Linking.openURL(`${Config.ETHERSCAN_TX_URL}${pendingTx.hash}`)
+              Linking.openURL(`${Config.ETHERSCAN_TX_URL}${unconfirmedTx.hash}`)
             }}>
             <OMGText style={styles.trackEtherscanText(theme)}>
               Track on Etherscan
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  pendingTxs: state.transaction.pendingTxs,
+  unconfirmedTxs: state.transaction.unconfirmedTxs,
   loading: state.loading,
   provider: state.setting.provider,
   wallet: state.wallets.find(

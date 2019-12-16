@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
@@ -28,7 +28,7 @@ const ExitConfirm = ({
   navigation,
   blockchainWallet,
   loading,
-  pendingTxs,
+  unconfirmedTx,
   dispatchExit
 }) => {
   const token = navigation.getParam('token')
@@ -39,9 +39,9 @@ const ExitConfirm = ({
   )
   const [loadingVisible, setLoadingVisible] = useState(false)
 
-  const exit = () => {
+  const exit = useCallback(() => {
     dispatchExit(blockchainWallet, token, exitFee)
-  }
+  }, [blockchainWallet, dispatchExit, token])
 
   useEffect(() => {
     if (loading.show && ActionAlert.exit.actions.indexOf(loading.action) > -1) {
@@ -63,7 +63,7 @@ const ExitConfirm = ({
     ) {
       navigation.navigate('ExitPending', {
         token,
-        pendingTx: pendingTxs.slice(-1).pop()
+        unconfirmedTx
       })
     }
   })
@@ -170,14 +170,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => ({
   blockchainWallet: state.setting.blockchainWallet,
-  pendingTxs: state.transaction.pendingTxs,
+  unconfirmedTx: state.transaction.unconfirmedTxs.slice(-1).pop(),
   loading: state.loading,
   provider: state.setting.provider
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchExit: (blockchainWallet, token, fee) =>
-    dispatch(plasmaActions.exit(blockchainWallet, token, exitFee))
+    dispatch(plasmaActions.exit(blockchainWallet, token, fee))
 })
 
 export default connect(

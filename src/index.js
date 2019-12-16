@@ -1,12 +1,17 @@
-import React, { Fragment, useEffect } from 'react'
-import { YellowBox } from 'react-native'
+import React, { Fragment, useEffect, useCallback } from 'react'
+import { YellowBox, Platform } from 'react-native'
 import { Provider } from 'react-redux'
 import Router from 'router'
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import { store, persistor } from 'common/stores'
 import { settingActions } from 'common/actions'
 import Config from 'react-native-config'
-import { TransactionTracker } from 'common/tracker'
+import {
+  BackgroundTaskTracker,
+  RootchainTransactionTracker,
+  ChildchainTransactionTracker,
+  ProcessExitTransactionTracker
+} from 'common/tracker'
 import { OMGAlert } from 'components/widgets'
 import { notificationService } from 'common/services'
 import { colors } from 'common/styles'
@@ -29,6 +34,27 @@ const App = () => {
     colors
   }
 
+  const renderTrackerByOs = useCallback(os => {
+    if (os === 'ios') {
+      return (
+        <>
+          <RootchainTransactionTracker />
+          <ChildchainTransactionTracker />
+          <ProcessExitTransactionTracker />
+          <BackgroundTaskTracker />
+        </>
+      )
+    } else {
+      return (
+        <>
+          <RootchainTransactionTracker />
+          <ChildchainTransactionTracker />
+          <ProcessExitTransactionTracker />
+        </>
+      )
+    }
+  }, [])
+
   return (
     <Fragment>
       <Provider store={store}>
@@ -36,7 +62,7 @@ const App = () => {
           <PersistGate persistor={persistor}>
             <Router />
             <OMGAlert />
-            <TransactionTracker />
+            {renderTrackerByOs(Platform.OS)}
           </PersistGate>
         </PaperProvider>
       </Provider>

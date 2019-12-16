@@ -1,11 +1,13 @@
-import React, { useEffect, Fragment } from 'react'
-import { connect } from 'react-redux'
-import { StyleSheet, View } from 'react-native'
+import { settingActions, transactionActions } from 'common/actions'
+import { GoogleAnalytics } from 'common/analytics'
+import { store } from 'common/stores'
+import { HeadlessProcessExit } from 'components/headless'
+import { OMGEmpty, OMGText } from 'components/widgets'
+import React, { useCallback, useEffect } from 'react'
+import { AppRegistry, Platform, StyleSheet, View } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
-import { settingActions } from 'common/actions'
-import { OMGEmpty, OMGText } from 'components/widgets'
-import { GoogleAnalytics } from 'common/analytics'
+import { connect } from 'react-redux'
 
 const Initializer = ({
   theme,
@@ -23,6 +25,11 @@ const Initializer = ({
       navigation.navigate('Welcome')
     } else if (wallet && provider && blockchainWallet) {
       navigation.navigate('MainContent')
+
+      if (Platform.OS === 'android') {
+        registerHeadlessService()
+      }
+
       GoogleAnalytics.sendEvent('view_balance', {})
     } else if (shouldGetBlockchainWallet(wallet, blockchainWallet, provider)) {
       dispatchSetBlockchainWallet(wallet, provider)
@@ -35,15 +42,22 @@ const Initializer = ({
     dispatchSetPrimaryWallet,
     navigation,
     provider,
+    registerHeadlessService,
     wallet,
     wallets
   ])
 
+  const registerHeadlessService = useCallback(() => {
+    AppRegistry.registerHeadlessTask('HeadlessProcessExit', () =>
+      HeadlessProcessExit.bind(null, store)
+    )
+  }, [])
+
   const renderChildren = () => {
     if (wallets.length === 0) {
-      return <Fragment>{children}</Fragment>
+      return <>{children}</>
     } else if (wallet && blockchainWallet && provider) {
-      return <Fragment>{children}</Fragment>
+      return <>{children}</>
     } else {
       return (
         <View style={styles.container}>
@@ -89,7 +103,8 @@ const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
   wallets: state.wallets,
   provider: state.setting.provider,
-  blockchainWallet: state.setting.blockchainWallet
+  blockchainWallet: state.setting.blockchainWallet,
+  unconfirmedTxs: state.transaction.unconfirmedTxs
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

@@ -1,4 +1,5 @@
-import { createStackNavigator, createSwitchNavigator } from 'react-navigation'
+import { createSwitchNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation-stack'
 import createMainDrawerNavigator from './main'
 import DepositNavigator from './deposit'
 import TransferNavigator from './transfer'

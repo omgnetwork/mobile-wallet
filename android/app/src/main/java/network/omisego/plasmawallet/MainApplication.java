@@ -1,14 +1,16 @@
 package network.omisego.plasmawallet;
 
 import android.app.Application;
+import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import io.invertase.firebase.RNFirebasePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
+import network.omisego.plasmawallet.schedule.TaskSchedulerPackage;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -21,10 +23,9 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
       packages.add(new RNFirebaseAnalyticsPackage());
-      // Packages that cannot be autolinked yet can be added manually here, for example:
+      packages.add(new TaskSchedulerPackage());
       return packages;
     }
 
@@ -42,6 +43,7 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+    SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
   }
 
@@ -69,4 +71,5 @@ public class MainApplication extends Application implements ReactApplication {
         e.printStackTrace();
       }
     }
+  }
 }

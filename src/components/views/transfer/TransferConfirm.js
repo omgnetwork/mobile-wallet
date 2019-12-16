@@ -26,7 +26,7 @@ const TransferConfirm = ({
   navigation,
   blockchainWallet,
   dispatchSendToken,
-  pendingTxs,
+  unconfirmedTxs,
   ethToken,
   loading
 }) => {
@@ -68,14 +68,14 @@ const TransferConfirm = ({
 
   useEffect(() => {
     if (loading.success && observedActions.indexOf(loading.action) > -1) {
-      const lastPendingTx = pendingTxs.slice(-1).pop()
+      const lastUnconfirmedTx = unconfirmedTxs.slice(-1).pop()
       navigation.navigate('TransferPending', {
         token,
         fromWallet,
         toWallet,
         isDeposit,
         isRootchain,
-        pendingTx: lastPendingTx,
+        unconfirmedTx: lastUnconfirmedTx,
         fee
       })
     }
@@ -87,7 +87,7 @@ const TransferConfirm = ({
     loading,
     navigation,
     observedActions,
-    pendingTxs,
+    unconfirmedTxs,
     toWallet,
     token
   ])
@@ -104,7 +104,7 @@ const TransferConfirm = ({
 
   useEffect(() => {
     const isPendingChildchainTransaction =
-      pendingTxs.find(
+      unconfirmedTxs.find(
         tx =>
           tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
       ) !== undefined
@@ -115,7 +115,7 @@ const TransferConfirm = ({
     setConfirmBtnDisable(
       isPendingChildchainTransaction && isChildchainTransaction
     )
-  }, [isRootchain, pendingTxs, toWallet.address])
+  }, [isRootchain, unconfirmedTxs, toWallet.address])
 
   const sendToken = () => {
     dispatchSendToken(
@@ -324,7 +324,7 @@ const mapStateToProps = (state, ownProps) => {
   )
 
   return {
-    pendingTxs: state.transaction.pendingTxs,
+    unconfirmedTxs: state.transaction.unconfirmedTxs,
     provider: state.setting.provider,
     loading: state.loading,
     blockchainWallet: state.setting.blockchainWallet,

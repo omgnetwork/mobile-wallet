@@ -1,6 +1,5 @@
 import { Formatter, Parser, Polling, Datetime, Mapper, Token } from '../utils'
 import { Plasma } from 'common/blockchain'
-import { Gas } from 'common/constants'
 import { priceService } from 'common/services'
 import Config from 'react-native-config'
 
@@ -16,7 +15,7 @@ export const fetchAssets = (provider, address) => {
       const contractAddresses = Array.from(new Set(currencies))
       const tokens = await Token.fetchTokens(provider, contractAddresses)
 
-      const pendingChildchainAssets = balances.map(balance => {
+      const unconfirmedChildchainAssets = balances.map(balance => {
         return new Promise(async (resolveBalance, rejectBalance) => {
           const token = tokens.find(t => balance.currency === t.contractAddress)
 
@@ -50,7 +49,7 @@ export const fetchAssets = (provider, address) => {
         })
       })
 
-      const childchainAssets = await Promise.all(pendingChildchainAssets)
+      const childchainAssets = await Promise.all(unconfirmedChildchainAssets)
 
       resolve({
         lastUtxoPos: (utxos.length && utxos[0].utxo_pos.toString(10)) || '0',
@@ -245,22 +244,37 @@ export const exit = (blockchainWallet, token, fee) => {
   })
 }
 
-export const processExits = (blockchainWallet, exitId, contractAddress) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const receipt = await Plasma.processExits(contractAddress, exitId, {
-        gas: Gas.LIMIT,
-        from: blockchainWallet.address,
-        privateKey: blockchainWallet.privateKey
-      })
+// We're not using this right now but let's keep it because it still has potential to be used in the future.
+// export const processExits = (blockchainWallet, exitId, contractAddress) => {
+//   return new Promise(async (resolve, reject) => {
+//     try {
+//       const { transactionHash } = await Plasma.processExits(
+//         contractAddress,
+//         exitId,
+//         {
+//           gas: Gas.LIMIT,
+//           from: blockchainWallet.address,
+//           privateKey: blockchainWallet.privateKey
+//         }
+//       )
 
-      resolve(receipt)
-    } catch (err) {
-      console.log(err)
-      reject(err)
-    }
-  })
-}
+//       await Plasma.waitForRootchainTransaction({
+//         transactionHash,
+//         intervalMs: 15000,
+//         confirmationThreshold: Config.CHILDCHAIN_EXIT_CONFIRMATION_BLOCKS,
+//         onCountdown: remaining =>
+//           console.log(
+//             `Process exit confirmation is remaining by ${remaining} blocks`
+//           )
+//       })
+
+//       resolve({ transactionHash })
+//     } catch (err) {
+//       console.log(err)
+//       reject(err)
+//     }
+//   })
+// }
 
 const getOrCreateUtxoWithAmount = async (
   desiredAmount,

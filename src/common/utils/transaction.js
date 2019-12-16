@@ -22,6 +22,22 @@ export const isReceiveTx = (walletAddress, toAddress) => {
   return walletAddress.toLowerCase() === toAddress.toLowerCase()
 }
 
-export const isExitTx = tx => {
-  return tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_EXIT
+export const isUnconfirmStartedExitTx = tx => {
+  return (
+    tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_EXIT && !tx.status
+  )
+}
+
+export const isConfirmedStartedExitTx = tx => {
+  return (
+    tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_EXIT &&
+    tx.status === 'started'
+  )
+}
+
+export const isReadyToProcessExitTx = tx => {
+  return (
+    tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_EXIT &&
+    tx.status === 'ready'
+  )
 }

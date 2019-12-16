@@ -60,11 +60,11 @@ export const depositEth = async (
     depositGasPrice
   )
 
-  const receipt = await Plasma.rootchain.depositEth(
-    encodedDepositTx,
-    weiAmount,
-    depositOptions
-  )
+  const receipt = await Plasma.rootchain.depositEth({
+    depositTx: encodedDepositTx,
+    amount: weiAmount,
+    txOptions: depositOptions
+  })
 
   return receiptWithGasPrice(receipt, depositGasPrice)
 }
@@ -157,6 +157,21 @@ export const standardExit = (exitData, blockchainWallet, options) => {
   })
 }
 
+export const waitForRootchainTransaction = ({
+  transactionHash,
+  intervalMs,
+  confirmationThreshold,
+  onCountdown = remaining => {}
+}) => {
+  return Plasma.utils.waitForRootchainTransaction({
+    web3: Plasma.rootchain.web3,
+    transactionHash,
+    checkIntervalMs: intervalMs,
+    blocksToWait: confirmationThreshold,
+    onCountdown: onCountdown
+  })
+}
+
 export const isDepositUtxo = utxo => {
   return utxo.blknum % 1000 !== 0
 }
@@ -175,21 +190,25 @@ export const hasToken = tokenContractAddress => {
 
 export const addToken = async (tokenContractAddress, options) => {
   try {
-    if (tokenContractAddress === ContractAddress.ETH_ADDRESS)
-      return Promise.resolve(true)
     const receipt = await Plasma.rootchain.addToken({
       token: tokenContractAddress,
       txOptions: options
     })
     return Promise.resolve(receipt)
   } catch (err) {
-    return Promise.resolve(true)
+    return Promise.reject(err)
   }
 }
 
-export const processExits = (contractAddress, exitId, options) => {
-  return Plasma.rootchain.processExits(contractAddress, exitId || 0, 1, options)
-}
+// We're not using this right now but let's keep it because it still has potential to be used in the future.
+// export const processExits = (contractAddress, exitId, txOptions) => {
+//   return Plasma.rootchain.processExits({
+//     token: contractAddress,
+//     exitId: exitId || 0,
+//     maxExitsToProcess: 1,
+//     txOptions
+//   })
+// }
 
 // Transaction management
 export const createTx = (fromAddress, payments, fee, metadata) => {

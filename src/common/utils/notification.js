@@ -1,8 +1,12 @@
 import PushNotification from 'react-native-push-notification'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
+import { Datetime } from 'common/utils'
 
 export const create = ({ title, message }) => {
-  PushNotification.localNotification({ title, message })
+  PushNotification.localNotification({
+    title,
+    message
+  })
 }
 
 export const init = () => {

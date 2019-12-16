@@ -16,7 +16,7 @@ import {
 import { Alert } from 'common/constants'
 
 const RootchainBalance = ({
-  pendingTxs,
+  unconfirmedTxs,
   provider,
   dispatchLoadAssets,
   wallet,
@@ -28,7 +28,7 @@ const RootchainBalance = ({
   const [totalBalance, setTotalBalance] = useState(0.0)
   const [loading, setLoading] = useState(false)
   const [shouldShowLoading, setShouldShowLoading] = useState(true)
-  const hasPendingTransaction = pendingTxs.length > 0
+  const hasPendingTransaction = unconfirmedTxs.length > 0
   const hasRootchainAssets =
     wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
   const currency = 'USD'
@@ -41,7 +41,7 @@ const RootchainBalance = ({
     }
   }, [
     dispatchLoadAssets,
-    pendingTxs,
+    unconfirmedTxs,
     provider,
     dispatchRefreshRootchain,
     wallet
@@ -134,7 +134,7 @@ const formatTotalBalance = balance => {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  pendingTxs: state.transaction.pendingTxs,
+  unconfirmedTxs: state.transaction.unconfirmedTxs,
   provider: state.setting.provider,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress

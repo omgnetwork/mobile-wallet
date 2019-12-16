@@ -4,7 +4,7 @@ import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
 import BigNumber from 'bignumber.js'
 
 export const mapChildchainTx = (tx, tokens, address) => {
-  const sentToken = mapChildchainOutput(tx.results)
+  const sentToken = mapChildchainOutput(tx.outputs)
   const contractAddress = sentToken.currency
   const token = Token.find(contractAddress, tokens)
   return {
@@ -21,9 +21,9 @@ export const mapChildchainTx = (tx, tokens, address) => {
     tokenSymbol: token.tokenSymbol,
     tokenDecimal: token.tokenDecimal,
     value:
-      typeof sentToken.value === 'string'
-        ? sentToken.value
-        : sentToken.value.toFixed(),
+      typeof sentToken.amount === 'string'
+        ? sentToken.amount
+        : sentToken.amount.toFixed(),
     timestamp: tx.block.timestamp
   }
 }
@@ -75,7 +75,7 @@ export const mapRootchainTx = (tx, address, cachedErc20Tx) => {
 }
 
 export const mapTxCurrency = tx => {
-  const usedCurrency = tx.results[tx.results.length - 1]
+  const usedCurrency = tx.outputs[tx.outputs.length - 1]
   return usedCurrency.currency
 }
 
@@ -121,14 +121,14 @@ const mapRootchainErc20Tx = (tx, address) => {
   }
 }
 
-const mapChildchainOutput = results => {
-  const erc20Token = results
+const mapChildchainOutput = outputs => {
+  const erc20Token = outputs
     .reverse()
-    .find(result => result.currency !== ContractAddress.ETH_ADDRESS)
+    .find(output => output.currency !== ContractAddress.ETH_ADDRESS)
   if (erc20Token) {
     return erc20Token
   } else {
-    return results[0]
+    return outputs[0]
   }
 }
 

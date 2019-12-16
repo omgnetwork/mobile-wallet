@@ -1,81 +1,78 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
-import { plasmaService } from 'common/services'
+import { useState, useEffect, useCallback } from 'react'
 import { Datetime } from 'common/utils'
 import Config from 'react-native-config'
+import { NotificationMessages } from 'common/constants'
 import BackgroundTimer from 'react-native-background-timer'
 
 const useExitTracker = blockchainWallet => {
-  // const INTERVAL_PERIOD = Config.EXIT_PERIOD / 2 + 5000
-  const INTERVAL_PERIOD = 20000
-  const [pendingExitTxs, setPendingExitTxs] = useState([])
-  const watchedExitTxs = useRef([])
+  const EXIT_PERIOD = Config.EXIT_PERIOD * 2
+  const INTERVAL_PERIOD = 60000
+  const [startedExitTxs, setStartedExitTxs] = useState([])
   const [notification, setNotification] = useState(null)
 
-  useEffect(() => {
-    watchedExitTxs.current = pendingExitTxs
-  }, [pendingExitTxs])
-
-  const getExitReadyTxs = () => {
-    return watchedExitTxs.current.filter(tx => {
+  const getExitReadyTxs = useCallback(() => {
+    return startedExitTxs.filter(tx => {
       const currentDatetime = Datetime.fromNow()
-      const createdAt = Datetime.fromString(tx.createdAt)
-      const exitableAt = Datetime.add(createdAt, Config.EXIT_PERIOD)
-      console.log('current datetime', currentDatetime.format())
-      console.log('exitable At', exitableAt.format())
-      console.log('exitable', currentDatetime.isSameOrAfter(exitableAt))
+      const startedExitAt = Datetime.fromString(tx.startedExitAt)
+      const exitableAt = Datetime.add(startedExitAt, EXIT_PERIOD)
       return currentDatetime.isSameOrAfter(exitableAt)
     })
-  }
+  }, [EXIT_PERIOD, startedExitTxs])
 
-  const processExit = useCallback(async () => {
-    const readyExitTxs = getExitReadyTxs()
-    const pendingProcessExits = readyExitTxs.map(tx => {
-      return plasmaService.processExits(
-        blockchainWallet,
-        tx.exitId,
-        tx.contractAddress
-      )
+  // const processExit = useCallback(async () => {
+  //   const readyExitTxs = getExitReadyTxs()
+  //   const pendingProcessExits = readyExitTxs.map(tx => {
+  //     return plasmaService.processExits(
+  //       blockchainWallet,
+  //       tx.exitId,
+  //       tx.contractAddress
+  //     )
+  //   })
+
+  //   if (pendingProcessExits.length) {
+  //     const receipts = await Promise.all(pendingProcessExits)
+  //     return readyExitTxs
+  //   }
+  //   return []
+  // }, [blockchainWallet, getExitReadyTxs])
+
+  const updateTransactionStatus = useCallback(() => {
+    const readyToExitTxs = getExitReadyTxs()
+    return readyToExitTxs.map(tx => {
+      return {
+        ...tx,
+        status: 'ready'
+      }
     })
-
-    console.log('readyExitTxs', readyExitTxs)
-
-    if (pendingProcessExits.length) {
-      console.log('processing...')
-      const receipts = await Promise.all(pendingProcessExits)
-      console.log(receipts)
-      return readyExitTxs
-    }
-    return []
-  }, [blockchainWallet])
+  }, [getExitReadyTxs])
 
   const verify = useCallback(exitedTxs => {
     return exitedTxs.length > 0
   }, [])
 
-  const buildNotification = useCallback(tx => {
+  const buildNotification = useCallback(txs => {
     return {
+      ...NotificationMessages.NOTIFY_TRANSACTION_READY_TO_PROCESS_EXITED(
+        txs[0].value,
+        txs[0].symbol
+      ),
       type: 'exit',
-      title: `Successfully exited from OmiseGO network`,
-      message: `${tx.value} ${tx.symbol}`,
-      confirmedTx: tx
+      confirmedTxs: txs
     }
   }, [])
 
   const track = useCallback(async () => {
-    const exitedTxs = await processExit()
-    if (verify(exitedTxs)) {
-      exitedTxs.forEach(tx => {
-        const notificationPayload = buildNotification(tx)
-        setNotification(notificationPayload)
-      })
+    const updatedTxs = updateTransactionStatus()
+    if (verify(updatedTxs)) {
+      const notificationPayload = buildNotification(updatedTxs)
+      setNotification(notificationPayload)
     }
-  }, [buildNotification, processExit, verify])
+  }, [buildNotification, updateTransactionStatus, verify])
 
   useEffect(() => {
     let intervalId
-    if (pendingExitTxs.length) {
+    if (startedExitTxs.length) {
       intervalId = BackgroundTimer.setInterval(() => {
-        console.log('track')
         track()
       }, INTERVAL_PERIOD)
     }
@@ -85,9 +82,9 @@ const useExitTracker = blockchainWallet => {
         BackgroundTimer.clearInterval(intervalId)
       }
     }
-  }, [INTERVAL_PERIOD, pendingExitTxs, track])
+  }, [INTERVAL_PERIOD, startedExitTxs, track])
 
-  return [notification, setPendingExitTxs]
+  return [notification, setNotification, setStartedExitTxs]
 }
 
 export default useExitTracker

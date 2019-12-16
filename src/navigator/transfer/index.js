@@ -1,4 +1,5 @@
-import { createSwitchNavigator, createStackNavigator } from 'react-navigation'
+import { createSwitchNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation-stack'
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs'
 import * as Views from 'components/views'
 import { OMGTab } from 'components/widgets'

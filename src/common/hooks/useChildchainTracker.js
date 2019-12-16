@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from 'react'
 import { plasmaService } from 'common/services'
+import { NotificationMessages } from 'common/constants'
 import BackgroundTimer from 'react-native-background-timer'
 
 const useChildchainTracker = wallet => {
-  const [pendingChildchainTxs, setPendingChildchainTxs] = useState([])
+  const [unconfirmedChildchainTxs, setUnconfirmedChildchainTxs] = useState([])
   const [notification, setNotification] = useState(null)
 
   const syncTransactions = useCallback(() => {
@@ -13,27 +14,28 @@ const useChildchainTracker = wallet => {
   const verify = useCallback(
     currentWatcherTxs => {
       console.log(currentWatcherTxs)
-      const pendingTxsHash = pendingChildchainTxs.map(
-        pendingTx => pendingTx.hash
-      )
-      const resolvedPendingTx = currentWatcherTxs.find(
-        tx => pendingTxsHash.indexOf(tx.hash) > -1
+      const latestUnconfirmedTx = unconfirmedChildchainTxs.slice(-1).pop()
+      const confirmedTx = currentWatcherTxs.find(
+        tx => latestUnconfirmedTx.hash === tx.hash
       )
 
-      console.log('have found yet?', resolvedPendingTx !== undefined)
+      console.log('have found yet?', confirmedTx !== undefined)
 
-      return pendingChildchainTxs.find(tx => tx.hash === resolvedPendingTx.hash)
+      return unconfirmedChildchainTxs.find(tx => tx.hash === confirmedTx.hash)
     },
-    [pendingChildchainTxs]
+    [unconfirmedChildchainTxs]
   )
 
   const buildNotification = useCallback(
     confirmedTx => {
       return {
+        ...NotificationMessages.NOTIFY_TRANSACTION_SENT_OMG_NETWORK(
+          wallet.current.name,
+          confirmedTx.value,
+          confirmedTx.symbol
+        ),
         type: 'childchain',
-        title: `${wallet.current.name} sent on OmiseGO network`,
-        message: `${confirmedTx.value} ${confirmedTx.symbol}`,
-        confirmedTx
+        confirmedTxs: [confirmedTx]
       }
     },
     [wallet]
@@ -52,7 +54,7 @@ const useChildchainTracker = wallet => {
 
   useEffect(() => {
     let intervalId
-    if (pendingChildchainTxs.length) {
+    if (unconfirmedChildchainTxs.length) {
       intervalId = BackgroundTimer.setInterval(() => {
         track()
       }, 5000)
@@ -63,9 +65,9 @@ const useChildchainTracker = wallet => {
         BackgroundTimer.clearInterval(intervalId)
       }
     }
-  }, [pendingChildchainTxs, track])
+  }, [unconfirmedChildchainTxs, track])
 
-  return [notification, setNotification, setPendingChildchainTxs]
+  return [notification, setNotification, setUnconfirmedChildchainTxs]
 }
 
 export default useChildchainTracker

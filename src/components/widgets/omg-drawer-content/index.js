@@ -18,7 +18,7 @@ const OMGDrawerContent = ({
 }) => {
   const handleWalletPress = wallet => {
     dispatchSetPrimaryWalletAddress(wallet.address)
-    navigation.closeDrawer()
+    navigation.navigate('Initializer')
   }
 
   const handleManageWalletPress = () => {
@@ -75,7 +75,9 @@ const OMGDrawerContent = ({
           </OMGText>
           <OMGText style={styles.environmentItemText(theme)}>
             Plasma Contract:{' '}
-            <OMGText weight='bold'>{Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS}</OMGText>
+            <OMGText weight='bold'>
+              {Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS}
+            </OMGText>
           </OMGText>
         </View>
       </View>

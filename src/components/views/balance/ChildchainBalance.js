@@ -19,7 +19,7 @@ const ChildchainBalance = ({
   exitButtonRef,
   dispatchLoadAssets,
   dispatchSetShouldRefreshChildchain,
-  pendingTxs,
+  unconfirmedTxs,
   wallet,
   provider,
   navigation
@@ -28,7 +28,7 @@ const ChildchainBalance = ({
   const [totalBalance, setTotalBalance] = useState(0.0)
   const [loading, setLoading] = useState(false)
   const [shouldShowLoading, setShouldShowLoading] = useState(true)
-  const hasPendingTransaction = pendingTxs.length > 0
+  const hasPendingTransaction = unconfirmedTxs.length > 0
   const hasRootchainAssets =
     wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
   const hasChildchainAssets =
@@ -149,7 +149,7 @@ const formatTotalBalance = balance => {
 
 const mapStateToProps = (state, ownProps) => ({
   provider: state.setting.provider,
-  pendingTxs: state.transaction.pendingTxs,
+  unconfirmedTxs: state.transaction.unconfirmedTxs,
   loading: state.loading,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
