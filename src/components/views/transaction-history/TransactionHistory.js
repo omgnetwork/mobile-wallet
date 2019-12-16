@@ -26,7 +26,7 @@ const TransactionHistory = ({
   dispatchAddAnchoredComponent,
   dispatchSetCurrentPage,
   currentPage,
-  transactionHistoryMenuPosition,
+  startedExitTxs,
   transactions
 }) => {
   const [fetched, setFetched] = useState(false)
@@ -60,6 +60,9 @@ const TransactionHistory = ({
       page: 1,
       limit: 100
     }
+
+    console.log('fetching', fetching)
+    console.log('fetched', fetched)
 
     if (wallet && wallet.address && !fetching && !fetched) {
       dispatchFetchTxHistory(wallet.address, provider, options)
@@ -98,20 +101,19 @@ const TransactionHistory = ({
 
   useEffect(() => {
     if (transactions.length) {
-      const recentTxs = transactions
-        .filter(
-          tx =>
-            [
-              TransactionTypes.TYPE_RECEIVED,
-              TransactionTypes.TYPE_SENT,
-              TransactionTypes.TYPE_DEPOSIT,
-              TransactionTypes.TYPE_UNIDENTIFIED
-            ].indexOf(tx.type) > -1
+      const recentTxs = [...transactions, ...startedExitTxs]
+        .filter(tx =>
+          [
+            TransactionTypes.TYPE_RECEIVED,
+            TransactionTypes.TYPE_SENT,
+            TransactionTypes.TYPE_DEPOSIT,
+            TransactionTypes.TYPE_EXIT
+          ].includes(tx.type)
         )
         .slice(0, 5)
       setTxs(recentTxs)
     }
-  }, [transactions])
+  }, [transactions, startedExitTxs])
 
   const handleClickTransactions = useCallback(() => {
     navigation.navigate('TransactionHistoryFilter', {
@@ -120,8 +122,7 @@ const TransactionHistory = ({
         TransactionTypes.TYPE_ALL,
         TransactionTypes.TYPE_RECEIVED,
         TransactionTypes.TYPE_SENT,
-        TransactionTypes.TYPE_DEPOSIT,
-        TransactionTypes.TYPE_UNIDENTIFIED
+        TransactionTypes.TYPE_FAILED
       ]
     })
   }, [navigation])
@@ -174,7 +175,7 @@ const TransactionHistory = ({
       <OMGTransactionList
         transactions={txs}
         loading={fetching}
-        type='recent'
+        type={TransactionTypes.TYPE_RECENT}
         address={wallet && wallet.address}
       />
     </SafeAreaView>
@@ -219,6 +220,7 @@ const mapStateToProps = (state, ownProps) => ({
   provider: state.setting.provider,
   loading: state.loading,
   transactions: state.transaction.transactions,
+  startedExitTxs: state.transaction.startedExitTxs,
   anchoredComponents: state.onboarding.anchoredComponents,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress

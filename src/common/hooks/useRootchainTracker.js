@@ -67,12 +67,16 @@ const useRootchainTracker = wallet => {
       intervalMs: 3000,
       confirmationThreshold: getConfirmationsThreshold(latestPendingTx),
       onCountdown: remaining =>
-        console.log(
-          `Process exit confirmation is remaining by ${remaining} blocks`
-        )
+        console.log(`Confirmation is remaining by ${remaining} blocks`)
     })
     if (receipt) {
-      const payload = buildNotification(latestPendingTx)
+      console.log('receipt', receipt)
+      const notificationTxPayload = {
+        ...latestPendingTx,
+        rootchainBlockNumber: receipt.blockNumber,
+        gasUsed: receipt.gasUsed
+      }
+      const payload = buildNotification(notificationTxPayload)
       setNotification(payload)
       setUnconfirmedRootchainTxs(pendingRootchainTxs.slice(0, -1))
     }

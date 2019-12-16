@@ -2,10 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGText, OMGTransactionList } from 'components/widgets'
+import { TransactionTypes } from 'common/constants'
+import { Mapper } from 'common/utils'
 
 const OMGTransactionFilter = ({
   types,
   transactions,
+  startedExitTxs,
   theme,
   loading,
   address,
@@ -15,9 +18,13 @@ const OMGTransactionFilter = ({
   const [activeType, setActiveType] = useState(types[0])
 
   useEffect(() => {
-    const selectedTxs = selectTransactionsByType(activeType, transactions)
+    const selectedTxs = selectTransactionsByType(
+      activeType,
+      transactions,
+      startedExitTxs
+    )
     setFilterTxs(selectedTxs)
-  }, [activeType, transactions])
+  }, [activeType, transactions, startedExitTxs])
 
   const renderTypeOptions = useCallback(() => {
     return types.map(type => {
@@ -50,20 +57,29 @@ const OMGTransactionFilter = ({
       transactions={filteredTxs}
       loading={loading.show}
       address={address}
-      type={types.length === 1 ? types[0] : 'all'}
+      type={activeType}
       style={style}
       renderHeader={renderHeader}
     />
   )
 }
 
-const selectTransactionsByType = (type, transactions) => {
-  if (type === 'all') {
-    return transactions
-  } else {
-    return transactions.filter(tx => {
-      return tx.type === type
-    })
+const selectTransactionsByType = (type, transactions, startedExitTxs) => {
+  switch (type) {
+    case TransactionTypes.TYPE_ALL:
+      return transactions.filter(tx => {
+        return [
+          TransactionTypes.TYPE_FAILED,
+          TransactionTypes.TYPE_RECEIVED,
+          TransactionTypes.TYPE_SENT
+        ].includes(tx.type)
+      })
+    case TransactionTypes.TYPE_EXIT:
+      return startedExitTxs.map(Mapper.mapStartedExitTx)
+    default:
+      return transactions.filter(tx => {
+        return tx.type === type
+      })
   }
 }
 

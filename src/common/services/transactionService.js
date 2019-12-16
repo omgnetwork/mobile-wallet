@@ -44,7 +44,13 @@ export const getTxs = (address, provider, options) => {
         queryChildchainOptions
       )
 
-      const currencies = childchainTxs.map(Mapper.mapTxCurrency)
+      console.log(childchainTxs)
+
+      const pristineChildchainTxs = excludeSplittedTxs(childchainTxs)
+
+      const currencies = pristineChildchainTxs.map(
+        tx => Mapper.mapInputTransfer(tx).currency
+      )
 
       const contractAddresses = Array.from(new Set(currencies))
 
@@ -57,7 +63,7 @@ export const getTxs = (address, provider, options) => {
         const txs = {
           rootchainTxs,
           rootchainErc20Txs,
-          childchainTxs
+          childchainTxs: pristineChildchainTxs
         }
         return mergeTxs(txs, address, tokens)
       })
@@ -69,6 +75,13 @@ export const getTxs = (address, provider, options) => {
       reject(err)
     }
   })
+}
+
+const excludeSplittedTxs = txs => {
+  const getOutputOwner = outputs => outputs.map(output => output.owner)
+  return txs.filter(
+    tx => tx.outputs.length <= 1 || new Set(getOutputOwner(tx.outputs)).size > 1
+  )
 }
 
 const mergeTxs = async (txs, address, tokens) => {

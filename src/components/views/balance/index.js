@@ -149,7 +149,12 @@ const Balance = ({
   useEffect(() => {
     setUnconfirmedTxs(unconfirmedTxs)
     setCompleteFeedbackTx(feedbackCompleteTx)
-  }, [feedbackCompleteTx, unconfirmedTxs, setCompleteFeedbackTx, setUnconfirmedTxs])
+  }, [
+    feedbackCompleteTx,
+    unconfirmedTxs,
+    setCompleteFeedbackTx,
+    setUnconfirmedTxs
+  ])
 
   const drawerNavigation = navigation.dangerouslyGetParent()
   return (

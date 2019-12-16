@@ -19,7 +19,7 @@ import Config from 'react-native-config'
 import { Validator } from 'common/utils'
 import { transactionService } from 'common/services'
 import TransactionDetailHash from './TransactionDetailHash'
-import TransactionDetailInfoSuccess from './TransactionDetailInfoSuccess'
+import TransactionDetailInfo from './TransactionDetailInfo'
 import TransactionDetailFromTo from './TransactionDetailFromTo'
 import * as BlockchainLabels from './blockchainLabels'
 import { BlockchainNetworkType, TransactionTypes } from 'common/constants'
@@ -87,7 +87,7 @@ const TransactionDetail = ({ navigation, theme }) => {
             transaction
           )}
         />
-        <TransactionDetailInfoSuccess
+        <TransactionDetailInfo
           tx={transaction}
           theme={theme}
           style={styles.infoContainer}

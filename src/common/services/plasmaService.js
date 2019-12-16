@@ -111,12 +111,17 @@ export const transfer = (
         Parser.parseUnits(fee.amount, 'Gwei')
       )
 
+      console.log('payments', payments)
+      console.log('childchainFee', childchainFee)
+
       const createdTransactions = await Plasma.createTx(
         fromBlockchainWallet.address,
         payments,
         childchainFee,
         metadata
       )
+
+      console.log(createdTransactions)
 
       const transaction = createdTransactions.transactions[0]
 
@@ -145,6 +150,8 @@ export const transfer = (
         typedData,
         new Array(sanitizedTransaction.inputs.length).fill(signatures[0])
       )
+
+      console.log(signedTransaction)
 
       const transactionReceipt = await Plasma.submitTx(signedTransaction)
 
@@ -220,6 +227,8 @@ export const exit = (blockchainWallet, token, fee) => {
         fee
       )
 
+      console.log('utxoToExit', utxoToExit)
+
       // const utxoToExit = await createUtxoWithAmount(
       //   desiredAmount,
       //   blockchainWallet,
@@ -236,8 +245,13 @@ export const exit = (blockchainWallet, token, fee) => {
       )
 
       const exitId = await Plasma.getStandardExitId(utxoToExit, exitData)
+      // const paymentExitGameAddress = await Plasma.getPaymentExitGameAddress()
 
-      resolve({ transactionHash, exitId })
+      resolve({
+        transactionHash,
+        exitId,
+        blknum: utxoToExit.blknum
+      })
     } catch (err) {
       reject(err)
     }

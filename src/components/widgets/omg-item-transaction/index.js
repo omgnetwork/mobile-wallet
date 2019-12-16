@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { Datetime } from 'common/utils'
-import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
+import { TransactionTypes } from 'common/constants'
 import { BlockchainRenderer } from 'common/blockchain'
 import OMGText from '../omg-text'
 import OMGIcon from '../omg-icon'
@@ -11,16 +11,12 @@ const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
   const isError = tx.type === TransactionTypes.TYPE_FAILED
   const iconName = getIconName(tx.type)
 
-  const renderEthereumValue = useCallback(() => {
+  const renderValue = useCallback(() => {
     return `${BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
       tx.value,
       tx.tokenDecimal
     )} ${tx.tokenSymbol}`
   }, [tx.tokenDecimal, tx.tokenSymbol, tx.value])
-
-  const renderOmiseGOValue = useCallback(() => {
-    return `? ${tx.tokenSymbol}`
-  }, [tx.tokenSymbol])
 
   return (
     <TouchableOpacity
@@ -44,11 +40,7 @@ const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
         {isError && <OMGText style={styles.subText(theme)}>Failed</OMGText>}
       </View>
       <View style={styles.rightContainer}>
-        <OMGText style={styles.textAmount(theme)}>
-          {tx.network === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
-            ? renderEthereumValue()
-            : renderOmiseGOValue()}
-        </OMGText>
+        <OMGText style={styles.textAmount(theme)}>{renderValue()}</OMGText>
         <OMGText style={styles.textDate(theme)}>
           {Datetime.format(
             Datetime.fromTimestamp(tx.timestamp),

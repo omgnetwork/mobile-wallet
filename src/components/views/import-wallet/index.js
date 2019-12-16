@@ -1,11 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, SafeAreaView } from 'react-native'
-import {
-  OMGIcon,
-  OMGBackground,
-  OMGText,
-  OMGStatusBar
-} from 'components/widgets'
+import { OMGIcon, OMGText, OMGStatusBar } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 
@@ -18,7 +13,7 @@ const ImportWallet = ({ theme, navigation }) => {
         barStyle={'dark-content'}
         backgroundColor={theme.colors.white}
       />
-      <OMGBackground style={styles.contentContainer(theme)}>
+      <View style={styles.contentContainer(theme)}>
         <View style={styles.header}>
           <OMGIcon
             name='chevron-left'
@@ -31,7 +26,7 @@ const ImportWallet = ({ theme, navigation }) => {
         </View>
         <View style={styles.line(theme)} />
         <ImportWalletNavigator navigation={navigation} />
-      </OMGBackground>
+      </View>
     </SafeAreaView>
   )
 }
