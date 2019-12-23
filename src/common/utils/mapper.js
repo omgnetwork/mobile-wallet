@@ -144,7 +144,6 @@ const mapRootchainErc20Tx = (tx, address) => {
 }
 
 export const mapStartedExitTx = tx => {
-  console.log('')
   return {
     ...tx,
     gasUsed: tx.gasUsed.toString(),

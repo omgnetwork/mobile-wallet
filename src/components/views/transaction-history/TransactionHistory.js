@@ -61,9 +61,6 @@ const TransactionHistory = ({
       limit: 100
     }
 
-    console.log('fetching', fetching)
-    console.log('fetched', fetched)
-
     if (wallet && wallet.address && !fetching && !fetched) {
       dispatchFetchTxHistory(wallet.address, provider, options)
       setFetching(true)
