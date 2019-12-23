@@ -30,13 +30,13 @@ export const walletsReducer = (state = [], action) => {
           const rootchainAssets = wallet.rootchainAssets || []
           return {
             ...wallet,
-            rootchainAssets: mergeAssets(
-              rootchainAssets,
-              action.data.rootchainAssets
-            ),
+            rootchainAssets: fromSameEthereumNetwork(wallet)
+              ? mergeAssets(rootchainAssets, action.data.rootchainAssets)
+              : action.data.rootchainAssets,
             shouldRefresh: false,
             updatedAt: action.data.updatedAt,
-            updatedBlock: action.data.updatedBlock
+            updatedBlock: action.data.updatedBlock,
+            ethereumNetwork: Config.ETHERSCAN_NETWORK
           }
         } else {
           return wallet
@@ -143,4 +143,8 @@ const fromSamePlasmaContract = wallet => {
     wallet.plasmaFrameworkContractAddress ===
     Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
   )
+}
+
+const fromSameEthereumNetwork = wallet => {
+  return wallet.ethereumNetwork === Config.ETHERSCAN_NETWORK
 }
