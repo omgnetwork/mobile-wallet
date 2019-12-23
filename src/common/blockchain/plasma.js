@@ -1,6 +1,7 @@
 import { Plasma } from 'common/clients'
 import { ContractABI, Transaction } from 'common/utils'
 import { Gas } from 'common/constants'
+import BN from 'bn.js'
 import { TxOptions } from 'common/blockchain'
 
 export const getBalances = address => {
@@ -37,7 +38,7 @@ export const createPayment = (address, tokenContractAddress, amount) => {
     {
       owner: address,
       currency: tokenContractAddress,
-      amount: Number(amount)
+      amount: new BN(amount)
     }
   ]
 }
