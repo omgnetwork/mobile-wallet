@@ -2,7 +2,6 @@ import { createAsyncAction } from './actionCreators'
 import { plasmaService } from 'common/services'
 import { TransactionActionTypes, TransactionTypes } from 'common/constants'
 import { Datetime, Parser } from 'common/utils'
-import Config from 'react-native-config'
 
 export const fetchAssets = (provider, address) => {
   const asyncAction = async () => {

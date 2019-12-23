@@ -1,6 +1,7 @@
 import { Formatter, Parser, Polling, Datetime, Mapper, Token } from '../utils'
 import { Plasma } from 'common/blockchain'
 import { priceService } from 'common/services'
+import BN from 'bn.js'
 import Config from 'react-native-config'
 
 export const fetchAssets = (provider, address) => {
@@ -15,7 +16,7 @@ export const fetchAssets = (provider, address) => {
       const contractAddresses = Array.from(new Set(currencies))
       const tokens = await Token.fetchTokens(provider, contractAddresses)
 
-      const unconfirmedChildchainAssets = balances.map(balance => {
+      const pendingChildchainAssets = balances.map(balance => {
         return new Promise(async (resolveBalance, rejectBalance) => {
           const token = tokens.find(t => balance.currency === t.contractAddress)
 
@@ -28,7 +29,7 @@ export const fetchAssets = (provider, address) => {
             resolveBalance({
               ...token,
               balance: Formatter.formatUnits(
-                balance.amount.toFixed(),
+                balance.amount,
                 token.tokenDecimal
               ),
               price: tokenPrice
@@ -40,7 +41,7 @@ export const fetchAssets = (provider, address) => {
               tokenDecimal: 18,
               contractAddress: '0x123456',
               balance: Formatter.formatUnits(
-                balance.amount.toFixed(),
+                balance.amount,
                 token.tokenDecimal
               ),
               price: tokenPrice
@@ -49,7 +50,9 @@ export const fetchAssets = (provider, address) => {
         })
       })
 
-      const childchainAssets = await Promise.all(unconfirmedChildchainAssets)
+      const childchainAssets = await Promise.all(pendingChildchainAssets)
+
+      console.log(childchainAssets)
 
       resolve({
         lastUtxoPos: (utxos.length && utxos[0].utxo_pos.toString(10)) || '0',
@@ -174,7 +177,7 @@ export const depositEth = (address, privateKey, amount) => {
       const transactionReceipt = await Plasma.depositEth(
         address,
         privateKey,
-        weiAmount
+        new BN(weiAmount)
       )
       resolve(transactionReceipt)
     } catch (err) {

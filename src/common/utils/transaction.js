@@ -1,4 +1,4 @@
-import { transaction } from '@omisego/omg-js-util'
+import { transaction } from '@ripzery/omg-js-util'
 import { ContractABI } from 'common/utils'
 import { TransactionActionTypes } from 'common/constants'
 import InputDataDecoder from 'ethereum-input-data-decoder'

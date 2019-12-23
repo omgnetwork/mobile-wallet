@@ -4,7 +4,12 @@ import { Gas } from 'common/constants'
 import { TxOptions } from 'common/blockchain'
 
 export const getBalances = address => {
-  return Plasma.childchain.getBalance(address)
+  return Plasma.childchain.getBalance(address).then(balances => {
+    return balances.map(balance => ({
+      ...balance,
+      amount: balance.amount.toString(10)
+    }))
+  })
 }
 
 export const getUtxos = (address, options) => {
@@ -12,6 +17,12 @@ export const getUtxos = (address, options) => {
 
   return Plasma.childchain
     .getUtxos(address)
+    .then(utxos =>
+      utxos.map(utxo => ({
+        ...utxo,
+        amount: utxo.amount.toString(10)
+      }))
+    )
     .then(utxos =>
       currency ? utxos.filter(utxo => utxo.currency === currency) : utxos
     )
