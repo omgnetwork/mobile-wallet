@@ -52,8 +52,6 @@ export const fetchAssets = (provider, address) => {
 
       const childchainAssets = await Promise.all(pendingChildchainAssets)
 
-      console.log(childchainAssets)
-
       resolve({
         lastUtxoPos: (utxos.length && utxos[0].utxo_pos.toString(10)) || '0',
         childchainAssets,
@@ -107,57 +105,25 @@ export const transfer = (
       const payments = Plasma.createPayment(
         toAddress,
         token.contractAddress,
-        Parser.parseUnits(token.balance, token.tokenDecimal)
+        Parser.parseUnits(token.balance, token.tokenDecimal).toString(10)
       )
-
       const childchainFee = Plasma.createFee(
         Parser.parseUnits(fee.amount, 'Gwei')
       )
-
-      console.log('payments', payments)
-      console.log('childchainFee', childchainFee)
-
       const createdTransactions = await Plasma.createTx(
         fromBlockchainWallet.address,
         payments,
         childchainFee,
         metadata
       )
-
-      console.log(createdTransactions)
-
       const transaction = createdTransactions.transactions[0]
-
-      // Remove the exponential notion from the amount when converting to string.
-      const sanitizedTransaction = {
-        ...transaction,
-        inputs: transaction.inputs.map(input => ({
-          ...input,
-          amount: input.amount.toString(10),
-          utxo_pos: input.utxo_pos.toString(10)
-        })),
-        outputs: transaction.outputs.map(output => ({
-          ...output,
-          amount: output.amount.toString(10)
-        }))
-      }
-
-      const typedData = Plasma.getTypedData(sanitizedTransaction)
-
+      const typedData = Plasma.getTypedData(transaction)
       const signatures = Plasma.signTx(
         typedData,
         fromBlockchainWallet.privateKey
       )
-
-      const signedTransaction = Plasma.buildSignedTx(
-        typedData,
-        new Array(sanitizedTransaction.inputs.length).fill(signatures[0])
-      )
-
-      console.log(signedTransaction)
-
+      const signedTransaction = Plasma.buildSignedTx(typedData, signatures)
       const transactionReceipt = await Plasma.submitTx(signedTransaction)
-
       resolve(transactionReceipt)
     } catch (err) {
       console.log(err)
