@@ -27,9 +27,7 @@ export const getUtxos = (address, options) => {
     .then(utxos =>
       currency ? utxos.filter(utxo => utxo.currency === currency) : utxos
     )
-    .then(utxos =>
-      utxos.filter(utxo => utxo.utxo_pos.toString(10) > (lastUtxoPos || 0))
-    )
+    .then(utxos => utxos.filter(utxo => utxo.utxo_pos > (lastUtxoPos || 0)))
     .then(utxos => utxos.sort((a, b) => b.utxo_pos - a.utxo_pos))
 }
 
@@ -158,7 +156,7 @@ const receiptWithGasPrice = (txReceipt, gasPrice, additionalGasUsed = 0) => {
 
 export const standardExit = (exitData, blockchainWallet, options) => {
   return Plasma.rootchain.startStandardExit({
-    outputId: exitData.utxo_pos,
+    utxoPos: exitData.utxo_pos,
     outputTx: exitData.txbytes,
     inclusionProof: exitData.proof,
     txOptions: {
@@ -236,13 +234,6 @@ export const createTx = (fromAddress, payments, fee, metadata) => {
   const encodedMetadata =
     (metadata && Transaction.encodeMetadata(metadata)) ||
     Plasma.transaction.NULL_METADATA
-
-  console.log({
-    owner: fromAddress,
-    payments,
-    fee,
-    metadata: encodedMetadata
-  })
 
   return Plasma.childchain.createTransaction({
     owner: fromAddress,

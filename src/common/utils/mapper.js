@@ -25,7 +25,7 @@ export const mapChildchainTx = (tx, tokens, walletAddress) => {
     value:
       typeof output.amount === 'string'
         ? output.amount
-        : output.amount.toFixed(),
+        : output.amount.toString(10),
     timestamp: tx.block.timestamp
   }
 }

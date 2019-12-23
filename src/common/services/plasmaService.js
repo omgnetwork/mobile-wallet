@@ -178,17 +178,23 @@ export const exit = (blockchainWallet, token, fee) => {
       // Check if the token has been unlocked
       const hasToken = await Plasma.hasToken(token.contractAddress)
 
+      console.log(hasToken)
+
       if (!hasToken) {
+        console.log('need to add token')
         await Plasma.addToken(token.contractAddress, {
           from: blockchainWallet.address,
           privateKey: blockchainWallet.privateKey
         })
       }
 
-      const desiredAmount = Parser.parseUnits(token.balance, token.tokenDecimal)
+      const desiredAmount = Parser.parseUnits(
+        token.balance,
+        token.tokenDecimal
+      ).toString(10)
 
       // For now `getUtxos` includes exited utxos, so after this issue https://github.com/omisego/elixir-omg/issues/1151 has been solved,
-      // we can then uncomment the function below to reduce unnecessary api call.
+      // we can then  uncomment the function below to reduce unnecessary api call.
       const utxoToExit = await createUtxoWithAmount(
         desiredAmount,
         blockchainWallet,
@@ -204,8 +210,27 @@ export const exit = (blockchainWallet, token, fee) => {
       //   token,
       //   fee
       // )
+      const {
+        amount,
+        blknum,
+        currency,
+        oindex,
+        owner,
+        txindex,
+        utxo_pos
+      } = utxoToExit
 
-      const exitData = await Plasma.getExitData(utxoToExit)
+      const exitData = await Plasma.getExitData({
+        amount,
+        blknum,
+        currency,
+        oindex,
+        owner,
+        txindex,
+        utxo_pos
+      })
+
+      console.log(exitData)
 
       const { transactionHash } = await Plasma.standardExit(
         exitData,
@@ -290,7 +315,7 @@ export const createUtxoWithAmount = async (
 
   return {
     ...selectedUtxo,
-    amount: selectedUtxo.amount.toString(10)
+    amount: selectedUtxo.amount
   }
 }
 
@@ -315,6 +340,7 @@ const getUtxoByAmount = async (amount, blockchainWallet, token) => {
   const utxos = await Plasma.getUtxos(blockchainWallet.address, {
     currency: token.contractAddress
   })
+  console.log(utxos, amount)
 
-  return utxos.find(utxo => utxo.amount.isEqualTo(amount))
+  return utxos.find(utxo => utxo.amount === amount)
 }
