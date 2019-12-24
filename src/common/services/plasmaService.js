@@ -118,10 +118,10 @@ export const transfer = (
       )
       const transaction = createdTransactions.transactions[0]
       const typedData = Plasma.getTypedData(transaction)
-      const signatures = Plasma.signTx(
-        typedData,
+      const privateKeys = new Array(transaction.inputs.length).fill(
         fromBlockchainWallet.privateKey
       )
+      const signatures = Plasma.signTx(typedData, privateKeys)
       const signedTransaction = Plasma.buildSignedTx(typedData, signatures)
       const transactionReceipt = await Plasma.submitTx(signedTransaction)
       resolve(transactionReceipt)

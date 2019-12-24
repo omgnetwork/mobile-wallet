@@ -1,8 +1,7 @@
 import { ContractAddress } from 'common/constants'
-import { Transaction, Token, Parser, Datetime } from 'common/utils'
+import { Transaction, Token, Datetime } from 'common/utils'
 import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
-import Config from 'react-native-config'
-import BigNumber from 'bignumber.js'
+import BN from 'bn.js'
 
 export const mapChildchainTx = (tx, tokens, walletAddress) => {
   const input = mapInputTransfer(tx)
@@ -92,7 +91,10 @@ export const mapInputFee = tx => {
 
 const isInputGreaterThanOutput = (input, outputs) => {
   const accumulateOutputAmount = outs =>
-    outs.reduce((acc, output) => acc.plus(output.amount), new BigNumber(0))
+    outs.reduce(
+      (acc, output) => acc.add(new BN(output.amount)),
+      new BN('0', 10)
+    )
 
   const sameCurrencyOutputs = outputs.filter(
     output => output.currency === input.currency

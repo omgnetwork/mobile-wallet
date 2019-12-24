@@ -254,8 +254,8 @@ export const getExitData = utxo => {
   return Plasma.childchain.getExitData(utxo)
 }
 
-export const signTx = (typedData, privateKey) => {
-  return Plasma.childchain.signTransaction(typedData, [privateKey])
+export const signTx = (typedData, privateKeys) => {
+  return Plasma.childchain.signTransaction(typedData, privateKeys)
 }
 
 export const buildSignedTx = (typedData, signatures) => {

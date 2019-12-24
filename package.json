@@ -9,7 +9,7 @@
     "test": "jest",
     "lint": "eslint .",
     "fix": "eslint . --fix",
-    "ios": "react-native run-ios --simulator='iPhone 7'",
+    "ios": "react-native run-ios --simulator='iPhone 11 Pro'",
     "android": "react-native run-android",
     "build-android": "cd android && ./gradlew assembleRelease && cd .. && mkdir -p artifacts && cp android/app/build/outputs/apk/release/*.apk artifacts/",
     "build-ios": "npm run ios-archive && npm run ios-export && mkdir -p artifacts && cp ios/build/Apps/PlasmaWallet.ipa artifacts/",
@@ -23,10 +23,9 @@
     ]
   },
   "dependencies": {
-    "@omisego/omg-js": "^3.0.0-alpha.12",
+    "@omisego/omg-js": "^3.0.0-alpha.13",
     "@react-native-community/async-storage": "^1.6.1",
     "@react-native-community/push-notification-ios": "^1.0.2",
-    "@ripzery/omg-js": "^3.0.0-alpha.13",
     "@tradle/react-native-http": "^2.0.1",
     "assert": "^1.5.0",
     "asyncstorage-down": "^4.2.0",
