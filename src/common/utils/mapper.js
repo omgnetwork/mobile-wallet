@@ -42,14 +42,8 @@ export const mapChildchainTxDetail = (oldTx, newTx) => {
       return acc
     }
   }
-  const totalEthInput = newTx.inputs.reduce(
-    accumulateEthAmount,
-    new BigNumber(0)
-  )
-  const totalEthOutput = newTx.outputs.reduce(
-    accumulateEthAmount,
-    new BigNumber(0)
-  )
+  const totalEthInput = newTx.inputs.reduce(accumulateEthAmount, new BN(0))
+  const totalEthOutput = newTx.outputs.reduce(accumulateEthAmount, new BN(0))
   const gasPrice = totalEthInput.minus(totalEthOutput).toString(10)
 
   return {

@@ -303,7 +303,8 @@ export const createUtxoWithAmount = async (
   token,
   fee
 ) => {
-  await transfer(blockchainWallet, blockchainWallet.address, token, fee, null)
+  await transfer(blockchainWallet, blockchainWallet.address, token, fee)
+
 
   // Wait for found matched UTXO after merge or split.
   const selectedUtxo = await waitForExitUtxo(
