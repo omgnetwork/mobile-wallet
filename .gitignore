@@ -64,6 +64,9 @@ buck-out/
 
 # ENV
 .env
+.env.mainnet
+.env.ropsten
+.env.rinkeby
 
 # Google Services
 google-services.json
