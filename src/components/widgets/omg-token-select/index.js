@@ -24,7 +24,7 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
           style={styles.balance(theme)}
           ellipsizeMode='tail'
           numberOfLines={1}>
-          {BlockchainRenderer.renderTokenBalance(token.balance, 3)}
+          {BlockchainRenderer.renderTokenBalance(token.balance, 4)}
         </OMGText>
         <OMGText style={styles.fiatValue(theme)}>
           {BlockchainRenderer.renderTokenPrice(token.balance, token.price)} USD
