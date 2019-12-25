@@ -80,13 +80,12 @@ export const depositErc20 = (blockchainWallet, token) => {
   })
 }
 
-export const transfer = (blockchainWallet, toAddress, token, fee) => {
+export const transfer = (blockchainWallet, toAddress, token) => {
   const asyncAction = async () => {
     const { txhash } = await plasmaService.transfer(
       blockchainWallet,
       toAddress,
-      token,
-      fee
+      token
     )
 
     return {
@@ -97,7 +96,7 @@ export const transfer = (blockchainWallet, toAddress, token, fee) => {
       tokenDecimal: token.tokenDecimal,
       contractAddress: token.contractAddress,
       gasUsed: 1,
-      gasPrice: Parser.parseUnits(fee.amount, 'gwei').toString(10),
+      gasPrice: 1,
       actionType: TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN,
       createdAt: Datetime.now()
     }
@@ -109,14 +108,15 @@ export const transfer = (blockchainWallet, toAddress, token, fee) => {
   })
 }
 
-export const exit = (blockchainWallet, token, fee) => {
+export const exit = (blockchainWallet, token) => {
   const asyncAction = async () => {
     const {
       transactionHash,
       exitId,
       blknum,
-      paymentExitGameAddress
-    } = await plasmaService.exit(blockchainWallet, token, fee)
+      paymentExitGameAddress,
+      gasPrice
+    } = await plasmaService.exit(blockchainWallet, token)
 
     return {
       hash: transactionHash,
@@ -132,7 +132,7 @@ export const exit = (blockchainWallet, token, fee) => {
       childchainBlockNumber: blknum,
       tokenDecimal: token.tokenDecimal,
       contractAddress: token.contractAddress,
-      gasPrice: Parser.parseUnits(fee.amount, fee.symbol).toString(),
+      gasPrice: gasPrice,
       gasUsed: 1,
       actionType: TransactionActionTypes.TYPE_CHILDCHAIN_EXIT,
       type: TransactionTypes.TYPE_EXIT,

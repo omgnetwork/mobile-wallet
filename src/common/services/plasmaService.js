@@ -1,6 +1,7 @@
 import { Formatter, Parser, Polling, Datetime, Mapper, Token } from '../utils'
 import { Plasma } from 'common/blockchain'
 import { priceService } from 'common/services'
+import { Gas } from 'common/constants'
 import BN from 'bn.js'
 import Config from 'react-native-config'
 
@@ -93,13 +94,7 @@ export const getTx = transactionHash => {
   })
 }
 
-export const transfer = (
-  fromBlockchainWallet,
-  toAddress,
-  token,
-  fee,
-  metadata
-) => {
+export const transfer = (fromBlockchainWallet, toAddress, token, metadata) => {
   return new Promise(async (resolve, reject) => {
     try {
       const payments = Plasma.createPayment(
@@ -107,9 +102,7 @@ export const transfer = (
         token.contractAddress,
         Parser.parseUnits(token.balance, token.tokenDecimal).toString(10)
       )
-      const childchainFee = Plasma.createFee(
-        Parser.parseUnits(fee.amount, 'Gwei')
-      )
+      const childchainFee = Plasma.createFee('0')
       const createdTransactions = await Plasma.createTx(
         fromBlockchainWallet.address,
         payments,
@@ -172,7 +165,7 @@ export const depositErc20 = (address, privateKey, token) => {
   })
 }
 
-export const exit = (blockchainWallet, token, fee) => {
+export const exit = (blockchainWallet, token) => {
   return new Promise(async (resolve, reject) => {
     try {
       // Check if the token has been unlocked
@@ -198,8 +191,7 @@ export const exit = (blockchainWallet, token, fee) => {
       const utxoToExit = await createUtxoWithAmount(
         desiredAmount,
         blockchainWallet,
-        token,
-        fee
+        token
       )
 
       console.log('utxoToExit', utxoToExit)
@@ -230,12 +222,12 @@ export const exit = (blockchainWallet, token, fee) => {
         utxo_pos
       })
 
-      console.log(exitData)
+      const gasPrice = Gas.EXIT_GAS_PRICE
 
       const { transactionHash } = await Plasma.standardExit(
         exitData,
         blockchainWallet,
-        {}
+        { gasPrice }
       )
 
       const exitId = await Plasma.getStandardExitId(utxoToExit, exitData)
@@ -245,7 +237,8 @@ export const exit = (blockchainWallet, token, fee) => {
         transactionHash,
         exitId,
         blknum: utxoToExit.blknum,
-        paymentExitGameAddress
+        paymentExitGameAddress,
+        gasPrice
       })
     } catch (err) {
       reject(err)
@@ -300,11 +293,9 @@ const getOrCreateUtxoWithAmount = async (
 export const createUtxoWithAmount = async (
   desiredAmount,
   blockchainWallet,
-  token,
-  fee
+  token
 ) => {
-  await transfer(blockchainWallet, blockchainWallet.address, token, fee)
-
+  await transfer(blockchainWallet, blockchainWallet.address, token)
 
   // Wait for found matched UTXO after merge or split.
   const selectedUtxo = await waitForExitUtxo(

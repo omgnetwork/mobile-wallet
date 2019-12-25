@@ -52,10 +52,8 @@ export const depositEth = async (
   weiAmount,
   options = {}
 ) => {
-  const web3 = Plasma.rootchain.web3
-  const defaultGasPrice = await web3.eth.getGasPrice()
-  const depositGas = options.gas || Gas.LIMIT
-  const depositGasPrice = options.gasPrice || defaultGasPrice
+  const depositGas = options.gas || Gas.MEDIUM_LIMIT
+  const depositGasPrice = options.gasPrice || Gas.DEPOSIT_GAS_PRICE
 
   const encodedDepositTx = Plasma.transaction.encodeDeposit(
     address,
@@ -93,7 +91,7 @@ export const depositErc20 = async (
     tokenContractAddress
   )
   const defaultGasPrice = await web3.eth.getGasPrice()
-  const depositGas = options.gas || Gas.LIMIT
+  const depositGas = options.gas || Gas.MEDIUM_LIMIT
   const depositGasPrice = options.gasPrice || defaultGasPrice
 
   // SEND ERC20 APPROVAL TRANSACTION 👇
@@ -162,7 +160,8 @@ export const standardExit = (exitData, blockchainWallet, options) => {
     txOptions: {
       privateKey: blockchainWallet.privateKey,
       from: blockchainWallet.address,
-      gas: options.gasLimit || Gas.LIMIT
+      gas: options.gasLimit || Gas.HIGH_LIMIT,
+      gasPrice: options.gasPrice || Gas.EXIT_GAS_PRICE
     }
   })
 }
