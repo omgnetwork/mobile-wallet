@@ -78,7 +78,7 @@ const useProgressiveFeedback = (
     if (
       feedback.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
     ) {
-      return `${Config.BLOCK_EXPLORER_URL}/transaction/${feedback.hash}`
+      return `${Config.BLOCK_EXPLORER_URL}transaction/${feedback.hash}`
     } else {
       return `${Config.ETHERSCAN_TX_URL}${feedback.hash}`
     }
