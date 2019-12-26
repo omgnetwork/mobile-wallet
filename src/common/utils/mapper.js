@@ -94,7 +94,7 @@ const isInputGreaterThanOutput = (input, outputs) => {
     output => output.currency === input.currency
   )
   const totalOutputAmount = accumulateOutputAmount(sameCurrencyOutputs)
-  return input.amount.gt(totalOutputAmount)
+  return new BN(input.amount).gt(totalOutputAmount)
 }
 
 export const mapAssetCurrency = asset => asset.currency
