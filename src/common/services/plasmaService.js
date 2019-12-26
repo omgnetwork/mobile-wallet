@@ -102,7 +102,7 @@ export const transfer = (fromBlockchainWallet, toAddress, token, metadata) => {
         token.contractAddress,
         Parser.parseUnits(token.balance, token.tokenDecimal).toString(10)
       )
-      const childchainFee = Plasma.createFee('0')
+      const childchainFee = Plasma.createFee('1')
       const createdTransactions = await Plasma.createTx(
         fromBlockchainWallet.address,
         payments,
