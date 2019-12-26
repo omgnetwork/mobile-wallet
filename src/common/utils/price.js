@@ -1,6 +1,6 @@
 import { ContractAddress } from 'common/constants'
 
-const USD_PER_ETH = 162.45 // $162.45 Price at 2019/11/22
+const USD_PER_ETH = 126.28 // $126.28 Price at 2019/12/26
 
 export const fetchPriceUsd = (contractAddress, network) => {
   // mainnet
