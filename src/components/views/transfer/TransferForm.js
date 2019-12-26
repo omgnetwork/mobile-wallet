@@ -44,7 +44,7 @@ const fees = [
   }
 ]
 
-const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
+// const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
 
 const TransferForm = ({ wallet, theme, navigation }) => {
   const selectedFee = navigation.getParam('selectedFee', fees[0])
@@ -62,7 +62,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
     'TransferForm',
     isDeposit
   )
-  const addressRef = useRef(selectedAddress || testAddress)
+  const addressRef = useRef(selectedAddress)
   const amountRef = useRef(defaultAmount)
   const [showErrorAddress, setShowErrorAddress] = useState(false)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
