@@ -1,5 +1,4 @@
-import { settingActions, transactionActions } from 'common/actions'
-import { GoogleAnalytics } from 'common/analytics'
+import { settingActions } from 'common/actions'
 import { store } from 'common/stores'
 import { HeadlessProcessExit } from 'components/headless'
 import { OMGEmpty, OMGText } from 'components/widgets'
@@ -29,8 +28,6 @@ const Initializer = ({
       if (Platform.OS === 'android') {
         registerHeadlessService()
       }
-
-      GoogleAnalytics.sendEvent('view_balance', {})
     } else if (shouldGetBlockchainWallet(wallet, blockchainWallet, provider)) {
       dispatchSetBlockchainWallet(wallet, provider)
     } else if (shouldSetPrimaryWallet(wallet, wallets)) {

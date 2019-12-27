@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, Linking } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
@@ -16,6 +16,7 @@ import {
   OMGExitComplete
 } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { GoogleAnalytics } from 'common/analytics'
 
 const ExitPending = ({ theme, navigation }) => {
   const unconfirmedTx = navigation.getParam('unconfirmedTx')
@@ -28,6 +29,10 @@ const ExitPending = ({ theme, navigation }) => {
   const handleOnBackPressedAndroid = () => {
     return true
   }
+
+  useEffect(() => {
+    GoogleAnalytics.sendEvent('transfer_exited', unconfirmedTx.hash)
+  }, [unconfirmedTx.hash])
 
   const processedAt = Datetime.add(Datetime.fromNow(), Config.EXIT_PERIOD * 2)
 

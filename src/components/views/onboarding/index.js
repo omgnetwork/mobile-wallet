@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { onboardingActions, transactionActions } from 'common/actions'
 import * as ContentSelector from './contentSelector'
+import { GoogleAnalytics } from 'common/analytics'
 import { connect } from 'react-redux'
 import {
   OMGOnboardingSheet,
@@ -26,6 +27,11 @@ const OnboardingTourGuide = ({
 
   const handleEnableOnboardingAction = useCallback(
     enabled => {
+      if (enabled) {
+        GoogleAnalytics.sendEvent('onboarding', true)
+      } else {
+        GoogleAnalytics.sendEvent('onboarding', false)
+      }
       dispatchEnableOnboarding(enabled)
       setTourVisible(false)
     },

@@ -6,7 +6,6 @@ import { withTheme } from 'react-native-paper'
 import { BlockchainRenderer } from 'common/blockchain'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
-import { TaskScheduler } from 'common/native'
 import {
   OMGBox,
   OMGButton,
@@ -53,8 +52,20 @@ const TransferPending = ({ theme, navigation }) => {
   }
 
   useEffect(() => {
-    GoogleAnalytics.sendEvent('make_transaction', unconfirmedTx)
-  }, [unconfirmedTx, unconfirmedTx.hash])
+    if (isDeposit) {
+      GoogleAnalytics.sendEvent('transfer_deposited', {
+        hash: unconfirmedTx.hash
+      })
+    } else if (isRootchain) {
+      GoogleAnalytics.sendEvent('transfer_rootchain', {
+        hash: unconfirmedTx.hash
+      })
+    } else {
+      GoogleAnalytics.sendEvent('transfer_childchain', {
+        hash: unconfirmedTx.hash
+      })
+    }
+  }, [isDeposit, isRootchain, unconfirmedTx])
 
   return (
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
@@ -152,7 +163,9 @@ const TransferPending = ({ theme, navigation }) => {
             <TouchableOpacity
               style={styles.trackEtherscanButton}
               onPress={() => {
-                Linking.openURL(`${Config.ETHERSCAN_TX_URL}${unconfirmedTx.hash}`)
+                Linking.openURL(
+                  `${Config.ETHERSCAN_TX_URL}${unconfirmedTx.hash}`
+                )
               }}>
               <OMGText style={styles.trackEtherscanText(theme)}>
                 Track on Etherscan
