@@ -56,3 +56,6 @@
 
 # react-native-svg
 -keep public class com.horcrux.svg.** {*;}
+
+-keep class io.invertase.firebase.** { *; }
+-dontwarn io.invertase.firebase.**
