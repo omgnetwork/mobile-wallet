@@ -23,11 +23,10 @@ export const isReceiveTx = (walletAddress, toAddress) => {
 }
 
 export const isPlasmaCallTx = tx => {
-  return tx.to === ContractAddress.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
-}
-
-export const isExitTx = tx => {
-  return tx.to === ContractAddress.PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
+  return [
+    ContractAddress.PLASMA_FRAMEWORK_CONTRACT_ADDRESS,
+    ContractAddress.PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
+  ].includes(tx.to)
 }
 
 export const isUnconfirmStartedExitTx = tx => {

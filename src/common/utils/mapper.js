@@ -163,13 +163,10 @@ const mapRootchainTransactionType = (tx, address) => {
     case 'addToken':
       return TransactionTypes.TYPE_PLASMA_ADD_TOKEN
     default:
-      if (Transaction.isExitTx(tx)) {
-        // return TransactionTypes.TYPE_EXIT
+      if (Transaction.isPlasmaCallTx(tx)) {
         return TransactionTypes.TYPE_UNIDENTIFIED
       } else if (Transaction.isReceiveTx(address, tx.to)) {
         return TransactionTypes.TYPE_RECEIVED
-      } else if (Transaction.isPlasmaCallTx(tx)) {
-        return TransactionTypes.TYPE_UNIDENTIFIED
       } else {
         return TransactionTypes.TYPE_SENT
       }
