@@ -1,6 +1,6 @@
 import 'ethers/dist/shims.js'
 import { ethers } from 'ethers'
-import { Datetime, BigNumber } from 'common/utils'
+import { Datetime } from 'common/utils'
 
 export const formatEther = wei => {
   return ethers.utils.formatEther(wei)

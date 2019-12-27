@@ -114,6 +114,7 @@ export const exit = (blockchainWallet, token) => {
       transactionHash,
       exitId,
       blknum,
+      flatFee,
       paymentExitGameAddress,
       gasPrice
     } = await plasmaService.exit(blockchainWallet, token)
@@ -132,11 +133,13 @@ export const exit = (blockchainWallet, token) => {
       childchainBlockNumber: blknum,
       tokenDecimal: token.tokenDecimal,
       contractAddress: token.contractAddress,
-      gasPrice: gasPrice,
+      flatFee,
+      gasPrice,
       gasUsed: 1,
       actionType: TransactionActionTypes.TYPE_CHILDCHAIN_EXIT,
       type: TransactionTypes.TYPE_EXIT,
-      createdAt: Datetime.now()
+      createdAt: Datetime.now(),
+      timestamp: Datetime.timestamp()
     }
   }
   return createAsyncAction({

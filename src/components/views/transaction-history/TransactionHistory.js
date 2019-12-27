@@ -13,6 +13,7 @@ import {
   OMGTransactionList
 } from 'components/widgets'
 import { usePositionMeasurement } from 'common/hooks'
+import { Mapper } from 'common/utils'
 
 const TransactionHistory = ({
   theme,
@@ -98,7 +99,11 @@ const TransactionHistory = ({
 
   useEffect(() => {
     if (transactions.length) {
-      const recentTxs = [...transactions, ...startedExitTxs]
+      const normalizedStartedExitTxs = startedExitTxs.map(
+        Mapper.mapStartedExitTx
+      )
+      const recentTxs = [...transactions, ...normalizedStartedExitTxs]
+        .sort((a, b) => b.timestamp - a.timestamp)
         .filter(tx =>
           [
             TransactionTypes.TYPE_RECEIVED,

@@ -159,14 +159,17 @@ const mapRootchainTransactionType = (tx, address) => {
     case 'deposit':
       return TransactionTypes.TYPE_DEPOSIT
     case 'approve':
-      return 'depositApprove'
+      return TransactionTypes.TYPE_APPROVE_ERC20
     case 'addToken':
-      return 'unlockExit'
-    case 'startStandardExit':
-      return TransactionTypes.TYPE_EXIT
+      return TransactionTypes.TYPE_PLASMA_ADD_TOKEN
     default:
-      if (Transaction.isReceiveTx(address, tx.to)) {
+      if (Transaction.isExitTx(tx)) {
+        // return TransactionTypes.TYPE_EXIT
+        return TransactionTypes.TYPE_UNIDENTIFIED
+      } else if (Transaction.isReceiveTx(address, tx.to)) {
         return TransactionTypes.TYPE_RECEIVED
+      } else if (Transaction.isPlasmaCallTx(tx)) {
+        return TransactionTypes.TYPE_UNIDENTIFIED
       } else {
         return TransactionTypes.TYPE_SENT
       }

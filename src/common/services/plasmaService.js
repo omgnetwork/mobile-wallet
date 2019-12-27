@@ -231,13 +231,15 @@ export const exit = (blockchainWallet, token) => {
       )
 
       const exitId = await Plasma.getStandardExitId(utxoToExit, exitData)
-      const paymentExitGameAddress = await Plasma.getPaymentExitGameAddress()
+      const { address, bonds } = await Plasma.getPaymentExitGameAddress()
+      const standardExitBond = bonds.standardExit.toString()
 
       resolve({
         transactionHash,
         exitId,
         blknum: utxoToExit.blknum,
-        paymentExitGameAddress,
+        paymentExitGameAddress: address,
+        flatFee: standardExitBond,
         gasPrice
       })
     } catch (err) {

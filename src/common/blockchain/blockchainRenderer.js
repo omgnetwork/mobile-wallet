@@ -1,11 +1,13 @@
 import { Parser, BigNumber, Formatter } from 'common/utils'
 
 // Output in ETH
-export const renderGasFee = (gasUsed, gasPriceWei) => {
+export const renderGasFee = (gasUsed, gasPriceWei, flatFee = '0') => {
+  const bigNumberFlatFee = BigNumber.create(flatFee)
   const bigNumberGasPriceWei = BigNumber.create(gasPriceWei)
   const bigNumberGasUsed = BigNumber.create(gasUsed)
   const bigNumberGasFee = bigNumberGasPriceWei.mul(bigNumberGasUsed)
-  return Formatter.formatUnits(bigNumberGasFee, 18)
+  const bigNumberTotalFee = bigNumberGasFee.add(bigNumberFlatFee)
+  return Formatter.formatUnits(bigNumberTotalFee, 18)
 }
 
 // Output in USD
@@ -36,7 +38,7 @@ export const renderTokenBalance = (amount, maxDecimal = 18) => {
 }
 
 export const renderTokenBalanceFromSmallestUnit = (amount, maxDecimal = 18) => {
-  const balance = Formatter.formatUnits(amount, maxDecimal)
+  const balance = Formatter.formatUnits(amount.toString(), maxDecimal)
   return Formatter.format(balance, {
     commify: true,
     maxDecimal: maxDecimal,

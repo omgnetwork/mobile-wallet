@@ -4,8 +4,12 @@ export const now = () => {
   return moment.utc().format()
 }
 
-export const fromTimestamp = timestamp => {
-  return moment.unix(timestamp)
+export const timestamp = () => {
+  return moment().unix()
+}
+
+export const fromTimestamp = ts => {
+  return moment.unix(ts)
 }
 
 export const toTimestamp = datetimeString => {

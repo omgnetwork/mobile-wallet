@@ -184,9 +184,8 @@ export const waitForRootchainTransaction = ({
   })
 }
 
-export const getPaymentExitGameAddress = async () => {
-  const paymentExitGame = await Plasma.rootchain.getPaymentExitGame()
-  return paymentExitGame.address
+export const getPaymentExitGameAddress = () => {
+  return Plasma.rootchain.getPaymentExitGame()
 }
 
 export const getErrorReason = hash => {
