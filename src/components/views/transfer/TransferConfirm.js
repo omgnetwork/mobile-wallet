@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
-import { BlockchainRenderer, BlockchainCalculator } from 'common/blockchain'
+import { BlockchainRenderer } from 'common/blockchain'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
 import {
   ActionAlert,
   ContractAddress,
-  TransactionActionTypes
+  TransactionActionTypes,
+  Gas
 } from 'common/constants'
 import { ethereumActions, plasmaActions } from 'common/actions'
 import {
@@ -42,13 +43,13 @@ const TransferConfirm = ({
     token.balance,
     token.price
   )
-  const feeEth = BlockchainRenderer.renderFeeEth(fee && fee.amount)
-  const estimatedTotalFee = BlockchainRenderer.renderEstimatedTotalFee(
-    isRootchain,
+  const feeEth = BlockchainRenderer.renderEthFromGwei(1, fee && fee.amount)
+  const gasFee = BlockchainRenderer.renderGasFee(
+    isRootchain ? Gas.MINIMUM_GAS_USED : 1,
     feeEth
   )
   const feePrice = BlockchainRenderer.renderTokenPrice(
-    estimatedTotalFee,
+    gasFee,
     ethToken && ethToken.price
   )
   const totalPrice = BlockchainRenderer.renderTotalPrice(tokenPrice, feePrice)

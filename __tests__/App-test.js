@@ -3,5 +3,5 @@
  */
 
 it('renders correctly', () => {
-  console.log('render')
+  expect(true).toBe(true)
 })
