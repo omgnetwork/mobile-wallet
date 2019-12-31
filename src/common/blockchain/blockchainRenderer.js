@@ -1,4 +1,5 @@
 import { Parser, BigNumber, Formatter } from 'common/utils'
+import { Gas } from 'common/constants'
 
 // Output in ETH
 export const renderGasFee = (gasUsed, gasPriceWei, flatFee = '0') => {
@@ -27,6 +28,14 @@ export const renderFeeEth = gweiFee => {
   if (!gweiFee) return '0'
   const weiFee = Parser.parseUnits(gweiFee, 'gwei')
   return Formatter.formatUnits(weiFee, 'ether')
+}
+
+export function renderEstimatedTotalFee(
+  isRootchain,
+  gasPrice,
+  estimatedGasUsed = Gas.MINIMUM_GAS_USED
+) {
+  return BigNumber.multiply(gasPrice, isRootchain ? estimatedGasUsed : 1)
 }
 
 export const renderTokenBalance = (amount, maxDecimal = 18) => {

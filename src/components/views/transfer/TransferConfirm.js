@@ -43,7 +43,7 @@ const TransferConfirm = ({
     token.price
   )
   const feeEth = BlockchainRenderer.renderFeeEth(fee && fee.amount)
-  const estimatedTotalFee = BlockchainCalculator.calculateEstimatedTotalFee(
+  const estimatedTotalFee = BlockchainRenderer.renderEstimatedTotalFee(
     isRootchain,
     feeEth
   )
