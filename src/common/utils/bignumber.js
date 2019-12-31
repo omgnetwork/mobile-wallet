@@ -1,4 +1,3 @@
-import 'ethers/dist/shims.js'
 import { ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
 

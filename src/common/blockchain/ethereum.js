@@ -1,4 +1,3 @@
-import 'ethers/dist/shims.js'
 import { ethers } from 'ethers'
 import { Parser, ContractABI } from 'common/utils'
 import { ContractAddress, Gas } from 'common/constants/'

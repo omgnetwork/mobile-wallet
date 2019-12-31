@@ -157,25 +157,9 @@
     "tls": false
   },
   "jest": {
-    "modulePaths": [
-      "./src",
-      "./node_modules"
-    ],
-    "globals": {
-      "NODE_ENV": "test"
-    },
-    "verbose": true,
-    "moduleFileExtensions": [
-      "js"
-    ],
-    "transform": {
-      "^.+\\.(js|jsx)?$": "babel-jest",
-      "^.+\\.js$": "./node_modules/react-native/jest/preprocessor.js"
-    },
-    "transformIgnorePatterns": [
-      "node_modules/(?!lodash-es)",
-      "node_modules/(?!react-native|react-navigation)/"
-    ],
-    "testEnvironment": "node"
+    "preset": "react-native",
+    "setupFiles": [
+      "<rootDir>/jest/setup.js"
+    ]
   }
 }

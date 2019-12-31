@@ -1,4 +1,3 @@
-import 'ethers/dist/shims.js'
 import { ethers } from 'ethers'
 
 export const isValidAddress = address => {
