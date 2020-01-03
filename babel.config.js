@@ -3,6 +3,9 @@ module.exports = {
   env: {
     production: {
       plugins: ['transform-remove-console']
+    },
+    test: {
+      plugins: ['@babel/plugin-transform-modules-commonjs']
     }
   },
   plugins: [

@@ -53,6 +53,12 @@ EXIT_PERIOD=<EXIT_PERIOD>
 
 [Go to iOS release doc](docs/release-ios.md)
 
+## Testing
+
+1. Copy `__mock__/react-native-config.example.js` and paste as `__mock__/react-native-config.js`
+2. Fill missing testing environment value e.g. `TEST_ADDRESS`, `TEST_PRIVATE_KEY`.
+3. Run test with `npm run test`
+
 ## Developer Notes
 
 ### **Developing New Views**
