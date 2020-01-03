@@ -9,7 +9,7 @@ export const fetchAssets = (provider, address) => {
     return {
       address,
       childchainAssets: result.childchainAssets,
-      lastUtxoPos: result.lastUtxoPos
+      fromUtxoPos: result.fromUtxoPos
     }
   }
   return createAsyncAction({

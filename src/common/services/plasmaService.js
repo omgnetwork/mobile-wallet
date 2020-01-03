@@ -54,7 +54,7 @@ export const fetchAssets = (provider, address) => {
       const childchainAssets = await Promise.all(pendingChildchainAssets)
 
       resolve({
-        lastUtxoPos: (utxos.length && utxos[0].utxo_pos.toString(10)) || '0',
+        fromUtxoPos: (utxos.length && utxos[0].utxo_pos.toString(10)) || '0',
         childchainAssets,
         updatedAt: Datetime.now()
       })
