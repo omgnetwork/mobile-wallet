@@ -16,11 +16,6 @@ const testProvider = Ethereum.createProvider(ETHERSCAN_NETWORK)
 const mockWalletTransfer = wallet => {
   wallet.sendTransaction = jest.fn()
 }
-const mockContractTransfer = () => {
-  ethers.Contract = jest.fn()
-  //	jest.spyOn(contract, 'transfer', 'get').mockReturnValue(jest.fn())
-  //	Object.defineProperty(contract, 'transfer', { value: jest.fn(), configurable: true })
-}
 
 describe('Test Ethereum Boundary', () => {
   it('importWalletMnemonic should return a wallet when given 12-words mnemonic', () => {
@@ -68,14 +63,7 @@ describe('Test Ethereum Boundary', () => {
   })
 
   it('sendERC20Token should send expected parameters', () => {
-    const wallet = new ethers.Wallet(TEST_PRIVATE_KEY, testProvider)
-    const abi = ContractABI.erc20Abi()
-    mockContractTransfer()
-    const contract = new ethers.Contract(
-      TEST_ERC20_TOKEN_CONTRACT_ADDRESS,
-      abi,
-      wallet
-    )
+    const contract = { transfer: jest.fn() }
     const fee = { amount: '0.1', symbol: 'gwei' }
     const token = { balance: '1', numberOfDecimals: 5 }
     const toAddress = TEST_ADDRESS
