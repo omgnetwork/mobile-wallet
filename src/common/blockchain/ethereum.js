@@ -93,28 +93,27 @@ export const sendEthToken = (wallet, options) => {
   const { fee, token, toAddress } = options
   return wallet.sendTransaction({
     to: toAddress,
-    value: ethers.utils.parseEther(token.balance),
+    value: Parser.parseUnits(token.balance, 'ether'),
     gasLimit: Gas.LOW_LIMIT,
     gasPrice: Parser.parseUnits(fee.amount, 'gwei')
   })
 }
 
-export const sendErc20Token = (wallet, options) => {
+export const sendErc20Token = (contract, options) => {
   const { fee, token, toAddress } = options
-  const abi = ContractABI.erc20Abi()
-  const contract = new ethers.Contract(token.contractAddress, abi, wallet)
 
-  const numberOfTokens = Parser.parseUnits(
-    token.balance,
-    token.numberOfDecimals
-  )
+  const amount = Parser.parseUnits(token.balance, token.numberOfDecimals)
 
   const gasOptions = {
     gasLimit: Gas.LOW_LIMIT,
     gasPrice: Parser.parseUnits(fee.amount, 'gwei')
   }
 
-  return contract.transfer(toAddress, numberOfTokens, gasOptions)
+  return contract.transfer(toAddress, amount, gasOptions)
+}
+
+export const getContract = (tokenContractAddress, abi, wallet) => {
+  return new ethers.Contract(tokenContractAddress, abi, wallet)
 }
 
 export const subscribeTx = (provider, tx, confirmations) => {

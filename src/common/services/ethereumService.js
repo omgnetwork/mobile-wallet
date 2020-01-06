@@ -1,7 +1,7 @@
 import { Ethereum } from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
-import { Datetime, Formatter } from 'common/utils'
+import { Datetime, ContractABI, Formatter } from 'common/utils'
 import { providerService, priceService } from 'common/services'
 
 export const getEthBalance = address => {
@@ -139,7 +139,10 @@ export const fetchERC20Token = (txHistory, provider, address) => {
 export const sendErc20Token = (wallet, options) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const pendingTransaction = await Ethereum.sendErc20Token(wallet, options)
+			const abi = ContractABI.erc20Abi()
+			const { token } = options 
+			const contract = new Ethereum.getContract(token.contractAddress, abi, wallet)
+      const pendingTransaction = await Ethereum.sendErc20Token(contract, options)
       resolve(pendingTransaction)
     } catch (err) {
       reject(err)
