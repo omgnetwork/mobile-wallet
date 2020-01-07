@@ -118,6 +118,7 @@
     "react-test-renderer": "16.9.0",
     "react-transform-hmr": "^1.0.4",
     "redux-devtools-extension": "^2.13.8",
+    "redux-mock-store": "^1.5.4",
     "rn-nodeify": "^10.1.0"
   },
   "react-native": {

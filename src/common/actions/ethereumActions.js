@@ -17,6 +17,7 @@ export const sendErc20Token = (token, fee, blockchainWallet, toAddress) => {
     return {
       hash: hash,
       from: from,
+			to: toAddress,
       nonce: nonce,
       value: token.balance,
       actionType: TransactionActionTypes.TYPE_ROOTCHAIN_SEND,
@@ -48,6 +49,7 @@ export const sendEthToken = (token, fee, blockchainWallet, toAddress) => {
     return {
       hash: hash,
       from: from,
+			to: toAddress,
       nonce: nonce,
       value: token.balance,
       actionType: TransactionActionTypes.TYPE_ROOTCHAIN_SEND,
