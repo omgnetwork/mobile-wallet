@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 const StatsD = require('hot-shots')
 const CONFIG = require('../config')
 

@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 const rateLimit = require("express-rate-limit");
 const CONFIG = require('../config')
 
