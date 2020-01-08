@@ -3,6 +3,7 @@ require('dotenv').config()
 const proxy = require('http-proxy-middleware')
 
 const CONFIG = require('../config')
+const errorReporter = require('../utils/error-reporter')
 const logger = require('../utils/logger')
 const metrics = require('../utils/metrics')
 
@@ -29,7 +30,7 @@ function requestReceivedHandler(proxyReq, req, res) {
   }
 }
 
-// Collect metrics on backend errors.
+// Collect metrics and report on backend errors.
 //
 // We want to trigger the metrics without interfering with the built in error handling,
 // but there isn't an easy way to piggyback on the built in handler. So the original handler code
@@ -40,6 +41,7 @@ function errorReceivedHandler(err, req, res) {
   const host = req.headers && req.headers.host
   const code = err.code
 
+  errorReporter.captureException(err)
   metrics.increment('mobile_api_proxy.num_errors')
 
   if (res.writeHead && !res.headersSent) {
