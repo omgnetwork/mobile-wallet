@@ -50,7 +50,11 @@ export const fetchAssets = (provider, address, lastBlockNumber) => {
       resolve(updatedAssets)
     } catch (err) {
       console.log(err)
-      reject(new Error(`Cannot fetch rootchainAssets for address ${address}.`))
+      reject(
+        new Error(
+          `Unable to fetch the rootchain assets for address ${address}.`
+        )
+      )
     }
   })
 }
@@ -86,48 +90,49 @@ export const fetchERC20Token = (txHistory, provider, address) => {
   try {
     const tokenSet = new Set(txHistory.map(tx => tx.contractAddress))
     const tokens = Array.from(tokenSet)
-    const pendingTokens = tokens.map(contractAddress => {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const token = txHistory.find(
-            tx => tx.contractAddress === contractAddress
-          )
-
-          const pendingTokenBalance = providerService.getTokenBalance(
-            provider,
-            contractAddress,
-            token.tokenDecimal,
-            address
-          )
-
-          const pendingTokenPrice = priceService.fetchPriceUsd(
-            contractAddress,
-            Config.ETHERSCAN_NETWORK
-          )
-
-          const [tokenBalance, tokenPrice] = await Promise.all([
-            pendingTokenBalance,
-            pendingTokenPrice
-          ])
-
-          resolve({
-            tokenName: token.tokenName,
-            tokenSymbol: token.tokenSymbol,
-            tokenDecimal: token.tokenDecimal,
-            contractAddress: contractAddress,
-            balance: tokenBalance,
-            price: tokenPrice
-          })
-        } catch (err) {
-          console.log(err)
-          reject(
-            new Error(
-              `Cannot fetch ERC20 token at contract address: ${contractAddress}`
-            )
-          )
-        }
-      })
-    })
+    const 
+    //    const pendingTokens = tokens.map(contractAddress => {
+    //      return new Promise(async (resolve, reject) => {
+    //        try {
+    //          const token = txHistory.find(
+    //            tx => tx.contractAddress === contractAddress
+    //          )
+    //
+    //          const pendingTokenBalance = providerService.getTokenBalance(
+    //            provider,
+    //            contractAddress,
+    //            token.tokenDecimal,
+    //            address
+    //          )
+    //
+    //          const pendingTokenPrice = priceService.fetchPriceUsd(
+    //            contractAddress,
+    //            Config.ETHERSCAN_NETWORK
+    //          )
+    //
+    //          const [tokenBalance, tokenPrice] = await Promise.all([
+    //            pendingTokenBalance,
+    //            pendingTokenPrice
+    //          ])
+    //
+    //          resolve({
+    //            tokenName: token.tokenName,
+    //            tokenSymbol: token.tokenSymbol,
+    //            tokenDecimal: token.tokenDecimal,
+    //            contractAddress: contractAddress,
+    //            balance: tokenBalance,
+    //            price: tokenPrice
+    //          })
+    //        } catch (err) {
+    //          console.log(err)
+    //          reject(
+    //            new Error(
+    //              `Cannot fetch ERC20 token at contract address: ${contractAddress}`
+    //            )
+    //          )
+    //        }
+    //      })
+    //    })
 
     return pendingTokens
   } catch (err) {
@@ -139,10 +144,17 @@ export const fetchERC20Token = (txHistory, provider, address) => {
 export const sendErc20Token = (wallet, options) => {
   return new Promise(async (resolve, reject) => {
     try {
-			const abi = ContractABI.erc20Abi()
-			const { token } = options 
-			const contract = new Ethereum.getContract(token.contractAddress, abi, wallet)
-      const pendingTransaction = await Ethereum.sendErc20Token(contract, options)
+      const abi = ContractABI.erc20Abi()
+      const { token } = options
+      const contract = new Ethereum.getContract(
+        token.contractAddress,
+        abi,
+        wallet
+      )
+      const pendingTransaction = await Ethereum.sendErc20Token(
+        contract,
+        options
+      )
       resolve(pendingTransaction)
     } catch (err) {
       reject(err)

@@ -6,7 +6,8 @@ export const formatEther = wei => {
 }
 
 export const formatUnits = (amount, numberOfDecimals) => {
-  return ethers.utils.formatUnits(amount, numberOfDecimals)
+  const decimal = Number(numberOfDecimals) || numberOfDecimals
+  return ethers.utils.formatUnits(amount, decimal)
 }
 
 export const formatComma = (number, commify) => {

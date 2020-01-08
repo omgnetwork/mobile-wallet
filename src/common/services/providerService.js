@@ -59,7 +59,7 @@ export const getTokenBalance = (
         accountAddress
       )
 
-      resolve(Formatter.formatUnits(balance, tokenDecimal))
+      resolve(Formatter.formatUnits(balance.toString(10), tokenDecimal))
     } catch (err) {
       reject(err)
     }

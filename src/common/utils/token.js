@@ -1,34 +1,17 @@
 import { Ethereum } from 'common/blockchain'
 
 export const fetchTokens = (provider, contractAddresses) => {
-  return new Promise(async (resolve, reject) => {
-    const pendingTokenDetails = contractAddresses.map(contractAddress => {
-      return new Promise(async (resolveToken, rejectToken) => {
-        const detail = await Promise.all(
-          Ethereum.getTokenDetail(provider, contractAddress)
-        )
-        resolveToken(detail)
-      })
-    })
-
-    const resolvedTokenDetails = await Promise.all(pendingTokenDetails)
-
-    const tokenDetails = resolvedTokenDetails.map(tokenDetail => {
-      const [
-        tokenName,
-        tokenSymbol,
-        tokenDecimal,
-        contractAddress
-      ] = tokenDetail
-      return {
-        tokenName,
-        tokenSymbol,
-        tokenDecimal,
-        contractAddress
-      }
-    })
-
-    resolve(tokenDetails)
+  const pendingTokenDetails = contractAddresses.map(contractAddress => {
+    return Promise.all(Ethereum.getTokenDetail(provider, contractAddress))
+  })
+  return Promise.all(pendingTokenDetails).then(tokens => {
+    return tokens.reduce(
+      (tokenMap, [tokenName, tokenSymbol, tokenDecimal, contractAddress, price]) => {
+        tokenMap[contractAddress] = { tokenName, tokenSymbol, tokenDecimal, price }
+        return tokenMap
+      },
+      {}
+    )
   })
 }
 

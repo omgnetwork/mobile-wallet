@@ -5,11 +5,16 @@ import { Datetime, Parser } from 'common/utils'
 
 export const fetchAssets = (provider, address) => {
   const asyncAction = async () => {
-    const result = await plasmaService.fetchAssets(provider, address)
+    const {
+      childchainAssets,
+      fromUtxoPos,
+      updatedAt
+    } = await plasmaService.fetchAssets(provider, address)
     return {
       address,
-      childchainAssets: result.childchainAssets,
-      fromUtxoPos: result.fromUtxoPos
+      childchainAssets,
+      fromUtxoPos,
+      updatedAt
     }
   }
   return createAsyncAction({

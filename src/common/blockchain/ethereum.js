@@ -1,6 +1,7 @@
 import { ethers } from 'ethers'
 import { Parser, ContractABI } from 'common/utils'
 import { ContractAddress, Gas } from 'common/constants/'
+import { priceService } from 'common/services'
 import axios from 'axios'
 import Config from 'react-native-config'
 
@@ -42,14 +43,16 @@ export const getTokenDetail = (provider, contractAddress) => {
       Promise.resolve('Ether'),
       Promise.resolve('ETH'),
       Promise.resolve(18),
-      Promise.resolve(contractAddress)
+      Promise.resolve(contractAddress),
+      priceService.fetchPriceUsd(contractAddress, Config.ETHERSCAN_NETWORK)
     ]
   } else {
     return [
       contract.name(),
       contract.symbol(),
       contract.decimals(),
-      Promise.resolve(contractAddress)
+      Promise.resolve(contractAddress),
+      priceService.fetchPriceUsd(contractAddress, Config.ETHERSCAN_NETWORK)
     ]
   }
 }

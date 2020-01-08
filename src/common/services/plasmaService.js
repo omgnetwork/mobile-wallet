@@ -5,64 +5,43 @@ import { Gas } from 'common/constants'
 import BN from 'bn.js'
 import Config from 'react-native-config'
 
-export const fetchAssets = (provider, address) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const [balances, utxos] = await Promise.all([
-        Plasma.getBalances(address),
-        Plasma.getUtxos(address)
-      ])
+export const fetchAssets = async (provider, address) => {
+  try {
+    const [balances, utxos] = await Promise.all([
+      Plasma.getBalances(address),
+      Plasma.getUtxos(address)
+    ])
 
-      const currencies = balances.map(Mapper.mapAssetCurrency)
-      const contractAddresses = Array.from(new Set(currencies))
-      const tokens = await Token.fetchTokens(provider, contractAddresses)
+    const tokenContractAddresses = getTokenContractAddresses(balances)
+    const tokenMap = await Token.fetchTokens(provider, tokenContractAddresses)
+    const childchainAssets = balances.map(balance => {
+      const token = tokenMap[balance.currency]
+      return {
+        ...token,
+        contractAddress: balance.currency,
+        balance: Formatter.formatUnits(balance.amount, token.tokenDecimal)
+      }
+    })
 
-      const pendingChildchainAssets = balances.map(balance => {
-        return new Promise(async (resolveBalance, rejectBalance) => {
-          const token = tokens.find(t => balance.currency === t.contractAddress)
-
-          const tokenPrice = await priceService.fetchPriceUsd(
-            token.contractAddress,
-            Config.ETHERSCAN_NETWORK
-          )
-
-          if (token) {
-            resolveBalance({
-              ...token,
-              balance: Formatter.formatUnits(
-                balance.amount,
-                token.tokenDecimal
-              ),
-              price: tokenPrice
-            })
-          } else {
-            resolveBalance({
-              tokenName: 'UNK',
-              tokenSymbol: 'Unknown',
-              tokenDecimal: 18,
-              contractAddress: '0x123456',
-              balance: Formatter.formatUnits(
-                balance.amount,
-                token.tokenDecimal
-              ),
-              price: tokenPrice
-            })
-          }
-        })
-      })
-
-      const childchainAssets = await Promise.all(pendingChildchainAssets)
-
-      resolve({
-        fromUtxoPos: (utxos.length && utxos[0].utxo_pos.toString(10)) || '0',
-        childchainAssets,
-        updatedAt: Datetime.now()
-      })
-    } catch (err) {
-      reject(err)
+    return {
+      fromUtxoPos: getUtxoPos(utxos),
+      childchainAssets,
+      updatedAt: Datetime.now()
     }
-  })
+  } catch (err) {
+    throw new Error(
+      `Unable to fetch the childchain assets for address ${address}.`
+    )
+  }
 }
+
+const getTokenContractAddresses = balances => {
+  const currencies = balances.map(Mapper.mapAssetCurrency)
+  return Array.from(new Set(currencies))
+}
+
+const getUtxoPos = utxos =>
+  (utxos.length && utxos[0].utxo_pos.toString(10)) || '0'
 
 export const getTxs = (address, options) => {
   return new Promise(async (resolve, reject) => {
