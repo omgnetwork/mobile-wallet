@@ -1,28 +1,22 @@
 require('dotenv').config()
 
-console.log('Initializing mobile wallet proxy-server app...')
-
-const invariant = require('invariant')
-const CONFIG = require('./config')
-
-invariant(!!CONFIG.ETHEREUM_RPC_URL, 'Missing ETHEREUM_RPC_URL in environment.')
-console.log('ETHEREUM_RPC_URL:', CONFIG.ETHEREUM_RPC_URL)
-
-invariant(!!CONFIG.PORT, 'Missing PORT in environment.')
-console.log('PORT:', CONFIG.PORT)
-
 const express = require('express')
-const expressApp = express()
-const proxy = require('http-proxy-middleware')
+const invariant = require('invariant')
+const bodyParser = require('body-parser')
 
-// Proxy options
-const options = {
-  target: CONFIG.ETHEREUM_RPC_URL,
-  changeOrigin: true,
-  ws: true
-};
+const CONFIG = require('./config')
+const ethereumRpcProxy = require('./handlers/ethereum-rpc-proxy')
+const rateLimiter = require('./utils/rate-limiter')
 
-const proxyServer = proxy(options)
+console.log('Initializing mobile wallet proxy-server app...')
+console.log('PORT:', CONFIG.PORT)
+console.log('ETHEREUM_RPC_URL:', CONFIG.ETHEREUM_RPC_URL)
+console.log('LOG_LEVEL:', CONFIG.LOG_LEVEL)
 
-expressApp.use('/', proxyServer)
-expressApp.listen(CONFIG.PORT)
+const app = express()
+
+app.use(rateLimiter)
+app.use(bodyParser.json())
+app.use('/', ethereumRpcProxy())
+
+app.listen(CONFIG.PORT)
