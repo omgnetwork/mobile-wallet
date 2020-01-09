@@ -6,15 +6,20 @@ import configureMockStore from 'redux-mock-store'
 import Config from 'react-native-config'
 import { plasmaActions } from 'common/actions'
 import BN from 'bn.js'
+import { ContractAddress } from 'common/constants'
 
 jest.mock('common/analytics/crashAnalytics.js')
 jest.mock('common/services/plasmaService.js')
 jest.spyOn(global, 'requestAnimationFrame').mockImplementation(cb => cb())
 
-const { TEST_PRIVATE_KEY, TEST_ADDRESS, ETHERSCAN_NETWORK } = Config
+const {
+  TEST_PRIVATE_KEY,
+  TEST_ADDRESS,
+  ETHERSCAN_NETWORK,
+  TEST_ERC20_TOKEN_CONTRACT_ADDRESS
+} = Config
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
-const store = mockStore({})
 const provider = ethers.getDefaultProvider(ETHERSCAN_NETWORK)
 const mockFetchAssetsResponse = resp => {
   fetchAssets.mockReturnValueOnce(Promise.resolve(resp))
@@ -53,6 +58,7 @@ describe('Plasma Action Test', () => {
     const updatedAt = Datetime.now()
 
     mockFetchAssetsResponse({ fromUtxoPos: '0', childchainAssets, updatedAt })
+    const store = mockStore({})
 
     return store
       .dispatch(plasmaActions.fetchAssets(provider, TEST_ADDRESS))
@@ -75,13 +81,40 @@ describe('Plasma Action Test', () => {
 
   it('depositEth should dispatch actions as expected', () => {
     const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
-    const token = { balance: '0.001', tokenSymbol: 'ETH', tokenDecimal: 18 }
-    //mockDepositEthResponse({
-    // transactionHash: ""
+    const token = {
+      balance: '0.001',
+      tokenSymbol: 'ETH',
+      tokenDecimal: 18,
+      contractAddress: ContractAddress.ETH_ADDRESS
+    }
+    const store = mockStore({})
 
-    //})
+    mockDepositEthResponse({
+      transactionHash: 'any',
+      gasPrice: 'any',
+      gasUsed: 'any'
+    })
     return store.dispatch(plasmaActions.depositEth(wallet, token)).then(() => {
-      console.log(store.getActions())
+      const actions = store.getActions()
+      expect(actions).toStrictEqual([
+        { type: 'CHILDCHAIN/DEPOSIT_ETH_TOKEN/INITIATED' },
+        {
+          type: 'CHILDCHAIN/DEPOSIT_ETH_TOKEN/SUCCESS',
+          data: {
+            hash: 'any',
+            from: TEST_ADDRESS,
+            value: token.balance,
+            symbol: token.tokenSymbol,
+            tokenDecimal: token.tokenDecimal,
+            contractAddress: token.contractAddress,
+            gasPrice: 'any',
+            gasUsed: 'any',
+            actionType: 'CHILDCHAIN_DEPOSIT',
+            createdAt: actions[1].data.createdAt
+          }
+        },
+        { type: 'LOADING/CHILDCHAIN_DEPOSIT_ETH_TOKEN/IDLE' }
+      ])
     })
   })
 })
