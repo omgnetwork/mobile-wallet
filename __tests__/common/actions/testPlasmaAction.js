@@ -1,10 +1,13 @@
 import {
   fetchAssets,
   depositEth,
-  depositErc20
+  depositErc20,
+  transfer,
+  exit
 } from 'common/services/plasmaService.js'
 import { ethers } from 'ethers'
 import { Datetime } from 'common/utils'
+import { TransactionActionTypes } from 'common/constants'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import Config from 'react-native-config'
@@ -33,6 +36,12 @@ const mockDepositEthResponse = resp => {
 }
 const mockDepositErc20Response = resp => {
   depositErc20.mockReturnValueOnce(Promise.resolve(resp))
+}
+const mockTransferResponse = resp => {
+  transfer.mockReturnValueOnce(Promise.resolve(resp))
+}
+const mockExitResponse = resp => {
+  exit.mockReturnValueOnce(Promise.resolve(resp))
 }
 describe('Plasma Action Test', () => {
   it('fetchAssets should dispatch actions as expected', () => {
@@ -166,5 +175,98 @@ describe('Plasma Action Test', () => {
           { type: 'LOADING/CHILDCHAIN_DEPOSIT_ERC20_TOKEN/IDLE' }
         ])
       })
+  })
+
+  it('transfer should dispatch actions as expected', () => {
+    const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
+    const toAddress = TEST_ADDRESS
+    const token = {
+      balance: '0.001',
+      tokenSymbol: 'EUR',
+      tokenDecimal: 18,
+      contractAddress: TEST_ERC20_TOKEN_CONTRACT_ADDRESS
+    }
+
+    mockTransferResponse({
+      txhash: 'any'
+    })
+
+    const store = mockStore({})
+
+    return store
+      .dispatch(plasmaActions.transfer(wallet, toAddress, token))
+      .then(() => {
+        const actions = store.getActions()
+
+        expect(actions).toStrictEqual([
+          { type: 'CHILDCHAIN/SEND_TOKEN/INITIATED' },
+          {
+            data: {
+              hash: 'any',
+              from: wallet.address,
+              value: token.balance,
+              symbol: token.tokenSymbol,
+              tokenDecimal: token.tokenDecimal,
+              contractAddress: token.contractAddress,
+              gasUsed: 1,
+              gasPrice: 1,
+              actionType: TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN,
+              createdAt: actions[1].data.createdAt
+            },
+            type: 'CHILDCHAIN/SEND_TOKEN/SUCCESS'
+          },
+          { type: 'LOADING/CHILDCHAIN_SEND_TOKEN/IDLE' }
+        ])
+      })
+  })
+
+  it('exit should dispatch actions as expected', () => {
+    const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
+    const token = {
+      balance: '0.001',
+      tokenSymbol: 'EUR',
+      tokenDecimal: 18,
+      contractAddress: TEST_ERC20_TOKEN_CONTRACT_ADDRESS
+    }
+
+    mockExitResponse({
+      transactionHash: 'any',
+      exitId: 'any',
+      blknum: 'any',
+      flatFee: 'any',
+      paymentExitGameAddress: 'any',
+      gasPrice: 'any'
+    })
+
+    const store = mockStore()
+    return store.dispatch(plasmaActions.exit(wallet, token)).then(() => {
+      const actions = store.getActions()
+      expect(actions).toStrictEqual([
+        { type: 'CHILDCHAIN/EXIT/INITIATED' },
+        {
+          data: {
+            actionType: 'CHILDCHAIN_EXIT',
+            childchainBlockNumber: 'any',
+            contractAddress: token.contractAddress,
+            createdAt: actions[1].data.createdAt,
+            exitId: 'any',
+            flatFee: 'any',
+            from: wallet.address,
+            gasPrice: 'any',
+            gasUsed: 1,
+            hash: 'any',
+            smallestValue: '1000000000000000',
+            symbol: token.tokenSymbol,
+            timestamp: actions[1].data.timestamp,
+            to: 'any',
+            tokenDecimal: token.tokenDecimal,
+            type: 'exit',
+            value: token.balance
+          },
+          type: 'CHILDCHAIN/EXIT/SUCCESS'
+        },
+        { type: 'LOADING/CHILDCHAIN_EXIT/IDLE' }
+      ])
+    })
   })
 })
