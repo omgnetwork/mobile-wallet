@@ -1,35 +1,102 @@
 import { providerService, ethereumService } from 'common/services'
-import Config from 'react-native-config'
+import { Token } from 'common/blockchain'
 import { ethers } from 'ethers'
-const { TEST_ADDRESS, ETHERSCAN_NETWORK } = Config
 
 jest.mock('common/services/providerService.js')
+jest.mock('common/blockchain/token.js')
 
-const provider = ethers.getDefaultProvider('homestead')
 const { getTransactionHistory } = providerService
-const mockProviderServiceGetTxHistory = resp => {
+const mockProviderServiceGetErc20TxHistory = resp => {
   getTransactionHistory.mockReturnValueOnce(Promise.resolve(resp))
 }
+const mockFetchToken = resp => {
+  Token.fetchTokens.mockReturnValueOnce(Promise.resolve(resp))
+}
+const provider = ethers.getDefaultProvider('homestead')
+const testAddress = '0x357829df016316d8DC40a54f0a8D84D53B0D76dD'
 
 describe('Test Ethereum Service', () => {
-  it('getEthBalance should return eth balance in ether unit', () => {
-    return ethereumService.getEthBalance(TEST_ADDRESS).then(result => {
-      console.log(result)
-    })
-  })
-
   it('fetchAssets should return a list of assets', () => {
-    mockProviderServiceGetTxHistory([
-      { contractAddress: '0xc12d1c73ee7dc3615ba4e37e4abfdbddfa38907e' },
-      { contractAddress: '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359' },
-      { contractAddress: '0xd26114cd6ee289accf82350c8d8487fedb8a0c07' },
-      { contractAddress: '0x1c3bb10de15c31d5dbe48fbb7b87735d1b7d8c32' },
-      { contractAddress: '0x2630997aab62fa1030a8b975e1aa2dc573b18a13' }
+    const ETH = '0x0000000000000000000000000000000000000000'
+    const DAI = '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
+    const OMG = '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07'
+    const KCK = '0xc12d1c73ee7dc3615ba4e37e4abfdbddfa38907e'
+
+    mockProviderServiceGetErc20TxHistory([
+      { contractAddress: KCK },
+      { contractAddress: DAI },
+      { contractAddress: OMG }
     ])
+
+    mockFetchToken({
+      '0x0000000000000000000000000000000000000000': {
+        tokenName: 'Ether',
+        tokenSymbol: 'ETH',
+        tokenDecimal: 18,
+        price: 126.28,
+        balance: '0.005',
+        contractAddress: ETH
+      },
+      '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359': {
+        tokenName: 'Dai Stablecoin v1.0',
+        tokenSymbol: 'DAI',
+        tokenDecimal: 18,
+        price: 1,
+        balance: '31.3131',
+        contractAddress: DAI
+      },
+      '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07': {
+        tokenName: 'OMGToken',
+        tokenSymbol: 'OMG',
+        tokenDecimal: 18,
+        price: 1,
+        balance: '0.0',
+        contractAddress: OMG
+      },
+      '0xc12d1c73ee7dc3615ba4e37e4abfdbddfa38907e': {
+        tokenName: 'KickToken',
+        tokenSymbol: 'KCK',
+        tokenDecimal: 8,
+        price: 1,
+        balance: '888888.0',
+        contractAddress: KCK
+      }
+    })
+
     return ethereumService
-      .fetchAssets(provider, '0x357829df016316d8DC40a54f0a8D84D53B0D76dD', 0)
+      .fetchAssets(provider, testAddress, 0)
       .then(result => {
-        console.log(result)
+        expect(result).toStrictEqual({
+          address: testAddress,
+          rootchainAssets: [
+            {
+              tokenName: 'Ether',
+              tokenSymbol: 'ETH',
+              tokenDecimal: 18,
+              price: 126.28,
+              balance: '0.005',
+              contractAddress: ETH
+            },
+            {
+              tokenName: 'Dai Stablecoin v1.0',
+              tokenSymbol: 'DAI',
+              tokenDecimal: 18,
+              price: 1,
+              balance: '31.3131',
+              contractAddress: DAI
+            },
+            {
+              tokenName: 'KickToken',
+              tokenSymbol: 'KCK',
+              tokenDecimal: 8,
+              price: 1,
+              balance: '888888.0',
+              contractAddress: KCK
+            }
+          ],
+          updatedBlock: 0,
+          updatedAt: result.updatedAt
+        })
       })
-  })
+  }, 10000)
 })

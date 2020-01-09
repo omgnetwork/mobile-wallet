@@ -1,5 +1,6 @@
 import { ethereumService, plasmaService } from 'common/services'
-import { Mapper, Token } from 'common/utils'
+import { Token } from 'common/blockchain'
+import { Mapper } from 'common/utils'
 
 export const getPlasmaTx = oldTransaction => {
   return new Promise(async (resolve, reject) => {

@@ -8,7 +8,7 @@ import { plasmaActions } from 'common/actions'
 import BN from 'bn.js'
 
 jest.mock('common/analytics/crashAnalytics.js')
-//jest.mock('common/services/plasmaService.js')
+jest.mock('common/services/plasmaService.js')
 jest.spyOn(global, 'requestAnimationFrame').mockImplementation(cb => cb())
 
 const { TEST_PRIVATE_KEY, TEST_ADDRESS, ETHERSCAN_NETWORK } = Config
@@ -73,17 +73,15 @@ describe('Plasma Action Test', () => {
       })
   })
 
-
   it('depositEth should dispatch actions as expected', () => {
     const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
-    const token = {balance: '0.001', tokenSymbol: 'ETH', tokenDecimal: 18}
+    const token = { balance: '0.001', tokenSymbol: 'ETH', tokenDecimal: 18 }
     //mockDepositEthResponse({
-    // transactionHash: "" 
-    
-     //})
+    // transactionHash: ""
+
+    //})
     return store.dispatch(plasmaActions.depositEth(wallet, token)).then(() => {
       console.log(store.getActions())
-    }) 
+    })
   })
 })
-

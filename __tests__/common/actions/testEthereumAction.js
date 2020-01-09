@@ -25,7 +25,6 @@ const mockFetchAssets = resp => {
   fetchAssets.mockReturnValueOnce(Promise.resolve(resp))
 }
 
-
 describe('Test Ethereum Actions', () => {
   it('sendErc20Token should dispatch expected actions to the store', () => {
     const token = { balance: '10', tokenSymbol: 'OMG', tokenDecimal: 18 }

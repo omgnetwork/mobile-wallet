@@ -17,46 +17,6 @@ export const importWalletPrivateKey = privateKey => {
   return new ethers.Wallet(privateKey)
 }
 
-export const getEthBalance = address => {
-  return axios.get(Config.ETHERSCAN_API_URL, {
-    params: {
-      module: 'account',
-      sort: 'asc',
-      apikey: Config.ETHERSCAN_API_KEY,
-      address: address,
-      action: 'balance'
-    }
-  })
-}
-
-export const getERC20Balance = (provider, contractAddress, accountAddress) => {
-  const abi = ContractABI.erc20Abi()
-  const contract = new ethers.Contract(contractAddress, abi, provider)
-  return contract.balanceOf(accountAddress)
-}
-
-export const getTokenDetail = (provider, contractAddress) => {
-  const abi = ContractABI.erc20Abi()
-  const contract = new ethers.Contract(contractAddress, abi, provider)
-  if (contractAddress === ContractAddress.ETH_ADDRESS) {
-    return [
-      Promise.resolve('Ether'),
-      Promise.resolve('ETH'),
-      Promise.resolve(18),
-      Promise.resolve(contractAddress),
-      priceService.fetchPriceUsd(contractAddress, Config.ETHERSCAN_NETWORK)
-    ]
-  } else {
-    return [
-      contract.name(),
-      contract.symbol(),
-      contract.decimals(),
-      Promise.resolve(contractAddress),
-      priceService.fetchPriceUsd(contractAddress, Config.ETHERSCAN_NETWORK)
-    ]
-  }
-}
-
 // Transaction Management
 export const getERC20Txs = (address, options) => {
   const { lastBlockNumber, limit, page } = options

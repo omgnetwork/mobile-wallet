@@ -1,9 +1,7 @@
-import { Formatter, Parser, Polling, Datetime, Mapper, Token } from '../utils'
-import { Plasma } from 'common/blockchain'
-import { priceService } from 'common/services'
+import { Formatter, Parser, Polling, Datetime, Mapper } from '../utils'
+import { Plasma, Token } from 'common/blockchain'
 import { Gas } from 'common/constants'
 import BN from 'bn.js'
-import Config from 'react-native-config'
 
 export const fetchAssets = async (provider, address) => {
   try {
@@ -13,7 +11,11 @@ export const fetchAssets = async (provider, address) => {
     ])
 
     const tokenContractAddresses = getTokenContractAddresses(balances)
-    const tokenMap = await Token.fetchTokens(provider, tokenContractAddresses)
+    const tokenMap = await Token.fetchTokens(
+      provider,
+      tokenContractAddresses,
+      address
+    )
     const childchainAssets = balances.map(balance => {
       const token = tokenMap[balance.currency]
       return {

@@ -2,7 +2,6 @@ import { Ethereum } from 'common/blockchain'
 import Config from 'react-native-config'
 import { ethers } from 'ethers'
 import { Gas } from 'common/constants'
-import { ContractABI } from 'common/utils'
 
 const {
   TEST_MNEMONIC,
@@ -24,22 +23,6 @@ describe('Test Ethereum Boundary', () => {
     expect(mnemonic).toBe(TEST_MNEMONIC)
     expect(privateKey).toBe(TEST_PRIVATE_KEY)
     expect(address).toBe(TEST_ADDRESS)
-  })
-
-  it('getTokenDetail should return {symbol, decimal, name, contractAddress}', () => {
-    const pendingDetails = Ethereum.getTokenDetail(
-      testProvider,
-      TEST_ERC20_TOKEN_CONTRACT_ADDRESS
-    )
-
-    return Promise.all(pendingDetails).then(
-      ([name, symbol, decimals, contractAddress]) => {
-        expect(name).toBeDefined()
-        expect(symbol).toBeDefined()
-        expect(decimals).toBeDefined()
-        expect(contractAddress).toBeDefined()
-      }
-    )
   })
 
   it('sendEthToken should send expected parameters', () => {

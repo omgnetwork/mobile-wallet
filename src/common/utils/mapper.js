@@ -1,5 +1,6 @@
 import { ContractAddress } from 'common/constants'
-import { Transaction, Token, Datetime } from 'common/utils'
+import { Token } from 'common/blockchain'
+import { Transaction, Datetime } from 'common/utils'
 import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
 import BN from 'bn.js'
 
