@@ -1,11 +1,14 @@
-import { fetchAssets, depositEth } from 'common/services/plasmaService.js'
+import {
+  fetchAssets,
+  depositEth,
+  depositErc20
+} from 'common/services/plasmaService.js'
 import { ethers } from 'ethers'
 import { Datetime } from 'common/utils'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import Config from 'react-native-config'
 import { plasmaActions } from 'common/actions'
-import BN from 'bn.js'
 import { ContractAddress } from 'common/constants'
 
 jest.mock('common/analytics/crashAnalytics.js')
@@ -18,6 +21,7 @@ const {
   ETHERSCAN_NETWORK,
   TEST_ERC20_TOKEN_CONTRACT_ADDRESS
 } = Config
+
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 const provider = ethers.getDefaultProvider(ETHERSCAN_NETWORK)
@@ -26,6 +30,9 @@ const mockFetchAssetsResponse = resp => {
 }
 const mockDepositEthResponse = resp => {
   depositEth.mockReturnValueOnce(Promise.resolve(resp))
+}
+const mockDepositErc20Response = resp => {
+  depositErc20.mockReturnValueOnce(Promise.resolve(resp))
 }
 describe('Plasma Action Test', () => {
   it('fetchAssets should dispatch actions as expected', () => {
@@ -58,8 +65,8 @@ describe('Plasma Action Test', () => {
     const updatedAt = Datetime.now()
 
     mockFetchAssetsResponse({ fromUtxoPos: '0', childchainAssets, updatedAt })
-    const store = mockStore({})
 
+    const store = mockStore({})
     return store
       .dispatch(plasmaActions.fetchAssets(provider, TEST_ADDRESS))
       .then(() => {
@@ -87,13 +94,14 @@ describe('Plasma Action Test', () => {
       tokenDecimal: 18,
       contractAddress: ContractAddress.ETH_ADDRESS
     }
-    const store = mockStore({})
-
     mockDepositEthResponse({
       transactionHash: 'any',
       gasPrice: 'any',
       gasUsed: 'any'
     })
+
+    const store = mockStore({})
+
     return store.dispatch(plasmaActions.depositEth(wallet, token)).then(() => {
       const actions = store.getActions()
       expect(actions).toStrictEqual([
@@ -116,5 +124,47 @@ describe('Plasma Action Test', () => {
         { type: 'LOADING/CHILDCHAIN_DEPOSIT_ETH_TOKEN/IDLE' }
       ])
     })
+  })
+
+  it('depositErc20 should dispatch actions as expected', () => {
+    const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
+    const token = {
+      balance: '0.001',
+      tokenSymbol: 'EUR',
+      tokenDecimal: 18,
+      contractAddress: TEST_ERC20_TOKEN_CONTRACT_ADDRESS
+    }
+    mockDepositErc20Response({
+      transactionHash: 'any',
+      gasPrice: 'any',
+      gasUsed: 'any'
+    })
+
+    const store = mockStore({})
+
+    return store
+      .dispatch(plasmaActions.depositErc20(wallet, token))
+      .then(() => {
+        const actions = store.getActions()
+        expect(actions).toStrictEqual([
+          { type: 'CHILDCHAIN/DEPOSIT_ERC20_TOKEN/INITIATED' },
+          {
+            type: 'CHILDCHAIN/DEPOSIT_ERC20_TOKEN/SUCCESS',
+            data: {
+              hash: 'any',
+              from: TEST_ADDRESS,
+              value: token.balance,
+              symbol: token.tokenSymbol,
+              tokenDecimal: token.tokenDecimal,
+              contractAddress: token.contractAddress,
+              gasPrice: 'any',
+              gasUsed: 'any',
+              actionType: 'CHILDCHAIN_DEPOSIT',
+              createdAt: actions[1].data.createdAt
+            }
+          },
+          { type: 'LOADING/CHILDCHAIN_DEPOSIT_ERC20_TOKEN/IDLE' }
+        ])
+      })
   })
 })
