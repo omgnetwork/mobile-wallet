@@ -6,7 +6,7 @@ const { logger, logProvider } = require('../utils/logger')
 const metrics = require('../utils/metrics')
 
 // Collect metrics on incoming requests
-function requestReceivedHandler(proxyReq, req, res) {
+function requestReceivedHandler(proxyReq, req) {
   metrics.increment('mobile_api_proxy.num_requests')
 
   // Log and measure the Ethereum's JSON-RPC method if `method` is provided.

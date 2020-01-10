@@ -11,7 +11,7 @@ const logger = winston.createLogger({
 })
 
 // The log provider function used by http-proxy-middleware
-const logProvider = function(provider) {
+const logProvider = function() {
   return logger
 }
 
