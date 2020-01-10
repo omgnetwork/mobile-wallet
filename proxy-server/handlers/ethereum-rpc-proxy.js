@@ -56,7 +56,7 @@ function errorReceivedHandler(err, req, res) {
     }
   }
 
-  res.end('Error occured while trying to proxy to: ' + host + req.url)
+  res.end('Error occured while trying to proxy for: ' + host + req.url)
 }
 
 // Build the proxy server

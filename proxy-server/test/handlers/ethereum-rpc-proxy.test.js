@@ -2,7 +2,6 @@ const http = require('http')
 const express = require('express')
 const bodyParser = require('body-parser')
 
-const CONFIG = require('../../config')
 const ethereumRpcProxy = require('../../handlers/ethereum-rpc-proxy')
 
 var backend
@@ -46,8 +45,9 @@ describe('ethereum-rpc-proxy with backend unavailable', function() {
     http.get('http://localhost:3000', res => {
       res.on('data', chunk => {
         const responseBody = chunk.toString()
-        const message = 'Error occured while trying to proxy to: ' + CONFIG.ETHEREUM_RPC_URL + '/'
-        expect(responseBody).toBe(message)
+        expect(responseBody).toBe(
+          'Error occured while trying to proxy for: localhost:3000/'
+        )
         done()
       })
     })
