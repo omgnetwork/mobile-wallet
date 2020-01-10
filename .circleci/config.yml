@@ -95,7 +95,7 @@ jobs:
 
   proxy-server-build:
     docker:
-      - image: node:10-alpine
+      - image: circleci/node:10
     steps:
       - checkout
       - run: npm install
@@ -107,7 +107,7 @@ jobs:
 
   proxy-server-lint:
     docker:
-      - image: node:10-alpine
+      - image: circleci/node:10
     steps:
       - attach_workspace:
           at: .
@@ -115,7 +115,7 @@ jobs:
 
   proxy-server-test:
     docker:
-      - image: node:10-alpine
+      - image: circleci/node:10
     steps:
       - attach_workspace:
           at: .
