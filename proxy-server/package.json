@@ -23,7 +23,6 @@
     "express": "^4.17.1",
     "hot-shots": "^6.8.5",
     "http-proxy-middleware": "^0.20.0",
-    "invariant": "^2.2.4",
     "winston": "^3.2.1"
   },
   "devDependencies": {

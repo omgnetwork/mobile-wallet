@@ -1,5 +1,4 @@
 const express = require('express')
-const invariant = require('invariant')
 const bodyParser = require('body-parser')
 
 const CONFIG = require('./config')
