@@ -2,7 +2,7 @@ const proxy = require('http-proxy-middleware')
 
 const CONFIG = require('../config')
 const errorReporter = require('../utils/error-reporter')
-const logger = require('../utils/logger')
+const { logger, logProvider } = require('../utils/logger')
 const metrics = require('../utils/metrics')
 
 // Collect metrics on incoming requests
@@ -10,11 +10,13 @@ function requestReceivedHandler(proxyReq, req, res) {
   metrics.increment('mobile_api_proxy.num_requests')
 
   // Log and measure the Ethereum's JSON-RPC method if `method` is provided.
-  if (!!req.body.method) {
+  if (req.body.method) {
     metrics.increment('mobile_api_proxy.num_requests.' + req.body.method)
     logger.info('Proxying ETH: ' + req.ip + ' -> ' + req.body.method)
   } else {
-    logger.info('Proxying HTTP: ' + req.ip + ' -> ' + req.headers.host + req.url)
+    logger.info(
+      'Proxying HTTP: ' + req.ip + ' -> ' + req.headers.host + req.url
+    )
   }
 
   // body-parser doesn't play well with http-proxy-middleware, so we need to stringify
@@ -65,7 +67,7 @@ function ethereumRpcProxy() {
     xfwd: true, // Let the host sees whom the request is being forwarded for
     ws: false, // No plans to interact with Ethereum client via websockets
     logLevel: CONFIG.LOG_LEVEL,
-    logProvider: function logProvider(provider) { return logger }, // A logger customized for more info
+    logProvider: logProvider, // A logger customized for more info
     onProxyReq: requestReceivedHandler,
     onError: errorReceivedHandler
   })

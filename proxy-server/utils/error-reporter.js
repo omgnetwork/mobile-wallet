@@ -1,6 +1,6 @@
-const Sentry = require('@sentry/node');
+const Sentry = require('@sentry/node')
 const CONFIG = require('../config')
 
-Sentry.init({dsn: CONFIG.SENTRY_DSN})
+Sentry.init({ dsn: CONFIG.SENTRY_DSN })
 
 module.exports = Sentry
