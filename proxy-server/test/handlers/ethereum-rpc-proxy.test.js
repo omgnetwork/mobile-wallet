@@ -26,7 +26,7 @@ describe('ethereum-rpc-proxy', function() {
   it('should return response from backend', function(done) {
     http.get('http://localhost:3000', res => {
       res.on('data', chunk => {
-        responseBody = chunk.toString()
+        const responseBody = chunk.toString()
         expect(responseBody).toBe('{"hello": "world"}')
         done()
       })
