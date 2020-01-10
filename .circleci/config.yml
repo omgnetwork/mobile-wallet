@@ -96,7 +96,6 @@ jobs:
   proxy-server-build:
     docker:
       - image: circleci/node:10
-    working_directory: ~/src/proxy-server
     steps:
       - checkout
       - run: npm install
