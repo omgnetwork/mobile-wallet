@@ -6,7 +6,40 @@ defaults: &defaults
   environment:
     JVM_OPTS: -Xmx3200m
 
+workflows:
+  version: 2
+  mobile-wallet-deploy-internal:
+    jobs:
+      - instrumentation-test
+      - hold:
+          type: approval
+          requires:
+            - instrumentation-test
+      - build-deploy-internal:
+          requires:
+            - hold
+
+  proxy-server-build-test-deploy:
+    jobs:
+      - proxy-server-build
+      - proxy-server-lint:
+          requires:
+            - proxy-server-build
+      - proxy-server-test:
+          requires:
+            - proxy-server-build
+      - proxy-server-publish:
+          requires:
+            - proxy-server-test
+          filters:
+            branches:
+              only: master
+
 jobs:
+  #
+  # Mobile wallet build jobs
+  #
+
   instrumentation-tests:
     <<: *defaults
     steps:
@@ -56,15 +89,47 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }} 
 
-workflows:
-  version: 2
-  deploy-internal:
-    jobs:
-      - instrumentation-tests
-      - hold:
-          type: approval
-          requires:
-            - instrumentation-tests
-      - deploy-internal:
-          requires:
-            - hold
+  #
+  # Proxy server build jobs
+  #
+
+  proxy-server-build:
+    docker:
+      - image: node:10-alpine
+    steps:
+      - checkout
+      - run: npm install
+      - persist_to_workspace:
+          name: Persist workspace
+          root: .
+          paths:
+            - proxy-server/
+
+  proxy-server-lint:
+    docker:
+      - image: node:10-alpine
+    steps:
+      - attach_workspace:
+          at: .
+      - run: npm run lint
+
+  proxy-server-test:
+    docker:
+      - image: node:10-alpine
+    steps:
+      - attach_workspace:
+          at: .
+      - run: npm run test
+
+  proxy-server-publish:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: |
+          echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+          gcloud auth configure-docker
+          docker build -t $DOCKER_IMAGE_NAME .
+          docker tag $DOCKER_IMAGE_NAME $DOCKER_REPO_URL
+          docker push $DOCKER_REPO_URL
