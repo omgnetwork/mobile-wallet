@@ -52,7 +52,7 @@ jobs:
       - run:
           name: Store service account
           command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
-      - run: 
+      - run:
           name: Authorize to gcloud
           command: gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json --project=${GOOGLE_PROJECT_ID}
       - run:
@@ -61,7 +61,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }} 
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
 
   deploy-internal:
     <<: *defaults
@@ -87,7 +87,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }} 
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
 
   #
   # Proxy server build jobs
@@ -96,6 +96,7 @@ jobs:
   proxy-server-build:
     docker:
       - image: circleci/node:10
+    working_directory: ~/src/proxy-server
     steps:
       - checkout
       - run: npm install
@@ -108,6 +109,7 @@ jobs:
   proxy-server-lint:
     docker:
       - image: circleci/node:10
+    working_directory: ~/src/proxy-server
     steps:
       - attach_workspace:
           at: .
@@ -116,6 +118,7 @@ jobs:
   proxy-server-test:
     docker:
       - image: circleci/node:10
+    working_directory: ~/src/proxy-server
     steps:
       - attach_workspace:
           at: .
@@ -124,6 +127,7 @@ jobs:
   proxy-server-publish:
     docker:
       - image: google/cloud-sdk
+    working_directory: ~/src/proxy-server
     steps:
       - checkout
       - setup_remote_docker
