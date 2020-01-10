@@ -8,7 +8,7 @@ var proxy
 
 beforeAll(() => {
   const backendApp = express()
-  backendApp.get('/', (req, res) => res.send('{"hello": "world"}'))
+  backendApp.get('/', (req, res) => res.send('{"backend":"response"}'))
   backend = backendApp.listen(8545)
 
   const proxyApp = express()
@@ -23,11 +23,11 @@ afterAll(() => {
 })
 
 describe('ethereum-rpc-proxy', function() {
-  it('should return response from backend', function(done) {
+  it('should return a response from the backend', function(done) {
     http.get('http://localhost:3000', res => {
       res.on('data', chunk => {
         const responseBody = chunk.toString()
-        expect(responseBody).toBe('{"hello": "world"}')
+        expect(responseBody).toBe('{"backend":"response"}')
         done()
       })
     })
