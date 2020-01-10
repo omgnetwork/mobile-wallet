@@ -108,25 +108,30 @@ jobs:
   proxy-server-lint:
     docker:
       - image: circleci/node:10
-    working_directory: ~/src/proxy-server
     steps:
       - attach_workspace:
           at: .
-      - run: npm run lint
+      - run:
+          name: Run proxy-server lint
+          command: |
+            cd proxy-server
+            npm run lint
 
   proxy-server-test:
     docker:
       - image: circleci/node:10
-    working_directory: ~/src/proxy-server
     steps:
       - attach_workspace:
           at: .
-      - run: npm run test
+      - run:
+          name: Run proxy-server tests
+          command: |
+            cd proxy-server
+            npm run lint
 
   proxy-server-publish:
     docker:
       - image: google/cloud-sdk
-    working_directory: ~/src/proxy-server
     steps:
       - checkout
       - setup_remote_docker
