@@ -15,7 +15,8 @@
   "homepage": "https://github.com/omisego/mobile-wallet",
   "scripts": {
     "lint": "eslint \"./**/*.js\"",
-    "test": "jest"
+    "test": "jest",
+    "start": "node index.js",
   },
   "dependencies": {
     "@sentry/node": "^5.10.2",
