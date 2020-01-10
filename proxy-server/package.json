@@ -16,7 +16,7 @@
   "scripts": {
     "lint": "eslint \"./**/*.js\"",
     "test": "jest",
-    "start": "node index.js",
+    "start": "node index.js"
   },
   "dependencies": {
     "@sentry/node": "^5.10.2",
