@@ -112,8 +112,11 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run: cd proxy-server
-      - run: npm run lint
+      - run:
+          name: Run proxy-server lint
+          command: |
+            cd proxy-server
+            npm run lint
 
   proxy-server-test:
     docker:
@@ -121,8 +124,11 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run: cd proxy-server
-      - run: npm run test
+      - run:
+          name: Run proxy-server tests
+          command: |
+            cd proxy-server
+            npm run test
 
   proxy-server-publish:
     docker:
