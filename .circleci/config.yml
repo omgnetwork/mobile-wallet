@@ -98,6 +98,7 @@ jobs:
       - image: circleci/node:10
     steps:
       - checkout
+      - run: cd proxy-server
       - run: npm install
       - persist_to_workspace:
           name: Persist workspace
@@ -111,11 +112,8 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run:
-          name: Run proxy-server lint
-          command: |
-            cd proxy-server
-            npm run lint
+      - run: cd proxy-server
+      - run: npm run lint
 
   proxy-server-test:
     docker:
@@ -123,17 +121,15 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run:
-          name: Run proxy-server tests
-          command: |
-            cd proxy-server
-            npm run lint
+      - run: cd proxy-server
+      - run: npm run test
 
   proxy-server-publish:
     docker:
       - image: google/cloud-sdk
     steps:
       - checkout
+      - run: cd proxy-server
       - setup_remote_docker
       - run: |
           echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
