@@ -98,13 +98,21 @@ jobs:
       - image: circleci/node:10
     steps:
       - checkout
-      - run: cd proxy-server
-      - run: npm install
+      - restore_cache:
+          keys:
+            - v1-proxy-server-node-modules-cache-{{ checksum "package.lock" }}
+      - run:
+          name: Install proxy-server node packages
+          command: |
+            cd proxy-server
+            npm install
+      - save_cache:
+          key: v1-proxy-server-node-modules-cache-{{ checksum "package.lock" }}
+          paths: "proxy-server/node_modules/"
       - persist_to_workspace:
           name: Persist workspace
           root: .
-          paths:
-            - proxy-server/
+          paths: "proxy-server/"
 
   proxy-server-lint:
     docker:
