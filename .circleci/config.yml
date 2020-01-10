@@ -100,14 +100,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-proxy-server-node-modules-cache-{{ checksum "package.lock" }}
+            - v1-proxy-server-node-modules-cache-{{ checksum "proxy-server/package-lock.json" }}
       - run:
           name: Install proxy-server node packages
           command: |
             cd proxy-server
             npm install
       - save_cache:
-          key: v1-proxy-server-node-modules-cache-{{ checksum "package.lock" }}
+          key: v1-proxy-server-node-modules-cache-{{ checksum "proxy-server/package-lock.json" }}
           paths: "proxy-server/node_modules/"
       - persist_to_workspace:
           name: Persist workspace
