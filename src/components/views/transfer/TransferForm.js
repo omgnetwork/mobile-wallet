@@ -1,6 +1,6 @@
-import React, { useRef, useState, useCallback } from 'react'
+import React, { useRef, useState, useCallback, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -66,9 +66,24 @@ const TransferForm = ({ wallet, theme, navigation }) => {
   )
   const addressRef = useRef(selectedAddress)
   const amountRef = useRef(defaultAmount)
+  const amountFocusRef = useRef(null)
   const [showErrorAddress, setShowErrorAddress] = useState(false)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
   const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
+
+  useEffect(() => {
+    if (!amountFocusRef.current) return
+    if ((isDeposit || isRootchain) && wallet.rootchainAssets.length === 1) {
+      amountFocusRef.current.focus()
+    } else if (wallet.childchainAssets.length === 1) {
+      amountFocusRef.current.focus()
+    }
+  }, [
+    isDeposit,
+    isRootchain,
+    wallet.childchainAssets.length,
+    wallet.rootchainAssets.length
+  ])
 
   const submit = useCallback(() => {
     if (!Validator.isValidAddress(addressRef.current)) {
@@ -159,6 +174,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
                 inputRef={amountRef}
                 showError={showErrorAmount}
                 errorMessage={errorAmountMessage}
+                focusRef={amountFocusRef}
                 defaultValue={navigation.getParam('lastAmount')}
                 style={styles.amountInput}
               />

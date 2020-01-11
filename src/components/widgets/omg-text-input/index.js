@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { TextInput, StyleSheet, Platform } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import PropTypes from 'prop-types'
@@ -15,6 +15,7 @@ const OMGTextInput = ({
   value,
   inputRef,
   onFocus,
+  focusRef,
   onBlur,
   disabled,
   theme
@@ -27,6 +28,7 @@ const OMGTextInput = ({
     <TextInput
       mode='flat'
       placeholder={placeholder}
+      ref={focusRef}
       autoCapitalize={autoCapitalize || 'none'}
       onChangeText={text => {
         inputRef && (inputRef.current = text)

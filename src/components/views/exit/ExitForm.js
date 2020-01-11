@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
@@ -21,8 +21,16 @@ const ExitForm = ({ wallet, theme, navigation }) => {
     wallet.childchainAssets[0]
   )
   const amountRef = useRef(defaultAmount)
+  const amountFocusRef = useRef(null)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
   const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
+
+  useEffect(() => {
+    if (!amountFocusRef.current) return
+    if (wallet.childchainAssets.length === 1) {
+      amountFocusRef.current.focus()
+    }
+  }, [wallet.childchainAssets.length])
 
   const navigateNext = useCallback(() => {
     if (!Validator.isValidAmount(amountRef.current)) {
@@ -63,6 +71,7 @@ const ExitForm = ({ wallet, theme, navigation }) => {
         <OMGAmountInput
           token={selectedToken}
           inputRef={amountRef}
+          focusRef={amountFocusRef}
           showError={showErrorAmount}
           errorMessage={errorAmountMessage}
           defaultValue={navigation.getParam('lastAmount')}
