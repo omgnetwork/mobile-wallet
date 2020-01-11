@@ -1,7 +1,6 @@
 import { ethers } from 'ethers'
-import { Parser, ContractABI } from 'common/utils'
-import { ContractAddress, Gas } from 'common/constants/'
-import { priceService } from 'common/services'
+import { Parser } from 'common/utils'
+import { Gas } from 'common/constants/'
 import axios from 'axios'
 import Config from 'react-native-config'
 

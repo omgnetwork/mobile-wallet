@@ -1,4 +1,4 @@
-import { Formatter, Parser, Polling, Datetime, Mapper } from '../utils'
+import { Formatter, Parser, Polling, Datetime, Mapper } from 'common/utils'
 import { Plasma, Token } from 'common/blockchain'
 import { Gas } from 'common/constants'
 import BN from 'bn.js'
