@@ -15,14 +15,9 @@ jest.spyOn(global, 'requestAnimationFrame').mockImplementation(cb => cb())
 const { ETHERSCAN_NETWORK, TEST_PRIVATE_KEY, TEST_ADDRESS } = Config
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
-const mockSendErc20Token = resp => {
-  sendErc20Token.mockReturnValueOnce(Promise.resolve(resp))
-}
-const mockSendEthToken = resp => {
-  sendEthToken.mockReturnValueOnce(Promise.resolve(resp))
-}
-const mockFetchAssets = resp => {
-  fetchAssets.mockReturnValueOnce(Promise.resolve(resp))
+
+const mockEthereumService = (method, resp) => {
+  method.mockReturnValueOnce(Promise.resolve(resp))
 }
 
 describe('Test Ethereum Actions', () => {
@@ -32,7 +27,7 @@ describe('Test Ethereum Actions', () => {
     const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
     const toAddress = TEST_ADDRESS
     const store = mockStore({ unconfirmedTxs: [] })
-    mockSendErc20Token({
+    mockEthereumService(sendErc20Token, {
       hash: 'any',
       from: 'any',
       nonce: 'any',
@@ -69,7 +64,7 @@ describe('Test Ethereum Actions', () => {
     const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
     const toAddress = TEST_ADDRESS
     const store = mockStore({ unconfirmedTxs: [] })
-    mockSendEthToken({
+    mockEthereumService(sendEthToken, {
       hash: 'any',
       from: 'any',
       nonce: 'any',
@@ -128,7 +123,7 @@ describe('Test Ethereum Actions', () => {
       updatedBlock: '4880102',
       updatedAt: '2020-01-07T07:37:30Z'
     }
-    mockFetchAssets(assets)
+    mockEthereumService(fetchAssets, assets)
     return store.dispatch(action).then(() => {
       expect(fetchAssets).toBeCalledWith(provider, TEST_ADDRESS, 0)
       const dispatchedActions = store.getActions()

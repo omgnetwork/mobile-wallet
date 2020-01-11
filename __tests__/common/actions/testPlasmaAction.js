@@ -28,21 +28,11 @@ const {
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 const provider = ethers.getDefaultProvider(ETHERSCAN_NETWORK)
-const mockFetchAssetsResponse = resp => {
-  fetchAssets.mockReturnValueOnce(Promise.resolve(resp))
+
+const mockPlasmaService = (method, resp) => {
+  method.mockReturnValueOnce(Promise.resolve(resp))
 }
-const mockDepositEthResponse = resp => {
-  depositEth.mockReturnValueOnce(Promise.resolve(resp))
-}
-const mockDepositErc20Response = resp => {
-  depositErc20.mockReturnValueOnce(Promise.resolve(resp))
-}
-const mockTransferResponse = resp => {
-  transfer.mockReturnValueOnce(Promise.resolve(resp))
-}
-const mockExitResponse = resp => {
-  exit.mockReturnValueOnce(Promise.resolve(resp))
-}
+
 describe('Plasma Action Test', () => {
   it('fetchAssets should dispatch actions as expected', () => {
     const childchainAssets = [
@@ -73,7 +63,11 @@ describe('Plasma Action Test', () => {
     ]
     const updatedAt = Datetime.now()
 
-    mockFetchAssetsResponse({ fromUtxoPos: '0', childchainAssets, updatedAt })
+    mockPlasmaService(fetchAssets, {
+      fromUtxoPos: '0',
+      childchainAssets,
+      updatedAt
+    })
 
     const store = mockStore({})
     return store
@@ -103,7 +97,7 @@ describe('Plasma Action Test', () => {
       tokenDecimal: 18,
       contractAddress: ContractAddress.ETH_ADDRESS
     }
-    mockDepositEthResponse({
+    mockPlasmaService(depositEth, {
       transactionHash: 'any',
       gasPrice: 'any',
       gasUsed: 'any'
@@ -143,7 +137,7 @@ describe('Plasma Action Test', () => {
       tokenDecimal: 18,
       contractAddress: TEST_ERC20_TOKEN_CONTRACT_ADDRESS
     }
-    mockDepositErc20Response({
+    mockPlasmaService(depositErc20, {
       transactionHash: 'any',
       gasPrice: 'any',
       gasUsed: 'any'
@@ -187,7 +181,7 @@ describe('Plasma Action Test', () => {
       contractAddress: TEST_ERC20_TOKEN_CONTRACT_ADDRESS
     }
 
-    mockTransferResponse({
+    mockPlasmaService(transfer, {
       txhash: 'any'
     })
 
@@ -229,7 +223,7 @@ describe('Plasma Action Test', () => {
       contractAddress: TEST_ERC20_TOKEN_CONTRACT_ADDRESS
     }
 
-    mockExitResponse({
+    mockPlasmaService(exit, {
       transactionHash: 'any',
       exitId: 'any',
       blknum: 'any',
