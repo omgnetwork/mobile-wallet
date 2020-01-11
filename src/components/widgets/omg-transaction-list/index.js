@@ -54,11 +54,26 @@ const OMGTransactionList = ({
   const handleClickTx = useCallback(
     transaction => {
       navigation.navigate('TransactionDetail', {
-        transaction
+        transaction,
+        title: getTransactionDetailTitle(transaction)
       })
     },
     [navigation]
   )
+
+  const getTransactionDetailTitle = tx => {
+    switch (tx.type) {
+      case TransactionTypes.TYPE_DEPOSIT:
+        return 'Deposit Details'
+      case TransactionTypes.TYPE_EXIT:
+        return 'Exit Details'
+      case TransactionTypes.TYPE_SENT:
+      case TransactionTypes.TYPE_RECEIVED:
+        return 'Transfer Details'
+      case TransactionTypes.TYPE_FAILED:
+        return 'Failed Details'
+    }
+  }
 
   return (
     <View style={{ ...styles.container, ...style }}>

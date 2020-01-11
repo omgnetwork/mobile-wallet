@@ -53,7 +53,15 @@ export const getTxs = (address, provider, options) => {
 
       const contractAddresses = Array.from(new Set(currencies))
 
-      const tokens = await Token.fetchTokens(provider, contractAddresses)
+      const tokenMap = await Token.fetchTokens(
+        provider,
+        contractAddresses,
+        address
+      )
+
+      const tokens = Object.keys(tokenMap).map(
+        contractAddress => tokenMap[contractAddress]
+      )
 
       const transactions = await Promise.all([
         pendingEthereumTxs,

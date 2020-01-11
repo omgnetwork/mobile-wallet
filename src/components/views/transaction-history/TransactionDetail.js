@@ -26,6 +26,7 @@ import { BlockchainNetworkType, TransactionTypes } from 'common/constants'
 
 const TransactionDetail = ({ navigation, theme }) => {
   const tx = navigation.getParam('transaction')
+  const title = navigation.getParam('title')
 
   const [transaction, setTransaction] = useState(null)
 
@@ -121,7 +122,7 @@ const TransactionDetail = ({ navigation, theme }) => {
           style={styles.headerIcon}
           onPress={() => navigation.goBack()}
         />
-        <OMGText style={styles.headerTitle(theme)}>Transaction Details</OMGText>
+        <OMGText style={styles.headerTitle(theme)}>{title}</OMGText>
       </View>
       {transaction ? renderTransactionDetail() : renderTransactionLoading()}
     </SafeAreaView>
