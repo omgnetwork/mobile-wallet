@@ -42,6 +42,7 @@ const OMGTextInput = ({
       }}
       importantForAutofill='no'
       maxLength={maxLength}
+      returnKeyType='done'
       numberOfLines={numberOfLines}
       editable={disabled === undefined ? true : !disabled}
       multiline={numberOfLines > 1}

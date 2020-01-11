@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   }),
   contentContainer: theme => ({
     paddingHorizontal: 30,
-    paddingVertical: 10
+    paddingVertical: 30
   }),
   buttonContainer: {
     paddingHorizontal: 30,

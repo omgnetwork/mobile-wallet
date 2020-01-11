@@ -42,37 +42,35 @@ const ExitForm = ({ wallet, theme, navigation }) => {
   }, [navigation, selectedToken])
 
   return (
-    <OMGDismissKeyboard>
-      <View style={styles.container}>
-        <OMGBlockchainLabel actionText='Sending to' isRootchain={true} />
-        <View style={styles.contentContainer}>
-          <OMGText weight='bold' style={styles.title(theme)}>
-            Select Exit Amount
-          </OMGText>
-          <OMGTokenInput
-            token={selectedToken}
-            style={styles.tokenInput}
-            onPress={() =>
-              navigation.navigate('TransferSelectBalance', {
-                currentToken: selectedToken,
-                lastAmount: amountRef.current,
-                assets: wallet.childchainAssets,
-                exit: true
-              })
-            }
-          />
-          <OMGAmountInput
-            token={selectedToken}
-            inputRef={amountRef}
-            showError={showErrorAmount}
-            errorMessage={errorAmountMessage}
-            defaultValue={navigation.getParam('lastAmount')}
-            style={styles.amountInput}
-          />
-          <OMGExitWarning style={styles.textWarning} />
-          <View style={styles.buttonContainer}>
-            <OMGButton onPress={navigateNext}>Next</OMGButton>
-          </View>
+    <OMGDismissKeyboard style={styles.container}>
+      <OMGBlockchainLabel actionText='Sending to' isRootchain={true} />
+      <View style={styles.contentContainer}>
+        <OMGText weight='bold' style={styles.title(theme)}>
+          Select Exit Amount
+        </OMGText>
+        <OMGTokenInput
+          token={selectedToken}
+          style={styles.tokenInput}
+          onPress={() =>
+            navigation.navigate('TransferSelectBalance', {
+              currentToken: selectedToken,
+              lastAmount: amountRef.current,
+              assets: wallet.childchainAssets,
+              exit: true
+            })
+          }
+        />
+        <OMGAmountInput
+          token={selectedToken}
+          inputRef={amountRef}
+          showError={showErrorAmount}
+          errorMessage={errorAmountMessage}
+          defaultValue={navigation.getParam('lastAmount')}
+          style={styles.amountInput}
+        />
+        <OMGExitWarning style={styles.textWarning} />
+        <View style={styles.buttonContainer}>
+          <OMGButton onPress={navigateNext}>Next</OMGButton>
         </View>
       </View>
     </OMGDismissKeyboard>

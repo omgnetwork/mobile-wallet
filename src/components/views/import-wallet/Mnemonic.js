@@ -40,33 +40,31 @@ const Mnemonic = ({
   }, [loading, loading.action, loading.success, navigation, wallets])
 
   return (
-    <OMGDismissKeyboard>
-      <View style={styles.mnemonicContainer}>
-        <OMGText style={styles.textBoxTitle} weight='bold'>
-          Mnemonic Phrase
-        </OMGText>
-        <OMGTextInputBox
-          style={styles.textBox}
-          inputRef={mnemonicRef}
-          disabled={loading.show}
-          lines={2}
-          placeholder='Enter mnemonic...'
-        />
-        <OMGText style={styles.textBoxTitle} weight='bold'>
-          Wallet Name
-        </OMGText>
-        <OMGTextInputBox
-          placeholder='Your wallet name'
-          style={styles.textBox}
-          inputRef={walletNameRef}
-          maxLength={20}
-          disabled={loading.show}
-        />
-        <View style={styles.buttonContainer}>
-          <OMGButton loading={loading.show} onPress={importWallet}>
-            Import
-          </OMGButton>
-        </View>
+    <OMGDismissKeyboard style={styles.mnemonicContainer}>
+      <OMGText style={styles.textBoxTitle} weight='bold'>
+        Mnemonic Phrase
+      </OMGText>
+      <OMGTextInputBox
+        style={styles.textBox}
+        inputRef={mnemonicRef}
+        disabled={loading.show}
+        lines={2}
+        placeholder='Enter mnemonic...'
+      />
+      <OMGText style={styles.textBoxTitle} weight='bold'>
+        Wallet Name
+      </OMGText>
+      <OMGTextInputBox
+        placeholder='Your wallet name'
+        style={styles.textBox}
+        inputRef={walletNameRef}
+        maxLength={20}
+        disabled={loading.show}
+      />
+      <View style={styles.buttonContainer}>
+        <OMGButton loading={loading.show} onPress={importWallet}>
+          Import
+        </OMGButton>
       </View>
     </OMGDismissKeyboard>
   )

@@ -1,10 +1,24 @@
 import React from 'react'
-import { TouchableWithoutFeedback, Keyboard } from 'react-native'
+import {
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView
+} from 'react-native'
 
-const OMGDismissKeyboard = ({ children }) => {
+const OMGDismissKeyboard = ({
+  children,
+  style,
+  keyboardVerticalOffset = 108
+}) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      {children}
+      <KeyboardAvoidingView
+        style={style}
+        behavior='padding'
+        enabled
+        keyboardVerticalOffset={keyboardVerticalOffset}>
+        {children}
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   )
 }

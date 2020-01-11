@@ -1,8 +1,8 @@
 import React, { useRef } from 'react'
-import { withNavigation, SafeAreaView } from 'react-navigation'
+import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, ScrollView } from 'react-native'
 import { Alerter } from 'common/utils'
 import { Alert } from 'common/constants'
 import {
@@ -29,19 +29,18 @@ const CreateWalletForm = ({ wallets, navigation }) => {
   }
 
   return (
-    <OMGDismissKeyboard>
-      <SafeAreaView style={styles.container}>
-        <OMGText weight='bold'>Name</OMGText>
-        <OMGTextInputBox
-          placeholder='Name'
-          inputRef={walletNameRef}
-          maxLength={20}
-          style={styles.nameContainer}
-        />
-        <View style={styles.button}>
-          <OMGButton onPress={navigateNext}>Create Wallet</OMGButton>
-        </View>
-      </SafeAreaView>
+    <OMGDismissKeyboard style={styles.container}>
+      <OMGText weight='bold'>Name</OMGText>
+      <OMGTextInputBox
+        placeholder='Name'
+        inputRef={walletNameRef}
+        maxLength={20}
+        style={styles.nameContainer}
+      />
+
+      <View style={styles.button}>
+        <OMGButton onPress={navigateNext}>Create Wallet</OMGButton>
+      </View>
     </OMGDismissKeyboard>
   )
 }

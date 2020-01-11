@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
   OMGBox,
   OMGButton,
@@ -12,7 +13,8 @@ import {
   OMGWalletAddress,
   OMGAmountInput,
   OMGFeeInput,
-  OMGBlockchainLabel
+  OMGBlockchainLabel,
+  OMGDismissKeyboard
 } from 'components/widgets'
 import { Validator } from 'common/utils'
 import * as BlockchainLabel from './blockchainLabel'
@@ -98,88 +100,92 @@ const TransferForm = ({ wallet, theme, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container(theme)}>
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        <View style={styles.formContainer}>
-          <OMGBlockchainLabel
-            actionText={blockchainLabelActionText}
-            isRootchain={isRootchain}
-          />
-          <OMGBox style={styles.fromContainer}>
-            <OMGText weight='bold'>From</OMGText>
-            <OMGTokenInput
-              token={selectedToken}
-              style={styles.tokenInput}
-              onPress={() =>
-                navigation.navigate('TransferSelectBalance', {
-                  currentToken: selectedToken,
-                  lastAmount: amountRef.current,
-                  assets:
-                    isDeposit || isRootchain
-                      ? wallet.rootchainAssets
-                      : wallet.childchainAssets
-                })
-              }
+      <OMGDismissKeyboard
+        style={styles.dismissKeyboard}
+        keyboardVerticalOffset={0}>
+        <KeyboardAwareScrollView contentContainerStyle={styles.scrollView}>
+          <View style={styles.formContainer}>
+            <OMGBlockchainLabel
+              actionText={blockchainLabelActionText}
+              isRootchain={isRootchain}
             />
-            <OMGWalletAddress
-              name={wallet.name}
-              address={wallet.address}
-              style={styles.walletAddress}
-            />
-          </OMGBox>
-          <OMGBox style={styles.toContainer}>
-            <OMGText weight='bold'>To</OMGText>
-            {isDeposit ? (
-              <OMGWalletAddress
-                style={styles.addressInput}
-                name='Plasma Contract'
-                address={selectedAddress}
-              />
-            ) : (
-              <OMGAddressInput
-                style={styles.addressInput}
-                inputRef={addressRef}
-                showError={showErrorAddress}
+            <OMGBox style={styles.fromContainer}>
+              <OMGText weight='bold'>From</OMGText>
+              <OMGTokenInput
+                token={selectedToken}
+                style={styles.tokenInput}
                 onPress={() =>
-                  navigation.navigate('TransferScanner', {
-                    rootchain: isRootchain
+                  navigation.navigate('TransferSelectBalance', {
+                    currentToken: selectedToken,
+                    lastAmount: amountRef.current,
+                    assets:
+                      isDeposit || isRootchain
+                        ? wallet.rootchainAssets
+                        : wallet.childchainAssets
                   })
                 }
               />
-            )}
-          </OMGBox>
-          <OMGBox style={styles.amountContainer}>
-            <OMGText weight='bold'>Amount</OMGText>
-            <OMGAmountInput
-              token={selectedToken}
-              inputRef={amountRef}
-              showError={showErrorAmount}
-              errorMessage={errorAmountMessage}
-              defaultValue={navigation.getParam('lastAmount')}
-              style={styles.amountInput}
-            />
-          </OMGBox>
-          <OMGBox style={styles.feeContainer(isRootchain)}>
-            <OMGText weight='bold'>Transaction Fee</OMGText>
-            <OMGFeeInput
-              fee={selectedFee}
-              style={styles.feeInput}
-              onPress={() => {
-                navigation.navigate('TransferSelectFee', {
-                  currentToken: {
-                    ...selectedToken,
-                    balance: amountRef.current
-                  },
-                  currentFee: selectedFee,
-                  fees: fees
-                })
-              }}
-            />
-          </OMGBox>
-        </View>
-        <View style={styles.buttonContainer}>
-          <OMGButton onPress={submit}>Next</OMGButton>
-        </View>
-      </ScrollView>
+              <OMGWalletAddress
+                name={wallet.name}
+                address={wallet.address}
+                style={styles.walletAddress}
+              />
+            </OMGBox>
+            <OMGBox style={styles.toContainer}>
+              <OMGText weight='bold'>To</OMGText>
+              {isDeposit ? (
+                <OMGWalletAddress
+                  style={styles.addressInput}
+                  name='Plasma Contract'
+                  address={selectedAddress}
+                />
+              ) : (
+                <OMGAddressInput
+                  style={styles.addressInput}
+                  inputRef={addressRef}
+                  showError={showErrorAddress}
+                  onPress={() =>
+                    navigation.navigate('TransferScanner', {
+                      rootchain: isRootchain
+                    })
+                  }
+                />
+              )}
+            </OMGBox>
+            <OMGBox style={styles.amountContainer}>
+              <OMGText weight='bold'>Amount</OMGText>
+              <OMGAmountInput
+                token={selectedToken}
+                inputRef={amountRef}
+                showError={showErrorAmount}
+                errorMessage={errorAmountMessage}
+                defaultValue={navigation.getParam('lastAmount')}
+                style={styles.amountInput}
+              />
+            </OMGBox>
+            <OMGBox style={styles.feeContainer(isRootchain)}>
+              <OMGText weight='bold'>Transaction Fee</OMGText>
+              <OMGFeeInput
+                fee={selectedFee}
+                style={styles.feeInput}
+                onPress={() => {
+                  navigation.navigate('TransferSelectFee', {
+                    currentToken: {
+                      ...selectedToken,
+                      balance: amountRef.current
+                    },
+                    currentFee: selectedFee,
+                    fees: fees
+                  })
+                }}
+              />
+            </OMGBox>
+          </View>
+          <View style={styles.buttonContainer}>
+            <OMGButton onPress={submit}>Next</OMGButton>
+          </View>
+        </KeyboardAwareScrollView>
+      </OMGDismissKeyboard>
     </SafeAreaView>
   )
 }
@@ -194,6 +200,9 @@ const styles = StyleSheet.create({
     flexGrow: 1
   },
   formContainer: {
+    flex: 1
+  },
+  dismissKeyboard: {
     flex: 1
   },
   fromContainer: {

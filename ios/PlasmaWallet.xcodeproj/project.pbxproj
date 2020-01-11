@@ -19,14 +19,15 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* PlasmaWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* PlasmaWalletTests.m */; };
 		492E820E806DC3A1CB78E963 /* libPods-PlasmaWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C667482EA634796EC80FD4C7 /* libPods-PlasmaWalletTests.a */; };
+		BCC7A78E066175327B8F25E4 /* libPods-PlasmaWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0AD69EDCD02A10814EFA4D4 /* libPods-PlasmaWallet.a */; };
 		C40F64AB230B9049007295E7 /* CircularStd-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = E0E50DDCE04C44A6A92E89B0 /* CircularStd-Black.otf */; };
 		C40F64AC230B9049007295E7 /* CircularStd-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 11B6B1BCA8A84A2DA3713B73 /* CircularStd-Book.otf */; };
 		C40F64AD230B9049007295E7 /* CircularStd-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D44BD1D7BCF3437781E6B52B /* CircularStd-Medium.otf */; };
 		C40F64AE230B9049007295E7 /* CircularStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 61288EB4BCED46B4AF9067AD /* CircularStd-Bold.otf */; };
 		C49E761123660727003B0D52 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */; };
-		C4AD05DB230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		C4AD05DC230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		C4AD05DD230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DB230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DC230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DD230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		D6DD8AB8C90447CCBFFCC6A7 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2752A0B5F702467A8625AC5D /* RNBackgroundFetch+AppDelegate.m */; };
 /* End PBXBuildFile section */
 
@@ -111,6 +112,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F856FFAE0AF45D49F1346DA /* TSBackgroundFetch.framework in Frameworks */,
+				BCC7A78E066175327B8F25E4 /* libPods-PlasmaWallet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,9 +395,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4AD05DB230AF9C30027E763 /* (null) in Resources */,
-				C4AD05DC230AF9C30027E763 /* (null) in Resources */,
-				C4AD05DD230AF9C30027E763 /* (null) in Resources */,
+				C4AD05DB230AF9C30027E763 /* BuildFile in Resources */,
+				C4AD05DC230AF9C30027E763 /* BuildFile in Resources */,
+				C4AD05DD230AF9C30027E763 /* BuildFile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
