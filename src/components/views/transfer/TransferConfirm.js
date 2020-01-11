@@ -348,7 +348,7 @@ const getAction = (token, fee, blockchainWallet, toAddress, isRootchain) => {
   } else if (TO_CHILDCHAIN && !ETH_TOKEN) {
     return plasmaActions.depositErc20(blockchainWallet, token, fee)
   } else if (!isRootchain) {
-    return plasmaActions.transfer(blockchainWallet, toAddress, token, fee)
+    return plasmaActions.transfer(blockchainWallet, toAddress, token)
   } else if (ETH_TOKEN) {
     return ethereumActions.sendEthToken(token, fee, blockchainWallet, toAddress)
   } else {

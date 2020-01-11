@@ -20,16 +20,17 @@ const RootchainTransactionTracker = ({
     setRootNotification,
     setRootchainTxs
   ] = useRootchainTracker(primaryWallet)
+  const invalidatedTxs = useRef([])
 
   useEffect(() => {
     if (rootNotification) {
       const confirmedTx = rootNotification.confirmedTxs.slice(-1).pop()
-      if (!confirmedTx) {
+      const hasInvalidated = invalidatedTxs.current.includes(confirmedTx.hash)
+      if (!confirmedTx && hasInvalidated) {
         return
       }
 
       if (Transaction.isUnconfirmStartedExitTx(confirmedTx)) {
-        console.log(confirmedTx)
         dispatchAddStartedExitTx({
           ...confirmedTx,
           startedExitAt: Datetime.now()
@@ -37,10 +38,9 @@ const RootchainTransactionTracker = ({
       }
 
       dispatchInvalidateUnconfirmedTx(confirmedTx)
-
       notificationService.sendNotification(rootNotification)
-
       setRootNotification(null)
+      invalidatedTxs.current = [...invalidatedTxs.current, confirmedTx.hash]
 
       switch (rootNotification.type) {
         case 'rootchain':

@@ -14,15 +14,6 @@ import {
   OMGBlockchainLabel
 } from 'components/widgets'
 
-const exitFee = {
-  id: 3,
-  speed: 'Safe low',
-  estimateTime: 'Less than 30 minutes',
-  amount: '1.5',
-  symbol: 'Gwei',
-  price: '0.007'
-}
-
 const ExitConfirm = ({
   theme,
   navigation,
@@ -40,7 +31,7 @@ const ExitConfirm = ({
   const [loadingVisible, setLoadingVisible] = useState(false)
 
   const exit = useCallback(() => {
-    dispatchExit(blockchainWallet, token, exitFee)
+    dispatchExit(blockchainWallet, token)
   }, [blockchainWallet, dispatchExit, token])
 
   useEffect(() => {
@@ -176,8 +167,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchExit: (blockchainWallet, token, fee) =>
-    dispatch(plasmaActions.exit(blockchainWallet, token, fee))
+  dispatchExit: (blockchainWallet, token) =>
+    dispatch(plasmaActions.exit(blockchainWallet, token))
 })
 
 export default connect(

@@ -13,7 +13,7 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
   const handleAddressClick = useCallback(
     address => {
       if (tx.network === BlockchainNetworkType.TYPE_OMISEGO_NETWORK) {
-        Linking.openURL(`${Config.BLOCK_EXPLORER_URL}/address/${address}`)
+        Linking.openURL(`${Config.BLOCK_EXPLORER_URL}address/${address}`)
       } else {
         Linking.openURL(`${Config.ETHERSCAN_ADDRESS_URL}${address}`)
       }

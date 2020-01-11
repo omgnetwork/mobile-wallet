@@ -1,6 +1,6 @@
 import { transaction } from '@omisego/omg-js-util'
 import { ContractABI } from 'common/utils'
-import { TransactionActionTypes } from 'common/constants'
+import { TransactionActionTypes, ContractAddress } from 'common/constants'
 import InputDataDecoder from 'ethereum-input-data-decoder'
 
 const plasmaInputDecoder = new InputDataDecoder(ContractABI.plasmaAbi())
@@ -20,6 +20,13 @@ export const decodePlasmaInputMethod = input => {
 export const isReceiveTx = (walletAddress, toAddress) => {
   if (!toAddress) return false
   return walletAddress.toLowerCase() === toAddress.toLowerCase()
+}
+
+export const isPlasmaCallTx = tx => {
+  return [
+    ContractAddress.PLASMA_FRAMEWORK_CONTRACT_ADDRESS,
+    ContractAddress.PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
+  ].includes(tx.to)
 }
 
 export const isUnconfirmStartedExitTx = tx => {

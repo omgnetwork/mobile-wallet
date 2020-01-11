@@ -24,7 +24,7 @@ const OMGTransactionFilter = ({
       startedExitTxs
     )
     setFilterTxs(selectedTxs)
-  }, [activeType, transactions, startedExitTxs])
+  }, [activeType, startedExitTxs, transactions])
 
   const renderTypeOptions = useCallback(() => {
     return types.map(type => {
@@ -75,7 +75,7 @@ const selectTransactionsByType = (type, transactions, startedExitTxs) => {
         ].includes(tx.type)
       })
     case TransactionTypes.TYPE_EXIT:
-      return startedExitTxs.map(Mapper.mapStartedExitTx)
+      return startedExitTxs.map(tx => Mapper.mapStartedExitTx(tx))
     default:
       return transactions.filter(tx => {
         return tx.type === type

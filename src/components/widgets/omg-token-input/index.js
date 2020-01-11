@@ -20,7 +20,7 @@ const OMGTokenInput = ({ theme, token, style, onPress }) => {
       <OMGText style={styles.text(theme)}>{token.tokenSymbol}</OMGText>
       <View style={styles.rightContainer}>
         <OMGText style={styles.amount(theme)}>
-          {BlockchainRenderer.renderTokenBalance(token.balance, 3)}{' '}
+          {BlockchainRenderer.renderTokenBalance(token.balance, 4)}{' '}
           {token.tokenSymbol}
         </OMGText>
         <OMGIcon name='chevron-right' size={14} color={theme.colors.gray3} />

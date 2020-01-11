@@ -1,10 +1,16 @@
 import { Plasma } from 'common/clients'
 import { ContractABI, Transaction } from 'common/utils'
 import { Gas } from 'common/constants'
+import BN from 'bn.js'
 import { TxOptions } from 'common/blockchain'
 
 export const getBalances = address => {
-  return Plasma.childchain.getBalance(address)
+  return Plasma.childchain.getBalance(address).then(balances => {
+    return balances.map(balance => ({
+      ...balance,
+      amount: balance.amount.toString(10)
+    }))
+  })
 }
 
 export const getUtxos = (address, options) => {
@@ -13,11 +19,15 @@ export const getUtxos = (address, options) => {
   return Plasma.childchain
     .getUtxos(address)
     .then(utxos =>
-      currency ? utxos.filter(utxo => utxo.currency === currency) : utxos
+      utxos.map(utxo => ({
+        ...utxo,
+        amount: utxo.amount.toString(10)
+      }))
     )
     .then(utxos =>
-      utxos.filter(utxo => utxo.utxo_pos.toString(10) > (lastUtxoPos || 0))
+      currency ? utxos.filter(utxo => utxo.currency === currency) : utxos
     )
+    .then(utxos => utxos.filter(utxo => utxo.utxo_pos > (lastUtxoPos || 0)))
     .then(utxos => utxos.sort((a, b) => b.utxo_pos - a.utxo_pos))
 }
 
@@ -26,13 +36,16 @@ export const createPayment = (address, tokenContractAddress, amount) => {
     {
       owner: address,
       currency: tokenContractAddress,
-      amount: Number(amount)
+      amount: new BN(amount)
     }
   ]
 }
 
-export const createFee = amount => ({
-  currency: Plasma.transaction.ETH_CURRENCY,
+export const createFee = (
+  amount,
+  currency = Plasma.transaction.ETH_CURRENCY
+) => ({
+  currency: currency,
   amount: Number(amount)
 })
 
@@ -42,10 +55,8 @@ export const depositEth = async (
   weiAmount,
   options = {}
 ) => {
-  const web3 = Plasma.rootchain.web3
-  const defaultGasPrice = await web3.eth.getGasPrice()
-  const depositGas = options.gas || Gas.LIMIT
-  const depositGasPrice = options.gasPrice || defaultGasPrice
+  const depositGas = options.gas || Gas.MEDIUM_LIMIT
+  const depositGasPrice = options.gasPrice || Gas.DEPOSIT_GAS_PRICE
 
   const encodedDepositTx = Plasma.transaction.encodeDeposit(
     address,
@@ -83,7 +94,7 @@ export const depositErc20 = async (
     tokenContractAddress
   )
   const defaultGasPrice = await web3.eth.getGasPrice()
-  const depositGas = options.gas || Gas.LIMIT
+  const depositGas = options.gas || Gas.MEDIUM_LIMIT
   const depositGasPrice = options.gasPrice || defaultGasPrice
 
   // SEND ERC20 APPROVAL TRANSACTION 👇
@@ -146,13 +157,14 @@ const receiptWithGasPrice = (txReceipt, gasPrice, additionalGasUsed = 0) => {
 
 export const standardExit = (exitData, blockchainWallet, options) => {
   return Plasma.rootchain.startStandardExit({
-    outputId: exitData.utxo_pos,
+    utxoPos: exitData.utxo_pos,
     outputTx: exitData.txbytes,
     inclusionProof: exitData.proof,
     txOptions: {
       privateKey: blockchainWallet.privateKey,
       from: blockchainWallet.address,
-      gas: options.gasLimit || Gas.LIMIT
+      gas: options.gasLimit || Gas.HIGH_LIMIT,
+      gasPrice: options.gasPrice || Gas.EXIT_GAS_PRICE
     }
   })
 }
@@ -172,9 +184,8 @@ export const waitForRootchainTransaction = ({
   })
 }
 
-export const getPaymentExitGameAddress = async () => {
-  const paymentExitGame = await Plasma.rootchain.getPaymentExitGame()
-  return paymentExitGame.address
+export const getPaymentExitGameAddress = () => {
+  return Plasma.rootchain.getPaymentExitGame()
 }
 
 export const getErrorReason = hash => {
@@ -225,13 +236,6 @@ export const createTx = (fromAddress, payments, fee, metadata) => {
     (metadata && Transaction.encodeMetadata(metadata)) ||
     Plasma.transaction.NULL_METADATA
 
-  console.log({
-    owner: fromAddress,
-    payments,
-    fee,
-    metadata: encodedMetadata
-  })
-
   return Plasma.childchain.createTransaction({
     owner: fromAddress,
     payments,
@@ -251,8 +255,8 @@ export const getExitData = utxo => {
   return Plasma.childchain.getExitData(utxo)
 }
 
-export const signTx = (typedData, privateKey) => {
-  return Plasma.childchain.signTransaction(typedData, [privateKey])
+export const signTx = (typedData, privateKeys) => {
+  return Plasma.childchain.signTransaction(typedData, privateKeys)
 }
 
 export const buildSignedTx = (typedData, signatures) => {

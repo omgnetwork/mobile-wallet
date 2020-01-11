@@ -1,6 +1,8 @@
 import { Formatter, Parser, Polling, Datetime, Mapper, Token } from '../utils'
 import { Plasma } from 'common/blockchain'
 import { priceService } from 'common/services'
+import { Gas } from 'common/constants'
+import BN from 'bn.js'
 import Config from 'react-native-config'
 
 export const fetchAssets = (provider, address) => {
@@ -15,7 +17,7 @@ export const fetchAssets = (provider, address) => {
       const contractAddresses = Array.from(new Set(currencies))
       const tokens = await Token.fetchTokens(provider, contractAddresses)
 
-      const unconfirmedChildchainAssets = balances.map(balance => {
+      const pendingChildchainAssets = balances.map(balance => {
         return new Promise(async (resolveBalance, rejectBalance) => {
           const token = tokens.find(t => balance.currency === t.contractAddress)
 
@@ -28,7 +30,7 @@ export const fetchAssets = (provider, address) => {
             resolveBalance({
               ...token,
               balance: Formatter.formatUnits(
-                balance.amount.toFixed(),
+                balance.amount,
                 token.tokenDecimal
               ),
               price: tokenPrice
@@ -40,7 +42,7 @@ export const fetchAssets = (provider, address) => {
               tokenDecimal: 18,
               contractAddress: '0x123456',
               balance: Formatter.formatUnits(
-                balance.amount.toFixed(),
+                balance.amount,
                 token.tokenDecimal
               ),
               price: tokenPrice
@@ -49,7 +51,7 @@ export const fetchAssets = (provider, address) => {
         })
       })
 
-      const childchainAssets = await Promise.all(unconfirmedChildchainAssets)
+      const childchainAssets = await Promise.all(pendingChildchainAssets)
 
       resolve({
         lastUtxoPos: (utxos.length && utxos[0].utxo_pos.toString(10)) || '0',
@@ -92,69 +94,29 @@ export const getTx = transactionHash => {
   })
 }
 
-export const transfer = (
-  fromBlockchainWallet,
-  toAddress,
-  token,
-  fee,
-  metadata
-) => {
+export const transfer = (fromBlockchainWallet, toAddress, token, metadata) => {
   return new Promise(async (resolve, reject) => {
     try {
       const payments = Plasma.createPayment(
         toAddress,
         token.contractAddress,
-        Parser.parseUnits(token.balance, token.tokenDecimal)
+        Parser.parseUnits(token.balance, token.tokenDecimal).toString(10)
       )
-
-      const childchainFee = Plasma.createFee(
-        Parser.parseUnits(fee.amount, 'Gwei')
-      )
-
-      console.log('payments', payments)
-      console.log('childchainFee', childchainFee)
-
+      const childchainFee = Plasma.createFee('1')
       const createdTransactions = await Plasma.createTx(
         fromBlockchainWallet.address,
         payments,
         childchainFee,
         metadata
       )
-
-      console.log(createdTransactions)
-
       const transaction = createdTransactions.transactions[0]
-
-      // Remove the exponential notion from the amount when converting to string.
-      const sanitizedTransaction = {
-        ...transaction,
-        inputs: transaction.inputs.map(input => ({
-          ...input,
-          amount: input.amount.toString(10),
-          utxo_pos: input.utxo_pos.toString(10)
-        })),
-        outputs: transaction.outputs.map(output => ({
-          ...output,
-          amount: output.amount.toString(10)
-        }))
-      }
-
-      const typedData = Plasma.getTypedData(sanitizedTransaction)
-
-      const signatures = Plasma.signTx(
-        typedData,
+      const typedData = Plasma.getTypedData(transaction)
+      const privateKeys = new Array(transaction.inputs.length).fill(
         fromBlockchainWallet.privateKey
       )
-
-      const signedTransaction = Plasma.buildSignedTx(
-        typedData,
-        new Array(sanitizedTransaction.inputs.length).fill(signatures[0])
-      )
-
-      console.log(signedTransaction)
-
+      const signatures = Plasma.signTx(typedData, privateKeys)
+      const signedTransaction = Plasma.buildSignedTx(typedData, signatures)
       const transactionReceipt = await Plasma.submitTx(signedTransaction)
-
       resolve(transactionReceipt)
     } catch (err) {
       console.log(err)
@@ -174,7 +136,7 @@ export const depositEth = (address, privateKey, amount) => {
       const transactionReceipt = await Plasma.depositEth(
         address,
         privateKey,
-        weiAmount
+        new BN(weiAmount)
       )
       resolve(transactionReceipt)
     } catch (err) {
@@ -203,28 +165,33 @@ export const depositErc20 = (address, privateKey, token) => {
   })
 }
 
-export const exit = (blockchainWallet, token, fee) => {
+export const exit = (blockchainWallet, token) => {
   return new Promise(async (resolve, reject) => {
     try {
       // Check if the token has been unlocked
       const hasToken = await Plasma.hasToken(token.contractAddress)
 
+      console.log(hasToken)
+
       if (!hasToken) {
+        console.log('need to add token')
         await Plasma.addToken(token.contractAddress, {
           from: blockchainWallet.address,
           privateKey: blockchainWallet.privateKey
         })
       }
 
-      const desiredAmount = Parser.parseUnits(token.balance, token.tokenDecimal)
+      const desiredAmount = Parser.parseUnits(
+        token.balance,
+        token.tokenDecimal
+      ).toString(10)
 
       // For now `getUtxos` includes exited utxos, so after this issue https://github.com/omisego/elixir-omg/issues/1151 has been solved,
-      // we can then uncomment the function below to reduce unnecessary api call.
+      // we can then  uncomment the function below to reduce unnecessary api call.
       const utxoToExit = await createUtxoWithAmount(
         desiredAmount,
         blockchainWallet,
-        token,
-        fee
+        token
       )
 
       console.log('utxoToExit', utxoToExit)
@@ -235,22 +202,45 @@ export const exit = (blockchainWallet, token, fee) => {
       //   token,
       //   fee
       // )
+      const {
+        amount,
+        blknum,
+        currency,
+        oindex,
+        owner,
+        txindex,
+        utxo_pos
+      } = utxoToExit
 
-      const exitData = await Plasma.getExitData(utxoToExit)
+      const exitData = await Plasma.getExitData({
+        amount,
+        blknum,
+        currency,
+        oindex,
+        owner,
+        txindex,
+        utxo_pos
+      })
+
+      const gasPrice = Gas.EXIT_GAS_PRICE
 
       const { transactionHash } = await Plasma.standardExit(
         exitData,
         blockchainWallet,
-        {}
+        { gasPrice }
       )
 
       const exitId = await Plasma.getStandardExitId(utxoToExit, exitData)
-      // const paymentExitGameAddress = await Plasma.getPaymentExitGameAddress()
+      const { address, bonds } = await Plasma.getPaymentExitGameAddress()
+      const standardExitBond = bonds.standardExit.toString()
 
       resolve({
         transactionHash,
         exitId,
-        blknum: utxoToExit.blknum
+        blknum: utxoToExit.blknum,
+        paymentExitGameAddress: address,
+        flatFee: standardExitBond,
+        gasPrice
       })
     } catch (err) {
       reject(err)
@@ -305,10 +295,9 @@ const getOrCreateUtxoWithAmount = async (
 export const createUtxoWithAmount = async (
   desiredAmount,
   blockchainWallet,
-  token,
-  fee
+  token
 ) => {
-  await transfer(blockchainWallet, blockchainWallet.address, token, fee, null)
+  await transfer(blockchainWallet, blockchainWallet.address, token)
 
   // Wait for found matched UTXO after merge or split.
   const selectedUtxo = await waitForExitUtxo(
@@ -321,7 +310,7 @@ export const createUtxoWithAmount = async (
 
   return {
     ...selectedUtxo,
-    amount: selectedUtxo.amount.toString(10)
+    amount: selectedUtxo.amount
   }
 }
 
@@ -346,6 +335,7 @@ const getUtxoByAmount = async (amount, blockchainWallet, token) => {
   const utxos = await Plasma.getUtxos(blockchainWallet.address, {
     currency: token.contractAddress
   })
+  console.log(utxos, amount)
 
-  return utxos.find(utxo => utxo.amount.isEqualTo(amount))
+  return utxos.find(utxo => utxo.amount === amount)
 }

@@ -44,7 +44,8 @@ const TransactionDetailInfo = ({ theme, tx, style }) => {
       <View style={styles.infoItem}>
         <OMGText style={styles.infoItemLabel(theme, isFailed)}>TXN Fee</OMGText>
         <OMGText style={styles.infoItemValue(theme)} weight='bold'>
-          {BlockchainRenderer.renderGasFee(tx.gasUsed, tx.gasPrice)} ETH
+          {BlockchainRenderer.renderGasFee(tx.gasUsed, tx.gasPrice, tx.flatFee)}{' '}
+          ETH
         </OMGText>
       </View>
     )

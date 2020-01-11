@@ -16,7 +16,7 @@ const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
       tx.value,
       tx.tokenDecimal
     )} ${tx.tokenSymbol}`
-  }, [tx.tokenDecimal, tx.tokenSymbol, tx.value])
+  }, [tx])
 
   return (
     <TouchableOpacity

@@ -22,7 +22,7 @@ const fees = [
     id: '1',
     speed: 'Fast',
     estimateTime: 'Less than 30 seconds',
-    amount: '10',
+    amount: '24',
     symbol: 'Gwei',
     price: '0.047'
   },
@@ -30,7 +30,7 @@ const fees = [
     id: '2',
     speed: 'Standard',
     estimateTime: 'Less than 3 minutes',
-    amount: '3',
+    amount: '10',
     symbol: 'Gwei',
     price: '0.019'
   },
@@ -38,16 +38,16 @@ const fees = [
     id: '3',
     speed: 'Safe low',
     estimateTime: 'Less than 10 minutes',
-    amount: '1',
+    amount: '5',
     symbol: 'Gwei',
     price: '0.007'
   }
 ]
 
-const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
+// const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
 
 const TransferForm = ({ wallet, theme, navigation }) => {
-  const selectedFee = navigation.getParam('selectedFee', fees[2])
+  const selectedFee = navigation.getParam('selectedFee', fees[0])
   const selectedAddress = navigation.getParam('address')
   const defaultAmount = navigation.getParam('lastAmount')
   const isDeposit = navigation.getParam('isDeposit')
@@ -62,7 +62,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
     'TransferForm',
     isDeposit
   )
-  const addressRef = useRef(selectedAddress || testAddress)
+  const addressRef = useRef(selectedAddress)
   const amountRef = useRef(defaultAmount)
   const [showErrorAddress, setShowErrorAddress] = useState(false)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
@@ -91,7 +91,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
           name: isDeposit ? 'Plasma Contract' : 'Another wallet',
           address: addressRef.current
         },
-        fee: isDeposit ? null : selectedFee
+        fee: isRootchain ? selectedFee : null
       })
     }
   }, [isDeposit, isRootchain, navigation, selectedFee, selectedToken, wallet])
@@ -158,7 +158,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
               style={styles.amountInput}
             />
           </OMGBox>
-          <OMGBox style={styles.feeContainer(isDeposit)}>
+          <OMGBox style={styles.feeContainer(isRootchain)}>
             <OMGText weight='bold'>Transaction Fee</OMGText>
             <OMGFeeInput
               fee={selectedFee}
@@ -206,8 +206,8 @@ const styles = StyleSheet.create({
   amountContainer: {
     flexDirection: 'column'
   },
-  feeContainer: isDeposit => ({
-    display: isDeposit ? 'none' : 'flex',
+  feeContainer: isRootchain => ({
+    display: isRootchain ? 'flex' : 'none',
     flexDirection: 'column'
   }),
   tokenInput: {

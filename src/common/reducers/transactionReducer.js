@@ -37,11 +37,12 @@ export const transactionReducer = (
         feedbackCompleteTx: null
       }
     case 'TRANSACTION/ADD_STARTED_EXIT_TX/OK':
-      const startExitTxsSet = new Set(state.startExitTxs)
-      startExitTxsSet.add({ ...action.data.exitTx, status: 'started' })
       return {
         ...state,
-        startedExitTxs: Array.from(startExitTxsSet)
+        startedExitTxs: [
+          { ...action.data.exitTx, status: 'started' },
+          ...state.startedExitTxs
+        ]
       }
     case 'TRANSACTION/UPDATE_STARTED_EXIT_TX/OK':
       return {

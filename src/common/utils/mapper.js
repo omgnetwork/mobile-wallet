@@ -1,8 +1,7 @@
 import { ContractAddress } from 'common/constants'
-import { Transaction, Token, Parser, Datetime } from 'common/utils'
+import { Transaction, Token, Datetime } from 'common/utils'
 import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
-import Config from 'react-native-config'
-import BigNumber from 'bignumber.js'
+import BN from 'bn.js'
 
 export const mapChildchainTx = (tx, tokens, walletAddress) => {
   const input = mapInputTransfer(tx)
@@ -25,7 +24,7 @@ export const mapChildchainTx = (tx, tokens, walletAddress) => {
     value:
       typeof output.amount === 'string'
         ? output.amount
-        : output.amount.toFixed(),
+        : output.amount.toString(10),
     timestamp: tx.block.timestamp
   }
 }
@@ -43,14 +42,8 @@ export const mapChildchainTxDetail = (oldTx, newTx) => {
       return acc
     }
   }
-  const totalEthInput = newTx.inputs.reduce(
-    accumulateEthAmount,
-    new BigNumber(0)
-  )
-  const totalEthOutput = newTx.outputs.reduce(
-    accumulateEthAmount,
-    new BigNumber(0)
-  )
+  const totalEthInput = newTx.inputs.reduce(accumulateEthAmount, new BN(0))
+  const totalEthOutput = newTx.outputs.reduce(accumulateEthAmount, new BN(0))
   const gasPrice = totalEthInput.minus(totalEthOutput).toString(10)
 
   return {
@@ -92,13 +85,16 @@ export const mapInputFee = tx => {
 
 const isInputGreaterThanOutput = (input, outputs) => {
   const accumulateOutputAmount = outs =>
-    outs.reduce((acc, output) => acc.plus(output.amount), new BigNumber(0))
+    outs.reduce(
+      (acc, output) => acc.add(new BN(output.amount)),
+      new BN('0', 10)
+    )
 
   const sameCurrencyOutputs = outputs.filter(
     output => output.currency === input.currency
   )
   const totalOutputAmount = accumulateOutputAmount(sameCurrencyOutputs)
-  return input.amount.gt(totalOutputAmount)
+  return new BN(input.amount).gt(totalOutputAmount)
 }
 
 export const mapAssetCurrency = asset => asset.currency
@@ -144,7 +140,6 @@ const mapRootchainErc20Tx = (tx, address) => {
 }
 
 export const mapStartedExitTx = tx => {
-  console.log('')
   return {
     ...tx,
     gasUsed: tx.gasUsed.toString(),
@@ -164,13 +159,13 @@ const mapRootchainTransactionType = (tx, address) => {
     case 'deposit':
       return TransactionTypes.TYPE_DEPOSIT
     case 'approve':
-      return 'depositApprove'
+      return TransactionTypes.TYPE_APPROVE_ERC20
     case 'addToken':
-      return 'unlockExit'
-    case 'startStandardExit':
-      return TransactionTypes.TYPE_EXIT
+      return TransactionTypes.TYPE_PLASMA_ADD_TOKEN
     default:
-      if (Transaction.isReceiveTx(address, tx.to)) {
+      if (Transaction.isPlasmaCallTx(tx)) {
+        return TransactionTypes.TYPE_UNIDENTIFIED
+      } else if (Transaction.isReceiveTx(address, tx.to)) {
         return TransactionTypes.TYPE_RECEIVED
       } else {
         return TransactionTypes.TYPE_SENT

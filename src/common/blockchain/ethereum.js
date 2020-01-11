@@ -95,7 +95,7 @@ export const sendEthToken = (wallet, options) => {
   return wallet.sendTransaction({
     to: toAddress,
     value: ethers.utils.parseEther(token.balance),
-    gasLimit: Gas.LIMIT,
+    gasLimit: Gas.LOW_LIMIT,
     gasPrice: Parser.parseUnits(fee.amount, 'gwei')
   })
 }
@@ -111,7 +111,7 @@ export const sendErc20Token = (wallet, options) => {
   )
 
   const gasOptions = {
-    gasLimit: Gas.LIMIT,
+    gasLimit: Gas.LOW_LIMIT,
     gasPrice: Parser.parseUnits(fee.amount, 'gwei')
   }
 

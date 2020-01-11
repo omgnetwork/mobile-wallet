@@ -45,7 +45,7 @@ const TransactionDetail = ({ navigation, theme }) => {
   const handleTxClick = useCallback(() => {
     if (Validator.isOmiseGOTransaction(transaction)) {
       Linking.openURL(
-        `${Config.BLOCK_EXPLORER_URL}/transaction/${transaction.hash}`
+        `${Config.BLOCK_EXPLORER_URL}transaction/${transaction.hash}`
       )
     } else {
       Linking.openURL(`${Config.ETHERSCAN_TX_URL}${transaction.hash}`)

@@ -107,12 +107,14 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   useEffect(() => {
     if (unconfirmedTx) {
       setShouldDisabledSendButton(true)
-    } else if (!hasRootchainAssets || !hasChildchainAssets) {
+    } else if (isRootchain && !hasRootchainAssets) {
+      setShouldDisabledSendButton(true)
+    } else if (!isRootchain && !hasChildchainAssets) {
       setShouldDisabledSendButton(true)
     } else {
       setShouldDisabledSendButton(false)
     }
-  }, [hasChildchainAssets, hasRootchainAssets, unconfirmedTx])
+  }, [hasChildchainAssets, hasRootchainAssets, isRootchain, unconfirmedTx])
 
   const unconfirmedTxComponent = (
     <Animated.View style={styles.unableView(overlayColorAnim)}>
