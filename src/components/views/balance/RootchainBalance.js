@@ -60,7 +60,9 @@ const RootchainBalance = ({
     } else if (!hasRootchainAssets) {
       Alerter.show(Alert.FAILED_DEPOSIT_EMPTY_WALLET)
     } else {
-      navigation.navigate('TransferDeposit')
+      navigation.navigate('TransferSelectBalance', {
+        isDeposit: true
+      })
     }
   }, [hasPendingTransaction, hasRootchainAssets, navigation])
 

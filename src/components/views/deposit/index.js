@@ -31,7 +31,7 @@ const Deposit = ({ navigation, theme }) => {
         <OMGText style={styles.title(theme)}>Deposit</OMGText>
         <OMGBox
           onPress={() => {
-            navigation.goBack()
+            navigation.navigate('Balance')
           }}
           style={styles.iconBox}>
           <OMGIcon

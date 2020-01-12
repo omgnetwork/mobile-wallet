@@ -17,8 +17,11 @@ const TransferSelectBalance = ({
   loading,
   navigation
 }) => {
+  const address = navigation.getParam('address')
+  const rootchain = navigation.getParam('rootchain')
   const assets = navigation.getParam('assets', primaryWallet.rootchainAssets)
   const isExit = navigation.getParam('exit')
+  const isDeposit = navigation.getParam('isDeposit')
   const currentToken = navigation.getParam('currentToken')
   const lastAmount = navigation.getParam('lastAmount')
   const [selectedToken, setSelectedToken] = useState(currentToken || assets[0])
@@ -32,10 +35,11 @@ const TransferSelectBalance = ({
           color={theme.colors.gray3}
           style={styles.headerIcon}
           onPress={() => {
-            const destination = isExit ? 'ExitForm' : 'TransferForm'
-            navigation.navigate(destination, {
-              lastAmount: lastAmount
-            })
+            navigation.goBack()
+            // const destination = isExit ? 'ExitForm' : 'TransferForm'
+            // navigation.navigate(destination, {
+            //   lastAmount: lastAmount
+            // })
           }}
         />
         <OMGText style={styles.headerTitle(theme)}>Select Balance</OMGText>
@@ -67,11 +71,17 @@ const TransferSelectBalance = ({
       <View style={styles.buttonContainer}>
         <OMGButton
           onPress={() => {
-            const destination = isExit ? 'ExitForm' : 'TransferForm'
+            const destination = isDeposit
+              ? 'TransferDeposit'
+              : isExit
+              ? 'ExitForm'
+              : 'TransferForm'
             navigation.navigate(destination, {
               selectedToken: selectedToken || currentToken,
               shouldFocus: true,
-              lastAmount: null
+              lastAmount: null,
+              rootchain,
+              address
             })
           }}>
           Apply

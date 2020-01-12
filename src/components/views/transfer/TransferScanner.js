@@ -47,12 +47,19 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
     }
   }
 
+  const getAssets = useCallback(() => {
+    return isRootchain ? wallet.rootchainAssets : wallet.childchainAssets
+  }, [isRootchain, wallet.childchainAssets, wallet.rootchainAssets])
+
   const navigateNext = useCallback(() => {
-    navigation.navigate('TransferForm', {
+    navigation.navigate('TransferSelectBalance', {
       address: address && address.replace('ethereum:', ''),
-      rootchain: isRootchain
+      rootchain: isRootchain,
+      currentToken: getAssets()[0],
+      lastAmount: null,
+      assets: getAssets()
     })
-  }, [address, navigation, isRootchain])
+  }, [navigation, address, isRootchain, getAssets])
 
   useEffect(() => {
     if (address) {

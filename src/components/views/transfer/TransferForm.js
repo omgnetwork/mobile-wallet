@@ -68,38 +68,33 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
   const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
 
   useEffect(() => {
-    navigateToSelectBalance()
-  }, [
-    isDeposit,
-    isRootchain,
-    navigateToSelectBalance,
-    wallet.childchainAssets.length,
-    wallet.rootchainAssets.length
-  ])
-
-  useEffect(() => {
     if (isFocused) {
       const shouldFocus = navigation.getParam('shouldFocus')
       if (shouldFocus) {
-        if (!selectedAddress) {
+        if (!selectedAddress && !isDeposit) {
           focusAddress()
         } else {
           focusAmount()
         }
       }
     }
-  }, [focusAddress, focusAmount, isFocused, navigation, selectedAddress])
+  }, [
+    focusAddress,
+    focusAmount,
+    isDeposit,
+    isFocused,
+    navigation,
+    selectedAddress
+  ])
 
   const focusAmount = useCallback(() => {
     InteractionManager.runAfterInteractions(() => {
-      console.log('focus amount')
       amountFocusRef.current.focus()
     })
   }, [])
 
   const focusAddress = useCallback(() => {
     InteractionManager.runAfterInteractions(() => {
-      console.log('focus address')
       addressFocusRef.current.focus()
     })
   }, [])
@@ -124,6 +119,7 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
     navigation.navigate('TransferSelectBalance', {
       currentToken: selectedToken,
       lastAmount: amountRef.current,
+      rootchain: isRootchain,
       assets:
         isDeposit || isRootchain
           ? wallet.rootchainAssets
@@ -171,6 +167,7 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
       <OMGDismissKeyboard style={styles.dismissKeyboard}>
         <KeyboardAwareScrollView
           contentContainerStyle={styles.scrollView}
+          enableOnAndroid={true}
           innerRef={ref => {
             keyboardAwareScrollRef.current = ref
           }}>
