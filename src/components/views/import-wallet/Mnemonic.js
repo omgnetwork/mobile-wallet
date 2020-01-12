@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, KeyboardAvoidingView } from 'react-native'
 import { walletActions } from 'common/actions'
 import {
   OMGText,
@@ -10,6 +10,7 @@ import {
 } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
+import { Validator } from 'common/utils'
 
 const Mnemonic = ({
   dispatchImportWalletByMnemonic,
@@ -20,14 +21,39 @@ const Mnemonic = ({
 }) => {
   const mnemonicRef = useRef(null)
   const walletNameRef = useRef(null)
+  const [showErrorMnemonic, setShowErrorMnemonic] = useState(false)
+  const [showErrorName, setShowErrorName] = useState(false)
+  const [errorMnemonicMessage, setErrorMnemonicMessage] = useState(
+    'Invalid mnemonic'
+  )
+  const [errorNameMessage, setErrorNameMessage] = useState(
+    'The wallet name should not be empty'
+  )
 
   const importWallet = useCallback(() => {
-    dispatchImportWalletByMnemonic(
-      wallets,
-      mnemonicRef.current.toLowerCase(),
-      provider,
-      walletNameRef.current
-    )
+    let isValid = true
+    if (!Validator.isValidMnemonic(mnemonicRef.current)) {
+      setShowErrorMnemonic(true)
+      isValid = false
+    } else {
+      setShowErrorMnemonic(false)
+    }
+
+    if (!Validator.isValidWalletName(walletNameRef.current)) {
+      setShowErrorName(true)
+      isValid = false
+    } else {
+      setShowErrorName(false)
+    }
+
+    if (isValid) {
+      dispatchImportWalletByMnemonic(
+        wallets,
+        mnemonicRef.current.toLowerCase(),
+        provider,
+        walletNameRef.current
+      )
+    }
   }, [dispatchImportWalletByMnemonic, provider, wallets])
 
   useEffect(() => {
@@ -41,31 +67,41 @@ const Mnemonic = ({
 
   return (
     <OMGDismissKeyboard style={styles.mnemonicContainer}>
-      <OMGText style={styles.textBoxTitle} weight='bold'>
-        Mnemonic Phrase
-      </OMGText>
-      <OMGTextInputBox
-        style={styles.textBox}
-        inputRef={mnemonicRef}
-        disabled={loading.show}
-        lines={2}
-        placeholder='Enter mnemonic...'
-      />
-      <OMGText style={styles.textBoxTitle} weight='bold'>
-        Wallet Name
-      </OMGText>
-      <OMGTextInputBox
-        placeholder='Your wallet name'
-        style={styles.textBox}
-        inputRef={walletNameRef}
-        maxLength={20}
-        disabled={loading.show}
-      />
-      <View style={styles.buttonContainer}>
-        <OMGButton loading={loading.show} onPress={importWallet}>
-          Import
-        </OMGButton>
-      </View>
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoidingView}
+        behavior='padding'
+        enabled
+        keyboardVerticalOffset={108}>
+        <OMGText style={styles.textBoxTitle} weight='bold'>
+          Mnemonic Phrase
+        </OMGText>
+        <OMGTextInputBox
+          style={styles.textBox}
+          inputRef={mnemonicRef}
+          showError={showErrorMnemonic}
+          errorMessage={errorMnemonicMessage}
+          disabled={loading.show}
+          lines={2}
+          placeholder='Enter mnemonic...'
+        />
+        <OMGText style={styles.textBoxTitle} weight='bold'>
+          Wallet Name
+        </OMGText>
+        <OMGTextInputBox
+          placeholder='Your wallet name'
+          style={styles.textBox}
+          inputRef={walletNameRef}
+          showError={showErrorName}
+          errorMessage={errorNameMessage}
+          maxLength={20}
+          disabled={loading.show}
+        />
+        <View style={styles.buttonContainer}>
+          <OMGButton loading={loading.show} onPress={importWallet}>
+            Import
+          </OMGButton>
+        </View>
+      </KeyboardAvoidingView>
     </OMGDismissKeyboard>
   )
 }
@@ -97,9 +133,11 @@ const styles = StyleSheet.create({
     height: 6
   }),
   mnemonicContainer: {
+    flex: 1
+  },
+  keyboardAvoidingView: {
     paddingHorizontal: 16,
-    flex: 1,
-    flexDirection: 'column'
+    flex: 1
   },
   buttonContainer: {
     flex: 1,

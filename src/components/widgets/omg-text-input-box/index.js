@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import OMGTextInput from '../omg-text-input'
+import { OMGTextInput, OMGText } from 'components/widgets'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 
@@ -9,6 +9,8 @@ const OMGTextInputBox = ({
   placeholder,
   disabled,
   inputRef,
+  showError,
+  errorMessage,
   lines,
   maxLength,
   theme
@@ -17,35 +19,48 @@ const OMGTextInputBox = ({
   const numberOfLines = lines ? lines : 1
 
   return (
-    <View
-      style={{
-        ...styles.container(theme, focus, disabled, numberOfLines),
-        ...style
-      }}>
-      <OMGTextInput
-        style={{ ...styles.text(theme, disabled), ...textStyle }}
-        inputRef={inputRef}
-        hideUnderline={true}
-        disabled={disabled}
-        maxLength={maxLength}
-        lines={lines}
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
-        placeholder={placeholder}
-      />
-    </View>
+    <>
+      <View
+        style={{
+          ...styles.container(theme, focus, disabled, showError),
+          ...style
+        }}>
+        <OMGTextInput
+          style={{ ...styles.text(theme, disabled), ...textStyle }}
+          inputRef={inputRef}
+          hideUnderline={true}
+          disabled={disabled}
+          maxLength={maxLength}
+          lines={lines}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+          placeholder={placeholder}
+        />
+      </View>
+      {showError && (
+        <OMGText style={styles.errorText(theme)}>{errorMessage}</OMGText>
+      )}
+    </>
   )
 }
 
 const styles = StyleSheet.create({
-  container: (theme, focus, disabled, lines) => ({
+  container: (theme, focus, disabled, showError) => ({
     backgroundColor: theme.colors.white,
     borderRadius: theme.roundness,
     opacity: disabled ? 0.4 : 1.0,
     paddingHorizontal: 8,
     paddingVertical: 8,
-    borderColor: focus ? theme.colors.gray5 : theme.colors.gray4,
+    borderColor: focus
+      ? theme.colors.gray5
+      : showError
+      ? theme.colors.red2
+      : theme.colors.gray4,
     borderWidth: 1
+  }),
+  errorText: theme => ({
+    color: theme.colors.red2,
+    marginTop: 8
   }),
   text: (theme, disabled) => ({
     color: theme.colors.primary,

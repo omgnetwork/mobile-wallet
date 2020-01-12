@@ -19,6 +19,14 @@ export const isValidAmount = amount => {
   }
 }
 
+export const isValidMnemonic = mnemonic => {
+  return ethers.utils.HDNode.isValidMnemonic(mnemonic)
+}
+
+export const isValidWalletName = name => {
+  return !!name
+}
+
 export const isEnoughToken = (sendAmount, tokenAmount) => {
   return Number(sendAmount) <= Number(tokenAmount)
 }
