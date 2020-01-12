@@ -43,7 +43,7 @@ const TransferConfirm = ({
     token.balance,
     token.price
   )
-  const feeEth = BlockchainRenderer.renderEthFromGwei(1, fee && fee.amount)
+  const feeEth = BlockchainRenderer.renderEthFromGwei(fee && fee.amount)
   const gasFee = BlockchainRenderer.renderGasFee(
     isRootchain ? Gas.MINIMUM_GAS_USED : 1,
     feeEth

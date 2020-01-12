@@ -1,20 +1,26 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { OMGText, OMGIcon } from 'components/widgets'
+import Config from 'react-native-config'
 import { withTheme } from 'react-native-paper'
 import { Datetime } from 'common/utils'
 
-const OMGExitComplete = ({ theme, style, processedAt }) => {
+const OMGExitComplete = ({ theme, style, createdAt }) => {
+  const renderProcessedAt = useCallback(() => {
+    const processedAt = Datetime.add(
+      Datetime.fromString(createdAt),
+      Config.EXIT_PERIOD * 2
+    )
+    return ` ${Datetime.format(processedAt, datetimeFormatToken)}. `
+  }, [createdAt])
+
   const datetimeFormatToken = 'MMM DD, hh:mm A' // Apr 05, 12:02 PM
   return (
     <View style={{ ...styles.container(theme), ...style }}>
       <OMGIcon name='time' size={24} style={styles.icon(theme)} />
       <OMGText style={styles.text(theme)}>
         Exit will be approximately completed on
-        <OMGText weight='bold'>
-          {' '}
-          {Datetime.format(processedAt, datetimeFormatToken)}.{' '}
-        </OMGText>
+        <OMGText weight='bold'>{renderProcessedAt()}</OMGText>
         You can track the transaction status in the
         <OMGText weight='bold'> History </OMGText>
         menu.

@@ -46,11 +46,11 @@ const fees = [
   }
 ]
 
-// const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
+const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
 
 const TransferForm = ({ wallet, theme, navigation }) => {
   const selectedFee = navigation.getParam('selectedFee', fees[0])
-  const selectedAddress = navigation.getParam('address')
+  const selectedAddress = navigation.getParam('address') || testAddress
   const defaultAmount = navigation.getParam('lastAmount')
   const isDeposit = navigation.getParam('isDeposit')
   const isRootchain = navigation.getParam('rootchain')
@@ -115,9 +115,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container(theme)}>
-      <OMGDismissKeyboard
-        style={styles.dismissKeyboard}
-        keyboardVerticalOffset={0}>
+      <OMGDismissKeyboard style={styles.dismissKeyboard}>
         <KeyboardAwareScrollView contentContainerStyle={styles.scrollView}>
           <View style={styles.formContainer}>
             <OMGBlockchainLabel

@@ -13,7 +13,8 @@ import {
   OMGText,
   OMGIcon,
   OMGEmpty,
-  OMGBlockchainLabel
+  OMGBlockchainLabel,
+  OMGExitComplete
 } from 'components/widgets'
 import Config from 'react-native-config'
 import { Validator } from 'common/utils'
@@ -69,6 +70,28 @@ const TransactionDetail = ({ navigation, theme }) => {
     )
   }, [handleTxClick, theme, transaction])
 
+  const renderPendingExitIfNeeded = useCallback(() => {
+    return tx.type === TransactionTypes.TYPE_EXIT ? (
+      <OMGExitComplete
+        style={styles.exitCompleteLabel}
+        createdAt={tx.createdAt}
+      />
+    ) : null
+  }, [tx])
+
+  const renderTransactionDetailFromToIfNeeded = useCallback(() => {
+    return [
+      TransactionTypes.TYPE_SENT,
+      TransactionTypes.TYPE_RECEIVED
+    ].includes(tx.type) ? (
+      <TransactionDetailFromTo
+        tx={transaction}
+        theme={theme}
+        style={styles.fromToContainer}
+      />
+    ) : null
+  }, [theme, transaction, tx.type])
+
   const renderTransactionDetail = useCallback(() => {
     return (
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -93,16 +116,18 @@ const TransactionDetail = ({ navigation, theme }) => {
           theme={theme}
           style={styles.infoContainer}
         />
-        <TransactionDetailFromTo
-          tx={transaction}
-          theme={theme}
-          style={styles.fromToContainer}
-        />
-        <Divider theme={theme} />
+        {renderPendingExitIfNeeded()}
+        {renderTransactionDetailFromToIfNeeded()}
         {renderExternalLink()}
       </ScrollView>
     )
-  }, [renderExternalLink, theme, transaction])
+  }, [
+    renderExternalLink,
+    renderPendingExitIfNeeded,
+    renderTransactionDetailFromToIfNeeded,
+    theme,
+    transaction
+  ])
 
   const renderTransactionLoading = useCallback(() => {
     return <OMGEmpty loading={transaction === null} />
@@ -187,6 +212,9 @@ const styles = StyleSheet.create({
   linkText: theme => ({
     color: theme.colors.blue4
   }),
+  exitCompleteLabel: {
+    marginTop: 16
+  },
   filler: {
     flex: 1
   }
