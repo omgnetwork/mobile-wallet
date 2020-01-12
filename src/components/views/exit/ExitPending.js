@@ -31,10 +31,8 @@ const ExitPending = ({ theme, navigation }) => {
   }
 
   useEffect(() => {
-    GoogleAnalytics.sendEvent('transfer_exited', unconfirmedTx.hash)
+    GoogleAnalytics.sendEvent('transfer_exited', { hash: unconfirmedTx.hash })
   }, [unconfirmedTx.hash])
-
-  const processedAt = Datetime.add(Datetime.fromNow(), Config.EXIT_PERIOD * 2)
 
   return (
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
@@ -68,7 +66,7 @@ const ExitPending = ({ theme, navigation }) => {
           </View>
           <OMGExitComplete
             style={styles.exitCompleteLabel}
-            processedAt={processedAt}
+            createdAt={unconfirmedTx.createdAt}
           />
         </View>
 

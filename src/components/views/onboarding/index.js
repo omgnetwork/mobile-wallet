@@ -28,9 +28,9 @@ const OnboardingTourGuide = ({
   const handleEnableOnboardingAction = useCallback(
     enabled => {
       if (enabled) {
-        GoogleAnalytics.sendEvent('onboarding', true)
+        GoogleAnalytics.sendEvent('onboarding', { enabled: true })
       } else {
-        GoogleAnalytics.sendEvent('onboarding', false)
+        GoogleAnalytics.sendEvent('onboarding', { enabled: false })
       }
       dispatchEnableOnboarding(enabled)
       setTourVisible(false)
