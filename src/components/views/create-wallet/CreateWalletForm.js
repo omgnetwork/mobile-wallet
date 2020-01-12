@@ -1,8 +1,9 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useCallback } from 'react'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
-import { View, StyleSheet, KeyboardAvoidingView } from 'react-native'
+import { Header } from 'react-navigation-stack'
+import { View, StyleSheet, Platform, KeyboardAvoidingView } from 'react-native'
 import { Validator } from 'common/utils'
 import { Alert } from 'common/constants'
 import {
@@ -36,13 +37,14 @@ const CreateWalletForm = ({ wallets, navigation }) => {
     })
   }
 
+  const extraKeyboardAvoidingPadding = Platform.OS === 'ios' ? 48 : 32
+
   return (
     <OMGDismissKeyboard style={styles.container}>
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior='padding'
-        enabled
-        keyboardVerticalOffset={108}>
+        keyboardVerticalOffset={Header.HEIGHT + extraKeyboardAvoidingPadding}>
         <OMGText weight='bold'>Name</OMGText>
         <OMGTextInputBox
           placeholder='Name'
@@ -75,7 +77,7 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     justifyContent: 'flex-end',
-    marginBottom: 16
+    marginBottom: 8
   }
 })
 

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, KeyboardAvoidingView } from 'react-native'
+import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
 import { walletActions } from 'common/actions'
+import { Header } from 'react-navigation-stack'
 import {
   OMGText,
   OMGTextInputBox,
@@ -65,13 +66,14 @@ const Mnemonic = ({
     }
   }, [loading, loading.action, loading.success, navigation, wallets])
 
+  const extraKeyboardAvoidingPadding = Platform.OS === 'ios' ? 48 : 32
+
   return (
     <OMGDismissKeyboard style={styles.mnemonicContainer}>
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior='padding'
-        enabled
-        keyboardVerticalOffset={108}>
+        keyboardVerticalOffset={Header.HEIGHT + extraKeyboardAvoidingPadding}>
         <OMGText style={styles.textBoxTitle} weight='bold'>
           Mnemonic Phrase
         </OMGText>
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
   contentContainer: theme => ({
     flex: 1,
     flexDirection: 'column',
-    paddingVertical: 8,
+    paddingTop: 8,
     backgroundColor: theme.colors.white
   }),
   importByMnemonic: {
