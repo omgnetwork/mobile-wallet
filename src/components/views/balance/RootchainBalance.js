@@ -20,6 +20,7 @@ const RootchainBalance = ({
   provider,
   dispatchLoadAssets,
   wallet,
+  globalLoading,
   dispatchRefreshRootchain,
   blockchainLabelRef,
   depositButtonRef,
@@ -27,7 +28,6 @@ const RootchainBalance = ({
 }) => {
   const [totalBalance, setTotalBalance] = useState(0.0)
   const [loading, setLoading] = useState(false)
-  const [shouldShowLoading, setShouldShowLoading] = useState(true)
   const hasPendingTransaction = unconfirmedTxs.length > 0
   const hasRootchainAssets =
     wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
@@ -67,7 +67,6 @@ const RootchainBalance = ({
   useEffect(() => {
     if (wallet.rootchainAssets) {
       setLoading(false)
-      setShouldShowLoading(false)
       const totalPrices = wallet.rootchainAssets.reduce((acc, asset) => {
         const parsedAmount = parseFloat(asset.balance)
         const tokenPrice = parsedAmount * asset.price
@@ -80,8 +79,13 @@ const RootchainBalance = ({
 
   const handleReload = useCallback(() => {
     dispatchRefreshRootchain(wallet.address, true)
-    setShouldShowLoading(true)
   }, [dispatchRefreshRootchain, wallet.address])
+
+  useEffect(() => {
+    if (globalLoading.action === 'ROOTCHAIN_FETCH_ASSETS') {
+      setLoading(globalLoading.show)
+    }
+  }, [globalLoading.action, globalLoading.show])
 
   return (
     <Fragment>
@@ -98,7 +102,7 @@ const RootchainBalance = ({
         data={wallet.rootchainAssets || []}
         keyExtractor={item => item.contractAddress}
         updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
-        loading={shouldShowLoading && loading}
+        loading={loading}
         type='rootchain'
         handleReload={handleReload}
         style={styles.list}
@@ -138,7 +142,8 @@ const mapStateToProps = (state, ownProps) => ({
   provider: state.setting.provider,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
-  )
+  ),
+  globalLoading: state.loading
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
