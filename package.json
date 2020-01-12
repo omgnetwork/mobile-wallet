@@ -158,6 +158,7 @@
     "tls": false
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "testMatch": ["**/tests/**/*.js"]
   }
 }
