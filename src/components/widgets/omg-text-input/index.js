@@ -16,6 +16,8 @@ const OMGTextInput = ({
   inputRef,
   onFocus,
   focusRef,
+  returnKeyType,
+  onSubmitEditing,
   onBlur,
   disabled,
   theme
@@ -44,7 +46,8 @@ const OMGTextInput = ({
       }}
       importantForAutofill='no'
       maxLength={maxLength}
-      returnKeyType='done'
+      onSubmitEditing={onSubmitEditing}
+      returnKeyType={returnKeyType || 'done'}
       numberOfLines={numberOfLines}
       editable={disabled === undefined ? true : !disabled}
       multiline={numberOfLines > 1}

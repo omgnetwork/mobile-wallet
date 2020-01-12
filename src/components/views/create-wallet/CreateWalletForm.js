@@ -3,7 +3,7 @@ import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
 import { View, StyleSheet, KeyboardAvoidingView } from 'react-native'
-import { Alerter, Validator } from 'common/utils'
+import { Validator } from 'common/utils'
 import { Alert } from 'common/constants'
 import {
   OMGButton,

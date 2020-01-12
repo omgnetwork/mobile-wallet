@@ -6,7 +6,16 @@ import OMGTextInput from '../omg-text-input'
 import OMGText from '../omg-text'
 import ScanQRIcon from './assets/scan-qr-icon.svg'
 
-const OMGAddressInput = ({ theme, style, onPress, inputRef, showError }) => {
+const OMGAddressInput = ({
+  theme,
+  style,
+  onPress,
+  inputRef,
+  showError,
+  returnKeyType,
+  onSubmitEditing,
+  focusRef
+}) => {
   return (
     <Fragment>
       <View style={{ ...styles.container(theme), ...style }}>
@@ -20,6 +29,9 @@ const OMGAddressInput = ({ theme, style, onPress, inputRef, showError }) => {
           style={styles.text(theme)}
           defaultValue={inputRef.current}
           inputRef={inputRef}
+          focusRef={focusRef}
+          returnKeyType={returnKeyType}
+          onSubmitEditing={onSubmitEditing}
           placeholder='Paste address'
           hideUnderline={true}
         />

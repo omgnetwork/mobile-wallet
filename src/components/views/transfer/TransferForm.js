@@ -1,7 +1,7 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet } from 'react-native'
-import { withNavigation, SafeAreaView } from 'react-navigation'
+import { View, StyleSheet, InteractionManager } from 'react-native'
+import { withNavigationFocus, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
@@ -46,20 +46,14 @@ const fees = [
   }
 ]
 
-const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
+// const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
 
-const TransferForm = ({ wallet, theme, navigation }) => {
+const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
   const selectedFee = navigation.getParam('selectedFee', fees[0])
-  const selectedAddress = navigation.getParam('address') || testAddress
+  const selectedAddress = navigation.getParam('address')
   const defaultAmount = navigation.getParam('lastAmount')
   const isDeposit = navigation.getParam('isDeposit')
   const isRootchain = navigation.getParam('rootchain')
-  const selectedToken = navigation.getParam(
-    'selectedToken',
-    isDeposit || isRootchain
-      ? wallet.rootchainAssets[0]
-      : wallet.childchainAssets[0]
-  )
   const blockchainLabelActionText = BlockchainLabel.getBlockchainTextActionLabel(
     'TransferForm',
     isDeposit
@@ -67,22 +61,81 @@ const TransferForm = ({ wallet, theme, navigation }) => {
   const addressRef = useRef(selectedAddress)
   const amountRef = useRef(defaultAmount)
   const amountFocusRef = useRef(null)
+  const addressFocusRef = useRef(null)
+  const keyboardAwareScrollRef = useRef(null)
   const [showErrorAddress, setShowErrorAddress] = useState(false)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
   const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
 
   useEffect(() => {
-    if (!amountFocusRef.current) return
-    if ((isDeposit || isRootchain) && wallet.rootchainAssets.length === 1) {
-      amountFocusRef.current.focus()
-    } else if (wallet.childchainAssets.length === 1) {
-      amountFocusRef.current.focus()
-    }
+    navigateToSelectBalance()
   }, [
     isDeposit,
     isRootchain,
+    navigateToSelectBalance,
     wallet.childchainAssets.length,
     wallet.rootchainAssets.length
+  ])
+
+  useEffect(() => {
+    if (isFocused) {
+      const shouldFocus = navigation.getParam('shouldFocus')
+      if (shouldFocus) {
+        if (!selectedAddress) {
+          focusAddress()
+        } else {
+          focusAmount()
+        }
+      }
+    }
+  }, [focusAddress, focusAmount, isFocused, navigation, selectedAddress])
+
+  const focusAmount = useCallback(() => {
+    InteractionManager.runAfterInteractions(() => {
+      console.log('focus amount')
+      amountFocusRef.current.focus()
+    })
+  }, [])
+
+  const focusAddress = useCallback(() => {
+    InteractionManager.runAfterInteractions(() => {
+      console.log('focus address')
+      addressFocusRef.current.focus()
+    })
+  }, [])
+
+  const getDefaultToken = useCallback(() => {
+    if (isDeposit || isRootchain) {
+      return wallet.rootchainAssets[0]
+    } else {
+      return wallet.childchainAssets[0]
+    }
+  }, [isDeposit, isRootchain, wallet.childchainAssets, wallet.rootchainAssets])
+  const selectedToken = navigation.getParam('selectedToken', getDefaultToken())
+
+  const focusNext = useCallback(() => {
+    addressFocusRef.current.blur()
+    setTimeout(() => {
+      focusAmount()
+    }, 250)
+  }, [focusAmount])
+
+  const navigateToSelectBalance = useCallback(() => {
+    navigation.navigate('TransferSelectBalance', {
+      currentToken: selectedToken,
+      lastAmount: amountRef.current,
+      assets:
+        isDeposit || isRootchain
+          ? wallet.rootchainAssets
+          : wallet.childchainAssets
+    })
+  }, [
+    isDeposit,
+    isRootchain,
+    navigation,
+    selectedToken,
+    wallet.childchainAssets,
+    wallet.rootchainAssets
   ])
 
   const submit = useCallback(() => {
@@ -116,7 +169,11 @@ const TransferForm = ({ wallet, theme, navigation }) => {
   return (
     <SafeAreaView style={styles.container(theme)}>
       <OMGDismissKeyboard style={styles.dismissKeyboard}>
-        <KeyboardAwareScrollView contentContainerStyle={styles.scrollView}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={styles.scrollView}
+          innerRef={ref => {
+            keyboardAwareScrollRef.current = ref
+          }}>
           <View style={styles.formContainer}>
             <OMGBlockchainLabel
               actionText={blockchainLabelActionText}
@@ -127,16 +184,7 @@ const TransferForm = ({ wallet, theme, navigation }) => {
               <OMGTokenInput
                 token={selectedToken}
                 style={styles.tokenInput}
-                onPress={() =>
-                  navigation.navigate('TransferSelectBalance', {
-                    currentToken: selectedToken,
-                    lastAmount: amountRef.current,
-                    assets:
-                      isDeposit || isRootchain
-                        ? wallet.rootchainAssets
-                        : wallet.childchainAssets
-                  })
-                }
+                onPress={navigateToSelectBalance}
               />
               <OMGWalletAddress
                 name={wallet.name}
@@ -157,6 +205,9 @@ const TransferForm = ({ wallet, theme, navigation }) => {
                   style={styles.addressInput}
                   inputRef={addressRef}
                   showError={showErrorAddress}
+                  focusRef={addressFocusRef}
+                  returnKeyType='next'
+                  onSubmitEditing={focusNext}
                   onPress={() =>
                     navigation.navigate('TransferScanner', {
                       rootchain: isRootchain
@@ -264,4 +315,4 @@ const mapStateToProps = (state, ownProps) => ({
 export default connect(
   mapStateToProps,
   null
-)(withNavigation(withTheme(TransferForm)))
+)(withNavigationFocus(withTheme(TransferForm)))

@@ -70,6 +70,7 @@ const TransferSelectBalance = ({
             const destination = isExit ? 'ExitForm' : 'TransferForm'
             navigation.navigate(destination, {
               selectedToken: selectedToken || currentToken,
+              shouldFocus: true,
               lastAmount: null
             })
           }}>
