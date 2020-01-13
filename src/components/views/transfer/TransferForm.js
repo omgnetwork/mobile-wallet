@@ -2,6 +2,7 @@ import React, { useRef, useState, useCallback, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, InteractionManager } from 'react-native'
 import { withNavigationFocus, SafeAreaView } from 'react-navigation'
+import * as TransferHelper from './transferHelper'
 import { withTheme } from 'react-native-paper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
@@ -16,6 +17,7 @@ import {
   OMGBlockchainLabel,
   OMGDismissKeyboard
 } from 'components/widgets'
+import { Gas } from 'common/constants'
 import { Validator } from 'common/utils'
 import * as BlockchainLabel from './blockchainLabel'
 
@@ -24,7 +26,8 @@ const fees = [
     id: '1',
     speed: 'Fast',
     estimateTime: 'Less than 30 seconds',
-    amount: '24',
+    amount: Gas.HIGH_TRANSFER_GAS_PRICE,
+    displayAmount: '24',
     symbol: 'Gwei',
     price: '0.047'
   },
@@ -32,7 +35,8 @@ const fees = [
     id: '2',
     speed: 'Standard',
     estimateTime: 'Less than 3 minutes',
-    amount: '10',
+    amount: Gas.MEDIUM_TRANSFER_GAS_PRICE,
+    displayAmount: '10',
     symbol: 'Gwei',
     price: '0.019'
   },
@@ -40,17 +44,19 @@ const fees = [
     id: '3',
     speed: 'Safe low',
     estimateTime: 'Less than 10 minutes',
-    amount: '5',
+    amount: Gas.LOW_TRANSFER_GAS_PRICE,
+    displayAmount: '5',
     symbol: 'Gwei',
     price: '0.007'
   }
 ]
 
-// const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
+const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
 
 const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
+  const depositFee = { amount: Gas.DEPOSIT_GAS_PRICE }
   const selectedFee = navigation.getParam('selectedFee', fees[0])
-  const selectedAddress = navigation.getParam('address')
+  const selectedAddress = navigation.getParam('address') || testAddress
   const defaultAmount = navigation.getParam('lastAmount')
   const isDeposit = navigation.getParam('isDeposit')
   const isRootchain = navigation.getParam('rootchain')
@@ -66,6 +72,7 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
   const [showErrorAddress, setShowErrorAddress] = useState(false)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
   const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
+  const transferType = TransferHelper.getTypes(isRootchain, isDeposit)
 
   useEffect(() => {
     if (isFocused) {
@@ -99,14 +106,14 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
     })
   }, [])
 
-  const getDefaultToken = useCallback(() => {
-    if (isDeposit || isRootchain) {
-      return wallet.rootchainAssets[0]
-    } else {
-      return wallet.childchainAssets[0]
-    }
-  }, [isDeposit, isRootchain, wallet.childchainAssets, wallet.rootchainAssets])
-  const selectedToken = navigation.getParam('selectedToken', getDefaultToken())
+  const selectedToken = navigation.getParam(
+    'selectedToken',
+    TransferHelper.getDefaultToken(
+      transferType,
+      wallet.rootchainAssets,
+      wallet.childchainAssets
+    )
+  )
 
   const focusNext = useCallback(() => {
     addressFocusRef.current.blur()
@@ -120,16 +127,17 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
       currentToken: selectedToken,
       lastAmount: amountRef.current,
       rootchain: isRootchain,
-      assets:
-        isDeposit || isRootchain
-          ? wallet.rootchainAssets
-          : wallet.childchainAssets
+      assets: TransferHelper.getAssets(
+        transferType,
+        wallet.rootchainAssets,
+        wallet.childchainAssets
+      )
     })
   }, [
-    isDeposit,
     isRootchain,
     navigation,
     selectedToken,
+    transferType,
     wallet.childchainAssets,
     wallet.rootchainAssets
   ])
@@ -157,10 +165,23 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
           name: isDeposit ? 'Plasma Contract' : 'Another wallet',
           address: addressRef.current
         },
-        fee: isRootchain ? selectedFee : null
+        fee: TransferHelper.getNavigationFee(
+          transferType,
+          depositFee,
+          selectedFee
+        )
       })
     }
-  }, [isDeposit, isRootchain, navigation, selectedFee, selectedToken, wallet])
+  }, [
+    depositFee,
+    isDeposit,
+    isRootchain,
+    navigation,
+    selectedFee,
+    selectedToken,
+    transferType,
+    wallet
+  ])
 
   return (
     <SafeAreaView style={styles.container(theme)}>

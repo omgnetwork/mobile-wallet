@@ -4,12 +4,12 @@ import { View, StyleSheet, ScrollView } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { BlockchainRenderer } from 'common/blockchain'
 import { withTheme } from 'react-native-paper'
+import * as TransferHelper from './transferHelper'
 import Config from 'react-native-config'
 import {
   ActionAlert,
   ContractAddress,
-  TransactionActionTypes,
-  Gas
+  TransactionActionTypes
 } from 'common/constants'
 import { ethereumActions, plasmaActions } from 'common/actions'
 import {
@@ -18,7 +18,8 @@ import {
   OMGText,
   OMGIcon,
   OMGWalletAddress,
-  OMGBlockchainLabel
+  OMGBlockchainLabel,
+  OMGEmpty
 } from 'components/widgets'
 import * as BlockchainLabel from './blockchainLabel'
 
@@ -37,22 +38,47 @@ const TransferConfirm = ({
   const fee = navigation.getParam('fee')
   const isRootchain = navigation.getParam('isRootchain')
   const isDeposit = navigation.getParam('isDeposit')
+  const [estimatedFee, setEstimatedFee] = useState(null)
+  const [estimatedFeeUsd, setEstimatedFeeUsd] = useState(null)
+  const [estimatedTotalPrice, setEstimatedTotalPrice] = useState(null)
 
   const tokenBalance = BlockchainRenderer.renderTokenBalance(token.balance)
   const tokenPrice = BlockchainRenderer.renderTokenPrice(
     token.balance,
     token.price
   )
-  const feeEth = BlockchainRenderer.renderEthFromGwei(fee && fee.amount)
-  const gasFee = BlockchainRenderer.renderGasFee(
-    isRootchain ? Gas.MINIMUM_GAS_USED : 1,
-    feeEth
-  )
-  const feePrice = BlockchainRenderer.renderTokenPrice(
-    gasFee,
-    ethToken && ethToken.price
-  )
-  const totalPrice = BlockchainRenderer.renderTotalPrice(tokenPrice, feePrice)
+
+  const transferType = TransferHelper.getTypes(isRootchain, isDeposit)
+
+  useEffect(() => {
+    async function calculateEstimatedFee() {
+      const gasUsed = await TransferHelper.getGasUsed(transferType, token, {
+        wallet: blockchainWallet,
+        to: toWallet.address,
+        fee: fee
+      })
+      const gasPrice = fee && fee.amount
+      const gasFee = BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
+      const usdPerEth = ethToken && ethToken.price
+      const gasFeeUsd = BlockchainRenderer.renderTokenPrice(gasFee, usdPerEth)
+      const totalPrice = BlockchainRenderer.renderTotalPrice(
+        tokenPrice,
+        gasFeeUsd
+      )
+      setEstimatedFee(gasFee)
+      setEstimatedFeeUsd(gasFeeUsd)
+      setEstimatedTotalPrice(totalPrice)
+    }
+    calculateEstimatedFee()
+  }, [
+    blockchainWallet,
+    ethToken,
+    fee,
+    toWallet,
+    token,
+    tokenPrice,
+    transferType
+  ])
 
   const blockchainLabelActionText = BlockchainLabel.getBlockchainTextActionLabel(
     'TransferConfirm',
@@ -76,6 +102,8 @@ const TransferConfirm = ({
         toWallet,
         isDeposit,
         isRootchain,
+        estimatedFee,
+        estimatedFeeUsd,
         unconfirmedTx: lastUnconfirmedTx,
         fee
       })
@@ -90,7 +118,9 @@ const TransferConfirm = ({
     observedActions,
     unconfirmedTxs,
     toWallet,
-    token
+    token,
+    estimatedFee,
+    estimatedFeeUsd
   ])
 
   useEffect(() => {
@@ -188,18 +218,36 @@ const TransferConfirm = ({
           </OMGBox>
           <View style={styles.transactionFeeContainer(fee)}>
             <OMGText weight='bold' style={styles.subtitle(theme)}>
-              Transaction Fee
+              Estimated Fee
             </OMGText>
             <View style={styles.feeContainer(theme)}>
-              <OMGText style={styles.feeAmount(theme)}>{feeEth} ETH</OMGText>
-              <OMGText style={styles.feeWorth(theme)}>{feePrice} USD</OMGText>
+              {estimatedFee ? (
+                <>
+                  <OMGText style={styles.feeAmount(theme)}>
+                    {estimatedFee} ETH
+                  </OMGText>
+                  <OMGText style={styles.feeWorth(theme)}>
+                    {estimatedFeeUsd} USD
+                  </OMGText>
+                </>
+              ) : (
+                <OMGEmpty loading={true} />
+              )}
             </View>
           </View>
         </View>
         <View style={styles.buttonContainer}>
           <View style={styles.totalContainer(fee)}>
-            <OMGText style={styles.totalText(theme)}>Max Total</OMGText>
-            <OMGText style={styles.totalText(theme)}>{totalPrice} USD</OMGText>
+            {estimatedTotalPrice ? (
+              <>
+                <OMGText style={styles.totalText(theme)}>Total</OMGText>
+                <OMGText style={styles.totalText(theme)}>
+                  {estimatedTotalPrice} USD
+                </OMGText>
+              </>
+            ) : (
+              <OMGEmpty loading={true} />
+            )}
           </View>
           <OMGButton
             style={styles.button}
@@ -345,9 +393,9 @@ const getAction = (token, fee, blockchainWallet, toAddress, isRootchain) => {
   const TO_CHILDCHAIN = toAddress === Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
   const ETH_TOKEN = token.contractAddress === ContractAddress.ETH_ADDRESS
   if (TO_CHILDCHAIN && ETH_TOKEN) {
-    return plasmaActions.depositEth(blockchainWallet, token, fee)
+    return plasmaActions.depositEth(blockchainWallet, token)
   } else if (TO_CHILDCHAIN && !ETH_TOKEN) {
-    return plasmaActions.depositErc20(blockchainWallet, token, fee)
+    return plasmaActions.depositErc20(blockchainWallet, token)
   } else if (!isRootchain) {
     return plasmaActions.transfer(blockchainWallet, toAddress, token)
   } else if (ETH_TOKEN) {

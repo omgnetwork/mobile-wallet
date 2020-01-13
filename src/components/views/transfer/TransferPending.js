@@ -15,7 +15,7 @@ import {
   OMGIcon,
   OMGBlockchainLabel
 } from 'components/widgets'
-import { Gas, TransactionActionTypes } from 'common/constants'
+import { TransactionActionTypes } from 'common/constants'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { GoogleAnalytics } from 'common/analytics'
 import * as BlockchainLabel from './blockchainLabel'
@@ -27,25 +27,38 @@ const TransferPending = ({ theme, navigation }) => {
   const toWallet = navigation.getParam('toWallet')
   const isDeposit = navigation.getParam('isDeposit')
   const isRootchain = navigation.getParam('isRootchain')
+  const estimatedGasFee = navigation.getParam('estimatedFee')
+  const estimatedGasFeeUsd = navigation.getParam('estimatedFeeUsd')
   const tokenPrice = BlockchainRenderer.renderTokenPrice(
     token.balance,
     token.price
   )
   const gasDetailAvailable = unconfirmedTx.gasUsed && unconfirmedTx.gasPrice
   const gasFee = useCallback(() => {
-    return BlockchainRenderer.renderGasFee(
-      unconfirmedTx.gasUsed || Gas.MINIMUM_GAS_USED,
-      unconfirmedTx.gasPrice
+    return (
+      estimatedGasFee ||
+      BlockchainRenderer.renderGasFee(
+        unconfirmedTx.gasUsed,
+        unconfirmedTx.gasPrice
+      )
     )
-  }, [unconfirmedTx])
+  }, [estimatedGasFee, unconfirmedTx.gasPrice, unconfirmedTx.gasUsed])
 
   const gasFeeUsd = useCallback(() => {
-    return BlockchainRenderer.renderGasFeeUsd(
-      unconfirmedTx.gasUsed || Gas.MINIMUM_GAS_USED,
-      unconfirmedTx.gasPrice,
-      token.price
+    return (
+      estimatedGasFeeUsd ||
+      BlockchainRenderer.renderGasFeeUsd(
+        unconfirmedTx.gasUsed,
+        unconfirmedTx.gasPrice,
+        token.price
+      )
     )
-  }, [unconfirmedTx, token])
+  }, [
+    estimatedGasFeeUsd,
+    unconfirmedTx.gasUsed,
+    unconfirmedTx.gasPrice,
+    token.price
+  ])
 
   const handleOnBackPressedAndroid = () => {
     return true
@@ -255,13 +268,11 @@ const styles = StyleSheet.create({
   },
   sentSection1: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    justifyContent: 'space-between'
   },
   sentSection2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
     marginTop: 8
   },
   sentDetailFirstline: theme => ({

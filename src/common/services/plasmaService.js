@@ -252,7 +252,7 @@ export const exit = (blockchainWallet, token) => {
 //         contractAddress,
 //         exitId,
 //         {
-//           gas: Gas.LIMIT,
+//           gas: Gas.HIGH_LIMIT,
 //           from: blockchainWallet.address,
 //           privateKey: blockchainWallet.privateKey
 //         }

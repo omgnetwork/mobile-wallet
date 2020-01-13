@@ -32,10 +32,10 @@ describe('Test BlockchainRenderer', () => {
     expect(gasFeeUsd).toBe('0.010')
   })
 
-  it('renderEthFromGwei should be equal to Gwei / 10^9', () => {
-    const gwei = '20000000'
-    const eth = BlockchainRenderer.renderEthFromGwei(gwei)
-    expect(eth).toBe('0.02')
+  it('renderEthFromWei should be equal to Wei / 10^18', () => {
+    const wei = '5000000000'
+    const eth = BlockchainRenderer.renderEthFromWei(wei)
+    expect(eth).toBe('0.000000005')
   })
 
   it('renderTokenBalance should have comma when balance more than or equal to 1000', () => {

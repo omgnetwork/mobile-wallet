@@ -12,7 +12,7 @@ const OMGFeeInput = ({ theme, fee, style, onPress }) => {
       <OMGText style={styles.text(theme)}>{fee.speed}</OMGText>
       <View style={styles.rightContainer}>
         <OMGText style={styles.amount(theme)}>
-          {fee.amount} {fee.symbol}
+          {fee.displayAmount} {fee.symbol}
         </OMGText>
         <OMGIcon name='chevron-right' size={14} color={theme.colors.gray3} />
       </View>

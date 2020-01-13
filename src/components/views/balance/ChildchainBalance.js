@@ -54,7 +54,10 @@ const ChildchainBalance = ({
     } else if (!hasRootchainAssets) {
       Alerter.show(Alert.FAILED_DEPOSIT_EMPTY_WALLET)
     } else {
-      navigation.navigate('TransferSelectBalance', { isDeposit: true })
+      navigation.navigate('TransferSelectBalance', {
+        isDeposit: true,
+        address: Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
+      })
     }
   }, [hasPendingTransaction, hasRootchainAssets, navigation])
 

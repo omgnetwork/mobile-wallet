@@ -89,9 +89,8 @@ export const depositErc20 = async (
     ContractABI.erc20Abi(),
     tokenContractAddress
   )
-  const defaultGasPrice = await web3.eth.getGasPrice()
   const depositGas = options.gas || Gas.MEDIUM_LIMIT
-  const depositGasPrice = options.gasPrice || defaultGasPrice
+  const depositGasPrice = options.gasPrice || Gas.DEPOSIT_GAS_PRICE
 
   // SEND ERC20 APPROVAL TRANSACTION 👇
 
@@ -106,6 +105,8 @@ export const depositErc20 = async (
   )
 
   const approveReceipt = await approveErc20(approveOptions, privateKey)
+
+  console.log(approveReceipt)
 
   // SEND DEPOSIT TRANSACTION 👇
 
