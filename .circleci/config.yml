@@ -145,7 +145,8 @@ jobs:
     docker:
       - image: google/cloud-sdk
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - setup_remote_docker
       - run: |
           export SHORT_GIT_HASH=$(echo $CIRCLE_SHA1 | cut -c -7)
