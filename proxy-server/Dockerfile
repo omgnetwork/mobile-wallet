@@ -1,4 +1,7 @@
+#
 # Install project dependencies from an image that has all the build toolings available
+#
+
 FROM node:10-alpine as builder
 WORKDIR /app
 
@@ -6,12 +9,20 @@ COPY . /app
 
 RUN apk add --no-cache python
 RUN npm install
+RUN pwd
+RUN ls
 
+#
 # Now copy the artifacts over and build the final image from a clean node alpine
+#
+
 FROM node:10-alpine as app
 
+RUN pwd
+RUN ls
+
 COPY . /app
-COPY --from=builder node_modules ./node_modules
+COPY --from=builder ./node_modules ./node_modules
 
 EXPOSE 3000
 CMD ["npm", "run", "start"]
