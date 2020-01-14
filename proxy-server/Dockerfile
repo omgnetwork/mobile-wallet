@@ -18,7 +18,7 @@ FROM node:10-alpine as app
 WORKDIR /app
 
 COPY . /app
-COPY --from=builder ./node_modules ./node_modules
+COPY --from=builder /app/node_modules /app/node_modules
 
 EXPOSE 3000
 CMD ["npm", "run", "start"]
