@@ -146,8 +146,12 @@ jobs:
       - run: cd proxy-server
       - setup_remote_docker
       - run: |
+          export SHORT_GIT_HASH=$(echo $CIRCLE_SHA1 | cut -c -7)
+          export PROXY_SERVER_DOCKER_TAG=$(echo $PROXY_SERVER_DOCKER_REPO_URL:$SHORT_GIT_HASH)
           echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
           gcloud auth configure-docker
-          docker build -t $DOCKER_IMAGE_NAME .
-          docker tag $DOCKER_IMAGE_NAME $DOCKER_REPO_URL
-          docker push $DOCKER_REPO_URL
+          docker build -t $PROXY_SERVER_DOCKER_IMAGE_NAME .
+          docker tag $PROXY_SERVER_DOCKER_IMAGE_NAME $PROXY_SERVER_DOCKER_TAG
+          docker push $PROXY_SERVER_DOCKER_TAG
+          gcloud beta container clusters get-credentials dev-73f526d-ropsten-01 --region asia-southeast1 --project omisego-development
+          kubectl set image deployment/mobile-wallet-proxy mobile-wallet-proxy=$PROXY_SERVER_DOCKER_TAG
