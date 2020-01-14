@@ -9,17 +9,13 @@ COPY . /app
 
 RUN apk add --no-cache python
 RUN npm install
-RUN pwd
-RUN ls
 
 #
 # Now copy the artifacts over and build the final image from a clean node alpine
 #
 
 FROM node:10-alpine as app
-
-RUN pwd
-RUN ls
+WORKDIR /app
 
 COPY . /app
 COPY --from=builder ./node_modules ./node_modules
