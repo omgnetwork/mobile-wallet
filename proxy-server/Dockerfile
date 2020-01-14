@@ -2,7 +2,7 @@
 FROM circleci/node:10 as builders
 WORKDIR /app
 
-COPY package.json package-lock.json /app
+COPY package.json package-lock.json /app/
 RUN npm install
 
 # Now copy the artifacts over and build the final image from a clean node alpine
