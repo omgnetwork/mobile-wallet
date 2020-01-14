@@ -31,6 +31,9 @@ workflows:
       - proxy-server-publish:
           requires:
             - proxy-server-test
+      - proxy-server-deploy:
+          requires:
+            - proxy-server-publish
           filters:
             branches:
               only: master
@@ -143,15 +146,25 @@ jobs:
       - image: google/cloud-sdk
     steps:
       - checkout
-      - run: cd proxy-server
       - setup_remote_docker
       - run: |
           export SHORT_GIT_HASH=$(echo $CIRCLE_SHA1 | cut -c -7)
           export PROXY_SERVER_DOCKER_TAG=$(echo $PROXY_SERVER_DOCKER_REPO_URL:$SHORT_GIT_HASH)
           echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
           gcloud auth configure-docker
+          cd proxy-server
           docker build -t $PROXY_SERVER_DOCKER_IMAGE_NAME .
           docker tag $PROXY_SERVER_DOCKER_IMAGE_NAME $PROXY_SERVER_DOCKER_TAG
           docker push $PROXY_SERVER_DOCKER_TAG
+
+  proxy-server-deploy:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - run: |
+          export SHORT_GIT_HASH=$(echo $CIRCLE_SHA1 | cut -c -7)
+          export PROXY_SERVER_DOCKER_TAG=$(echo $PROXY_SERVER_DOCKER_REPO_URL:$SHORT_GIT_HASH)
+          echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+          gcloud auth configure-docker
           gcloud beta container clusters get-credentials dev-73f526d-ropsten-01 --region asia-southeast1 --project omisego-development
           kubectl set image deployment/mobile-wallet-proxy mobile-wallet-proxy=$PROXY_SERVER_DOCKER_TAG
