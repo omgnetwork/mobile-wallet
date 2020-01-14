@@ -2,19 +2,22 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGText } from 'components/widgets'
+import { TransferHelper } from 'components/views/transfer'
 import { IconEth, IconGo } from './assets'
 
-const OMGBlockchainLabel = ({ theme, actionText, isRootchain, style }) => {
-  const blockchainName = isRootchain
+const OMGBlockchainLabel = ({ theme, actionText, transferType, style }) => {
+  const isEthereumRootchain =
+    transferType !== TransferHelper.TYPE_TRANSFER_CHILDCHAIN
+  const blockchainName = isEthereumRootchain
     ? 'Ethereum Rootchain'
     : 'Plasma Childchain'
-  const BlockchainIcon = isRootchain ? IconEth : IconGo
+  const BlockchainIcon = isEthereumRootchain ? IconEth : IconGo
 
   return (
-    <View style={[styles.container(theme, isRootchain), style]}>
+    <View style={[styles.container(theme, isEthereumRootchain), style]}>
       <BlockchainIcon
-        width={isRootchain ? 14 : 20}
-        height={isRootchain ? 23 : 19}
+        width={isEthereumRootchain ? 14 : 20}
+        height={isEthereumRootchain ? 23 : 19}
         style={styles.icon(theme)}
       />
       <OMGText style={styles.text(theme)}>

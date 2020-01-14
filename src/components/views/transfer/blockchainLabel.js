@@ -1,8 +1,22 @@
-export const getBlockchainTextActionLabel = (screen, isDeposit) => {
+import * as TransferHelper from './transferHelper'
+
+export const getBlockchainTextActionLabel = (screen, transferType) => {
   switch (screen) {
     case 'TransferPending':
-      return isDeposit ? 'Deposited to' : 'Sent on'
+      return getDoneText(transferType)
     default:
-      return isDeposit ? 'Depositing to' : 'Sending on'
+      return getOngoingText(transferType)
   }
+}
+
+const getOngoingText = transferType => {
+  return transferType === TransferHelper.TYPE_DEPOSIT
+    ? 'Depositing to'
+    : 'Sending on'
+}
+
+const getDoneText = transferType => {
+  return transferType === TransferHelper.TYPE_DEPOSIT
+    ? 'Deposited to'
+    : 'Sent on'
 }

@@ -10,11 +10,14 @@ import {
   OMGIcon,
   OMGText
 } from 'components/widgets'
+import { getParamsForTransferSelectFeeFromTransferForm } from './transferNavigation'
 
 const TransferSelectFee = ({ theme, loading, navigation }) => {
-  const fees = navigation.getParam('fees')
-  const currentToken = navigation.getParam('currentToken')
-  const currentFee = navigation.getParam('currentFee')
+  const {
+    fees,
+    currentToken,
+    currentFee
+  } = getParamsForTransferSelectFeeFromTransferForm(navigation)
   const [selectedFee, setSelectedFee] = useState(currentFee || fees[0])
 
   return (

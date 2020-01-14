@@ -4,6 +4,7 @@ import { View, StyleSheet, Linking } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { BlockchainRenderer } from 'common/blockchain'
+import * as TransferHelper from './transferHelper'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
 import {
@@ -19,16 +20,18 @@ import { TransactionActionTypes } from 'common/constants'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { GoogleAnalytics } from 'common/analytics'
 import * as BlockchainLabel from './blockchainLabel'
+import { getParamsForTransferPendingFromTransferConfirm } from './transferNavigation'
 
 const TransferPending = ({ theme, navigation }) => {
-  const unconfirmedTx = navigation.getParam('unconfirmedTx')
-  const token = navigation.getParam('token')
-  const fromWallet = navigation.getParam('fromWallet')
-  const toWallet = navigation.getParam('toWallet')
-  const isDeposit = navigation.getParam('isDeposit')
-  const isRootchain = navigation.getParam('isRootchain')
-  const estimatedGasFee = navigation.getParam('estimatedFee')
-  const estimatedGasFeeUsd = navigation.getParam('estimatedFeeUsd')
+  const {
+    unconfirmedTx,
+    token,
+    fromWallet,
+    toWallet,
+    transferType,
+    estimatedGasFee,
+    estimatedGasFeeUsd
+  } = getParamsForTransferPendingFromTransferConfirm(navigation)
   const tokenPrice = BlockchainRenderer.renderTokenPrice(
     token.balance,
     token.price
@@ -65,20 +68,21 @@ const TransferPending = ({ theme, navigation }) => {
   }
 
   useEffect(() => {
-    if (isDeposit) {
-      GoogleAnalytics.sendEvent('transfer_deposited', {
-        hash: unconfirmedTx.hash
-      })
-    } else if (isRootchain) {
-      GoogleAnalytics.sendEvent('transfer_rootchain', {
-        hash: unconfirmedTx.hash
-      })
-    } else {
-      GoogleAnalytics.sendEvent('transfer_childchain', {
-        hash: unconfirmedTx.hash
-      })
+    switch (transferType) {
+      case TransferHelper.TYPE_DEPOSIT:
+        return GoogleAnalytics.sendEvent('transfer_deposited', {
+          hash: unconfirmedTx.hash
+        })
+      case TransferHelper.TYPE_TRANSFER_ROOTCHAIN:
+        return GoogleAnalytics.sendEvent('transfer_rootchain', {
+          hash: unconfirmedTx.hash
+        })
+      default:
+        return GoogleAnalytics.sendEvent('transfer_childchain', {
+          hash: unconfirmedTx.hash
+        })
     }
-  }, [isDeposit, isRootchain, unconfirmedTx])
+  }, [transferType, unconfirmedTx])
 
   return (
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
@@ -100,9 +104,9 @@ const TransferPending = ({ theme, navigation }) => {
             style={styles.blockchainLabel}
             actionText={BlockchainLabel.getBlockchainTextActionLabel(
               'TransferPending',
-              isDeposit
+              transferType
             )}
-            isRootchain={isRootchain}
+            transferType={transferType}
           />
           <OMGBox style={styles.addressContainer}>
             <OMGText style={styles.subtitle(theme)} weight='bold'>

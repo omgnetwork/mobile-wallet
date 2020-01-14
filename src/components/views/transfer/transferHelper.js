@@ -4,6 +4,7 @@ import { ContractAddress } from 'common/constants'
 export const TYPE_DEPOSIT = 1
 export const TYPE_TRANSFER_ROOTCHAIN = 2
 export const TYPE_TRANSFER_CHILDCHAIN = 3
+export const TYPE_EXIT = 4
 
 export const getTypes = (isRootchain, isDeposit) => {
   if (isDeposit) {

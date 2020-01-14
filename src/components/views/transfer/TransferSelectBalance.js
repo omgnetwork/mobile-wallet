@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import { withNavigation, SafeAreaView } from 'react-navigation'
@@ -10,6 +10,11 @@ import {
   OMGIcon,
   OMGText
 } from 'components/widgets'
+import { TransferHelper } from 'components/views/transfer'
+import {
+  getParamsForTransferSelectBalanceFromTransferForm,
+  paramsForTransferSelectBalanceToAnywhere
+} from './transferNavigation'
 
 const TransferSelectBalance = ({
   primaryWallet,
@@ -17,14 +22,27 @@ const TransferSelectBalance = ({
   loading,
   navigation
 }) => {
-  const address = navigation.getParam('address')
-  const rootchain = navigation.getParam('rootchain')
-  const assets = navigation.getParam('assets', primaryWallet.rootchainAssets)
-  const isExit = navigation.getParam('exit')
-  const isDeposit = navigation.getParam('isDeposit')
-  const currentToken = navigation.getParam('currentToken')
-  const lastAmount = navigation.getParam('lastAmount')
+  const {
+    address,
+    assets,
+    transferType,
+    currentToken
+  } = getParamsForTransferSelectBalanceFromTransferForm(
+    navigation,
+    primaryWallet.rootchainAssets
+  )
   const [selectedToken, setSelectedToken] = useState(currentToken || assets[0])
+
+  const getNavigationDestination = useCallback(() => {
+    switch (transferType) {
+      case TransferHelper.TYPE_DEPOSIT:
+        return 'TransferDeposit'
+      case TransferHelper.TYPE_EXIT:
+        return 'ExitForm'
+      default:
+        return 'TransferForm'
+    }
+  }, [transferType])
 
   return (
     <SafeAreaView style={styles.container(theme)}>
@@ -36,10 +54,6 @@ const TransferSelectBalance = ({
           style={styles.headerIcon}
           onPress={() => {
             navigation.goBack()
-            // const destination = isExit ? 'ExitForm' : 'TransferForm'
-            // navigation.navigate(destination, {
-            //   lastAmount: lastAmount
-            // })
           }}
         />
         <OMGText style={styles.headerTitle(theme)}>Select Balance</OMGText>
@@ -71,18 +85,15 @@ const TransferSelectBalance = ({
       <View style={styles.buttonContainer}>
         <OMGButton
           onPress={() => {
-            const destination = isDeposit
-              ? 'TransferDeposit'
-              : isExit
-              ? 'ExitForm'
-              : 'TransferForm'
-            navigation.navigate(destination, {
-              selectedToken: selectedToken || currentToken,
-              shouldFocus: true,
-              lastAmount: null,
-              rootchain,
-              address
-            })
+            const destination = getNavigationDestination()
+            navigation.navigate(
+              destination,
+              paramsForTransferSelectBalanceToAnywhere({
+                selectedToken,
+                currentToken,
+                address
+              })
+            )
           }}>
           Apply
         </OMGButton>

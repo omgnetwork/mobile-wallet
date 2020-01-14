@@ -6,8 +6,12 @@ import TransferReceive from './TransferReceive'
 import TransferScanner from './TransferScanner'
 import TransferSelectBalance from './TransferSelectBalance'
 import TransferSelectFee from './TransferSelectFee'
+import * as TransferHelper from './transferHelper'
+import * as TransferNavigation from './transferNavigation'
 
 export {
+  TransferHelper,
+  TransferNavigation,
   TransferContainer,
   TransferConfirm,
   TransferForm,

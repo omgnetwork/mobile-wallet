@@ -5,6 +5,7 @@ import { StyleSheet } from 'react-native'
 import { plasmaActions, walletActions } from 'common/actions'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
+import { TransferHelper } from 'components/views/transfer'
 import { Formatter, Datetime, Alerter } from 'common/utils'
 import {
   OMGItemToken,
@@ -55,7 +56,7 @@ const ChildchainBalance = ({
       Alerter.show(Alert.FAILED_DEPOSIT_EMPTY_WALLET)
     } else {
       navigation.navigate('TransferSelectBalance', {
-        isDeposit: true,
+        transferType: TransferHelper.TYPE_DEPOSIT,
         address: Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
       })
     }

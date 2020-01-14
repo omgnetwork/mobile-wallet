@@ -6,6 +6,7 @@ import { withNavigation, SafeAreaView } from 'react-navigation'
 import { BlockchainRenderer } from 'common/blockchain'
 import { plasmaActions } from 'common/actions'
 import { ActionAlert } from 'common/constants'
+import { TransferHelper } from 'components/views/transfer'
 import {
   OMGText,
   OMGIcon,
@@ -77,7 +78,7 @@ const ExitConfirm = ({
         </View>
         <OMGBlockchainLabel
           actionText='Sending to'
-          isRootchain={true}
+          transferType={TransferHelper.TYPE_TRANSFER_ROOTCHAIN}
           style={styles.blockchainLabel}
         />
         <View style={styles.amountContainer(theme)}>

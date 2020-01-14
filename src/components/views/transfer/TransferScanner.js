@@ -5,10 +5,12 @@ import React, {
   useCallback,
   useRef
 } from 'react'
+import { getParamsForTransferScannerFromTransferForm } from './transferNavigation'
 import { View, StyleSheet, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
+import { paramsForTransferScannerToTransferSelectBalance } from './transferNavigation'
 import {
   OMGText,
   OMGIcon,
@@ -25,7 +27,7 @@ import { Animator } from 'common/anims'
 import * as BlockchainIcons from './assets'
 
 const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
-  const rootchain = navigation.getParam('rootchain')
+  const { rootchain } = getParamsForTransferScannerFromTransferForm(navigation)
   const [rendering, setRendering] = useState(true)
   const camera = useRef(null)
   const [address, setAddress] = useState(null)
@@ -52,13 +54,14 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   }, [isRootchain, wallet.childchainAssets, wallet.rootchainAssets])
 
   const navigateNext = useCallback(() => {
-    navigation.navigate('TransferSelectBalance', {
-      address: address && address.replace('ethereum:', ''),
-      rootchain: isRootchain,
-      currentToken: getAssets()[0],
-      lastAmount: null,
-      assets: getAssets()
-    })
+    navigation.navigate(
+      'TransferSelectBalance',
+      paramsForTransferScannerToTransferSelectBalance({
+        address,
+        isRootchain,
+        assets: getAssets()
+      })
+    )
   }, [navigation, address, isRootchain, getAssets])
 
   useEffect(() => {

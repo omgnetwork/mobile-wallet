@@ -10,6 +10,7 @@ import {
   OMGButton,
   OMGDismissKeyboard
 } from 'components/widgets'
+import { TransferHelper } from 'components/views/transfer'
 import { Validator } from 'common/utils'
 import { withNavigation } from 'react-navigation'
 import { OMGBlockchainLabel } from 'components/widgets'
@@ -51,7 +52,10 @@ const ExitForm = ({ wallet, theme, navigation }) => {
 
   return (
     <OMGDismissKeyboard style={styles.container}>
-      <OMGBlockchainLabel actionText='Sending to' isRootchain={true} />
+      <OMGBlockchainLabel
+        actionText='Sending to'
+        transferType={TransferHelper.TYPE_TRANSFER_ROOTCHAIN}
+      />
       <View style={styles.contentContainer}>
         <OMGText weight='bold' style={styles.title(theme)}>
           Select Exit Amount
@@ -61,6 +65,7 @@ const ExitForm = ({ wallet, theme, navigation }) => {
           style={styles.tokenInput}
           onPress={() =>
             navigation.navigate('TransferSelectBalance', {
+              transferType: TransferHelper.TYPE_EXIT,
               currentToken: selectedToken,
               lastAmount: amountRef.current,
               assets: wallet.childchainAssets,

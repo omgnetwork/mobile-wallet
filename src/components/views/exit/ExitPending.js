@@ -6,7 +6,7 @@ import { withTheme } from 'react-native-paper'
 import { BlockchainRenderer } from 'common/blockchain'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
-import { Datetime } from 'common/utils'
+import { TransferHelper } from 'components/views/transfer'
 import {
   OMGButton,
   OMGText,
@@ -51,7 +51,7 @@ const ExitPending = ({ theme, navigation }) => {
         </View>
         <OMGBlockchainLabel
           actionText='Sent to'
-          isRootchain={true}
+          transferType={TransferHelper.TYPE_TRANSFER_ROOTCHAIN}
           style={styles.blockchainLabel}
         />
         <View style={styles.contentContainer}>

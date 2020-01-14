@@ -14,6 +14,7 @@ import {
   OMGAssetFooter
 } from 'components/widgets'
 import { Alert } from 'common/constants'
+import { TransferHelper } from '../transfer'
 
 const RootchainBalance = ({
   unconfirmedTxs,
@@ -61,7 +62,7 @@ const RootchainBalance = ({
       Alerter.show(Alert.FAILED_DEPOSIT_EMPTY_WALLET)
     } else {
       navigation.navigate('TransferSelectBalance', {
-        isDeposit: true,
+        transferType: TransferHelper.TYPE_DEPOSIT,
         address: Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
       })
     }

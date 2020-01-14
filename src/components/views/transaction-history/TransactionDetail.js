@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
+import { TransferHelper } from 'components/views/transfer'
 import {
   OMGStatusBar,
   OMGText,
@@ -30,6 +31,14 @@ const TransactionDetail = ({ navigation, theme }) => {
   const title = navigation.getParam('title')
 
   const [transaction, setTransaction] = useState(null)
+
+  // transaction.network ===
+  //             BlockchainNetworkType.TYPE_ETHEREUM_NETWORK &&
+  //           transaction.type !== TransactionTypes.TYPE_DEPOSIT
+  const transferType =
+    transaction.network === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
+      ? TransferHelper.TYPE_TRANSFER_ROOTCHAIN
+      : TransferHelper.TYPE_TRANSFER_CHILDCHAIN
 
   useEffect(() => {
     async function getPlasmaTx() {
@@ -102,11 +111,7 @@ const TransactionDetail = ({ navigation, theme }) => {
         />
         <OMGBlockchainLabel
           style={styles.blockchainLabel(theme)}
-          isRootchain={
-            transaction.network ===
-              BlockchainNetworkType.TYPE_ETHEREUM_NETWORK &&
-            transaction.type !== TransactionTypes.TYPE_DEPOSIT
-          }
+          transferType={transferType}
           actionText={BlockchainLabels.getBlockchainTextActionLabel(
             transaction
           )}
@@ -126,7 +131,8 @@ const TransactionDetail = ({ navigation, theme }) => {
     renderPendingExitIfNeeded,
     renderTransactionDetailFromToIfNeeded,
     theme,
-    transaction
+    transaction,
+    transferType
   ])
 
   const renderTransactionLoading = useCallback(() => {
