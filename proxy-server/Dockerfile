@@ -1,15 +1,17 @@
 # Install project dependencies from an image that has all the build toolings available
-FROM circleci/node:10 as builder
-
-COPY package.json package-lock.json ./
-RUN npm install
-
-# Now copy the artifacts over and build the final image from a clean node alpine
-FROM node:10-alpine
+FROM node:10-alpine as builder
 WORKDIR /app
 
 COPY . /app
-COPY --from=builder ./node_modules /app/node_modules
+
+RUN apk add --no-cache python
+RUN npm install
+
+# Now copy the artifacts over and build the final image from a clean node alpine
+FROM node:10-alpine as app
+
+COPY . /app
+COPY --from=builder node_modules ./node_modules
 
 EXPOSE 3000
 CMD ["npm", "run", "start"]
