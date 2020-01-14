@@ -68,7 +68,9 @@ const ChildchainBalance = ({
     } else if (!shouldEnableExitAction()) {
       Alerter.show(Alert.CANNOT_EXIT_PENDING_TRANSACTION)
     } else {
-      navigation.navigate('TransferExit')
+      navigation.navigate('TransferSelectBalance', {
+        transferType: TransferHelper.TYPE_EXIT
+      })
     }
   }, [hasPendingTransaction, navigation, shouldEnableExitAction])
 

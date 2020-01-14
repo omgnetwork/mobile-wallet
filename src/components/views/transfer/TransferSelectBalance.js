@@ -38,7 +38,7 @@ const TransferSelectBalance = ({
       case TransferHelper.TYPE_DEPOSIT:
         return 'TransferDeposit'
       case TransferHelper.TYPE_EXIT:
-        return 'ExitForm'
+        return 'TransferExit'
       default:
         return 'TransferForm'
     }

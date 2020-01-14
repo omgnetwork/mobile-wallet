@@ -1,7 +1,15 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  Platform,
+  InteractionManager,
+  KeyboardAvoidingView
+} from 'react-native'
+import { withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
+import { Header } from 'react-navigation-stack'
 import {
   OMGText,
   OMGTokenInput,
@@ -15,7 +23,9 @@ import { Validator } from 'common/utils'
 import { withNavigation } from 'react-navigation'
 import { OMGBlockchainLabel } from 'components/widgets'
 
-const ExitForm = ({ wallet, theme, navigation }) => {
+const extraKeyboardAvoidingPadding = Platform.OS === 'ios' ? 48 : 32
+
+const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
   const defaultAmount = navigation.getParam('lastAmount')
   const selectedToken = navigation.getParam(
     'selectedToken',
@@ -26,12 +36,17 @@ const ExitForm = ({ wallet, theme, navigation }) => {
   const [showErrorAmount, setShowErrorAmount] = useState(false)
   const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
 
+  const focusOn = useCallback(inputRef => {
+    InteractionManager.runAfterInteractions(() => {
+      inputRef.current.focus()
+    })
+  }, [])
+
   useEffect(() => {
-    if (!amountFocusRef.current) return
-    if (wallet.childchainAssets.length === 1) {
-      amountFocusRef.current.focus()
+    if (isFocused) {
+      focusOn(amountFocusRef)
     }
-  }, [wallet.childchainAssets.length])
+  }, [focusOn, isFocused])
 
   const navigateNext = useCallback(() => {
     if (!Validator.isValidAmount(amountRef.current)) {
@@ -56,7 +71,10 @@ const ExitForm = ({ wallet, theme, navigation }) => {
         actionText='Sending to'
         transferType={TransferHelper.TYPE_TRANSFER_ROOTCHAIN}
       />
-      <View style={styles.contentContainer}>
+      <KeyboardAvoidingView
+        style={styles.contentContainer}
+        behavior='padding'
+        keyboardVerticalOffset={Header.HEIGHT + extraKeyboardAvoidingPadding}>
         <OMGText weight='bold' style={styles.title(theme)}>
           Select Exit Amount
         </OMGText>
@@ -86,7 +104,7 @@ const ExitForm = ({ wallet, theme, navigation }) => {
         <View style={styles.buttonContainer}>
           <OMGButton onPress={navigateNext}>Next</OMGButton>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </OMGDismissKeyboard>
   )
 }
@@ -96,6 +114,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column'
   },
+  keyboardAvoidingView: {},
   contentContainer: {
     flex: 1,
     paddingHorizontal: 16,
@@ -130,4 +149,4 @@ const mapStateToProps = (state, ownProps) => ({
 export default connect(
   mapStateToProps,
   null
-)(withNavigation(withTheme(ExitForm)))
+)(withNavigationFocus(withTheme(ExitForm)))
