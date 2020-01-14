@@ -91,6 +91,7 @@ const TransferSelectBalance = ({
               paramsForTransferSelectBalanceToAnywhere({
                 selectedToken,
                 currentToken,
+                transferType,
                 address
               })
             )

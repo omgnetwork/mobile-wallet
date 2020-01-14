@@ -5,13 +5,13 @@ export const paramsForTransferFormToTransferSelectBalance = ({
   transferType,
   selectedToken,
   currentAmount,
-  isRootchain,
   wallet
 }) => {
   return {
     currentToken: selectedToken,
     lastAmount: currentAmount,
-    rootchain: isRootchain,
+    rootchain: transferType === TransferHelper.TYPE_TRANSFER_ROOTCHAIN,
+    transferType,
     assets: TransferHelper.getAssets(
       transferType,
       wallet.rootchainAssets,
@@ -25,8 +25,6 @@ export const paramsForTransferFormToTransferConfirm = ({
   currentAmount,
   currentAddress,
   wallet,
-  isRootchain,
-  isDeposit,
   transferType,
   depositFee,
   selectedFee
@@ -34,10 +32,12 @@ export const paramsForTransferFormToTransferConfirm = ({
   return {
     token: { ...selectedToken, balance: currentAmount },
     fromWallet: wallet,
-    isRootchain: isRootchain,
-    isDeposit: isDeposit,
+    transferType,
     toWallet: {
-      name: isDeposit ? 'Plasma Contract' : 'Another wallet',
+      name:
+        transferType === TransferHelper.TYPE_DEPOSIT
+          ? 'Plasma Contract'
+          : 'Another wallet',
       address: currentAddress
     },
     fee: TransferHelper.getNavigationFee(transferType, depositFee, selectedFee)
@@ -78,7 +78,9 @@ export const paramsForTransferScannerToTransferSelectBalance = ({
 }) => {
   return {
     address: address && address.replace('ethereum:', ''),
-    rootchain: isRootchain,
+    transferType: isRootchain
+      ? TransferHelper.TYPE_TRANSFER_ROOTCHAIN
+      : TransferHelper.TYPE_TRANSFER_CHILDCHAIN,
     currentToken: assets[0],
     assets,
     lastAmount: null
@@ -102,7 +104,7 @@ export const paramsForTransferConfirmToTransferPending = ({
     transferType,
     estimatedFee,
     estimatedFeeUsd,
-    lastUnconfirmedTx,
+    unconfirmedTx: lastUnconfirmedTx,
     fee
   }
 }
@@ -110,12 +112,14 @@ export const paramsForTransferConfirmToTransferPending = ({
 export const paramsForTransferSelectBalanceToAnywhere = ({
   selectedToken,
   currentToken,
-  address
+  address,
+  transferType
 }) => {
   return {
     selectedToken: selectedToken || currentToken,
     shouldFocus: true,
     lastAmount: null,
+    transferType,
     address
   }
 }

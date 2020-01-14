@@ -30,8 +30,8 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
   const selectedFee = navigation.getParam('selectedFee', feeOptions[0])
   const selectedAddress = navigation.getParam('address') || testAddress
   const defaultAmount = navigation.getParam('lastAmount')
-  const isDeposit = navigation.getParam('isDeposit')
-  const isRootchain = navigation.getParam('rootchain')
+  const transferType = navigation.getParam('transferType')
+  console.log(transferType)
   const selectedToken = navigation.getParam(
     'selectedToken',
     TransferHelper.getDefaultToken(
@@ -49,7 +49,6 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
   const [showErrorAddress, setShowErrorAddress] = useState(false)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
   const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
-  const transferType = TransferHelper.getTypes(isRootchain, isDeposit)
   const blockchainLabelActionText = BlockchainLabel.getBlockchainTextActionLabel(
     'TransferForm',
     transferType
@@ -91,12 +90,11 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
       paramsForTransferFormToTransferSelectBalance({
         selectedToken,
         currentAmount: amountRef.current,
-        isRootchain,
         transferType,
         wallet
       })
     )
-  }, [isRootchain, navigation, selectedToken, transferType, wallet])
+  }, [navigation, selectedToken, transferType, wallet])
 
   const submit = useCallback(() => {
     if (!Validator.isValidAddress(addressRef.current)) {
@@ -220,7 +218,7 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
             </OMGBox>
             <OMGBox
               style={styles.feeContainer(
-                transferType !== TransferHelper.TYPE_TRANSFER_CHILDCHAIN
+                transferType === TransferHelper.TYPE_TRANSFER_ROOTCHAIN
               )}>
               <OMGText weight='bold'>Transaction Fee</OMGText>
               <OMGFeeInput

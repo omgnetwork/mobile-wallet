@@ -20,7 +20,6 @@ import {
 } from 'components/widgets'
 import { TransferHelper } from 'components/views/transfer'
 import { Validator } from 'common/utils'
-import { withNavigation } from 'react-navigation'
 import { OMGBlockchainLabel } from 'components/widgets'
 
 const extraKeyboardAvoidingPadding = Platform.OS === 'ios' ? 48 : 32
