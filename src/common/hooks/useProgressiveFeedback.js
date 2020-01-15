@@ -33,6 +33,28 @@ const useProgressiveFeedback = (
     }
   }, [completeFeedbackTx, unconfirmedTxs])
 
+  const getTransactionFeedbackTitle = useCallback((pending, actionType) => {
+    if (pending) {
+      switch (actionType) {
+        case TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT:
+          return 'Pending Deposit...'
+        case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
+          return 'Pending Start Exit...'
+        default:
+          return 'Pending Transaction...'
+      }
+    } else {
+      switch (actionType) {
+        case TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT:
+          return 'Successfully Deposited!'
+        case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
+          return 'Successfully Started Exit!'
+        default:
+          return 'Successfully Transferred!'
+      }
+    }
+  }, [])
+
   const formatFeedbackTx = useCallback(
     transaction => {
       if (!transaction) return emptyFeedback
@@ -40,9 +62,7 @@ const useProgressiveFeedback = (
 
       if (transaction.pending) {
         return {
-          title: Transaction.isUnconfirmStartedExitTx(transaction.result)
-            ? 'Pending start exit...'
-            : 'Pending transaction...',
+          title: getTransactionFeedbackTitle(true, actionType),
           actionType: actionType,
           hash: hash,
           pending: true,
@@ -52,9 +72,7 @@ const useProgressiveFeedback = (
         }
       } else {
         return {
-          title: Transaction.isUnconfirmStartedExitTx(transaction.result)
-            ? 'Successfully started exit'
-            : 'Successfully transferred!',
+          title: getTransactionFeedbackTitle(false, actionType),
           actionType: actionType,
           hash: hash,
           pending: false,
@@ -64,7 +82,7 @@ const useProgressiveFeedback = (
         }
       }
     },
-    [theme.colors.green2, theme.colors.yellow3]
+    [getTransactionFeedbackTitle, theme.colors.green2, theme.colors.yellow3]
   )
 
   const handleOnClose = useCallback(() => {

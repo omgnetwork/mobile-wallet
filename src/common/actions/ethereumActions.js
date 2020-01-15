@@ -20,7 +20,7 @@ export const sendErc20Token = (token, fee, blockchainWallet, toAddress) => {
       to: toAddress,
       nonce: nonce,
       value: token.balance,
-      actionType: TransactionActionTypes.TYPE_ROOTCHAIN_SEND,
+      actionType: TransactionActionTypes.TYPE_ROOTCHAIN_SEND_TOKEN,
       symbol: token.tokenSymbol,
       gasPrice: gasPrice.toString(),
       createdAt: Datetime.now()
@@ -52,7 +52,7 @@ export const sendEthToken = (token, fee, blockchainWallet, toAddress) => {
       to: toAddress,
       nonce: nonce,
       value: token.balance,
-      actionType: TransactionActionTypes.TYPE_ROOTCHAIN_SEND,
+      actionType: TransactionActionTypes.TYPE_ROOTCHAIN_SEND_TOKEN,
       symbol: token.tokenSymbol,
       gasUsed: null,
       gasPrice: gasPrice.toString(),
