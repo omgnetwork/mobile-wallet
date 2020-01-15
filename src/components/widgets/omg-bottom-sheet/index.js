@@ -1,8 +1,9 @@
-import React, { useCallback } from 'react'
-import { View, StyleSheet } from 'react-native'
+import React, { useCallback, useRef, useEffect } from 'react'
+import { View, StyleSheet, Animated } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGIcon, OMGText } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { Slide } from 'common/anims'
 
 const OMGBottomSheet = ({
   theme,
@@ -16,6 +17,17 @@ const OMGBottomSheet = ({
   onPressClose,
   show
 }) => {
+  const offBottom = new Animated.Value(320.0)
+  const slide = useRef(offBottom)
+
+  useEffect(() => {
+    if (show) {
+      Slide.Up(slide.current)
+    } else {
+      Slide.Down(slide.current, offBottom)
+    }
+  }, [offBottom, show])
+
   const renderLink = useCallback(() => {
     return (
       <TouchableOpacity onPress={onPressLink}>
@@ -24,10 +36,8 @@ const OMGBottomSheet = ({
     )
   }, [onPressLink, textLink, theme])
 
-  if (!show) return null
-
   return (
-    <View style={{ ...styles.container(theme), ...style }}>
+    <Animated.View style={{ ...styles.container(theme, slide), ...style }}>
       <View style={styles.iconContainer(iconColor)}>
         <OMGIcon
           name={iconName || 'pending'}
@@ -57,16 +67,17 @@ const OMGBottomSheet = ({
           color={theme.colors.gray3}
         />
       </TouchableOpacity>
-    </View>
+    </Animated.View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: theme => ({
+  container: (theme, slide) => ({
     flexDirection: 'row',
     justifyContent: 'center',
     padding: 30,
     elevation: 2,
+    transform: [{ translateY: slide.current }],
     position: 'absolute',
     bottom: 0,
     shadowOpacity: 0.3,
