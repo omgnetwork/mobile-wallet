@@ -17,6 +17,7 @@ const useProgressiveFeedback = (
   theme,
   dispatchInvalidateFeedbackCompleteTx
 ) => {
+  const MILLIS_TO_DISMISS = 5000
   const [feedback, setFeedback] = useState(emptyFeedback)
   const [visible, setVisible] = useState(false)
   const [unconfirmedTxs, setUnconfirmedTxs] = useState([])
@@ -84,13 +85,19 @@ const useProgressiveFeedback = (
     }
   }, [feedback.actionType, feedback.hash])
 
+  const startAutoDismiss = useCallback(() => {
+    setTimeout(handleOnClose, MILLIS_TO_DISMISS)
+  }, [handleOnClose])
+
   useEffect(() => {
     const feedbackTx = selectFeedbackTx()
     const formattedFeedback = formatFeedbackTx(feedbackTx)
-
     setFeedback(formattedFeedback)
     setVisible(feedbackTx !== null)
-  }, [formatFeedbackTx, selectFeedbackTx])
+    if (!formatFeedbackTx.pending) {
+      startAutoDismiss()
+    }
+  }, [formatFeedbackTx, handleOnClose, selectFeedbackTx, startAutoDismiss])
 
   return [
     feedback,
