@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import { View, StyleSheet, ScrollView, TouchableHighlight } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { BlockchainRenderer } from 'common/blockchain'
 import { withTheme } from 'react-native-paper'
@@ -151,6 +151,15 @@ const TransferConfirm = ({
     )
   }, [unconfirmedTxs, toWallet.address, transferType])
 
+  const handleBackToEditPressed = useCallback(() => {
+    navigation.navigate(
+      'TransferForm',
+      paramsForTransferConfirmToTransferForm({
+        token
+      })
+    )
+  }, [navigation, token])
+
   const renderEstimatedFeeElement = useCallback(() => {
     return estimatedFee ? (
       <>
@@ -189,22 +198,16 @@ const TransferConfirm = ({
     <SafeAreaView style={styles.container(theme)}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.contentContainer}>
-          <View style={styles.subHeaderContainer}>
-            <OMGIcon
-              name='chevron-left'
-              size={14}
-              color={theme.colors.gray3}
-              onPress={() =>
-                navigation.navigate(
-                  'TransferForm',
-                  paramsForTransferConfirmToTransferForm({
-                    token
-                  })
-                )
-              }
-            />
-            <OMGText style={styles.edit}>Edit</OMGText>
-          </View>
+          <TouchableHighlight onPress={handleBackToEditPressed}>
+            <View style={styles.subHeaderContainer}>
+              <OMGIcon
+                name='chevron-left'
+                size={14}
+                color={theme.colors.gray3}
+              />
+              <OMGText style={styles.edit}>Edit</OMGText>
+            </View>
+          </TouchableHighlight>
           <OMGBlockchainLabel
             style={styles.blockchainLabel}
             actionText={blockchainLabelActionText}
@@ -285,13 +288,12 @@ const styles = StyleSheet.create({
     flex: 1
   },
   subHeaderContainer: {
+    paddingBottom: 16,
     paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center'
   },
-  blockchainLabel: {
-    marginTop: 16
-  },
+  blockchainLabel: {},
   amountContainer: theme => ({
     padding: 20,
     backgroundColor: theme.colors.gray4,

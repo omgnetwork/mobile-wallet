@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, TouchableHighlight } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
@@ -60,22 +60,27 @@ const ExitConfirm = ({
     }
   })
 
+  const handleBackToEditPressed = useCallback(() => {
+    navigation.navigate('ExitForm', {
+      lastAmount: token.balance
+    })
+  }, [navigation, token.balance])
+
   return (
     <SafeAreaView style={styles.container(theme)}>
       <View style={styles.contentContainer}>
-        <View style={styles.subHeaderContainer}>
-          <OMGIcon
-            name='chevron-left'
-            size={14}
-            color={theme.colors.gray3}
-            onPress={() =>
-              navigation.navigate('ExitForm', {
-                lastAmount: token.balance
-              })
-            }
-          />
-          <OMGText style={styles.edit}>Edit</OMGText>
-        </View>
+        <TouchableHighlight onPress={handleBackToEditPressed}>
+          <View style={styles.subHeaderContainer}>
+            <OMGIcon
+              name='chevron-left'
+              size={14}
+              color={theme.colors.gray3}
+              onPress={handleBackToEditPressed}
+            />
+            <OMGText style={styles.edit}>Edit</OMGText>
+          </View>
+        </TouchableHighlight>
+
         <OMGBlockchainLabel
           actionText='Sending to'
           transferType={TransferHelper.TYPE_TRANSFER_ROOTCHAIN}
@@ -115,6 +120,7 @@ const styles = StyleSheet.create({
   },
   subHeaderContainer: {
     paddingHorizontal: 16,
+    paddingBottom: 16,
     flexDirection: 'row',
     alignItems: 'center'
   },
@@ -155,9 +161,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     color: theme.colors.gray3
   }),
-  blockchainLabel: {
-    marginTop: 20
-  }
+  blockchainLabel: {}
 })
 
 const mapStateToProps = (state, ownProps) => ({
