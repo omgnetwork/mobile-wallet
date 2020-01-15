@@ -31,7 +31,6 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
   const selectedAddress = navigation.getParam('address') || testAddress
   const defaultAmount = navigation.getParam('lastAmount')
   const transferType = navigation.getParam('transferType')
-  console.log(transferType)
   const selectedToken = navigation.getParam(
     'selectedToken',
     TransferHelper.getDefaultToken(

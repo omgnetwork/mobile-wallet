@@ -31,19 +31,19 @@ const TransactionDetail = ({ navigation, theme }) => {
   const title = navigation.getParam('title')
 
   const [transaction, setTransaction] = useState(null)
-
-  // transaction.network ===
-  //             BlockchainNetworkType.TYPE_ETHEREUM_NETWORK &&
-  //           transaction.type !== TransactionTypes.TYPE_DEPOSIT
-  const transferType =
-    transaction.network === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
-      ? TransferHelper.TYPE_TRANSFER_ROOTCHAIN
-      : TransferHelper.TYPE_TRANSFER_CHILDCHAIN
+  const [transferType, setTransferType] = useState(
+    TransferHelper.TYPE_TRANSFER_CHILDCHAIN
+  )
 
   useEffect(() => {
     async function getPlasmaTx() {
       const plasmaTx = await transactionService.getPlasmaTx(tx)
+      const type =
+        plasmaTx.network === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
+          ? TransferHelper.TYPE_TRANSFER_ROOTCHAIN
+          : TransferHelper.TYPE_TRANSFER_CHILDCHAIN
       setTransaction(plasmaTx)
+      setTransferType(type)
     }
 
     if (!Validator.isValidTransaction(tx)) {
