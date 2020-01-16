@@ -22,11 +22,11 @@ import {
 import { Validator } from 'common/utils'
 import * as BlockchainLabel from './blockchainLabel'
 
-const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
+// const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
 
 const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
   const selectedFee = navigation.getParam('selectedFee', feeOptions[0])
-  const selectedAddress = navigation.getParam('address') || testAddress
+  const selectedAddress = navigation.getParam('address')
   const defaultAmount = navigation.getParam('lastAmount')
   const transferType = navigation.getParam('transferType')
   const selectedToken = navigation.getParam(
@@ -170,64 +170,63 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
 
   return (
     <SafeAreaView style={styles.container(theme)}>
-      <OMGDismissKeyboard style={styles.dismissKeyboard}>
-        <KeyboardAwareScrollView
-          contentContainerStyle={styles.scrollView}
-          enableOnAndroid={true}
-          innerRef={ref => {
-            keyboardAwareScrollRef.current = ref
-          }}>
-          <View style={styles.formContainer}>
-            <OMGBlockchainLabel
-              actionText={blockchainLabelActionText}
-              transferType={transferType}
+      <KeyboardAwareScrollView
+        contentContainerStyle={styles.scrollView}
+        enableOnAndroid={true}
+        extraScrollHeight={16}
+        innerRef={ref => {
+          keyboardAwareScrollRef.current = ref
+        }}>
+        <View style={styles.formContainer}>
+          <OMGBlockchainLabel
+            actionText={blockchainLabelActionText}
+            transferType={transferType}
+          />
+          <OMGBox style={styles.fromContainer}>
+            <OMGText weight='bold'>From</OMGText>
+            <OMGTokenInput
+              token={selectedToken}
+              style={styles.tokenInput}
+              onPress={navigateToSelectBalance}
             />
-            <OMGBox style={styles.fromContainer}>
-              <OMGText weight='bold'>From</OMGText>
-              <OMGTokenInput
-                token={selectedToken}
-                style={styles.tokenInput}
-                onPress={navigateToSelectBalance}
-              />
-              <OMGWalletAddress
-                name={wallet.name}
-                address={wallet.address}
-                style={styles.walletAddress}
-              />
-            </OMGBox>
-            <OMGBox style={styles.toContainer}>
-              <OMGText weight='bold'>To</OMGText>
-              {renderAddressElement()}
-            </OMGBox>
-            <OMGBox style={styles.amountContainer}>
-              <OMGText weight='bold'>Amount</OMGText>
-              <OMGAmountInput
-                token={selectedToken}
-                inputRef={amountRef}
-                showError={showErrorAmount}
-                errorMessage={errorAmountMessage}
-                focusRef={amountFocusRef}
-                defaultValue={navigation.getParam('lastAmount')}
-                style={styles.amountInput}
-              />
-            </OMGBox>
-            <OMGBox
-              style={styles.feeContainer(
-                transferType === TransferHelper.TYPE_TRANSFER_ROOTCHAIN
-              )}>
-              <OMGText weight='bold'>Transaction Fee</OMGText>
-              <OMGFeeInput
-                fee={selectedFee}
-                style={styles.feeInput}
-                onPress={navigationToTransferSelectFee}
-              />
-            </OMGBox>
-          </View>
-          <View style={styles.buttonContainer}>
-            <OMGButton onPress={submit}>Next</OMGButton>
-          </View>
-        </KeyboardAwareScrollView>
-      </OMGDismissKeyboard>
+            <OMGWalletAddress
+              name={wallet.name}
+              address={wallet.address}
+              style={styles.walletAddress}
+            />
+          </OMGBox>
+          <OMGBox style={styles.toContainer}>
+            <OMGText weight='bold'>To</OMGText>
+            {renderAddressElement()}
+          </OMGBox>
+          <OMGBox style={styles.amountContainer}>
+            <OMGText weight='bold'>Amount</OMGText>
+            <OMGAmountInput
+              token={selectedToken}
+              inputRef={amountRef}
+              showError={showErrorAmount}
+              errorMessage={errorAmountMessage}
+              focusRef={amountFocusRef}
+              defaultValue={navigation.getParam('lastAmount')}
+              style={styles.amountInput}
+            />
+          </OMGBox>
+          <OMGBox
+            style={styles.feeContainer(
+              transferType === TransferHelper.TYPE_TRANSFER_ROOTCHAIN
+            )}>
+            <OMGText weight='bold'>Transaction Fee</OMGText>
+            <OMGFeeInput
+              fee={selectedFee}
+              style={styles.feeInput}
+              onPress={navigationToTransferSelectFee}
+            />
+          </OMGBox>
+        </View>
+        <View style={styles.buttonContainer}>
+          <OMGButton onPress={submit}>Next</OMGButton>
+        </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   )
 }
