@@ -77,7 +77,7 @@ const TransferConfirm = ({
     blockchainWallet,
     ethToken,
     fee,
-    toWallet,
+    toWallet.address,
     token,
     tokenPrice,
     transferType
@@ -332,7 +332,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }),
   totalContainer: fee => ({
-    display: fee ? 'flex' : 'none',
+    // display: fee ? 'flex' : 'none',
+    display: 'none',
     marginTop: 16,
     flexDirection: 'row',
     justifyContent: 'space-between'

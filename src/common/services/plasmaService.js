@@ -190,7 +190,7 @@ export const exit = (blockchainWallet, token) => {
         blockchainWallet,
         token
       )
-      const acceptableUtxoParams = createAcceptableUtxoParams(utxoToExit)
+      const acceptableUtxoParams = Plasma.createAcceptableUtxoParams(utxoToExit)
       const exitData = await Plasma.getExitData(acceptableUtxoParams)
       const gasPrice = Gas.EXIT_GAS_PRICE
 
@@ -288,26 +288,6 @@ export const createUtxoWithAmount = async (
   return {
     ...selectedUtxo,
     amount: selectedUtxo.amount
-  }
-}
-
-export const createAcceptableUtxoParams = ({
-  amount,
-  blknum,
-  currency,
-  oindex,
-  owner,
-  txindex,
-  utxo_pos
-}) => {
-  return {
-    amount,
-    blknum,
-    currency,
-    oindex,
-    owner,
-    txindex,
-    utxo_pos
   }
 }
 

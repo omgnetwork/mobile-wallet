@@ -166,6 +166,37 @@ export const standardExit = (exitData, blockchainWallet, options) => {
   })
 }
 
+export const getExitTxDetails = async (exitTx, { from, gas, gasPrice }) => {
+  const { utxo_pos, txbytes, proof } = exitTx
+  const {
+    contract,
+    address,
+    bonds
+  } = await Plasma.RootChain.getPaymentExitGame()
+  const data = getTxData(contract, 'startStandardExit', [
+    utxo_pos.toString(),
+    txbytes,
+    proof
+  ])
+  const value = bonds.standardExit
+  return {
+    from,
+    to: address,
+    value,
+    data,
+    gas,
+    gasPrice
+  }
+}
+
+const getTxData = (contract, method, ...args) => {
+  if (web3.version.api && web3.version.api.startsWith('0.2')) {
+    return contract[method].getData(...args)
+  } else {
+    return contract.methods[method](...args).encodeABI()
+  }
+}
+
 export const waitForRootchainTransaction = ({
   hash,
   intervalMs,
@@ -239,6 +270,26 @@ export const createTx = (fromAddress, payments, fee, metadata) => {
     fee,
     metadata: encodedMetadata
   })
+}
+
+export const createAcceptableUtxoParams = ({
+  amount,
+  blknum,
+  currency,
+  oindex,
+  owner,
+  txindex,
+  utxo_pos
+}) => {
+  return {
+    amount,
+    blknum,
+    currency,
+    oindex,
+    owner,
+    txindex,
+    utxo_pos
+  }
 }
 
 export const getTypedData = tx => {

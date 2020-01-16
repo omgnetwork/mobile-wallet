@@ -19,14 +19,12 @@ import {
   OMGBlockchainLabel,
   OMGDismissKeyboard
 } from 'components/widgets'
-import { Gas } from 'common/constants'
 import { Validator } from 'common/utils'
 import * as BlockchainLabel from './blockchainLabel'
 
 const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
 
 const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
-  const depositFee = { amount: Gas.DEPOSIT_GAS_PRICE }
   const selectedFee = navigation.getParam('selectedFee', feeOptions[0])
   const selectedAddress = navigation.getParam('address') || testAddress
   const defaultAmount = navigation.getParam('lastAmount')
@@ -117,12 +115,11 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
           currentAddress: addressRef.current,
           wallet,
           transferType,
-          depositFee,
           selectedFee
         })
       )
     }
-  }, [depositFee, navigation, selectedFee, selectedToken, transferType, wallet])
+  }, [navigation, selectedFee, selectedToken, transferType, wallet])
 
   const navigateToTransferScanner = useCallback(() => {
     const { paramsForTransferFormToTransferScanner } = TransferNavigation

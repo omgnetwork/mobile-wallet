@@ -19,7 +19,6 @@ export const paramsForTransferFormToTransferConfirm = ({
   currentAddress,
   wallet,
   transferType,
-  depositFee,
   selectedFee
 }) => {
   return {
@@ -33,7 +32,7 @@ export const paramsForTransferFormToTransferConfirm = ({
           : 'Another wallet',
       address: currentAddress
     },
-    fee: TransferHelper.getNavigationFee(transferType, depositFee, selectedFee)
+    fee: TransferHelper.getTransferFee(transferType, selectedFee)
   }
 }
 
