@@ -29,7 +29,7 @@ const TransferSelectBalance = ({
     currentToken
   } = getParamsForTransferSelectBalanceFromTransferForm(
     navigation,
-    primaryWallet.rootchainAssets
+    primaryWallet
   )
   const [selectedToken, setSelectedToken] = useState(currentToken || assets[0])
 

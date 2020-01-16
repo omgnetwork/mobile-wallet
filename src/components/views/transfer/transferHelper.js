@@ -17,11 +17,11 @@ export const getTypes = (isRootchain, isDeposit) => {
 }
 
 export const getGasUsed = (type, token, options) => {
+  const { wallet, to, fee } = options
   switch (type) {
     case TYPE_DEPOSIT:
-      return GasEstimator.estimateDeposit(token)
+      return GasEstimator.estimateDeposit(wallet.address, to, token)
     case TYPE_TRANSFER_ROOTCHAIN:
-      const { wallet, to, fee } = options
       const isEth = token.contractAddress === ContractAddress.ETH_ADDRESS
       return isEth
         ? GasEstimator.estimateTransferETH()
@@ -44,6 +44,7 @@ export const getNavigationFee = (type, depositFee, selectedTransferFee) => {
 
 export const getAssets = (type, rootchainAssets, childchainAssets) => {
   switch (type) {
+    case TYPE_EXIT:
     case TYPE_TRANSFER_CHILDCHAIN:
       return childchainAssets
     default:
@@ -53,6 +54,7 @@ export const getAssets = (type, rootchainAssets, childchainAssets) => {
 
 export const getDefaultToken = (type, rootchainAssets, childchainAssets) => {
   switch (type) {
+    case TYPE_EXIT:
     case TYPE_TRANSFER_CHILDCHAIN:
       return childchainAssets[0]
     default:

@@ -4,19 +4,12 @@ import feeOptions from './feeOptions'
 export const paramsForTransferFormToTransferSelectBalance = ({
   transferType,
   selectedToken,
-  currentAmount,
-  wallet
+  currentAmount
 }) => {
   return {
     currentToken: selectedToken,
     lastAmount: currentAmount,
-    rootchain: transferType === TransferHelper.TYPE_TRANSFER_ROOTCHAIN,
-    transferType,
-    assets: TransferHelper.getAssets(
-      transferType,
-      wallet.rootchainAssets,
-      wallet.childchainAssets
-    )
+    transferType
   }
 }
 
@@ -150,11 +143,17 @@ export const getParamsForTransferSelectFeeFromTransferForm = navigation => {
 
 export const getParamsForTransferSelectBalanceFromTransferForm = (
   navigation,
-  rootchainAssets
+  { rootchainAssets, childchainAssets }
 ) => {
+  const transferType = navigation.getParam('transferType')
+  const assets = TransferHelper.getAssets(
+    transferType,
+    rootchainAssets,
+    childchainAssets
+  )
   return {
     address: navigation.getParam('address'),
-    assets: navigation.getParam('assets', rootchainAssets),
+    assets: assets,
     currentToken: navigation.getParam('currentToken'),
     lastAmount: navigation.getParam('lastAmount'),
     transferType: navigation.getParam('transferType')

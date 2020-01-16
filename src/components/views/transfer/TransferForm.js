@@ -89,11 +89,10 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
       paramsForTransferFormToTransferSelectBalance({
         selectedToken,
         currentAmount: amountRef.current,
-        transferType,
-        wallet
+        transferType
       })
     )
-  }, [navigation, selectedToken, transferType, wallet])
+  }, [navigation, selectedToken, transferType])
 
   const submit = useCallback(() => {
     if (!Validator.isValidAddress(addressRef.current)) {
