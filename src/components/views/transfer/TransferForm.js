@@ -16,8 +16,7 @@ import {
   OMGWalletAddress,
   OMGAmountInput,
   OMGFeeInput,
-  OMGBlockchainLabel,
-  OMGDismissKeyboard
+  OMGBlockchainLabel
 } from 'components/widgets'
 import { Validator } from 'common/utils'
 import * as BlockchainLabel from './blockchainLabel'
@@ -173,7 +172,7 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
       <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollView}
         enableOnAndroid={true}
-        extraScrollHeight={16}
+        extraHeight={128}
         innerRef={ref => {
           keyboardAwareScrollRef.current = ref
         }}>
