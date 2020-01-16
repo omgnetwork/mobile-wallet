@@ -4,7 +4,7 @@ import QRCodeScanner from 'react-native-qrcode-scanner'
 import { View, StyleSheet, Animated } from 'react-native'
 import Svg, { Rect, Path } from 'react-native-svg'
 import { Dimensions } from 'common/utils'
-import { OMGText, OMGEmpty } from 'components/widgets'
+import { OMGText } from 'components/widgets'
 
 const SCREEN_WIDTH = Dimensions.windowWidth
 export const ROOTCHAIN_OVERLAY_COLOR = 'rgba(125, 85, 246, 0.50)'
@@ -16,6 +16,7 @@ const OMGQRScanner = props => {
     renderTop,
     renderBottom,
     borderColor,
+    rootchain,
     borderStrokeWidth,
     overlayColorAnim,
     cameraRef,
@@ -28,32 +29,46 @@ const OMGQRScanner = props => {
     wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
   const hasChildchainAssets =
     wallet && wallet.childchainAssets && wallet.childchainAssets.length > 0
+  const shouldRenderEmptyView =
+    (rootchain && !hasRootchainAssets) || (!rootchain && !hasChildchainAssets)
   const renderQRMarker = (
     <QRMarker borderColor={borderColor} borderStrokeWidth={borderStrokeWidth} />
   )
 
   const renderContent = useCallback(() => {
     if (unconfirmedTx) {
+      disableScanner()
       return renderUnconfirmedTx
-    } else if (!hasRootchainAssets || !hasChildchainAssets) {
+    } else if (shouldRenderEmptyView) {
+      disableScanner()
       return renderEmptyComponent
     } else {
+      enableScanner()
       return renderQRMarker
     }
   }, [
-    hasChildchainAssets,
-    hasRootchainAssets,
     unconfirmedTx,
-    renderEmptyComponent,
+    shouldRenderEmptyView,
+    disableScanner,
     renderUnconfirmedTx,
+    renderEmptyComponent,
+    enableScanner,
     renderQRMarker
   ])
 
   const handleOnRead = e => {
-    if (!unconfirmedTx) {
-      props.onReceiveQR(e)
-    }
+    if (shouldRenderEmptyView) return
+    if (unconfirmedTx) return
+    props.onReceiveQR(e)
   }
+
+  const disableScanner = useCallback(() => {
+    cameraRef.current && cameraRef.current.disable()
+  }, [cameraRef])
+
+  const enableScanner = useCallback(() => {
+    cameraRef.current && cameraRef.current.enable()
+  }, [cameraRef])
 
   return (
     <View style={styles.container}>
