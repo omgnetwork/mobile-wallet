@@ -36,7 +36,11 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
       wallet.childchainAssets
     )
   )
-
+  const hasAddressInput = transferType !== TransferHelper.TYPE_DEPOSIT
+  const hasEmptyAddressInput = !selectedAddress
+  const shouldFocusAddressInput = hasAddressInput && hasEmptyAddressInput
+  const extraHeight = transferType === TransferHelper.TYPE_DEPOSIT ? 0 : 128
+  const extraScrollHeight = shouldFocusAddressInput ? 0 : 16
   const addressRef = useRef(selectedAddress)
   const amountRef = useRef(defaultAmount)
   const amountFocusRef = useRef(null)
@@ -51,16 +55,24 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
   )
   useEffect(() => {
     const shouldActiveKeyboard = navigation.getParam('shouldFocus')
-    const hasAddressInput = transferType !== TransferHelper.TYPE_DEPOSIT
-    const hasEmptyAddressInput = !selectedAddress
     if (isFocused && shouldActiveKeyboard) {
-      if (hasAddressInput && hasEmptyAddressInput) {
+      if (shouldFocusAddressInput) {
         focusOn(addressFocusRef)
       } else {
+        // setTimeout(() => {
+        // focusOn(amountFocusRef)
+        // }, 300)
         focusOn(amountFocusRef)
       }
     }
-  }, [focusOn, isFocused, navigation, selectedAddress, transferType])
+  }, [
+    focusOn,
+    isFocused,
+    navigation,
+    selectedAddress,
+    shouldFocusAddressInput,
+    transferType
+  ])
 
   const focusOn = useCallback(inputRef => {
     InteractionManager.runAfterInteractions(() => {
@@ -172,7 +184,9 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
       <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollView}
         enableOnAndroid={true}
-        extraHeight={128}
+        extraHeight={extraHeight}
+        extraScrollHeight={extraScrollHeight}
+        keyboardOpeningTime={0}
         innerRef={ref => {
           keyboardAwareScrollRef.current = ref
         }}>
