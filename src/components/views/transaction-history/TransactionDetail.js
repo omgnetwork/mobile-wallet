@@ -36,22 +36,27 @@ const TransactionDetail = ({ navigation, theme }) => {
   )
 
   useEffect(() => {
-    async function getPlasmaTx() {
+    async function fetchAndSetTransaction() {
       const plasmaTx = await transactionService.getPlasmaTx(tx)
-      const type =
-        plasmaTx.network === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
-          ? TransferHelper.TYPE_TRANSFER_ROOTCHAIN
-          : TransferHelper.TYPE_TRANSFER_CHILDCHAIN
-      setTransaction(plasmaTx)
+      const type = getTransferType(plasmaTx)
       setTransferType(type)
+      setTransaction(plasmaTx)
     }
 
     if (!Validator.isValidTransaction(tx)) {
-      getPlasmaTx()
+      fetchAndSetTransaction()
     } else {
+      const type = getTransferType(tx)
+      setTransferType(type)
       setTransaction(tx)
     }
-  }, [tx])
+  }, [getTransferType, tx])
+
+  const getTransferType = useCallback(({ network }) => {
+    return network === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
+      ? TransferHelper.TYPE_TRANSFER_ROOTCHAIN
+      : TransferHelper.TYPE_TRANSFER_CHILDCHAIN
+  }, [])
 
   const handleTxClick = useCallback(() => {
     if (Validator.isOmiseGOTransaction(transaction)) {
