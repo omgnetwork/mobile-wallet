@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
+import { View, StyleSheet, KeyboardAvoidingView } from 'react-native'
 import { walletActions } from 'common/actions'
 import { Header } from 'react-navigation-stack'
 import {
@@ -11,7 +11,7 @@ import {
 } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
-import { Validator } from 'common/utils'
+import { Validator, Dimensions } from 'common/utils'
 
 const Mnemonic = ({
   dispatchImportWalletByMnemonic,
@@ -24,12 +24,10 @@ const Mnemonic = ({
   const walletNameRef = useRef(null)
   const [showErrorMnemonic, setShowErrorMnemonic] = useState(false)
   const [showErrorName, setShowErrorName] = useState(false)
-  const [errorMnemonicMessage, setErrorMnemonicMessage] = useState(
-    'Invalid mnemonic'
-  )
-  const [errorNameMessage, setErrorNameMessage] = useState(
-    'The wallet name should not be empty'
-  )
+  const [shouldDisable, setShouldDisable] = useState(false)
+  const statusBarHeight = Dimensions.getStatusBarHeight()
+  const errorMnemonicMessage = 'Invalid mnemonic'
+  const errorNameMessage = 'The wallet name should not be empty'
 
   const importWallet = useCallback(() => {
     let isValid = true
@@ -58,6 +56,12 @@ const Mnemonic = ({
   }, [dispatchImportWalletByMnemonic, provider, wallets])
 
   useEffect(() => {
+    if (loading.action === 'WALLET_IMPORT') {
+      setShouldDisable(loading.show)
+    }
+  }, [loading.action, loading.show])
+
+  useEffect(() => {
     if (loading.success && loading.action === 'WALLET_IMPORT') {
       const latestWallet = wallets.slice(-1).pop()
       navigation.navigate('ImportWalletSuccess', {
@@ -66,14 +70,12 @@ const Mnemonic = ({
     }
   }, [loading, loading.action, loading.success, navigation, wallets])
 
-  const extraKeyboardAvoidingPadding = Platform.OS === 'ios' ? 48 : 32
-
   return (
     <OMGDismissKeyboard style={styles.mnemonicContainer}>
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior='padding'
-        keyboardVerticalOffset={Header.HEIGHT + extraKeyboardAvoidingPadding}>
+        keyboardVerticalOffset={Header.HEIGHT + statusBarHeight}>
         <OMGText style={styles.textBoxTitle} weight='bold'>
           Mnemonic Phrase
         </OMGText>
@@ -96,10 +98,10 @@ const Mnemonic = ({
           showError={showErrorName}
           errorMessage={errorNameMessage}
           maxLength={20}
-          disabled={loading.show}
+          disabled={shouldDisable}
         />
         <View style={styles.buttonContainer}>
-          <OMGButton loading={loading.show} onPress={importWallet}>
+          <OMGButton loading={shouldDisable} onPress={importWallet}>
             Import
           </OMGButton>
         </View>
