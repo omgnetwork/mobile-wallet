@@ -32,6 +32,7 @@ import OMGIcon from './omg-icon'
 import OMGImage from './omg-image'
 import OMGItemWallet from './omg-item-wallet'
 import OMGItemToken from './omg-item-token'
+import OMGKeyboardShift from './omg-keyboard-shift'
 import OMGQRCode from './omg-qr-code'
 import OMGQRScanner from './omg-qr-scanner'
 import OMGPasswordTextInput from './omg-password-text-input'
@@ -74,6 +75,7 @@ export {
   OMGItemWallet,
   OMGItemToken,
   OMGItemTransaction,
+  OMGKeyboardShift,
   OMGMenu,
   OMGMenuIcon,
   OMGMenuImage,
