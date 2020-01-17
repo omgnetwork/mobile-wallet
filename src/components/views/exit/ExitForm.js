@@ -1,15 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { connect } from 'react-redux'
-import {
-  View,
-  StyleSheet,
-  Platform,
-  InteractionManager,
-  KeyboardAvoidingView
-} from 'react-native'
+import { View, StyleSheet, Platform, InteractionManager } from 'react-native'
 import { withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { Header } from 'react-navigation-stack'
 import {
   OMGText,
   OMGTokenInput,
@@ -21,8 +14,7 @@ import {
 import { TransferHelper } from 'components/views/transfer'
 import { Validator } from 'common/utils'
 import { OMGBlockchainLabel } from 'components/widgets'
-
-const extraKeyboardAvoidingPadding = Platform.OS === 'ios' ? 48 : 32
+import { ScrollView } from 'react-native-gesture-handler'
 
 const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
   const defaultAmount = navigation.getParam('lastAmount')
@@ -70,40 +62,40 @@ const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
         actionText='Sending to'
         transferType={TransferHelper.TYPE_TRANSFER_ROOTCHAIN}
       />
-      <KeyboardAvoidingView
-        style={styles.contentContainer}
-        behavior='padding'
-        keyboardVerticalOffset={Header.HEIGHT + extraKeyboardAvoidingPadding}>
-        <OMGText weight='bold' style={styles.title(theme)}>
-          Select Exit Amount
-        </OMGText>
-        <OMGTokenInput
-          token={selectedToken}
-          style={styles.tokenInput}
-          onPress={() =>
-            navigation.navigate('TransferSelectBalance', {
-              transferType: TransferHelper.TYPE_EXIT,
-              currentToken: selectedToken,
-              lastAmount: amountRef.current,
-              assets: wallet.childchainAssets,
-              exit: true
-            })
-          }
-        />
-        <OMGAmountInput
-          token={selectedToken}
-          inputRef={amountRef}
-          focusRef={amountFocusRef}
-          showError={showErrorAmount}
-          errorMessage={errorAmountMessage}
-          defaultValue={navigation.getParam('lastAmount')}
-          style={styles.amountInput}
-        />
-        <OMGExitWarning style={styles.textWarning} />
+      <View style={styles.contentContainer}>
+        <ScrollView>
+          <OMGText weight='bold' style={styles.title(theme)}>
+            Select Exit Amount
+          </OMGText>
+          <OMGTokenInput
+            token={selectedToken}
+            style={styles.tokenInput}
+            onPress={() =>
+              navigation.navigate('TransferSelectBalance', {
+                transferType: TransferHelper.TYPE_EXIT,
+                currentToken: selectedToken,
+                lastAmount: amountRef.current,
+                assets: wallet.childchainAssets,
+                exit: true
+              })
+            }
+          />
+          <OMGAmountInput
+            token={selectedToken}
+            inputRef={amountRef}
+            focusRef={amountFocusRef}
+            showError={showErrorAmount}
+            errorMessage={errorAmountMessage}
+            defaultValue={navigation.getParam('lastAmount')}
+            style={styles.amountInput}
+          />
+          <OMGExitWarning style={styles.textWarning} />
+        </ScrollView>
+
         <View style={styles.buttonContainer}>
           <OMGButton onPress={navigateNext}>Next</OMGButton>
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </OMGDismissKeyboard>
   )
 }
