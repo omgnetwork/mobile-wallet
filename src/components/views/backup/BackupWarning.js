@@ -115,7 +115,8 @@ const BackupWarning = ({ theme, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
+    paddingBottom: 8
   },
   image: {
     marginTop: 32,

@@ -1,10 +1,10 @@
-import React, { useRef, useState, useCallback } from 'react'
+import React, { useRef, useState } from 'react'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
 import { Header } from 'react-navigation-stack'
-import { View, StyleSheet, Platform, KeyboardAvoidingView } from 'react-native'
-import { Validator } from 'common/utils'
+import { View, StyleSheet, KeyboardAvoidingView } from 'react-native'
+import { Validator, Dimensions } from 'common/utils'
 import { Alert } from 'common/constants'
 import {
   OMGButton,
@@ -19,6 +19,8 @@ const CreateWalletForm = ({ wallets, navigation }) => {
   const [errorNameMessage, setErrorNameMessage] = useState(
     'The wallet name should not be empty'
   )
+  const statusBarHeight = Dimensions.getStatusBarHeight()
+
   const navigateNext = () => {
     if (!Validator.isValidWalletName(walletNameRef.current)) {
       setErrorNameMessage('The wallet name should not be empty')
@@ -37,14 +39,12 @@ const CreateWalletForm = ({ wallets, navigation }) => {
     })
   }
 
-  const extraKeyboardAvoidingPadding = Platform.OS === 'ios' ? 48 : 32
-
   return (
     <OMGDismissKeyboard style={styles.container}>
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior='padding'
-        keyboardVerticalOffset={Header.HEIGHT + extraKeyboardAvoidingPadding}>
+        keyboardVerticalOffset={Header.HEIGHT + statusBarHeight}>
         <OMGText weight='bold'>Name</OMGText>
         <OMGTextInputBox
           placeholder='Name'

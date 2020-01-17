@@ -37,7 +37,6 @@ const BackupModal = ({ visible, theme, onPressOk, onPressCancel }) => {
 
 const styles = StyleSheet.create({
   container: theme => ({
-    margin: 16,
     alignItems: 'center',
     flexDirection: 'column'
   }),

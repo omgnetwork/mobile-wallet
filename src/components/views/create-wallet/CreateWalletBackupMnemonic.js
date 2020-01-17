@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap'
   },
   buttonContainer: {
-    justifyContent: 'flex-end'
+    marginBottom: 8
   },
   chip: {
     marginRight: 8

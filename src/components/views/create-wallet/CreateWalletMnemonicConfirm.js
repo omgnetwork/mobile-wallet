@@ -137,7 +137,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap'
   },
   buttonContainer: {
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    marginBottom: 8
   },
   chip: theme => ({
     marginRight: 8,
