@@ -6,12 +6,12 @@ import * as TransferHelper from './transferHelper'
 import * as TransferNavigation from './transferNavigation'
 import feeOptions from './feeOptions'
 import { withTheme } from 'react-native-paper'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
   OMGBox,
   OMGButton,
   OMGText,
   OMGAddressInput,
+  OMGKeyboardShift,
   OMGTokenInput,
   OMGWalletAddress,
   OMGAmountInput,
@@ -59,10 +59,10 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
       if (shouldFocusAddressInput) {
         focusOn(addressFocusRef)
       } else {
-        // setTimeout(() => {
+        setTimeout(() => {
+          focusOn(amountFocusRef)
+        }, 300)
         // focusOn(amountFocusRef)
-        // }, 300)
-        focusOn(amountFocusRef)
       }
     }
   }, [
@@ -181,12 +181,8 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
 
   return (
     <SafeAreaView style={styles.container(theme)}>
-      <KeyboardAwareScrollView
+      <OMGKeyboardShift
         contentContainerStyle={styles.scrollView}
-        enableOnAndroid={true}
-        extraHeight={extraHeight}
-        extraScrollHeight={extraScrollHeight}
-        keyboardOpeningTime={0}
         innerRef={ref => {
           keyboardAwareScrollRef.current = ref
         }}>
@@ -239,7 +235,7 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
         <View style={styles.buttonContainer}>
           <OMGButton onPress={submit}>Next</OMGButton>
         </View>
-      </KeyboardAwareScrollView>
+      </OMGKeyboardShift>
     </SafeAreaView>
   )
 }
