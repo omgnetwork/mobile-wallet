@@ -168,6 +168,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
       showMarker={true}
       onReceiveQR={e => setAddress(e.data)}
       cameraRef={camera}
+      borderColor={theme.colors.black5}
       rootchain={isRootchain}
       renderUnconfirmedTx={unconfirmedTxComponent}
       renderEmptyComponent={emptyComponent}
@@ -198,7 +199,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
       }
       renderBottom={
         <OMGButton
-          style={styles.button}
+          style={styles.button(theme)}
           disabled={shouldDisabledSendButton}
           onPress={navigateNext}>
           Or, Send Manually
@@ -246,9 +247,12 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     paddingVertical: 8
   },
-  button: {
-    width: 300
-  },
+  button: theme => ({
+    width: 300,
+    backgroundColor: 'transparent',
+    borderColor: theme.colors.white,
+    borderWidth: 1
+  }),
   cameraContainer: {
     alignSelf: 'center',
     flex: 1
