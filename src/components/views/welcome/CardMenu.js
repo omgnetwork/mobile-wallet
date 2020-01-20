@@ -2,7 +2,7 @@ import React from 'react'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { OMGIcon, OMGText } from '../../widgets'
+import { OMGFontIcon, OMGText } from '../../widgets'
 
 const CardMenu = ({ theme, color, header, description, onPress, style }) => {
   return (
@@ -17,7 +17,7 @@ const CardMenu = ({ theme, color, header, description, onPress, style }) => {
           {description}
         </OMGText>
       </View>
-      <OMGIcon name='chevron-right' size={24} style={styles.arrow(theme)} />
+      <OMGFontIcon name='chevron-right' size={24} style={styles.arrow(theme)} />
     </TouchableOpacity>
   )
 }

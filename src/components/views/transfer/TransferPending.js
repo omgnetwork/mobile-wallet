@@ -13,7 +13,7 @@ import {
   OMGText,
   OMGWalletAddress,
   OMGStatusBar,
-  OMGIcon,
+  OMGFontIcon,
   OMGBlockchainLabel
 } from 'components/widgets'
 import { TransactionActionTypes } from 'common/constants'
@@ -94,7 +94,7 @@ const TransferPending = ({ theme, navigation }) => {
         <View style={styles.contentContainer}>
           <View style={styles.headerContainer}>
             <View style={styles.icon(theme)}>
-              <OMGIcon name='pending' size={24} color={theme.colors.white} />
+              <OMGFontIcon name='pending' size={24} color={theme.colors.white} />
             </View>
             <OMGText style={styles.title(theme)} weight='bold'>
               Pending Transaction

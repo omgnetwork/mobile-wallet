@@ -1,7 +1,6 @@
 import React from 'react'
-import { Image, StyleSheet, View, TouchableOpacity } from 'react-native'
-import OMGText from '../omg-text'
-import OMGIcon from '../omg-icon'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { OMGText, OMGFontIcon, OMGIdenticon } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 
 const OMGItemWallet = ({ wallet, style, theme, showCaret, onPress }) => {
@@ -9,19 +8,14 @@ const OMGItemWallet = ({ wallet, style, theme, showCaret, onPress }) => {
     <TouchableOpacity
       style={{ ...styles.container(theme), ...style }}
       onPress={onPress}>
-      <Image
-        style={styles.logo}
-        source={{
-          uri: `https://api.adorable.io/avatars/285/${wallet.address}.png`
-        }}
-      />
+      <OMGIdenticon hash={wallet.address} style={styles.logo} />
       <View style={styles.sectionName}>
         <OMGText style={styles.name(theme)} weight='bold'>
           {wallet.name}
         </OMGText>
         <OMGText style={styles.address(theme)}>{wallet.address}</OMGText>
       </View>
-      {showCaret && <OMGIcon name='chevron-right' size={24} />}
+      {showCaret && <OMGFontIcon name='chevron-right' size={24} />}
     </TouchableOpacity>
   )
 }

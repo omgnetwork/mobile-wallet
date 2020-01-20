@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useEffect } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { OMGIcon, OMGText } from 'components/widgets'
+import { OMGFontIcon, OMGText } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Slide } from 'common/anims'
 
@@ -39,7 +39,7 @@ const OMGBottomSheet = ({
   return (
     <Animated.View style={{ ...styles.container(theme, slide), ...style }}>
       <View style={styles.iconContainer(iconColor)}>
-        <OMGIcon
+        <OMGFontIcon
           name={iconName || 'pending'}
           color={theme.colors.white}
           size={14}
@@ -60,7 +60,7 @@ const OMGBottomSheet = ({
       <TouchableOpacity
         onPress={onPressClose}
         style={styles.closeIconContainer}>
-        <OMGIcon
+        <OMGFontIcon
           style={styles.closeIcon}
           name='x-mark'
           size={14}

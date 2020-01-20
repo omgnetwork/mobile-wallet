@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import OMGText from '../omg-text'
-import OMGIcon from '../omg-icon'
+import OMGFontIcon from '../omg-icon'
 import { withTheme } from 'react-native-paper'
 import { Formatter } from 'common/utils'
 
@@ -32,7 +32,7 @@ const OMGFeeSelect = ({ style, onPress, fee, selected, theme }) => {
       </View>
       <View style={styles.sectionSelect}>
         {selected && (
-          <OMGIcon name='check-mark' size={14} color={theme.colors.gray3} />
+          <OMGFontIcon name='check-mark' size={14} color={theme.colors.gray3} />
         )}
       </View>
     </TouchableOpacity>

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { OMGText, OMGIcon } from 'components/widgets'
+import { OMGText, OMGFontIcon } from 'components/widgets'
 import Config from 'react-native-config'
 import { withTheme } from 'react-native-paper'
 import { Datetime } from 'common/utils'
@@ -17,7 +17,7 @@ const OMGExitComplete = ({ theme, style, createdAt }) => {
   const datetimeFormatToken = 'MMM DD, hh:mm A' // Apr 05, 12:02 PM
   return (
     <View style={{ ...styles.container(theme), ...style }}>
-      <OMGIcon name='time' size={24} style={styles.icon(theme)} />
+      <OMGFontIcon name='time' size={24} style={styles.icon(theme)} />
       <OMGText style={styles.text(theme)}>
         Exit will be approximately completed on
         <OMGText weight='bold'>{renderProcessedAt()}</OMGText>

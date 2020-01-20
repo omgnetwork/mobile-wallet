@@ -4,7 +4,7 @@ import { withTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
 import {
-  OMGIcon,
+  OMGFontIcon,
   OMGBox,
   OMGText,
   OMGStatusBar,
@@ -39,7 +39,7 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
             navigation.goBack()
           }}
           style={styles.iconBox}>
-          <OMGIcon
+          <OMGFontIcon
             name='x-mark'
             size={18}
             color={theme.colors.gray3}

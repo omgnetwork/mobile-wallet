@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { View, StyleSheet, Linking, TouchableOpacity } from 'react-native'
-import { OMGIcon, OMGText } from 'components/widgets'
+import { OMGFontIcon, OMGText } from 'components/widgets'
 import { BlockchainRenderer } from 'common/blockchain'
 import Config from 'react-native-config'
 import { BlockchainNetworkType } from 'common/constants'
@@ -26,7 +26,7 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
       <View style={styles.detailContainer}>
         <OMGText style={styles.title(theme)}>From</OMGText>
         <View style={styles.detailItem}>
-          <OMGIcon name='wallet' size={14} />
+          <OMGFontIcon name='wallet' size={14} />
           <TouchableOpacity
             style={styles.detailItemAddress}
             onPress={() => handleAddressClick(tx.from)}>
@@ -50,7 +50,7 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
       <View style={styles.detailContainer}>
         <OMGText style={styles.title(theme)}>To</OMGText>
         <View style={styles.detailItem}>
-          <OMGIcon name='wallet' size={14} />
+          <OMGFontIcon name='wallet' size={14} />
           <TouchableOpacity
             style={styles.detailItemAddress}
             onPress={() => handleAddressClick(tx.to)}>

@@ -9,7 +9,7 @@ import { ActionAlert, Gas, ContractAddress } from 'common/constants'
 import { TransferHelper } from 'components/views/transfer'
 import {
   OMGText,
-  OMGIcon,
+  OMGFontIcon,
   OMGButton,
   OMGExitWarning,
   OMGBlockchainLabel,
@@ -105,7 +105,7 @@ const ExitConfirm = ({
       <View style={styles.contentContainer}>
         <TouchableHighlight onPress={handleBackToEditPressed}>
           <View style={styles.subHeaderContainer}>
-            <OMGIcon
+            <OMGFontIcon
               name='chevron-left'
               size={14}
               color={theme.colors.gray3}

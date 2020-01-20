@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { View, StyleSheet, Clipboard } from 'react-native'
-import { OMGIcon, OMGBox, OMGText } from 'components/widgets'
+import { OMGFontIcon, OMGBox, OMGText } from 'components/widgets'
 import { Alerter } from 'common/utils'
 import { Alert } from 'common/constants'
 
@@ -16,7 +16,7 @@ const TransactionDetailHash = ({ theme, hash, style }) => {
         {hash}
       </OMGText>
       <OMGBox style={styles.iconContainer(theme)} onPress={handleCopyClick}>
-        <OMGIcon name='copy' size={14} color={theme.colors.black2} />
+        <OMGFontIcon name='copy' size={14} color={theme.colors.black2} />
       </OMGBox>
     </View>
   )

@@ -7,7 +7,7 @@ import {
   OMGButton,
   OMGEmpty,
   OMGFeeSelect,
-  OMGIcon,
+  OMGFontIcon,
   OMGText
 } from 'components/widgets'
 import { getParamsForTransferSelectFeeFromTransferForm } from './transferNavigation'
@@ -23,7 +23,7 @@ const TransferSelectFee = ({ theme, loading, navigation }) => {
   return (
     <SafeAreaView style={styles.container(theme)}>
       <View style={styles.header}>
-        <OMGIcon
+        <OMGFontIcon
           name='chevron-left'
           size={18}
           color={theme.colors.gray3}

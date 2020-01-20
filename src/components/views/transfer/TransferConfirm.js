@@ -20,7 +20,7 @@ import {
   OMGBox,
   OMGButton,
   OMGText,
-  OMGIcon,
+  OMGFontIcon,
   OMGWalletAddress,
   OMGBlockchainLabel,
   OMGEmpty
@@ -200,7 +200,7 @@ const TransferConfirm = ({
         <View style={styles.contentContainer}>
           <TouchableHighlight onPress={handleBackToEditPressed}>
             <View style={styles.subHeaderContainer}>
-              <OMGIcon
+              <OMGFontIcon
                 name='chevron-left'
                 size={14}
                 color={theme.colors.gray3}

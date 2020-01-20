@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { OMGIcon, OMGText } from 'components/widgets'
+import { OMGFontIcon, OMGText } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
@@ -41,12 +41,12 @@ const OMGBottomTab = ({
   } else if (type === 'tabBarBigIcon') {
     return (
       <View style={styles.iconBox} ref={transferRef}>
-        <OMGIcon name={iconName} size={24} color='#04070d' />
+        <OMGFontIcon name={iconName} size={24} color='#04070d' />
       </View>
     )
   } else if (type === 'tabBarIcon') {
     return (
-      <OMGIcon
+      <OMGFontIcon
         name={iconName}
         size={iconSize}
         color={tintColor}

@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import OMGText from '../omg-text'
-import OMGIcon from '../omg-icon'
+import OMGFontIcon from '../omg-icon'
 import { withTheme } from 'react-native-paper'
 
 const OMGMenuIcon = ({
@@ -19,7 +19,7 @@ const OMGMenuIcon = ({
       ref={menuRef}
       onPress={onPress}>
       <View style={styles.imageContainer(theme)}>
-        <OMGIcon color={theme.colors.gray3} size={18} name={iconName} />
+        <OMGFontIcon color={theme.colors.gray3} size={18} name={iconName} />
       </View>
       <View style={styles.sectionName}>
         <OMGText style={styles.title(theme)} weight='bold'>
@@ -27,7 +27,7 @@ const OMGMenuIcon = ({
         </OMGText>
         <OMGText style={styles.description(theme)}>{description}</OMGText>
       </View>
-      <OMGIcon name='chevron-right' size={24} />
+      <OMGFontIcon name='chevron-right' size={24} />
     </TouchableOpacity>
   )
 }

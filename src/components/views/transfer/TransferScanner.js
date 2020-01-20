@@ -13,7 +13,7 @@ import { withNavigation } from 'react-navigation'
 import { paramsForTransferScannerToTransferSelectBalance } from './transferNavigation'
 import {
   OMGText,
-  OMGIcon,
+  OMGFontIcon,
   OMGQRScanner,
   OMGButton,
   OMGEmpty
@@ -128,7 +128,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
 
   const unconfirmedTxComponent = (
     <Animated.View style={styles.unableView(overlayColorAnim)}>
-      <OMGIcon
+      <OMGFontIcon
         style={styles.unableIcon(theme)}
         name='pending'
         size={16}

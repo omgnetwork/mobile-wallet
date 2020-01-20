@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react'
 import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import OMGImage from '../omg-image'
 import OMGTextInput from '../omg-text-input'
 import OMGText from '../omg-text'
 import ScanQRIcon from './assets/scan-qr-icon.svg'
+import OMGIdenticon from '../omg-identicon'
 
 const OMGAddressInput = ({
   theme,
@@ -19,11 +19,10 @@ const OMGAddressInput = ({
   return (
     <Fragment>
       <View style={{ ...styles.container(theme), ...style }}>
-        <OMGImage
+        <OMGIdenticon
           style={styles.logo(theme)}
-          source={{
-            uri: `https://api.adorable.io/avatars/285/${inputRef.current}.png`
-          }}
+          size={24}
+          hash={inputRef.current}
         />
         <OMGTextInput
           style={styles.text(theme)}

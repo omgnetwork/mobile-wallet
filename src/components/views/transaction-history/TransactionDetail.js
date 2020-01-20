@@ -12,7 +12,7 @@ import { TransferHelper } from 'components/views/transfer'
 import {
   OMGStatusBar,
   OMGText,
-  OMGIcon,
+  OMGFontIcon,
   OMGEmpty,
   OMGBlockchainLabel,
   OMGExitComplete
@@ -79,7 +79,7 @@ const TransactionDetail = ({ navigation, theme }) => {
           <OMGText style={styles.linkText(theme)}>{linkTitle}</OMGText>
         </TouchableOpacity>
         <View style={styles.filler} />
-        <OMGIcon name='export' color={theme.colors.black2} />
+        <OMGFontIcon name='export' color={theme.colors.black2} />
       </View>
     )
   }, [handleTxClick, theme, transaction])
@@ -151,7 +151,7 @@ const TransactionDetail = ({ navigation, theme }) => {
         backgroundColor={theme.colors.white}
       />
       <View style={styles.header}>
-        <OMGIcon
+        <OMGFontIcon
           name='chevron-left'
           size={18}
           color={theme.colors.gray3}

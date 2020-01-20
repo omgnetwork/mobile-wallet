@@ -3,7 +3,7 @@ import * as Views from 'components/views'
 import * as Widgets from 'components/widgets'
 import { SafeAreaView } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
-import { OMGStatusBar, OMGIcon } from 'components/widgets'
+import { OMGStatusBar, OMGFontIcon } from 'components/widgets'
 import TransferChildchainNavigator from '../deposit'
 import ImportWalletNavigator from '../import-wallet'
 import CreateWalletNavigator from '../create-wallet'
@@ -80,7 +80,7 @@ const WarpPortalNavigator = createStackNavigator(
       navigationOptions: ({ navigation }) => ({
         title: 'Preview',
         headerRight: (
-          <OMGIcon name='plus' onPress={() => navigation.navigate('Deposit')} />
+          <OMGFontIcon name='plus' onPress={() => navigation.navigate('Deposit')} />
         )
       })
     },

@@ -39,8 +39,6 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
   const hasAddressInput = transferType !== TransferHelper.TYPE_DEPOSIT
   const hasEmptyAddressInput = !selectedAddress
   const shouldFocusAddressInput = hasAddressInput && hasEmptyAddressInput
-  const extraHeight = transferType === TransferHelper.TYPE_DEPOSIT ? 0 : 128
-  const extraScrollHeight = shouldFocusAddressInput ? 0 : 16
   const addressRef = useRef(selectedAddress)
   const amountRef = useRef(defaultAmount)
   const amountFocusRef = useRef(null)
@@ -62,7 +60,6 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
         setTimeout(() => {
           focusOn(amountFocusRef)
         }, 300)
-        // focusOn(amountFocusRef)
       }
     }
   }, [

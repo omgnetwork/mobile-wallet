@@ -1,9 +1,7 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import OMGImage from '../omg-image'
-import OMGText from '../omg-text'
-import OMGIcon from '../omg-icon'
+import { OMGText, OMGFontIcon, OMGIdenticon } from 'components/widgets'
 import Config from 'react-native-config'
 
 const OMGWalletAddress = ({ theme, name, address, style }) => {
@@ -13,15 +11,10 @@ const OMGWalletAddress = ({ theme, name, address, style }) => {
     <View style={{ ...styles.container(theme), ...style }}>
       {IS_CHILDCHAIN_ADDRESS ? (
         <View style={styles.logo(theme)}>
-          <OMGIcon name='files' size={14} />
+          <OMGFontIcon name='files' size={14} />
         </View>
       ) : (
-        <OMGImage
-          style={styles.logo(theme)}
-          source={{
-            uri: `https://api.adorable.io/avatars/285/${address}.png`
-          }}
-        />
+        <OMGIdenticon style={styles.logo(theme)} size={24} hash={address} />
       )}
 
       <OMGText style={styles.text(theme)}>{name}</OMGText>

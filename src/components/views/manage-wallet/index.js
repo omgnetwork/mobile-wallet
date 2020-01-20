@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { View, StyleSheet, TouchableOpacity, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
-import { OMGIcon, OMGText, OMGStatusBar, OMGButton } from 'components/widgets'
+import { OMGFontIcon, OMGText, OMGStatusBar, OMGButton } from 'components/widgets'
 import { walletActions, onboardingActions } from 'common/actions'
 
 const ManageWallet = ({
@@ -45,7 +45,7 @@ const ManageWallet = ({
             navigation.navigate('Balance')
           }}
           style={styles.icon}>
-          <OMGIcon name='x-mark' size={18} color={theme.colors.gray3} />
+          <OMGFontIcon name='x-mark' size={18} color={theme.colors.gray3} />
         </TouchableOpacity>
       </View>
       <View style={styles.menuContainer}>
@@ -84,7 +84,7 @@ const ManageWalletMenu = ({ theme, title, style, onPress }) => {
       style={{ ...menuStyles.container, ...style }}
       onPress={onPress}>
       <OMGText style={menuStyles.titleLeft(theme)}>{title}</OMGText>
-      <OMGIcon name='chevron-right' size={14} style={menuStyles.iconRight} />
+      <OMGFontIcon name='chevron-right' size={14} style={menuStyles.iconRight} />
     </TouchableOpacity>
   )
 }

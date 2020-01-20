@@ -4,6 +4,7 @@ import * as Datetime from './datetime'
 import * as Formatter from './formatter'
 import * as GasEstimator from './gasEstimator'
 import * as Alerter from './alerter'
+import * as Identicon from './identicon'
 import * as Notification from './notification'
 import * as Parser from './parser'
 import * as Polling from './polling'
@@ -28,6 +29,7 @@ export {
   GasEstimator,
   Mapper,
   Notification,
+  Identicon,
   Parser,
   Polling,
   Price,

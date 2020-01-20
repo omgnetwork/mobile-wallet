@@ -12,7 +12,7 @@ import {
   OMGText,
   OMGBlockchainLabel,
   OMGStatusBar,
-  OMGIcon,
+  OMGFontIcon,
   OMGExitComplete
 } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -43,7 +43,7 @@ const ExitPending = ({ theme, navigation }) => {
         />
         <View style={styles.headerContainer}>
           <View style={styles.iconPending(theme)}>
-            <OMGIcon name='pending' size={24} style={styles.icon(theme)} />
+            <OMGFontIcon name='pending' size={24} style={styles.icon(theme)} />
           </View>
           <OMGText style={styles.title(theme)} weight='bold'>
             Pending Transaction

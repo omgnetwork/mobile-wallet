@@ -3,7 +3,7 @@ import { View, StyleSheet, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
-import { OMGIcon, OMGBox, OMGText, OMGStatusBar } from 'components/widgets'
+import { OMGFontIcon, OMGBox, OMGText, OMGStatusBar } from 'components/widgets'
 
 const Deposit = ({ navigation, theme }) => {
   const ChildChainTransferNavigator = navigation.getParam('navigator')
@@ -34,7 +34,7 @@ const Deposit = ({ navigation, theme }) => {
             navigation.navigate('Balance')
           }}
           style={styles.iconBox}>
-          <OMGIcon
+          <OMGFontIcon
             name='x-mark'
             size={18}
             color={theme.colors.gray3}

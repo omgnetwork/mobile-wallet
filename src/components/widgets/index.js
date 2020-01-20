@@ -28,7 +28,8 @@ import {
   OMGOnboardingSheet,
   OMGOnboardingPopup
 } from './omg-onboarding'
-import OMGIcon from './omg-icon'
+import OMGFontIcon from './omg-icon'
+import OMGIdenticon from './omg-identicon'
 import OMGImage from './omg-image'
 import OMGItemWallet from './omg-item-wallet'
 import OMGItemToken from './omg-item-token'
@@ -43,6 +44,7 @@ import OMGText from './omg-text'
 import OMGTextChip from './omg-text-chip'
 import OMGTextInput from './omg-text-input'
 import OMGTextInputBox from './omg-text-input-box'
+import OMGTokenIcon from './omg-token-icon'
 import OMGTokenInput from './omg-token-input'
 import OMGTokenSelect from './omg-token-select'
 import OMGViewPager from './omg-view-pager'
@@ -70,7 +72,8 @@ export {
   OMGExitWarning,
   OMGFeeInput,
   OMGFeeSelect,
-  OMGIcon,
+  OMGFontIcon,
+  OMGIdenticon,
   OMGImage,
   OMGItemWallet,
   OMGItemToken,
@@ -95,6 +98,7 @@ export {
   OMGTextChip,
   OMGTextInput,
   OMGTextInputBox,
+  OMGTokenIcon,
   OMGTokenInput,
   OMGTokenSelect,
   OMGViewPager,
