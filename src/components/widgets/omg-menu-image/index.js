@@ -8,7 +8,7 @@ const OMGMenuImage = ({ title, description, style, theme, onPress }) => {
     <TouchableOpacity
       style={{ ...styles.container(theme), ...style }}
       onPress={onPress}>
-      <OMGIdenticon style={styles.logo} hash={title} />
+      <OMGIdenticon style={styles.logo} hash={title} size={40} />
       <View style={styles.sectionName}>
         <OMGText style={styles.title(theme)} weight='bold'>
           {title}
