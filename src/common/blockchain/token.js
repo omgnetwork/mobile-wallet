@@ -41,7 +41,7 @@ export const fetchTokenDetail = (provider, contractAddress, accountAddress) => {
       Promise.resolve(18),
       fetchPrice(contractAddress, Config.ETHERSCAN_NETWORK),
       fetchEthBalance(provider, accountAddress),
-      getContractAddress(contractAddress)
+      Promise.resolve(contractAddress)
     ]
   } else {
     const contract = new ethers.Contract(
@@ -60,7 +60,7 @@ export const fetchTokenDetail = (provider, contractAddress, accountAddress) => {
       fetchDecimals(contract),
       fetchPrice(contractAddress, Config.ETHERSCAN_NETWORK),
       fetchBalance(contract, accountAddress),
-      getContractAddress(contractAddress)
+      Promise.resolve(contractAddress)
     ]
   }
 }
@@ -81,8 +81,8 @@ const fetchDecimals = contract => {
   return contract.decimals()
 }
 
-const getContractAddress = contractAddress => {
-  return Promise.resolve(contractAddress)
+export const getContractAddressChecksum = contractAddress => {
+  return ethers.utils.getAddress(contractAddress)
 }
 
 const fetchPrice = (contractAddress, chainNetwork) => {

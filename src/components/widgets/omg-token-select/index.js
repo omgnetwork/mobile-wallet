@@ -9,7 +9,7 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
     <TouchableOpacity
       style={{ ...styles.container(theme, selected), ...style }}
       onPress={onPress}>
-      <OMGTokenIcon style={styles.logo(theme)} token={token} />
+      <OMGTokenIcon token={token} />
       <View style={styles.sectionName}>
         <OMGText style={styles.symbol(theme)}>{token.tokenSymbol}</OMGText>
       </View>
@@ -34,12 +34,6 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
 }
 
 const styles = StyleSheet.create({
-  logo: theme => ({
-    width: 40,
-    height: 40,
-    borderRadius: theme.roundness,
-    borderWidth: 0.5
-  }),
   container: (theme, selected) => ({
     flexDirection: 'row',
     backgroundColor: selected ? theme.colors.blue1 : theme.colors.gray4,

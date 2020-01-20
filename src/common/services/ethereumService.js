@@ -48,6 +48,36 @@ const getUpdatedBlock = txHistory => {
   return (txHistory.length && txHistory.slice(-1).pop().blockNumber) || 0
 }
 
+<<<<<<< HEAD
+=======
+export const fetchEthToken = (pendingEthBalance, pendingEthPrice) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const [balance, price] = await Promise.all([
+        pendingEthBalance,
+        pendingEthPrice
+      ])
+
+      if (balance === '0.0') {
+        resolve(null)
+      } else {
+        resolve({
+          tokenName: 'Ether',
+          tokenSymbol: 'ETH',
+          tokenDecimal: 18,
+          contractAddress: ContractAddress.ETH_ADDRESS,
+          balance: balance,
+          price: price
+        })
+      }
+    } catch (err) {
+      console.log(err)
+      reject(new Error(`Cannot fetch eth token.`))
+    }
+  })
+}
+
+>>>>>>> Support real token icon
 export const sendErc20Token = (wallet, options) => {
   return new Promise(async (resolve, reject) => {
     try {

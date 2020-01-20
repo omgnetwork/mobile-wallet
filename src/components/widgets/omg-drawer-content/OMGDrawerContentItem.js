@@ -8,7 +8,7 @@ const OMGDrawerContentItem = ({ wallet, primary, onWalletPress }) => {
     <TouchableOpacity
       style={styles.container}
       onPress={() => onWalletPress(wallet)}>
-      <OMGIdenticon style={styles.logo} hash={wallet.address} />
+      <OMGIdenticon style={styles.logo} hash={wallet.address} size={24} />
       <OMGText style={styles.name}>{wallet.name}</OMGText>
       {primary && (
         <OMGFontIcon name='check-mark' size={14} style={styles.iconRight} />
