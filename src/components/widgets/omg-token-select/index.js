@@ -9,7 +9,7 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
     <TouchableOpacity
       style={{ ...styles.container(theme, selected), ...style }}
       onPress={onPress}>
-      <OMGTokenIcon token={token} />
+      <OMGTokenIcon token={token} size={32} />
       <View style={styles.sectionName}>
         <OMGText style={styles.symbol(theme)}>{token.tokenSymbol}</OMGText>
       </View>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Image } from 'react-native'
+import { Image, View } from 'react-native'
 import { ContractAddress } from 'common/constants'
 import { OMGIdenticon } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
@@ -21,13 +21,15 @@ const OMGTokenIcon = ({ token, theme, style, size }) => {
       style={[styles.iconFallback(theme), style]}
     />
   ) : (
-    <Image
-      style={[styles.icon(theme), style]}
-      source={{
-        uri: iconUri
-      }}
-      onError={() => setIsError(true)}
-    />
+    <View style={[styles.icon(theme), style]}>
+      <Image
+        style={styles.innerIcon(size)}
+        source={{
+          uri: iconUri
+        }}
+        onError={() => setIsError(true)}
+      />
+    </View>
   )
 }
 
@@ -42,7 +44,15 @@ const styles = {
   icon: theme => ({
     width: 40,
     height: 40,
-    borderRadius: theme.roundness
+    borderRadius: theme.roundness,
+    borderColor: theme.colors.black4,
+    borderWidth: 0.5,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }),
+  innerIcon: size => ({
+    width: size,
+    height: size
   })
 }
 

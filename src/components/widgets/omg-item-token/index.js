@@ -52,7 +52,7 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
       }}
       elevation={5}
       onPress={onPress}>
-      <OMGTokenIcon token={token} />
+      <OMGTokenIcon token={token} size={32} />
       <View style={styles.sectionName}>
         <OMGText style={styles.symbol(theme)}>{token.tokenSymbol}</OMGText>
       </View>
