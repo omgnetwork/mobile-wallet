@@ -20,7 +20,6 @@ import ImportWalletMnemonic from './import-wallet/Mnemonic'
 import ImportWalletSuccess from './import-wallet/ImportSuccess'
 import Initializer from './initializer'
 import Main from './main'
-import ManageWallet from './manage-wallet'
 import Preview from './preview'
 import Setting from './setting'
 import {
@@ -66,7 +65,6 @@ export {
   ImportWalletSuccess,
   Initializer,
   Main,
-  ManageWallet,
   OnboardingTourGuide,
   Preview,
   Setting,
