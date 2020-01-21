@@ -8,6 +8,7 @@ import CreateWalletForm from './create-wallet/CreateWalletForm'
 import CreateWalletBackupMnemonic from './create-wallet/CreateWalletBackupMnemonic'
 import CreateWalletMnemonicConfirm from './create-wallet/CreateWalletMnemonicConfirm'
 import CreateWalletMnemonicFailed from './create-wallet/CreateWalletMnemonicFailed'
+import DeleteWallet from './delete-wallet'
 import Deposit from './deposit'
 import Disclaimer from './disclaimer'
 import Exit from './exit'
@@ -53,6 +54,7 @@ export {
   CreateWalletBackupMnemonic,
   CreateWalletMnemonicConfirm,
   CreateWalletMnemonicFailed,
+  DeleteWallet,
   Deposit,
   Disclaimer,
   Exit,

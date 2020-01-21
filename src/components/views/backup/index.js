@@ -24,7 +24,6 @@ const Backup = ({ theme, navigation }) => {
           />
           <OMGText style={styles.headerTitle(theme)}>Backup Wallet</OMGText>
         </View>
-        <View style={styles.line(theme)} />
         <BackupWalletNavigator navigation={navigation} />
       </View>
     </SafeAreaView>

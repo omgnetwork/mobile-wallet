@@ -8,24 +8,38 @@ const OMGItemWallet = ({ wallet, style, theme, showCaret, onPress }) => {
     <TouchableOpacity
       style={{ ...styles.container(theme), ...style }}
       onPress={onPress}>
-      <OMGIdenticon hash={wallet.address} style={styles.logo} />
+      <OMGIdenticon
+        hash={wallet.address}
+        style={styles.identicon(theme)}
+        size={40}
+      />
       <View style={styles.sectionName}>
         <OMGText style={styles.name(theme)} weight='bold'>
           {wallet.name}
         </OMGText>
-        <OMGText style={styles.address(theme)}>{wallet.address}</OMGText>
+        <OMGText style={styles.address(theme)} numberOfLines={1}>
+          {wallet.address}
+        </OMGText>
       </View>
-      {showCaret && <OMGFontIcon name='chevron-right' size={24} />}
+      {showCaret && (
+        <OMGFontIcon
+          name='chevron-right'
+          size={24}
+          color={theme.colors.gray2}
+        />
+      )}
     </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
-  logo: {
-    width: 64,
-    height: 64,
-    borderRadius: 12
-  },
+  identicon: theme => ({
+    width: 40,
+    height: 40,
+    borderRadius: theme.roundness,
+    borderColor: theme.colors.black4,
+    borderWidth: 0.5
+  }),
   container: theme => ({
     flexDirection: 'row',
     backgroundColor: theme.colors.white3,
@@ -45,7 +59,8 @@ const styles = StyleSheet.create({
   }),
   address: theme => ({
     color: theme.colors.gray5,
-    fontSize: 12
+    fontSize: 12,
+    marginRight: 32
   })
 })
 

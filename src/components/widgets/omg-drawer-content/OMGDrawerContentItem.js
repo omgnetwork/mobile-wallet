@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { colors } from 'common/styles'
 import { OMGText, OMGFontIcon, OMGIdenticon } from 'components/widgets'
 

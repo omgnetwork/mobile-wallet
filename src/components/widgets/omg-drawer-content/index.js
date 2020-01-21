@@ -5,13 +5,29 @@ import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
 import { colors } from 'common/styles'
-import { OMGText } from 'components/widgets'
+import { OMGText, OMGFontIcon } from 'components/widgets'
 import OMGDrawerContentItem from './OMGDrawerContentItem'
-import { settingActions } from 'common/actions'
+import { settingActions, onboardingActions } from 'common/actions'
+
+const ManageWalletMenu = ({ theme, title, style, onPress }) => {
+  return (
+    <TouchableOpacity
+      style={{ ...menuStyles.container, ...style }}
+      onPress={onPress}>
+      <OMGText style={menuStyles.titleLeft(theme)}>{title}</OMGText>
+      <OMGFontIcon
+        name='chevron-right'
+        size={14}
+        style={menuStyles.iconRight}
+      />
+    </TouchableOpacity>
+  )
+}
 
 const OMGDrawerContent = ({
   navigation,
   dispatchSetPrimaryWalletAddress,
+  dispatchSetCurrentPage,
   primaryWallet,
   theme,
   wallets
@@ -21,8 +37,9 @@ const OMGDrawerContent = ({
     navigation.navigate('Initializer')
   }
 
-  const handleManageWalletPress = () => {
-    navigation.navigate('ManageWallet')
+  const handleManageWalletMenuPress = destination => {
+    dispatchSetCurrentPage(destination)
+    navigation.navigate(destination)
     requestAnimationFrame(() => {
       navigation.closeDrawer()
     })
@@ -39,14 +56,17 @@ const OMGDrawerContent = ({
           </OMGText>
 
           {wallets.map(wallet => (
-            <OMGDrawerContentItem
-              wallet={wallet}
-              key={wallet.address}
-              onWalletPress={handleWalletPress}
-              primary={
-                primaryWallet && primaryWallet.address === wallet.address
-              }
-            />
+            <>
+              <OMGDrawerContentItem
+                wallet={wallet}
+                key={wallet.address}
+                onWalletPress={handleWalletPress}
+                primary={
+                  primaryWallet && primaryWallet.address === wallet.address
+                }
+              />
+              <View style={styles.divider(theme)} />
+            </>
           ))}
         </View>
       )}
@@ -55,11 +75,30 @@ const OMGDrawerContent = ({
         <OMGText weight='bold' style={styles.titleText}>
           SETTINGS
         </OMGText>
-        <TouchableOpacity
-          style={styles.settingItem}
-          onPress={handleManageWalletPress}>
-          <OMGText style={styles.settingItemText}>Manage Wallets</OMGText>
-        </TouchableOpacity>
+        <ManageWalletMenu
+          title='Import Wallet'
+          theme={theme}
+          onPress={() => handleManageWalletMenuPress('ImportWallet')}
+        />
+        <View style={styles.divider(theme)} />
+        <ManageWalletMenu
+          title='Create Wallet'
+          theme={theme}
+          onPress={() => handleManageWalletMenuPress('CreateWallet')}
+        />
+        <View style={styles.divider(theme)} />
+        <ManageWalletMenu
+          title='Backup Wallet'
+          theme={theme}
+          onPress={() => handleManageWalletMenuPress('BackupWallet')}
+        />
+        <View style={styles.divider(theme)} />
+        <ManageWalletMenu
+          title='Delete Wallet'
+          theme={theme}
+          onPress={() => handleManageWalletMenuPress('DeleteWallet')}
+        />
+        <View style={styles.divider(theme)} />
         <View style={styles.expander} />
         <View style={styles.environment}>
           <OMGText weight='bold' style={styles.environmentTitleText(theme)}>
@@ -85,12 +124,29 @@ const OMGDrawerContent = ({
   )
 }
 
+const menuStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    paddingVertical: 16
+  },
+  titleLeft: theme => ({
+    flex: 1,
+    color: theme.colors.primary
+  }),
+  iconRight: {}
+})
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingLeft: 30,
     paddingTop: 32
   },
+  divider: theme => ({
+    backgroundColor: theme.colors.black1,
+    height: 1,
+    opacity: 0.3
+  }),
   walletContainer: {
     marginTop: 16,
     flexDirection: 'column'
@@ -98,6 +154,7 @@ const styles = StyleSheet.create({
   settingContainer: {
     flex: 1,
     marginTop: 16,
+    paddingRight: 16,
     flexDirection: 'column'
   },
   titleText: {
@@ -135,7 +192,10 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchSetPrimaryWalletAddress: primaryAddress =>
-    settingActions.setPrimaryAddress(dispatch, primaryAddress)
+    settingActions.setPrimaryAddress(dispatch, primaryAddress),
+  dispatchSetCurrentPage: (currentPage, page) => {
+    onboardingActions.setCurrentPage(dispatch, currentPage, page)
+  }
 })
 
 export default connect(

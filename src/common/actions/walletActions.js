@@ -40,6 +40,13 @@ export const clear = dispatch => {
   })
 }
 
+export const deleteWallet = (dispatch, wallets, walletAddress) => {
+  return createAction(dispatch, {
+    operation: () => ({ wallets, walletAddress }),
+    type: 'WALLET/DELETE'
+  })
+}
+
 export const getTransactionHistory = address => {
   const asyncAction = async () => {
     const txHistory = await providerService.getTransactionHistory(address)
