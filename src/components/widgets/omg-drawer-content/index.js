@@ -102,22 +102,32 @@ const OMGDrawerContent = ({
         <View style={styles.expander} />
         <View style={styles.environment}>
           <OMGText weight='bold' style={styles.environmentTitleText(theme)}>
-            ENVIRONMENT INFO
+            Environment Info
           </OMGText>
-          <OMGText style={styles.environmentItemText(theme)}>
-            Ethereum Network:{' '}
-            <OMGText weight='bold'>{Config.ETHERSCAN_NETWORK}</OMGText>
-          </OMGText>
-          <OMGText style={styles.environmentItemText(theme)}>
-            Watcher URL:{' '}
-            <OMGText weight='bold'>{Config.CHILDCHAIN_WATCHER_URL}</OMGText>
-          </OMGText>
-          <OMGText style={styles.environmentItemText(theme)}>
-            Plasma Contract:{' '}
-            <OMGText weight='bold'>
+          <View style={styles.envInfoCard(theme)}>
+            <OMGText style={styles.environmentItemText(theme)}>
+              Ethereum Network
+            </OMGText>
+            <OMGText style={styles.environmentItemTextLighter(theme)}>
+              {Config.ETHERSCAN_NETWORK}
+            </OMGText>
+          </View>
+          <View style={styles.envInfoCard(theme)}>
+            <OMGText style={styles.environmentItemText(theme)}>
+              Plasma Contract
+            </OMGText>
+            <OMGText style={styles.environmentItemTextLighter(theme)}>
               {Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS}
             </OMGText>
-          </OMGText>
+          </View>
+          <View style={styles.envInfoCard(theme)}>
+            <OMGText style={styles.environmentItemText(theme)}>
+              Watcher URL
+            </OMGText>
+            <OMGText style={styles.environmentItemTextLighter(theme)}>
+              {Config.CHILDCHAIN_WATCHER_URL}
+            </OMGText>
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -163,6 +173,12 @@ const styles = StyleSheet.create({
   settingItemText: {
     color: colors.black3
   },
+  envInfoCard: theme => ({
+    marginTop: 4,
+    padding: 12,
+    borderRadius: theme.roundness,
+    backgroundColor: theme.colors.gray4
+  }),
   settingItem: {
     paddingVertical: 12
   },
@@ -175,11 +191,15 @@ const styles = StyleSheet.create({
   },
   environmentTitleText: theme => ({
     opacity: 0.5,
-    color: theme.colors.gray3
+    color: theme.colors.gray3,
+    paddingBottom: 16
   }),
   environmentItemText: theme => ({
-    marginTop: 8,
-    opacity: 0.5
+    fontSize: 14,
+    color: theme.colors.primary
+  }),
+  environmentItemTextLighter: theme => ({
+    color: theme.colors.black2
   })
 })
 
