@@ -8,6 +8,7 @@ import { colors } from 'common/styles'
 import { OMGText, OMGFontIcon } from 'components/widgets'
 import OMGDrawerContentItem from './OMGDrawerContentItem'
 import { settingActions, onboardingActions } from 'common/actions'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const ManageWalletMenu = ({ theme, title, style, onPress }) => {
   return (
@@ -49,87 +50,89 @@ const OMGDrawerContent = ({
     <SafeAreaView
       style={styles.container}
       forceInset={{ top: 'always', horizontal: 'never' }}>
-      {wallets.length > 0 && (
-        <View>
+      <ScrollView>
+        {wallets.length > 0 && (
+          <View>
+            <OMGText weight='bold' style={styles.titleText}>
+              WALLETS
+            </OMGText>
+
+            {wallets.map(wallet => (
+              <>
+                <OMGDrawerContentItem
+                  wallet={wallet}
+                  key={wallet.address}
+                  onWalletPress={handleWalletPress}
+                  primary={
+                    primaryWallet && primaryWallet.address === wallet.address
+                  }
+                />
+                <View style={styles.divider(theme)} />
+              </>
+            ))}
+          </View>
+        )}
+
+        <View style={styles.settingContainer}>
           <OMGText weight='bold' style={styles.titleText}>
-            WALLETS
+            SETTINGS
           </OMGText>
-
-          {wallets.map(wallet => (
-            <>
-              <OMGDrawerContentItem
-                wallet={wallet}
-                key={wallet.address}
-                onWalletPress={handleWalletPress}
-                primary={
-                  primaryWallet && primaryWallet.address === wallet.address
-                }
-              />
-              <View style={styles.divider(theme)} />
-            </>
-          ))}
-        </View>
-      )}
-
-      <View style={styles.settingContainer}>
-        <OMGText weight='bold' style={styles.titleText}>
-          SETTINGS
-        </OMGText>
-        <ManageWalletMenu
-          title='Import Wallet'
-          theme={theme}
-          onPress={() => handleManageWalletMenuPress('ImportWallet')}
-        />
-        <View style={styles.divider(theme)} />
-        <ManageWalletMenu
-          title='Create Wallet'
-          theme={theme}
-          onPress={() => handleManageWalletMenuPress('CreateWallet')}
-        />
-        <View style={styles.divider(theme)} />
-        <ManageWalletMenu
-          title='Backup Wallet'
-          theme={theme}
-          onPress={() => handleManageWalletMenuPress('BackupWallet')}
-        />
-        <View style={styles.divider(theme)} />
-        <ManageWalletMenu
-          title='Delete Wallet'
-          theme={theme}
-          onPress={() => handleManageWalletMenuPress('DeleteWallet')}
-        />
-        <View style={styles.divider(theme)} />
-        <View style={styles.expander} />
-        <View style={styles.environment}>
-          <OMGText weight='bold' style={styles.environmentTitleText(theme)}>
-            Environment Info
-          </OMGText>
-          <View style={styles.envInfoCard(theme)}>
-            <OMGText style={styles.environmentItemText(theme)}>
-              Ethereum Network
+          <ManageWalletMenu
+            title='Import Wallet'
+            theme={theme}
+            onPress={() => handleManageWalletMenuPress('ImportWallet')}
+          />
+          <View style={styles.divider(theme)} />
+          <ManageWalletMenu
+            title='Create Wallet'
+            theme={theme}
+            onPress={() => handleManageWalletMenuPress('CreateWallet')}
+          />
+          <View style={styles.divider(theme)} />
+          <ManageWalletMenu
+            title='Backup Wallet'
+            theme={theme}
+            onPress={() => handleManageWalletMenuPress('BackupWallet')}
+          />
+          <View style={styles.divider(theme)} />
+          <ManageWalletMenu
+            title='Delete Wallet'
+            theme={theme}
+            onPress={() => handleManageWalletMenuPress('DeleteWallet')}
+          />
+          <View style={styles.divider(theme)} />
+          <View style={styles.expander} />
+          <View style={styles.environment}>
+            <OMGText weight='bold' style={styles.environmentTitleText(theme)}>
+              Environment Info
             </OMGText>
-            <OMGText style={styles.environmentItemTextLighter(theme)}>
-              {Config.ETHERSCAN_NETWORK}
-            </OMGText>
-          </View>
-          <View style={styles.envInfoCard(theme)}>
-            <OMGText style={styles.environmentItemText(theme)}>
-              Plasma Contract
-            </OMGText>
-            <OMGText style={styles.environmentItemTextLighter(theme)}>
-              {Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS}
-            </OMGText>
-          </View>
-          <View style={styles.envInfoCard(theme)}>
-            <OMGText style={styles.environmentItemText(theme)}>
-              Watcher URL
-            </OMGText>
-            <OMGText style={styles.environmentItemTextLighter(theme)}>
-              {Config.CHILDCHAIN_WATCHER_URL}
-            </OMGText>
+            <View style={styles.envInfoCard(theme)}>
+              <OMGText style={styles.environmentItemText(theme)}>
+                Ethereum Network
+              </OMGText>
+              <OMGText style={styles.environmentItemTextLighter(theme)}>
+                {Config.ETHERSCAN_NETWORK}
+              </OMGText>
+            </View>
+            <View style={styles.envInfoCard(theme)}>
+              <OMGText style={styles.environmentItemText(theme)}>
+                Plasma Contract
+              </OMGText>
+              <OMGText style={styles.environmentItemTextLighter(theme)}>
+                {Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS}
+              </OMGText>
+            </View>
+            <View style={styles.envInfoCard(theme)}>
+              <OMGText style={styles.environmentItemText(theme)}>
+                Watcher URL
+              </OMGText>
+              <OMGText style={styles.environmentItemTextLighter(theme)}>
+                {Config.CHILDCHAIN_WATCHER_URL}
+              </OMGText>
+            </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }
