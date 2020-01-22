@@ -167,5 +167,5 @@ jobs:
           export PROXY_SERVER_DOCKER_TAG=$(echo $PROXY_SERVER_DOCKER_REPO_URL:$SHORT_GIT_HASH)
           echo $PROXY_SERVER_GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
           gcloud auth configure-docker
-          gcloud beta container clusters get-credentials dev-73f526d-ropsten-01 --region asia-southeast1 --project omisego-development
+          gcloud beta container clusters get-credentials dev-6f757ea-ropsten-01 --region asia-southeast1 --project omisego-development
           kubectl set image deployment/mobile-wallet-proxy mobile-wallet-proxy=$PROXY_SERVER_DOCKER_TAG
