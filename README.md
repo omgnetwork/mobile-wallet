@@ -55,9 +55,7 @@ EXIT_PERIOD=<EXIT_PERIOD>
 
 ## Testing
 
-1. Copy `__mock__/react-native-config.example.js` and paste as `__mock__/react-native-config.js`
-2. Fill missing testing environment value e.g. `TEST_ADDRESS`, `TEST_PRIVATE_KEY`.
-3. Run test with `npm run test`
+Run test with `npm run test`
 
 ## Developer Notes
 
