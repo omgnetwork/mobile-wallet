@@ -37,7 +37,8 @@ describe('Test Token Util', () => {
         expect(contractAddress).toBeDefined()
       }
     )
-  })
+  }, 15000)
+
   it('fetchTokens should return [contractAddress: {tokenName, tokenSymbol, tokenDecimal, price, balance}]', () => {
     return Token.fetchTokens(
       provider,
