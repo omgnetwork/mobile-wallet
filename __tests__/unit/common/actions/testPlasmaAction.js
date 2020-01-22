@@ -8,9 +8,8 @@ import {
 import { ethers } from 'ethers'
 import { Datetime } from 'common/utils'
 import { TransactionActionTypes } from 'common/constants'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 import Config from 'react-native-config'
+import { getMockStore } from '../../../helpers'
 import { plasmaActions } from 'common/actions'
 import { ContractAddress } from 'common/constants'
 
@@ -25,8 +24,7 @@ const {
   TEST_ERC20_TOKEN_CONTRACT_ADDRESS
 } = Config
 
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const mockStore = getMockStore()
 const provider = ethers.getDefaultProvider(ETHERSCAN_NETWORK)
 
 const mockPlasmaService = (method, resp) => {

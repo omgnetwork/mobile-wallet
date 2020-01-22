@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "*": ["src/*"],
-      "test/*": ["tests/*"],
+      "test/*": ["__tests__/*"],
       "underscore": ["lodash"]
     }
   }

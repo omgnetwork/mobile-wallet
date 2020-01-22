@@ -40,7 +40,6 @@
     "babel-plugin-transform-remove-console": "^6.9.4",
     "bignumber.js": "^9.0.0",
     "browserify-zlib": "^0.1.4",
-    "eslint-plugin-jest": "^22.13.6",
     "ethereum-input-data-decoder": "^0.2.0",
     "ethers": "^4.0.33",
     "events": "^1.1.1",
@@ -107,6 +106,7 @@
     "eslint-config-prettier": "^6.0.0",
     "eslint-import-resolver-babel-module": "^5.1.0",
     "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.21.0",
     "eslint-plugin-prettier": "^3.1.0",
     "jest": "^24.9.0",
     "jetifier": "^1.6.4",
@@ -159,6 +159,8 @@
   },
   "jest": {
     "preset": "react-native",
-    "testMatch": ["**/tests/**/*.js"]
+    "testMatch": [
+      "**/__tests__/unit/**/*.js"
+    ]
   }
 }

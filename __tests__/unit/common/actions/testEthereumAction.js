@@ -1,6 +1,5 @@
 import { ethereumActions } from 'common/actions'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
+import { getMockStore } from '../../../helpers/index'
 import { ethers } from 'ethers'
 import {
   sendErc20Token,
@@ -13,8 +12,7 @@ jest.mock('common/services/ethereumService')
 jest.spyOn(global, 'requestAnimationFrame').mockImplementation(cb => cb())
 
 const { ETHERSCAN_NETWORK, TEST_PRIVATE_KEY, TEST_ADDRESS } = Config
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const mockStore = getMockStore()
 
 const mockEthereumService = (method, resp) => {
   method.mockReturnValueOnce(Promise.resolve(resp))
