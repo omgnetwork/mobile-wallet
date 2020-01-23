@@ -50,7 +50,7 @@ const OMGDrawerContent = ({
     <SafeAreaView
       style={styles.container}
       forceInset={{ top: 'always', horizontal: 'never' }}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.scrollView}>
         {wallets.length > 0 && (
           <View>
             <OMGText weight='bold' style={styles.titleText}>
@@ -160,6 +160,9 @@ const styles = StyleSheet.create({
     height: 1,
     opacity: 0.3
   }),
+  scrollView: {
+    flexGrow: 1
+  },
   walletContainer: {
     marginTop: 16,
     flexDirection: 'column'
@@ -195,7 +198,7 @@ const styles = StyleSheet.create({
   environmentTitleText: theme => ({
     opacity: 0.5,
     color: theme.colors.gray3,
-    paddingBottom: 16
+    paddingBottom: 8
   }),
   environmentItemText: theme => ({
     fontSize: 14,
