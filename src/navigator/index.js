@@ -25,8 +25,6 @@ Views.ImportWallet.router = ImportWalletNavigator.router
 Views.CreateWallet.router = CreateWalletNavigator.router
 Views.Backup.router = BackupWalletNavigator.router
 
-console.log(Views.DeleteWallet)
-
 const WelcomeNavigator = createWelcomeNavigator(
   ImportWalletNavigator,
   CreateWalletNavigator

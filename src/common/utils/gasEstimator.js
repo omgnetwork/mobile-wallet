@@ -60,7 +60,6 @@ export const estimateExit = async (blockchainWallet, token) => {
   const utxoToExit = await Plasma.getUtxos(blockchainWallet.address, {
     currency: token.contractAddress
   }).then(utxos => utxos[0])
-  console.log(utxoToExit)
   const acceptableUtxoParams = Plasma.createAcceptableUtxoParams(utxoToExit)
   const exitTx = await Plasma.getExitData(acceptableUtxoParams)
   const from = blockchainWallet.address
@@ -75,7 +74,6 @@ export const estimateExit = async (blockchainWallet, token) => {
   try {
     const exitGas = await web3EstimateGas(txDetails)
     const totalGas = exitGas + bondFee
-    console.log('totalGas', totalGas)
     return totalGas
   } catch (err) {
     console.log(err)
