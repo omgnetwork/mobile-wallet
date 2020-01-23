@@ -1,20 +1,20 @@
 import { Ethereum } from 'common/blockchain'
-import Config from 'react-native-config'
+import Config from '../../../config'
 import { ethers } from 'ethers'
 import { Gas } from 'common/constants'
+
+const mockWalletTransfer = wallet => {
+  wallet.sendTransaction = jest.fn()
+}
 
 const {
   TEST_MNEMONIC,
   TEST_PRIVATE_KEY,
   TEST_ADDRESS,
-  ETHERSCAN_NETWORK,
-  TEST_ERC20_TOKEN_CONTRACT_ADDRESS
+  ETHERSCAN_NETWORK
 } = Config
 
 const testProvider = Ethereum.createProvider(ETHERSCAN_NETWORK)
-const mockWalletTransfer = wallet => {
-  wallet.sendTransaction = jest.fn()
-}
 
 describe('Test Ethereum Boundary', () => {
   it('importWalletMnemonic should return a wallet when given 12-words mnemonic', () => {
@@ -28,7 +28,7 @@ describe('Test Ethereum Boundary', () => {
   it('sendEthToken should send expected parameters', () => {
     const wallet = new ethers.Wallet(TEST_PRIVATE_KEY, testProvider)
     mockWalletTransfer(wallet)
-    const fee = { amount: '0.1', symbol: 'gwei' }
+    const fee = { amount: '1000000000', symbol: 'wei' }
     const token = { balance: '1', numberOfDecimals: 18 }
     const toAddress = TEST_ADDRESS
     const expectedValue = ethers.utils.parseUnits(
@@ -36,7 +36,7 @@ describe('Test Ethereum Boundary', () => {
       token.numberOfDecimals
     )
     const expectedFee = ethers.utils.parseUnits(fee.amount, fee.symbol)
-    const receipt = Ethereum.sendEthToken(wallet, { fee, token, toAddress })
+    Ethereum.sendEthToken(wallet, { fee, token, toAddress })
     expect(wallet.sendTransaction).toBeCalledWith({
       to: toAddress,
       value: expectedValue,
@@ -47,7 +47,7 @@ describe('Test Ethereum Boundary', () => {
 
   it('sendERC20Token should send expected parameters', () => {
     const contract = { transfer: jest.fn() }
-    const fee = { amount: '0.1', symbol: 'gwei' }
+    const fee = { amount: '1000000000', symbol: 'wei' }
     const token = { balance: '1', numberOfDecimals: 5 }
     const toAddress = TEST_ADDRESS
     const expectedValue = ethers.utils.parseUnits(
@@ -55,7 +55,7 @@ describe('Test Ethereum Boundary', () => {
       token.numberOfDecimals
     )
     const expectedFee = ethers.utils.parseUnits(fee.amount, fee.symbol)
-    const receipt = Ethereum.sendErc20Token(contract, { fee, token, toAddress })
+    Ethereum.sendErc20Token(contract, { fee, token, toAddress })
     expect(contract.transfer).toBeCalledWith(toAddress, expectedValue, {
       gasPrice: expectedFee,
       gasLimit: Gas.LOW_LIMIT
