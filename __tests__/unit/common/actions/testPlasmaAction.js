@@ -31,7 +31,7 @@ const mockPlasmaService = (method, resp) => {
   method.mockReturnValueOnce(Promise.resolve(resp))
 }
 
-describe('Plasma Action Test', () => {
+describe('Test Plasma Actions', () => {
   it('fetchAssets should dispatch actions as expected', () => {
     const childchainAssets = [
       {

@@ -2,7 +2,7 @@ import { BlockchainRenderer } from 'common/blockchain'
 
 const FIVE_GWEI = '5000000000'
 
-describe('BlockchainRenderer', () => {
+describe('Test BlockchainRenderer', () => {
   it('renderGasFee with zero flat fee should be equal to gasUsed * gasPrice in Ether unit', () => {
     const gasUsed = 21000
     const gasPrice = FIVE_GWEI
