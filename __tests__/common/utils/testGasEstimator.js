@@ -24,7 +24,6 @@ describe('Test Gas Estimator', () => {
     )
 
     return pendingGasUsed.then(gasUsed => {
-      console.log(gasUsed.toString(10))
       expect(gasUsed.toString(10)).toBeDefined()
     })
   })

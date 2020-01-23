@@ -106,8 +106,6 @@ export const depositErc20 = async (
 
   const approveReceipt = await approveErc20(approveOptions, privateKey)
 
-  console.log(approveReceipt)
-
   // SEND DEPOSIT TRANSACTION 👇
 
   const encodedDepositTx = PlasmaUtils.transaction.encodeDeposit(
