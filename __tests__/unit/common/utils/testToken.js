@@ -1,23 +1,19 @@
 import { Token } from 'common/blockchain'
 import { ethers } from 'ethers'
-import Config from 'react-native-config'
+import Config from '../../../config'
 
-const { ETHERSCAN_NETWORK, TEST_ERC20_TOKEN_CONTRACT_ADDRESS } = Config
+const {
+  ETHERSCAN_NETWORK,
+  TEST_ERC20_TOKEN_CONTRACT_ADDRESS,
+  TEST_WALLET_ADDRESS_FOR_TOKENS,
+  TEST_TOKENS
+} = Config
 
 const provider = ethers.getDefaultProvider('homestead')
 const testProvider = ethers.getDefaultProvider(ETHERSCAN_NETWORK)
 
-const ETH = '0x0000000000000000000000000000000000000000'
-// DAI return bytes32 symbol and name
-const DAI = '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
-// OMG return string symbol and name
-const OMG = '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07'
-// KICK return decimal 8
-const KCK = '0xc12d1c73ee7dc3615ba4e37e4abfdbddfa38907e'
-// HYP return bytes8 symbol and bytes32 name.
-const HYP = '0x2630997aab62fa1030a8b975e1aa2dc573b18a13'
-
-const testWalletAddress = '0x357829df016316d8DC40a54f0a8D84D53B0D76dD'
+const testWalletAddress = TEST_WALLET_ADDRESS_FOR_TOKENS
+const [ETH, DAI, OMG, KCK, HYP] = TEST_TOKENS
 
 describe('Test Token Util', () => {
   it('fetchTokenDetail should return {name, symbol, decimals, price, balance, contractAddress}', () => {

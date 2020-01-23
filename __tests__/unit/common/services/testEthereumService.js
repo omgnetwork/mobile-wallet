@@ -1,9 +1,12 @@
 import { providerService, ethereumService } from 'common/services'
 import { Token } from 'common/blockchain'
 import { ethers } from 'ethers'
+import Config from '../../../config'
 
 jest.mock('common/services/providerService.js')
 jest.mock('common/blockchain/token.js')
+
+const { TEST_TOKENS, TEST_WALLET_ADDRESS_FOR_TOKENS } = Config
 
 const { getTransactionHistory } = providerService
 const { fetchTokens } = Token
@@ -15,15 +18,11 @@ const mockBlockchainToken = (method, resp) => {
   method.mockReturnValueOnce(Promise.resolve(resp))
 }
 const provider = ethers.getDefaultProvider('homestead')
-const testAddress = '0x357829df016316d8DC40a54f0a8D84D53B0D76dD'
+const testAddress = TEST_WALLET_ADDRESS_FOR_TOKENS
+const [ETH, DAI, OMG, KCK] = TEST_TOKENS
 
-describe('Test Ethereum Service', () => {
+describe('Test Ethereum Services', () => {
   it('fetchAssets should return a list of assets', () => {
-    const ETH = '0x0000000000000000000000000000000000000000'
-    const DAI = '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
-    const OMG = '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07'
-    const KCK = '0xc12d1c73ee7dc3615ba4e37e4abfdbddfa38907e'
-
     mockProviderService(getTransactionHistory, [
       { contractAddress: KCK },
       { contractAddress: DAI },
