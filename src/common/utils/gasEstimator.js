@@ -6,7 +6,7 @@ import { ContractABI, Parser } from 'common/utils'
 export const estimateTransferErc20 = (wallet, to, fee, token) => {
   const abi = ContractABI.erc20Abi()
   const contract = new Ethereum.getContract(token.contractAddress, abi, wallet)
-  const amount = Parser.parseUnits(token.balance, token.numberOfDecimals)
+  const amount = Parser.parseUnits(token.balance, token.tokenDecimal)
   const gasOptions = {
     gasLimit: Gas.LOW_LIMIT,
     gasPrice: Parser.parseUnits(fee.amount, 'wei')
