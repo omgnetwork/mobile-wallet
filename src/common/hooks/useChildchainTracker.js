@@ -43,9 +43,7 @@ const useChildchainTracker = wallet => {
 
   const track = useCallback(async () => {
     const currentWatcherTxs = await syncTransactions()
-    // console.log(currentWatcherTxs)
     const confirmedTx = verify(currentWatcherTxs)
-    console.log('which one?', confirmedTx)
     if (confirmedTx) {
       const notificationPayload = buildNotification(confirmedTx)
       setNotification(notificationPayload)
