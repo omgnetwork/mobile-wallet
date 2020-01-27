@@ -112,7 +112,7 @@ const useProgressiveFeedback = (
     const formattedFeedback = formatFeedbackTx(feedbackTx)
     setFeedback(formattedFeedback)
     setVisible(feedbackTx !== null)
-    if (formattedFeedback && formattedFeedback.pending === false) {
+    if (formattedFeedback && !formattedFeedback.pending) {
       startAutoDismiss()
     }
   }, [formatFeedbackTx, handleOnClose, selectFeedbackTx, startAutoDismiss])

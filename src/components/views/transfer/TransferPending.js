@@ -36,32 +36,19 @@ const TransferPending = ({ theme, navigation }) => {
     token.balance,
     token.price
   )
-  const gasDetailAvailable = unconfirmedTx.gasUsed && unconfirmedTx.gasPrice
+  const { gasUsed, gasPrice, hash, actionType } = unconfirmedTx
+
+  const gasDetailAvailable = gasUsed && gasPrice
   const gasFee = useCallback(() => {
-    return (
-      estimatedGasFee ||
-      BlockchainRenderer.renderGasFee(
-        unconfirmedTx.gasUsed,
-        unconfirmedTx.gasPrice
-      )
-    )
-  }, [estimatedGasFee, unconfirmedTx.gasPrice, unconfirmedTx.gasUsed])
+    return estimatedGasFee || BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
+  }, [estimatedGasFee, gasPrice, gasUsed])
 
   const gasFeeUsd = useCallback(() => {
     return (
       estimatedGasFeeUsd ||
-      BlockchainRenderer.renderGasFeeUsd(
-        unconfirmedTx.gasUsed,
-        unconfirmedTx.gasPrice,
-        token.price
-      )
+      BlockchainRenderer.renderGasFeeUsd(gasUsed, gasPrice, token.price)
     )
-  }, [
-    estimatedGasFeeUsd,
-    unconfirmedTx.gasUsed,
-    unconfirmedTx.gasPrice,
-    token.price
-  ])
+  }, [estimatedGasFeeUsd, gasUsed, gasPrice, token.price])
 
   const handleOnBackPressedAndroid = () => {
     return true
@@ -71,18 +58,18 @@ const TransferPending = ({ theme, navigation }) => {
     switch (transferType) {
       case TransferHelper.TYPE_DEPOSIT:
         return GoogleAnalytics.sendEvent('transfer_deposited', {
-          hash: unconfirmedTx.hash
+          hash
         })
       case TransferHelper.TYPE_TRANSFER_ROOTCHAIN:
         return GoogleAnalytics.sendEvent('transfer_rootchain', {
-          hash: unconfirmedTx.hash
+          hash
         })
       default:
         return GoogleAnalytics.sendEvent('transfer_childchain', {
-          hash: unconfirmedTx.hash
+          hash
         })
     }
-  }, [transferType, unconfirmedTx])
+  }, [transferType, hash])
 
   return (
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
@@ -94,7 +81,11 @@ const TransferPending = ({ theme, navigation }) => {
         <View style={styles.contentContainer}>
           <View style={styles.headerContainer}>
             <View style={styles.icon(theme)}>
-              <OMGFontIcon name='pending' size={24} color={theme.colors.white} />
+              <OMGFontIcon
+                name='pending'
+                size={24}
+                color={theme.colors.white}
+              />
             </View>
             <OMGText style={styles.title(theme)} weight='bold'>
               Pending Transaction
@@ -175,14 +166,11 @@ const TransferPending = ({ theme, navigation }) => {
             }}>
             Done
           </OMGButton>
-          {unconfirmedTx.actionType !==
-            TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN && (
+          {actionType !== TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN && (
             <TouchableOpacity
               style={styles.trackEtherscanButton}
               onPress={() => {
-                Linking.openURL(
-                  `${Config.ETHERSCAN_TX_URL}${unconfirmedTx.hash}`
-                )
+                Linking.openURL(`${Config.ETHERSCAN_TX_URL}${hash}`)
               }}>
               <OMGText style={styles.trackEtherscanText(theme)}>
                 Track on Etherscan
