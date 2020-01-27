@@ -13,7 +13,6 @@ const useChildchainTracker = wallet => {
 
   const verify = useCallback(
     currentWatcherTxs => {
-      // console.log(currentWatcherTxs)
       const latestUnconfirmedTx = unconfirmedChildchainTxs.slice(-1).pop()
       const confirmedTx = currentWatcherTxs.find(
         tx => latestUnconfirmedTx.hash === tx.hash
