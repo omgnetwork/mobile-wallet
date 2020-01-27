@@ -141,7 +141,7 @@ const approveErc20 = async (approveOptions, ownerPrivateKey) => {
 
 const receiptWithGasPrice = (txReceipt, gasPrice, additionalGasUsed = 0) => {
   return {
-    transactionHash: txReceipt.transactionHash,
+    hash: txReceipt.transactionHash,
     from: txReceipt.from,
     to: txReceipt.to,
     blockNumber: txReceipt.blockNumber,
@@ -166,14 +166,14 @@ export const standardExit = (exitData, blockchainWallet, options) => {
 }
 
 export const waitForRootchainTransaction = ({
-  transactionHash,
+  hash,
   intervalMs,
   confirmationThreshold,
   onCountdown = remaining => {}
 }) => {
   return PlasmaUtils.waitForRootchainTransaction({
     web3,
-    transactionHash,
+    hash,
     checkIntervalMs: intervalMs,
     blocksToWait: confirmationThreshold,
     onCountdown: onCountdown
@@ -272,6 +272,6 @@ export const getTxs = (address, options) => {
   })
 }
 
-export const getTx = transactionHash => {
-  return Plasma.ChildChain.getTransaction(transactionHash)
+export const getTx = hash => {
+  return Plasma.ChildChain.getTransaction(hash)
 }

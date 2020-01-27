@@ -415,7 +415,7 @@ describe('Test Plasma Boundary', () => {
     const gasPrice = '6000000'
 
     mockDepositEthResponse({
-      transactionHash: 'any',
+      hash: 'any',
       from: 'any',
       to: 'any',
       blockNumber: 'any',
@@ -458,7 +458,7 @@ describe('Test Plasma Boundary', () => {
     mockWeb3SignTransaction({ rawTransaction: 'rawTransaction' })
     mockWeb3SendSignedTransaction({ gasUsed: gas })
     mockDepositErc20Response({
-      transactionHash: 'any',
+      hash: 'any',
       from: 'any',
       to: 'any',
       blockNumber: 'any',

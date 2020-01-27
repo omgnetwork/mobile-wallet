@@ -12,8 +12,14 @@ jest.mock('common/services/ethereumService')
 jest.spyOn(global, 'requestAnimationFrame').mockImplementation(cb => cb())
 
 const { ETHERSCAN_NETWORK, TEST_PRIVATE_KEY, TEST_ADDRESS } = Config
-const mockStore = getMockStore()
+const mockTxOptions = {
+  hash: 'any',
+  from: 'any',
+  nonce: 'any',
+  gasPrice: 'any'
+}
 
+const mockStore = getMockStore()
 const mockEthereumService = (method, resp) => {
   method.mockReturnValueOnce(Promise.resolve(resp))
 }
@@ -25,12 +31,7 @@ describe('Test Ethereum Actions', () => {
     const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
     const toAddress = TEST_ADDRESS
     const store = mockStore({ unconfirmedTxs: [] })
-    mockEthereumService(sendErc20Token, {
-      hash: 'any',
-      from: 'any',
-      nonce: 'any',
-      gasPrice: 'any'
-    })
+    mockEthereumService(sendErc20Token, mockTxOptions)
     const action = ethereumActions.sendErc20Token(token, fee, wallet, toAddress)
     return store.dispatch(action).then(() => {
       expect(sendErc20Token).toBeCalledWith(wallet, { token, fee, toAddress })
@@ -40,14 +41,11 @@ describe('Test Ethereum Actions', () => {
         {
           type: 'ROOTCHAIN/SEND_ERC20_TOKEN/SUCCESS',
           data: {
-            hash: 'any',
-            from: 'any',
+            ...mockTxOptions,
             to: toAddress,
-            nonce: 'any',
             value: token.balance,
             actionType: 'ROOTCHAIN_SEND',
             symbol: token.tokenSymbol,
-            gasPrice: 'any',
             createdAt: dispatchedActions[1].data.createdAt
           }
         },
@@ -62,12 +60,7 @@ describe('Test Ethereum Actions', () => {
     const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
     const toAddress = TEST_ADDRESS
     const store = mockStore({ unconfirmedTxs: [] })
-    mockEthereumService(sendEthToken, {
-      hash: 'any',
-      from: 'any',
-      nonce: 'any',
-      gasPrice: 'any'
-    })
+    mockEthereumService(sendEthToken, mockTxOptions)
     const action = ethereumActions.sendEthToken(token, fee, wallet, toAddress)
     return store.dispatch(action).then(() => {
       expect(sendEthToken).toBeCalledWith(wallet, { token, fee, toAddress })
@@ -77,15 +70,12 @@ describe('Test Ethereum Actions', () => {
         {
           type: 'ROOTCHAIN/SEND_ETH_TOKEN/SUCCESS',
           data: {
-            hash: 'any',
-            from: 'any',
+            ...mockTxOptions,
             to: toAddress,
-            nonce: 'any',
             gasUsed: null,
             value: token.balance,
             actionType: 'ROOTCHAIN_SEND',
             symbol: token.tokenSymbol,
-            gasPrice: 'any',
             createdAt: dispatchedActions[1].data.createdAt
           }
         },

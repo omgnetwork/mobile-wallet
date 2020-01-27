@@ -27,6 +27,21 @@ const {
 const mockStore = getMockStore()
 const provider = ethers.getDefaultProvider(ETHERSCAN_NETWORK)
 
+const mockDepositTxReceipt = {
+  hash: 'any',
+  gasPrice: 'any',
+  gasUsed: 'any'
+}
+
+const mockExitTxReceipt = {
+  hash: 'any',
+  exitId: 'any',
+  blknum: 'any',
+  flatFee: 'any',
+  to: 'any',
+  gasPrice: 'any'
+}
+
 const mockPlasmaService = (method, resp) => {
   method.mockReturnValueOnce(Promise.resolve(resp))
 }
@@ -95,11 +110,7 @@ describe('Test Plasma Actions', () => {
       tokenDecimal: 18,
       contractAddress: ContractAddress.ETH_ADDRESS
     }
-    mockPlasmaService(depositEth, {
-      transactionHash: 'any',
-      gasPrice: 'any',
-      gasUsed: 'any'
-    })
+    mockPlasmaService(depositEth, mockDepositTxReceipt)
 
     const store = mockStore({})
 
@@ -110,14 +121,12 @@ describe('Test Plasma Actions', () => {
         {
           type: 'CHILDCHAIN/DEPOSIT_ETH_TOKEN/SUCCESS',
           data: {
-            hash: 'any',
+            ...mockDepositTxReceipt,
             from: TEST_ADDRESS,
             value: token.balance,
             symbol: token.tokenSymbol,
             tokenDecimal: token.tokenDecimal,
             contractAddress: token.contractAddress,
-            gasPrice: 'any',
-            gasUsed: 'any',
             actionType: 'CHILDCHAIN_DEPOSIT',
             createdAt: actions[1].data.createdAt
           }
@@ -135,11 +144,7 @@ describe('Test Plasma Actions', () => {
       tokenDecimal: 18,
       contractAddress: TEST_ERC20_TOKEN_CONTRACT_ADDRESS
     }
-    mockPlasmaService(depositErc20, {
-      transactionHash: 'any',
-      gasPrice: 'any',
-      gasUsed: 'any'
-    })
+    mockPlasmaService(depositErc20, mockDepositTxReceipt)
 
     const store = mockStore({})
 
@@ -152,14 +157,12 @@ describe('Test Plasma Actions', () => {
           {
             type: 'CHILDCHAIN/DEPOSIT_ERC20_TOKEN/SUCCESS',
             data: {
-              hash: 'any',
+              ...mockDepositTxReceipt,
               from: TEST_ADDRESS,
               value: token.balance,
               symbol: token.tokenSymbol,
               tokenDecimal: token.tokenDecimal,
               contractAddress: token.contractAddress,
-              gasPrice: 'any',
-              gasUsed: 'any',
               actionType: 'CHILDCHAIN_DEPOSIT',
               createdAt: actions[1].data.createdAt
             }
@@ -221,14 +224,7 @@ describe('Test Plasma Actions', () => {
       contractAddress: TEST_ERC20_TOKEN_CONTRACT_ADDRESS
     }
 
-    mockPlasmaService(exit, {
-      transactionHash: 'any',
-      exitId: 'any',
-      blknum: 'any',
-      flatFee: 'any',
-      paymentExitGameAddress: 'any',
-      gasPrice: 'any'
-    })
+    mockPlasmaService(exit, mockExitTxReceipt)
 
     const store = mockStore()
     return store.dispatch(plasmaActions.exit(wallet, token)).then(() => {
@@ -237,20 +233,15 @@ describe('Test Plasma Actions', () => {
         { type: 'CHILDCHAIN/EXIT/INITIATED' },
         {
           data: {
+            ...mockExitTxReceipt,
             actionType: 'CHILDCHAIN_EXIT',
-            childchainBlockNumber: 'any',
             contractAddress: token.contractAddress,
             createdAt: actions[1].data.createdAt,
-            exitId: 'any',
-            flatFee: 'any',
             from: wallet.address,
-            gasPrice: 'any',
             gasUsed: 1,
-            hash: 'any',
             smallestValue: '1000000000000000',
             symbol: token.tokenSymbol,
             timestamp: actions[1].data.timestamp,
-            to: 'any',
             tokenDecimal: token.tokenDecimal,
             type: 'exit',
             value: token.balance

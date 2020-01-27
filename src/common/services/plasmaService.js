@@ -61,10 +61,10 @@ export const getTxs = (address, options) => {
   })
 }
 
-export const getTx = transactionHash => {
+export const getTx = hash => {
   return new Promise(async (resolve, reject) => {
     try {
-      const transaction = await Plasma.getTx(transactionHash)
+      const transaction = await Plasma.getTx(hash)
       resolve({
         hash: transaction.txhash,
         ...transaction
@@ -114,12 +114,18 @@ export const depositEth = (address, privateKey, amount) => {
   return new Promise(async (resolve, reject) => {
     try {
       const weiAmount = Parser.parseUnits(amount, 'ether').toString(10)
-      const transactionReceipt = await Plasma.depositEth(
+
+      const { hash, gasPrice, gasUsed } = await Plasma.depositEth(
         address,
         privateKey,
         new BN(weiAmount)
       )
-      resolve(transactionReceipt)
+
+      resolve({
+        hash,
+        gasPrice,
+        gasUsed
+      })
     } catch (err) {
       reject(err)
     }
@@ -133,13 +139,18 @@ export const depositErc20 = (address, privateKey, token) => {
         token.balance,
         token.tokenDecimal
       ).toString(10)
-      const transactionReceipt = await Plasma.depositErc20(
+
+      const { hash, gasPrice, gasUsed } = await Plasma.depositErc20(
         address,
         privateKey,
         weiAmount,
         token.contractAddress
       )
-      resolve(transactionReceipt)
+      resolve({
+        hash,
+        gasPrice,
+        gasUsed
+      })
     } catch (err) {
       reject(err)
     }
@@ -204,8 +215,12 @@ export const exit = (blockchainWallet, token) => {
       })
 
       const gasPrice = Gas.EXIT_GAS_PRICE
+<<<<<<< Updated upstream
 
       const { transactionHash } = await Plasma.standardExit(
+=======
+      const { transactionHash: hash } = await Plasma.standardExit(
+>>>>>>> Stashed changes
         exitData,
         blockchainWallet,
         { gasPrice }
@@ -216,10 +231,10 @@ export const exit = (blockchainWallet, token) => {
       const standardExitBond = bonds.standardExit.toString()
 
       resolve({
-        transactionHash,
+        hash,
         exitId,
         blknum: utxoToExit.blknum,
-        paymentExitGameAddress: address,
+        to: address,
         flatFee: standardExitBond,
         gasPrice
       })

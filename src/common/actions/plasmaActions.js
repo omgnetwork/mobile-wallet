@@ -25,18 +25,14 @@ export const fetchAssets = (provider, address) => {
 
 export const depositEth = (blockchainWallet, token) => {
   const asyncAction = async () => {
-    const {
-      transactionHash,
-      gasPrice,
-      gasUsed
-    } = await plasmaService.depositEth(
+    const { hash, gasPrice, gasUsed } = await plasmaService.depositEth(
       blockchainWallet.address,
       blockchainWallet.privateKey,
       token.balance
     )
 
     return {
-      hash: transactionHash,
+      hash,
       from: blockchainWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
@@ -56,18 +52,14 @@ export const depositEth = (blockchainWallet, token) => {
 
 export const depositErc20 = (blockchainWallet, token) => {
   const asyncAction = async () => {
-    const {
-      transactionHash,
-      gasPrice,
-      gasUsed
-    } = await plasmaService.depositErc20(
+    const { hash, gasPrice, gasUsed } = await plasmaService.depositErc20(
       blockchainWallet.address,
       blockchainWallet.privateKey,
       token
     )
 
     return {
-      hash: transactionHash,
+      hash,
       from: blockchainWallet.address,
       value: token.balance,
       symbol: token.tokenSymbol,
@@ -116,18 +108,18 @@ export const transfer = (blockchainWallet, toAddress, token) => {
 export const exit = (blockchainWallet, token) => {
   const asyncAction = async () => {
     const {
-      transactionHash,
+      hash,
       exitId,
       blknum,
       flatFee,
-      paymentExitGameAddress,
+      to,
       gasPrice
     } = await plasmaService.exit(blockchainWallet, token)
 
     return {
-      hash: transactionHash,
+      hash,
       from: blockchainWallet.address,
-      to: paymentExitGameAddress,
+      to: to,
       value: token.balance,
       smallestValue: Parser.parseUnits(
         token.balance,
@@ -135,7 +127,7 @@ export const exit = (blockchainWallet, token) => {
       ).toString(),
       symbol: token.tokenSymbol,
       exitId: exitId,
-      childchainBlockNumber: blknum,
+      blknum,
       tokenDecimal: token.tokenDecimal,
       contractAddress: token.contractAddress,
       flatFee,
