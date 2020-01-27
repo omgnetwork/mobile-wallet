@@ -2,7 +2,7 @@ import { ChildChain, RootChain, OmgUtil } from '@omisego/omg-js'
 import Config from 'react-native-config'
 import Web3 from 'web3'
 
-const web3 = new Web3(
+export const web3 = new Web3(
   new Web3.providers.HttpProvider(Config.WEB3_HTTP_PROVIDER),
   null,
   {
@@ -17,8 +17,7 @@ const rootchain = new RootChain({
 const childchain = new ChildChain({ watcherUrl: Config.CHILDCHAIN_WATCHER_URL })
 
 export const Plasma = {
-  rootchain,
-  childchain,
-  utils: OmgUtil,
-  transaction: OmgUtil.transaction
+  RootChain: rootchain,
+  ChildChain: childchain
 }
+export const PlasmaUtils = OmgUtil

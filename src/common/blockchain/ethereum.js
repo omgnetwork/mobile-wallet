@@ -1,7 +1,6 @@
-import 'ethers/dist/shims.js'
 import { ethers } from 'ethers'
-import { Parser, ContractABI } from 'common/utils'
-import { ContractAddress, Gas } from 'common/constants/'
+import { Parser } from 'common/utils'
+import { Gas } from 'common/constants/'
 import axios from 'axios'
 import Config from 'react-native-config'
 
@@ -15,44 +14,6 @@ export const generateWalletMnemonic = () => {
 
 export const importWalletPrivateKey = privateKey => {
   return new ethers.Wallet(privateKey)
-}
-
-export const getEthBalance = address => {
-  return axios.get(Config.ETHERSCAN_API_URL, {
-    params: {
-      module: 'account',
-      sort: 'asc',
-      apikey: Config.ETHERSCAN_API_KEY,
-      address: address,
-      action: 'balance'
-    }
-  })
-}
-
-export const getERC20Balance = (provider, contractAddress, accountAddress) => {
-  const abi = ContractABI.erc20Abi()
-  const contract = new ethers.Contract(contractAddress, abi, provider)
-  return contract.balanceOf(accountAddress)
-}
-
-export const getTokenDetail = (provider, contractAddress) => {
-  const abi = ContractABI.erc20Abi()
-  const contract = new ethers.Contract(contractAddress, abi, provider)
-  if (contractAddress === ContractAddress.ETH_ADDRESS) {
-    return [
-      Promise.resolve('Ether'),
-      Promise.resolve('ETH'),
-      Promise.resolve(18),
-      Promise.resolve(contractAddress)
-    ]
-  } else {
-    return [
-      contract.name(),
-      contract.symbol(),
-      contract.decimals(),
-      Promise.resolve(contractAddress)
-    ]
-  }
 }
 
 // Transaction Management
@@ -94,28 +55,27 @@ export const sendEthToken = (wallet, options) => {
   const { fee, token, toAddress } = options
   return wallet.sendTransaction({
     to: toAddress,
-    value: ethers.utils.parseEther(token.balance),
+    value: Parser.parseUnits(token.balance, 'ether'),
     gasLimit: Gas.LOW_LIMIT,
     gasPrice: Parser.parseUnits(fee.amount, 'gwei')
   })
 }
 
-export const sendErc20Token = (wallet, options) => {
+export const sendErc20Token = (contract, options) => {
   const { fee, token, toAddress } = options
-  const abi = ContractABI.erc20Abi()
-  const contract = new ethers.Contract(token.contractAddress, abi, wallet)
 
-  const numberOfTokens = Parser.parseUnits(
-    token.balance,
-    token.numberOfDecimals
-  )
+  const amount = Parser.parseUnits(token.balance, token.numberOfDecimals)
 
   const gasOptions = {
     gasLimit: Gas.LOW_LIMIT,
     gasPrice: Parser.parseUnits(fee.amount, 'gwei')
   }
 
-  return contract.transfer(toAddress, numberOfTokens, gasOptions)
+  return contract.transfer(toAddress, amount, gasOptions)
+}
+
+export const getContract = (tokenContractAddress, abi, wallet) => {
+  return new ethers.Contract(tokenContractAddress, abi, wallet)
 }
 
 export const subscribeTx = (provider, tx, confirmations) => {

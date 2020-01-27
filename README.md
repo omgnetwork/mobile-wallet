@@ -53,6 +53,10 @@ EXIT_PERIOD=<EXIT_PERIOD>
 
 [Go to iOS release doc](docs/release-ios.md)
 
+## Testing
+
+Run test with `npm run test`
+
 ## Developer Notes
 
 ### **Developing New Views**

@@ -1,68 +1,49 @@
-import { Formatter, Parser, Polling, Datetime, Mapper, Token } from '../utils'
-import { Plasma } from 'common/blockchain'
-import { priceService } from 'common/services'
+import { Formatter, Parser, Polling, Datetime, Mapper } from 'common/utils'
+import { Plasma, Token } from 'common/blockchain'
 import { Gas } from 'common/constants'
 import BN from 'bn.js'
-import Config from 'react-native-config'
 
-export const fetchAssets = (provider, address) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const [balances, utxos] = await Promise.all([
-        Plasma.getBalances(address),
-        Plasma.getUtxos(address)
-      ])
+export const fetchAssets = async (provider, address) => {
+  try {
+    const [balances, utxos] = await Promise.all([
+      Plasma.getBalances(address),
+      Plasma.getUtxos(address)
+    ])
 
-      const currencies = balances.map(Mapper.mapAssetCurrency)
-      const contractAddresses = Array.from(new Set(currencies))
-      const tokens = await Token.fetchTokens(provider, contractAddresses)
+    const tokenContractAddresses = getTokenContractAddresses(balances)
+    const tokenMap = await Token.fetchTokens(
+      provider,
+      tokenContractAddresses,
+      address
+    )
+    const childchainAssets = balances.map(balance => {
+      const token = tokenMap[balance.currency]
+      return {
+        ...token,
+        contractAddress: balance.currency,
+        balance: Formatter.formatUnits(balance.amount, token.tokenDecimal)
+      }
+    })
 
-      const pendingChildchainAssets = balances.map(balance => {
-        return new Promise(async (resolveBalance, rejectBalance) => {
-          const token = tokens.find(t => balance.currency === t.contractAddress)
-
-          const tokenPrice = await priceService.fetchPriceUsd(
-            token.contractAddress,
-            Config.ETHERSCAN_NETWORK
-          )
-
-          if (token) {
-            resolveBalance({
-              ...token,
-              balance: Formatter.formatUnits(
-                balance.amount,
-                token.tokenDecimal
-              ),
-              price: tokenPrice
-            })
-          } else {
-            resolveBalance({
-              tokenName: 'UNK',
-              tokenSymbol: 'Unknown',
-              tokenDecimal: 18,
-              contractAddress: '0x123456',
-              balance: Formatter.formatUnits(
-                balance.amount,
-                token.tokenDecimal
-              ),
-              price: tokenPrice
-            })
-          }
-        })
-      })
-
-      const childchainAssets = await Promise.all(pendingChildchainAssets)
-
-      resolve({
-        lastUtxoPos: (utxos.length && utxos[0].utxo_pos.toString(10)) || '0',
-        childchainAssets,
-        updatedAt: Datetime.now()
-      })
-    } catch (err) {
-      reject(err)
+    return {
+      fromUtxoPos: getUtxoPos(utxos),
+      childchainAssets,
+      updatedAt: Datetime.now()
     }
-  })
+  } catch (err) {
+    throw new Error(
+      `Unable to fetch the childchain assets for address ${address}.`
+    )
+  }
 }
+
+const getTokenContractAddresses = balances => {
+  const currencies = balances.map(Mapper.mapAssetCurrency)
+  return Array.from(new Set(currencies))
+}
+
+const getUtxoPos = utxos =>
+  (utxos.length && utxos[0].utxo_pos.toString(10)) || '0'
 
 export const getTxs = (address, options) => {
   return new Promise(async (resolve, reject) => {
@@ -80,10 +61,10 @@ export const getTxs = (address, options) => {
   })
 }
 
-export const getTx = transactionHash => {
+export const getTx = hash => {
   return new Promise(async (resolve, reject) => {
     try {
-      const transaction = await Plasma.getTx(transactionHash)
+      const transaction = await Plasma.getTx(hash)
       resolve({
         hash: transaction.txhash,
         ...transaction
@@ -133,12 +114,18 @@ export const depositEth = (address, privateKey, amount) => {
   return new Promise(async (resolve, reject) => {
     try {
       const weiAmount = Parser.parseUnits(amount, 'ether').toString(10)
-      const transactionReceipt = await Plasma.depositEth(
+
+      const { hash, gasPrice, gasUsed } = await Plasma.depositEth(
         address,
         privateKey,
         new BN(weiAmount)
       )
-      resolve(transactionReceipt)
+
+      resolve({
+        hash,
+        gasPrice,
+        gasUsed
+      })
     } catch (err) {
       reject(err)
     }
@@ -152,13 +139,18 @@ export const depositErc20 = (address, privateKey, token) => {
         token.balance,
         token.tokenDecimal
       ).toString(10)
-      const transactionReceipt = await Plasma.depositErc20(
+
+      const { hash, gasPrice, gasUsed } = await Plasma.depositErc20(
         address,
         privateKey,
         weiAmount,
         token.contractAddress
       )
-      resolve(transactionReceipt)
+      resolve({
+        hash,
+        gasPrice,
+        gasUsed
+      })
     } catch (err) {
       reject(err)
     }
@@ -223,8 +215,12 @@ export const exit = (blockchainWallet, token) => {
       })
 
       const gasPrice = Gas.EXIT_GAS_PRICE
+<<<<<<< Updated upstream
 
       const { transactionHash } = await Plasma.standardExit(
+=======
+      const { transactionHash: hash } = await Plasma.standardExit(
+>>>>>>> Stashed changes
         exitData,
         blockchainWallet,
         { gasPrice }
@@ -235,10 +231,10 @@ export const exit = (blockchainWallet, token) => {
       const standardExitBond = bonds.standardExit.toString()
 
       resolve({
-        transactionHash,
+        hash,
         exitId,
         blknum: utxoToExit.blknum,
-        paymentExitGameAddress: address,
+        to: address,
         flatFee: standardExitBond,
         gasPrice
       })

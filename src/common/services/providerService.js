@@ -1,4 +1,3 @@
-import { Formatter } from '../utils'
 import { Ethereum } from 'common/blockchain'
 import { settingStorage } from '../storages'
 
@@ -39,27 +38,6 @@ export const getTransactionHistory = (address, lastBlockNumber) => {
       })
 
       resolve(formattedTxHistory)
-    } catch (err) {
-      reject(err)
-    }
-  })
-}
-
-export const getTokenBalance = (
-  provider,
-  contractAddress,
-  tokenDecimal,
-  accountAddress
-) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const balance = await Ethereum.getERC20Balance(
-        provider,
-        contractAddress,
-        accountAddress
-      )
-
-      resolve(Formatter.formatUnits(balance, tokenDecimal))
     } catch (err) {
       reject(err)
     }

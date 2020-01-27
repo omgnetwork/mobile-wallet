@@ -53,7 +53,7 @@ export const walletsReducer = (state = [], action) => {
               : action.data.childchainAssets,
             updatedAt: action.data.updatedAt,
             shouldRefreshChildchain: false,
-            lastUtxoPos: action.data.lastUtxoPos,
+            fromUtxoPos: action.data.fromUtxoPos,
             plasmaFrameworkContractAddress:
               Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
           }

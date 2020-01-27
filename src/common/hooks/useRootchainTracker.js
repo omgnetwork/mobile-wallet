@@ -63,7 +63,7 @@ const useRootchainTracker = wallet => {
   const track = useCallback(async () => {
     const latestPendingTx = pendingRootchainTxs.slice(-1).pop()
     const receipt = await Plasma.waitForRootchainTransaction({
-      transactionHash: latestPendingTx.hash,
+      hash: latestPendingTx.hash,
       intervalMs: 3000,
       confirmationThreshold: getConfirmationsThreshold(latestPendingTx),
       onCountdown: remaining =>
