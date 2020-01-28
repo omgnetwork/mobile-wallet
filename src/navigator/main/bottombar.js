@@ -98,7 +98,7 @@ export default (TransferNavigator, TransactionHistoryNavigator) =>
           marginTop: 16
         },
         style: {
-          backgroundColor: '#3c414d',
+          backgroundColor: '#1F1F22',
           marginTop: 0,
           height: Dimensions.bottomBarHeight,
           paddingTop: 0

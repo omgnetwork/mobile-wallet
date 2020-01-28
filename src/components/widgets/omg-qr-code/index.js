@@ -15,12 +15,14 @@ const OMGQRCode = ({ payload, displayText, size, theme, style }) => {
   }, [displayText])
   return (
     <View style={{ ...styles.container, ...style }}>
-      <QRCode value={payload} size={size || 200} style={styles.qrcode} />
+      <View style={styles.qrFrame(theme)}>
+        <QRCode value={payload} size={size || 200} style={styles.qrcode} />
+      </View>
       {displayText && (
         <View style={styles.displayTextContainer}>
           <OMGText style={styles.text(theme)}>{displayText}</OMGText>
           <OMGBox style={styles.icon(theme)} onPress={handleCopyClick}>
-            <OMGFontIcon name='copy' size={14} color={theme.colors.black2} />
+            <OMGFontIcon name='copy' size={24} color={theme.colors.white} />
           </OMGBox>
         </View>
       )}
@@ -34,18 +36,21 @@ const styles = StyleSheet.create({
     marginTop: 16,
     flexDirection: 'row'
   },
+  qrFrame: theme => ({
+    padding: 4,
+    backgroundColor: theme.colors.white
+  }),
   icon: theme => ({
     justifyContent: 'flex-end',
-    padding: 8,
-    borderRadius: 15,
-    backgroundColor: theme.colors.white2
+    padding: 0,
+    backgroundColor: 'transparent'
   }),
   qrcode: {},
   text: theme => ({
     flex: 1,
-    marginRight: 8,
+    marginRight: 16,
     fontSize: 12,
-    color: theme.colors.primary
+    color: theme.colors.white
   })
 })
 

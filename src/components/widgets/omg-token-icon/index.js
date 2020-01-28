@@ -38,15 +38,13 @@ const styles = {
     width: 40,
     height: 40,
     borderRadius: theme.roundness,
-    borderColor: theme.colors.black4,
-    borderWidth: 0.5
+    backgroundColor: theme.colors.white
   }),
   icon: theme => ({
     width: 40,
     height: 40,
     borderRadius: theme.roundness,
-    borderColor: theme.colors.black4,
-    borderWidth: 0.5,
+    backgroundColor: theme.colors.white,
     alignItems: 'center',
     justifyContent: 'center'
   }),
