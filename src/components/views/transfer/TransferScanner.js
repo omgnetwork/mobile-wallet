@@ -5,13 +5,15 @@ import React, {
   useCallback,
   useRef
 } from 'react'
+import { getParamsForTransferScannerFromTransferForm } from './transferNavigation'
 import { View, StyleSheet, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
+import { paramsForTransferScannerToTransferSelectBalance } from './transferNavigation'
 import {
   OMGText,
-  OMGIcon,
+  OMGFontIcon,
   OMGQRScanner,
   OMGButton,
   OMGEmpty
@@ -25,7 +27,7 @@ import { Animator } from 'common/anims'
 import * as BlockchainIcons from './assets'
 
 const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
-  const rootchain = navigation.getParam('rootchain')
+  const { rootchain } = getParamsForTransferScannerFromTransferForm(navigation)
   const [rendering, setRendering] = useState(true)
   const camera = useRef(null)
   const [address, setAddress] = useState(null)
@@ -47,12 +49,20 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
     }
   }
 
+  const getAssets = useCallback(() => {
+    return isRootchain ? wallet.rootchainAssets : wallet.childchainAssets
+  }, [isRootchain, wallet.childchainAssets, wallet.rootchainAssets])
+
   const navigateNext = useCallback(() => {
-    navigation.navigate('TransferForm', {
-      address: address && address.replace('ethereum:', ''),
-      rootchain: isRootchain
-    })
-  }, [address, navigation, isRootchain])
+    navigation.navigate(
+      'TransferSelectBalance',
+      paramsForTransferScannerToTransferSelectBalance({
+        address,
+        isRootchain,
+        assets: getAssets()
+      })
+    )
+  }, [navigation, address, isRootchain, getAssets])
 
   useEffect(() => {
     if (address) {
@@ -118,7 +128,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
 
   const unconfirmedTxComponent = (
     <Animated.View style={styles.unableView(overlayColorAnim)}>
-      <OMGIcon
+      <OMGFontIcon
         style={styles.unableIcon(theme)}
         name='pending'
         size={16}
@@ -158,6 +168,8 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
       showMarker={true}
       onReceiveQR={e => setAddress(e.data)}
       cameraRef={camera}
+      borderColor={theme.colors.black5}
+      rootchain={isRootchain}
       renderUnconfirmedTx={unconfirmedTxComponent}
       renderEmptyComponent={emptyComponent}
       cameraStyle={styles.cameraContainer}
@@ -187,7 +199,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
       }
       renderBottom={
         <OMGButton
-          style={styles.button}
+          style={styles.button(theme)}
           disabled={shouldDisabledSendButton}
           onPress={navigateNext}>
           Or, Send Manually
@@ -235,9 +247,12 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     paddingVertical: 8
   },
-  button: {
-    width: 300
-  },
+  button: theme => ({
+    width: 300,
+    backgroundColor: 'transparent',
+    borderColor: theme.colors.white,
+    borderWidth: 1
+  }),
   cameraContainer: {
     alignSelf: 'center',
     flex: 1

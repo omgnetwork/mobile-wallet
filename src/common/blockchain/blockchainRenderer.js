@@ -23,9 +23,9 @@ export const renderGasFeeUsd = (gasUsed, gasPriceWei, usdEth) => {
   })
 }
 
-export const renderEthFromGwei = gwei => {
-  if (!gwei) return '0'
-  const weiFee = Parser.parseUnits(gwei, 'gwei')
+export const renderEthFromWei = wei => {
+  if (!wei) return '0'
+  const weiFee = Parser.parseUnits(wei, 'wei')
   return Formatter.formatUnits(weiFee, 'ether')
 }
 

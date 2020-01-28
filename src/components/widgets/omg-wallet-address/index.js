@@ -1,27 +1,21 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import OMGImage from '../omg-image'
-import OMGText from '../omg-text'
-import OMGIcon from '../omg-icon'
+import { OMGText, OMGIdenticon } from 'components/widgets'
 import Config from 'react-native-config'
+import PlasmaContractIcon from './assets/ic-plasma-contract.svg'
 
 const OMGWalletAddress = ({ theme, name, address, style }) => {
-  const IS_CHILDCHAIN_ADDRESS =
+  const IS_PLASMA_CONTRACT =
     address === Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
   return (
     <View style={{ ...styles.container(theme), ...style }}>
-      {IS_CHILDCHAIN_ADDRESS ? (
+      {IS_PLASMA_CONTRACT ? (
         <View style={styles.logo(theme)}>
-          <OMGIcon name='files' size={14} />
+          <PlasmaContractIcon name='files' width={24} height={24} />
         </View>
       ) : (
-        <OMGImage
-          style={styles.logo(theme)}
-          source={{
-            uri: `https://api.adorable.io/avatars/285/${address}.png`
-          }}
-        />
+        <OMGIdenticon style={styles.logo(theme)} size={24} hash={address} />
       )}
 
       <OMGText style={styles.text(theme)}>{name}</OMGText>

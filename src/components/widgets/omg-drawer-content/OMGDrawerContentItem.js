@@ -1,22 +1,17 @@
 import React from 'react'
-import { StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { colors } from 'common/styles'
-import { OMGText, OMGIcon } from 'components/widgets'
+import { OMGText, OMGFontIcon, OMGIdenticon } from 'components/widgets'
 
 const OMGDrawerContentItem = ({ wallet, primary, onWalletPress }) => {
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={() => onWalletPress(wallet)}>
-      <Image
-        style={styles.logo}
-        source={{
-          uri: `https://api.adorable.io/avatars/285/${wallet.address}.png`
-        }}
-      />
+      <OMGIdenticon style={styles.logo} hash={wallet.address} size={24} />
       <OMGText style={styles.name}>{wallet.name}</OMGText>
       {primary && (
-        <OMGIcon name='check-mark' size={14} style={styles.iconRight} />
+        <OMGFontIcon name='check-mark' size={14} style={styles.iconRight} />
       )}
     </TouchableOpacity>
   )

@@ -1,7 +1,6 @@
 import React from 'react'
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
-import OMGText from '../omg-text'
-import OMGIcon from '../omg-icon'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { OMGText, OMGFontIcon, OMGIdenticon } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 
 const OMGMenuImage = ({ title, description, style, theme, onPress }) => {
@@ -9,19 +8,14 @@ const OMGMenuImage = ({ title, description, style, theme, onPress }) => {
     <TouchableOpacity
       style={{ ...styles.container(theme), ...style }}
       onPress={onPress}>
-      <Image
-        style={styles.logo}
-        source={{
-          uri: `https://api.adorable.io/avatars/285/${title}.png`
-        }}
-      />
+      <OMGIdenticon style={styles.logo} hash={title} size={40} />
       <View style={styles.sectionName}>
         <OMGText style={styles.title(theme)} weight='bold'>
           {title}
         </OMGText>
         <OMGText style={styles.description(theme)}>{description || ''}</OMGText>
       </View>
-      <OMGIcon name='chevron-right' size={24} />
+      <OMGFontIcon name='chevron-right' size={24} />
     </TouchableOpacity>
   )
 }

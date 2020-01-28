@@ -1,19 +1,18 @@
 import React from 'react'
-import { View, TouchableOpacity, StyleSheet, Image } from 'react-native'
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
-import { OMGQRCode, OMGText } from 'components/widgets'
+import { OMGQRCode, OMGText, OMGIdenticon } from 'components/widgets'
 
 const ShowQR = ({ theme, primaryWallet, primaryWalletAddress, navigation }) => {
   return (
     <View style={styles.container(theme)}>
       <View style={styles.titleContainer}>
-        <Image
-          style={styles.logo(theme)}
-          source={{
-            uri: `https://api.adorable.io/avatars/285/${primaryWalletAddress}.png`
-          }}
+        <OMGIdenticon
+          style={styles.identicon(theme)}
+          hash={primaryWalletAddress}
+          size={40}
         />
         <OMGText style={styles.title(theme)} weight='bold'>
           {primaryWallet.name}
@@ -44,9 +43,10 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     borderRadius: theme.roundness
   }),
-  logo: theme => ({
+  identicon: theme => ({
     width: 40,
     height: 40,
+    borderColor: theme.colors.black4,
     borderRadius: theme.roundness,
     borderWidth: 0.5
   }),

@@ -9,14 +9,12 @@ const {
   TEST_TOKENS
 } = Config
 
-const provider = ethers.getDefaultProvider('homestead')
-const testProvider = ethers.getDefaultProvider(ETHERSCAN_NETWORK)
-
 const testWalletAddress = TEST_WALLET_ADDRESS_FOR_TOKENS
 const [ETH, DAI, OMG, KCK, HYP] = TEST_TOKENS
 
 describe('Test Token Util', () => {
   it('fetchTokenDetail should return {name, symbol, decimals, price, balance, contractAddress}', () => {
+    const testProvider = ethers.getDefaultProvider(ETHERSCAN_NETWORK)
     const pendingDetails = Token.fetchTokenDetail(
       testProvider,
       TEST_ERC20_TOKEN_CONTRACT_ADDRESS,
@@ -36,8 +34,9 @@ describe('Test Token Util', () => {
   }, 15000)
 
   it('fetchTokens should return [contractAddress: {tokenName, tokenSymbol, tokenDecimal, price, balance}]', () => {
+    const testProvider = ethers.getDefaultProvider('homestead')
     return Token.fetchTokens(
-      provider,
+      testProvider,
       [ETH, DAI, OMG, KCK, HYP],
       testWalletAddress
     ).then(result => {

@@ -7,20 +7,23 @@ import {
   OMGButton,
   OMGEmpty,
   OMGFeeSelect,
-  OMGIcon,
+  OMGFontIcon,
   OMGText
 } from 'components/widgets'
+import { getParamsForTransferSelectFeeFromTransferForm } from './transferNavigation'
 
 const TransferSelectFee = ({ theme, loading, navigation }) => {
-  const fees = navigation.getParam('fees')
-  const currentToken = navigation.getParam('currentToken')
-  const currentFee = navigation.getParam('currentFee')
+  const {
+    fees,
+    currentToken,
+    currentFee
+  } = getParamsForTransferSelectFeeFromTransferForm(navigation)
   const [selectedFee, setSelectedFee] = useState(currentFee || fees[0])
 
   return (
     <SafeAreaView style={styles.container(theme)}>
       <View style={styles.header}>
-        <OMGIcon
+        <OMGFontIcon
           name='chevron-left'
           size={18}
           color={theme.colors.gray3}

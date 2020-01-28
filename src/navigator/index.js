@@ -7,7 +7,6 @@ import ExitNavigator from './exit'
 import ImportWalletNavigator from './import-wallet'
 import BackupWalletNavigator from './backup-wallet'
 import CreateWalletNavigator from './create-wallet'
-import ManageWalletNavigator from './manage-wallet'
 import TransactionHistoryNavigator from './transaction-history'
 import createWelcomeNavigator from './welcome'
 import WarpPortal from './warp-portal'
@@ -51,11 +50,27 @@ const InitializationNavigator = createSwitchNavigator(
 export const AppNavigator = createStackNavigator(
   {
     Main: InitializationNavigator,
-    ManageWallet: ManageWalletNavigator(
-      ImportWalletNavigator,
-      CreateWalletNavigator,
-      BackupWalletNavigator
-    ),
+    ImportWallet: {
+      screen: Views.ImportWallet,
+      params: {
+        navigator: ImportWalletNavigator
+      }
+    },
+    CreateWallet: {
+      screen: Views.CreateWallet,
+      params: {
+        navigator: CreateWalletNavigator
+      }
+    },
+    BackupWallet: {
+      screen: Views.Backup,
+      params: {
+        navigator: BackupWalletNavigator
+      }
+    },
+    DeleteWallet: {
+      screen: Views.DeleteWallet
+    },
     TransferSelectBalance: {
       screen: Views.TransferSelectBalance
     },

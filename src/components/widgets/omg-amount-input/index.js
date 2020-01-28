@@ -1,13 +1,12 @@
 import React, { Fragment } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import OMGImage from '../omg-image'
-import OMGText from '../omg-text'
-import OMGTextInput from '../omg-text-input'
+import { OMGTokenIcon, OMGText, OMGTextInput } from 'components/widgets'
 
 const OMGAmountInput = ({
   theme,
   token,
+  focusRef,
   inputRef,
   defaultValue,
   style,
@@ -18,17 +17,13 @@ const OMGAmountInput = ({
   return (
     <Fragment>
       <View style={{ ...styles.container(theme), ...style }}>
-        <OMGImage
-          style={styles.logo}
-          source={{
-            uri: `https://api.adorable.io/avatars/285/${token.contractAddress}.png`
-          }}
-        />
+        <OMGTokenIcon style={styles.logo} token={token} size={26} />
         <OMGTextInput
           style={styles.text(theme)}
           placeholder='00.00'
           callback={callback}
           inputRef={inputRef}
+          focusRef={focusRef}
           hideUnderline={true}
           defaultValue={defaultValue}
           keyboardType='decimal-pad'

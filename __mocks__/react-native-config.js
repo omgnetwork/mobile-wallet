@@ -3,18 +3,20 @@ export default {
   CHILDCHAIN_EXIT_CONFIRMATION_BLOCKS: 12,
   ROOTCHAIN_TRANSFER_CONFIRMATION_BLOCKS: 1,
   ETHERSCAN_API_KEY: 'VCKWHFAA6M5AR8SFVXC43DEMEA8JN2H3WZ',
-  ETHERSCAN_API_URL: 'https://api-rinkeby.etherscan.io/api/',
-  ETHERSCAN_TX_URL: 'https://rinkeby.etherscan.io/tx/',
-  ETHERSCAN_ADDRESS_URL: 'https://rinkeby.etherscan.io/address/',
-  ETHERSCAN_NETWORK: 'rinkeby',
+  ETHERSCAN_API_URL: 'https://api-ropsten.etherscan.io/api/',
+  ETHERSCAN_TX_URL: 'https://ropsten.etherscan.io/tx/',
+  ETHERSCAN_ADDRESS_URL: 'https://ropsten.etherscan.io/address/',
+  ETHERSCAN_NETWORK: 'ropsten',
   OMISEGO_NETWORK: 'lumpini',
   WEB3_HTTP_PROVIDER:
-    'https://rinkeby.infura.io/v3/510b6d5b3c56497b8070626a54f565a9',
+    'https://ropsten.infura.io/v3/510b6d5b3c56497b8070626a54f565a9',
   PLASMA_FRAMEWORK_CONTRACT_ADDRESS:
-    '0x24e0b6b701c941824b3eedc041f50be6e15bfdeb',
-  CHILDCHAIN_WATCHER_URL: 'https://watcher-pre-lumphini.omg.network/',
-  BLOCK_EXPLORER_URL: 'https://quest-pre-lumphini.omg.network',
-  EXIT_PERIOD: 86400000,
+    '0x0414b180bdb58d001e147496c2127a2fff790942',
+  CHILDCHAIN_WATCHER_URL:
+    'https://dev-6f757ea-watcher-info-ropsten-01.omg.network/',
+  BLOCK_EXPLORER_URL:
+    'https://dev-6f757ea-blockexplorer-ropsten-01.omg.network/',
+  EXIT_PERIOD: 300000,
 
   // For Testing
   TEST_ADDRESS: '0xba5D7f4C1860e99C0AB9917b141006B81fCC7b13',
@@ -23,6 +25,6 @@ export default {
   TEST_MNEMONIC:
     'quarter vote usage diagram antique inner lock actress fine dentist crisp uncover',
   TEST_ERC20_TOKEN_CONTRACT_ADDRESS:
-    '0xa1c9d0c6ed627fb2197fd16cd3afde37cc5e8da5',
+    '0xD74eF52053204C9887Df4A0e921B1Ae024F6Fe31',
   TEST_ERC20_VAULT_ADDRESS: '0x88D38A42946C62D32F159880FE2735C0149cCa3f'
 }

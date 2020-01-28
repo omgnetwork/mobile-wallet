@@ -1,7 +1,6 @@
 import React from 'react'
-import { Image, StyleSheet, View, TouchableOpacity } from 'react-native'
-import OMGText from '../omg-text'
-import OMGIcon from '../omg-icon'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { OMGText, OMGFontIcon, OMGTokenIcon } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import { BlockchainRenderer } from 'common/blockchain'
 
@@ -10,12 +9,7 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
     <TouchableOpacity
       style={{ ...styles.container(theme, selected), ...style }}
       onPress={onPress}>
-      <Image
-        style={styles.logo(theme)}
-        source={{
-          uri: `https://api.adorable.io/avatars/285/${token.contractAddress}.png`
-        }}
-      />
+      <OMGTokenIcon token={token} size={40} />
       <View style={styles.sectionName}>
         <OMGText style={styles.symbol(theme)}>{token.tokenSymbol}</OMGText>
       </View>
@@ -32,7 +26,7 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
       </View>
       <View style={styles.sectionSelect}>
         {selected && (
-          <OMGIcon name='check-mark' size={14} color={theme.colors.gray3} />
+          <OMGFontIcon name='check-mark' size={14} color={theme.colors.gray3} />
         )}
       </View>
     </TouchableOpacity>
@@ -40,12 +34,6 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
 }
 
 const styles = StyleSheet.create({
-  logo: theme => ({
-    width: 40,
-    height: 40,
-    borderRadius: theme.roundness,
-    borderWidth: 0.5
-  }),
   container: (theme, selected) => ({
     flexDirection: 'row',
     backgroundColor: selected ? theme.colors.blue1 : theme.colors.gray4,

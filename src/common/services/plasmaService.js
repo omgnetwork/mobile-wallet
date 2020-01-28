@@ -163,10 +163,7 @@ export const exit = (blockchainWallet, token) => {
       // Check if the token has been unlocked
       const hasToken = await Plasma.hasToken(token.contractAddress)
 
-      console.log(hasToken)
-
       if (!hasToken) {
-        console.log('need to add token')
         await Plasma.addToken(token.contractAddress, {
           from: blockchainWallet.address,
           privateKey: blockchainWallet.privateKey
@@ -180,52 +177,26 @@ export const exit = (blockchainWallet, token) => {
 
       // For now `getUtxos` includes exited utxos, so after this issue https://github.com/omisego/elixir-omg/issues/1151 has been solved,
       // we can then  uncomment the function below to reduce unnecessary api call.
+      // const utxoToExit = await getOrCreateUtxoWithAmount(
+      //   desiredAmount,
+      //   blockchainWallet,
+      //   token
+      // )
+
       const utxoToExit = await createUtxoWithAmount(
         desiredAmount,
         blockchainWallet,
         token
       )
-
-      console.log('utxoToExit', utxoToExit)
-
-      // const utxoToExit = await createUtxoWithAmount(
-      //   desiredAmount,
-      //   blockchainWallet,
-      //   token,
-      //   fee
-      // )
-      const {
-        amount,
-        blknum,
-        currency,
-        oindex,
-        owner,
-        txindex,
-        utxo_pos
-      } = utxoToExit
-
-      const exitData = await Plasma.getExitData({
-        amount,
-        blknum,
-        currency,
-        oindex,
-        owner,
-        txindex,
-        utxo_pos
-      })
-
+      const acceptableUtxoParams = Plasma.createAcceptableUtxoParams(utxoToExit)
+      const exitData = await Plasma.getExitData(acceptableUtxoParams)
       const gasPrice = Gas.EXIT_GAS_PRICE
-<<<<<<< Updated upstream
 
-      const { transactionHash } = await Plasma.standardExit(
-=======
       const { transactionHash: hash } = await Plasma.standardExit(
->>>>>>> Stashed changes
         exitData,
         blockchainWallet,
         { gasPrice }
       )
-
       const exitId = await Plasma.getStandardExitId(utxoToExit, exitData)
       const { address, bonds } = await Plasma.getPaymentExitGameAddress()
       const standardExitBond = bonds.standardExit.toString()
@@ -252,7 +223,7 @@ export const exit = (blockchainWallet, token) => {
 //         contractAddress,
 //         exitId,
 //         {
-//           gas: Gas.LIMIT,
+//           gas: Gas.HIGH_LIMIT,
 //           from: blockchainWallet.address,
 //           privateKey: blockchainWallet.privateKey
 //         }
@@ -293,11 +264,19 @@ export const createUtxoWithAmount = async (
   blockchainWallet,
   token
 ) => {
+  const { utxo_pos: latestUtxoPos } = await Plasma.getUtxos(
+    blockchainWallet.address,
+    {
+      currency: token.contractAddress
+    }
+  ).then(utxos => utxos[0])
+
   await transfer(blockchainWallet, blockchainWallet.address, token)
 
   // Wait for found matched UTXO after merge or split.
   const selectedUtxo = await waitForExitUtxo(
     desiredAmount,
+    latestUtxoPos,
     blockchainWallet,
     token
   )
@@ -310,9 +289,19 @@ export const createUtxoWithAmount = async (
   }
 }
 
-export const waitForExitUtxo = (desiredAmount, blockchainWallet, token) => {
+export const waitForExitUtxo = (
+  desiredAmount,
+  fromUtxoPos,
+  blockchainWallet,
+  token
+) => {
   return Polling.pollUntilSuccess(async () => {
-    const utxo = await getUtxoByAmount(desiredAmount, blockchainWallet, token)
+    const utxo = await getNewUtxoByAmount(
+      desiredAmount,
+      fromUtxoPos + 1,
+      blockchainWallet,
+      token
+    )
 
     if (utxo) {
       return {
@@ -324,14 +313,27 @@ export const waitForExitUtxo = (desiredAmount, blockchainWallet, token) => {
         success: false
       }
     }
-  }, 5000)
+  }, 3000)
 }
 
 const getUtxoByAmount = async (amount, blockchainWallet, token) => {
   const utxos = await Plasma.getUtxos(blockchainWallet.address, {
     currency: token.contractAddress
   })
-  console.log(utxos, amount)
+
+  return utxos.find(utxo => utxo.amount === amount)
+}
+
+const getNewUtxoByAmount = async (
+  amount,
+  fromUtxoPos,
+  blockchainWallet,
+  token
+) => {
+  const utxos = await Plasma.getUtxos(blockchainWallet.address, {
+    fromUtxoPos: fromUtxoPos,
+    currency: token.contractAddress
+  })
 
   return utxos.find(utxo => utxo.amount === amount)
 }

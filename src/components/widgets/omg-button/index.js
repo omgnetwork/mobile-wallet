@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     borderRadius: theme.roundness,
     justifyContent: 'center',
-    backgroundColor: theme.colors.gray3,
+    backgroundColor: theme.colors.primary,
     alignSelf: 'center',
     width: '100%',
     paddingHorizontal: 8,

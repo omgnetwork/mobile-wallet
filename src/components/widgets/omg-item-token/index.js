@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Image, StyleSheet, View, Animated } from 'react-native'
+import { StyleSheet, View, Animated } from 'react-native'
 import { Animator } from 'common/anims'
-import OMGText from '../omg-text'
+import { OMGText, OMGTokenIcon } from 'components/widgets'
 import { BlockchainRenderer } from 'common/blockchain'
 import { withTheme } from 'react-native-paper'
-
 const OMGItemToken = ({ token, style, onPress, theme }) => {
   const [animating, setAnimating] = useState(false)
   const shadowAnim = useRef(new Animated.Value(0))
@@ -53,12 +52,7 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
       }}
       elevation={5}
       onPress={onPress}>
-      <Image
-        style={styles.logo(theme)}
-        source={{
-          uri: `https://api.adorable.io/avatars/285/${token.contractAddress}.png`
-        }}
-      />
+      <OMGTokenIcon token={token} size={40} />
       <View style={styles.sectionName}>
         <OMGText style={styles.symbol(theme)}>{token.tokenSymbol}</OMGText>
       </View>
@@ -76,12 +70,6 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
 }
 
 const styles = StyleSheet.create({
-  logo: theme => ({
-    width: 40,
-    height: 40,
-    borderRadius: theme.roundness,
-    borderWidth: 0.5
-  }),
   container: (theme, animating, shadowAnim, shadowOpacity) => ({
     flexDirection: 'row',
     borderRadius: theme.roundness,

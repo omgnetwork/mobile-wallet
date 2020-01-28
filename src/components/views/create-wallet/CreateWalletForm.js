@@ -1,9 +1,10 @@
-import React, { useRef } from 'react'
-import { withNavigation, SafeAreaView } from 'react-navigation'
+import React, { useRef, useState } from 'react'
+import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
-import { View, StyleSheet } from 'react-native'
-import { Alerter } from 'common/utils'
+import { Header } from 'react-navigation-stack'
+import { View, StyleSheet, KeyboardAvoidingView } from 'react-native'
+import { Validator, Dimensions } from 'common/utils'
 import { Alert } from 'common/constants'
 import {
   OMGButton,
@@ -14,43 +15,61 @@ import {
 
 const CreateWalletForm = ({ wallets, navigation }) => {
   const walletNameRef = useRef()
+  const [showErrorName, setShowErrorName] = useState(false)
+  const [errorNameMessage, setErrorNameMessage] = useState(
+    'The wallet name should not be empty'
+  )
+  const statusBarHeight = Dimensions.getStatusBarHeight()
 
   const navigateNext = () => {
-    if (walletNameRef.current) {
-      if (wallets.find(wallet => wallet.name === walletNameRef.current)) {
-        return Alerter.show(Alert.FAILED_ADD_DUPLICATED_WALLET)
-      }
-      navigation.navigate('CreateWalletBackupWarning', {
-        name: walletNameRef.current
-      })
+    if (!Validator.isValidWalletName(walletNameRef.current)) {
+      setErrorNameMessage('The wallet name should not be empty')
+      return setShowErrorName(true)
     } else {
-      return Alerter.show(Alert.FAILED_ADD_EMPTY_WALLET_NAME)
+      setShowErrorName(false)
     }
+
+    if (wallets.find(wallet => wallet.name === walletNameRef.current)) {
+      setErrorNameMessage(Alert.FAILED_ADD_DUPLICATED_WALLET.message)
+      return setShowErrorName(true)
+    }
+
+    navigation.navigate('CreateWalletBackupWarning', {
+      name: walletNameRef.current
+    })
   }
 
   return (
-    <OMGDismissKeyboard>
-      <SafeAreaView style={styles.container}>
+    <OMGDismissKeyboard style={styles.container}>
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoidingView}
+        behavior='padding'
+        keyboardVerticalOffset={Header.HEIGHT + statusBarHeight}>
         <OMGText weight='bold'>Name</OMGText>
         <OMGTextInputBox
           placeholder='Name'
           inputRef={walletNameRef}
+          showError={showErrorName}
+          errorMessage={errorNameMessage}
           maxLength={20}
           style={styles.nameContainer}
         />
+
         <View style={styles.button}>
           <OMGButton onPress={navigateNext}>Create Wallet</OMGButton>
         </View>
-      </SafeAreaView>
+      </KeyboardAvoidingView>
     </OMGDismissKeyboard>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'column',
-    padding: 16
+    flex: 1
+  },
+  keyboardAvoidingView: {
+    padding: 16,
+    flex: 1
   },
   nameContainer: {
     marginTop: 16
@@ -58,7 +77,7 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     justifyContent: 'flex-end',
-    marginBottom: 16
+    marginBottom: 8
   }
 })
 

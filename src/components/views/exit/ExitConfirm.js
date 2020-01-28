@@ -1,22 +1,25 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, TouchableHighlight } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { BlockchainRenderer } from 'common/blockchain'
 import { plasmaActions } from 'common/actions'
-import { ActionAlert } from 'common/constants'
+import { ActionAlert, Gas, ContractAddress } from 'common/constants'
+import { TransferHelper } from 'components/views/transfer'
 import {
   OMGText,
-  OMGIcon,
+  OMGFontIcon,
   OMGButton,
   OMGExitWarning,
-  OMGBlockchainLabel
+  OMGBlockchainLabel,
+  OMGEmpty
 } from 'components/widgets'
 
 const ExitConfirm = ({
   theme,
   navigation,
+  ethToken,
   blockchainWallet,
   loading,
   unconfirmedTx,
@@ -28,6 +31,8 @@ const ExitConfirm = ({
     token.balance,
     token.price
   )
+  const [estimatedFee, setEstimatedFee] = useState(null)
+  const [estimatedFeeUsd, setEstimatedFeeUsd] = useState(null)
   const [loadingVisible, setLoadingVisible] = useState(false)
 
   const exit = useCallback(() => {
@@ -59,25 +64,60 @@ const ExitConfirm = ({
     }
   })
 
+  useEffect(() => {
+    async function calculateEstimatedFee() {
+      const gasUsed = await TransferHelper.getGasUsed(
+        TransferHelper.TYPE_EXIT,
+        token,
+        {
+          wallet: blockchainWallet
+        }
+      )
+      const gasPrice = Gas.EXIT_GAS_PRICE
+      const gasFee = BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
+      const usdPerEth = ethToken && ethToken.price
+      const gasFeeUsd = BlockchainRenderer.renderTokenPrice(gasFee, usdPerEth)
+      setEstimatedFee(gasFee)
+      setEstimatedFeeUsd(gasFeeUsd)
+    }
+    calculateEstimatedFee()
+  }, [blockchainWallet, ethToken, token, tokenPrice])
+
+  const renderEstimatedFeeElement = useCallback(() => {
+    return estimatedFee ? (
+      <>
+        <OMGText style={styles.feeAmount(theme)}>{estimatedFee} ETH</OMGText>
+        <OMGText style={styles.feeWorth(theme)}>{estimatedFeeUsd} USD</OMGText>
+      </>
+    ) : (
+      <OMGEmpty loading={true} />
+    )
+  }, [estimatedFee, estimatedFeeUsd, theme])
+
+  const handleBackToEditPressed = useCallback(() => {
+    navigation.navigate('ExitForm', {
+      lastAmount: token.balance
+    })
+  }, [navigation, token.balance])
+
   return (
     <SafeAreaView style={styles.container(theme)}>
       <View style={styles.contentContainer}>
-        <View style={styles.subHeaderContainer}>
-          <OMGIcon
-            name='chevron-left'
-            size={14}
-            color={theme.colors.gray3}
-            onPress={() =>
-              navigation.navigate('ExitForm', {
-                lastAmount: token.balance
-              })
-            }
-          />
-          <OMGText style={styles.edit}>Edit</OMGText>
-        </View>
+        <TouchableHighlight onPress={handleBackToEditPressed}>
+          <View style={styles.subHeaderContainer}>
+            <OMGFontIcon
+              name='chevron-left'
+              size={14}
+              color={theme.colors.gray3}
+              onPress={handleBackToEditPressed}
+            />
+            <OMGText style={styles.edit}>Edit</OMGText>
+          </View>
+        </TouchableHighlight>
+
         <OMGBlockchainLabel
           actionText='Sending to'
-          isRootchain={true}
+          transferType={TransferHelper.TYPE_TRANSFER_ROOTCHAIN}
           style={styles.blockchainLabel}
         />
         <View style={styles.amountContainer(theme)}>
@@ -90,6 +130,14 @@ const ExitConfirm = ({
           </View>
         </View>
         <OMGExitWarning />
+        <View style={styles.transactionFeeContainer}>
+          <OMGText weight='bold' style={styles.subtitle(theme)}>
+            Estimated Fee
+          </OMGText>
+          <View style={styles.feeContainer(theme)}>
+            {renderEstimatedFeeElement()}
+          </View>
+        </View>
       </View>
       <View style={styles.buttonContainer}>
         <OMGButton
@@ -114,6 +162,7 @@ const styles = StyleSheet.create({
   },
   subHeaderContainer: {
     paddingHorizontal: 16,
+    paddingBottom: 16,
     flexDirection: 'row',
     alignItems: 'center'
   },
@@ -126,6 +175,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   }),
+  transactionFeeContainer: {
+    flexDirection: 'column',
+    marginTop: 8,
+    paddingHorizontal: 16
+  },
   buttonContainer: {
     justifyContent: 'flex-end',
     marginVertical: 16,
@@ -154,17 +208,49 @@ const styles = StyleSheet.create({
     marginTop: 8,
     color: theme.colors.gray3
   }),
-  blockchainLabel: {
-    marginTop: 20
-  }
+  feeContainer: theme => ({
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 16,
+    backgroundColor: theme.colors.white3,
+    borderColor: theme.colors.gray4,
+    borderRadius: theme.roundness,
+    borderWidth: 1,
+    padding: 12,
+    alignItems: 'center'
+  }),
+  totalContainer: {
+    marginBottom: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  blockchainLabel: {},
+  feeAmount: theme => ({
+    color: theme.colors.primary
+  }),
+  feeWorth: theme => ({
+    color: theme.colors.gray2
+  }),
+  totalText: theme => ({
+    color: theme.colors.gray3
+  })
 })
 
-const mapStateToProps = (state, ownProps) => ({
-  blockchainWallet: state.setting.blockchainWallet,
-  unconfirmedTx: state.transaction.unconfirmedTxs.slice(-1).pop(),
-  loading: state.loading,
-  provider: state.setting.provider
-})
+const mapStateToProps = (state, ownProps) => {
+  const primaryWallet = state.wallets.find(
+    wallet => wallet.address === state.setting.primaryWalletAddress
+  )
+
+  return {
+    blockchainWallet: state.setting.blockchainWallet,
+    unconfirmedTx: state.transaction.unconfirmedTxs.slice(-1).pop(),
+    loading: state.loading,
+    provider: state.setting.provider,
+    ethToken: primaryWallet.rootchainAssets.find(
+      token => token.contractAddress === ContractAddress.ETH_ADDRESS
+    )
+  }
+}
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchExit: (blockchainWallet, token) =>

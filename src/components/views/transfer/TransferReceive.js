@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { View, StyleSheet, Image, Clipboard } from 'react-native'
+import { View, StyleSheet, Clipboard } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
 import {
@@ -7,7 +7,8 @@ import {
   OMGBackground,
   OMGText,
   OMGBox,
-  OMGIcon
+  OMGFontIcon,
+  OMGIdenticon
 } from 'components/widgets'
 import { Alert } from 'common/constants'
 import { Alerter } from 'common/utils'
@@ -21,11 +22,10 @@ const TransferReceive = ({ theme, primaryWallet, primaryWalletAddress }) => {
     <OMGBackground style={styles.container(theme)}>
       <View style={styles.contentContainer(theme)}>
         <View style={styles.titleContainer}>
-          <Image
-            style={styles.logo(theme)}
-            source={{
-              uri: `https://api.adorable.io/avatars/285/${primaryWalletAddress}.png`
-            }}
+          <OMGIdenticon
+            style={styles.identicon(theme)}
+            hash={primaryWalletAddress}
+            size={40}
           />
           <OMGText style={styles.title(theme)} weight='bold'>
             {primaryWallet.name}
@@ -33,7 +33,7 @@ const TransferReceive = ({ theme, primaryWallet, primaryWalletAddress }) => {
           <View style={styles.walletAddress}>
             <OMGText style={styles.text(theme)}>{primaryWalletAddress}</OMGText>
             <OMGBox style={styles.icon(theme)} onPress={handleCopyClick}>
-              <OMGIcon name='copy' size={14} color={theme.colors.gray3} />
+              <OMGFontIcon name='copy' size={14} color={theme.colors.gray3} />
             </OMGBox>
           </View>
         </View>
@@ -56,11 +56,12 @@ const styles = StyleSheet.create({
     borderRadius: theme.roundness,
     backgroundColor: theme.colors.gray4
   }),
-  logo: theme => ({
+  identicon: theme => ({
     width: 40,
     height: 40,
     borderRadius: theme.roundness,
     borderWidth: 0.5,
+    borderColor: theme.colors.black4,
     marginTop: 30
   }),
   titleContainer: {

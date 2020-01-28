@@ -1,13 +1,13 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { OMGText, OMGIcon } from 'components/widgets'
+import { OMGText, OMGFontIcon } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 
 const OMGExitWarning = ({ theme, style }) => {
   return (
     <View style={{ ...styles.container(theme), ...style }}>
       <View style={styles.iconContainer(theme)}>
-        <OMGIcon name='attention' style={styles.icon(theme)} />
+        <OMGFontIcon name='attention' style={styles.icon(theme)} />
       </View>
       <OMGText style={styles.text(theme)}>
         You are about to move fund out of {'-\n'}

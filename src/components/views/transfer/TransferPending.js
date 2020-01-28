@@ -4,6 +4,7 @@ import { View, StyleSheet, Linking } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { BlockchainRenderer } from 'common/blockchain'
+import * as TransferHelper from './transferHelper'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
 import {
@@ -12,60 +13,63 @@ import {
   OMGText,
   OMGWalletAddress,
   OMGStatusBar,
-  OMGIcon,
+  OMGFontIcon,
   OMGBlockchainLabel
 } from 'components/widgets'
-import { Gas, TransactionActionTypes } from 'common/constants'
+import { TransactionActionTypes } from 'common/constants'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { GoogleAnalytics } from 'common/analytics'
 import * as BlockchainLabel from './blockchainLabel'
+import { getParamsForTransferPendingFromTransferConfirm } from './transferNavigation'
 
 const TransferPending = ({ theme, navigation }) => {
-  const unconfirmedTx = navigation.getParam('unconfirmedTx')
-  const token = navigation.getParam('token')
-  const fromWallet = navigation.getParam('fromWallet')
-  const toWallet = navigation.getParam('toWallet')
-  const isDeposit = navigation.getParam('isDeposit')
-  const isRootchain = navigation.getParam('isRootchain')
+  const {
+    unconfirmedTx,
+    token,
+    fromWallet,
+    toWallet,
+    transferType,
+    estimatedGasFee,
+    estimatedGasFeeUsd
+  } = getParamsForTransferPendingFromTransferConfirm(navigation)
   const tokenPrice = BlockchainRenderer.renderTokenPrice(
     token.balance,
     token.price
   )
-  const gasDetailAvailable = unconfirmedTx.gasUsed && unconfirmedTx.gasPrice
+  const { gasUsed, gasPrice, hash, actionType } = unconfirmedTx
+
+  const gasDetailAvailable = gasUsed && gasPrice
   const gasFee = useCallback(() => {
-    return BlockchainRenderer.renderGasFee(
-      unconfirmedTx.gasUsed || Gas.MINIMUM_GAS_USED,
-      unconfirmedTx.gasPrice
-    )
-  }, [unconfirmedTx])
+    return estimatedGasFee || BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
+  }, [estimatedGasFee, gasPrice, gasUsed])
 
   const gasFeeUsd = useCallback(() => {
-    return BlockchainRenderer.renderGasFeeUsd(
-      unconfirmedTx.gasUsed || Gas.MINIMUM_GAS_USED,
-      unconfirmedTx.gasPrice,
-      token.price
+    return (
+      estimatedGasFeeUsd ||
+      BlockchainRenderer.renderGasFeeUsd(gasUsed, gasPrice, token.price)
     )
-  }, [unconfirmedTx, token])
+  }, [estimatedGasFeeUsd, gasUsed, gasPrice, token.price])
 
   const handleOnBackPressedAndroid = () => {
     return true
   }
 
   useEffect(() => {
-    if (isDeposit) {
-      GoogleAnalytics.sendEvent('transfer_deposited', {
-        hash: unconfirmedTx.hash
-      })
-    } else if (isRootchain) {
-      GoogleAnalytics.sendEvent('transfer_rootchain', {
-        hash: unconfirmedTx.hash
-      })
-    } else {
-      GoogleAnalytics.sendEvent('transfer_childchain', {
-        hash: unconfirmedTx.hash
-      })
+    switch (transferType) {
+      case TransferHelper.TYPE_DEPOSIT:
+        return GoogleAnalytics.sendEvent('transfer_deposited', {
+          hash
+        })
+      case TransferHelper.TYPE_TRANSFER_ROOTCHAIN:
+        return GoogleAnalytics.sendEvent('transfer_rootchain', {
+          hash
+        })
+      default:
+        return GoogleAnalytics.sendEvent('transfer_childchain', {
+          hash
+        })
     }
-  }, [isDeposit, isRootchain, unconfirmedTx])
+  }, [transferType, hash])
 
   return (
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
@@ -77,7 +81,11 @@ const TransferPending = ({ theme, navigation }) => {
         <View style={styles.contentContainer}>
           <View style={styles.headerContainer}>
             <View style={styles.icon(theme)}>
-              <OMGIcon name='pending' size={24} color={theme.colors.white} />
+              <OMGFontIcon
+                name='pending'
+                size={24}
+                color={theme.colors.white}
+              />
             </View>
             <OMGText style={styles.title(theme)} weight='bold'>
               Pending Transaction
@@ -87,9 +95,9 @@ const TransferPending = ({ theme, navigation }) => {
             style={styles.blockchainLabel}
             actionText={BlockchainLabel.getBlockchainTextActionLabel(
               'TransferPending',
-              isDeposit
+              transferType
             )}
-            isRootchain={isRootchain}
+            transferType={transferType}
           />
           <OMGBox style={styles.addressContainer}>
             <OMGText style={styles.subtitle(theme)} weight='bold'>
@@ -158,14 +166,11 @@ const TransferPending = ({ theme, navigation }) => {
             }}>
             Done
           </OMGButton>
-          {unconfirmedTx.actionType !==
-            TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN && (
+          {actionType !== TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN && (
             <TouchableOpacity
               style={styles.trackEtherscanButton}
               onPress={() => {
-                Linking.openURL(
-                  `${Config.ETHERSCAN_TX_URL}${unconfirmedTx.hash}`
-                )
+                Linking.openURL(`${Config.ETHERSCAN_TX_URL}${hash}`)
               }}>
               <OMGText style={styles.trackEtherscanText(theme)}>
                 Track on Etherscan
@@ -255,13 +260,11 @@ const styles = StyleSheet.create({
   },
   sentSection1: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    justifyContent: 'space-between'
   },
   sentSection2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
     marginTop: 8
   },
   sentDetailFirstline: theme => ({

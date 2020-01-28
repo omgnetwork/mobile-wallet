@@ -13,7 +13,7 @@ import {
   OMGBottomSheet,
   OMGViewPager,
   OMGText,
-  OMGIcon,
+  OMGFontIcon,
   OMGStatusBar,
   OMGButton
 } from 'components/widgets'
@@ -168,7 +168,7 @@ const Balance = ({
           <OMGText style={styles.topTitleLeft(theme)}>
             {primaryWallet ? primaryWallet.name : 'Wallet not found'}
           </OMGText>
-          <OMGIcon
+          <OMGFontIcon
             style={styles.topIconRight}
             size={24}
             name='hamburger'

@@ -13,7 +13,6 @@ const useChildchainTracker = wallet => {
 
   const verify = useCallback(
     currentWatcherTxs => {
-      console.log(currentWatcherTxs)
       const latestUnconfirmedTx = unconfirmedChildchainTxs.slice(-1).pop()
       const confirmedTx = currentWatcherTxs.find(
         tx => latestUnconfirmedTx.hash === tx.hash
@@ -43,9 +42,7 @@ const useChildchainTracker = wallet => {
 
   const track = useCallback(async () => {
     const currentWatcherTxs = await syncTransactions()
-    console.log(currentWatcherTxs)
     const confirmedTx = verify(currentWatcherTxs)
-    console.log('which one?', confirmedTx)
     if (confirmedTx) {
       const notificationPayload = buildNotification(confirmedTx)
       setNotification(notificationPayload)

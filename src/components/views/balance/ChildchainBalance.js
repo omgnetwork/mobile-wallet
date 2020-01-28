@@ -5,6 +5,7 @@ import { StyleSheet } from 'react-native'
 import { plasmaActions, walletActions } from 'common/actions'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
+import { TransferHelper } from 'components/views/transfer'
 import { Formatter, Datetime, Alerter } from 'common/utils'
 import {
   OMGItemToken,
@@ -20,6 +21,7 @@ const ChildchainBalance = ({
   dispatchLoadAssets,
   dispatchSetShouldRefreshChildchain,
   unconfirmedTxs,
+  globalLoading,
   wallet,
   provider,
   navigation
@@ -27,7 +29,6 @@ const ChildchainBalance = ({
   const currency = 'USD'
   const [totalBalance, setTotalBalance] = useState(0.0)
   const [loading, setLoading] = useState(false)
-  const [shouldShowLoading, setShouldShowLoading] = useState(true)
   const hasPendingTransaction = unconfirmedTxs.length > 0
   const hasRootchainAssets =
     wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
@@ -54,7 +55,10 @@ const ChildchainBalance = ({
     } else if (!hasRootchainAssets) {
       Alerter.show(Alert.FAILED_DEPOSIT_EMPTY_WALLET)
     } else {
-      navigation.navigate('TransferDeposit')
+      navigation.navigate('TransferSelectBalance', {
+        transferType: TransferHelper.TYPE_DEPOSIT,
+        address: Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
+      })
     }
   }, [hasPendingTransaction, hasRootchainAssets, navigation])
 
@@ -64,7 +68,9 @@ const ChildchainBalance = ({
     } else if (!shouldEnableExitAction()) {
       Alerter.show(Alert.CANNOT_EXIT_PENDING_TRANSACTION)
     } else {
-      navigation.navigate('TransferExit')
+      navigation.navigate('TransferSelectBalance', {
+        transferType: TransferHelper.TYPE_EXIT
+      })
     }
   }, [hasPendingTransaction, navigation, shouldEnableExitAction])
 
@@ -78,13 +84,10 @@ const ChildchainBalance = ({
 
   const handleReload = useCallback(() => {
     dispatchSetShouldRefreshChildchain(wallet.address, true)
-    setShouldShowLoading(true)
   }, [dispatchSetShouldRefreshChildchain, wallet.address])
 
   useEffect(() => {
     if (wallet.childchainAssets) {
-      setLoading(false)
-      setShouldShowLoading(false)
       const totalPrices = wallet.childchainAssets.reduce((acc, asset) => {
         const parsedAmount = parseFloat(asset.balance)
         const tokenPrice = parsedAmount * asset.price
@@ -94,6 +97,12 @@ const ChildchainBalance = ({
       setTotalBalance(totalPrices)
     }
   }, [wallet.childchainAssets])
+
+  useEffect(() => {
+    if (globalLoading.action === 'CHILDCHAIN_FETCH_ASSETS') {
+      setLoading(globalLoading.show)
+    }
+  }, [globalLoading.action, globalLoading.show])
 
   return (
     <Fragment>
@@ -112,7 +121,7 @@ const ChildchainBalance = ({
         keyExtractor={item => item.contractAddress}
         type='childchain'
         updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
-        loading={shouldShowLoading && loading}
+        loading={loading}
         handleReload={handleReload}
         style={styles.list}
         renderItem={({ item }) => (
@@ -150,7 +159,7 @@ const formatTotalBalance = balance => {
 const mapStateToProps = (state, ownProps) => ({
   provider: state.setting.provider,
   unconfirmedTxs: state.transaction.unconfirmedTxs,
-  loading: state.loading,
+  globalLoading: state.loading,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   )

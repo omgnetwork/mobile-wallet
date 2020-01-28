@@ -70,7 +70,6 @@ const useRootchainTracker = wallet => {
         console.log(`Confirmation is remaining by ${remaining} blocks`)
     })
     if (receipt) {
-      console.log('receipt', receipt)
       const notificationTxPayload = {
         ...latestPendingTx,
         rootchainBlockNumber: receipt.blockNumber,

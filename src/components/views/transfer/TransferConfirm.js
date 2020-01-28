@@ -1,24 +1,29 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import { View, StyleSheet, ScrollView, TouchableHighlight } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { BlockchainRenderer } from 'common/blockchain'
 import { withTheme } from 'react-native-paper'
-import Config from 'react-native-config'
+import * as TransferHelper from './transferHelper'
+import {
+  paramsForTransferConfirmToTransferPending,
+  paramsForTransferConfirmToTransferForm,
+  getParamsForTransferConfirmFromTransferForm
+} from './transferNavigation'
 import {
   ActionAlert,
   ContractAddress,
-  TransactionActionTypes,
-  Gas
+  TransactionActionTypes
 } from 'common/constants'
 import { ethereumActions, plasmaActions } from 'common/actions'
 import {
   OMGBox,
   OMGButton,
   OMGText,
-  OMGIcon,
+  OMGFontIcon,
   OMGWalletAddress,
-  OMGBlockchainLabel
+  OMGBlockchainLabel,
+  OMGEmpty
 } from 'components/widgets'
 import * as BlockchainLabel from './blockchainLabel'
 
@@ -31,32 +36,56 @@ const TransferConfirm = ({
   ethToken,
   loading
 }) => {
-  const token = navigation.getParam('token')
-  const fromWallet = navigation.getParam('fromWallet')
-  const toWallet = navigation.getParam('toWallet')
-  const fee = navigation.getParam('fee')
-  const isRootchain = navigation.getParam('isRootchain')
-  const isDeposit = navigation.getParam('isDeposit')
+  const {
+    token,
+    fromWallet,
+    toWallet,
+    fee,
+    transferType
+  } = getParamsForTransferConfirmFromTransferForm(navigation)
+  const [estimatedFee, setEstimatedFee] = useState(null)
+  const [estimatedFeeUsd, setEstimatedFeeUsd] = useState(null)
+  const [estimatedTotalPrice, setEstimatedTotalPrice] = useState(null)
 
   const tokenBalance = BlockchainRenderer.renderTokenBalance(token.balance)
   const tokenPrice = BlockchainRenderer.renderTokenPrice(
     token.balance,
     token.price
   )
-  const feeEth = BlockchainRenderer.renderEthFromGwei(1, fee && fee.amount)
-  const gasFee = BlockchainRenderer.renderGasFee(
-    isRootchain ? Gas.MINIMUM_GAS_USED : 1,
-    feeEth
-  )
-  const feePrice = BlockchainRenderer.renderTokenPrice(
-    gasFee,
-    ethToken && ethToken.price
-  )
-  const totalPrice = BlockchainRenderer.renderTotalPrice(tokenPrice, feePrice)
+
+  useEffect(() => {
+    async function calculateEstimatedFee() {
+      const gasUsed = await TransferHelper.getGasUsed(transferType, token, {
+        wallet: blockchainWallet,
+        to: toWallet.address,
+        fee: fee
+      })
+      const gasPrice = fee && fee.amount
+      const gasFee = BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
+      const usdPerEth = ethToken && ethToken.price
+      const gasFeeUsd = BlockchainRenderer.renderTokenPrice(gasFee, usdPerEth)
+      const totalPrice = BlockchainRenderer.renderTotalPrice(
+        tokenPrice,
+        gasFeeUsd
+      )
+      setEstimatedFee(gasFee)
+      setEstimatedFeeUsd(gasFeeUsd)
+      setEstimatedTotalPrice(totalPrice)
+    }
+    calculateEstimatedFee()
+  }, [
+    blockchainWallet,
+    ethToken,
+    fee,
+    toWallet.address,
+    token,
+    tokenPrice,
+    transferType
+  ])
 
   const blockchainLabelActionText = BlockchainLabel.getBlockchainTextActionLabel(
     'TransferConfirm',
-    isDeposit
+    transferType
   )
 
   const [loadingVisible, setLoadingVisible] = useState(false)
@@ -70,27 +99,32 @@ const TransferConfirm = ({
   useEffect(() => {
     if (loading.success && observedActions.indexOf(loading.action) > -1) {
       const lastUnconfirmedTx = unconfirmedTxs.slice(-1).pop()
-      navigation.navigate('TransferPending', {
-        token,
-        fromWallet,
-        toWallet,
-        isDeposit,
-        isRootchain,
-        unconfirmedTx: lastUnconfirmedTx,
-        fee
-      })
+      navigation.navigate(
+        'TransferPending',
+        paramsForTransferConfirmToTransferPending({
+          token,
+          fromWallet,
+          toWallet,
+          transferType,
+          estimatedFee,
+          estimatedFeeUsd,
+          lastUnconfirmedTx,
+          fee
+        })
+      )
     }
   }, [
     fee,
     fromWallet,
-    isDeposit,
-    isRootchain,
     loading,
     navigation,
     observedActions,
     unconfirmedTxs,
     toWallet,
-    token
+    token,
+    estimatedFee,
+    estimatedFeeUsd,
+    transferType
   ])
 
   useEffect(() => {
@@ -110,13 +144,45 @@ const TransferConfirm = ({
           tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
       ) !== undefined
     const isChildchainTransaction =
-      !isRootchain &&
-      toWallet.address !== Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
+      transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN
 
     setConfirmBtnDisable(
       isPendingChildchainTransaction && isChildchainTransaction
     )
-  }, [isRootchain, unconfirmedTxs, toWallet.address])
+  }, [unconfirmedTxs, toWallet.address, transferType])
+
+  const handleBackToEditPressed = useCallback(() => {
+    navigation.navigate(
+      'TransferForm',
+      paramsForTransferConfirmToTransferForm({
+        token
+      })
+    )
+  }, [navigation, token])
+
+  const renderEstimatedFeeElement = useCallback(() => {
+    return estimatedFee ? (
+      <>
+        <OMGText style={styles.feeAmount(theme)}>{estimatedFee} ETH</OMGText>
+        <OMGText style={styles.feeWorth(theme)}>{estimatedFeeUsd} USD</OMGText>
+      </>
+    ) : (
+      <OMGEmpty loading={true} />
+    )
+  }, [estimatedFee, estimatedFeeUsd, theme])
+
+  const renderEstimatedFeeUsdElement = useCallback(() => {
+    return estimatedTotalPrice ? (
+      <>
+        <OMGText style={styles.totalText(theme)}>Total</OMGText>
+        <OMGText style={styles.totalText(theme)}>
+          {estimatedTotalPrice} USD
+        </OMGText>
+      </>
+    ) : (
+      <OMGEmpty loading={true} />
+    )
+  }, [estimatedTotalPrice, theme])
 
   const sendToken = () => {
     dispatchSendToken(
@@ -124,7 +190,7 @@ const TransferConfirm = ({
       fee,
       blockchainWallet,
       toWallet.address,
-      isRootchain
+      transferType
     )
   }
 
@@ -132,23 +198,20 @@ const TransferConfirm = ({
     <SafeAreaView style={styles.container(theme)}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.contentContainer}>
-          <View style={styles.subHeaderContainer}>
-            <OMGIcon
-              name='chevron-left'
-              size={14}
-              color={theme.colors.gray3}
-              onPress={() =>
-                navigation.navigate('TransferForm', {
-                  lastAmount: token.balance
-                })
-              }
-            />
-            <OMGText style={styles.edit}>Edit</OMGText>
-          </View>
+          <TouchableHighlight onPress={handleBackToEditPressed}>
+            <View style={styles.subHeaderContainer}>
+              <OMGFontIcon
+                name='chevron-left'
+                size={14}
+                color={theme.colors.gray3}
+              />
+              <OMGText style={styles.edit}>Edit</OMGText>
+            </View>
+          </TouchableHighlight>
           <OMGBlockchainLabel
             style={styles.blockchainLabel}
             actionText={blockchainLabelActionText}
-            isRootchain={isRootchain}
+            transferType={transferType}
           />
           <View style={styles.amountContainer(theme)}>
             <OMGText
@@ -188,18 +251,16 @@ const TransferConfirm = ({
           </OMGBox>
           <View style={styles.transactionFeeContainer(fee)}>
             <OMGText weight='bold' style={styles.subtitle(theme)}>
-              Transaction Fee
+              Estimated Fee
             </OMGText>
             <View style={styles.feeContainer(theme)}>
-              <OMGText style={styles.feeAmount(theme)}>{feeEth} ETH</OMGText>
-              <OMGText style={styles.feeWorth(theme)}>{feePrice} USD</OMGText>
+              {renderEstimatedFeeElement()}
             </View>
           </View>
         </View>
         <View style={styles.buttonContainer}>
           <View style={styles.totalContainer(fee)}>
-            <OMGText style={styles.totalText(theme)}>Max Total</OMGText>
-            <OMGText style={styles.totalText(theme)}>{totalPrice} USD</OMGText>
+            {renderEstimatedFeeUsdElement()}
           </View>
           <OMGButton
             style={styles.button}
@@ -227,13 +288,12 @@ const styles = StyleSheet.create({
     flex: 1
   },
   subHeaderContainer: {
+    paddingBottom: 16,
     paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center'
   },
-  blockchainLabel: {
-    marginTop: 16
-  },
+  blockchainLabel: {},
   amountContainer: theme => ({
     padding: 20,
     backgroundColor: theme.colors.gray4,
@@ -272,7 +332,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }),
   totalContainer: fee => ({
-    display: fee ? 'flex' : 'none',
+    // display: fee ? 'flex' : 'none',
+    display: 'none',
     marginTop: 16,
     flexDirection: 'row',
     justifyContent: 'space-between'
@@ -337,18 +398,21 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchSendToken: (token, fee, blockchainWallet, toAddress, isRootchain) =>
-    dispatch(getAction(token, fee, blockchainWallet, toAddress, isRootchain))
+  dispatchSendToken: (token, fee, blockchainWallet, toAddress, transferType) =>
+    dispatch(getAction(token, fee, blockchainWallet, toAddress, transferType))
 })
 
-const getAction = (token, fee, blockchainWallet, toAddress, isRootchain) => {
-  const TO_CHILDCHAIN = toAddress === Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
+const getAction = (token, fee, blockchainWallet, toAddress, transferType) => {
+  const IS_DEPOSIT = transferType === TransferHelper.TYPE_DEPOSIT
   const ETH_TOKEN = token.contractAddress === ContractAddress.ETH_ADDRESS
-  if (TO_CHILDCHAIN && ETH_TOKEN) {
-    return plasmaActions.depositEth(blockchainWallet, token, fee)
-  } else if (TO_CHILDCHAIN && !ETH_TOKEN) {
-    return plasmaActions.depositErc20(blockchainWallet, token, fee)
-  } else if (!isRootchain) {
+  const TRANFER_CHILDCHAIN =
+    transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN
+
+  if (IS_DEPOSIT && ETH_TOKEN) {
+    return plasmaActions.depositEth(blockchainWallet, token)
+  } else if (IS_DEPOSIT && !ETH_TOKEN) {
+    return plasmaActions.depositErc20(blockchainWallet, token)
+  } else if (TRANFER_CHILDCHAIN) {
     return plasmaActions.transfer(blockchainWallet, toAddress, token)
   } else if (ETH_TOKEN) {
     return ethereumActions.sendEthToken(token, fee, blockchainWallet, toAddress)

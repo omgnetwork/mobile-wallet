@@ -44,7 +44,7 @@ describe('Test Ethereum Actions', () => {
             ...mockTxOptions,
             to: toAddress,
             value: token.balance,
-            actionType: 'ROOTCHAIN_SEND',
+            actionType: 'ROOTCHAIN_SEND_TOKEN',
             symbol: token.tokenSymbol,
             createdAt: dispatchedActions[1].data.createdAt
           }
@@ -74,7 +74,7 @@ describe('Test Ethereum Actions', () => {
             to: toAddress,
             gasUsed: null,
             value: token.balance,
-            actionType: 'ROOTCHAIN_SEND',
+            actionType: 'ROOTCHAIN_SEND_TOKEN',
             symbol: token.tokenSymbol,
             createdAt: dispatchedActions[1].data.createdAt
           }

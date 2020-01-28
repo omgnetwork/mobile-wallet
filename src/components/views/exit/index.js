@@ -4,7 +4,7 @@ import { withTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
 import {
-  OMGIcon,
+  OMGFontIcon,
   OMGBox,
   OMGText,
   OMGStatusBar,
@@ -37,10 +37,10 @@ const Exit = ({ navigation, theme, primaryWallet }) => {
         <OMGText style={styles.title(theme)}>Exit</OMGText>
         <OMGBox
           onPress={() => {
-            navigation.goBack()
+            navigation.navigate('Balance')
           }}
           style={styles.icon}>
-          <OMGIcon name='x-mark' size={18} color={theme.colors.gray3} />
+          <OMGFontIcon name='x-mark' size={18} color={theme.colors.gray3} />
         </OMGBox>
       </View>
       {primaryWallet ? (

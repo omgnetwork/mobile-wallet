@@ -14,10 +14,7 @@ const ScannerTransferFormSwitchNavigator = createSwitchNavigator(
       }
     },
     TransferForm: {
-      screen: Views.TransferForm,
-      params: {
-        isDeposit: false
-      }
+      screen: Views.TransferForm
     }
   },
   {

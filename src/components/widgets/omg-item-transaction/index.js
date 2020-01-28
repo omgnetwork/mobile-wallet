@@ -5,7 +5,7 @@ import { Datetime } from 'common/utils'
 import { TransactionTypes } from 'common/constants'
 import { BlockchainRenderer } from 'common/blockchain'
 import OMGText from '../omg-text'
-import OMGIcon from '../omg-icon'
+import OMGFontIcon from '../omg-icon'
 
 const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
   const isError = tx.type === TransactionTypes.TYPE_FAILED
@@ -24,7 +24,7 @@ const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
       style={{ ...styles.container, ...style }}
       key={key}>
       <View style={styles.logo(theme, isError)}>
-        <OMGIcon
+        <OMGFontIcon
           name={iconName}
           size={14}
           color={isError ? theme.colors.red : theme.colors.black5}

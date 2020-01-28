@@ -8,8 +8,12 @@ const envInfo = {
 }
 
 export const sendEvent = (eventName, params) => {
-  return firebase.analytics().logEvent(eventName, {
-    ...params,
-    ...envInfo
-  })
+  try {
+    return firebase.analytics().logEvent(eventName, {
+      ...params,
+      ...envInfo
+    })
+  } catch (err) {
+    console.log(err)
+  }
 }

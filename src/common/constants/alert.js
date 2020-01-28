@@ -5,7 +5,7 @@ export const SUCCESS_COPIED_ADDRESS = {
 
 export const FAILED_ADD_DUPLICATED_WALLET = {
   type: 'danger',
-  message: 'Cannot add the wallet. The wallet name has already been taken.'
+  message: 'The wallet name has already been taken.'
 }
 
 export const FAILED_ADD_EMPTY_WALLET_NAME = {

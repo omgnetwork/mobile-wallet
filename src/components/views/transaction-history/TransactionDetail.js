@@ -8,12 +8,14 @@ import {
 } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
+import { TransferHelper } from 'components/views/transfer'
 import {
   OMGStatusBar,
   OMGText,
-  OMGIcon,
+  OMGFontIcon,
   OMGEmpty,
-  OMGBlockchainLabel
+  OMGBlockchainLabel,
+  OMGExitComplete
 } from 'components/widgets'
 import Config from 'react-native-config'
 import { Validator } from 'common/utils'
@@ -26,21 +28,35 @@ import { BlockchainNetworkType, TransactionTypes } from 'common/constants'
 
 const TransactionDetail = ({ navigation, theme }) => {
   const tx = navigation.getParam('transaction')
+  const title = navigation.getParam('title')
 
   const [transaction, setTransaction] = useState(null)
+  const [transferType, setTransferType] = useState(
+    TransferHelper.TYPE_TRANSFER_CHILDCHAIN
+  )
 
   useEffect(() => {
-    async function getPlasmaTx() {
+    async function fetchAndSetTransaction() {
       const plasmaTx = await transactionService.getPlasmaTx(tx)
+      const type = getTransferType(plasmaTx)
+      setTransferType(type)
       setTransaction(plasmaTx)
     }
 
     if (!Validator.isValidTransaction(tx)) {
-      getPlasmaTx()
+      fetchAndSetTransaction()
     } else {
+      const type = getTransferType(tx)
+      setTransferType(type)
       setTransaction(tx)
     }
-  }, [tx])
+  }, [getTransferType, tx])
+
+  const getTransferType = useCallback(({ network }) => {
+    return network === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
+      ? TransferHelper.TYPE_TRANSFER_ROOTCHAIN
+      : TransferHelper.TYPE_TRANSFER_CHILDCHAIN
+  }, [])
 
   const handleTxClick = useCallback(() => {
     if (Validator.isOmiseGOTransaction(transaction)) {
@@ -63,10 +79,32 @@ const TransactionDetail = ({ navigation, theme }) => {
           <OMGText style={styles.linkText(theme)}>{linkTitle}</OMGText>
         </TouchableOpacity>
         <View style={styles.filler} />
-        <OMGIcon name='export' color={theme.colors.black2} />
+        <OMGFontIcon name='export' color={theme.colors.black2} />
       </View>
     )
   }, [handleTxClick, theme, transaction])
+
+  const renderPendingExitIfNeeded = useCallback(() => {
+    return tx.type === TransactionTypes.TYPE_EXIT ? (
+      <OMGExitComplete
+        style={styles.exitCompleteLabel}
+        createdAt={tx.createdAt}
+      />
+    ) : null
+  }, [tx])
+
+  const renderTransactionDetailFromToIfNeeded = useCallback(() => {
+    return [
+      TransactionTypes.TYPE_SENT,
+      TransactionTypes.TYPE_RECEIVED
+    ].includes(tx.type) ? (
+      <TransactionDetailFromTo
+        tx={transaction}
+        theme={theme}
+        style={styles.fromToContainer}
+      />
+    ) : null
+  }, [theme, transaction, tx.type])
 
   const renderTransactionDetail = useCallback(() => {
     return (
@@ -78,11 +116,7 @@ const TransactionDetail = ({ navigation, theme }) => {
         />
         <OMGBlockchainLabel
           style={styles.blockchainLabel(theme)}
-          isRootchain={
-            transaction.network ===
-              BlockchainNetworkType.TYPE_ETHEREUM_NETWORK &&
-            transaction.type !== TransactionTypes.TYPE_DEPOSIT
-          }
+          transferType={transferType}
           actionText={BlockchainLabels.getBlockchainTextActionLabel(
             transaction
           )}
@@ -92,16 +126,19 @@ const TransactionDetail = ({ navigation, theme }) => {
           theme={theme}
           style={styles.infoContainer}
         />
-        <TransactionDetailFromTo
-          tx={transaction}
-          theme={theme}
-          style={styles.fromToContainer}
-        />
-        <Divider theme={theme} />
+        {renderPendingExitIfNeeded()}
+        {renderTransactionDetailFromToIfNeeded()}
         {renderExternalLink()}
       </ScrollView>
     )
-  }, [renderExternalLink, theme, transaction])
+  }, [
+    renderExternalLink,
+    renderPendingExitIfNeeded,
+    renderTransactionDetailFromToIfNeeded,
+    theme,
+    transaction,
+    transferType
+  ])
 
   const renderTransactionLoading = useCallback(() => {
     return <OMGEmpty loading={transaction === null} />
@@ -114,14 +151,14 @@ const TransactionDetail = ({ navigation, theme }) => {
         backgroundColor={theme.colors.white}
       />
       <View style={styles.header}>
-        <OMGIcon
+        <OMGFontIcon
           name='chevron-left'
           size={18}
           color={theme.colors.gray3}
           style={styles.headerIcon}
           onPress={() => navigation.goBack()}
         />
-        <OMGText style={styles.headerTitle(theme)}>Transaction Details</OMGText>
+        <OMGText style={styles.headerTitle(theme)}>{title}</OMGText>
       </View>
       {transaction ? renderTransactionDetail() : renderTransactionLoading()}
     </SafeAreaView>
@@ -186,6 +223,9 @@ const styles = StyleSheet.create({
   linkText: theme => ({
     color: theme.colors.blue4
   }),
+  exitCompleteLabel: {
+    marginTop: 16
+  },
   filler: {
     flex: 1
   }

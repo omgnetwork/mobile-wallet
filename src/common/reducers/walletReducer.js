@@ -16,6 +16,10 @@ export const walletsReducer = (state = [], action) => {
       return action.data.wallets
     case 'WALLET/DELETE_ALL/OK':
       return []
+    case 'WALLET/DELETE/OK':
+      return state.filter(
+        wallet => wallet.address !== action.data.walletAddress
+      )
     case 'WALLET/GET_TX_HISTORY/SUCCESS':
       return state.map(wallet => {
         if (wallet.address === action.data.address) {

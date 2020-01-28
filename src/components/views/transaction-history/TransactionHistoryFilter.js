@@ -5,7 +5,7 @@ import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import {
   OMGText,
-  OMGIcon,
+  OMGFontIcon,
   OMGStatusBar,
   OMGTransactionFilter
 } from 'components/widgets'
@@ -28,7 +28,7 @@ const TransactionHistoryFilter = ({
         backgroundColor={theme.colors.white}
       />
       <View style={styles.header}>
-        <OMGIcon
+        <OMGFontIcon
           name='chevron-left'
           size={18}
           color={theme.colors.gray3}

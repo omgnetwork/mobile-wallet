@@ -1,9 +1,7 @@
 import React from 'react'
 import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import OMGImage from '../omg-image'
-import OMGIcon from '../omg-icon'
-import OMGText from '../omg-text'
+import { OMGTokenIcon, OMGFontIcon, OMGText } from 'components/widgets'
 import { BlockchainRenderer } from 'common/blockchain'
 
 const OMGTokenInput = ({ theme, token, style, onPress }) => {
@@ -11,19 +9,18 @@ const OMGTokenInput = ({ theme, token, style, onPress }) => {
     <TouchableOpacity
       onPress={onPress}
       style={{ ...styles.container(theme), ...style }}>
-      <OMGImage
-        style={styles.logo}
-        source={{
-          uri: `https://api.adorable.io/avatars/285/${token.contractAddress}.png`
-        }}
-      />
+      <OMGTokenIcon token={token} style={styles.logo} size={26} />
       <OMGText style={styles.text(theme)}>{token.tokenSymbol}</OMGText>
       <View style={styles.rightContainer}>
         <OMGText style={styles.amount(theme)}>
           {BlockchainRenderer.renderTokenBalance(token.balance, 4)}{' '}
           {token.tokenSymbol}
         </OMGText>
-        <OMGIcon name='chevron-right' size={14} color={theme.colors.gray3} />
+        <OMGFontIcon
+          name='chevron-right'
+          size={14}
+          color={theme.colors.gray3}
+        />
       </View>
     </TouchableOpacity>
   )

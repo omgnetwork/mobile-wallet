@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { View, StyleSheet, Clipboard } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import QRCode from 'react-native-qrcode-svg'
-import OMGIcon from '../omg-icon'
+import OMGFontIcon from '../omg-icon'
 import OMGBox from '../omg-box'
 import OMGText from '../omg-text'
 import { Alert } from 'common/constants'
@@ -20,7 +20,7 @@ const OMGQRCode = ({ payload, displayText, size, theme, style }) => {
         <View style={styles.displayTextContainer}>
           <OMGText style={styles.text(theme)}>{displayText}</OMGText>
           <OMGBox style={styles.icon(theme)} onPress={handleCopyClick}>
-            <OMGIcon name='copy' size={14} color={theme.colors.black2} />
+            <OMGFontIcon name='copy' size={14} color={theme.colors.black2} />
           </OMGBox>
         </View>
       )}

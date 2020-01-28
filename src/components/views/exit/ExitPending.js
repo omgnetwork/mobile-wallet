@@ -6,13 +6,13 @@ import { withTheme } from 'react-native-paper'
 import { BlockchainRenderer } from 'common/blockchain'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
-import { Datetime } from 'common/utils'
+import { TransferHelper } from 'components/views/transfer'
 import {
   OMGButton,
   OMGText,
   OMGBlockchainLabel,
   OMGStatusBar,
-  OMGIcon,
+  OMGFontIcon,
   OMGExitComplete
 } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -31,10 +31,8 @@ const ExitPending = ({ theme, navigation }) => {
   }
 
   useEffect(() => {
-    GoogleAnalytics.sendEvent('transfer_exited', unconfirmedTx.hash)
+    GoogleAnalytics.sendEvent('transfer_exited', { hash: unconfirmedTx.hash })
   }, [unconfirmedTx.hash])
-
-  const processedAt = Datetime.add(Datetime.fromNow(), Config.EXIT_PERIOD * 2)
 
   return (
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
@@ -45,7 +43,7 @@ const ExitPending = ({ theme, navigation }) => {
         />
         <View style={styles.headerContainer}>
           <View style={styles.iconPending(theme)}>
-            <OMGIcon name='pending' size={24} style={styles.icon(theme)} />
+            <OMGFontIcon name='pending' size={24} style={styles.icon(theme)} />
           </View>
           <OMGText style={styles.title(theme)} weight='bold'>
             Pending Transaction
@@ -53,7 +51,7 @@ const ExitPending = ({ theme, navigation }) => {
         </View>
         <OMGBlockchainLabel
           actionText='Sent to'
-          isRootchain={true}
+          transferType={TransferHelper.TYPE_TRANSFER_ROOTCHAIN}
           style={styles.blockchainLabel}
         />
         <View style={styles.contentContainer}>
@@ -68,7 +66,7 @@ const ExitPending = ({ theme, navigation }) => {
           </View>
           <OMGExitComplete
             style={styles.exitCompleteLabel}
-            processedAt={processedAt}
+            createdAt={unconfirmedTx.createdAt}
           />
         </View>
 

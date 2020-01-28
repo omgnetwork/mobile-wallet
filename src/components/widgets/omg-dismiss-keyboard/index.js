@@ -1,10 +1,10 @@
 import React from 'react'
-import { TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { TouchableWithoutFeedback, Keyboard, View } from 'react-native'
 
-const OMGDismissKeyboard = ({ children }) => {
+const OMGDismissKeyboard = ({ children, style }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      {children}
+      <View style={style}>{children}</View>
     </TouchableWithoutFeedback>
   )
 }
