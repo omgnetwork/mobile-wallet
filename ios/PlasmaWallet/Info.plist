@@ -70,6 +70,8 @@
 		<string>MessinaSansMono-Regular.otf</string>
 		<string>MessinaSansMono-SemiBold.otf</string>
 		<string>FontAwesome5_Solid.ttf</string>
+		<string>MessinaSans-Light.otf</string>
+		<string>MessinaSansMono-Light.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

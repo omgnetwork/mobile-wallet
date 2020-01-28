@@ -34,7 +34,7 @@ const OMGBottomTab = ({
 
   if (type === 'tabBarLabel') {
     return (
-      <OMGText style={styles.textTabBar(focused, tintColor)}>
+      <OMGText weight='regular' style={styles.textTabBar(focused, tintColor)}>
         {textButton}
       </OMGText>
     )
@@ -59,10 +59,10 @@ const styles = StyleSheet.create({
   textTabBar: (focused, tintColor) => ({
     opacity: focused ? 1.0 : 0.7,
     color: tintColor,
-    fontSize: 12,
+    fontSize: 10,
     alignSelf: 'center',
-    marginTop: 16,
-    marginBottom: 8
+    marginTop: 8,
+    marginBottom: 12
   }),
   icon: focused => ({
     opacity: focused ? 1.0 : 0.7

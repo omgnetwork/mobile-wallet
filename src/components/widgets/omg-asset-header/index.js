@@ -2,6 +2,7 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGEmpty, OMGText } from 'components/widgets'
+import { IconEth, IconGo } from './assets'
 
 const OMGAssetHeader = ({
   theme,
@@ -14,6 +15,7 @@ const OMGAssetHeader = ({
   anchoredRef,
   style
 }) => {
+  const BlockchainIcon = rootchain ? IconEth : IconGo
   return (
     <View style={{ ...styles.container(theme), ...style }}>
       <View style={styles.balance}>
@@ -22,20 +24,21 @@ const OMGAssetHeader = ({
         ) : (
           <OMGText style={styles.balanceAmount(theme)}>{amount}</OMGText>
         )}
-        <OMGText style={styles.balanceCurrency(theme)}>{currency}</OMGText>
+        <OMGText style={styles.balanceCurrency(theme)} weight='light'>
+          {currency}
+        </OMGText>
       </View>
-      <View style={styles.footer(theme, rootchain)} ref={anchoredRef}>
-        <View style={styles.subfooter}>
-          <OMGText style={styles.subfooterText1(theme)}>{blockchain}</OMGText>
-          <OMGText style={styles.subfooterText2(theme)}>
-            {rootchain ? 'RootChain' : 'Childchain'}
-          </OMGText>
-        </View>
-        <View style={styles.divider(theme)} />
-        <View style={styles.subfooter}>
-          <OMGText style={styles.subfooterText1(theme)}>{network}</OMGText>
-          <OMGText style={styles.subfooterText2(theme)}>Network</OMGText>
-        </View>
+      <View style={styles.footer} ref={anchoredRef}>
+        <BlockchainIcon
+          fill={theme.colors.new_gray2}
+          width={rootchain ? 14 : 57.963}
+          height={rootchain ? 23 : 20}
+        />
+        <OMGText style={styles.textChain(theme)}>
+          {rootchain ? 'Ethereum Rootchain' : 'Plasma Childchain'}
+        </OMGText>
+        <View style={styles.greenDot(theme)} />
+        <OMGText style={styles.textNetwork(theme)}>Mainnet</OMGText>
       </View>
     </View>
   )
@@ -45,7 +48,6 @@ const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'column',
     backgroundColor: theme.colors.new_black7,
-    paddingBottom: 16,
     borderTopLeftRadius: theme.roundness,
     borderTopRightRadius: theme.roundness
   }),
@@ -63,40 +65,35 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'left',
     fontSize: 32,
+    letterSpacing: -3,
     color: theme.colors.white
   }),
   balanceCurrency: theme => ({
     color: theme.colors.black1,
     fontSize: 32
   }),
-  footer: (theme, rootchain) => ({
+  footer: {
     flexDirection: 'row',
-    backgroundColor: rootchain ? theme.colors.purple : theme.colors.blue2,
-    borderRadius: theme.roundness,
-    marginHorizontal: 20
-  }),
-  subfooter: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 8
+    marginHorizontal: 20,
+    alignItems: 'center'
   },
-  subfooterText1: theme => ({
+  textChain: theme => ({
+    flex: 1,
     fontSize: 12,
-    textTransform: 'capitalize',
-    color: theme.colors.white,
-    marginRight: 4
+    marginLeft: 20,
+    letterSpacing: -0.7,
+    color: theme.colors.new_gray2
   }),
-  subfooterText2: theme => ({
+  textNetwork: theme => ({
     fontSize: 12,
-    textTransform: 'capitalize',
-    color: theme.colors.black1
+    marginLeft: 6,
+    color: theme.colors.new_gray2
   }),
-  divider: theme => ({
-    borderLeftWidth: 1,
-    borderLeftColor: theme.colors.black4,
-    opacity: 0.3
+  greenDot: theme => ({
+    width: 6,
+    height: 6,
+    backgroundColor: theme.colors.new_green1,
+    borderRadius: 3
   })
 })
 

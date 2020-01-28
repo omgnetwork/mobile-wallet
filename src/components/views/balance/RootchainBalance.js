@@ -117,7 +117,7 @@ const RootchainBalance = ({
       <OMGAssetFooter
         enableDeposit={shouldEnableDepositAction()}
         showExit={false}
-        depositText='DEPOSIT TO PLASMA'
+        depositText='DEPOSIT'
         footerRef={depositButtonRef}
         onPressDeposit={handleDepositClick}
       />
@@ -129,7 +129,8 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
     borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 4
+    borderBottomRightRadius: 4,
+    paddingTop: 36
   }
 })
 

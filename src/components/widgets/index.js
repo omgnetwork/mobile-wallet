@@ -28,7 +28,7 @@ import {
   OMGOnboardingSheet,
   OMGOnboardingPopup
 } from './omg-onboarding'
-import OMGFontIcon from './omg-icon'
+import OMGFontIcon from './omg-font-icon'
 import OMGIdenticon from './omg-identicon'
 import OMGImage from './omg-image'
 import OMGItemWallet from './omg-item-wallet'

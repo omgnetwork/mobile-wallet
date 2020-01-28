@@ -5,7 +5,7 @@ import { Datetime } from 'common/utils'
 import { TransactionTypes } from 'common/constants'
 import { BlockchainRenderer } from 'common/blockchain'
 import OMGText from '../omg-text'
-import OMGFontIcon from '../omg-icon'
+import OMGFontIcon from '../omg-font-icon'
 
 const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
   const isError = tx.type === TransactionTypes.TYPE_FAILED

@@ -40,7 +40,7 @@ const OMGAssetList = ({
   return (
     <View style={{ ...styles.container(theme), ...style }}>
       <View style={styles.header(theme)}>
-        <OMGText style={styles.title(theme)} weight='mono-bold'>
+        <OMGText style={styles.title(theme)} weight='regular'>
           ASSETS
         </OMGText>
         {updatedAt && (
@@ -105,7 +105,8 @@ const styles = StyleSheet.create({
   }),
   updatedAt: theme => ({
     color: theme.colors.black2,
-    fontSize: 12
+    letterSpacing: -0.7,
+    fontSize: 10
   }),
   add: {
     justifyContent: 'flex-end'

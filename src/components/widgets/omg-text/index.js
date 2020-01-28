@@ -25,10 +25,14 @@ const fontFamilySelector = weight => {
       return 'MessinaSansMono-SemiBold'
     case 'mono-regular':
       return 'MessinaSansMono-Regular'
+    case 'mono-light':
+      return 'MessinaSansMono-Light'
     case 'book':
       return 'MessinaSans-Book'
     case 'regular':
       return 'MessinaSans-Regular'
+    case 'light':
+      return 'MessinaSans-Light'
     default:
       return 'MessinaSansMono-Book'
   }
@@ -36,12 +40,14 @@ const fontFamilySelector = weight => {
 
 const fontWeightSelector = weight => {
   switch (weight) {
-    case 'extra-bold':
-      return '900'
-    case 'bold':
+    case 'mono-bold':
       return '700'
-    case 'medium':
-      return '500'
+    case 'mono-regular':
+    case 'regular':
+      return '400'
+    case 'mono-light':
+    case 'light':
+      return '300'
     default:
       return '400'
   }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import OMGText from '../omg-text'
-import OMGFontIcon from '../omg-icon'
+import OMGFontIcon from '../omg-font-icon'
 import { withTheme } from 'react-native-paper'
 import { Formatter } from 'common/utils'
 

@@ -30,6 +30,8 @@
 		E2F77AF6594346FAB542CE8E /* MessinaSans-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5CFFB4E20C3E4050B9091133 /* MessinaSans-Book.otf */; };
 		F5453F5A0F6C41A1ADCB7C88 /* MessinaSansMono-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511878A4CE6B4B38834A201F /* MessinaSansMono-Regular.otf */; };
 		ACCD3CC46AFD4DE5935A40FE /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A42FB0BFEA441FBBBE39BFC /* FontAwesome5_Solid.ttf */; };
+		D2A2277A48E64BA1A6CA92BA /* MessinaSans-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0359736497A843F3972493C8 /* MessinaSans-Light.otf */; };
+		3A7EEF073014497B89EDC811 /* MessinaSansMono-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = D8FEECC5438C4F8C8835E93C /* MessinaSansMono-Light.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +84,8 @@
 		F34506AC4A0E41B88C8AED57 /* TSBackgroundFetch.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = TSBackgroundFetch.framework; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/TSBackgroundFetch.framework"; sourceTree = SDKROOT; };
 		F5F22C7E7BED4FE4DFAAEE6D /* Pods-PlasmaWalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlasmaWalletTests.release.xcconfig"; path = "Target Support Files/Pods-PlasmaWalletTests/Pods-PlasmaWalletTests.release.xcconfig"; sourceTree = "<group>"; };
 		3A42FB0BFEA441FBBBE39BFC /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Solid.ttf"; path = "../assets/fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0359736497A843F3972493C8 /* MessinaSans-Light.otf */ = {isa = PBXFileReference; name = "MessinaSans-Light.otf"; path = "../assets/fonts/MessinaSans-Light.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D8FEECC5438C4F8C8835E93C /* MessinaSansMono-Light.otf */ = {isa = PBXFileReference; name = "MessinaSansMono-Light.otf"; path = "../assets/fonts/MessinaSansMono-Light.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +225,8 @@
 				720399F0D2A44BE8B2D7918E /* MessinaSansMono-SemiBold.otf */,
 				EA92F585139B4B03A9F625FB /* OMGFontIcon.ttf */,
 				3A42FB0BFEA441FBBBE39BFC /* FontAwesome5_Solid.ttf */,
+				0359736497A843F3972493C8 /* MessinaSans-Light.otf */,
+				D8FEECC5438C4F8C8835E93C /* MessinaSansMono-Light.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -385,6 +391,8 @@
 				D764F9A350CA45E88C984E40 /* MessinaSansMono-SemiBold.otf in Resources */,
 				3E988AC7244C4F22B03B7046 /* OMGFontIcon.ttf in Resources */,
 				ACCD3CC46AFD4DE5935A40FE /* FontAwesome5_Solid.ttf in Resources */,
+				D2A2277A48E64BA1A6CA92BA /* MessinaSans-Light.otf in Resources */,
+				3A7EEF073014497B89EDC811 /* MessinaSansMono-Light.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
