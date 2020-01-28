@@ -27,7 +27,7 @@ const TransferReceive = ({ theme, primaryWallet, primaryWalletAddress }) => {
             hash={primaryWalletAddress}
             size={40}
           />
-          <OMGText style={styles.title(theme)} weight='bold'>
+          <OMGText style={styles.title(theme)} weight='mono-bold'>
             {primaryWallet.name}
           </OMGText>
           <View style={styles.walletAddress}>

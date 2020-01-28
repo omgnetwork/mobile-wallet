@@ -151,7 +151,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
       <Fragment>
         <View style={styles.titleContainer(theme)}>
           <Icon />
-          <OMGText style={styles.title(theme)} weight='extra-bold'>
+          <OMGText style={styles.title(theme)} weight='mono-bold'>
             {textAboveLine}
           </OMGText>
         </View>

@@ -45,7 +45,7 @@ const ExitPending = ({ theme, navigation }) => {
           <View style={styles.iconPending(theme)}>
             <OMGFontIcon name='pending' size={24} style={styles.icon(theme)} />
           </View>
-          <OMGText style={styles.title(theme)} weight='bold'>
+          <OMGText style={styles.title(theme)} weight='mono-bold'>
             Pending Transaction
           </OMGText>
         </View>
@@ -55,7 +55,7 @@ const ExitPending = ({ theme, navigation }) => {
           style={styles.blockchainLabel}
         />
         <View style={styles.contentContainer}>
-          <OMGText weight='bold' style={styles.amountText}>
+          <OMGText weight='mono-bold' style={styles.amountText}>
             Amount
           </OMGText>
           <View style={styles.amountContainer(theme)}>

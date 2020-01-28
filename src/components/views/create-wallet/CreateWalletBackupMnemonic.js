@@ -21,7 +21,7 @@ const CreateWalletBackupMnemonic = ({ theme, navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <BackupMnemonicImage width={80} height={80} style={styles.image} />
-      <OMGText weight='bold' style={styles.title(theme)}>
+      <OMGText weight='mono-bold' style={styles.title(theme)}>
         Backup Mnemonic Phrase
       </OMGText>
       <OMGText style={styles.description(theme)}>

@@ -22,7 +22,7 @@ const OMGMenuIcon = ({
         <OMGFontIcon color={theme.colors.gray3} size={18} name={iconName} />
       </View>
       <View style={styles.sectionName}>
-        <OMGText style={styles.title(theme)} weight='bold'>
+        <OMGText style={styles.title(theme)} weight='mono-bold'>
           {title}
         </OMGText>
         <OMGText style={styles.description(theme)}>{description}</OMGText>

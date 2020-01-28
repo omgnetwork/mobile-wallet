@@ -21,14 +21,16 @@ const OMGText = ({ children, weight, style, ellipsizeMode, numberOfLines }) => {
 
 const fontFamilySelector = weight => {
   switch (weight) {
-    case 'extra-bold':
-      return 'CircularStd-Black'
-    case 'bold':
-      return 'CircularStd-Bold'
-    case 'medium':
-      return 'CircularStd-Medium'
+    case 'mono-bold':
+      return 'MessinaSansMono-SemiBold'
+    case 'mono-regular':
+      return 'MessinaSansMono-Regular'
+    case 'book':
+      return 'MessinaSans-Book'
+    case 'regular':
+      return 'MessinaSans-Regular'
     default:
-      return 'CircularStd-Book'
+      return 'MessinaSansMono-Book'
   }
 }
 

@@ -5,29 +5,31 @@
 	};
 	objectVersion = 52;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* PlasmaWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* PlasmaWalletTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		14C0937A7C13460093D1C4C2 /* MessinaSans-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = BACAA5B51E39422E85FE565D /* MessinaSans-Regular.otf */; };
 		1F856FFAE0AF45D49F1346DA /* TSBackgroundFetch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F34506AC4A0E41B88C8AED57 /* TSBackgroundFetch.framework */; };
-		26B581CA473E484FA264CAAE /* omgwallet.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76FF737E1E8C4AD9A2524175 /* omgwallet.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* PlasmaWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* PlasmaWalletTests.m */; };
+		3E988AC7244C4F22B03B7046 /* OMGFontIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EA92F585139B4B03A9F625FB /* OMGFontIcon.ttf */; };
 		492E820E806DC3A1CB78E963 /* libPods-PlasmaWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C667482EA634796EC80FD4C7 /* libPods-PlasmaWalletTests.a */; };
-		C40F64AB230B9049007295E7 /* CircularStd-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = E0E50DDCE04C44A6A92E89B0 /* CircularStd-Black.otf */; };
-		C40F64AC230B9049007295E7 /* CircularStd-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 11B6B1BCA8A84A2DA3713B73 /* CircularStd-Book.otf */; };
-		C40F64AD230B9049007295E7 /* CircularStd-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D44BD1D7BCF3437781E6B52B /* CircularStd-Medium.otf */; };
-		C40F64AE230B9049007295E7 /* CircularStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 61288EB4BCED46B4AF9067AD /* CircularStd-Bold.otf */; };
+		519B4451C4A2275DB6A5398B /* libPods-PlasmaWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0AD69EDCD02A10814EFA4D4 /* libPods-PlasmaWallet.a */; };
+		71B952FEB1694F4E838D28C6 /* MessinaSansMono-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4BD391ABF0B04F5DBC7C4B8D /* MessinaSansMono-Book.otf */; };
 		C49E761123660727003B0D52 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */; };
-		C4AD05DB230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		C4AD05DC230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		C4AD05DD230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DB230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DC230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DD230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		D6DD8AB8C90447CCBFFCC6A7 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2752A0B5F702467A8625AC5D /* RNBackgroundFetch+AppDelegate.m */; };
+		D764F9A350CA45E88C984E40 /* MessinaSansMono-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 720399F0D2A44BE8B2D7918E /* MessinaSansMono-SemiBold.otf */; };
+		E2F77AF6594346FAB542CE8E /* MessinaSans-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5CFFB4E20C3E4050B9091133 /* MessinaSans-Book.otf */; };
+		F5453F5A0F6C41A1ADCB7C88 /* MessinaSansMono-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511878A4CE6B4B38834A201F /* MessinaSansMono-Regular.otf */; };
+		ACCD3CC46AFD4DE5935A40FE /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A42FB0BFEA441FBBBE39BFC /* FontAwesome5_Solid.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,8 +55,6 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* PlasmaWalletTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlasmaWalletTests.m; sourceTree = "<group>"; };
 		087F5735B91515136DBCA8D2 /* Pods-PlasmaWalletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlasmaWalletTests.debug.xcconfig"; path = "Target Support Files/Pods-PlasmaWalletTests/Pods-PlasmaWalletTests.debug.xcconfig"; sourceTree = "<group>"; };
-		0CD2CEF2289948A18D3BA764 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
-		11B6B1BCA8A84A2DA3713B73 /* CircularStd-Book.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CircularStd-Book.otf"; path = "../assets/fonts/CircularStd-Book.otf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* PlasmaWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlasmaWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = PlasmaWallet/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = PlasmaWallet/AppDelegate.m; sourceTree = "<group>"; };
@@ -62,39 +62,26 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = PlasmaWallet/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PlasmaWallet/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PlasmaWallet/main.m; sourceTree = "<group>"; };
-		1AD6669148F449E7A6472E92 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		2752A0B5F702467A8625AC5D /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
-		2A6898E0CB2E47DB9E298155 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
-		2AEC1C3EFDD94B5186324552 /* omgwallet.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = omgwallet.ttf; path = ../assets/fonts/omgwallet.ttf; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* PlasmaWallet-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PlasmaWallet-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* PlasmaWallet-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PlasmaWallet-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		359C6835F0C30CF64690E5A7 /* Pods-PlasmaWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlasmaWallet.debug.xcconfig"; path = "Target Support Files/Pods-PlasmaWallet/Pods-PlasmaWallet.debug.xcconfig"; sourceTree = "<group>"; };
-		43573B28C3E540A884A3DE61 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
-		4C5F7F477A74483B9CB8F24E /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
-		5E5CA900E1734A9FBB703C92 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-		61288EB4BCED46B4AF9067AD /* CircularStd-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CircularStd-Bold.otf"; path = "../assets/fonts/CircularStd-Bold.otf"; sourceTree = "<group>"; };
-		6C4C0659C1234215AEED6DC6 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
-		76FF737E1E8C4AD9A2524175 /* omgwallet.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = omgwallet.ttf; path = ../assets/fonts/omgwallet.ttf; sourceTree = "<group>"; };
-		8700D8101AC24ABA8FB74AEE /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
-		94A4D1468C7A406B95799C34 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		9A55817706A74349994E5D1E /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		4BD391ABF0B04F5DBC7C4B8D /* MessinaSansMono-Book.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "MessinaSansMono-Book.otf"; path = "../assets/fonts/MessinaSansMono-Book.otf"; sourceTree = "<group>"; };
+		511878A4CE6B4B38834A201F /* MessinaSansMono-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "MessinaSansMono-Regular.otf"; path = "../assets/fonts/MessinaSansMono-Regular.otf"; sourceTree = "<group>"; };
+		5CFFB4E20C3E4050B9091133 /* MessinaSans-Book.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "MessinaSans-Book.otf"; path = "../assets/fonts/MessinaSans-Book.otf"; sourceTree = "<group>"; };
+		720399F0D2A44BE8B2D7918E /* MessinaSansMono-SemiBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "MessinaSansMono-SemiBold.otf"; path = "../assets/fonts/MessinaSansMono-SemiBold.otf"; sourceTree = "<group>"; };
 		AB581858E39E99898C048AB4 /* Pods-PlasmaWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlasmaWallet.release.xcconfig"; path = "Target Support Files/Pods-PlasmaWallet/Pods-PlasmaWallet.release.xcconfig"; sourceTree = "<group>"; };
-		BA41073F990D407AAFBA0AD4 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		BC1DD938E1134B61908858B9 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
-		C11DBCE866F4431D9E86B747 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		BACAA5B51E39422E85FE565D /* MessinaSans-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "MessinaSans-Regular.otf"; path = "../assets/fonts/MessinaSans-Regular.otf"; sourceTree = "<group>"; };
 		C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "PlasmaWallet/wallet/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C4F845CE236D3C8D002C25C7 /* libreact-native-google-analytics-bridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-google-analytics-bridge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C667482EA634796EC80FD4C7 /* libPods-PlasmaWalletTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PlasmaWalletTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C749D77E6D0F40D49422BC2E /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
-		D36851ED9F9C44CAA40E6779 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
-		D44BD1D7BCF3437781E6B52B /* CircularStd-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CircularStd-Medium.otf"; path = "../assets/fonts/CircularStd-Medium.otf"; sourceTree = "<group>"; };
 		E0AD69EDCD02A10814EFA4D4 /* libPods-PlasmaWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PlasmaWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E0E50DDCE04C44A6A92E89B0 /* CircularStd-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CircularStd-Black.otf"; path = "../assets/fonts/CircularStd-Black.otf"; sourceTree = "<group>"; };
+		EA92F585139B4B03A9F625FB /* OMGFontIcon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = OMGFontIcon.ttf; path = ../assets/fonts/OMGFontIcon.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F34506AC4A0E41B88C8AED57 /* TSBackgroundFetch.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = TSBackgroundFetch.framework; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/TSBackgroundFetch.framework"; sourceTree = SDKROOT; };
-		F565AE7DCA93424289230246 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		F5F22C7E7BED4FE4DFAAEE6D /* Pods-PlasmaWalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlasmaWalletTests.release.xcconfig"; path = "Target Support Files/Pods-PlasmaWalletTests/Pods-PlasmaWalletTests.release.xcconfig"; sourceTree = "<group>"; };
+		3A42FB0BFEA441FBBBE39BFC /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Solid.ttf"; path = "../assets/fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +98,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F856FFAE0AF45D49F1346DA /* TSBackgroundFetch.framework in Frameworks */,
+				519B4451C4A2275DB6A5398B /* libPods-PlasmaWallet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,28 +214,13 @@
 			isa = PBXGroup;
 			children = (
 				C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */,
-				4C5F7F477A74483B9CB8F24E /* AntDesign.ttf */,
-				6C4C0659C1234215AEED6DC6 /* Entypo.ttf */,
-				8700D8101AC24ABA8FB74AEE /* EvilIcons.ttf */,
-				F565AE7DCA93424289230246 /* Feather.ttf */,
-				C11DBCE866F4431D9E86B747 /* FontAwesome.ttf */,
-				D36851ED9F9C44CAA40E6779 /* FontAwesome5_Brands.ttf */,
-				BC1DD938E1134B61908858B9 /* FontAwesome5_Regular.ttf */,
-				1AD6669148F449E7A6472E92 /* FontAwesome5_Solid.ttf */,
-				0CD2CEF2289948A18D3BA764 /* Fontisto.ttf */,
-				5E5CA900E1734A9FBB703C92 /* Foundation.ttf */,
-				BA41073F990D407AAFBA0AD4 /* Ionicons.ttf */,
-				2A6898E0CB2E47DB9E298155 /* MaterialCommunityIcons.ttf */,
-				9A55817706A74349994E5D1E /* MaterialIcons.ttf */,
-				43573B28C3E540A884A3DE61 /* Octicons.ttf */,
-				94A4D1468C7A406B95799C34 /* SimpleLineIcons.ttf */,
-				C749D77E6D0F40D49422BC2E /* Zocial.ttf */,
-				76FF737E1E8C4AD9A2524175 /* omgwallet.ttf */,
-				E0E50DDCE04C44A6A92E89B0 /* CircularStd-Black.otf */,
-				11B6B1BCA8A84A2DA3713B73 /* CircularStd-Book.otf */,
-				D44BD1D7BCF3437781E6B52B /* CircularStd-Medium.otf */,
-				61288EB4BCED46B4AF9067AD /* CircularStd-Bold.otf */,
-				2AEC1C3EFDD94B5186324552 /* omgwallet.ttf */,
+				5CFFB4E20C3E4050B9091133 /* MessinaSans-Book.otf */,
+				BACAA5B51E39422E85FE565D /* MessinaSans-Regular.otf */,
+				4BD391ABF0B04F5DBC7C4B8D /* MessinaSansMono-Book.otf */,
+				511878A4CE6B4B38834A201F /* MessinaSansMono-Regular.otf */,
+				720399F0D2A44BE8B2D7918E /* MessinaSansMono-SemiBold.otf */,
+				EA92F585139B4B03A9F625FB /* OMGFontIcon.ttf */,
+				3A42FB0BFEA441FBBBE39BFC /* FontAwesome5_Solid.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -285,7 +258,6 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				C49E760E2364A30C003B0D52 /* Run Script */,
-				54EC9F5EDDDA7695D12F16E0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -393,9 +365,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4AD05DB230AF9C30027E763 /* (null) in Resources */,
-				C4AD05DC230AF9C30027E763 /* (null) in Resources */,
-				C4AD05DD230AF9C30027E763 /* (null) in Resources */,
+				C4AD05DB230AF9C30027E763 /* BuildFile in Resources */,
+				C4AD05DC230AF9C30027E763 /* BuildFile in Resources */,
+				C4AD05DD230AF9C30027E763 /* BuildFile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,14 +375,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C40F64AB230B9049007295E7 /* CircularStd-Black.otf in Resources */,
 				C49E761123660727003B0D52 /* GoogleService-Info.plist in Resources */,
-				C40F64AC230B9049007295E7 /* CircularStd-Book.otf in Resources */,
-				C40F64AD230B9049007295E7 /* CircularStd-Medium.otf in Resources */,
-				C40F64AE230B9049007295E7 /* CircularStd-Bold.otf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				26B581CA473E484FA264CAAE /* omgwallet.ttf in Resources */,
+				E2F77AF6594346FAB542CE8E /* MessinaSans-Book.otf in Resources */,
+				14C0937A7C13460093D1C4C2 /* MessinaSans-Regular.otf in Resources */,
+				71B952FEB1694F4E838D28C6 /* MessinaSansMono-Book.otf in Resources */,
+				F5453F5A0F6C41A1ADCB7C88 /* MessinaSansMono-Regular.otf in Resources */,
+				D764F9A350CA45E88C984E40 /* MessinaSansMono-SemiBold.otf in Resources */,
+				3E988AC7244C4F22B03B7046 /* OMGFontIcon.ttf in Resources */,
+				ACCD3CC46AFD4DE5935A40FE /* FontAwesome5_Solid.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -503,23 +477,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
-		};
-		54EC9F5EDDDA7695D12F16E0 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PlasmaWallet/Pods-PlasmaWallet-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PlasmaWallet/Pods-PlasmaWallet-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlasmaWallet/Pods-PlasmaWallet-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		C49E760E2364A30C003B0D52 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -11,7 +11,7 @@ const OMGFeeSelect = ({ style, onPress, fee, selected, theme }) => {
       style={{ ...styles.container(theme, selected), ...style }}
       onPress={onPress}>
       <View style={styles.sectionFeeSpeed}>
-        <OMGText style={styles.feeSpeed(theme)} weight='bold'>
+        <OMGText style={styles.feeSpeed(theme)} weight='mono-bold'>
           {fee.speed}
         </OMGText>
         <OMGText style={styles.feeEstimateTime(theme)}>
@@ -22,7 +22,7 @@ const OMGFeeSelect = ({ style, onPress, fee, selected, theme }) => {
         <OMGText
           style={styles.feeAmount(theme)}
           ellipsizeMode='tail'
-          weight='bold'
+          weight='mono-bold'
           numberOfLines={1}>
           {fee.amount} {fee.symbol}
         </OMGText>

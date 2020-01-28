@@ -87,7 +87,7 @@ const TransferPending = ({ theme, navigation }) => {
                 color={theme.colors.white}
               />
             </View>
-            <OMGText style={styles.title(theme)} weight='bold'>
+            <OMGText style={styles.title(theme)} weight='mono-bold'>
               Pending Transaction
             </OMGText>
           </View>
@@ -100,7 +100,7 @@ const TransferPending = ({ theme, navigation }) => {
             transferType={transferType}
           />
           <OMGBox style={styles.addressContainer}>
-            <OMGText style={styles.subtitle(theme)} weight='bold'>
+            <OMGText style={styles.subtitle(theme)} weight='mono-bold'>
               From
             </OMGText>
             <OMGWalletAddress
@@ -110,7 +110,7 @@ const TransferPending = ({ theme, navigation }) => {
             />
             <OMGText
               style={[styles.subtitle(theme), styles.marginSubtitle]}
-              weight='bold'>
+              weight='mono-bold'>
               To
             </OMGText>
             <OMGWalletAddress
@@ -120,7 +120,7 @@ const TransferPending = ({ theme, navigation }) => {
             />
           </OMGBox>
           <View style={styles.sentContainer}>
-            <OMGText weight='bold' style={styles.subtitle(theme)}>
+            <OMGText weight='mono-bold' style={styles.subtitle(theme)}>
               Sent
             </OMGText>
             <View style={styles.sentContentContainer(theme)}>

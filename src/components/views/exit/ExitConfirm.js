@@ -131,7 +131,7 @@ const ExitConfirm = ({
         </View>
         <OMGExitWarning />
         <View style={styles.transactionFeeContainer}>
-          <OMGText weight='bold' style={styles.subtitle(theme)}>
+          <OMGText weight='mono-bold' style={styles.subtitle(theme)}>
             Estimated Fee
           </OMGText>
           <View style={styles.feeContainer(theme)}>

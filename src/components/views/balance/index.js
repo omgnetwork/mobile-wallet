@@ -160,7 +160,7 @@ const Balance = ({
   return (
     <SafeAreaView style={styles.safeAreaView(theme)}>
       <OMGStatusBar
-        barStyle={'dark-content'}
+        barStyle={'light-content'}
         backgroundColor={theme.colors.gray4}
       />
       <View style={styles.container(theme)}>
@@ -173,7 +173,7 @@ const Balance = ({
             size={24}
             name='hamburger'
             onPress={() => drawerNavigation.openDrawer()}
-            color={theme.colors.primary}
+            color={theme.colors.white}
           />
         </View>
         {!wallets || !primaryWallet ? (
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 16,
     textTransform: 'uppercase',
-    color: theme.colors.primary
+    color: theme.colors.white
   }),
   topIconRight: {},
   container: theme => ({

@@ -44,7 +44,7 @@ const OMGAssetHeader = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'column',
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.new_black7,
     paddingBottom: 16,
     borderTopLeftRadius: theme.roundness,
     borderTopRightRadius: theme.roundness
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'left',
     fontSize: 32,
-    color: theme.colors.black3
+    color: theme.colors.white
   }),
   balanceCurrency: theme => ({
     color: theme.colors.black1,

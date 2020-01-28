@@ -73,7 +73,7 @@ const BackupWarning = ({ theme, navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <BackupImage width={110} height={110} style={styles.image} />
-      <OMGText weight='bold' style={styles.title(theme)}>
+      <OMGText weight='mono-bold' style={styles.title(theme)}>
         Backup Mnemonic
       </OMGText>
       <OMGText style={styles.description(theme)}>

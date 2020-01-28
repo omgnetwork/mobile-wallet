@@ -10,7 +10,7 @@ const OMGMenuImage = ({ title, description, style, theme, onPress }) => {
       onPress={onPress}>
       <OMGIdenticon style={styles.logo} hash={title} size={40} />
       <View style={styles.sectionName}>
-        <OMGText style={styles.title(theme)} weight='bold'>
+        <OMGText style={styles.title(theme)} weight='mono-bold'>
           {title}
         </OMGText>
         <OMGText style={styles.description(theme)}>{description || ''}</OMGText>

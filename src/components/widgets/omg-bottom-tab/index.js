@@ -41,7 +41,7 @@ const OMGBottomTab = ({
   } else if (type === 'tabBarBigIcon') {
     return (
       <View style={styles.iconBox} ref={transferRef}>
-        <OMGFontIcon name={iconName} size={24} color='#04070d' />
+        <OMGFontIcon name={iconName} size={24} color='#92929D' />
       </View>
     )
   } else if (type === 'tabBarIcon') {
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     height: 48,
     padding: 12,
     borderRadius: 24,
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#36363E'
   }
 })
 

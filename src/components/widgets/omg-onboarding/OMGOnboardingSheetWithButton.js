@@ -21,7 +21,7 @@ const OMGOnboardingSheetWithButton = ({
 
   return (
     <OnboardingContainer visible={visible} isModal={true} tourKey={content.key}>
-      <OMGText style={styles.title(theme)} weight='bold'>
+      <OMGText style={styles.title(theme)} weight='mono-bold'>
         {content.title}
       </OMGText>
       {TextContent}

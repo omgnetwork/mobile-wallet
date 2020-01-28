@@ -11,13 +11,13 @@ const Page = ({ theme, textTitle, textContent, image }) => {
     <View style={styles.container}>
       <WelcomeImage style={styles.image} />
       <View style={styles.textContent}>
-        <OMGText style={[styles.text(theme), styles.header]} weight='bold'>
+        <OMGText style={[styles.text(theme), styles.header]} weight='mono-bold'>
           {textTitle}
         </OMGText>
         {textContent && (
           <OMGText
             style={[styles.text(theme), styles.subheader]}
-            weight='medium'>
+            weight='regular'>
             {textContent}
           </OMGText>
         )}

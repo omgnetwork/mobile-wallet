@@ -11,9 +11,9 @@ const OMGExitWarning = ({ theme, style }) => {
       </View>
       <OMGText style={styles.text(theme)}>
         You are about to move fund out of {'-\n'}
-        <OMGText weight='bold'>Plasma </OMGText>
+        <OMGText weight='mono-bold'>Plasma </OMGText>
         Chain to
-        <OMGText weight='bold'> Ethereum </OMGText>
+        <OMGText weight='mono-bold'> Ethereum </OMGText>
         Chain
       </OMGText>
     </View>

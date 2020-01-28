@@ -72,18 +72,11 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
 const styles = StyleSheet.create({
   container: (theme, animating, shadowAnim, shadowOpacity) => ({
     flexDirection: 'row',
-    borderRadius: theme.roundness,
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.new_black7,
     shadowColor: '#000000',
     elevation: shadowAnim.current,
     paddingHorizontal: animating ? 12 : 20,
     marginHorizontal: animating ? 8 : 0,
-    shadowOffset: {
-      width: 0,
-      height: shadowAnim.current
-    },
-    marginTop: 2,
-    marginBottom: 6,
     shadowRadius: shadowAnim.current,
     shadowOpacity: shadowOpacity.current,
     alignItems: 'center',
@@ -101,13 +94,13 @@ const styles = StyleSheet.create({
   }),
   symbol: theme => ({
     fontSize: 14,
-    color: theme.colors.primary
+    color: theme.colors.white
   }),
   balance: theme => ({
     textAlign: 'right',
     maxWidth: 100,
     fontSize: 14,
-    color: theme.colors.primary
+    color: theme.colors.white
   }),
   fiatValue: theme => ({
     textAlign: 'right',

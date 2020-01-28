@@ -189,7 +189,7 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
             transferType={transferType}
           />
           <OMGBox style={styles.fromContainer}>
-            <OMGText weight='bold'>From</OMGText>
+            <OMGText weight='mono-bold'>From</OMGText>
             <OMGTokenInput
               token={selectedToken}
               style={styles.tokenInput}
@@ -202,11 +202,11 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
             />
           </OMGBox>
           <OMGBox style={styles.toContainer}>
-            <OMGText weight='bold'>To</OMGText>
+            <OMGText weight='mono-bold'>To</OMGText>
             {renderAddressElement()}
           </OMGBox>
           <OMGBox style={styles.amountContainer}>
-            <OMGText weight='bold'>Amount</OMGText>
+            <OMGText weight='mono-bold'>Amount</OMGText>
             <OMGAmountInput
               token={selectedToken}
               inputRef={amountRef}
@@ -221,7 +221,7 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
             style={styles.feeContainer(
               transferType === TransferHelper.TYPE_TRANSFER_ROOTCHAIN
             )}>
-            <OMGText weight='bold'>Transaction Fee</OMGText>
+            <OMGText weight='mono-bold'>Transaction Fee</OMGText>
             <OMGFeeInput
               fee={selectedFee}
               style={styles.feeInput}

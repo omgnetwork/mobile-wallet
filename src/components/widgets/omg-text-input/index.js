@@ -69,7 +69,7 @@ const OMGTextInput = ({
 }
 const styles = StyleSheet.create({
   textInput: {
-    fontFamily: 'CircularStd-Book',
+    fontFamily: 'MessinaSans-Book',
     backgroundColor: '#FFFFFF',
     paddingVertical: Platform.OS === 'ios' ? 8 : 0,
     marginLeft: Platform.OS === 'ios' ? 0 : -4

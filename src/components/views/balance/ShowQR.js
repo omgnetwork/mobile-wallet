@@ -14,11 +14,11 @@ const ShowQR = ({ theme, primaryWallet, primaryWalletAddress, navigation }) => {
           hash={primaryWalletAddress}
           size={40}
         />
-        <OMGText style={styles.title(theme)} weight='bold'>
+        <OMGText style={styles.title(theme)} weight='mono-bold'>
           {primaryWallet.name}
         </OMGText>
       </View>
-      <View style={styles.qrContainer}>
+      <View style={styles.qrContainer(theme)}>
         <OMGQRCode
           payload={primaryWalletAddress}
           displayText={primaryWalletAddress}
@@ -40,15 +40,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-around',
     padding: 16,
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.new_black7,
     borderRadius: theme.roundness
   }),
   identicon: theme => ({
-    width: 40,
-    height: 40,
-    borderColor: theme.colors.black4,
+    borderColor: theme.colors.new_gray1,
     borderRadius: theme.roundness,
-    borderWidth: 0.5
+    borderWidth: 1
   }),
   titleContainer: {
     flexDirection: 'column',
@@ -58,14 +56,15 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40
   },
-  qrContainer: {
-    alignItems: 'center'
-  },
+  qrContainer: theme => ({
+    alignItems: 'center',
+    padding: 4
+  }),
   title: theme => ({
     textTransform: 'uppercase',
     fontSize: 18,
     marginTop: 16,
-    color: theme.colors.gray3
+    color: theme.colors.white
   }),
   bottomText: theme => ({
     color: theme.colors.primary,

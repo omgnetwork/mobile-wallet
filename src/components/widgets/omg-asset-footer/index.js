@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'left',
     fontSize: 32,
-    color: theme.colors.white
+    color: theme.colors.new_black7
   }),
   balanceCurrency: theme => ({
     color: theme.colors.primaryLight,
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   }),
   divider: theme => ({
     borderLeftWidth: 1,
-    borderLeftColor: theme.colors.white,
+    borderLeftColor: theme.colors.new_black7,
     opacity: 0.1
   })
 })

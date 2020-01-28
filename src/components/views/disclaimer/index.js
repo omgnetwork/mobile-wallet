@@ -23,7 +23,7 @@ const Disclaimer = ({ navigation, theme }) => {
       />
       <View style={styles.headerContainer(theme)}>
         <OnboardingDisclaimer width={98} style={styles.image} />
-        <OMGText style={styles.headerText(theme)} weight='bold'>
+        <OMGText style={styles.headerText(theme)} weight='mono-bold'>
           Nice choice! But before you start, let’s make sure we’re on the same
           page :)
         </OMGText>
@@ -43,7 +43,7 @@ const Disclaimer = ({ navigation, theme }) => {
         <OMGButton
           style={styles.confirmButton(theme)}
           textStyle={styles.confirmButtonText(theme)}
-          textWeight='medium'
+          textweight='regular'
           onPress={handleAcceptPressed}>
           I UNDERSTAND AND ACCEPT
         </OMGButton>
@@ -51,7 +51,7 @@ const Disclaimer = ({ navigation, theme }) => {
           style={styles.declineButton(theme)}
           textStyle={styles.declineButtonText(theme)}
           onPress={handleDeclinePressed}
-          textWeight='medium'>
+          textweight='regular'>
           DECLINE
         </OMGButton>
       </View>

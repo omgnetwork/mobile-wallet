@@ -14,7 +14,7 @@ const OMGItemWallet = ({ wallet, style, theme, showCaret, onPress }) => {
         size={40}
       />
       <View style={styles.sectionName}>
-        <OMGText style={styles.name(theme)} weight='bold'>
+        <OMGText style={styles.name(theme)} weight='mono-bold'>
           {wallet.name}
         </OMGText>
         <OMGText style={styles.address(theme)} numberOfLines={1}>

@@ -76,7 +76,7 @@ const Mnemonic = ({
         style={styles.keyboardAvoidingView}
         behavior='padding'
         keyboardVerticalOffset={Header.HEIGHT + statusBarHeight}>
-        <OMGText style={styles.textBoxTitle} weight='bold'>
+        <OMGText style={styles.textBoxTitle} weight='mono-bold'>
           Mnemonic Phrase
         </OMGText>
         <OMGTextInputBox
@@ -88,7 +88,7 @@ const Mnemonic = ({
           lines={2}
           placeholder='Enter mnemonic...'
         />
-        <OMGText style={styles.textBoxTitle} weight='bold'>
+        <OMGText style={styles.textBoxTitle} weight='mono-bold'>
           Wallet Name
         </OMGText>
         <OMGTextInputBox

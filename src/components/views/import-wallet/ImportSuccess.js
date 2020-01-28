@@ -16,7 +16,7 @@ const ImportSuccess = ({ theme, navigation, dispatchSetPrimaryWallet }) => {
 
   return (
     <View style={styles.container}>
-      <OMGText style={styles.title(theme)} weight='bold'>
+      <OMGText style={styles.title(theme)} weight='mono-bold'>
         Successfully Imported!
       </OMGText>
       <OMGItemWallet wallet={wallet} style={styles.walletItem} />

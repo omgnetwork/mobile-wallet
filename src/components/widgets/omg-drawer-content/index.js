@@ -53,7 +53,7 @@ const OMGDrawerContent = ({
       <ScrollView contentContainerStyle={styles.scrollView}>
         {wallets.length > 0 && (
           <View>
-            <OMGText weight='bold' style={styles.titleText}>
+            <OMGText weight='mono-bold' style={styles.titleText}>
               WALLETS
             </OMGText>
 
@@ -74,7 +74,7 @@ const OMGDrawerContent = ({
         )}
 
         <View style={styles.settingContainer}>
-          <OMGText weight='bold' style={styles.titleText}>
+          <OMGText weight='mono-bold' style={styles.titleText}>
             SETTINGS
           </OMGText>
           <ManageWalletMenu
@@ -103,7 +103,7 @@ const OMGDrawerContent = ({
           <View style={styles.divider(theme)} />
           <View style={styles.expander} />
           <View style={styles.environment}>
-            <OMGText weight='bold' style={styles.environmentTitleText(theme)}>
+            <OMGText weight='mono-bold' style={styles.environmentTitleText(theme)}>
               Environment Info
             </OMGText>
             <View style={styles.envInfoCard(theme)}>

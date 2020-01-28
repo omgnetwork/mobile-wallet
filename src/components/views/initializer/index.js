@@ -58,7 +58,7 @@ const Initializer = ({
     } else {
       return (
         <View style={styles.container}>
-          <OMGText style={styles.text(theme)} weight='bold'>
+          <OMGText style={styles.text(theme)} weight='mono-bold'>
             Loading wallet...
           </OMGText>
           <OMGEmpty loading={true} style={styles.empty} />

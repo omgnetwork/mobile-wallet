@@ -220,7 +220,6 @@ dependencies {
     implementation project(':react-native-svg')
     implementation project(':react-native-config')
     implementation project(':react-native-sensitive-info')
-    implementation project(':react-native-vector-icons')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
