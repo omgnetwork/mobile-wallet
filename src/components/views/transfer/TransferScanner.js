@@ -276,8 +276,8 @@ const styles = StyleSheet.create({
   },
   button: (theme, isRootchain) => ({
     backgroundColor: isRootchain
-      ? theme.colors.primary
-      : theme.colors.new_green2,
+      ? theme.colors.new_green2
+      : theme.colors.primary,
     borderRadius: 0,
     marginTop: 20
   }),
