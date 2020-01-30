@@ -20,7 +20,7 @@ const OMGAddressInput = ({
 
   const onPressPaste = useCallback(async () => {
     const clipboardContent = await Clipboard.getString()
-    setInputText(clipboardContent)
+    setInputText(clipboardContent.trim())
   }, [])
 
   const onChangeText = useCallback(text => {
