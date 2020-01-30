@@ -11,22 +11,25 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
       onPress={onPress}>
       <OMGTokenIcon token={token} size={40} />
       <View style={styles.sectionName}>
-        <OMGText style={styles.symbol(theme)}>{token.tokenSymbol}</OMGText>
+        <OMGText style={styles.symbol(theme)} weight='mono-regular'>
+          {token.tokenSymbol}
+        </OMGText>
       </View>
       <View style={styles.sectionAmount}>
         <OMGText
           style={styles.balance(theme)}
           ellipsizeMode='tail'
+          weight='mono-regular'
           numberOfLines={1}>
           {BlockchainRenderer.renderTokenBalance(token.balance, 4)}
         </OMGText>
-        <OMGText style={styles.fiatValue(theme)}>
+        <OMGText style={styles.fiatValue(theme)} weight='mono-regular'>
           {BlockchainRenderer.renderTokenPrice(token.balance, token.price)} USD
         </OMGText>
       </View>
       <View style={styles.sectionSelect}>
         {selected && (
-          <OMGFontIcon name='check-mark' size={14} color={theme.colors.gray3} />
+          <OMGFontIcon name='check-mark' size={14} color={theme.colors.white} />
         )}
       </View>
     </TouchableOpacity>
@@ -36,11 +39,11 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
 const styles = StyleSheet.create({
   container: (theme, selected) => ({
     flexDirection: 'row',
-    backgroundColor: selected ? theme.colors.blue1 : theme.colors.gray4,
+    backgroundColor: theme.colors.gray4,
     alignItems: 'center',
-    padding: 20,
+    padding: 12,
     borderRadius: theme.roundness,
-    borderColor: selected ? theme.colors.blue1 : theme.colors.black4,
+    borderColor: theme.colors.new_gray5,
     borderWidth: 1
   }),
   sectionName: {
@@ -57,19 +60,20 @@ const styles = StyleSheet.create({
     marginLeft: 20
   },
   symbol: theme => ({
-    fontSize: 14,
-    color: theme.colors.primary
+    fontSize: 16,
+    letterSpace: -0.64,
+    color: theme.colors.white
   }),
   balance: theme => ({
     textAlign: 'right',
     maxWidth: 100,
-    fontSize: 14,
-    color: theme.colors.primary
+    fontSize: 16,
+    color: theme.colors.white
   }),
   fiatValue: theme => ({
     textAlign: 'right',
-    color: theme.colors.black2,
-    fontSize: 8
+    color: theme.colors.new_gray7,
+    fontSize: 12
   })
 })
 

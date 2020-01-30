@@ -179,7 +179,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
       showMarker={true}
       onReceiveQR={e => setAddress(e.data)}
       cameraRef={camera}
-      borderColor={isRootchain ? theme.colors.primary : theme.colors.new_green1}
+      borderColor={isRootchain ? theme.colors.new_green1 : theme.colors.primary}
       rootchain={isRootchain}
       renderUnconfirmedTx={unconfirmedTxComponent}
       renderEmptyComponent={emptyComponent}
@@ -204,6 +204,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
           <OMGButton
             style={styles.button(theme, isRootchain)}
             disabled={shouldDisabledSendButton}
+            textStyle={styles.buttonText(theme)}
             onPress={navigateNext}>
             Or, Send Manually
           </OMGButton>
@@ -246,7 +247,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-around',
-    alignContent: 'center'
+    alignContent: 'center',
+    backgroundColor: theme.colors.new_black7
   }),
   titleContainer: theme => ({
     flexDirection: 'row',
@@ -264,6 +266,11 @@ const styles = StyleSheet.create({
     marginTop: 16,
     opacity: 0.5,
     backgroundColor: theme.colors.white
+  }),
+  buttonText: theme => ({
+    color: theme.colors.white,
+    textTransform: 'none',
+    fontSize: 14
   }),
   headerContainer: {
     alignItems: 'center',

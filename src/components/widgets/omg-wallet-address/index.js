@@ -18,11 +18,14 @@ const OMGWalletAddress = ({ theme, name, address, style }) => {
         <OMGIdenticon style={styles.logo(theme)} size={24} hash={address} />
       )}
 
-      <OMGText style={styles.text(theme)}>{name}</OMGText>
+      <OMGText style={styles.text(theme)} weight='mono-regular'>
+        {name}
+      </OMGText>
       <View style={styles.rightContainer}>
         <OMGText
           style={styles.address(theme)}
           ellipsizeMode='tail'
+          weight='mono-regular'
           numberOfLines={1}>
           {address}
         </OMGText>
@@ -34,10 +37,8 @@ const OMGWalletAddress = ({ theme, name, address, style }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.white3,
-    borderColor: theme.colors.gray4,
+    backgroundColor: theme.colors.new_gray6,
     borderRadius: theme.roundness,
-    borderWidth: 1,
     padding: 12,
     alignItems: 'center'
   }),
@@ -52,13 +53,16 @@ const styles = StyleSheet.create({
     borderRadius: theme.roundness
   }),
   address: theme => ({
-    color: theme.colors.gray2,
+    color: theme.colors.new_gray7,
     maxWidth: 128,
+    fontSize: 16,
+    letterSpacing: -0.64,
     marginRight: 10
   }),
   text: theme => ({
-    color: theme.colors.primary,
-    fontSize: 14,
+    color: theme.colors.white,
+    letterSpacing: -0.64,
+    fontSize: 16,
     flex: 1
   }),
   rightContainer: {

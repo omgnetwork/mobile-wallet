@@ -13,7 +13,7 @@ const OMGButton = ({
   disabled,
   style,
   textStyle,
-  textWeight,
+  textWeight = 'semi-bold',
   children,
   onPress,
   loading,
@@ -30,12 +30,16 @@ const OMGButton = ({
         color='#ffffff'
         style={{ ...styles.icon }}
       />
-      <OMGText style={{ ...styles.text, ...textStyle }} weight={textWeight}>
+      <OMGText
+        style={{ ...styles.text(theme), ...textStyle }}
+        weight={textWeight}>
         {children}
       </OMGText>
     </Fragment>
   ) : (
-    <OMGText style={{ ...styles.text, ...textStyle }} weight={textWeight}>
+    <OMGText
+      style={{ ...styles.text(theme), ...textStyle }}
+      weight={textWeight}>
       {children}
     </OMGText>
   )
@@ -72,15 +76,15 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16
   },
-  text: {
-    color: '#FFFFFF',
+  text: theme => ({
+    color: theme.colors.new_black6,
     textAlign: 'center',
+    fontSize: 16,
     textTransform: 'uppercase'
-  },
+  }),
   container: theme => ({
-    borderRadius: theme.roundness,
     justifyContent: 'center',
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.white,
     alignSelf: 'center',
     width: '100%',
     paddingHorizontal: 8,

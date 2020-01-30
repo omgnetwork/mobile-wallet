@@ -134,9 +134,9 @@ export const getParamsForTransferScannerFromTransferForm = navigation => {
 
 export const getParamsForTransferSelectFeeFromTransferForm = navigation => {
   return {
-    fees: navigation.getParams('fee'),
-    currentToken: navigation.getParams('currentToken'),
-    currentFee: navigation.getParams('currentFee')
+    fees: feeOptions,
+    currentToken: navigation.getParam('currentToken'),
+    currentFee: navigation.getParam('currentFee')
   }
 }
 

@@ -21,11 +21,11 @@ import {
 import { Validator } from 'common/utils'
 import * as BlockchainLabel from './blockchainLabel'
 
-// const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
+const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
 
 const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
   const selectedFee = navigation.getParam('selectedFee', feeOptions[0])
-  const selectedAddress = navigation.getParam('address')
+  const selectedAddress = navigation.getParam('address') || testAddress
   const defaultAmount = navigation.getParam('lastAmount')
   const transferType = navigation.getParam('transferType')
   const selectedToken = navigation.getParam(
@@ -165,7 +165,7 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
         focusRef={addressFocusRef}
         returnKeyType='next'
         onSubmitEditing={moveFocusFromAddressToAmount}
-        onPress={navigateToTransferScanner}
+        onPressScanQR={navigateToTransferScanner}
       />
     )
   }, [
@@ -183,13 +183,15 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
         innerRef={ref => {
           keyboardAwareScrollRef.current = ref
         }}>
-        <View style={styles.formContainer}>
+        <View style={styles.formContainer(theme)}>
           <OMGBlockchainLabel
             actionText={blockchainLabelActionText}
             transferType={transferType}
           />
-          <OMGBox style={styles.fromContainer}>
-            <OMGText weight='mono-semi-bold'>From</OMGText>
+          <OMGBox style={styles.fromContainer(theme)}>
+            <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
+              From
+            </OMGText>
             <OMGTokenInput
               token={selectedToken}
               style={styles.tokenInput}
@@ -201,12 +203,16 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
               style={styles.walletAddress}
             />
           </OMGBox>
-          <OMGBox style={styles.toContainer}>
-            <OMGText weight='mono-semi-bold'>To</OMGText>
+          <OMGBox style={styles.toContainer(theme)}>
+            <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
+              To
+            </OMGText>
             {renderAddressElement()}
           </OMGBox>
-          <OMGBox style={styles.amountContainer}>
-            <OMGText weight='mono-semi-bold'>Amount</OMGText>
+          <OMGBox style={styles.amountContainer(theme)}>
+            <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
+              Amount
+            </OMGText>
             <OMGAmountInput
               token={selectedToken}
               inputRef={amountRef}
@@ -219,9 +225,12 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
           </OMGBox>
           <OMGBox
             style={styles.feeContainer(
+              theme,
               transferType === TransferHelper.TYPE_TRANSFER_ROOTCHAIN
             )}>
-            <OMGText weight='mono-semi-bold'>Transaction Fee</OMGText>
+            <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
+              Transaction Fee
+            </OMGText>
             <OMGFeeInput
               fee={selectedFee}
               style={styles.feeInput}
@@ -241,30 +250,35 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.white
+    backgroundColor: theme.colors.new_black7
   }),
   scrollView: {
     flexGrow: 1
   },
-  formContainer: {
-    flex: 1
-  },
+  formContainer: theme => ({
+    flex: 1,
+    backgroundColor: theme.colors.new_black7
+  }),
   dismissKeyboard: {
     flex: 1
   },
-  fromContainer: {
+  fromContainer: theme => ({
     flexDirection: 'column',
-    justifyContent: 'flex-start'
-  },
-  toContainer: {
-    flexDirection: 'column'
-  },
-  amountContainer: {
-    flexDirection: 'column'
-  },
-  feeContainer: isRootchain => ({
+    justifyContent: 'flex-start',
+    backgroundColor: theme.colors.new_black7
+  }),
+  toContainer: theme => ({
+    flexDirection: 'column',
+    backgroundColor: theme.colors.new_black7
+  }),
+  amountContainer: theme => ({
+    flexDirection: 'column',
+    backgroundColor: theme.colors.new_black7
+  }),
+  feeContainer: (theme, isRootchain) => ({
     display: isRootchain ? 'flex' : 'none',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    backgroundColor: theme.colors.new_black7
   }),
   tokenInput: {
     marginTop: 16
@@ -285,7 +299,10 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 16,
     paddingHorizontal: 16
-  }
+  },
+  title: theme => ({
+    color: theme.colors.white
+  })
 })
 
 const mapStateToProps = (state, ownProps) => ({

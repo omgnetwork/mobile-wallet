@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react'
-import { TouchableOpacity, View, StyleSheet } from 'react-native'
+import React, { Fragment, useCallback, useState } from 'react'
+import { TouchableOpacity, View, StyleSheet, Clipboard } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import OMGTextInput from '../omg-text-input'
 import OMGText from '../omg-text'
@@ -9,13 +9,24 @@ import OMGIdenticon from '../omg-identicon'
 const OMGAddressInput = ({
   theme,
   style,
-  onPress,
+  onPressScanQR,
   inputRef,
   showError,
   returnKeyType,
   onSubmitEditing,
   focusRef
 }) => {
+  const [inputText, setInputText] = useState(inputRef.current)
+
+  const onPressPaste = useCallback(async () => {
+    const clipboardContent = await Clipboard.getString()
+    setInputText(clipboardContent)
+  }, [])
+
+  const onChangeText = useCallback(text => {
+    setInputText(text)
+  }, [])
+
   return (
     <Fragment>
       <View style={{ ...styles.container(theme), ...style }}>
@@ -29,16 +40,25 @@ const OMGAddressInput = ({
           defaultValue={inputRef.current}
           inputRef={inputRef}
           focusRef={focusRef}
+          onChangeText={onChangeText}
+          value={inputText}
           returnKeyType={returnKeyType}
           onSubmitEditing={onSubmitEditing}
           placeholder='Paste address'
           hideUnderline={true}
         />
-        <TouchableOpacity
-          style={styles.rightContainer(theme)}
-          onPress={onPress}>
-          <ScanQRIcon size={24} color={theme.colors.gray3} />
-        </TouchableOpacity>
+        <View style={styles.rightContainer(theme)}>
+          <TouchableOpacity onPress={onPressPaste}>
+            <OMGText weight='mono-regular' style={styles.textPaste(theme)}>
+              Paste
+            </OMGText>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={onPressScanQR}
+            style={styles.scanQRIcon(theme)}>
+            <ScanQRIcon size={24} fill={theme.colors.primary} />
+          </TouchableOpacity>
+        </View>
       </View>
       {showError && (
         <OMGText style={styles.errorText(theme)}>Invalid address</OMGText>
@@ -50,8 +70,8 @@ const OMGAddressInput = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.white,
-    borderColor: theme.colors.gray4,
+    backgroundColor: theme.colors.new_black7,
+    borderColor: theme.colors.new_gray5,
     borderRadius: theme.roundness,
     borderWidth: 1,
     alignItems: 'center'
@@ -68,28 +88,29 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     marginLeft: 12
   }),
-  walletName: theme => ({
-    color: theme.colors.primary,
-    flex: 1
-  }),
   text: theme => ({
-    color: theme.colors.primary,
+    color: theme.colors.white,
     fontSize: 14,
     flex: 1
+  }),
+  textPaste: theme => ({
+    color: theme.colors.new_blue1,
+    letterSpacing: -0.48,
+    marginRight: 20,
+    fontSize: 12
   }),
   errorText: theme => ({
     color: theme.colors.red2,
     marginTop: 8
   }),
   rightContainer: theme => ({
-    width: 50,
-    height: 50,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 16,
-    borderLeftColor: theme.colors.gray4,
-    borderLeftWidth: 1
+    marginLeft: 16
+  }),
+  scanQRIcon: theme => ({
+    marginRight: 12
   })
 })
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { TextInput, StyleSheet, Platform } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import PropTypes from 'prop-types'
@@ -11,7 +11,9 @@ const OMGTextInput = ({
   keyboardType,
   autoCapitalize,
   defaultValue,
+  placeholderTextColor,
   maxLength,
+  onChangeText,
   value,
   inputRef,
   onFocus,
@@ -30,10 +32,16 @@ const OMGTextInput = ({
     <TextInput
       mode='flat'
       placeholder={placeholder}
+      placeholderTextColor={placeholderTextColor || theme.colors.new_gray7}
       ref={focusRef}
       autoCapitalize={autoCapitalize || 'none'}
       onChangeText={text => {
-        inputRef && (inputRef.current = text)
+        if (onChangeText) {
+          onChangeText()
+        }
+        if (inputRef) {
+          inputRef.current = text
+        }
       }}
       underlineColorAndroid={hideUnderline ? 'transparent' : underlineTextcolor}
       onBlur={() => {
@@ -57,7 +65,7 @@ const OMGTextInput = ({
       keyboardType={keyboardType}
       selectionColor={theme.colors.gray5}
       style={{
-        ...styles.textInput,
+        ...styles.textInput(theme),
         ...style,
         minHeight: Math.max(
           20,
@@ -68,12 +76,14 @@ const OMGTextInput = ({
   )
 }
 const styles = StyleSheet.create({
-  textInput: {
-    fontFamily: 'MessinaSans-Book',
-    backgroundColor: '#FFFFFF',
+  textInput: theme => ({
+    fontFamily: 'MessinaSansMono-Book',
+    backgroundColor: theme.colors.new_black7,
     paddingVertical: Platform.OS === 'ios' ? 8 : 0,
-    marginLeft: Platform.OS === 'ios' ? 0 : -4
-  }
+    marginLeft: Platform.OS === 'ios' ? 0 : -4,
+    letterSpacing: -0.64,
+    fontSize: 16
+  })
 })
 
 OMGTextInput.propTypes = {

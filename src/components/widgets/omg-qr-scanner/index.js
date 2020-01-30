@@ -90,7 +90,9 @@ const OMGQRScanner = props => {
       reactivate={reactivate}
       onRead={handleOnRead}
       pendingAuthorizationView={
-        <OMGText style={styles.loadingText}>Loading...</OMGText>
+        <View style={{ backgroundColor: theme.colors.new_black7 }}>
+          <OMGText style={styles.loadingText(theme)}>Loading...</OMGText>
+        </View>
       }
       customMarker={
         <View style={styles.contentContainer}>
@@ -178,9 +180,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.new_black7
   }),
-  loadingText: {
-    textAlign: 'center'
-  },
+  loadingText: theme => ({
+    textAlign: 'center',
+    color: theme.colors.white
+  }),
   qrMarkerContainer: {
     alignItems: 'center'
   },

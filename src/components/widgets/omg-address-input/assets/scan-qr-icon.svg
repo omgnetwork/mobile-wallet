@@ -16,8 +16,8 @@
                                 <g id="Group-3" transform="translate(14.000000, 14.000000)">
                                     <path d="M22,16.5340705 L22,20 C22,21.1045695 21.1045695,22 20,22 L17.0993437,22 L17.0993437,22 M4.66314497,22 L2,22 C0.8954305,22 5.7935996e-16,21.1045695 0,20 L0,16.5340705 L0,16.5340705 M0,5.66849646 L0,2 C-1.3527075e-16,0.8954305 0.8954305,2.02906125e-16 2,0 L4.66314497,0 L4.66314497,0 M17.0993437,0 L20,0 C21.1045695,-4.2495073e-16 22,0.8954305 22,2 L22,5.66849646 L22,5.66849646" id="Shape" stroke="#858B9A" stroke-width="2" stroke-linecap="round"></path>
                                     <g id="icon18/037-QR" transform="translate(4.000000, 4.000000)">
-                                        <rect id="Rectangle" fill-opacity="0" fill="#FFFFFF" x="0" y="0" width="14" height="14"></rect>
-                                        <mask id="mask-2" fill="white">
+                                        <rect id="Rectangle" fill-opacity="0" fill="#778DFC" x="0" y="0" width="14" height="14"></rect>
+                                        <mask id="mask-2" fill="#778DFC">
                                             <use xlink:href="#path-1"></use>
                                         </mask>
                                         <use id="Mask" fill="#04070D" fill-rule="nonzero" xlink:href="#path-1"></use>

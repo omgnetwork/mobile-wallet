@@ -17,7 +17,7 @@ const OMGFeeInput = ({ theme, fee, style, onPress }) => {
         <OMGFontIcon
           name='chevron-right'
           size={14}
-          color={theme.colors.gray3}
+          color={theme.colors.white}
         />
       </View>
     </TouchableOpacity>
@@ -27,8 +27,8 @@ const OMGFeeInput = ({ theme, fee, style, onPress }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.white,
-    borderColor: theme.colors.gray4,
+    backgroundColor: theme.colors.new_black7,
+    borderColor: theme.colors.new_gray5,
     borderRadius: theme.roundness,
     borderWidth: 1,
     padding: 12,
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     marginRight: 10
   }),
   text: theme => ({
-    color: theme.colors.primary,
+    color: theme.colors.white,
     fontSize: 14,
     flex: 1
   }),

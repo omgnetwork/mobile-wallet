@@ -50,13 +50,15 @@ const TransferSelectBalance = ({
         <OMGFontIcon
           name='chevron-left'
           size={18}
-          color={theme.colors.gray3}
+          color={theme.colors.white}
           style={styles.headerIcon}
           onPress={() => {
             navigation.goBack()
           }}
         />
-        <OMGText style={styles.headerTitle(theme)}>Select Balance</OMGText>
+        <OMGText weight='regular' style={styles.headerTitle(theme)}>
+          Select Balance
+        </OMGText>
       </View>
       <FlatList
         data={assets || []}
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.white
+    backgroundColor: theme.colors.gray4
   }),
   header: {
     alignItems: 'center',
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: theme => ({
     fontSize: 18,
-    color: theme.colors.gray3,
+    color: theme.colors.white,
     marginLeft: 8,
     alignSelf: 'center',
     textTransform: 'uppercase'

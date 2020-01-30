@@ -11,9 +11,7 @@ const OMGFeeSelect = ({ style, onPress, fee, selected, theme }) => {
       style={{ ...styles.container(theme, selected), ...style }}
       onPress={onPress}>
       <View style={styles.sectionFeeSpeed}>
-        <OMGText style={styles.feeSpeed(theme)} weight='mono-semi-bold'>
-          {fee.speed}
-        </OMGText>
+        <OMGText style={styles.feeSpeed(theme)}>{fee.speed}</OMGText>
         <OMGText style={styles.feeEstimateTime(theme)}>
           {fee.estimateTime}
         </OMGText>
@@ -22,17 +20,16 @@ const OMGFeeSelect = ({ style, onPress, fee, selected, theme }) => {
         <OMGText
           style={styles.feeAmount(theme)}
           ellipsizeMode='tail'
-          weight='mono-semi-bold'
           numberOfLines={1}>
-          {fee.amount} {fee.symbol}
+          {fee.displayAmount} {fee.symbol}
         </OMGText>
         <OMGText style={styles.feePrice(theme)}>
-          ${formatFeePrice(fee.amount, fee.price)}/transfer
+          ${formatFeePrice(fee.displayAmount, fee.price)}/transfer
         </OMGText>
       </View>
       <View style={styles.sectionSelect}>
         {selected && (
-          <OMGFontIcon name='check-mark' size={14} color={theme.colors.gray3} />
+          <OMGFontIcon name='check-mark' size={14} color={theme.colors.white} />
         )}
       </View>
     </TouchableOpacity>
@@ -52,44 +49,50 @@ const formatFeePrice = (amount, price) => {
 const styles = StyleSheet.create({
   container: (theme, selected) => ({
     flexDirection: 'row',
-    backgroundColor: selected ? theme.colors.blue1 : theme.colors.gray4,
+    backgroundColor: theme.colors.new_black7,
     alignItems: 'center',
-    padding: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 16,
     borderRadius: theme.roundness,
-    borderColor: selected ? theme.colors.blue1 : theme.colors.black4,
+    borderColor: selected ? theme.colors.new_blue1 : theme.colors.black4,
     borderWidth: 1
   }),
   sectionFeeSpeed: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'flex-start',
-    marginLeft: 16
+    justifyContent: 'flex-start'
   },
   sectionFeeAmount: {
+    marginLeft: 'auto',
     flexDirection: 'column'
   },
   feeSpeed: theme => ({
-    textTransform: 'uppercase',
-    color: theme.colors.primary
+    fontSize: 16,
+    color: theme.colors.white,
+    letterSpacing: -0.64
   }),
   feeEstimateTime: theme => ({
-    color: theme.colors.black2,
-    fontSize: 12
+    color: theme.colors.new_gray1,
+    fontSize: 12,
+    marginTop: 4,
+    letterSpacing: -0.48
   }),
   feeAmount: theme => ({
     textAlign: 'right',
-    fontSize: 14,
-    textTransform: 'uppercase',
-    color: theme.colors.black2
+    fontSize: 16,
+    color: theme.colors.white,
+    letterSpacing: -0.48
   }),
   feePrice: theme => ({
     textAlign: 'right',
-    color: theme.colors.black2,
-    fontSize: 8
+    color: theme.colors.new_gray1,
+    fontSize: 12,
+    marginTop: 4,
+    letterSpacing: -0.48
   }),
   sectionSelect: {
     width: 14,
-    marginLeft: 20
+    marginLeft: 12
   }
 })
 
