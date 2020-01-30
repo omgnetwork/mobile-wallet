@@ -43,7 +43,7 @@ const TransactionDetailInfo = ({ theme, tx, style }) => {
     return (
       <View style={styles.infoItem}>
         <OMGText style={styles.infoItemLabel(theme, isFailed)}>TXN Fee</OMGText>
-        <OMGText style={styles.infoItemValue(theme)} weight='mono-bold'>
+        <OMGText style={styles.infoItemValue(theme)} weight='mono-semi-bold'>
           {BlockchainRenderer.renderGasFee(tx.gasUsed, tx.gasPrice, tx.flatFee)}{' '}
           ETH
         </OMGText>
@@ -80,7 +80,7 @@ const TransactionDetailInfo = ({ theme, tx, style }) => {
         <OMGText style={styles.infoItemLabel(theme, isFailed)}>
           {`${textExactDatetime} UTC`}
         </OMGText>
-        <OMGText style={styles.infoItemValue(theme)} weight='mono-bold'>
+        <OMGText style={styles.infoItemValue(theme)} weight='mono-semi-bold'>
           {textFromNowDatetime}
         </OMGText>
       </View>
@@ -89,7 +89,7 @@ const TransactionDetailInfo = ({ theme, tx, style }) => {
         <OMGText style={styles.infoItemLabel(theme, isFailed)}>
           Total Value Transacted
         </OMGText>
-        <OMGText style={styles.infoItemValue(theme)} weight='mono-bold'>
+        <OMGText style={styles.infoItemValue(theme)} weight='mono-semi-bold'>
           {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
             tx.value,
             tx.tokenDecimal

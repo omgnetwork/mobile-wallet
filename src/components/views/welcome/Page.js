@@ -11,7 +11,7 @@ const Page = ({ theme, textTitle, textContent, image }) => {
     <View style={styles.container}>
       <WelcomeImage style={styles.image} />
       <View style={styles.textContent}>
-        <OMGText style={[styles.text(theme), styles.header]} weight='mono-bold'>
+        <OMGText style={[styles.text(theme), styles.header]} weight='mono-semi-bold'>
           {textTitle}
         </OMGText>
         {textContent && (

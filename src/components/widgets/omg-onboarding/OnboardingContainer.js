@@ -22,6 +22,7 @@ const OMGOnboardingContainer = ({
 }) => {
   const offBottom = new Animated.Value(320)
   const containerSlideAnim = useRef(offBottom)
+  console.log(position)
 
   useEffect(() => {
     if (!isModal && !isPopup) {

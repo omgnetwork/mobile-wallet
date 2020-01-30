@@ -11,7 +11,7 @@ const BackupModal = ({ visible, theme, onPressOk, onPressCancel }) => {
       <Modal isVisible={visible} style={styles.modal} useNativeDriver={true}>
         <View style={styles.contentContainer(theme)}>
           <BackupCamera width={85} height={55} style={styles.image} />
-          <OMGText style={styles.textTitle(theme)} weight='mono-bold'>
+          <OMGText style={styles.textTitle(theme)} weight='mono-semi-bold'>
             Do not take screenshot
           </OMGText>
           <OMGText style={styles.textContent(theme)}>

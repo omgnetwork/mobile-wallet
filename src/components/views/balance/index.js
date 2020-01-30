@@ -79,7 +79,7 @@ const Balance = ({
 
   useEffect(() => {
     function didFocus() {
-      StatusBar.setBarStyle('dark-content')
+      StatusBar.setBarStyle('light-content')
       StatusBar.setBackgroundColor(theme.colors.gray4)
     }
 

@@ -64,7 +64,7 @@ const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
       />
       <View style={styles.contentContainer}>
         <ScrollView>
-          <OMGText weight='mono-bold' style={styles.title(theme)}>
+          <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
             Select Exit Amount
           </OMGText>
           <OMGTokenInput

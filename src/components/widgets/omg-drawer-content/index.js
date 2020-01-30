@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { SafeAreaView, withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
@@ -52,29 +52,28 @@ const OMGDrawerContent = ({
       forceInset={{ top: 'always', horizontal: 'never' }}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         {wallets.length > 0 && (
-          <View>
-            <OMGText weight='mono-bold' style={styles.titleText}>
+          <View key='wallet-container'>
+            <OMGText weight='mono-semi-bold' style={styles.titleText}>
               WALLETS
             </OMGText>
 
-            {wallets.map(wallet => (
-              <>
+            {wallets.map((wallet, index) => (
+              <Fragment key={index}>
                 <OMGDrawerContentItem
                   wallet={wallet}
-                  key={wallet.address}
                   onWalletPress={handleWalletPress}
                   primary={
                     primaryWallet && primaryWallet.address === wallet.address
                   }
                 />
                 <View style={styles.divider(theme)} />
-              </>
+              </Fragment>
             ))}
           </View>
         )}
 
-        <View style={styles.settingContainer}>
-          <OMGText weight='mono-bold' style={styles.titleText}>
+        <View style={styles.settingContainer} key={'setting-container'}>
+          <OMGText weight='mono-semi-bold' style={styles.titleText}>
             SETTINGS
           </OMGText>
           <ManageWalletMenu
@@ -103,7 +102,9 @@ const OMGDrawerContent = ({
           <View style={styles.divider(theme)} />
           <View style={styles.expander} />
           <View style={styles.environment}>
-            <OMGText weight='mono-bold' style={styles.environmentTitleText(theme)}>
+            <OMGText
+              weight='mono-semi-bold'
+              style={styles.environmentTitleText(theme)}>
               Environment Info
             </OMGText>
             <View style={styles.envInfoCard(theme)}>

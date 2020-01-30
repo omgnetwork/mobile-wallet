@@ -23,7 +23,7 @@ const Disclaimer = ({ navigation, theme }) => {
       />
       <View style={styles.headerContainer(theme)}>
         <OnboardingDisclaimer width={98} style={styles.image} />
-        <OMGText style={styles.headerText(theme)} weight='mono-bold'>
+        <OMGText style={styles.headerText(theme)} weight='mono-semi-bold'>
           Nice choice! But before you start, let’s make sure we’re on the same
           page :)
         </OMGText>

@@ -230,7 +230,7 @@ const TransferConfirm = ({
             </View>
           </View>
           <OMGBox style={styles.addressContainer}>
-            <OMGText style={styles.subtitle(theme)} weight='mono-bold'>
+            <OMGText style={styles.subtitle(theme)} weight='mono-semi-bold'>
               From
             </OMGText>
             <OMGWalletAddress
@@ -240,7 +240,7 @@ const TransferConfirm = ({
             />
             <OMGText
               style={[styles.subtitle(theme), styles.marginSubtitle]}
-              weight='mono-bold'>
+              weight='mono-semi-bold'>
               To
             </OMGText>
             <OMGWalletAddress
@@ -250,7 +250,7 @@ const TransferConfirm = ({
             />
           </OMGBox>
           <View style={styles.transactionFeeContainer(fee)}>
-            <OMGText weight='mono-bold' style={styles.subtitle(theme)}>
+            <OMGText weight='mono-semi-bold' style={styles.subtitle(theme)}>
               Estimated Fee
             </OMGText>
             <View style={styles.feeContainer(theme)}>

@@ -9,7 +9,7 @@ const CreateWalletMnemonicFailed = ({ theme, navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <BackupMnemonicError width={80} height={80} style={styles.image} />
-      <OMGText weight='mono-bold' style={styles.title(theme)}>
+      <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
         Incorrect order
       </OMGText>
       <OMGText style={styles.description(theme)}>

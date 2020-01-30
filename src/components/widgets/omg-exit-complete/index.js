@@ -20,9 +20,9 @@ const OMGExitComplete = ({ theme, style, createdAt }) => {
       <OMGFontIcon name='time' size={24} style={styles.icon(theme)} />
       <OMGText style={styles.text(theme)}>
         Exit will be approximately completed on
-        <OMGText weight='mono-bold'>{renderProcessedAt()}</OMGText>
+        <OMGText weight='mono-semi-bold'>{renderProcessedAt()}</OMGText>
         You can track the transaction status in the
-        <OMGText weight='mono-bold'> History </OMGText>
+        <OMGText weight='mono-semi-bold'> History </OMGText>
         menu.
       </OMGText>
     </View>

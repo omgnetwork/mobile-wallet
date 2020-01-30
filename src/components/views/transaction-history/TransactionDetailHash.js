@@ -12,7 +12,7 @@ const TransactionDetailHash = ({ theme, hash, style }) => {
 
   return (
     <View style={{ ...styles.container(theme), ...style }}>
-      <OMGText style={styles.hashText(theme)} weight='mono-bold'>
+      <OMGText style={styles.hashText(theme)} weight='mono-semi-bold'>
         {hash}
       </OMGText>
       <OMGBox style={styles.iconContainer(theme)} onPress={handleCopyClick}>

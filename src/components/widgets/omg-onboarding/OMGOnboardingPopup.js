@@ -30,7 +30,7 @@ const OMGOnboardingPopup = ({
       arrowDirection={content.arrowDirection}
       position={position}>
       <View style={styles.container(theme)}>
-        <OMGText weight='mono-bold' style={styles.title(theme)}>
+        <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
           {content.title}
         </OMGText>
         <View style={styles.textContainer}>{TextContent}</View>

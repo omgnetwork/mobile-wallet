@@ -3,9 +3,10 @@ import { StyleSheet, TouchableOpacity } from 'react-native'
 import { colors } from 'common/styles'
 import { OMGText, OMGFontIcon, OMGIdenticon } from 'components/widgets'
 
-const OMGDrawerContentItem = ({ wallet, primary, onWalletPress }) => {
+const OMGDrawerContentItem = ({ wallet, primary, onWalletPress, key }) => {
   return (
     <TouchableOpacity
+      key={key}
       style={styles.container}
       onPress={() => onWalletPress(wallet)}>
       <OMGIdenticon style={styles.logo} hash={wallet.address} size={24} />

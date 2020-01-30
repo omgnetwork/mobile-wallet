@@ -171,7 +171,7 @@ const TransactionHistory = ({
         menuRef={transactionHistoryRef}
         description='From Plasma Chain'
       />
-      <OMGText style={styles.subheader(theme)} weight='mono-bold'>
+      <OMGText style={styles.subheader(theme)} weight='mono-semi-bold'>
         Recent
       </OMGText>
       <OMGTransactionList

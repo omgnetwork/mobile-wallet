@@ -82,7 +82,7 @@ const DeleteWalletList = ({
             <OMGEmpty
               text='WALLET NOT FOUND'
               style={styles.emptyContainer}
-              weight='mono-bold'
+              weight='mono-semi-bold'
               textStyle={styles.textEmpty(theme)}
             />
           )}

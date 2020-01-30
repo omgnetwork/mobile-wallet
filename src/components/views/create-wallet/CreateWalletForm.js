@@ -45,7 +45,7 @@ const CreateWalletForm = ({ wallets, navigation }) => {
         style={styles.keyboardAvoidingView}
         behavior='padding'
         keyboardVerticalOffset={Header.HEIGHT + statusBarHeight}>
-        <OMGText weight='mono-bold'>Name</OMGText>
+        <OMGText weight='mono-semi-bold'>Name</OMGText>
         <OMGTextInputBox
           placeholder='Name'
           inputRef={walletNameRef}

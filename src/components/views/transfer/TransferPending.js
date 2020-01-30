@@ -75,7 +75,7 @@ const TransferPending = ({ theme, navigation }) => {
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
       <SafeAreaView style={styles.container(theme)}>
         <OMGStatusBar
-          barStyle='dark-content'
+          barStyle='light-content'
           backgroundColor={theme.colors.white}
         />
         <View style={styles.contentContainer}>
@@ -87,7 +87,7 @@ const TransferPending = ({ theme, navigation }) => {
                 color={theme.colors.white}
               />
             </View>
-            <OMGText style={styles.title(theme)} weight='mono-bold'>
+            <OMGText style={styles.title(theme)} weight='mono-semi-bold'>
               Pending Transaction
             </OMGText>
           </View>
@@ -100,7 +100,7 @@ const TransferPending = ({ theme, navigation }) => {
             transferType={transferType}
           />
           <OMGBox style={styles.addressContainer}>
-            <OMGText style={styles.subtitle(theme)} weight='mono-bold'>
+            <OMGText style={styles.subtitle(theme)} weight='mono-semi-bold'>
               From
             </OMGText>
             <OMGWalletAddress
@@ -110,7 +110,7 @@ const TransferPending = ({ theme, navigation }) => {
             />
             <OMGText
               style={[styles.subtitle(theme), styles.marginSubtitle]}
-              weight='mono-bold'>
+              weight='mono-semi-bold'>
               To
             </OMGText>
             <OMGWalletAddress
@@ -120,7 +120,7 @@ const TransferPending = ({ theme, navigation }) => {
             />
           </OMGBox>
           <View style={styles.sentContainer}>
-            <OMGText weight='mono-bold' style={styles.subtitle(theme)}>
+            <OMGText weight='mono-semi-bold' style={styles.subtitle(theme)}>
               Sent
             </OMGText>
             <View style={styles.sentContentContainer(theme)}>

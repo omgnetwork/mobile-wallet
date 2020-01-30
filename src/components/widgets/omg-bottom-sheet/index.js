@@ -46,7 +46,7 @@ const OMGBottomSheet = ({
         />
       </View>
       <View style={styles.content}>
-        <OMGText style={styles.textTitle(theme)} weight='mono-bold'>
+        <OMGText style={styles.textTitle(theme)} weight='mono-semi-bold'>
           {textTitle}
         </OMGText>
         <OMGText
