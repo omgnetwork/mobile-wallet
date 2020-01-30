@@ -21,12 +21,16 @@ const OMGText = ({ children, weight, style, ellipsizeMode, numberOfLines }) => {
 
 const fontFamilySelector = weight => {
   switch (weight) {
-    case 'mono-bold':
+    case 'mono-semi-bold':
       return 'MessinaSansMono-SemiBold'
     case 'mono-regular':
       return 'MessinaSansMono-Regular'
     case 'mono-light':
       return 'MessinaSansMono-Light'
+    case 'bold':
+      return 'MessinaSans-Bold'
+    case 'semi-bold':
+      return 'MessinaSans-SemiBold'
     case 'book':
       return 'MessinaSans-Book'
     case 'regular':
@@ -40,8 +44,12 @@ const fontFamilySelector = weight => {
 
 const fontWeightSelector = weight => {
   switch (weight) {
-    case 'mono-bold':
+    case 'bold':
+    case 'mono-semi-bold':
       return '700'
+    case 'semi-bold':
+    case 'mono-semi-bold':
+      return '600'
     case 'mono-regular':
     case 'regular':
       return '400'
