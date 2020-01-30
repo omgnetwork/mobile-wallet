@@ -9,8 +9,6 @@ const OMGAssetHeader = ({
   loading,
   amount,
   currency,
-  blockchain,
-  network,
   rootchain,
   anchoredRef,
   style

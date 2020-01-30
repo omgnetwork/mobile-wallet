@@ -111,9 +111,7 @@ const ChildchainBalance = ({
         currency={currency}
         rootchain={false}
         loading={loading}
-        blockchain={'Plasma'}
         anchoredRef={blockchainLabelRef}
-        network={Config.OMISEGO_NETWORK}
       />
       <OMGAssetList
         data={wallet.childchainAssets || []}

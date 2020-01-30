@@ -98,9 +98,7 @@ const RootchainBalance = ({
         currency={currency}
         loading={loading}
         rootchain={true}
-        blockchain={'Ethereum'}
         anchoredRef={blockchainLabelRef}
-        network={Config.ETHERSCAN_NETWORK}
       />
       <OMGAssetList
         data={wallet.rootchainAssets || []}
