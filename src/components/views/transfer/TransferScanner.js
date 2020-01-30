@@ -40,7 +40,8 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   const hasChildchainAssets =
     wallet && wallet.childchainAssets && wallet.childchainAssets.length > 0
   const overlayColorAnim = useRef(new Animated.Value(rootchain ? 0 : 1))
-  const Icon = BlockchainIcons[isRootchain ? 'IconEth' : 'IconGo']
+  const OMGIcon = BlockchainIcons.IconGo
+  const ETHIcon = BlockchainIcons.IconEth
   const transitionOverlay = isRootChain => {
     if (isRootChain) {
       Animator.spring(overlayColorAnim, 1, 2000, false).start()
@@ -146,19 +147,29 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
     </Animated.View>
   )
 
-  const TopMarker = ({ textAboveLine, textBelowLine, onPressSwitch }) => {
+  const TopMarker = ({ text }) => {
     return (
       <Fragment>
         <View style={styles.titleContainer(theme)}>
-          <Icon />
-          <OMGText style={styles.title(theme)} weight='mono-bold'>
-            {textAboveLine}
+          {isRootchain ? (
+            <ETHIcon fill={theme.colors.white} width={18} height={29.27} />
+          ) : (
+            <OMGIcon
+              fill={theme.colors.white}
+              width={86.94}
+              height={30}
+              scale={1.1}
+            />
+          )}
+          {isRootchain && (
+            <OMGText style={styles.textEthereum(theme)} weight='bold'>
+              Ethereum
+            </OMGText>
+          )}
+          <OMGText style={styles.title(theme)} weight='mono-light'>
+            {text}
           </OMGText>
         </View>
-        <View style={styles.line(theme)} />
-        <TouchableOpacity onPress={onPressSwitch}>
-          <OMGText style={styles.normalText(theme)}>{textBelowLine}</OMGText>
-        </TouchableOpacity>
       </Fragment>
     )
   }
@@ -168,7 +179,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
       showMarker={true}
       onReceiveQR={e => setAddress(e.data)}
       cameraRef={camera}
-      borderColor={theme.colors.black5}
+      borderColor={isRootchain ? theme.colors.primary : theme.colors.new_green1}
       rootchain={isRootchain}
       renderUnconfirmedTx={unconfirmedTxComponent}
       renderEmptyComponent={emptyComponent}
@@ -181,29 +192,44 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
       }
       renderTop={
         <TopMarker
-          textAboveLine={
+          text={
             isRootchain
-              ? 'Sending on \nEthereum Rootchain'
+              ? 'Sending on \nEthereum\nRootchain'
               : 'Sending on \nPlasma Childchain'
           }
-          textBelowLine={
-            isRootchain
-              ? 'Switch to Plasma Childchain'
-              : 'Switch to Ethereum Rootchain'
-          }
-          onPressSwitch={() => {
-            setIsRootchain(!isRootchain)
-            transitionOverlay(isRootchain)
-          }}
         />
       }
       renderBottom={
-        <OMGButton
-          style={styles.button(theme)}
-          disabled={shouldDisabledSendButton}
-          onPress={navigateNext}>
-          Or, Send Manually
-        </OMGButton>
+        <>
+          <OMGButton
+            style={styles.button(theme, isRootchain)}
+            disabled={shouldDisabledSendButton}
+            onPress={navigateNext}>
+            Or, Send Manually
+          </OMGButton>
+          <TouchableOpacity
+            style={styles.buttonChangeNetwork(theme)}
+            onPress={() => {
+              setIsRootchain(!isRootchain)
+              transitionOverlay(isRootchain)
+            }}>
+            {isRootchain ? (
+              <ETHIcon fill={theme.colors.white} width={18} height={29.27} />
+            ) : (
+              <OMGIcon
+                fill={theme.colors.white}
+                width={69.56}
+                height={24}
+                scale={1.1}
+              />
+            )}
+            <OMGText
+              weight='semi-bold'
+              style={styles.textChangeNetwork(theme)}>{`Switch to send on \n${
+              isRootchain ? 'Ethereum Rootchain' : 'Plasma Childchain'
+            }`}</OMGText>
+          </TouchableOpacity>
+        </>
       }
     />
   )
@@ -224,12 +250,13 @@ const styles = StyleSheet.create({
   }),
   titleContainer: theme => ({
     flexDirection: 'row',
+    justifyContent: 'flex-start',
     alignItems: 'center'
   }),
   title: theme => ({
     color: theme.colors.white,
-    marginLeft: 16,
-    fontSize: 18
+    marginLeft: 'auto',
+    fontSize: 14
   }),
   line: theme => ({
     width: 246,
@@ -247,11 +274,25 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     paddingVertical: 8
   },
-  button: theme => ({
-    width: 300,
-    backgroundColor: 'transparent',
+  button: (theme, isRootchain) => ({
+    backgroundColor: isRootchain
+      ? theme.colors.primary
+      : theme.colors.new_green2,
+    borderRadius: 0,
+    marginTop: 20
+  }),
+  buttonChangeNetwork: theme => ({
+    borderWidth: 1,
     borderColor: theme.colors.white,
-    borderWidth: 1
+    flexDirection: 'row',
+    paddingVertical: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 32
+  }),
+  textChangeNetwork: theme => ({
+    color: theme.colors.white,
+    marginLeft: 16
   }),
   cameraContainer: {
     alignSelf: 'center',
@@ -282,6 +323,11 @@ const styles = StyleSheet.create({
     }),
     alignItems: 'center',
     justifyContent: 'center'
+  }),
+  textEthereum: theme => ({
+    color: theme.colors.white,
+    marginLeft: 16,
+    fontSize: 18
   }),
   unableText: theme => ({
     color: theme.colors.gray2,
