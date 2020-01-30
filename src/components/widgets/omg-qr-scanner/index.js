@@ -35,7 +35,13 @@ const OMGQRScanner = props => {
   const shouldRenderEmptyView =
     (rootchain && !hasRootchainAssets) || (!rootchain && !hasChildchainAssets)
   const renderQRMarker = (
-    <QRMarker borderColor={borderColor} borderStrokeWidth={borderStrokeWidth} />
+    <View style={styles.qrMarkerContainer}>
+      <QRMarker
+        borderColor={borderColor}
+        borderStrokeWidth={borderStrokeWidth}
+      />
+      <OMGText style={styles.qrMarkerText(theme)}>Scan QR to send</OMGText>
+    </View>
   )
 
   const renderContent = useCallback(() => {
@@ -174,7 +180,15 @@ const styles = StyleSheet.create({
   }),
   loadingText: {
     textAlign: 'center'
-  }
+  },
+  qrMarkerContainer: {
+    alignItems: 'center'
+  },
+  qrMarkerText: theme => ({
+    color: theme.colors.white,
+    marginTop: -33,
+    paddingBottom: 16
+  })
 })
 
 const mapStateToProps = (state, ownProps) => ({
