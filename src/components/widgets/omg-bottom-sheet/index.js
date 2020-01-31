@@ -41,8 +41,8 @@ const OMGBottomSheet = ({
       <View style={styles.iconContainer(iconColor)}>
         <OMGFontIcon
           name={iconName || 'pending'}
-          color={theme.colors.white}
-          size={14}
+          color={theme.colors.new_gray6}
+          size={24}
         />
       </View>
       <View style={styles.content}>
