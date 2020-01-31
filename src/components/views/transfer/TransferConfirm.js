@@ -345,7 +345,7 @@ const styles = StyleSheet.create({
   toSendTitle: theme => ({
     color: theme.colors.white,
     fontSize: 16,
-    letterSpace: -0.64
+    letterSpacing: -0.64
   }),
   totalUsdText: theme => ({
     color: theme.colors.new_gray1,

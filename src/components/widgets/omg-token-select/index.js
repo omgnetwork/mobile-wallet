@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   },
   symbol: theme => ({
     fontSize: 16,
-    letterSpace: -0.64,
+    letterSpacing: -0.64,
     color: theme.colors.white
   }),
   balance: theme => ({
