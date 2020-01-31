@@ -27,7 +27,7 @@ const OMGButton = ({
     <Fragment>
       <ActivityIndicator
         animating={loading || false}
-        color='#ffffff'
+        color={theme.colors.new_black6}
         style={{ ...styles.icon }}
       />
       <OMGText
