@@ -30,7 +30,7 @@ const OMGAssetHeader = ({
         <BlockchainIcon
           fill={theme.colors.new_gray2}
           width={rootchain ? 14 : 57.963}
-          height={rootchain ? 23 : 20}
+          height={rootchain ? 23 : 18}
         />
         <OMGText style={styles.textChain(theme)}>
           {rootchain ? 'Ethereum Rootchain' : 'Plasma Childchain'}
