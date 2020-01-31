@@ -46,7 +46,7 @@ const OMGBottomSheet = ({
         />
       </View>
       <View style={styles.content}>
-        <OMGText style={styles.textTitle(theme)} weight='mono-semi-bold'>
+        <OMGText style={styles.textTitle(theme)} weight='regular'>
           {textTitle}
         </OMGText>
         <OMGText
@@ -55,7 +55,7 @@ const OMGBottomSheet = ({
           numberOfLines={1}>
           {textSubtitle}
         </OMGText>
-        {textLink && renderLink()}
+        {/* {textLink && renderLink()} */}
       </View>
       <TouchableOpacity
         onPress={onPressClose}
@@ -64,7 +64,7 @@ const OMGBottomSheet = ({
           style={styles.closeIcon}
           name='x-mark'
           size={14}
-          color={theme.colors.gray3}
+          color={theme.colors.white}
         />
       </TouchableOpacity>
     </Animated.View>
@@ -75,20 +75,12 @@ const styles = StyleSheet.create({
   container: (theme, slide) => ({
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 30,
-    elevation: 2,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
     transform: [{ translateY: slide.current }],
     position: 'absolute',
     bottom: 0,
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: {
-      height: 0,
-      width: 0
-    },
-    backgroundColor: theme.colors.white,
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20
+    backgroundColor: theme.colors.new_gray6
   }),
   iconContainer: color => ({
     width: 24,
@@ -105,13 +97,13 @@ const styles = StyleSheet.create({
     marginLeft: 16
   },
   textTitle: theme => ({
-    color: theme.colors.primary
+    color: theme.colors.white
   }),
   textSubtitle: theme => ({
     marginTop: 2,
     fontSize: 8,
     marginRight: 16,
-    color: theme.colors.gray5
+    color: theme.colors.new_gray2
   }),
   textLink: theme => ({
     fontSize: 8,
