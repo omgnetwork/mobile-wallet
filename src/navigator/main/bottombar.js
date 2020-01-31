@@ -100,6 +100,7 @@ export default (TransferNavigator, TransactionHistoryNavigator) =>
         style: {
           backgroundColor: '#1F1F22',
           marginTop: 0,
+          borderTopWidth: 0,
           height: Dimensions.bottomBarHeight,
           paddingTop: 0
         }
