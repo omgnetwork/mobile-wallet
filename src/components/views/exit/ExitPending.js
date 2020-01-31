@@ -38,7 +38,7 @@ const ExitPending = ({ theme, navigation }) => {
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
       <SafeAreaView style={styles.container(theme)}>
         <OMGStatusBar
-          barStyle='dark-content'
+          barStyle='light-content'
           backgroundColor={theme.colors.white}
         />
         <View style={styles.headerContainer}>

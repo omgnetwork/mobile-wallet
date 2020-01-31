@@ -77,19 +77,10 @@ const TransactionHistory = ({
 
   useEffect(() => {
     if (wallet && isFocused) {
-      StatusBar.setBarStyle('dark-content')
-      StatusBar.setBackgroundColor(theme.colors.white)
+      StatusBar.setBarStyle('light-content')
+      StatusBar.setBackgroundColor(theme.colors.gray4)
     }
-  }, [
-    isFocused,
-    dispatchFetchTxHistory,
-    navigation,
-    provider,
-    theme.colors.white,
-    wallet,
-    loading.action,
-    fetching
-  ])
+  }, [isFocused, theme.colors.gray4, wallet])
 
   useEffect(() => {
     if (isFocused) {
@@ -146,7 +137,7 @@ const TransactionHistory = ({
   return (
     <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
       <OMGStatusBar
-        barStyle={'dark-content'}
+        barStyle={'light-content'}
         backgroundColor={theme.colors.white}
       />
       <OMGText style={styles.title(theme)}>History</OMGText>

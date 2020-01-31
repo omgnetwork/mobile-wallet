@@ -189,9 +189,7 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
             transferType={transferType}
           />
           <OMGBox style={styles.fromContainer(theme)}>
-            <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
-              From
-            </OMGText>
+            <OMGText style={styles.title(theme)}>From</OMGText>
             <OMGTokenInput
               token={selectedToken}
               style={styles.tokenInput}
@@ -204,15 +202,11 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
             />
           </OMGBox>
           <OMGBox style={styles.toContainer(theme)}>
-            <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
-              To
-            </OMGText>
+            <OMGText style={styles.title(theme)}>To</OMGText>
             {renderAddressElement()}
           </OMGBox>
           <OMGBox style={styles.amountContainer(theme)}>
-            <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
-              Amount
-            </OMGText>
+            <OMGText style={styles.title(theme)}>Amount</OMGText>
             <OMGAmountInput
               token={selectedToken}
               inputRef={amountRef}
@@ -228,9 +222,7 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
               theme,
               transferType === TransferHelper.TYPE_TRANSFER_ROOTCHAIN
             )}>
-            <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
-              Transaction Fee
-            </OMGText>
+            <OMGText style={styles.title(theme)}>Transaction Fee</OMGText>
             <OMGFeeInput
               fee={selectedFee}
               style={styles.feeInput}
@@ -301,7 +293,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16
   },
   title: theme => ({
-    color: theme.colors.white
+    color: theme.colors.white,
+    fontSize: 12,
+    textTransform: 'uppercase'
   })
 })
 

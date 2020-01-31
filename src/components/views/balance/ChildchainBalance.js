@@ -141,8 +141,6 @@ const ChildchainBalance = ({
 const styles = StyleSheet.create({
   list: {
     flex: 1,
-    borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 4,
     paddingTop: 40
   }
 })

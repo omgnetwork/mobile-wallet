@@ -25,7 +25,6 @@ const OMGWalletAddress = ({ theme, name, address, style }) => {
         <OMGText
           style={styles.address(theme)}
           ellipsizeMode='tail'
-          weight='mono-regular'
           numberOfLines={1}>
           {address}
         </OMGText>

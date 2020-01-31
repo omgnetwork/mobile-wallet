@@ -24,7 +24,7 @@ const TransactionHistoryFilter = ({
   return (
     <SafeAreaView style={styles.container}>
       <OMGStatusBar
-        barStyle={'dark-content'}
+        barStyle={'light-content'}
         backgroundColor={theme.colors.white}
       />
       <View style={styles.header}>

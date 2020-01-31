@@ -7,10 +7,10 @@ import Svg, { Rect, Path } from 'react-native-svg'
 import { Dimensions } from 'common/utils'
 import { OMGText } from 'components/widgets'
 
-const SCREEN_WIDTH = Dimensions.windowWidth
+const SCREEN_WIDTH = Dimensions.windowWidth + 1
+const CONTAINER_WIDTH = Math.round(SCREEN_WIDTH * 0.68)
 export const ROOTCHAIN_OVERLAY_COLOR = 'rgba(125, 85, 246, 0.50)'
 export const CHILDCHAIN_OVERLAY_COLOR = 'rgba(33, 118, 255, 0.50)'
-const CONTAINER_WIDTH = Math.round(SCREEN_WIDTH * 0.68)
 
 const OMGQRScanner = props => {
   const {
@@ -40,7 +40,7 @@ const OMGQRScanner = props => {
         borderColor={borderColor}
         borderStrokeWidth={borderStrokeWidth}
       />
-      <OMGText style={styles.qrMarkerText(theme)}>Scan QR to send</OMGText>
+      {/* <OMGText style={styles.qrMarkerText(theme)}>Scan QR to send</OMGText> */}
     </View>
   )
 
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   },
   qrMarkerText: theme => ({
     color: theme.colors.white,
-    marginTop: -33,
+    marginTop: -30,
     paddingBottom: 16
   })
 })

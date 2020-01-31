@@ -61,7 +61,7 @@ const DeleteWalletList = ({
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <OMGStatusBar
-        barStyle={'dark-content'}
+        barStyle={'light-content'}
         backgroundColor={theme.colors.white}
       />
       <View style={styles.contentContainer(theme)}>

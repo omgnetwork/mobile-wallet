@@ -16,8 +16,8 @@ const Exit = ({ navigation, theme, primaryWallet }) => {
 
   useEffect(() => {
     function didFocus() {
-      StatusBar.setBarStyle('dark-content')
-      StatusBar.setBackgroundColor(theme.colors.white)
+      StatusBar.setBarStyle('light-content')
+      StatusBar.setBackgroundColor(theme.colors.gray4)
     }
 
     const didFocusSubscription = navigation.addListener('didFocus', didFocus)
@@ -25,12 +25,12 @@ const Exit = ({ navigation, theme, primaryWallet }) => {
     return () => {
       didFocusSubscription.remove()
     }
-  }, [navigation, theme.colors.white])
+  }, [navigation, theme.colors.gray4])
 
   return (
     <SafeAreaView style={styles.container}>
       <OMGStatusBar
-        barStyle={'dark-content'}
+        barStyle={'light-content'}
         backgroundColor={theme.colors.white}
       />
       <View style={styles.titleContainer}>

@@ -260,13 +260,6 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     fontSize: 14
   }),
-  line: theme => ({
-    width: 246,
-    height: 1,
-    marginTop: 16,
-    opacity: 0.5,
-    backgroundColor: theme.colors.white
-  }),
   buttonText: theme => ({
     color: theme.colors.white,
     textTransform: 'none',

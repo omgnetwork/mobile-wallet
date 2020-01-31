@@ -58,17 +58,19 @@ const styles = StyleSheet.create({
   text: theme => ({
     color: theme.colors.white,
     fontSize: 14,
-    flex: 1
+    flex: 1,
+    textAlign: 'right',
+    marginRight: 12
   }),
   rightContainer: {
-    width: 50,
     height: 50,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 16
+    marginRight: 12
   },
   errorText: theme => ({
+    marginLeft: 'auto',
     color: theme.colors.red2,
     marginTop: 8
   }),

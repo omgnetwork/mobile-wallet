@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { View, StyleSheet, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-navigation'
@@ -16,7 +16,7 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
   useEffect(() => {
     function didFocus() {
       StatusBar.setBarStyle('light-content')
-      StatusBar.setBackgroundColor(theme.colors.white)
+      StatusBar.setBackgroundColor(theme.colors.gray4)
     }
 
     const didFocusSubscription = navigation.addListener('didFocus', didFocus)
@@ -24,7 +24,7 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
     return () => {
       didFocusSubscription.remove()
     }
-  }, [navigation, theme.colors.white])
+  }, [navigation, theme.colors.gray4])
 
   return (
     <SafeAreaView

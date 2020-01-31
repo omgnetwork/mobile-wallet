@@ -63,3 +63,12 @@ export const renderTotalPrice = (tokenPrice, feePrice) => {
     ellipsize: false
   })
 }
+
+export const renderTotalEthAmount = (token, feeAmount) => {
+  const totalAmount = BigNumber.plus(token.balance, feeAmount)
+  return Formatter.format(totalAmount, {
+    commify: true,
+    maxDecimal: 18,
+    ellipsize: false
+  })
+}
