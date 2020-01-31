@@ -203,7 +203,7 @@ export const waitForRootchainTransaction = ({
 }) => {
   return PlasmaUtils.waitForRootchainTransaction({
     web3,
-    hash,
+    transactionHash: hash,
     checkIntervalMs: intervalMs,
     blocksToWait: confirmationThreshold,
     onCountdown: onCountdown
