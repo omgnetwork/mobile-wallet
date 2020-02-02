@@ -4,7 +4,6 @@ import { SafeAreaView, withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
-import { colors } from 'common/styles'
 import { OMGText, OMGFontIcon } from 'components/widgets'
 import OMGDrawerContentItem from './OMGDrawerContentItem'
 import { settingActions, onboardingActions } from 'common/actions'
@@ -53,7 +52,7 @@ const OMGDrawerContent = ({
       <ScrollView contentContainerStyle={styles.scrollView}>
         {wallets.length > 0 && (
           <View key='wallet-container'>
-            <OMGText weight='mono-semi-bold' style={styles.titleText}>
+            <OMGText weight='regular' style={styles.titleText(theme)}>
               WALLETS
             </OMGText>
 
@@ -73,8 +72,8 @@ const OMGDrawerContent = ({
         )}
 
         <View style={styles.settingContainer} key={'setting-container'}>
-          <OMGText weight='mono-semi-bold' style={styles.titleText}>
-            SETTINGS
+          <OMGText weight='regular' style={styles.titleText(theme)}>
+            Manage
           </OMGText>
           <ManageWalletMenu
             title='Import Wallet'
@@ -102,9 +101,7 @@ const OMGDrawerContent = ({
           <View style={styles.divider(theme)} />
           <View style={styles.expander} />
           <View style={styles.environment}>
-            <OMGText
-              weight='mono-semi-bold'
-              style={styles.environmentTitleText(theme)}>
+            <OMGText style={styles.environmentTitleText(theme)}>
               Environment Info
             </OMGText>
             <View style={styles.envInfoCard(theme)}>
@@ -145,7 +142,9 @@ const menuStyles = StyleSheet.create({
   },
   titleLeft: theme => ({
     flex: 1,
-    color: theme.colors.primary
+    fontSize: 16,
+    letterSpacing: -0.64,
+    color: theme.colors.new_gray8
   }),
   iconRight: {}
 })
@@ -153,7 +152,7 @@ const menuStyles = StyleSheet.create({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingLeft: 30,
+    paddingLeft: 16,
     paddingTop: 32
   },
   divider: theme => ({
@@ -174,17 +173,16 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     flexDirection: 'column'
   },
-  titleText: {
-    color: colors.gray3
-  },
-  settingItemText: {
-    color: colors.black3
-  },
+  titleText: theme => ({
+    fontSize: 18,
+    textTransform: 'uppercase',
+    color: theme.colors.gray4,
+    marginTop: 12
+  }),
   envInfoCard: theme => ({
-    marginTop: 4,
-    padding: 12,
-    borderRadius: theme.roundness,
-    backgroundColor: theme.colors.gray4
+    marginTop: 16,
+    padding: 16,
+    backgroundColor: theme.colors.new_white2
   }),
   settingItem: {
     paddingVertical: 12
@@ -194,19 +192,23 @@ const styles = StyleSheet.create({
   },
   environment: {
     marginBottom: 24,
-    marginTop: 16
+    marginTop: 32
   },
   environmentTitleText: theme => ({
-    opacity: 0.5,
-    color: theme.colors.gray3,
+    color: theme.colors.new_gray5,
+    fontSize: 12,
+    letterSpacing: -0.48,
     paddingBottom: 8
   }),
   environmentItemText: theme => ({
-    fontSize: 14,
-    color: theme.colors.primary
+    fontSize: 16,
+    letterSpacing: -0.64,
+    color: theme.colors.new_gray6
   }),
   environmentItemTextLighter: theme => ({
-    color: theme.colors.black2
+    color: theme.colors.new_gray5,
+    fontSize: 12,
+    letterSpacing: -0.48
   })
 })
 

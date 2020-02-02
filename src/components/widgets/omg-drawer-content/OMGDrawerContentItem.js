@@ -1,16 +1,22 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
-import { colors } from 'common/styles'
+import { withTheme } from 'react-native-paper'
 import { OMGText, OMGFontIcon, OMGIdenticon } from 'components/widgets'
 
-const OMGDrawerContentItem = ({ wallet, primary, onWalletPress, key }) => {
+const OMGDrawerContentItem = ({
+  wallet,
+  primary,
+  onWalletPress,
+  key,
+  theme
+}) => {
   return (
     <TouchableOpacity
       key={key}
       style={styles.container}
       onPress={() => onWalletPress(wallet)}>
-      <OMGIdenticon style={styles.logo} hash={wallet.address} size={24} />
-      <OMGText style={styles.name}>{wallet.name}</OMGText>
+      <OMGIdenticon style={styles.logo} hash={wallet.address} size={32} />
+      <OMGText style={styles.name(theme)}>{wallet.name}</OMGText>
       {primary && (
         <OMGFontIcon name='check-mark' size={14} style={styles.iconRight} />
       )}
@@ -25,17 +31,18 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   logo: {
-    width: 24,
-    height: 24
+    width: 32,
+    height: 32
   },
-  name: {
+  name: theme => ({
+    fontSize: 16,
     flex: 1,
     marginLeft: 16,
-    color: colors.gray3
-  },
+    color: theme.colors.gray3
+  }),
   iconRight: {
     marginRight: 30
   }
 })
 
-export default OMGDrawerContentItem
+export default withTheme(OMGDrawerContentItem)
