@@ -164,9 +164,7 @@ const TransactionHistory = ({
         menuRef={transactionHistoryRef}
         description='From Plasma Chain'
       />
-      <OMGText style={styles.subheader(theme)} weight='mono-semi-bold'>
-        Recent
-      </OMGText>
+      <OMGText style={styles.subheader(theme)}>Recent</OMGText>
       <OMGTransactionList
         transactions={txs}
         loading={fetching}
@@ -204,7 +202,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 16
   },
   subheader: theme => ({
-    color: theme.colors.primary,
+    fontSize: 12,
+    color: theme.colors.white,
     textTransform: 'uppercase',
     marginLeft: 16,
     marginBottom: 8,
