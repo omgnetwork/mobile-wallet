@@ -10,12 +10,10 @@ const OMGMenuImage = ({ title, description, style, theme, onPress }) => {
       onPress={onPress}>
       <OMGIdenticon style={styles.logo} hash={title} size={40} />
       <View style={styles.sectionName}>
-        <OMGText style={styles.title(theme)} weight='mono-semi-bold'>
-          {title}
-        </OMGText>
+        <OMGText style={styles.title(theme)}>{title}</OMGText>
         <OMGText style={styles.description(theme)}>{description || ''}</OMGText>
       </View>
-      <OMGFontIcon name='chevron-right' size={24} />
+      <OMGFontIcon name='chevron-right' size={24} color={theme.colors.white} />
     </TouchableOpacity>
   )
 }
@@ -23,10 +21,9 @@ const OMGMenuImage = ({ title, description, style, theme, onPress }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.white3,
+    backgroundColor: theme.colors.new_black7,
     alignItems: 'center',
-    padding: 20,
-    borderRadius: theme.roundness
+    padding: 20
   }),
   logo: {
     width: 40,
@@ -40,12 +37,12 @@ const styles = StyleSheet.create({
     marginLeft: 16
   },
   title: theme => ({
-    fontSize: 14,
-    textTransform: 'uppercase',
-    color: theme.colors.primary
+    fontSize: 16,
+    letterSpacing: -0.64,
+    color: theme.colors.white
   }),
   description: theme => ({
-    color: theme.colors.gray5,
+    color: theme.colors.new_gray7,
     fontSize: 12
   })
 })

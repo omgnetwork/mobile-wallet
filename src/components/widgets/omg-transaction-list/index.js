@@ -44,13 +44,6 @@ const OMGTransactionList = ({
     }
   }, [type])
 
-  const renderSeparator = useCallback(
-    ({ leadingItem }) => {
-      return <View style={styles.divider(theme)} />
-    },
-    [theme]
-  )
-
   const handleClickTx = useCallback(
     transaction => {
       navigation.navigate('TransactionDetail', {
@@ -84,7 +77,6 @@ const OMGTransactionList = ({
           ListHeaderComponent={renderHeader && renderHeader()}
           data={transactions}
           keyExtractor={(tx, index) => tx.hash}
-          ItemSeparatorComponent={renderSeparator}
           contentContainerStyle={
             transactions && transactions.length
               ? styles.content

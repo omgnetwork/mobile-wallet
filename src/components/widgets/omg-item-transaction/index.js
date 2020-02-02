@@ -27,7 +27,7 @@ const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
         <OMGFontIcon
           name={iconName}
           size={14}
-          color={isError ? theme.colors.red : theme.colors.black5}
+          color={isError ? theme.colors.red : theme.colors.white}
         />
       </View>
       <View style={styles.centerContainer}>
@@ -96,7 +96,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   textHash: theme => ({
-    color: theme.colors.primary,
+    fontSize: 16,
+    letterSpacing: -0.64,
+    color: theme.colors.white,
     alignItems: 'center',
     justifyContent: 'center'
   }),
@@ -105,11 +107,14 @@ const styles = StyleSheet.create({
     fontSize: 10
   }),
   textAmount: theme => ({
-    color: theme.colors.primary
+    fontSize: 16,
+    letterSpacing: -0.64,
+    color: theme.colors.white
   }),
   textDate: theme => ({
-    color: theme.colors.gray2,
-    fontSize: 8
+    color: theme.colors.new_gray2,
+    fontSize: 8,
+    letterSpacing: -0.32
   })
 })
 

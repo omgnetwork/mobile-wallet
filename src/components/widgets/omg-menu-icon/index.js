@@ -19,15 +19,13 @@ const OMGMenuIcon = ({
       ref={menuRef}
       onPress={onPress}>
       <View style={styles.imageContainer(theme)}>
-        <OMGFontIcon color={theme.colors.gray3} size={18} name={iconName} />
+        <OMGFontIcon color={theme.colors.white} size={18} name={iconName} />
       </View>
       <View style={styles.sectionName}>
-        <OMGText style={styles.title(theme)} weight='mono-semi-bold'>
-          {title}
-        </OMGText>
+        <OMGText style={styles.title(theme)}>{title}</OMGText>
         <OMGText style={styles.description(theme)}>{description}</OMGText>
       </View>
-      <OMGFontIcon name='chevron-right' size={24} />
+      <OMGFontIcon name='chevron-right' size={24} color={theme.colors.white} />
     </TouchableOpacity>
   )
 }
@@ -35,7 +33,7 @@ const OMGMenuIcon = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.white3,
+    backgroundColor: theme.colors.new_black7,
     alignItems: 'center',
     padding: 20,
     borderRadius: theme.roundness
@@ -55,12 +53,12 @@ const styles = StyleSheet.create({
     marginLeft: 16
   },
   title: theme => ({
-    fontSize: 14,
-    color: theme.colors.primary,
-    textTransform: 'uppercase'
+    fontSize: 16,
+    letterSpacing: -0.64,
+    color: theme.colors.white
   }),
   description: theme => ({
-    color: theme.colors.gray5,
+    color: theme.colors.new_gray7,
     fontSize: 12
   })
 })

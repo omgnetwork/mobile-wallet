@@ -135,10 +135,12 @@ const TransactionHistory = ({
   }, [navigation])
 
   return (
-    <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
+    <SafeAreaView
+      style={styles.container(theme)}
+      forceInset={{ top: 'always' }}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.white}
+        backgroundColor={theme.colors.gray4}
       />
       <OMGText style={styles.title(theme)}>History</OMGText>
       <OMGMenuImage
@@ -176,10 +178,11 @@ const TransactionHistory = ({
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: theme => ({
     flex: 1,
-    paddingVertical: 16
-  },
+    paddingVertical: 16,
+    backgroundColor: theme.colors.gray4
+  }),
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center'
@@ -189,7 +192,7 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     marginTop: 8,
     textTransform: 'uppercase',
-    color: theme.colors.gray3
+    color: theme.colors.white
   }),
   icon: {
     paddingTop: 8,
