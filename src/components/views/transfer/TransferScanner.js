@@ -128,7 +128,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   }, [hasChildchainAssets, hasRootchainAssets, isRootchain, unconfirmedTx])
 
   const unconfirmedTxComponent = (
-    <Animated.View style={styles.unableView(overlayColorAnim)}>
+    <Animated.View style={styles.unableView(theme)}>
       <OMGFontIcon
         style={styles.unableIcon(theme)}
         name='pending'
@@ -142,7 +142,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   )
 
   const emptyComponent = (
-    <Animated.View style={styles.emptyView(overlayColorAnim)}>
+    <Animated.View style={styles.emptyView(theme)}>
       <OMGEmpty {...getEmptyStatePayload()} />
     </Animated.View>
   )
@@ -305,22 +305,16 @@ const styles = StyleSheet.create({
   notAuthorizedView: {
     textAlign: 'center'
   },
-  unableView: overlayColorAnim => ({
+  unableView: theme => ({
     flexDirection: 'column',
-    backgroundColor: overlayColorAnim.current.interpolate({
-      inputRange: [0, 1],
-      outputRange: [ROOTCHAIN_OVERLAY_COLOR, CHILDCHAIN_OVERLAY_COLOR]
-    }),
+    backgroundColor: theme.colors.new_black7,
     alignItems: 'center',
     justifyContent: 'center'
   }),
-  emptyView: overlayColorAnim => ({
+  emptyView: theme => ({
     height: 240,
     flexDirection: 'column',
-    backgroundColor: overlayColorAnim.current.interpolate({
-      inputRange: [0, 1],
-      outputRange: [ROOTCHAIN_OVERLAY_COLOR, CHILDCHAIN_OVERLAY_COLOR]
-    }),
+    backgroundColor: theme.colors.new_black7,
     alignItems: 'center',
     justifyContent: 'center'
   }),
