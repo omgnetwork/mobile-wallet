@@ -219,7 +219,7 @@ const TransferConfirm = ({
     <SafeAreaView style={styles.container(theme)}>
       <ScrollView
         contentContainerStyle={styles.scrollView(theme)}
-        bounces='false'>
+        bounces={false}>
         <View style={styles.contentContainer}>
           <TouchableHighlight onPress={handleBackToEditPressed}>
             <View style={styles.subHeaderContainer(theme)}>
