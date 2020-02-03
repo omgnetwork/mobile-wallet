@@ -8,7 +8,6 @@ import * as TransferHelper from './transferHelper'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
 import {
-  OMGBox,
   OMGButton,
   OMGText,
   OMGWalletAddress,
