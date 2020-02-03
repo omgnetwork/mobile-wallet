@@ -5,10 +5,6 @@ import { BlockchainRenderer } from 'common/blockchain'
 import Config from 'react-native-config'
 import { BlockchainNetworkType } from 'common/constants'
 
-const Divider = ({ theme }) => {
-  return <View style={styles.divider(theme)} />
-}
-
 const TransactionDetailFromTo = ({ theme, tx, style }) => {
   const handleAddressClick = useCallback(
     address => {
@@ -26,7 +22,7 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
       <View style={styles.detailContainer}>
         <OMGText style={styles.title(theme)}>From</OMGText>
         <View style={styles.detailItem}>
-          <OMGFontIcon name='wallet' size={14} />
+          <OMGFontIcon name='wallet' size={18} color={theme.colors.white} />
           <TouchableOpacity
             style={styles.detailItemAddress}
             onPress={() => handleAddressClick(tx.from)}>
@@ -46,11 +42,10 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
           </OMGText>
         </View>
       </View>
-      <Divider theme={theme} />
       <View style={styles.detailContainer}>
         <OMGText style={styles.title(theme)}>To</OMGText>
         <View style={styles.detailItem}>
-          <OMGFontIcon name='wallet' size={14} />
+          <OMGFontIcon name='wallet' size={18} color={theme.colors.white} />
           <TouchableOpacity
             style={styles.detailItemAddress}
             onPress={() => handleAddressClick(tx.to)}>
@@ -81,13 +76,13 @@ const styles = StyleSheet.create({
     borderRadius: theme.roundness
   }),
   title: theme => ({
-    color: theme.colors.gray3
+    color: theme.colors.white,
+    fontSize: 12,
+    textTransform: 'uppercase',
+    paddingVertical: 16
   }),
-  detailContainer: {
-    marginTop: 8
-  },
+  detailContainer: {},
   detailItem: {
-    marginTop: 8,
     flexDirection: 'row',
     alignItems: 'center'
   },
@@ -97,16 +92,14 @@ const styles = StyleSheet.create({
     marginLeft: 6
   },
   detailItemAddressText: theme => ({
-    color: theme.colors.blue4
+    fontSize: 16,
+    letterSpacing: -0.64,
+    color: theme.colors.white
   }),
   detailItemValueText: theme => ({
-    color: theme.colors.black2
-  }),
-  divider: theme => ({
-    opacity: 0.25,
-    backgroundColor: theme.colors.black1,
-    height: 1,
-    marginTop: 16
+    fontSize: 16,
+    letterSpacing: -0.64,
+    color: theme.colors.new_gray7
   })
 })
 

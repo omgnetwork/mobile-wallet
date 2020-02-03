@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
-import { View, StyleSheet, Clipboard } from 'react-native'
-import { OMGFontIcon, OMGBox, OMGText } from 'components/widgets'
+import { View, StyleSheet, Clipboard, TouchableOpacity } from 'react-native'
+import { OMGFontIcon, OMGText } from 'components/widgets'
 import { Alerter } from 'common/utils'
 import { Alert } from 'common/constants'
 
@@ -12,12 +12,10 @@ const TransactionDetailHash = ({ theme, hash, style }) => {
 
   return (
     <View style={{ ...styles.container(theme), ...style }}>
-      <OMGText style={styles.hashText(theme)} weight='mono-semi-bold'>
-        {hash}
-      </OMGText>
-      <OMGBox style={styles.iconContainer(theme)} onPress={handleCopyClick}>
-        <OMGFontIcon name='copy' size={14} color={theme.colors.black2} />
-      </OMGBox>
+      <OMGText style={styles.hashText(theme)}>{hash}</OMGText>
+      <TouchableOpacity onPress={handleCopyClick}>
+        <OMGFontIcon name='copy' size={24} color={theme.colors.white} />
+      </TouchableOpacity>
     </View>
   )
 }
@@ -25,8 +23,8 @@ const TransactionDetailHash = ({ theme, hash, style }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    padding: 10,
-    borderRadius: theme.roundness
+    alignItems: 'center',
+    padding: 10
   }),
   iconContainer: theme => ({
     padding: 8,
@@ -37,9 +35,10 @@ const styles = StyleSheet.create({
   }),
   hashText: theme => ({
     flex: 1,
-    marginRight: 8,
-    fontSize: 14,
-    color: theme.colors.primary
+    marginRight: 24,
+    fontSize: 16,
+    letterSpacing: -0.64,
+    color: theme.colors.white
   })
 })
 
