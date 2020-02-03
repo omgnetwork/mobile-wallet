@@ -6,9 +6,12 @@ import { withTheme } from 'react-native-paper'
 const OMGExitWarning = ({ theme, style }) => {
   return (
     <View style={{ ...styles.container(theme), ...style }}>
-      <View style={styles.iconContainer(theme)}>
-        <OMGFontIcon name='attention' style={styles.icon(theme)} />
-      </View>
+      <OMGFontIcon
+        style={styles.icon}
+        size={30}
+        name='attention'
+        color={theme.colors.new_blue1}
+      />
       <OMGText style={styles.text(theme)}>
         You are about to move fund out of {'-\n'}
         <OMGText weight='mono-semi-bold'>Plasma </OMGText>
@@ -24,24 +27,27 @@ const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
     padding: 18,
-    backgroundColor: theme.colors.yellow2,
+    backgroundColor: theme.colors.new_gray3,
     alignItems: 'center'
   }),
   iconContainer: theme => ({
     width: 24,
     height: 24,
+    marginLeft: 16,
     backgroundColor: theme.colors.yellow,
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center'
   }),
-  icon: theme => ({
-    color: theme.colors.white
-  }),
   text: theme => ({
-    color: theme.colors.primary,
+    fontSize: 12,
+    letterSpacing: -0.48,
+    color: theme.colors.white,
+    marginLeft: 18
+  }),
+  icon: {
     marginLeft: 16
-  })
+  }
 })
 
 export default withTheme(OMGExitWarning)

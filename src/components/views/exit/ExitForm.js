@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, Platform, InteractionManager } from 'react-native'
+import { View, StyleSheet, InteractionManager } from 'react-native'
 import { withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import {
@@ -57,12 +57,12 @@ const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
   }, [navigation, selectedToken])
 
   return (
-    <OMGDismissKeyboard style={styles.container}>
+    <OMGDismissKeyboard style={styles.container(theme)}>
       <OMGBlockchainLabel
-        actionText='Sending to'
-        transferType={TransferHelper.TYPE_TRANSFER_ROOTCHAIN}
+        actionText='Exit to'
+        transferType={TransferHelper.TYPE_EXIT}
       />
-      <View style={styles.contentContainer}>
+      <View style={styles.contentContainer(theme)}>
         <ScrollView>
           <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
             Select Exit Amount
@@ -89,7 +89,7 @@ const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
             defaultValue={navigation.getParam('lastAmount')}
             style={styles.amountInput}
           />
-          <OMGExitWarning style={styles.textWarning} />
+          <OMGExitWarning style={styles.warningContainer} />
         </ScrollView>
 
         <View style={styles.buttonContainer}>
@@ -101,18 +101,21 @@ const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: theme => ({
     flex: 1,
-    flexDirection: 'column'
-  },
+    flexDirection: 'column',
+    backgroundColor: theme.colors.gray4
+  }),
   keyboardAvoidingView: {},
-  contentContainer: {
+  contentContainer: theme => ({
     flex: 1,
     paddingHorizontal: 16,
-    paddingBottom: 16
-  },
-  textWarning: {
+    paddingBottom: 16,
+    backgroundColor: theme.colors.gray4
+  }),
+  warningContainer: {
     marginTop: 16,
+    padding: 16,
     marginHorizontal: -16
   },
   title: theme => ({

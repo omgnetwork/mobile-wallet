@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
   },
   text: theme => ({
     color: theme.colors.white,
-    fontSize: 14,
+    fontSize: 16,
+    letterSpacing: -0.64,
     flex: 1,
     textAlign: 'right',
     marginRight: 12
@@ -75,7 +76,9 @@ const styles = StyleSheet.create({
     marginTop: 8
   }),
   symbol: theme => ({
-    color: theme.colors.gray2
+    fontSize: 16,
+    letterSpacing: -0.64,
+    color: theme.colors.new_gray7
   })
 })
 

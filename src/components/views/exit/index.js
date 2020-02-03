@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { View, StyleSheet, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
 import {
   OMGFontIcon,
-  OMGBox,
   OMGText,
   OMGStatusBar,
   OMGEmpty
 } from 'components/widgets'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const Exit = ({ navigation, theme, primaryWallet }) => {
   const ExitNavigator = navigation.getParam('navigator')
@@ -28,20 +28,20 @@ const Exit = ({ navigation, theme, primaryWallet }) => {
   }, [navigation, theme.colors.gray4])
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.white}
+        backgroundColor={theme.colors.gray4}
       />
       <View style={styles.titleContainer}>
         <OMGText style={styles.title(theme)}>Exit</OMGText>
-        <OMGBox
+        <TouchableOpacity
           onPress={() => {
             navigation.navigate('Balance')
           }}
           style={styles.icon}>
-          <OMGFontIcon name='x-mark' size={18} color={theme.colors.gray3} />
-        </OMGBox>
+          <OMGFontIcon name='x-mark' size={18} color={theme.colors.white} />
+        </TouchableOpacity>
       </View>
       {primaryWallet ? (
         <ExitNavigator navigation={navigation} />
@@ -55,9 +55,10 @@ const Exit = ({ navigation, theme, primaryWallet }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
+  container: theme => ({
+    flex: 1,
+    backgroundColor: theme.colors.gray4
+  }),
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center'
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     fontSize: 18,
     textTransform: 'uppercase',
-    color: theme.colors.gray3
+    color: theme.colors.white
   }),
   icon: {
     padding: 16
