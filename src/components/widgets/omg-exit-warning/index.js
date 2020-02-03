@@ -45,9 +45,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     marginLeft: 18
   }),
-  icon: {
-    marginLeft: 16
-  }
+  icon: {}
 })
 
 export default withTheme(OMGExitWarning)

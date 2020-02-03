@@ -84,15 +84,39 @@ const ExitConfirm = ({
   }, [blockchainWallet, ethToken, token, tokenPrice])
 
   const renderEstimatedFeeElement = useCallback(() => {
-    return estimatedFee ? (
-      <>
-        <OMGText style={styles.feeAmount(theme)}>{estimatedFee} ETH</OMGText>
-        <OMGText style={styles.feeWorth(theme)}>{estimatedFeeUsd} USD</OMGText>
-      </>
-    ) : (
-      <OMGEmpty loading={true} />
+    return (
+      <View style={[styles.exitFeeContainer, styles.marginExitFeeItem]}>
+        <OMGText style={styles.exitFeeTitle(theme)}>Exit Fee</OMGText>
+        <View style={styles.exitFeeContainerRight}>
+          {estimatedFee ? (
+            <>
+              <OMGText
+                style={styles.exitFeeAmount(theme)}
+                ellipsizeMode='tail'
+                numberOfLines={1}>
+                {estimatedFee} ETH
+              </OMGText>
+              <OMGText style={styles.exitFeeWorth(theme)}>
+                {estimatedFeeUsd} USD
+              </OMGText>
+            </>
+          ) : (
+            <OMGEmpty loading={true} />
+          )}
+        </View>
+      </View>
     )
   }, [estimatedFee, estimatedFeeUsd, theme])
+
+  const renderMaxTotal = useCallback(() => {
+    ;<View style={styles.amountContainer(theme)}>
+      <OMGText style={styles.tokenBalance(theme)}>{tokenBalance}</OMGText>
+      <View style={styles.balanceContainer}>
+        <OMGText style={styles.tokenSymbol(theme)}>{token.tokenSymbol}</OMGText>
+        <OMGText style={styles.tokenWorth(theme)}>{tokenPrice} USD</OMGText>
+      </View>
+    </View>
+  }, [theme, token.tokenSymbol, tokenBalance, tokenPrice])
 
   const handleBackToEditPressed = useCallback(() => {
     navigation.navigate('ExitForm', {
@@ -108,10 +132,10 @@ const ExitConfirm = ({
             <OMGFontIcon
               name='chevron-left'
               size={14}
-              color={theme.colors.gray3}
+              color={theme.colors.white}
               onPress={handleBackToEditPressed}
             />
-            <OMGText style={styles.edit}>Edit</OMGText>
+            <OMGText style={styles.edit(theme)}>Edit</OMGText>
           </View>
         </TouchableHighlight>
 
@@ -120,31 +144,33 @@ const ExitConfirm = ({
           transferType={TransferHelper.TYPE_TRANSFER_ROOTCHAIN}
           style={styles.blockchainLabel}
         />
-        <View style={styles.amountContainer(theme)}>
-          <OMGText style={styles.tokenBalance(theme)}>{tokenBalance}</OMGText>
-          <View style={styles.balanceContainer}>
-            <OMGText style={styles.tokenSymbol(theme)}>
-              {token.tokenSymbol}
-            </OMGText>
-            <OMGText style={styles.tokenWorth(theme)}>{tokenPrice} USD</OMGText>
+        {token.tokenSymbol === 'ETH' && renderMaxTotal()}
+        <OMGText style={styles.subtitle(theme)}>To Exit</OMGText>
+        <View style={styles.feeContainer(theme)}>
+          <View style={styles.exitFeeContainer}>
+            <OMGText style={styles.exitFeeTitle(theme)}>Exit Amount</OMGText>
+            <View style={styles.exitFeeContainerRight}>
+              <OMGText
+                style={styles.exitFeeAmount(theme)}
+                ellipsizeMode='tail'
+                numberOfLines={1}>
+                {tokenBalance} {token.tokenSymbol}
+              </OMGText>
+              <OMGText style={styles.exitFeeWorth(theme)}>
+                {tokenPrice} USD
+              </OMGText>
+            </View>
           </View>
+          {renderEstimatedFeeElement()}
         </View>
-        <OMGExitWarning />
-        <View style={styles.transactionFeeContainer}>
-          <OMGText weight='mono-semi-bold' style={styles.subtitle(theme)}>
-            Estimated Fee
-          </OMGText>
-          <View style={styles.feeContainer(theme)}>
-            {renderEstimatedFeeElement()}
-          </View>
-        </View>
+        <OMGExitWarning style={styles.exitwarning} />
       </View>
       <View style={styles.buttonContainer}>
         <OMGButton
           style={styles.button}
           loading={loadingVisible}
           onPress={exit}>
-          Exit from plasma chain
+          Confirm to Exit
         </OMGButton>
       </View>
     </SafeAreaView>
@@ -155,14 +181,15 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.white
+    backgroundColor: theme.colors.gray4
   }),
   contentContainer: {
     flex: 1
   },
   subHeaderContainer: {
+    marginTop: 14,
     paddingHorizontal: 16,
-    paddingBottom: 16,
+    paddingBottom: 30,
     flexDirection: 'row',
     alignItems: 'center'
   },
@@ -170,7 +197,7 @@ const styles = StyleSheet.create({
   amountContainer: theme => ({
     marginTop: 16,
     padding: 20,
-    backgroundColor: theme.colors.gray4,
+    backgroundColor: theme.colors.new_gray5,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
@@ -188,36 +215,37 @@ const styles = StyleSheet.create({
   subHeaderTitle: {
     fontSize: 14
   },
-  edit: {
-    marginLeft: 3,
-    opacity: 0.7
-  },
+  edit: theme => ({
+    fontSize: 12,
+    color: theme.colors.white,
+    textTransform: 'uppercase',
+    marginLeft: 3
+  }),
   tokenBalance: theme => ({
     fontSize: 18,
-    color: theme.colors.gray3
+    color: theme.colors.white
   }),
   tokenSymbol: theme => ({
     textAlign: 'right',
     fontSize: 18,
-    color: theme.colors.gray3
+    color: theme.colors.white
   }),
   tokenWorth: theme => ({
-    color: theme.colors.black2
+    color: theme.colors.white
   }),
   subtitle: theme => ({
-    marginTop: 8,
-    color: theme.colors.gray3
+    marginTop: 30,
+    marginLeft: 16,
+    fontSize: 12,
+    textTransform: 'uppercase',
+    color: theme.colors.white
   }),
   feeContainer: theme => ({
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
     marginTop: 16,
-    backgroundColor: theme.colors.white3,
-    borderColor: theme.colors.gray4,
-    borderRadius: theme.roundness,
-    borderWidth: 1,
-    padding: 12,
-    alignItems: 'center'
+    marginHorizontal: 16,
+    backgroundColor: theme.colors.new_gray6,
+    padding: 12
   }),
   totalContainer: {
     marginBottom: 16,
@@ -225,12 +253,36 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   blockchainLabel: {},
-  feeAmount: theme => ({
-    color: theme.colors.primary
+  exitwarning: {
+    marginTop: 16
+  },
+  exitFeeAmount: theme => ({
+    color: theme.colors.white,
+    fontSize: 16,
+    letterSpacing: -0.64
   }),
-  feeWorth: theme => ({
-    color: theme.colors.gray2
+  exitFeeWorth: theme => ({
+    color: theme.colors.new_gray7,
+    fontSize: 12,
+    letterSpacing: -0.48
   }),
+  exitFeeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  exitFeeContainerRight: {
+    marginLeft: 'auto',
+    flexDirection: 'column',
+    alignItems: 'flex-end'
+  },
+  exitFeeTitle: theme => ({
+    color: theme.colors.white,
+    fontSize: 16,
+    letterSpacing: -0.64
+  }),
+  marginExitFeeItem: {
+    marginTop: 16
+  },
   totalText: theme => ({
     color: theme.colors.gray3
   })

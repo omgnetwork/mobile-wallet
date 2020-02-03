@@ -114,9 +114,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.gray4
   }),
   warningContainer: {
-    marginTop: 16,
-    padding: 16,
-    marginHorizontal: -16
+    marginTop: 16
   },
   title: theme => ({
     color: theme.colors.gray3,
