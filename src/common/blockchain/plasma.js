@@ -214,8 +214,13 @@ export const getPaymentExitGameAddress = () => {
   return Plasma.RootChain.getPaymentExitGame()
 }
 
-export const getErrorReason = hash => {
-  return PlasmaUtils.ethErrorReason({ web3, hash })
+export const getErrorReason = async hash => {
+  try {
+    return await PlasmaUtils.ethErrorReason({ web3, hash }).catch()
+  } catch (e) {
+    console.log(e)
+    return 'Cannot retrieve error reason'
+  }
 }
 
 export const isDepositUtxo = utxo => {
