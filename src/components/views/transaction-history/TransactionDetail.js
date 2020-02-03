@@ -71,7 +71,7 @@ const TransactionDetail = ({ navigation, theme }) => {
   const renderExternalLink = useCallback(() => {
     const linkTitle = Validator.isOmiseGOTransaction(transaction)
       ? 'Block Explorer'
-      : 'Etherscan'
+      : 'Etherscan.io'
     return (
       <View style={styles.etherscanContainer}>
         <OMGText style={styles.etherscanText(theme)}>More on</OMGText>
@@ -108,18 +108,20 @@ const TransactionDetail = ({ navigation, theme }) => {
 
   const renderTransactionDetail = useCallback(() => {
     return (
-      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-        <TransactionDetailHash
-          hash={transaction.hash}
-          style={styles.addressContainer}
-          theme={theme}
-        />
+      <ScrollView
+        contentContainerStyle={styles.scrollViewContainer(theme)}
+        bounces={false}>
         <OMGBlockchainLabel
           style={styles.blockchainLabel(theme)}
           transferType={transferType}
           actionText={BlockchainLabels.getBlockchainTextActionLabel(
             transaction
           )}
+        />
+        <TransactionDetailHash
+          hash={transaction.hash}
+          style={styles.addressContainer}
+          theme={theme}
         />
         <TransactionDetailInfo
           tx={transaction}
@@ -145,45 +147,49 @@ const TransactionDetail = ({ navigation, theme }) => {
   }, [transaction])
 
   return (
-    <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
+    <SafeAreaView
+      style={styles.container(theme)}
+      forceInset={{ top: 'always' }}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.white}
+        backgroundColor={theme.colors.gray4}
       />
       <View style={styles.header}>
         <OMGFontIcon
           name='chevron-left'
           size={18}
-          color={theme.colors.gray3}
+          color={theme.colors.white}
           style={styles.headerIcon}
           onPress={() => navigation.goBack()}
         />
-        <OMGText style={styles.headerTitle(theme)}>{title}</OMGText>
+        <OMGText style={styles.headerTitle(theme)} weight='regular'>
+          {title}
+        </OMGText>
       </View>
       {transaction ? renderTransactionDetail() : renderTransactionLoading()}
     </SafeAreaView>
   )
 }
 
-const Divider = ({ theme }) => {
-  return <View style={styles.divider(theme)} />
-}
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
+  container: theme => ({
+    flex: 1,
+    backgroundColor: theme.colors.gray4
+  }),
   blockchainLabel: theme => ({
-    borderRadius: theme.roundness
+    marginTop: 16,
+    marginHorizontal: -16,
+    paddingVertical: 10
   }),
   addressContainer: {
-    paddingVertical: 16
+    marginTop: 16
   },
-  scrollViewContainer: {
+  scrollViewContainer: theme => ({
+    backgroundColor: theme.colors.gray4,
     flexDirection: 'column',
     paddingHorizontal: 16,
     paddingBottom: 16
-  },
+  }),
   header: {
     alignItems: 'center',
     flexDirection: 'row',
@@ -195,7 +201,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: theme => ({
     fontSize: 18,
-    color: theme.colors.gray3,
+    color: theme.colors.white,
     marginLeft: 8,
     textTransform: 'uppercase'
   }),
@@ -212,16 +218,20 @@ const styles = StyleSheet.create({
     marginTop: 16
   }),
   etherscanContainer: {
-    marginTop: 16,
+    marginTop: 30,
     flexDirection: 'row',
     alignItems: 'center'
   },
   etherscanText: theme => ({
+    fontSize: 12,
+    letterSpacing: -0.48,
     marginRight: 4,
-    color: theme.colors.primary
+    color: theme.colors.white
   }),
   linkText: theme => ({
-    color: theme.colors.blue4
+    fontSize: 12,
+    letterSpacing: -0.48,
+    color: theme.colors.new_blue1
   }),
   exitCompleteLabel: {
     marginTop: 16
