@@ -7,7 +7,10 @@ import { IconEth, IconGo } from './assets'
 
 const OMGBlockchainLabel = ({ theme, actionText, transferType, style }) => {
   const isEthereumRootchain =
-    transferType !== TransferHelper.TYPE_TRANSFER_CHILDCHAIN
+    [
+      TransferHelper.TYPE_TRANSFER_CHILDCHAIN,
+      TransferHelper.TYPE_DEPOSIT
+    ].indexOf(transferType) === -1
   const blockchainName = isEthereumRootchain
     ? 'Ethereum Rootchain'
     : 'Plasma Childchain'
