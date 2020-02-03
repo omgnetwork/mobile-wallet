@@ -1,35 +1,44 @@
-import React from 'react'
-import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import React, { useCallback } from 'react'
+import { View, TouchableOpacity, StyleSheet, Share } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { OMGQRCode, OMGText, OMGIdenticon } from 'components/widgets'
 
 const ShowQR = ({ theme, primaryWallet, primaryWalletAddress, navigation }) => {
+  const handleShareClick = useCallback(() => {
+    Share.share({
+      title: 'Share Wallet Address',
+      message: primaryWalletAddress
+    })
+  }, [primaryWalletAddress])
   return (
     <View style={styles.container(theme)}>
-      <View style={styles.titleContainer}>
-        <OMGIdenticon
-          style={styles.identicon(theme)}
-          hash={primaryWalletAddress}
-          size={40}
-        />
-        <OMGText style={styles.title(theme)} weight='mono-semi-bold'>
-          {primaryWallet.name}
-        </OMGText>
+      <View style={styles.contentContainer}>
+        <View style={styles.titleContainer}>
+          <OMGIdenticon
+            style={styles.identicon(theme)}
+            hash={primaryWalletAddress}
+            size={40}
+          />
+          <OMGText style={styles.title(theme)} weight='mono-semi-bold'>
+            {primaryWallet.name}
+          </OMGText>
+        </View>
+        <View style={styles.qrContainer(theme)}>
+          <OMGQRCode
+            payload={primaryWalletAddress}
+            displayText={primaryWalletAddress}
+          />
+        </View>
+        <TouchableOpacity
+          style={styles.buttonContainer(theme)}
+          onPress={handleShareClick}>
+          <OMGText style={styles.buttonText(theme)} weigth='semi-bold'>
+            Share to Receive
+          </OMGText>
+        </TouchableOpacity>
       </View>
-      <View style={styles.qrContainer(theme)}>
-        <OMGQRCode
-          payload={primaryWalletAddress}
-          displayText={primaryWalletAddress}
-        />
-      </View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('TransactionHistory')}>
-        <OMGText style={styles.bottomText(theme)}>
-          View Transaction History
-        </OMGText>
-      </TouchableOpacity>
     </View>
   )
 }
@@ -37,8 +46,7 @@ const ShowQR = ({ theme, primaryWallet, primaryWalletAddress, navigation }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-around',
+    alignItems: 'center',
     padding: 16,
     backgroundColor: theme.colors.new_black7,
     borderRadius: theme.roundness
@@ -51,6 +59,11 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'column',
     alignItems: 'center'
+  },
+  contentContainer: {
+    width: 200,
+    flex: 1,
+    justifyContent: 'center'
   },
   icon: {
     width: 40,
@@ -66,9 +79,15 @@ const styles = StyleSheet.create({
     marginTop: 16,
     color: theme.colors.white
   }),
-  bottomText: theme => ({
-    color: theme.colors.primary,
-    alignSelf: 'center'
+  buttonContainer: theme => ({
+    borderWidth: 1,
+    borderColor: theme.colors.new_gray5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 14
+  }),
+  buttonText: theme => ({
+    color: theme.colors.white
   })
 })
 

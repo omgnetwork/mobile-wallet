@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
   container: { padding: 16 },
   displayTextContainer: {
     marginTop: 16,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   qrFrame: theme => ({
     padding: 4,
