@@ -286,7 +286,9 @@ const styles = StyleSheet.create({
   },
   trackEtherscanText: theme => ({
     color: theme.colors.white,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: 12,
+    letterSpacing: -0.48
   }),
   button: {
     marginTop: 24

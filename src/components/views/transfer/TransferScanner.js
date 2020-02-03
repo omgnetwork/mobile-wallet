@@ -10,6 +10,7 @@ import { View, StyleSheet, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
+import { Dimensions } from 'common/utils'
 import { paramsForTransferScannerToTransferSelectBalance } from './transferNavigation'
 import {
   OMGText,
@@ -18,13 +19,12 @@ import {
   OMGButton,
   OMGEmpty
 } from 'components/widgets'
-import {
-  ROOTCHAIN_OVERLAY_COLOR,
-  CHILDCHAIN_OVERLAY_COLOR
-} from 'components/widgets/omg-qr-scanner'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Animator } from 'common/anims'
 import * as BlockchainIcons from './assets'
+
+const SCREEN_WIDTH = Dimensions.windowWidth + 1
+const CAMERA_WIDTH = Math.round(SCREEN_WIDTH * 0.68)
 
 const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   const { rootchain } = getParamsForTransferScannerFromTransferForm(navigation)
@@ -306,6 +306,8 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   unableView: theme => ({
+    width: CAMERA_WIDTH,
+    height: CAMERA_WIDTH,
     flexDirection: 'column',
     backgroundColor: theme.colors.new_black7,
     alignItems: 'center',

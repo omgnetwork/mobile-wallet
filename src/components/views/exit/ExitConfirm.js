@@ -59,7 +59,9 @@ const ExitConfirm = ({
     ) {
       navigation.navigate('ExitPending', {
         token,
-        unconfirmedTx
+        unconfirmedTx,
+        estimatedFee,
+        estimatedFeeUsd
       })
     }
   })

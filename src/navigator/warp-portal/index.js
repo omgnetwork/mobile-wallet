@@ -80,7 +80,10 @@ const WarpPortalNavigator = createStackNavigator(
       navigationOptions: ({ navigation }) => ({
         title: 'Preview',
         headerRight: (
-          <OMGFontIcon name='plus' onPress={() => navigation.navigate('Deposit')} />
+          <OMGFontIcon
+            name='plus'
+            onPress={() => navigation.navigate('Deposit')}
+          />
         )
       })
     },
