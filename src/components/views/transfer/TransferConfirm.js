@@ -163,23 +163,27 @@ const TransferConfirm = ({
   }, [navigation, token])
 
   const renderEstimatedFeeElement = useCallback(() => {
-    return estimatedFee ? (
+    return (
       <View style={[styles.toSendContainer, styles.marginToSendItem]}>
         <OMGText style={styles.toSendTitle(theme)}>Fee</OMGText>
         <View style={styles.toSendContainerRight}>
-          <OMGText
-            style={styles.toSendAmount(theme)}
-            ellipsizeMode='tail'
-            numberOfLines={1}>
-            {estimatedFee} ETH
-          </OMGText>
-          <OMGText style={styles.toSendWorth(theme)}>
-            {estimatedFeeUsd} USD
-          </OMGText>
+          {estimatedFee ? (
+            <>
+              <OMGText
+                style={styles.toSendAmount(theme)}
+                ellipsizeMode='tail'
+                numberOfLines={1}>
+                {estimatedFee} ETH
+              </OMGText>
+              <OMGText style={styles.toSendWorth(theme)}>
+                {estimatedFeeUsd} USD
+              </OMGText>
+            </>
+          ) : (
+            <OMGEmpty loading={true} />
+          )}
         </View>
       </View>
-    ) : (
-      <OMGEmpty loading={true} />
     )
   }, [estimatedFee, estimatedFeeUsd, theme])
 

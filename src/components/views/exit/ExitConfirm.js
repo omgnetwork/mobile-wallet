@@ -109,13 +109,22 @@ const ExitConfirm = ({
   }, [estimatedFee, estimatedFeeUsd, theme])
 
   const renderMaxTotal = useCallback(() => {
-    ;<View style={styles.amountContainer(theme)}>
-      <OMGText style={styles.tokenBalance(theme)}>{tokenBalance}</OMGText>
-      <View style={styles.balanceContainer}>
-        <OMGText style={styles.tokenSymbol(theme)}>{token.tokenSymbol}</OMGText>
-        <OMGText style={styles.tokenWorth(theme)}>{tokenPrice} USD</OMGText>
+    return (
+      <View style={styles.maxTotalContainer(theme)}>
+        <OMGText style={styles.maxTotalTitle(theme)}>MAX TOTAL</OMGText>
+        <View style={styles.amountContainer}>
+          <OMGText style={styles.tokenBalance(theme)} weight='mono-semi-bold'>
+            {tokenBalance}
+          </OMGText>
+          <View style={styles.balanceContainer}>
+            <OMGText style={styles.tokenSymbol(theme)}>
+              {token.tokenSymbol}
+            </OMGText>
+            <OMGText style={styles.tokenWorth(theme)}>{tokenPrice} USD</OMGText>
+          </View>
+        </View>
       </View>
-    </View>
+    )
   }, [theme, token.tokenSymbol, tokenBalance, tokenPrice])
 
   const handleBackToEditPressed = useCallback(() => {
@@ -193,15 +202,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
-  balanceContainer: {},
-  amountContainer: theme => ({
-    marginTop: 16,
-    padding: 20,
+  maxTotalContainer: theme => ({
     backgroundColor: theme.colors.new_gray5,
+    flexDirection: 'column',
+    paddingHorizontal: 16,
+    paddingVertical: 20
+  }),
+  balanceContainer: {},
+  amountContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
-  }),
+    alignItems: 'center',
+    marginTop: 10
+  },
   transactionFeeContainer: {
     flexDirection: 'column',
     marginTop: 8,
@@ -222,15 +235,25 @@ const styles = StyleSheet.create({
     marginLeft: 3
   }),
   tokenBalance: theme => ({
-    fontSize: 18,
+    fontSize: 32,
+    letterSpacing: -3,
     color: theme.colors.white
   }),
   tokenSymbol: theme => ({
     textAlign: 'right',
     fontSize: 18,
+    letterSpacing: -0.64,
     color: theme.colors.white
   }),
   tokenWorth: theme => ({
+    color: theme.colors.white,
+    fontSize: 12,
+    letterSpacing: -0.48,
+    marginTop: 2
+  }),
+  maxTotalTitle: theme => ({
+    fontSize: 12,
+    textTransform: 'uppercase',
     color: theme.colors.white
   }),
   subtitle: theme => ({
