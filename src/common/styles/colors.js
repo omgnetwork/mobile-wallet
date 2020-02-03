@@ -22,6 +22,7 @@ export default {
   green2: '#0ebf9a',
   new_green1: '#0EBF9A',
   new_green2: '#38C08A',
+  new_green3: '#32D5B5',
   gray1: '#d8d8d8',
   gray2: '#abb2c2',
   gray3: '#04070D',

@@ -62,7 +62,7 @@ const OMGTransactionList = ({
         return 'Exit Details'
       case TransactionTypes.TYPE_SENT:
       case TransactionTypes.TYPE_RECEIVED:
-        return 'Transfer Details'
+        return 'Transaction Details'
       case TransactionTypes.TYPE_FAILED:
         return 'Failed Details'
     }

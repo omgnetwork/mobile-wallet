@@ -63,7 +63,7 @@ const OMGButton = ({
       onPress={onPress}
       onPressIn={() => Push.In(scale.current)}
       onPressOut={() => Push.Out(scale.current)}>
-      <Animated.View style={{ opacity: fade.current, flexDirection: 'row' }}>
+      <Animated.View style={styles.contentContainer(fade)}>
         {textLayout}
       </Animated.View>
     </TouchableOpacity>
@@ -90,6 +90,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 12,
     flexDirection: 'row'
+  }),
+  contentContainer: fade => ({
+    opacity: fade.current,
+    flexDirection: 'row',
+    alignItems: 'center'
   }),
   inactive: {
     opacity: 0.5
