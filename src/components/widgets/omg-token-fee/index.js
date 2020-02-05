@@ -5,6 +5,10 @@ import { withTheme } from 'react-native-paper'
 import { BlockchainRenderer } from 'common/blockchain'
 
 const OMGTokenFee = ({ token, theme, selected }) => {
+  const displayAmount = BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+    token.amount,
+    token.tokenDecimal
+  )
   return (
     <View style={styles.container(theme)}>
       <OMGTokenIcon token={token} size={24} style={styles.iconToken} />
@@ -13,13 +17,12 @@ const OMGTokenFee = ({ token, theme, selected }) => {
       </OMGText>
       <View style={styles.rightContainer}>
         <OMGText style={styles.textWhite16(theme)}>
-          {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
-            token.amount,
-            token.tokenDecimal
-          )}{' '}
-          {token.tokenSymbol}
+          {displayAmount} {token.tokenSymbol}
         </OMGText>
-        <OMGText style={styles.textGray12(theme)}>
+        <OMGText style={styles.textWhite12(theme)}>
+          {BlockchainRenderer.renderTokenPrice(displayAmount, token.price)} USD
+        </OMGText>
+        <OMGText style={[styles.textGray12(theme), styles.marginTop12]}>
           Balance{' '}
           {BlockchainRenderer.renderTokenBalance(
             token.balance,
@@ -71,9 +74,11 @@ const styles = StyleSheet.create({
   textGray12: theme => ({
     fontSize: 12,
     letterSpacing: -0.48,
-    color: theme.colors.new_gray7,
-    marginTop: 12
+    color: theme.colors.new_gray7
   }),
+  marginTop12: {
+    marginTop: 12
+  },
   select: {
     width: 14,
     marginLeft: 20

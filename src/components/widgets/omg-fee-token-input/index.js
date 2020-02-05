@@ -20,14 +20,11 @@ const OMGFeeTokenInput = ({ theme, feeToken, style, onPress, loading }) => {
         </OMGText>
       )
     } else {
-      const {
-        tokenSymbol,
-        tokenDecimal,
+      const { tokenSymbol, tokenDecimal, amount, price } = feeToken
+      const displayAmount = BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
         amount,
-        pegged_amount,
-        pegged_currency,
-        pegged_subunit_to_unit
-      } = feeToken
+        tokenDecimal
+      )
       return (
         <>
           <OMGTokenIcon token={feeToken} style={styles.logo} size={26} />
@@ -37,13 +34,13 @@ const OMGFeeTokenInput = ({ theme, feeToken, style, onPress, loading }) => {
           <View style={styles.rightContainer}>
             <View style={styles.rightVerticalContainer}>
               <OMGText style={styles.amount(theme)}>
-                {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
-                  amount,
-                  tokenDecimal
-                )}{' '}
-                {tokenSymbol}
+                {displayAmount} {tokenSymbol}
+              </OMGText>
+              <OMGText style={styles.usd(theme)}>
+                {BlockchainRenderer.renderTokenPrice(displayAmount, price)} USD
               </OMGText>
             </View>
+
             <OMGFontIcon
               name='chevron-right'
               size={14}
