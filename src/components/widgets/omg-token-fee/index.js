@@ -5,7 +5,6 @@ import { withTheme } from 'react-native-paper'
 import { BlockchainRenderer } from 'common/blockchain'
 
 const OMGTokenFee = ({ token, theme, selected }) => {
-  console.log('token', token)
   return (
     <View style={styles.container(theme)}>
       <OMGTokenIcon token={token} size={24} style={styles.iconToken} />
@@ -14,10 +13,17 @@ const OMGTokenFee = ({ token, theme, selected }) => {
       </OMGText>
       <View style={styles.rightContainer}>
         <OMGText style={styles.textWhite16(theme)}>
-          {token.amount} {token.tokenSymbol}
+          {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+            token.amount,
+            token.tokenDecimal
+          )}{' '}
+          {token.tokenSymbol}
         </OMGText>
         <OMGText style={styles.textWhite12(theme)}>
-          {token.pegged_amount / token.pegged_subunit_to_unit}{' '}
+          {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+            token.pegged_amount,
+            Math.log10(token.pegged_subunit_to_unit)
+          )}{' '}
           {token.pegged_currency}
         </OMGText>
         <OMGText style={styles.textGray12(theme)}>

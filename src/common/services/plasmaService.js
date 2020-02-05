@@ -80,7 +80,7 @@ export const getFees = async tokens => {
     const currencies = tokens.map(token => token.contractAddress)
     const fees = await Plasma.getFees(currencies).then(feeTokens => {
       return feeTokens.map(feeToken => {
-        const token = tokens.find(t => t.contractAddress === feeToken.currency)
+        const token = tokens.find(t => t.contractAddress === feeToken.token)
         return {
           ...feeToken,
           ...token
@@ -107,7 +107,7 @@ export const transfer = (
         token.contractAddress,
         Parser.parseUnits(token.balance, token.tokenDecimal).toString(10)
       )
-      const childchainFee = Plasma.createFee(feeToken.currency)
+      const childchainFee = Plasma.createFee(feeToken.contractAddress)
       const createdTransactions = await Plasma.createTx(
         fromBlockchainWallet.address,
         payments,

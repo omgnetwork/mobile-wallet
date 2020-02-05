@@ -44,7 +44,7 @@ const TransferSelectPlasmaFee = ({ theme, loading, navigation, fees }) => {
       <View style={styles.listContainer(theme)}>
         <FlatList
           data={displayFees}
-          keyExtractor={item => item.currency}
+          keyExtractor={item => item.contractAddress}
           keyboardShouldPersistTaps='always'
           ListEmptyComponent={
             <OMGEmpty text='Empty fees' loading={loading.show} />
@@ -54,14 +54,15 @@ const TransferSelectPlasmaFee = ({ theme, loading, navigation, fees }) => {
           }
           renderItem={({ item }) => (
             <OMGTokenFee
-              key={item.currency}
+              key={item.contractAddress}
               style={{ marginTop: 8 }}
               token={item}
               onPress={() => {
                 setSelectedFeeToken(item)
               }}
               selected={
-                selectedFeeToken && item.currency === selectedFeeToken.currency
+                selectedFeeToken &&
+                item.contractAddress === selectedFeeToken.contractAddress
               }
             />
           )}

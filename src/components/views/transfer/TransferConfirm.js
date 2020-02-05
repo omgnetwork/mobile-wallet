@@ -25,6 +25,7 @@ import {
   OMGEmpty
 } from 'components/widgets'
 import * as BlockchainLabel from './blockchainLabel'
+import { compose } from 'redux'
 
 const TransferConfirm = ({
   theme,
@@ -63,15 +64,26 @@ const TransferConfirm = ({
       })
       const gasPrice = fee && fee.amount
       const gasFee = BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
+      const plasmaFee = BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+        selectedFeeToken.amount,
+        selectedFeeToken.tokenDecimal
+      )
+      const plasmaFeeUsd = BlockchainRenderer.renderTokenPrice(
+        plasmaFee,
+        selectedFeeToken.price
+      )
       const usdPerEth = ethToken && ethToken.price
       const gasFeeUsd = BlockchainRenderer.renderTokenPrice(gasFee, usdPerEth)
       const totalPrice = BlockchainRenderer.renderTotalPrice(
         tokenPrice,
-        gasFeeUsd
+        selectedFeeToken ? plasmaFeeUsd : gasFeeUsd
       )
-      const totalAmount = BlockchainRenderer.renderTotalEthAmount(token, gasFee)
-      setEstimatedFee(gasFee)
-      setEstimatedFeeUsd(gasFeeUsd)
+      const totalAmount = BlockchainRenderer.renderTotalEthAmount(
+        token,
+        selectedFeeToken ? plasmaFee : gasFee
+      )
+      setEstimatedFee(selectedFeeToken ? plasmaFee : gasFee)
+      setEstimatedFeeUsd(selectedFeeToken ? plasmaFeeUsd : gasFeeUsd)
       setEstimatedTotalPrice(totalPrice)
       setEstimatedTotalAmount(totalAmount)
     }
@@ -80,6 +92,9 @@ const TransferConfirm = ({
     blockchainWallet,
     ethToken,
     fee,
+    selectedFeeToken,
+    selectedFeeToken.amount,
+    selectedFeeToken.tokenDecimal,
     toWallet.address,
     token,
     tokenPrice,
