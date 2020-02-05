@@ -43,15 +43,7 @@ const OMGFeeTokenInput = ({ theme, feeToken, style, onPress, loading }) => {
                 )}{' '}
                 {tokenSymbol}
               </OMGText>
-              <OMGText style={styles.usd(theme)}>
-                {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
-                  pegged_amount,
-                  Math.log10(pegged_subunit_to_unit)
-                )}{' '}
-                {pegged_currency}
-              </OMGText>
             </View>
-
             <OMGFontIcon
               name='chevron-right'
               size={14}

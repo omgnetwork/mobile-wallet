@@ -19,13 +19,6 @@ const OMGTokenFee = ({ token, theme, selected }) => {
           )}{' '}
           {token.tokenSymbol}
         </OMGText>
-        <OMGText style={styles.textWhite12(theme)}>
-          {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
-            token.pegged_amount,
-            Math.log10(token.pegged_subunit_to_unit)
-          )}{' '}
-          {token.pegged_currency}
-        </OMGText>
         <OMGText style={styles.textGray12(theme)}>
           Balance{' '}
           {BlockchainRenderer.renderTokenBalance(
