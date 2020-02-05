@@ -17,6 +17,7 @@ export const paramsForTransferFormToTransferConfirm = ({
   selectedToken,
   currentAmount,
   currentAddress,
+  selectedFeeToken,
   wallet,
   transferType,
   selectedFee
@@ -25,6 +26,7 @@ export const paramsForTransferFormToTransferConfirm = ({
     token: { ...selectedToken, balance: currentAmount },
     fromWallet: wallet,
     transferType,
+    selectedFeeToken,
     toWallet: {
       name:
         transferType === TransferHelper.TYPE_DEPOSIT
@@ -122,7 +124,8 @@ export const getParamsForTransferConfirmFromTransferForm = navigation => {
     fromWallet: navigation.getParam('fromWallet'),
     toWallet: navigation.getParam('toWallet'),
     fee: navigation.getParam('fee'),
-    transferType: navigation.getParam('transferType')
+    transferType: navigation.getParam('transferType'),
+    selectedFeeToken: navigation.getParam('selectedFeeToken')
   }
 }
 

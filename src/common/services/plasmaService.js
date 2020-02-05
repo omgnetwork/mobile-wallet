@@ -93,7 +93,13 @@ export const getFees = async tokens => {
   }
 }
 
-export const transfer = (fromBlockchainWallet, toAddress, token, metadata) => {
+export const transfer = (
+  fromBlockchainWallet,
+  toAddress,
+  token,
+  feeToken,
+  metadata
+) => {
   return new Promise(async (resolve, reject) => {
     try {
       const payments = Plasma.createPayment(
@@ -101,7 +107,7 @@ export const transfer = (fromBlockchainWallet, toAddress, token, metadata) => {
         token.contractAddress,
         Parser.parseUnits(token.balance, token.tokenDecimal).toString(10)
       )
-      const childchainFee = Plasma.createFee('1')
+      const childchainFee = Plasma.createFee(feeToken.currency)
       const createdTransactions = await Plasma.createTx(
         fromBlockchainWallet.address,
         payments,

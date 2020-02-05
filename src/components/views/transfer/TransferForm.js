@@ -131,6 +131,7 @@ const TransferForm = ({
   }, [navigation, selectedToken, transferType])
 
   const submit = useCallback(() => {
+    const feeToken = selectedFeeToken || fees[0]
     if (!Validator.isValidAddress(addressRef.current)) {
       setShowErrorAddress(true)
     } else if (!Validator.isValidAmount(amountRef.current)) {
@@ -141,6 +142,10 @@ const TransferForm = ({
     ) {
       setErrorAmountMessage('Not enough balance')
       setShowErrorAmount(true)
+    } else if (
+      transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN &&
+      !feeToken
+    ) {
     } else {
       setShowErrorAddress(false)
       setShowErrorAmount(false)
@@ -151,13 +156,22 @@ const TransferForm = ({
           selectedToken,
           currentAmount: amountRef.current,
           currentAddress: addressRef.current,
+          selectedFeeToken: selectedFeeToken || fees[0],
           wallet,
           transferType,
           selectedFee
         })
       )
     }
-  }, [navigation, selectedFee, selectedToken, transferType, wallet])
+  }, [
+    fees,
+    navigation,
+    selectedFee,
+    selectedFeeToken,
+    selectedToken,
+    transferType,
+    wallet
+  ])
 
   const navigateToTransferScanner = useCallback(() => {
     const { paramsForTransferFormToTransferScanner } = TransferNavigation

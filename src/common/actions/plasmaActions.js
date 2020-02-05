@@ -77,12 +77,13 @@ export const depositErc20 = (blockchainWallet, token) => {
   })
 }
 
-export const transfer = (blockchainWallet, toAddress, token) => {
+export const transfer = (blockchainWallet, toAddress, token, feeToken) => {
   const asyncAction = async () => {
     const { txhash } = await plasmaService.transfer(
       blockchainWallet,
       toAddress,
-      token
+      token,
+      feeToken
     )
 
     return {

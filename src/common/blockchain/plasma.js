@@ -40,12 +40,8 @@ export const createPayment = (address, tokenContractAddress, amount) => {
   ]
 }
 
-export const createFee = (
-  amount,
-  currency = PlasmaUtils.transaction.ETH_CURRENCY
-) => ({
-  currency: currency,
-  amount: Number(amount)
+export const createFee = (currency = PlasmaUtils.transaction.ETH_CURRENCY) => ({
+  currency: currency
 })
 
 export const depositEth = async (

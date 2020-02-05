@@ -40,7 +40,8 @@ const TransferConfirm = ({
     fromWallet,
     toWallet,
     fee,
-    transferType
+    transferType,
+    selectedFeeToken
   } = getParamsForTransferConfirmFromTransferForm(navigation)
   const [estimatedFee, setEstimatedFee] = useState(null)
   const [estimatedFeeUsd, setEstimatedFeeUsd] = useState(null)
@@ -215,7 +216,8 @@ const TransferConfirm = ({
       fee,
       blockchainWallet,
       toWallet.address,
-      transferType
+      transferType,
+      selectedFeeToken
     )
   }
 
@@ -468,11 +470,34 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchSendToken: (token, fee, blockchainWallet, toAddress, transferType) =>
-    dispatch(getAction(token, fee, blockchainWallet, toAddress, transferType))
+  dispatchSendToken: (
+    token,
+    fee,
+    blockchainWallet,
+    toAddress,
+    transferType,
+    selectedFeeToken
+  ) =>
+    dispatch(
+      getAction(
+        token,
+        fee,
+        blockchainWallet,
+        toAddress,
+        transferType,
+        selectedFeeToken
+      )
+    )
 })
 
-const getAction = (token, fee, blockchainWallet, toAddress, transferType) => {
+const getAction = (
+  token,
+  fee,
+  blockchainWallet,
+  toAddress,
+  transferType,
+  selectedFeeToken
+) => {
   const IS_DEPOSIT = transferType === TransferHelper.TYPE_DEPOSIT
   const ETH_TOKEN = token.contractAddress === ContractAddress.ETH_ADDRESS
   const TRANFER_CHILDCHAIN =
@@ -483,7 +508,12 @@ const getAction = (token, fee, blockchainWallet, toAddress, transferType) => {
   } else if (IS_DEPOSIT && !ETH_TOKEN) {
     return plasmaActions.depositErc20(blockchainWallet, token)
   } else if (TRANFER_CHILDCHAIN) {
-    return plasmaActions.transfer(blockchainWallet, toAddress, token)
+    return plasmaActions.transfer(
+      blockchainWallet,
+      toAddress,
+      token,
+      selectedFeeToken
+    )
   } else if (ETH_TOKEN) {
     return ethereumActions.sendEthToken(token, fee, blockchainWallet, toAddress)
   } else {
