@@ -215,19 +215,19 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
               transitionOverlay(isRootchain)
             }}>
             {isRootchain ? (
-              <ETHIcon fill={theme.colors.white} width={18} height={29.27} />
-            ) : (
               <OMGIcon
                 fill={theme.colors.white}
                 width={69.56}
                 height={24}
                 scale={1.1}
               />
+            ) : (
+              <ETHIcon fill={theme.colors.white} width={18} height={29.27} />
             )}
             <OMGText
               weight='semi-bold'
               style={styles.textChangeNetwork(theme)}>{`Switch to send on \n${
-              isRootchain ? 'Ethereum Rootchain' : 'Plasma Childchain'
+              isRootchain ? 'Plasma Childchain' : 'Ethereum Rootchain'
             }`}</OMGText>
           </TouchableOpacity>
         </>

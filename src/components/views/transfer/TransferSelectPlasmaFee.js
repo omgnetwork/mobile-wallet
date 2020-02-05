@@ -3,7 +3,6 @@ import { View, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { plasmaActions } from 'common/actions'
 import {
   OMGButton,
   OMGEmpty,
@@ -13,41 +12,18 @@ import {
 } from 'components/widgets'
 import { getParamsForTransferSelectTokenFeeFromTransferForm } from './transferNavigation'
 
-const TransferSelectPlasmaFee = ({
-  theme,
-  loading,
-  navigation,
-  fees,
-  dispatchGetFees
-}) => {
+const TransferSelectPlasmaFee = ({ theme, loading, navigation, fees }) => {
   const {
-    currentTokenFee,
+    currentFeeToken,
     tokens
   } = getParamsForTransferSelectTokenFeeFromTransferForm(navigation)
-  const [displayFees, setDisplayFees] = useState([])
-  const [selectedTokenFee, setSelectedTokenFee] = useState(null)
+  const [displayFees, setDisplayFees] = useState(fees)
+  const [selectedFeeToken, setSelectedFeeToken] = useState(currentFeeToken)
 
   useEffect(() => {
-    dispatchGetFees()
-  }, [dispatchGetFees])
-
-  useEffect(() => {
-    if (fees && fees.data && fees.data.length) {
-      const ownCurrencies = tokens.map(token => token.contractAddress)
-      const ownFeeTokens = fees.data
-        .filter(fee => ownCurrencies.indexOf(fee.currency) > -1)
-        .map(feeToken => {
-          const token = tokens.find(
-            t => t.contractAddress === feeToken.currency
-          )
-          return {
-            ...feeToken,
-            ...token
-          }
-        })
-      console.log(ownFeeTokens)
-      setDisplayFees(ownFeeTokens)
-      setSelectedTokenFee(ownFeeTokens[0])
+    if (fees && fees.length) {
+      setDisplayFees(fees)
+      setSelectedFeeToken(fees[0])
     }
   }, [fees, tokens])
 
@@ -82,10 +58,10 @@ const TransferSelectPlasmaFee = ({
               style={{ marginTop: 8 }}
               token={item}
               onPress={() => {
-                setSelectedTokenFee(item)
+                setSelectedFeeToken(item)
               }}
               selected={
-                selectedTokenFee && item.currency === selectedTokenFee.currency
+                selectedFeeToken && item.currency === selectedFeeToken.currency
               }
             />
           )}
@@ -94,8 +70,7 @@ const TransferSelectPlasmaFee = ({
           <OMGButton
             onPress={() => {
               navigation.navigate('TransferForm', {
-                // selectedFee,
-                // lastAmount: currentToken.balance
+                selectedFeeToken
               })
             }}>
             Apply
@@ -161,14 +136,9 @@ const mapStateToProps = (state, ownProps) => ({
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
   ),
-  fees: state.fees
+  fees: state.fees.data
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchGetFees: () => dispatch(plasmaActions.getFees())
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withNavigation(withTheme(TransferSelectPlasmaFee)))
+export default connect(mapStateToProps)(
+  withNavigation(withTheme(TransferSelectPlasmaFee))
+)

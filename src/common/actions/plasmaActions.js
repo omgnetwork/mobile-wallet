@@ -145,9 +145,9 @@ export const exit = (blockchainWallet, token) => {
   })
 }
 
-export const getFees = () => {
+export const getFees = tokens => {
   const asyncAction = async () => {
-    const { fees, updatedAt } = await plasmaService.getFees()
+    const { fees, updatedAt } = await plasmaService.getFees(tokens)
     return {
       data: fees,
       updatedAt

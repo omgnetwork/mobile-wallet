@@ -39,6 +39,9 @@ const initialState = {
     viewedPopups: [],
     currentPopup: null,
     anchoredComponents: {}
+  },
+  fees: {
+    data: []
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Image, View } from 'react-native'
 import { ContractAddress } from 'common/constants'
 import { OMGIdenticon } from 'components/widgets'
@@ -10,10 +10,15 @@ const OMGTokenIcon = ({ token, theme, style, size }) => {
   const contractAddressChecksum = Token.getContractAddressChecksum(
     token.contractAddress
   )
-  const isEth = token.contractAddress === ContractAddress.ETH_ADDRESS
-  const iconUri = isEth
-    ? `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png`
-    : `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${contractAddressChecksum}/logo.png`
+  const identiconUri = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${contractAddressChecksum}/logo.png`
+  const ethUri = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png`
+  const [iconUri, setIconUri] = useState(identiconUri)
+
+  useEffect(() => {
+    const isEth = token.contractAddress === ContractAddress.ETH_ADDRESS
+    const uri = isEth ? ethUri : identiconUri
+    setIconUri(uri)
+  }, [contractAddressChecksum, ethUri, identiconUri, token.contractAddress])
   return isError ? (
     <OMGIdenticon
       hash={contractAddressChecksum}

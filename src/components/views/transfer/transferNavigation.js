@@ -142,7 +142,7 @@ export const getParamsForTransferSelectFeeFromTransferForm = navigation => {
 
 export const getParamsForTransferSelectTokenFeeFromTransferForm = navigation => {
   return {
-    currentTokenFee: navigation.getParam('currentTokenFee'),
+    currentFeeToken: navigation.getParam('currentFeeToken'),
     tokens: navigation.getParam('tokens')
   }
 }

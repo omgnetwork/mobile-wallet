@@ -6,6 +6,7 @@ import * as TransferHelper from './transferHelper'
 import * as TransferNavigation from './transferNavigation'
 import feeOptions from './feeOptions'
 import { withTheme } from 'react-native-paper'
+import { plasmaActions } from 'common/actions'
 import {
   OMGBox,
   OMGButton,
@@ -24,7 +25,15 @@ import * as BlockchainLabel from './blockchainLabel'
 
 const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
 
-const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
+const TransferForm = ({
+  wallet,
+  theme,
+  navigation,
+  isFocused,
+  dispatchGetFees,
+  fees,
+  loading
+}) => {
   const selectedFee = navigation.getParam('selectedFee', feeOptions[0])
   const selectedAddress = navigation.getParam('address') || testAddress
   const defaultAmount = navigation.getParam('lastAmount')
@@ -37,10 +46,7 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
       wallet.childchainAssets
     )
   )
-  const selectedFeeToken = navigation.getParam(
-    'selectedFeeToken',
-    selectedToken
-  )
+  const selectedFeeToken = navigation.getParam('selectedFeeToken')
   const hasAddressInput = transferType !== TransferHelper.TYPE_DEPOSIT
   const hasEmptyAddressInput = !selectedAddress
   const shouldFocusAddressInput = hasAddressInput && hasEmptyAddressInput
@@ -51,6 +57,7 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
   const keyboardAwareScrollRef = useRef(null)
   const [showErrorAddress, setShowErrorAddress] = useState(false)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
+  const [loadingFeeToken, setLoadingFeeToken] = useState(fees.length === 0)
   const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
   const blockchainLabelActionText = BlockchainLabel.getBlockchainTextActionLabel(
     'TransferForm',
@@ -76,6 +83,18 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
     transferType
   ])
 
+  useEffect(() => {
+    if (fees.length === 0) {
+      dispatchGetFees(wallet.childchainAssets)
+    }
+  }, [dispatchGetFees, fees.length, wallet.childchainAssets])
+
+  useEffect(() => {
+    if (loading.action === 'CHILDCHAIN_FEES') {
+      setLoadingFeeToken(loading.show)
+    }
+  }, [loading.action, loading.show])
+
   const focusOn = useCallback(inputRef => {
     InteractionManager.runAfterInteractions(() => {
       inputRef.current.focus()
@@ -86,11 +105,11 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
     inputRef.current.blur()
   }, [])
 
-  const navigateToSelectTokenFee = useCallback(() => {
+  const navigateToSelectPlasmaFee = useCallback(() => {
     navigation.navigate('TransferSelectPlasmaFee', {
-      tokens: wallet.childchainAssets
+      currentFeeToken: selectedFeeToken || fees[0]
     })
-  }, [navigation, wallet.childchainAssets])
+  }, [fees, navigation, selectedFeeToken])
 
   const moveFocusFromAddressToAmount = useCallback(() => {
     blurOn(addressFocusRef)
@@ -238,9 +257,10 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
               />
             ) : (
               <OMGFeeTokenInput
-                onPress={navigateToSelectTokenFee}
+                onPress={navigateToSelectPlasmaFee}
                 style={styles.feeInput}
-                feeToken={selectedFeeToken}
+                feeToken={selectedFeeToken || fees[0]}
+                loading={loadingFeeToken}
               />
             )}
           </OMGBox>
@@ -317,10 +337,16 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, ownProps) => ({
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
-  )
+  ),
+  loading: state.loading,
+  fees: state.fees.data
+})
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatchGetFees: tokens => dispatch(plasmaActions.getFees(tokens))
 })
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withNavigationFocus(withTheme(TransferForm)))

@@ -1,35 +1,59 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { OMGTokenIcon, OMGFontIcon, OMGText } from 'components/widgets'
+import {
+  OMGTokenIcon,
+  OMGFontIcon,
+  OMGText,
+  OMGEmpty
+} from 'components/widgets'
 import { BlockchainRenderer } from 'common/blockchain'
 
-const OMGFeeTokenInput = ({ theme, feeToken, style, onPress }) => {
+const OMGFeeTokenInput = ({ theme, feeToken, style, onPress, loading }) => {
+  const renderContent = useCallback(() => {
+    if (loading) {
+      return <OMGEmpty loading={true} />
+    } else if (!feeToken) {
+      return (
+        <OMGText style={styles.errorText(theme)}>
+          Not found token to pay fee
+        </OMGText>
+      )
+    } else {
+      return (
+        <>
+          <OMGTokenIcon token={feeToken} style={styles.logo} size={26} />
+          <OMGText style={styles.symbol(theme)} weight='mono-regular'>
+            {feeToken.tokenSymbol}
+          </OMGText>
+          <View style={styles.rightContainer}>
+            <View style={styles.rightVerticalContainer}>
+              <OMGText style={styles.amount(theme)}>
+                {BlockchainRenderer.renderTokenBalance(feeToken.amount, 4)}{' '}
+                {feeToken.tokenSymbol}
+              </OMGText>
+              <OMGText style={styles.usd(theme)}>
+                {feeToken.pegged_amount / feeToken.pegged_subunit_to_unit}{' '}
+                {feeToken.pegged_currency}
+              </OMGText>
+            </View>
+
+            <OMGFontIcon
+              name='chevron-right'
+              size={14}
+              color={theme.colors.white}
+            />
+          </View>
+        </>
+      )
+    }
+  }, [feeToken, loading, theme])
+
   return (
     <TouchableOpacity
       onPress={onPress}
       style={{ ...styles.container(theme), ...style }}>
-      <OMGTokenIcon token={feeToken} style={styles.logo} size={26} />
-      <OMGText style={styles.symbol(theme)} weight='mono-regular'>
-        {feeToken.tokenSymbol}
-      </OMGText>
-      <View style={styles.rightContainer}>
-        <View style={styles.rightVerticalContainer}>
-          <OMGText style={styles.amount(theme)}>
-            {BlockchainRenderer.renderTokenBalance(feeToken.balance, 4)}{' '}
-            {feeToken.tokenSymbol}
-          </OMGText>
-          <OMGText style={styles.usd(theme)}>
-            {feeToken.usd || '0.04 USD'}
-          </OMGText>
-        </View>
-
-        <OMGFontIcon
-          name='chevron-right'
-          size={14}
-          color={theme.colors.white}
-        />
-      </View>
+      {renderContent()}
     </TouchableOpacity>
   )
 }
@@ -75,7 +99,10 @@ const styles = StyleSheet.create({
     marginRight: 12,
     flexDirection: 'column',
     alignItems: 'flex-end'
-  }
+  },
+  errorText: theme => ({
+    color: theme.colors.red2
+  })
 })
 
 export default withTheme(OMGFeeTokenInput)

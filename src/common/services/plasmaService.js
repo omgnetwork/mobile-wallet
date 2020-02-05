@@ -75,9 +75,18 @@ export const getTx = hash => {
   })
 }
 
-export const getFees = async () => {
+export const getFees = async tokens => {
   try {
-    const fees = await Plasma.getFees()
+    const currencies = tokens.map(token => token.contractAddress)
+    const fees = await Plasma.getFees(currencies).then(feeTokens => {
+      return feeTokens.map(feeToken => {
+        const token = tokens.find(t => t.contractAddress === feeToken.currency)
+        return {
+          ...feeToken,
+          ...token
+        }
+      })
+    })
     return { fees, updatedAt: fees[0].updated_at }
   } catch (err) {
     throw err
@@ -99,6 +108,8 @@ export const transfer = (fromBlockchainWallet, toAddress, token, metadata) => {
         childchainFee,
         metadata
       )
+
+      console.log(JSON.stringify(createdTransactions))
 
       const transaction = createdTransactions.transactions[0]
       const typedData = Plasma.getTypedData(transaction)
