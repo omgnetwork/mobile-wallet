@@ -107,8 +107,7 @@ const styles = StyleSheet.create({
   }),
   buttonContainer: {
     justifyContent: 'flex-end',
-    marginVertical: 16,
-    paddingHorizontal: 16
+    marginVertical: 16
   },
   gasRecommendContainer: theme => ({
     marginTop: 16,

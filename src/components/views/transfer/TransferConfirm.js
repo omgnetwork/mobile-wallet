@@ -25,7 +25,6 @@ import {
   OMGEmpty
 } from 'components/widgets'
 import * as BlockchainLabel from './blockchainLabel'
-import { compose } from 'redux'
 
 const TransferConfirm = ({
   theme,
