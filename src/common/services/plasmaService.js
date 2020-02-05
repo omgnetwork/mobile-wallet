@@ -75,6 +75,15 @@ export const getTx = hash => {
   })
 }
 
+export const getFees = async () => {
+  try {
+    const fees = await Plasma.getFees()
+    return { fees, updatedAt: fees[0].updated_at }
+  } catch (err) {
+    throw err
+  }
+}
+
 export const transfer = (fromBlockchainWallet, toAddress, token, metadata) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -90,6 +99,7 @@ export const transfer = (fromBlockchainWallet, toAddress, token, metadata) => {
         childchainFee,
         metadata
       )
+
       const transaction = createdTransactions.transactions[0]
       const typedData = Plasma.getTypedData(transaction)
       const privateKeys = new Array(transaction.inputs.length).fill(

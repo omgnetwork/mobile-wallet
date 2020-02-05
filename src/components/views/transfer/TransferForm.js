@@ -16,7 +16,8 @@ import {
   OMGWalletAddress,
   OMGAmountInput,
   OMGFeeInput,
-  OMGBlockchainLabel
+  OMGBlockchainLabel,
+  OMGFeeTokenInput
 } from 'components/widgets'
 import { Validator } from 'common/utils'
 import * as BlockchainLabel from './blockchainLabel'
@@ -35,6 +36,10 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
       wallet.rootchainAssets,
       wallet.childchainAssets
     )
+  )
+  const selectedFeeToken = navigation.getParam(
+    'selectedFeeToken',
+    selectedToken
   )
   const hasAddressInput = transferType !== TransferHelper.TYPE_DEPOSIT
   const hasEmptyAddressInput = !selectedAddress
@@ -80,6 +85,12 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
   const blurOn = useCallback(inputRef => {
     inputRef.current.blur()
   }, [])
+
+  const navigateToSelectTokenFee = useCallback(() => {
+    navigation.navigate('TransferSelectPlasmaFee', {
+      tokens: wallet.childchainAssets
+    })
+  }, [navigation, wallet.childchainAssets])
 
   const moveFocusFromAddressToAmount = useCallback(() => {
     blurOn(addressFocusRef)
@@ -217,17 +228,21 @@ const TransferForm = ({ wallet, theme, navigation, isFocused }) => {
               style={styles.amountInput}
             />
           </OMGBox>
-          <OMGBox
-            style={styles.feeContainer(
-              theme,
-              transferType === TransferHelper.TYPE_TRANSFER_ROOTCHAIN
-            )}>
+          <OMGBox style={styles.feeContainer(theme, transferType)}>
             <OMGText style={styles.title(theme)}>Transaction Fee</OMGText>
-            <OMGFeeInput
-              fee={selectedFee}
-              style={styles.feeInput}
-              onPress={navigationToTransferSelectFee}
-            />
+            {transferType === TransferHelper.TYPE_TRANSFER_ROOTCHAIN ? (
+              <OMGFeeInput
+                fee={selectedFee}
+                style={styles.feeInput}
+                onPress={navigationToTransferSelectFee}
+              />
+            ) : (
+              <OMGFeeTokenInput
+                onPress={navigateToSelectTokenFee}
+                style={styles.feeInput}
+                feeToken={selectedFeeToken}
+              />
+            )}
           </OMGBox>
         </View>
         <View style={styles.buttonContainer}>
@@ -267,8 +282,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: theme.colors.new_black7
   }),
-  feeContainer: (theme, isRootchain) => ({
-    display: isRootchain ? 'flex' : 'none',
+  feeContainer: (theme, transferType) => ({
+    display: TransferHelper.TYPE_DEPOSIT === transferType ? 'none' : 'flex',
     flexDirection: 'column',
     backgroundColor: theme.colors.new_black7
   }),

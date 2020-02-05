@@ -35,6 +35,7 @@ import {
   TransferReceive,
   TransferScanner,
   TransferSelectBalance,
+  TransferSelectPlasmaFee,
   TransferSelectFee
 } from './transfer'
 import Wallets from './wallets'
@@ -76,6 +77,7 @@ export {
   TransferScanner,
   TransferSelectBalance,
   TransferSelectFee,
+  TransferSelectPlasmaFee,
   TransactionHistory,
   TransactionHistoryFilter,
   TransactionDetail,

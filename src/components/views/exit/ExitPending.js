@@ -93,21 +93,6 @@ const ExitPending = ({ theme, navigation, wallet }) => {
             transferType={TransferHelper.TYPE_EXIT}
             style={styles.blockchainLabel}
           />
-          {/* <View style={styles.contentContainer}>
-          <OMGText weight='mono-semi-bold' style={styles.amountText}>
-            Amount
-          </OMGText>
-          <View style={styles.amountContainer(theme)}>
-            <OMGText style={styles.tokenBalance(theme)}>
-              {tokenBalance} {token.tokenSymbol}
-            </OMGText>
-            <OMGText style={styles.tokenPrice(theme)}>{tokenPrice} USD</OMGText>
-          </View>
-          <OMGExitComplete
-            style={styles.exitCompleteLabel}
-            createdAt={unconfirmedTx.createdAt}
-          />
-        </View> */}
           <View style={styles.contentContainer(theme)}>
             <View style={styles.addressContainer}>
               <OMGText style={[styles.subtitle(theme), styles.marginSubtitle]}>

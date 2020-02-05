@@ -145,6 +145,21 @@ export const exit = (blockchainWallet, token) => {
   })
 }
 
+export const getFees = () => {
+  const asyncAction = async () => {
+    const { fees, updatedAt } = await plasmaService.getFees()
+    return {
+      data: fees,
+      updatedAt
+    }
+  }
+
+  return createAsyncAction({
+    type: 'CHILDCHAIN/FEES',
+    operation: asyncAction
+  })
+}
+
 // We're not using this right now but let's keep it because it still has potential to be used in the future.
 // export const processExits = (blockchainWallet, transaction) => {
 //   const asyncAction = async () => {

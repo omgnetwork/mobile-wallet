@@ -330,3 +330,35 @@ export const getTxs = (address, options) => {
 export const getTx = hash => {
   return Plasma.ChildChain.getTransaction(hash)
 }
+
+export const getFees = () => {
+  const response = {
+    data: {
+      '1': [
+        {
+          amount: 0,
+          currency: '0x0000000000000000000000000000000000000000',
+          pegged_amount: 4,
+          pegged_currency: 'USD',
+          pegged_subunit_to_unit: 100,
+          subunit_to_unit: 1e18,
+          updated_at: '2020-01-01T10:10:00Z'
+        },
+        {
+          amount: 0,
+          currency: '0xdc8b8b12e42999981476b7c9ee39ef9fcef71dc3',
+          pegged_amount: 4,
+          pegged_currency: 'USD',
+          pegged_subunit_to_unit: 100,
+          subunit_to_unit: 1e18,
+          updated_at: '2020-01-01T10:10:00Z'
+        }
+      ]
+    },
+    service_name: 'watcher_info',
+    success: true,
+    version: '0.3.0+1a24dc4'
+  }
+
+  return Promise.resolve(response.data['1'])
+}

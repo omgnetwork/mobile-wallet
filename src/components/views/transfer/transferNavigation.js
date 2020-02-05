@@ -140,6 +140,13 @@ export const getParamsForTransferSelectFeeFromTransferForm = navigation => {
   }
 }
 
+export const getParamsForTransferSelectTokenFeeFromTransferForm = navigation => {
+  return {
+    currentTokenFee: navigation.getParam('currentTokenFee'),
+    tokens: navigation.getParam('tokens')
+  }
+}
+
 export const getParamsForTransferSelectBalanceFromTransferForm = (
   navigation,
   { rootchainAssets, childchainAssets }

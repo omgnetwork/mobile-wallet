@@ -56,7 +56,7 @@ const OMGAddressInput = ({
           <TouchableOpacity
             onPress={onPressScanQR}
             style={styles.scanQRIcon(theme)}>
-            <ScanQRIcon size={24} fill={theme.colors.primary} />
+            <ScanQRIcon fill={theme.colors.new_blue1} />
           </TouchableOpacity>
         </View>
       </View>
