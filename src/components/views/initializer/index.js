@@ -2,7 +2,14 @@ import { settingActions } from 'common/actions'
 import { store } from 'common/stores'
 import { HeadlessProcessExit } from 'components/headless'
 import React, { useRef, useCallback, useEffect } from 'react'
-import { AppRegistry, StyleSheet, View, Animated } from 'react-native'
+import {
+  AppRegistry,
+  StyleSheet,
+  View,
+  Animated,
+  Platform,
+  InteractionManager
+} from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
@@ -22,38 +29,42 @@ const Initializer = ({
   wallets
 }) => {
   const move = useRef(new Animated.Value(0))
-  const moveAnim = Animated.sequence([
-    Move.To(move.current, 123),
-    Move.To(move.current, 0)
-  ])
+  const loadingAnim = Animated.loop(
+    Animated.sequence([Move.To(move.current, 123), Move.To(move.current, 0)])
+  )
 
   useEffect(() => {
-    // if (wallets.length === 0) {
-    //   navigation.navigate('Welcome')
-    // } else if (wallet && provider && blockchainWallet) {
-    //   navigation.navigate('MainContent')
-    //   if (Platform.OS === 'android') {
-    //     registerHeadlessService()
-    //   }
-    // } else if (shouldGetBlockchainWallet(wallet, blockchainWallet, provider)) {
-    //   dispatchSetBlockchainWallet(wallet, provider)
-    // } else if (shouldSetPrimaryWallet(wallet, wallets)) {
-    //   dispatchSetPrimaryWallet(wallets[0], wallets)
-    // } else {
-    // moveAnim.start()
-    Animated.loop(moveAnim).start()
-    // }
+    if (wallets.length === 0) {
+      navigation.navigate('Welcome')
+    } else if (wallet && provider && blockchainWallet) {
+      navigation.navigate('MainContent')
+      if (Platform.OS === 'android') {
+        registerHeadlessService()
+      }
+    } else if (shouldGetBlockchainWallet(wallet, blockchainWallet, provider)) {
+      setTimeout(() => {
+        InteractionManager.runAfterInteractions(() => {
+          dispatchSetBlockchainWallet(wallet, provider)
+        })
+      }, 1000 + Math.random() * 1000)
+    } else if (shouldSetPrimaryWallet(wallet, wallets)) {
+      dispatchSetPrimaryWallet(wallets[0], wallets)
+    }
   }, [
     blockchainWallet,
     dispatchSetBlockchainWallet,
     dispatchSetPrimaryWallet,
-    moveAnim,
     navigation,
     provider,
     registerHeadlessService,
     wallet,
     wallets
   ])
+
+  useEffect(() => {
+    loadingAnim.start()
+    return loadingAnim.stop
+  }, [loadingAnim])
 
   const registerHeadlessService = useCallback(() => {
     AppRegistry.registerHeadlessTask('HeadlessProcessExit', () =>
