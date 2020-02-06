@@ -17,7 +17,7 @@ const OMGAmountInput = ({
   return (
     <Fragment>
       <View style={{ ...styles.container(theme), ...style }}>
-        <OMGTokenIcon style={styles.logo} token={token} size={26} />
+        <OMGTokenIcon style={styles.logo} token={token} size={18} />
         <OMGTextInput
           style={styles.text(theme)}
           placeholder='00.00'

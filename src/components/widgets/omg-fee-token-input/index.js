@@ -16,7 +16,7 @@ const OMGFeeTokenInput = ({ theme, feeToken, style, onPress, loading }) => {
     } else if (!feeToken) {
       return (
         <OMGText style={styles.errorText(theme)}>
-          Not found token to pay fee
+          Not found token to pay fee e.g. ETH
         </OMGText>
       )
     } else {

@@ -9,7 +9,7 @@ const OMGTokenInput = ({ theme, token, style, onPress }) => {
     <TouchableOpacity
       onPress={onPress}
       style={{ ...styles.container(theme), ...style }}>
-      <OMGTokenIcon token={token} style={styles.logo} size={26} />
+      <OMGTokenIcon token={token} style={styles.logo} size={18} />
       <OMGText style={styles.text(theme)} weight='mono-regular'>
         {token.tokenSymbol}
       </OMGText>
