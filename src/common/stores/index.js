@@ -40,6 +40,12 @@ const initialState = {
     currentPopup: null,
     anchoredComponents: {}
   },
+  transaction: {
+    unconfirmedTxs: [],
+    transactions: [],
+    startedExitTxs: [],
+    feedbackCompleteTx: null
+  },
   fees: {
     data: []
   }

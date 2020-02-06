@@ -87,7 +87,7 @@ export const getFees = async tokens => {
         }
       })
     })
-    return { fees, updatedAt: fees[0].updated_at }
+    return { fees, updatedAt: fees[0] ? fees[0].updated_at : null }
   } catch (err) {
     throw err
   }
@@ -114,8 +114,6 @@ export const transfer = (
         childchainFee,
         metadata
       )
-
-      console.log(JSON.stringify(createdTransactions))
 
       const transaction = createdTransactions.transactions[0]
       const typedData = Plasma.getTypedData(transaction)
