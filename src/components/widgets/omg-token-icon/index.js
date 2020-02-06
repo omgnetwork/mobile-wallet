@@ -38,7 +38,7 @@ const OMGTokenIcon = ({ token, theme, style, size }) => {
   return isError ? (
     <OMGIdenticon
       hash={contractAddressChecksum}
-      size={size || 40}
+      size={(style && style.width) || 40}
       style={[styles.iconFallback(theme), style]}
     />
   ) : (
