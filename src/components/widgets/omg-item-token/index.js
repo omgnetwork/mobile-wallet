@@ -9,7 +9,7 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
   const shadowAnim = useRef(new Animated.Value(0))
   const shadowOpacity = useRef(new Animated.Value(0))
   const balanceOpacity = useRef(new Animated.Value(1.0))
-  const balance = BlockchainRenderer.renderTokenBalance(token.balance, 4)
+  const balance = BlockchainRenderer.renderTokenBalance(token.balance, 6)
   const price = BlockchainRenderer.renderTokenPrice(token.balance, token.price)
   const [currentBalance, setCurrentBalance] = useState(balance)
   const [currentPrice, setCurrentPrice] = useState(price)
