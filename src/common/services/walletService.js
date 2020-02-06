@@ -4,8 +4,8 @@ import { Ethereum } from 'common/blockchain'
 export const get = async (address, provider) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const mnemonic = await walletStorage.getMnemonic(address)
-      const wallet = Ethereum.importWalletMnemonic(mnemonic)
+      const privateKey = await walletStorage.getPrivateKey(address)
+      const wallet = Ethereum.importWalletPrivateKey(privateKey)
       const connectedProviderWallet = wallet.connect(provider)
       resolve(connectedProviderWallet)
     } catch (err) {
@@ -41,7 +41,15 @@ export const importByMnemonic = (wallets, mnemonic, provider, name) => {
         )
       }
 
-      await walletStorage.setMnemonic({ address, mnemonic })
+      await walletStorage.setPrivateKey({
+        address,
+        privateKey: wallet.privateKey
+      })
+
+      await walletStorage.setMnemonic({
+        address,
+        mnemonic
+      })
 
       const newWallet = { address, name, balance }
 
