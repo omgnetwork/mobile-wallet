@@ -80,7 +80,7 @@ export const getFees = async tokens => {
     const currencies = tokens.map(token => token.contractAddress)
     const fees = await Plasma.getFees(currencies).then(feeTokens => {
       return feeTokens.map(feeToken => {
-        const token = tokens.find(t => t.contractAddress === feeToken.token)
+        const token = tokens.find(t => t.contractAddress === feeToken.currency)
         return {
           ...feeToken,
           ...token
