@@ -35,8 +35,6 @@ const OMGTokenIcon = ({ token, theme, style, size }) => {
     return <OMGEmpty loading={true} />
   }
 
-  console.log(token.tokenSymbol, isError, iconUri)
-
   return isError ? (
     <OMGIdenticon
       hash={contractAddressChecksum}
