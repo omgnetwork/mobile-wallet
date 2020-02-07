@@ -13,7 +13,7 @@ import {
   OMGDismissKeyboard
 } from 'components/widgets'
 
-const CreateWalletForm = ({ wallets, navigation }) => {
+const CreateWalletForm = ({ wallets, navigation, theme }) => {
   const walletNameRef = useRef()
   const [showErrorName, setShowErrorName] = useState(false)
   const [errorNameMessage, setErrorNameMessage] = useState(
@@ -40,19 +40,21 @@ const CreateWalletForm = ({ wallets, navigation }) => {
   }
 
   return (
-    <OMGDismissKeyboard style={styles.container}>
+    <OMGDismissKeyboard style={styles.container(theme)}>
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior='padding'
         keyboardVerticalOffset={Header.HEIGHT + statusBarHeight}>
-        <OMGText weight='mono-semi-bold'>Name</OMGText>
+        <OMGText weight='mono-semi-bold' style={styles.textTitle(theme)}>
+          Name
+        </OMGText>
         <OMGTextInputBox
-          placeholder='Name'
+          style={styles.textBox(theme)}
+          placeholder='Your wallet name'
           inputRef={walletNameRef}
           showError={showErrorName}
           errorMessage={errorNameMessage}
           maxLength={20}
-          style={styles.nameContainer}
         />
 
         <View style={styles.button}>
@@ -64,21 +66,30 @@ const CreateWalletForm = ({ wallets, navigation }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
+  container: theme => ({
+    flex: 1,
+    paddingBottom: 16,
+    backgroundColor: theme.colors.new_black7
+  }),
   keyboardAvoidingView: {
     padding: 16,
     flex: 1
   },
   nameContainer: {
-    marginTop: 16
+    marginTop: 12
   },
   button: {
     flex: 1,
     justifyContent: 'flex-end',
     marginBottom: 8
-  }
+  },
+  textTitle: theme => ({
+    color: theme.colors.white
+  }),
+  textBox: theme => ({
+    marginTop: 16,
+    backgroundColor: theme.colors.new_black7
+  })
 })
 
 const mapStateToProps = (state, ownProps) => ({

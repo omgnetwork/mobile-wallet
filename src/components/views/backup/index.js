@@ -11,7 +11,7 @@ const Backup = ({ theme, navigation }) => {
     <SafeAreaView style={styles.container}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.white}
+        backgroundColor={theme.colors.gray4}
       />
       <View style={styles.contentContainer(theme)}>
         <View style={styles.header}>
