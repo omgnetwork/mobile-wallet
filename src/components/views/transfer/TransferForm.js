@@ -97,12 +97,12 @@ const TransferForm = ({
 
   const focusOn = useCallback(inputRef => {
     InteractionManager.runAfterInteractions(() => {
-      inputRef.current.focus()
+      inputRef?.current?.focus()
     })
   }, [])
 
   const blurOn = useCallback(inputRef => {
-    inputRef.current.blur()
+    inputRef?.current?.blur()
   }, [])
 
   const navigateToSelectPlasmaFee = useCallback(() => {

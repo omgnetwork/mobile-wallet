@@ -78,9 +78,7 @@ const OMGTransactionList = ({
           data={transactions}
           keyExtractor={(tx, index) => tx.hash}
           contentContainerStyle={
-            transactions && transactions.length
-              ? styles.content
-              : styles.emptyContent(theme)
+            transactions?.length ? styles.content : styles.emptyContent(theme)
           }
           ListEmptyComponent={<OMGEmpty {...getEmptyStatePayload()} />}
           renderItem={({ item }) => (

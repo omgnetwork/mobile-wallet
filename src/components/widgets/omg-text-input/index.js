@@ -46,11 +46,11 @@ const OMGTextInput = ({
       underlineColorAndroid={hideUnderline ? 'transparent' : underlineTextcolor}
       onBlur={() => {
         setUnderlineTextcolor(theme.colors.gray4)
-        onBlur && onBlur()
+        onBlur?.()
       }}
       onFocus={() => {
         setUnderlineTextcolor(theme.colors.gray5)
-        onFocus && onFocus()
+        onFocus?.()
       }}
       importantForAutofill='no'
       maxLength={maxLength}

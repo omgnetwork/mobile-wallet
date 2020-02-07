@@ -28,10 +28,8 @@ const OMGQRScanner = props => {
     theme
   } = props
 
-  const hasRootchainAssets =
-    wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
-  const hasChildchainAssets =
-    wallet && wallet.childchainAssets && wallet.childchainAssets.length > 0
+  const hasRootchainAssets = wallet?.rootchainAssets?.length > 0
+  const hasChildchainAssets = wallet?.childchainAssets?.length > 0
   const shouldRenderEmptyView =
     (rootchain && !hasRootchainAssets) || (!rootchain && !hasChildchainAssets)
   const renderQRMarker = (
@@ -72,11 +70,11 @@ const OMGQRScanner = props => {
   }
 
   const disableScanner = useCallback(() => {
-    cameraRef.current && cameraRef.current.disable()
+    cameraRef.current?.disable()
   }, [cameraRef])
 
   const enableScanner = useCallback(() => {
-    cameraRef.current && cameraRef.current.enable()
+    cameraRef.current?.enable()
   }, [cameraRef])
 
   return (
