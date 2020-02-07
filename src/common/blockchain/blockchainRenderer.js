@@ -11,7 +11,12 @@ export const renderGasFee = (gasUsed, gasPriceWei, flatFee = '0') => {
 }
 
 // Output in USD
-export const renderGasFeeUsd = (gasUsed, gasPriceWei, usdEth) => {
+export const renderGasFeeUsd = (
+  gasUsed,
+  gasPriceWei,
+  usdEth,
+  flatFee = '0'
+) => {
   const bigNumberGasPriceWei = BigNumber.create(gasPriceWei)
   const bigNumberGasUsed = BigNumber.create(gasUsed)
   const bigNumberGasFee = bigNumberGasPriceWei.mul(bigNumberGasUsed)

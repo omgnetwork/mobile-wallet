@@ -1,20 +1,34 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { OMGText } from 'components/widgets'
 import { Formatter } from 'common/utils'
 import { BlockchainRenderer, Plasma } from 'common/blockchain'
+import { connect } from 'react-redux'
 import { priceService } from 'common/services'
 
-const TransactionDetailInfo = ({ theme, tx, style }) => {
+const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
   const [errorReason, setErrorReason] = useState(null)
-  const [feePrice, setFeePrice] = useState(false)
+  const [feePrice, setFeePrice] = useState(null)
 
+  const tokens = primaryWallet.childchainAssets
   const textExactDatetime = Formatter.formatTimeStamp(
     tx.timestamp,
     'MMMM-DD-YYYY, HH:mm:ss A Z'
   )
+  const feeAmount = BlockchainRenderer.renderGasFee(
+    tx.gasUsed,
+    tx.gasPrice,
+    tx.flatFee
+  )
   const textFromNowDatetime = Formatter.formatTimeStampFromNow(tx.timestamp)
   const isFailed = tx.type === 'failed'
+
+  const getFeeTokenSymbol = useCallback(() => {
+    return (
+      tokens.find(token => token.contractAddress === tx.gasCurrency)
+        ?.tokenSymbol ?? 'ETH'
+    )
+  }, [tokens, tx.gasCurrency])
 
   const renderLabel = () => {
     if (isFailed) {
@@ -35,9 +49,21 @@ const TransactionDetailInfo = ({ theme, tx, style }) => {
   }
 
   useEffect(() => {
+    async function calculateFeePrice() {
+      const price = await priceService.fetchPriceUsd(tx.gasCurrency)
+      const feeUsd = BlockchainRenderer.renderGasFeeUsd(
+        tx.gasUsed,
+        tx.gasPrice,
+        price
+      )
+      setFeePrice(feeUsd)
+    }
+    calculateFeePrice()
+  })
+
+  useEffect(() => {
     async function getErrorReason() {
       const reason = await Plasma.getErrorReason(tx.hash)
-      console.log(reason)
       setErrorReason(reason)
     }
     if (isFailed) {
@@ -51,14 +77,11 @@ const TransactionDetailInfo = ({ theme, tx, style }) => {
         <OMGText style={styles.infoItemLabel(theme, isFailed)}>Fee</OMGText>
         <View style={styles.infoItemContent}>
           <OMGText style={styles.infoItemValue(theme)}>
-            {BlockchainRenderer.renderGasFee(
-              tx.gasUsed,
-              tx.gasPrice,
-              tx.flatFee
-            )}{' '}
-            ETH
+            {feeAmount} {getFeeTokenSymbol()}
           </OMGText>
-          <OMGText style={styles.infoItemValueLighter(theme)}>0.12 USD</OMGText>
+          <OMGText style={styles.infoItemValueLighter(theme)}>
+            {feePrice} USD
+          </OMGText>
         </View>
       </View>
     )
@@ -178,4 +201,13 @@ const styles = StyleSheet.create({
   })
 })
 
-export default TransactionDetailInfo
+const mapStateToProps = (state, ownProps) => ({
+  primaryWallet: state.wallets.find(
+    wallet => wallet.address === state.setting.primaryWalletAddress
+  )
+})
+
+export default connect(
+  mapStateToProps,
+  null
+)(TransactionDetailInfo)

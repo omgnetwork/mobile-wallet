@@ -1,10 +1,9 @@
 import { ContractAddress } from 'common/constants'
-
-const USD_PER_ETH = 126.28 // $126.28 Price at 2019/12/26
+const USD_PER_ETH = 217.37 // $217.37 Price at 2020/02/07
 
 export const fetchPriceUsd = (contractAddress, network) => {
   // mainnet
-  if (network === 'homestead') {
+  if (network === 'homestead' || network === 'mainnet') {
     //TODO Fetch price from Coinmarketcap.
     return Promise.resolve({
       contractAddress,

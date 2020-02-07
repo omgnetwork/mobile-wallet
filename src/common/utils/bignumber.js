@@ -13,6 +13,10 @@ export const plus = (a, b) => {
   return new BigNumber(a).plus(new BigNumber(b)).toString(10)
 }
 
+export const minus = (a, b) => {
+  return new BigNumber(a).minus(new BigNumber(b)).toString(10)
+}
+
 export const divide = (a, b) => {
   return new BigNumber(a).divide(new BigNumber(b).toString(10))
 }
