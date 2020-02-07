@@ -18,7 +18,7 @@ const BackupList = ({ navigation, wallets, theme }) => {
     />
   ))
   return (
-    <View style={styles.container}>
+    <View style={styles.container(theme)}>
       {wallets.length ? (
         <ScrollView>{backupItems}</ScrollView>
       ) : (
@@ -34,11 +34,12 @@ const BackupList = ({ navigation, wallets, theme }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: theme => ({
     flex: 1,
     padding: 16,
-    justifyContent: 'center'
-  },
+    justifyContent: 'center',
+    backgroundColor: theme.colors.new_black7
+  }),
   walletItem: {
     marginTop: 8,
     padding: 8

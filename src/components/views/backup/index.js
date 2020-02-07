@@ -18,7 +18,7 @@ const Backup = ({ theme, navigation }) => {
           <OMGFontIcon
             name='chevron-left'
             size={18}
-            color={theme.colors.gray3}
+            color={theme.colors.white}
             style={styles.headerIcon}
             onPress={() => navigation.goBack()}
           />
@@ -37,8 +37,7 @@ const styles = StyleSheet.create({
   contentContainer: theme => ({
     flex: 1,
     flexDirection: 'column',
-    paddingVertical: 8,
-    backgroundColor: theme.colors.white
+    backgroundColor: theme.colors.gray4
   }),
   header: {
     alignItems: 'center',
@@ -51,8 +50,9 @@ const styles = StyleSheet.create({
   },
   headerTitle: theme => ({
     fontSize: 18,
-    color: theme.colors.gray3,
+    color: theme.colors.white,
     marginLeft: 8,
+    paddingVertical: 16,
     textTransform: 'uppercase'
   }),
   line: theme => ({

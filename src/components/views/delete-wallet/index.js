@@ -62,20 +62,20 @@ const DeleteWalletList = ({
     <SafeAreaView style={styles.safeAreaView}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.white}
+        backgroundColor={theme.colors.gray4}
       />
       <View style={styles.contentContainer(theme)}>
         <View style={styles.header}>
           <OMGFontIcon
             name='chevron-left'
             size={18}
-            color={theme.colors.gray3}
+            color={theme.colors.white}
             style={styles.headerIcon}
             onPress={() => navigation.goBack()}
           />
           <OMGText style={styles.headerTitle(theme)}>Delete Wallet</OMGText>
         </View>
-        <View style={styles.container}>
+        <View style={styles.container(theme)}>
           {walletItems.length ? (
             <ScrollView>{walletItems}</ScrollView>
           ) : (
@@ -96,11 +96,12 @@ const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1
   },
-  container: {
+  container: theme => ({
     flex: 1,
     padding: 16,
-    justifyContent: 'center'
-  },
+    justifyContent: 'center',
+    backgroundColor: theme.colors.new_black7
+  }),
   walletItem: {
     marginTop: 8,
     padding: 8
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
     paddingVertical: 0
   },
   textEmpty: theme => ({
-    color: theme.colors.primary,
+    color: theme.colors.white,
     opacity: 0.3,
     fontSize: 24,
     marginHorizontal: 16
@@ -117,13 +118,13 @@ const styles = StyleSheet.create({
   contentContainer: theme => ({
     flex: 1,
     flexDirection: 'column',
-    paddingVertical: 8,
-    backgroundColor: theme.colors.white
+    backgroundColor: theme.colors.gray4
   }),
   header: {
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
+    paddingVertical: 16
   },
   headerIcon: {
     padding: 8,
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: theme => ({
     fontSize: 18,
-    color: theme.colors.gray3,
+    color: theme.colors.white,
     marginLeft: 8,
     textTransform: 'uppercase'
   }),
