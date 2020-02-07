@@ -32,6 +32,7 @@ const Initializer = ({
   const loadingAnim = Animated.loop(
     Animated.sequence([Move.To(move.current, 123), Move.To(move.current, 0)])
   )
+  const loadingDuration = 1000 + Math.random() * 1000
 
   useEffect(() => {
     if (wallets.length === 0) {
@@ -43,10 +44,8 @@ const Initializer = ({
       }
     } else if (shouldGetBlockchainWallet(wallet, blockchainWallet, provider)) {
       setTimeout(() => {
-        InteractionManager.runAfterInteractions(() => {
-          dispatchSetBlockchainWallet(wallet, provider)
-        })
-      }, 1000 + Math.random() * 1000)
+        dispatchSetBlockchainWallet(wallet, provider)
+      }, loadingDuration)
     } else if (shouldSetPrimaryWallet(wallet, wallets)) {
       dispatchSetPrimaryWallet(wallets[0], wallets)
     }
@@ -54,6 +53,7 @@ const Initializer = ({
     blockchainWallet,
     dispatchSetBlockchainWallet,
     dispatchSetPrimaryWallet,
+    loadingDuration,
     navigation,
     provider,
     registerHeadlessService,

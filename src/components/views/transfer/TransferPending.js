@@ -198,7 +198,8 @@ const styles = StyleSheet.create({
   },
   bottomContainer: theme => ({
     backgroundColor: theme.colors.new_black7,
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
+    paddingBottom: 16
   }),
   totalContainer: theme => ({
     flexDirection: 'row',
