@@ -2,14 +2,7 @@ import { settingActions } from 'common/actions'
 import { store } from 'common/stores'
 import { HeadlessProcessExit } from 'components/headless'
 import React, { useRef, useCallback, useEffect } from 'react'
-import {
-  AppRegistry,
-  StyleSheet,
-  View,
-  Animated,
-  Platform,
-  InteractionManager
-} from 'react-native'
+import { AppRegistry, StyleSheet, View, Animated, Platform } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'

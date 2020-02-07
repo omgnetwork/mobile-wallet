@@ -18,7 +18,8 @@ const Mnemonic = ({
   loading,
   provider,
   wallets,
-  navigation
+  navigation,
+  theme
 }) => {
   const mnemonicRef = useRef(null)
   const walletNameRef = useRef(null)
@@ -71,29 +72,29 @@ const Mnemonic = ({
   }, [loading, loading.action, loading.success, navigation, wallets])
 
   return (
-    <OMGDismissKeyboard style={styles.mnemonicContainer}>
+    <OMGDismissKeyboard style={styles.mnemonicContainer(theme)}>
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior='padding'
         keyboardVerticalOffset={Header.HEIGHT + statusBarHeight}>
-        <OMGText style={styles.textBoxTitle} weight='mono-semi-bold'>
+        <OMGText style={styles.textBoxTitle(theme)} weight='mono-semi-bold'>
           Mnemonic Phrase
         </OMGText>
         <OMGTextInputBox
-          style={styles.textBox}
+          style={styles.textBox(theme)}
           inputRef={mnemonicRef}
           showError={showErrorMnemonic}
           errorMessage={errorMnemonicMessage}
           disabled={loading.show}
-          lines={2}
+          lines={3}
           placeholder='Enter mnemonic...'
         />
-        <OMGText style={styles.textBoxTitle} weight='mono-semi-bold'>
+        <OMGText style={styles.textBoxTitle(theme)} weight='mono-semi-bold'>
           Wallet Name
         </OMGText>
         <OMGTextInputBox
           placeholder='Your wallet name'
-          style={styles.textBox}
+          style={styles.textBox(theme)}
           inputRef={walletNameRef}
           showError={showErrorName}
           errorMessage={errorNameMessage}
@@ -111,34 +112,33 @@ const Mnemonic = ({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-end'
-  },
   contentContainer: theme => ({
     flex: 1,
     flexDirection: 'column',
     paddingTop: 8,
-    backgroundColor: theme.colors.white
+    backgroundColor: theme.colors.new_black7
   }),
   importByMnemonic: {
     marginTop: 16
   },
-  textBox: {
-    marginTop: 16
-  },
-  textBoxTitle: {
+  textBox: theme => ({
     marginTop: 16,
-    fontSize: 14
-  },
+    backgroundColor: theme.colors.new_black7
+  }),
+  textBoxTitle: theme => ({
+    marginTop: 16,
+    fontSize: 14,
+    color: theme.colors.white
+  }),
   line: theme => ({
     marginTop: 16,
     backgroundColor: theme.colors.white3,
     height: 6
   }),
-  mnemonicContainer: {
-    flex: 1
-  },
+  mnemonicContainer: theme => ({
+    flex: 1,
+    backgroundColor: theme.colors.new_black7
+  }),
   keyboardAvoidingView: {
     paddingHorizontal: 16,
     flex: 1

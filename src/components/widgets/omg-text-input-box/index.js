@@ -46,16 +46,16 @@ const OMGTextInputBox = ({
 
 const styles = StyleSheet.create({
   container: (theme, focus, disabled, showError) => ({
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.new_gray7,
     borderRadius: theme.roundness,
     opacity: disabled ? 0.4 : 1.0,
     paddingHorizontal: 8,
     paddingVertical: 8,
     borderColor: focus
-      ? theme.colors.gray5
+      ? theme.colors.new_gray5
       : showError
       ? theme.colors.red2
-      : theme.colors.gray4,
+      : theme.colors.new_gray5,
     borderWidth: 1
   }),
   errorText: theme => ({
@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
     marginTop: 8
   }),
   text: (theme, disabled) => ({
-    color: theme.colors.primary,
-    backgroundColor: disabled ? theme.colors.gray4 : theme.colors.white
+    color: theme.colors.white,
+    backgroundColor: theme.colors.new_black7
   })
 })
 
