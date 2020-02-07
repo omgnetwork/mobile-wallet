@@ -37,12 +37,14 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: theme.roundness,
-    borderColor: theme.colors.black4,
+    borderColor: theme.colors.new_gray5,
     borderWidth: 0.5
   }),
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.white3,
+    borderWidth: 1,
+    borderColor: theme.colors.new_gray5,
+    backgroundColor: theme.colors.new_black7,
     alignItems: 'center',
     paddingVertical: 20,
     borderRadius: theme.roundness
@@ -55,10 +57,10 @@ const styles = StyleSheet.create({
   },
   name: theme => ({
     fontSize: 16,
-    color: theme.colors.primary
+    color: theme.colors.white
   }),
   address: theme => ({
-    color: theme.colors.gray5,
+    color: theme.colors.new_gray7,
     fontSize: 12,
     marginRight: 32
   })
