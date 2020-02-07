@@ -3,7 +3,8 @@ import { View, StyleSheet, Linking, TouchableOpacity } from 'react-native'
 import { OMGFontIcon, OMGText } from 'components/widgets'
 import { BlockchainRenderer } from 'common/blockchain'
 import Config from 'react-native-config'
-import { BlockchainNetworkType } from 'common/constants'
+import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
+import PlasmaContractIcon from './assets/ic-plasma-contract.svg'
 
 const TransactionDetailFromTo = ({ theme, tx, style }) => {
   const handleAddressClick = useCallback(
@@ -45,7 +46,11 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
       <View style={styles.detailContainer}>
         <OMGText style={styles.title(theme)}>To</OMGText>
         <View style={styles.detailItem}>
-          <OMGFontIcon name='wallet' size={18} color={theme.colors.white} />
+          {tx.type === TransactionTypes.TYPE_DEPOSIT ? (
+            <PlasmaContractIcon width={18} height={18} />
+          ) : (
+            <OMGFontIcon name='wallet' size={18} color={theme.colors.white} />
+          )}
           <TouchableOpacity
             style={styles.detailItemAddress}
             onPress={() => handleAddressClick(tx.to)}>

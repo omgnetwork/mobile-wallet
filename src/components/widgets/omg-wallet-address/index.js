@@ -12,7 +12,7 @@ const OMGWalletAddress = ({ theme, name, address, style }) => {
     <View style={{ ...styles.container(theme), ...style }}>
       {IS_PLASMA_CONTRACT ? (
         <View style={styles.logo(theme)}>
-          <PlasmaContractIcon name='files' width={24} height={24} />
+          <PlasmaContractIcon width={24} height={24} />
         </View>
       ) : (
         <OMGIdenticon style={styles.logo(theme)} size={24} hash={address} />

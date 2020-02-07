@@ -52,7 +52,10 @@ const TransactionDetail = ({ navigation, theme }) => {
     }
   }, [getTransferType, tx])
 
-  const getTransferType = useCallback(({ network }) => {
+  const getTransferType = useCallback(({ network, type }) => {
+    if (type === TransactionTypes.TYPE_DEPOSIT)
+      return TransferHelper.TYPE_DEPOSIT
+
     return network === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
       ? TransferHelper.TYPE_TRANSFER_ROOTCHAIN
       : TransferHelper.TYPE_TRANSFER_CHILDCHAIN
@@ -96,7 +99,8 @@ const TransactionDetail = ({ navigation, theme }) => {
   const renderTransactionDetailFromToIfNeeded = useCallback(() => {
     return [
       TransactionTypes.TYPE_SENT,
-      TransactionTypes.TYPE_RECEIVED
+      TransactionTypes.TYPE_RECEIVED,
+      TransactionTypes.TYPE_DEPOSIT
     ].includes(tx.type) ? (
       <TransactionDetailFromTo
         tx={transaction}
