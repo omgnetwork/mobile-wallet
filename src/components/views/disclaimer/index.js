@@ -19,11 +19,11 @@ const Disclaimer = ({ navigation, theme }) => {
     <SafeAreaView style={styles.container} forceInset={{ top: 'never' }}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.black5}
+        backgroundColor={theme.colors.gray4}
       />
       <View style={styles.headerContainer(theme)}>
         <OnboardingDisclaimer width={98} style={styles.image} />
-        <OMGText style={styles.headerText(theme)} weight='mono-semi-bold'>
+        <OMGText style={styles.headerText(theme)} weight='regular'>
           Nice choice! But before you start, let’s make sure we’re on the same
           page :)
         </OMGText>
@@ -39,7 +39,7 @@ const Disclaimer = ({ navigation, theme }) => {
           transaction charges. Practice prudence with each transaction.
         </OMGText>
       </ScrollView>
-      <View style={styles.buttonContainer}>
+      <View style={styles.buttonContainer(theme)}>
         <OMGButton
           style={styles.confirmButton(theme)}
           textStyle={styles.confirmButtonText(theme)}
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: theme => ({
     padding: 30,
-    backgroundColor: theme.colors.gray3
+    backgroundColor: theme.colors.gray4
   }),
   headerText: theme => ({
     color: theme.colors.white,
@@ -77,24 +77,27 @@ const styles = StyleSheet.create({
     marginTop: 28
   }),
   contentContainer: theme => ({
-    paddingHorizontal: 30,
-    paddingVertical: 30
+    backgroundColor: theme.colors.gray4,
+    paddingHorizontal: 30
   }),
-  buttonContainer: {
+  buttonContainer: theme => ({
     paddingHorizontal: 30,
-    paddingVertical: 8
-  },
+    paddingVertical: 8,
+    backgroundColor: theme.colors.gray4
+  }),
   contentText1: theme => ({
-    color: theme.colors.primary,
-    fontSize: 17
+    color: theme.colors.new_gray7,
+    fontSize: 14,
+    lineHeight: 20
   }),
   contentText2: theme => ({
-    color: theme.colors.primary,
-    fontSize: 17,
-    marginTop: 10
+    color: theme.colors.new_gray7,
+    fontSize: 14,
+    marginTop: 10,
+    lineHeight: 20
   }),
   confirmButton: theme => ({
-    backgroundColor: theme.colors.gray3,
+    backgroundColor: theme.colors.primary,
     borderRadius: theme.roundness
   }),
   confirmButtonText: theme => ({
@@ -105,7 +108,7 @@ const styles = StyleSheet.create({
     marginTop: 8
   }),
   declineButtonText: theme => ({
-    color: theme.colors.gray3
+    color: theme.colors.white
   })
 })
 

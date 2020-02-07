@@ -19,7 +19,7 @@ const CreateWalletBackupMnemonic = ({ theme, navigation }) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container(theme)}>
       <BackupMnemonicImage width={80} height={80} style={styles.image} />
       <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
         Backup Mnemonic Phrase
@@ -36,20 +36,22 @@ const CreateWalletBackupMnemonic = ({ theme, navigation }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: theme => ({
     flex: 1,
-    paddingHorizontal: 16
-  },
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+    backgroundColor: theme.colors.new_black7
+  }),
   image: {
     marginTop: 32
   },
   title: theme => ({
-    color: theme.colors.gray3,
+    color: theme.colors.white,
     marginTop: 30,
     fontSize: 18
   }),
   description: theme => ({
-    color: theme.colors.primary,
+    color: theme.colors.white,
     marginTop: 16
   }),
   mnemonicContainer: {

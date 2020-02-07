@@ -80,8 +80,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    justifyContent: 'flex-end',
-    marginBottom: 8
+    justifyContent: 'flex-end'
   },
   textTitle: theme => ({
     color: theme.colors.white
