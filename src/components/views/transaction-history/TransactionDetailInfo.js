@@ -116,22 +116,26 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
         <OMGText style={styles.infoItemLabel(theme)}>
           {`${textExactDatetime} UTC`}
         </OMGText>
-        <OMGText style={styles.infoItemValue(theme)}>
-          {textFromNowDatetime}
-        </OMGText>
+        <View style={styles.infoItemContent}>
+          <OMGText style={styles.infoItemValue(theme)}>
+            {textFromNowDatetime}
+          </OMGText>
+        </View>
       </View>
       <Divider theme={theme} />
       <View style={styles.infoItem}>
         <OMGText style={styles.infoItemLabel(theme, isFailed)}>
           Transact Value
         </OMGText>
-        <OMGText style={styles.infoItemValue(theme)}>
-          {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
-            tx.value,
-            tx.tokenDecimal
-          )}{' '}
-          {tx.tokenSymbol}
-        </OMGText>
+        <View style={styles.infoItemContent}>
+          <OMGText style={styles.infoItemValue(theme)}>
+            {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+              tx.value,
+              tx.tokenDecimal
+            )}{' '}
+            {tx.tokenSymbol}
+          </OMGText>
+        </View>
       </View>
       <Divider theme={theme} />
       {isFailed ? renderErrorReason() : renderFee()}
