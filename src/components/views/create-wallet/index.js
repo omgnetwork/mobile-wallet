@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, StyleSheet, SafeAreaView } from 'react-native'
+import React, { useEffect } from 'react'
+import { View, StyleSheet, SafeAreaView, StatusBar } from 'react-native'
 import { OMGFontIcon, OMGText, OMGStatusBar } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
@@ -8,7 +8,7 @@ const CreateWallet = ({ theme, navigation }) => {
   const CreateWalletNavigator = navigation.getParam('navigator')
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
         backgroundColor={theme.colors.gray4}
@@ -31,9 +31,10 @@ const CreateWallet = ({ theme, navigation }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
+  container: theme => ({
+    flex: 1,
+    backgroundColor: theme.colors.gray4
+  }),
   contentContainer: theme => ({
     flex: 1,
     flexDirection: 'column',

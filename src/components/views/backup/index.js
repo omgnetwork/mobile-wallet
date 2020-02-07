@@ -8,7 +8,7 @@ const Backup = ({ theme, navigation }) => {
   const BackupWalletNavigator = navigation.getParam('navigator')
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
         backgroundColor={theme.colors.gray4}
@@ -31,9 +31,10 @@ const Backup = ({ theme, navigation }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
+  container: theme => ({
+    flex: 1,
+    backgroundColor: theme.colors.gray4
+  }),
   contentContainer: theme => ({
     flex: 1,
     flexDirection: 'column',

@@ -73,7 +73,7 @@ const ExitPending = ({ theme, navigation, wallet }) => {
       <SafeAreaView style={styles.container(theme)}>
         <OMGStatusBar
           barStyle='light-content'
-          backgroundColor={theme.colors.white}
+          backgroundColor={theme.colors.gray4}
         />
         <ScrollView bounces={false}>
           <View style={styles.headerContainer}>

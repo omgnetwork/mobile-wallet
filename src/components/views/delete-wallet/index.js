@@ -59,7 +59,7 @@ const DeleteWalletList = ({
     />
   ))
   return (
-    <SafeAreaView style={styles.safeAreaView}>
+    <SafeAreaView style={styles.safeAreaView(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
         backgroundColor={theme.colors.gray4}
@@ -93,9 +93,10 @@ const DeleteWalletList = ({
 }
 
 const styles = StyleSheet.create({
-  safeAreaView: {
-    flex: 1
-  },
+  safeAreaView: theme => ({
+    flex: 1,
+    backgroundColor: theme.colors.gray4
+  }),
   container: theme => ({
     flex: 1,
     padding: 16,

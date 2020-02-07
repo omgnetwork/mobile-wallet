@@ -25,7 +25,7 @@ const Deposit = ({ navigation, theme }) => {
     <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.white}
+        backgroundColor={theme.colors.gray4}
       />
       <View style={styles.titleContainer}>
         <OMGText style={styles.title(theme)} weight='regular'>
