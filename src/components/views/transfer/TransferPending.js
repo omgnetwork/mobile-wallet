@@ -7,6 +7,7 @@ import { BlockchainRenderer } from 'common/blockchain'
 import * as TransferHelper from './transferHelper'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
+import { BigNumber } from 'common/utils'
 import {
   OMGButton,
   OMGText,
@@ -35,14 +36,15 @@ const TransferPending = ({ theme, navigation }) => {
     token.balance,
     token.price
   )
-  const { gasUsed, gasPrice, hash, actionType } = unconfirmedTx
+  const { gasUsed, gasPrice, hash, actionType, gasToken } = unconfirmedTx
 
   const gasDetailAvailable = gasUsed && gasPrice
+  const sendAmount = BigNumber.multiply(token.balance, token.price)
   const gasFee = useCallback(() => {
     return estimatedGasFee || BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
   }, [estimatedGasFee, gasPrice, gasUsed])
 
-  const gasTokenSymbol = unconfirmedTx.gasToken?.tokenSymbol ?? 'ETH'
+  const gasTokenSymbol = gasToken?.tokenSymbol ?? 'ETH'
 
   const gasFeeUsd = useCallback(() => {
     return (
@@ -151,7 +153,7 @@ const TransferPending = ({ theme, navigation }) => {
           <View style={styles.totalContainer(theme)}>
             <OMGText style={styles.totalText(theme)}>Total</OMGText>
             <OMGText style={styles.totalText(theme)}>
-              {BlockchainRenderer.renderTotalPrice(tokenPrice, gasFeeUsd())} USD
+              {BlockchainRenderer.renderTotalPrice(sendAmount, gasFeeUsd())} USD
             </OMGText>
           </View>
           <OMGButton
