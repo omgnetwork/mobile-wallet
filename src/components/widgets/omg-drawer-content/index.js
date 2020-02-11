@@ -128,6 +128,14 @@ const OMGDrawerContent = ({
                 {Config.CHILDCHAIN_WATCHER_URL}
               </OMGText>
             </View>
+            <View style={styles.envInfoCard(theme)}>
+              <OMGText style={styles.environmentItemText(theme)}>
+                Version
+              </OMGText>
+              <OMGText style={styles.environmentItemTextLighter(theme)}>
+                {Config.VERSION}
+              </OMGText>
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -208,6 +216,7 @@ const styles = StyleSheet.create({
   environmentItemTextLighter: theme => ({
     color: theme.colors.new_gray5,
     fontSize: 12,
+    marginTop: 4,
     letterSpacing: -0.48
   })
 })
