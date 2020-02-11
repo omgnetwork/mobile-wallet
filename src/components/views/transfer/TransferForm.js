@@ -150,13 +150,17 @@ const TransferForm = ({
       setShowErrorAddress(false)
       setShowErrorAmount(false)
       const { paramsForTransferFormToTransferConfirm } = TransferNavigation
+      const feeToken =
+        transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN
+          ? selectedFeeToken || fees[0]
+          : null
       navigation.navigate(
         'TransferConfirm',
         paramsForTransferFormToTransferConfirm({
           selectedToken,
           currentAmount: amountRef.current,
           currentAddress: addressRef.current,
-          selectedFeeToken: selectedFeeToken || fees[0],
+          selectedFeeToken: feeToken,
           wallet,
           transferType,
           selectedFee
