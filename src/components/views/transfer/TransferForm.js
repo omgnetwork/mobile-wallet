@@ -131,7 +131,10 @@ const TransferForm = ({
   }, [navigation, selectedToken, transferType])
 
   const submit = useCallback(() => {
-    const feeToken = selectedFeeToken || fees[0]
+    const feeToken =
+      transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN
+        ? selectedFeeToken || fees[0]
+        : null
     if (!Validator.isValidAddress(addressRef.current)) {
       setShowErrorAddress(true)
     } else if (!Validator.isValidAmount(amountRef.current)) {
@@ -150,10 +153,6 @@ const TransferForm = ({
       setShowErrorAddress(false)
       setShowErrorAmount(false)
       const { paramsForTransferFormToTransferConfirm } = TransferNavigation
-      const feeToken =
-        transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN
-          ? selectedFeeToken || fees[0]
-          : null
       navigation.navigate(
         'TransferConfirm',
         paramsForTransferFormToTransferConfirm({

@@ -95,6 +95,7 @@ export const transfer = (blockchainWallet, toAddress, token, feeToken) => {
       contractAddress: token.contractAddress,
       gasUsed: 1,
       gasPrice: 1,
+      gasToken: feeToken,
       actionType: TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN,
       createdAt: Datetime.now()
     }

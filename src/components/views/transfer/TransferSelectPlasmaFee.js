@@ -23,9 +23,9 @@ const TransferSelectPlasmaFee = ({ theme, loading, navigation, fees }) => {
   useEffect(() => {
     if (fees && fees.length) {
       setDisplayFees(fees)
-      setSelectedFeeToken(fees[0])
+      setSelectedFeeToken(currentFeeToken || fees[0])
     }
-  }, [fees, tokens])
+  }, [currentFeeToken, fees, tokens])
 
   return (
     <SafeAreaView style={styles.container(theme)}>

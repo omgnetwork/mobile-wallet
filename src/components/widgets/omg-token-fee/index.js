@@ -1,16 +1,16 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { OMGText, OMGTokenIcon, OMGFontIcon } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import { BlockchainRenderer } from 'common/blockchain'
 
-const OMGTokenFee = ({ token, theme, selected }) => {
+const OMGTokenFee = ({ token, theme, selected, onPress }) => {
   const displayAmount = BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
     token.amount,
     token.tokenDecimal
   )
   return (
-    <View style={styles.container(theme)}>
+    <TouchableOpacity style={styles.container(theme)} onPress={onPress}>
       <OMGTokenIcon token={token} size={24} style={styles.iconToken} />
       <OMGText style={[styles.tokenName, styles.textWhite16(theme)]}>
         {token.tokenSymbol}
@@ -36,7 +36,7 @@ const OMGTokenFee = ({ token, theme, selected }) => {
           <OMGFontIcon name='check-mark' size={14} color={theme.colors.white} />
         )}
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 

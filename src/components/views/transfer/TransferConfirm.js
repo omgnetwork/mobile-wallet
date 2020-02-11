@@ -45,6 +45,7 @@ const TransferConfirm = ({
     selectedFeeToken
   } = getParamsForTransferConfirmFromTransferForm(navigation)
   const [estimatedFee, setEstimatedFee] = useState(null)
+  const [estimatedFeeSymbol, setEstimatedFeeSymbol] = useState(null)
   const [estimatedFeeUsd, setEstimatedFeeUsd] = useState(null)
   const [estimatedTotalPrice, setEstimatedTotalPrice] = useState(null)
   const [estimatedTotalAmount, setEstimatedTotalAmount] = useState(null)
@@ -76,6 +77,7 @@ const TransferConfirm = ({
           plasmaFee
         )
         setEstimatedFee(plasmaFee)
+        setEstimatedFeeSymbol(selectedFeeToken?.tokenSymbol ?? 'ETH')
         setEstimatedFeeUsd(plasmaFeeUsd)
         setEstimatedTotalPrice(totalPrice)
         setEstimatedTotalAmount(totalAmount)
@@ -102,6 +104,7 @@ const TransferConfirm = ({
             gasFee
           )
           setEstimatedFee(gasFee)
+          setEstimatedFeeSymbol('ETH')
           setEstimatedFeeUsd(gasFeeUsd)
           setEstimatedTotalPrice(totalPrice)
           setEstimatedTotalAmount(totalAmount)
@@ -211,7 +214,7 @@ const TransferConfirm = ({
                 style={styles.toSendAmount(theme)}
                 ellipsizeMode='tail'
                 numberOfLines={1}>
-                {estimatedFee} ETH
+                {estimatedFee} {estimatedFeeSymbol}
               </OMGText>
               <OMGText style={styles.toSendWorth(theme)}>
                 {estimatedFeeUsd} USD
@@ -223,7 +226,7 @@ const TransferConfirm = ({
         </View>
       </View>
     )
-  }, [estimatedFee, estimatedFeeUsd, theme])
+  }, [estimatedFee, estimatedFeeSymbol, estimatedFeeUsd, theme])
 
   const renderMaxTotal = useCallback(() => {
     return estimatedFee ? (

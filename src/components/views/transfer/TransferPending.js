@@ -42,6 +42,8 @@ const TransferPending = ({ theme, navigation }) => {
     return estimatedGasFee || BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
   }, [estimatedGasFee, gasPrice, gasUsed])
 
+  const gasTokenSymbol = unconfirmedTx.gasToken?.tokenSymbol ?? 'ETH'
+
   const gasFeeUsd = useCallback(() => {
     return (
       estimatedGasFeeUsd ||
@@ -135,7 +137,7 @@ const TransferPending = ({ theme, navigation }) => {
                 </OMGText>
                 <View style={styles.sentDetail}>
                   <OMGText style={styles.sentDetailFirstline(theme)}>
-                    {gasFee()} ETH
+                    {gasFee()} {gasTokenSymbol}
                   </OMGText>
                   <OMGText style={styles.sentDetailSecondline(theme)}>
                     {gasFeeUsd()} USD
