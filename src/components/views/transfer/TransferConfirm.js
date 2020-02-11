@@ -5,6 +5,7 @@ import { withNavigation, SafeAreaView } from 'react-navigation'
 import { BlockchainRenderer } from 'common/blockchain'
 import { withTheme } from 'react-native-paper'
 import * as TransferHelper from './transferHelper'
+import { BigNumber } from 'common/utils'
 import {
   paramsForTransferConfirmToTransferPending,
   paramsForTransferConfirmToTransferForm,
@@ -53,6 +54,7 @@ const TransferConfirm = ({
     token.balance,
     token.price
   )
+  const sendAmount = BigNumber.multiply(token.balance, token.price)
 
   useEffect(() => {
     async function calculateEstimatedFee() {
@@ -66,7 +68,7 @@ const TransferConfirm = ({
           selectedFeeToken.price
         )
         const totalPrice = BlockchainRenderer.renderTotalPrice(
-          tokenPrice,
+          sendAmount,
           plasmaFeeUsd
         )
         const totalAmount = BlockchainRenderer.renderTotalEthAmount(
@@ -78,27 +80,34 @@ const TransferConfirm = ({
         setEstimatedTotalPrice(totalPrice)
         setEstimatedTotalAmount(totalAmount)
       } else {
-        const gasUsed = await TransferHelper.getGasUsed(transferType, token, {
-          wallet: blockchainWallet,
-          to: toWallet.address,
-          fee: fee
-        })
-        const gasPrice = fee && fee.amount
-        const gasFee = BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
-        const usdPerEth = ethToken && ethToken.price
-        const gasFeeUsd = BlockchainRenderer.renderTokenPrice(gasFee, usdPerEth)
-        const totalPrice = BlockchainRenderer.renderTotalPrice(
-          tokenPrice,
-          gasFeeUsd
-        )
-        const totalAmount = BlockchainRenderer.renderTotalEthAmount(
-          token,
-          gasFee
-        )
-        setEstimatedFee(gasFee)
-        setEstimatedFeeUsd(gasFeeUsd)
-        setEstimatedTotalPrice(totalPrice)
-        setEstimatedTotalAmount(totalAmount)
+        try {
+          const gasUsed = await TransferHelper.getGasUsed(transferType, token, {
+            wallet: blockchainWallet,
+            to: toWallet.address,
+            fee: fee
+          })
+          const gasPrice = fee && fee.amount
+          const gasFee = BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
+          const usdPerEth = ethToken && ethToken.price
+          const gasFeeUsd = BlockchainRenderer.renderTokenPrice(
+            gasFee,
+            usdPerEth
+          )
+          const totalPrice = BlockchainRenderer.renderTotalPrice(
+            sendAmount,
+            gasFeeUsd
+          )
+          const totalAmount = BlockchainRenderer.renderTotalEthAmount(
+            token,
+            gasFee
+          )
+          setEstimatedFee(gasFee)
+          setEstimatedFeeUsd(gasFeeUsd)
+          setEstimatedTotalPrice(totalPrice)
+          setEstimatedTotalAmount(totalAmount)
+        } catch (err) {
+          console.log(err)
+        }
       }
     }
     calculateEstimatedFee()
@@ -107,6 +116,7 @@ const TransferConfirm = ({
     ethToken,
     fee,
     selectedFeeToken,
+    sendAmount,
     toWallet.address,
     token,
     tokenPrice,
