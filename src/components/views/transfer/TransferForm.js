@@ -23,7 +23,7 @@ import {
 import { Validator } from 'common/utils'
 import * as BlockchainLabel from './blockchainLabel'
 
-const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
+// const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
 
 const TransferForm = ({
   wallet,
@@ -35,7 +35,7 @@ const TransferForm = ({
   loading
 }) => {
   const selectedFee = navigation.getParam('selectedFee', feeOptions[0])
-  const selectedAddress = navigation.getParam('address') || testAddress
+  const selectedAddress = navigation.getParam('address')
   const defaultAmount = navigation.getParam('lastAmount')
   const transferType = navigation.getParam('transferType')
   const selectedToken = navigation.getParam(
