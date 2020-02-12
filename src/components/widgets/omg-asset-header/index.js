@@ -10,6 +10,7 @@ const OMGAssetHeader = ({
   amount,
   currency,
   rootchain,
+  network,
   anchoredRef,
   style
 }) => {
@@ -36,7 +37,7 @@ const OMGAssetHeader = ({
           {rootchain ? 'Ethereum Rootchain' : 'Plasma Childchain'}
         </OMGText>
         <View style={styles.greenDot(theme)} />
-        <OMGText style={styles.textNetwork(theme)}>Mainnet</OMGText>
+        <OMGText style={styles.textNetwork(theme)}>{network}</OMGText>
       </View>
     </View>
   )
@@ -85,6 +86,7 @@ const styles = StyleSheet.create({
   textNetwork: theme => ({
     fontSize: 12,
     marginLeft: 6,
+    textTransform: 'capitalize',
     color: theme.colors.new_gray2
   }),
   greenDot: theme => ({

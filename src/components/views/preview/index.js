@@ -20,6 +20,7 @@ import {
   OMGTokenSelect
 } from 'components/widgets'
 import OMGItemToken from 'components/widgets/omg-item-token'
+import Config from 'react-native-config'
 
 const mockToken = {
   tokenName: 'Ether',
@@ -111,7 +112,7 @@ const Preview = ({ navigation, theme }) => {
           amount='2,090.00'
           currency='USD'
           blockchain='Ethereum'
-          network='Mainnet'
+          network={Config.ETHERSCAN_NETWORK}
           style={{ marginTop: 16 }}
         />
         <OMGAssetList theme={theme} />

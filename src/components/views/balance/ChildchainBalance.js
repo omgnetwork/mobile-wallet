@@ -111,6 +111,7 @@ const ChildchainBalance = ({
         currency={currency}
         rootchain={false}
         loading={loading}
+        network={Config.OMISEGO_NETWORK}
         anchoredRef={blockchainLabelRef}
       />
       <OMGAssetList
