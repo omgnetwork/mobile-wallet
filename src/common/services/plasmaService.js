@@ -1,6 +1,6 @@
 import { Formatter, Parser, Polling, Datetime, Mapper } from 'common/utils'
 import { Plasma, Token } from 'common/blockchain'
-import { Gas } from 'common/constants'
+import { Gas, ContractAddress } from 'common/constants'
 import BN from 'bn.js'
 
 export const fetchAssets = async (provider, address) => {
@@ -102,12 +102,14 @@ export const transfer = (
 ) => {
   return new Promise(async (resolve, reject) => {
     try {
+      const feeCurrency =
+        feeToken?.contractAddress ?? ContractAddress.ETH_ADDRESS
       const payments = Plasma.createPayment(
         toAddress,
         token.contractAddress,
         Parser.parseUnits(token.balance, token.tokenDecimal).toString(10)
       )
-      const childchainFee = Plasma.createFee(feeToken.contractAddress)
+      const childchainFee = Plasma.createFee(feeCurrency)
       const createdTransactions = await Plasma.createTx(
         fromBlockchainWallet.address,
         payments,
