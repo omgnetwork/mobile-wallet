@@ -84,10 +84,8 @@ const TransferForm = ({
   ])
 
   useEffect(() => {
-    if (fees.length === 0) {
-      dispatchGetFees(wallet.childchainAssets)
-    }
-  }, [dispatchGetFees, fees.length, wallet.childchainAssets])
+    dispatchGetFees(wallet.childchainAssets)
+  }, [dispatchGetFees, wallet.childchainAssets])
 
   useEffect(() => {
     if (loading.action === 'CHILDCHAIN_FEES') {
