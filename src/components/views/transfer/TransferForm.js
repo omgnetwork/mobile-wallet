@@ -5,6 +5,7 @@ import { withNavigationFocus, SafeAreaView } from 'react-navigation'
 import * as TransferHelper from './transferHelper'
 import { withTheme } from 'react-native-paper'
 import { plasmaActions } from 'common/actions'
+import { useLoading } from 'common/hooks'
 import {
   OMGBox,
   OMGButton,
@@ -58,7 +59,11 @@ const TransferForm = ({
   const keyboardAwareScrollRef = useRef(null)
   const [showErrorAddress, setShowErrorAddress] = useState(false)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
-  const [loadingFeeToken, setLoadingFeeToken] = useState(fees.length === 0)
+  const [loadingFeeToken] = useLoading(
+    loading,
+    'CHILDCHAIN_FEES',
+    fees.length === 0
+  )
   const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
 
   // Focus on amount input when the TransferForm screen is active.
@@ -75,13 +80,6 @@ const TransferForm = ({
   useEffect(() => {
     dispatchGetFees(wallet.childchainAssets)
   }, [dispatchGetFees, wallet.childchainAssets])
-
-  // Show loading when fetching /fees.all
-  useEffect(() => {
-    if (loading.action === 'CHILDCHAIN_FEES') {
-      setLoadingFeeToken(loading.show)
-    }
-  }, [loading.action, loading.show])
 
   const focusOn = useCallback(inputRef => {
     InteractionManager.runAfterInteractions(inputRef?.current?.focus)

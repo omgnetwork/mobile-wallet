@@ -9,6 +9,7 @@ import {
   OMGButton,
   OMGDismissKeyboard
 } from 'components/widgets'
+import { useLoading } from 'common/hooks'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { Validator, Dimensions } from 'common/utils'
@@ -25,7 +26,7 @@ const Mnemonic = ({
   const walletNameRef = useRef(null)
   const [showErrorMnemonic, setShowErrorMnemonic] = useState(false)
   const [showErrorName, setShowErrorName] = useState(false)
-  const [shouldDisable, setShouldDisable] = useState(false)
+  const [shouldDisable, setShouldDisable] = useLoading(loading, 'WALLET_IMPORT')
   const statusBarHeight = Dimensions.getStatusBarHeight()
   const errorMnemonicMessage = 'Invalid mnemonic'
   const errorNameMessage = 'The wallet name should not be empty'
@@ -55,12 +56,6 @@ const Mnemonic = ({
       )
     }
   }, [dispatchImportWalletByMnemonic, provider, wallets])
-
-  useEffect(() => {
-    if (loading.action === 'WALLET_IMPORT') {
-      setShouldDisable(loading.show)
-    }
-  }, [loading.action, loading.show])
 
   useEffect(() => {
     if (loading.success && loading.action === 'WALLET_IMPORT') {

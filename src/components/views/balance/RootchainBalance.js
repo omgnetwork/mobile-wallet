@@ -15,6 +15,7 @@ import {
 } from 'components/widgets'
 import { Alert } from 'common/constants'
 import { TransferHelper } from '../transfer'
+import { useLoading } from 'common/hooks'
 
 const RootchainBalance = ({
   unconfirmedTxs,
@@ -28,7 +29,10 @@ const RootchainBalance = ({
   navigation
 }) => {
   const [totalBalance, setTotalBalance] = useState(0.0)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useLoading(
+    globalLoading,
+    'ROOTCHAIN_FETCH_ASSETS'
+  )
   const hasPendingTransaction = unconfirmedTxs.length > 0
   const hasRootchainAssets =
     wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
@@ -45,7 +49,8 @@ const RootchainBalance = ({
     unconfirmedTxs,
     provider,
     dispatchRefreshRootchain,
-    wallet
+    wallet,
+    setLoading
   ])
 
   const shouldEnableDepositAction = useCallback(() => {
@@ -79,17 +84,11 @@ const RootchainBalance = ({
 
       setTotalBalance(totalPrices)
     }
-  }, [wallet.rootchainAssets])
+  }, [setLoading, wallet.rootchainAssets])
 
   const handleReload = useCallback(() => {
     dispatchRefreshRootchain(wallet.address, true)
   }, [dispatchRefreshRootchain, wallet.address])
-
-  useEffect(() => {
-    if (globalLoading.action === 'ROOTCHAIN_FETCH_ASSETS') {
-      setLoading(globalLoading.show)
-    }
-  }, [globalLoading.action, globalLoading.show])
 
   return (
     <Fragment>
