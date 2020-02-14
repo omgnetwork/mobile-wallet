@@ -47,13 +47,9 @@ const TransferForm = ({
     )
   )
   const selectedFeeToken = navigation.getParam('selectedFeeToken')
-  const hasAddressInput = transferType !== TransferHelper.TYPE_DEPOSIT
-  const hasEmptyAddressInput = !selectedAddress
-  const shouldFocusAddressInput = hasAddressInput && hasEmptyAddressInput
   const addressRef = useRef(selectedAddress)
   const amountRef = useRef(defaultAmount)
   const amountFocusRef = useRef(null)
-  const addressFocusRef = useRef(null)
   const keyboardAwareScrollRef = useRef(null)
   const [showErrorAddress, setShowErrorAddress] = useState(false)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
@@ -63,30 +59,23 @@ const TransferForm = ({
     'TransferForm',
     transferType
   )
+
+  // Focus on amount input when the TransferForm screen is active.
+  // So the keyboard is show automatically for the UX sake.
   useEffect(() => {
-    const shouldActiveKeyboard = navigation.getParam('shouldFocus')
-    if (isFocused && shouldActiveKeyboard) {
-      if (shouldFocusAddressInput) {
-        focusOn(addressFocusRef)
-      } else {
-        setTimeout(() => {
-          focusOn(amountFocusRef)
-        }, 300)
+    if (isFocused) {
+      if (!amountRef.current) {
+        focusOn(amountFocusRef)
       }
     }
-  }, [
-    focusOn,
-    isFocused,
-    navigation,
-    selectedAddress,
-    shouldFocusAddressInput,
-    transferType
-  ])
+  }, [dispatchGetFees, focusOn, isFocused, wallet.childchainAssets])
 
+  // Retrieve fees from /fees.all when the component is mounted
   useEffect(() => {
     dispatchGetFees(wallet.childchainAssets)
   }, [dispatchGetFees, wallet.childchainAssets])
 
+  // Show loading when fetching /fees.all
   useEffect(() => {
     if (loading.action === 'CHILDCHAIN_FEES') {
       setLoadingFeeToken(loading.show)
@@ -94,13 +83,7 @@ const TransferForm = ({
   }, [loading.action, loading.show])
 
   const focusOn = useCallback(inputRef => {
-    InteractionManager.runAfterInteractions(() => {
-      inputRef?.current?.focus()
-    })
-  }, [])
-
-  const blurOn = useCallback(inputRef => {
-    inputRef?.current?.blur()
+    InteractionManager.runAfterInteractions(inputRef?.current?.focus)
   }, [])
 
   const navigateToSelectPlasmaFee = useCallback(() => {
@@ -108,13 +91,6 @@ const TransferForm = ({
       currentFeeToken: selectedFeeToken || fees[0]
     })
   }, [fees, navigation, selectedFeeToken])
-
-  const moveFocusFromAddressToAmount = useCallback(() => {
-    blurOn(addressFocusRef)
-    setTimeout(() => {
-      focusOn(amountFocusRef)
-    }, 250)
-  }, [blurOn, focusOn])
 
   const navigateToSelectBalance = useCallback(() => {
     const { paramsForTransferFormToTransferSelectBalance } = TransferNavigation
@@ -207,14 +183,11 @@ const TransferForm = ({
         style={styles.addressInput}
         inputRef={addressRef}
         showError={showErrorAddress}
-        focusRef={addressFocusRef}
         returnKeyType='next'
-        onSubmitEditing={moveFocusFromAddressToAmount}
         onPressScanQR={navigateToTransferScanner}
       />
     )
   }, [
-    moveFocusFromAddressToAmount,
     navigateToTransferScanner,
     selectedAddress,
     showErrorAddress,
