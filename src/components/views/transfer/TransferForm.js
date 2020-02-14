@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 import { View, StyleSheet, InteractionManager } from 'react-native'
 import { withNavigationFocus, SafeAreaView } from 'react-navigation'
 import * as TransferHelper from './transferHelper'
-import * as TransferNavigation from './transferNavigation'
-import feeOptions from './feeOptions'
 import { withTheme } from 'react-native-paper'
 import { plasmaActions } from 'common/actions'
 import {
@@ -22,7 +20,14 @@ import {
 } from 'components/widgets'
 import { Validator } from 'common/utils'
 import * as BlockchainLabel from './blockchainLabel'
-
+import {
+  getParamsForTransferForm,
+  paramsForTransferFormToTransferSelectBalance,
+  paramsForTransferFormToTransferConfirm,
+  paramsForTransferFormToTransferScanner,
+  paramsForTransferFormToTransferSelectFee,
+  paramsForTransferFormToTransferSelectPlasmaFee
+} from './transferNavigation'
 // const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
 
 const TransferForm = ({
@@ -34,31 +39,27 @@ const TransferForm = ({
   fees,
   loading
 }) => {
-  const selectedFee = navigation.getParam('selectedFee', feeOptions[0])
-  const selectedAddress = navigation.getParam('address')
-  const defaultAmount = navigation.getParam('lastAmount')
-  const transferType = navigation.getParam('transferType')
-  const selectedToken = navigation.getParam(
-    'selectedToken',
-    TransferHelper.getDefaultToken(
-      transferType,
-      wallet.rootchainAssets,
-      wallet.childchainAssets
-    )
+  const {
+    selectedEthFee,
+    selectedPlasmaFee,
+    selectedToken,
+    amount,
+    address,
+    transferType
+  } = getParamsForTransferForm(navigation, wallet)
+
+  const blockchainLabelActionText = BlockchainLabel.getBlockchainTextActionLabel(
+    'TransferForm',
+    transferType
   )
-  const selectedFeeToken = navigation.getParam('selectedFeeToken')
-  const addressRef = useRef(selectedAddress)
-  const amountRef = useRef(defaultAmount)
+  const addressRef = useRef(address)
+  const amountRef = useRef(amount)
   const amountFocusRef = useRef(null)
   const keyboardAwareScrollRef = useRef(null)
   const [showErrorAddress, setShowErrorAddress] = useState(false)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
   const [loadingFeeToken, setLoadingFeeToken] = useState(fees.length === 0)
   const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
-  const blockchainLabelActionText = BlockchainLabel.getBlockchainTextActionLabel(
-    'TransferForm',
-    transferType
-  )
 
   // Focus on amount input when the TransferForm screen is active.
   // So the keyboard is show automatically for the UX sake.
@@ -87,27 +88,27 @@ const TransferForm = ({
   }, [])
 
   const navigateToSelectPlasmaFee = useCallback(() => {
-    navigation.navigate('TransferSelectPlasmaFee', {
-      currentFeeToken: selectedFeeToken || fees[0]
+    const params = paramsForTransferFormToTransferSelectPlasmaFee({
+      selectedPlasmaFee,
+      fees
     })
-  }, [fees, navigation, selectedFeeToken])
+    navigation.navigate('TransferSelectPlasmaFee', params)
+  }, [fees, navigation, selectedPlasmaFee])
 
   const navigateToSelectBalance = useCallback(() => {
-    const { paramsForTransferFormToTransferSelectBalance } = TransferNavigation
-    navigation.navigate(
-      'TransferSelectBalance',
-      paramsForTransferFormToTransferSelectBalance({
-        selectedToken,
-        currentAmount: amountRef.current,
-        transferType
-      })
-    )
+    const params = paramsForTransferFormToTransferSelectBalance({
+      selectedToken,
+      amount: amountRef.current,
+      transferType
+    })
+
+    navigation.navigate('TransferSelectBalance', params)
   }, [navigation, selectedToken, transferType])
 
   const submit = useCallback(() => {
-    const feeToken =
+    const plasmaFee =
       transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN
-        ? selectedFeeToken || fees[0]
+        ? selectedPlasmaFee || fees[0]
         : null
     if (!Validator.isValidAddress(addressRef.current)) {
       setShowErrorAddress(true)
@@ -121,37 +122,35 @@ const TransferForm = ({
       setShowErrorAmount(true)
     } else if (
       transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN &&
-      !feeToken
+      !plasmaFee
     ) {
     } else {
       setShowErrorAddress(false)
       setShowErrorAmount(false)
-      const { paramsForTransferFormToTransferConfirm } = TransferNavigation
       navigation.navigate(
         'TransferConfirm',
         paramsForTransferFormToTransferConfirm({
           selectedToken,
-          currentAmount: amountRef.current,
-          currentAddress: addressRef.current,
-          selectedFeeToken: feeToken,
+          amount: amountRef.current,
+          address: addressRef.current,
+          selectedPlasmaFee: plasmaFee,
           wallet,
           transferType,
-          selectedFee
+          selectedEthFee
         })
       )
     }
   }, [
     fees,
     navigation,
-    selectedFee,
-    selectedFeeToken,
+    selectedEthFee,
+    selectedPlasmaFee,
     selectedToken,
     transferType,
     wallet
   ])
 
   const navigateToTransferScanner = useCallback(() => {
-    const { paramsForTransferFormToTransferScanner } = TransferNavigation
     navigation.navigate(
       'TransferScanner',
       paramsForTransferFormToTransferScanner({
@@ -161,22 +160,20 @@ const TransferForm = ({
   }, [navigation, transferType])
 
   const navigationToTransferSelectFee = useCallback(() => {
-    navigation.navigate('TransferSelectFee', {
-      currentToken: {
-        ...selectedToken,
-        balance: amountRef.current
-      },
-      currentFee: selectedFee,
-      fees: feeOptions
+    const params = paramsForTransferFormToTransferSelectFee({
+      selectedToken,
+      selectedEthFee,
+      amount: amountRef.current
     })
-  }, [navigation, selectedFee, selectedToken])
+    navigation.navigate('TransferSelectFee', params)
+  }, [navigation, selectedEthFee, selectedToken])
 
   const renderAddressElement = useCallback(() => {
     return transferType === TransferHelper.TYPE_DEPOSIT ? (
       <OMGWalletAddress
         style={styles.addressInput}
         name='Plasma Contract'
-        address={selectedAddress}
+        address={address}
       />
     ) : (
       <OMGAddressInput
@@ -187,12 +184,7 @@ const TransferForm = ({
         onPressScanQR={navigateToTransferScanner}
       />
     )
-  }, [
-    navigateToTransferScanner,
-    selectedAddress,
-    showErrorAddress,
-    transferType
-  ])
+  }, [address, navigateToTransferScanner, showErrorAddress, transferType])
 
   return (
     <SafeAreaView style={styles.container(theme)}>
@@ -231,7 +223,7 @@ const TransferForm = ({
               showError={showErrorAmount}
               errorMessage={errorAmountMessage}
               focusRef={amountFocusRef}
-              defaultValue={navigation.getParam('lastAmount')}
+              defaultValue={amount}
               style={styles.amountInput}
             />
           </OMGBox>
@@ -239,7 +231,7 @@ const TransferForm = ({
             <OMGText style={styles.title(theme)}>Transaction Fee</OMGText>
             {transferType === TransferHelper.TYPE_TRANSFER_ROOTCHAIN ? (
               <OMGFeeInput
-                fee={selectedFee}
+                fee={selectedEthFee}
                 style={styles.feeInput}
                 onPress={navigationToTransferSelectFee}
               />
@@ -247,7 +239,7 @@ const TransferForm = ({
               <OMGFeeTokenInput
                 onPress={navigateToSelectPlasmaFee}
                 style={styles.feeInput}
-                feeToken={selectedFeeToken || fees[0]}
+                feeToken={selectedPlasmaFee || fees[0]}
                 loading={loadingFeeToken}
               />
             )}

@@ -17,12 +17,12 @@ import { OMGBlockchainLabel } from 'components/widgets'
 import { ScrollView } from 'react-native-gesture-handler'
 
 const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
-  const defaultAmount = navigation.getParam('lastAmount')
+  const amount = navigation.getParam('amount')
   const selectedToken = navigation.getParam(
     'selectedToken',
     wallet.childchainAssets[0]
   )
-  const amountRef = useRef(defaultAmount)
+  const amountRef = useRef(amount)
   const amountFocusRef = useRef(null)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
   const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
@@ -74,7 +74,7 @@ const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
               navigation.navigate('TransferSelectBalance', {
                 transferType: TransferHelper.TYPE_EXIT,
                 currentToken: selectedToken,
-                lastAmount: amountRef.current,
+                amount: amountRef.current,
                 assets: wallet.childchainAssets,
                 exit: true
               })
@@ -86,7 +86,7 @@ const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
             focusRef={amountFocusRef}
             showError={showErrorAmount}
             errorMessage={errorAmountMessage}
-            defaultValue={navigation.getParam('lastAmount')}
+            defaultValue={amount}
             style={styles.amountInput}
           />
           <OMGExitWarning style={styles.warningContainer} />

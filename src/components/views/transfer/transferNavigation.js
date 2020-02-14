@@ -1,40 +1,59 @@
 import * as TransferHelper from './transferHelper'
 import feeOptions from './feeOptions'
 
+export const getParamsForTransferForm = (navigation, wallet) => {
+  const transferType = navigation.getParam('transferType')
+  return {
+    selectedEthFee: navigation.getParam('selectedEthFee', feeOptions[0]),
+    selectedPlasmaFee: navigation.getParam('selectedPlasmaFee'),
+    selectedToken: navigation.getParam(
+      'selectedToken',
+      TransferHelper.getDefaultToken(
+        transferType,
+        wallet.rootchainAssets,
+        wallet.childchainAssets
+      )
+    ),
+    amount: navigation.getParam('amount'),
+    address: navigation.getParam('address'),
+    transferType
+  }
+}
+
 export const paramsForTransferFormToTransferSelectBalance = ({
   transferType,
   selectedToken,
-  currentAmount
+  amount
 }) => {
   return {
-    currentToken: selectedToken,
-    lastAmount: currentAmount,
+    selectedToken,
+    amount,
     transferType
   }
 }
 
 export const paramsForTransferFormToTransferConfirm = ({
   selectedToken,
-  currentAmount,
-  currentAddress,
-  selectedFeeToken,
+  amount,
+  address,
+  selectedPlasmaFee,
   wallet,
   transferType,
-  selectedFee
+  selectedEthFee
 }) => {
   return {
-    token: { ...selectedToken, balance: currentAmount },
+    token: { ...selectedToken, balance: amount },
     fromWallet: wallet,
     transferType,
-    selectedFeeToken,
+    selectedPlasmaFee,
     toWallet: {
       name:
         transferType === TransferHelper.TYPE_DEPOSIT
           ? 'Plasma Contract'
           : 'Another wallet',
-      address: currentAddress
+      address: address
     },
-    fee: TransferHelper.getTransferFee(transferType, selectedFee)
+    selectedEthFee: TransferHelper.getTransferFee(transferType, selectedEthFee)
   }
 }
 
@@ -46,22 +65,49 @@ export const paramsForTransferFormToTransferScanner = ({ isRootchain }) => {
 
 export const paramsForTransferFormToTransferSelectFee = ({
   selectedToken,
-  currentAmount,
-  selectedFee
+  selectedEthFee,
+  amount
 }) => {
   return {
-    currentToken: {
+    selectedToken: {
       ...selectedToken,
-      balance: currentAmount
+      balance: amount
     },
-    currentFee: selectedFee,
-    fee: feeOptions
+    selectedEthFee,
+    fees: feeOptions
+  }
+}
+
+export const paramsForTransferSelectPlasmaFeeToTransferForm = ({
+  selectedPlasmaFee
+}) => {
+  return {
+    selectedPlasmaFee
+  }
+}
+
+export const paramsForTransferFormToTransferSelectPlasmaFee = ({
+  selectedPlasmaFee,
+  fees
+}) => {
+  return {
+    selectedPlasmaFee: selectedPlasmaFee || fees[0]
+  }
+}
+
+export const paramsForTransferSelectEthFeeToTransferForm = ({
+  selectedEthFee,
+  amount
+}) => {
+  return {
+    selectedEthFee,
+    amount
   }
 }
 
 export const paramsForTransferConfirmToTransferForm = ({ token }) => {
   return {
-    lastAmount: token.balance
+    amount: token.balance
   }
 }
 
@@ -75,9 +121,9 @@ export const paramsForTransferScannerToTransferSelectBalance = ({
     transferType: isRootchain
       ? TransferHelper.TYPE_TRANSFER_ROOTCHAIN
       : TransferHelper.TYPE_TRANSFER_CHILDCHAIN,
-    currentToken: assets[0],
+    selectedToken: assets[0],
     assets,
-    lastAmount: null
+    amount: null
   }
 }
 
@@ -88,8 +134,7 @@ export const paramsForTransferConfirmToTransferPending = ({
   transferType,
   estimatedFee,
   estimatedFeeUsd,
-  lastUnconfirmedTx,
-  fee
+  lastUnconfirmedTx
 }) => {
   return {
     token,
@@ -98,21 +143,18 @@ export const paramsForTransferConfirmToTransferPending = ({
     transferType,
     estimatedFee,
     estimatedFeeUsd,
-    unconfirmedTx: lastUnconfirmedTx,
-    fee
+    unconfirmedTx: lastUnconfirmedTx
   }
 }
 
 export const paramsForTransferSelectBalanceToAnywhere = ({
   selectedToken,
-  currentToken,
   address,
   transferType
 }) => {
   return {
-    selectedToken: selectedToken || currentToken,
-    shouldFocus: true,
-    lastAmount: null,
+    selectedToken,
+    amount: null,
     transferType,
     address
   }
@@ -123,9 +165,9 @@ export const getParamsForTransferConfirmFromTransferForm = navigation => {
     token: navigation.getParam('token'),
     fromWallet: navigation.getParam('fromWallet'),
     toWallet: navigation.getParam('toWallet'),
-    fee: navigation.getParam('fee'),
     transferType: navigation.getParam('transferType'),
-    selectedFeeToken: navigation.getParam('selectedFeeToken')
+    selectedEthFee: navigation.getParam('selectedEthFee'),
+    selectedPlasmaFee: navigation.getParam('selectedPlasmaFee')
   }
 }
 
@@ -138,15 +180,14 @@ export const getParamsForTransferScannerFromTransferForm = navigation => {
 export const getParamsForTransferSelectFeeFromTransferForm = navigation => {
   return {
     fees: feeOptions,
-    currentToken: navigation.getParam('currentToken'),
-    currentFee: navigation.getParam('currentFee')
+    selectedToken: navigation.getParam('selectedToken'),
+    selectedEthFee: navigation.getParam('selectedEthFee')
   }
 }
 
-export const getParamsForTransferSelectTokenFeeFromTransferForm = navigation => {
+export const getParamsForTransferSelectPlasmaFeeFromTransferForm = navigation => {
   return {
-    currentFeeToken: navigation.getParam('currentFeeToken'),
-    tokens: navigation.getParam('tokens')
+    selectedPlasmaFee: navigation.getParam('selectedPlasmaFee')
   }
 }
 
@@ -163,8 +204,8 @@ export const getParamsForTransferSelectBalanceFromTransferForm = (
   return {
     address: navigation.getParam('address'),
     assets: assets,
-    currentToken: navigation.getParam('currentToken'),
-    lastAmount: navigation.getParam('lastAmount'),
+    selectedToken: navigation.getParam('selectedToken'),
+    amount: navigation.getParam('amount'),
     transferType: navigation.getParam('transferType')
   }
 }

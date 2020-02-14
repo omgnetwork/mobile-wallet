@@ -10,22 +10,25 @@ import {
   OMGFontIcon,
   OMGText
 } from 'components/widgets'
-import { getParamsForTransferSelectTokenFeeFromTransferForm } from './transferNavigation'
+import {
+  getParamsForTransferSelectPlasmaFeeFromTransferForm,
+  paramsForTransferSelectPlasmaFeeToTransferForm
+} from './transferNavigation'
 
 const TransferSelectPlasmaFee = ({ theme, loading, navigation, fees }) => {
   const {
-    currentFeeToken,
+    selectedPlasmaFee,
     tokens
-  } = getParamsForTransferSelectTokenFeeFromTransferForm(navigation)
+  } = getParamsForTransferSelectPlasmaFeeFromTransferForm(navigation)
   const [displayFees, setDisplayFees] = useState(fees)
-  const [selectedFeeToken, setSelectedFeeToken] = useState(currentFeeToken)
+  const [plasmaFee, setPlasmaFee] = useState(selectedPlasmaFee)
 
   useEffect(() => {
     if (fees && fees.length) {
       setDisplayFees(fees)
-      setSelectedFeeToken(currentFeeToken || fees[0])
+      setPlasmaFee(selectedPlasmaFee || fees[0])
     }
-  }, [currentFeeToken, fees, tokens])
+  }, [selectedPlasmaFee, fees, tokens])
 
   return (
     <SafeAreaView style={styles.container(theme)}>
@@ -58,11 +61,10 @@ const TransferSelectPlasmaFee = ({ theme, loading, navigation, fees }) => {
               style={{ marginTop: 8 }}
               token={item}
               onPress={() => {
-                setSelectedFeeToken(item)
+                setPlasmaFee(item)
               }}
               selected={
-                selectedFeeToken &&
-                item.contractAddress === selectedFeeToken.contractAddress
+                plasmaFee && item.contractAddress === plasmaFee.contractAddress
               }
             />
           )}
@@ -70,9 +72,10 @@ const TransferSelectPlasmaFee = ({ theme, loading, navigation, fees }) => {
         <View style={styles.buttonContainer}>
           <OMGButton
             onPress={() => {
-              navigation.navigate('TransferForm', {
-                selectedFeeToken
+              const params = paramsForTransferSelectPlasmaFeeToTransferForm({
+                selectedPlasmaFee: plasmaFee
               })
+              navigation.navigate('TransferForm', params)
             }}>
             Apply
           </OMGButton>

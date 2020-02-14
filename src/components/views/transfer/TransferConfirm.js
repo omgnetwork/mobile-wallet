@@ -40,9 +40,9 @@ const TransferConfirm = ({
     token,
     fromWallet,
     toWallet,
-    fee,
     transferType,
-    selectedFeeToken
+    selectedEthFee,
+    selectedPlasmaFee
   } = getParamsForTransferConfirmFromTransferForm(navigation)
   const [estimatedFee, setEstimatedFee] = useState(null)
   const [estimatedFeeSymbol, setEstimatedFeeSymbol] = useState(null)
@@ -59,14 +59,14 @@ const TransferConfirm = ({
 
   useEffect(() => {
     async function calculateEstimatedFee() {
-      if (selectedFeeToken) {
+      if (selectedPlasmaFee) {
         const plasmaFee = BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
-          selectedFeeToken.amount,
-          selectedFeeToken.tokenDecimal
+          selectedPlasmaFee.amount,
+          selectedPlasmaFee.tokenDecimal
         )
         const plasmaFeeUsd = BlockchainRenderer.renderTokenPrice(
           plasmaFee,
-          selectedFeeToken.price
+          selectedPlasmaFee.price
         )
         const totalPrice = BlockchainRenderer.renderTotalPrice(
           sendAmount,
@@ -77,7 +77,7 @@ const TransferConfirm = ({
           plasmaFee
         )
         setEstimatedFee(plasmaFee)
-        setEstimatedFeeSymbol(selectedFeeToken?.tokenSymbol ?? 'ETH')
+        setEstimatedFeeSymbol(selectedPlasmaFee?.tokenSymbol ?? 'ETH')
         setEstimatedFeeUsd(plasmaFeeUsd)
         setEstimatedTotalPrice(totalPrice)
         setEstimatedTotalAmount(totalAmount)
@@ -86,9 +86,9 @@ const TransferConfirm = ({
           const gasUsed = await TransferHelper.getGasUsed(transferType, token, {
             wallet: blockchainWallet,
             to: toWallet.address,
-            fee: fee
+            fee: selectedEthFee
           })
-          const gasPrice = fee && fee.amount
+          const gasPrice = selectedEthFee && selectedEthFee.amount
           const gasFee = BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
           const usdPerEth = ethToken && ethToken.price
           const gasFeeUsd = BlockchainRenderer.renderTokenPrice(
@@ -117,8 +117,8 @@ const TransferConfirm = ({
   }, [
     blockchainWallet,
     ethToken,
-    fee,
-    selectedFeeToken,
+    selectedEthFee,
+    selectedPlasmaFee,
     sendAmount,
     toWallet.address,
     token,
@@ -151,13 +151,11 @@ const TransferConfirm = ({
           transferType,
           estimatedFee,
           estimatedFeeUsd,
-          lastUnconfirmedTx,
-          fee
+          lastUnconfirmedTx
         })
       )
     }
   }, [
-    fee,
     fromWallet,
     loading,
     navigation,
@@ -167,7 +165,8 @@ const TransferConfirm = ({
     token,
     estimatedFee,
     estimatedFeeUsd,
-    transferType
+    transferType,
+    selectedEthFee
   ])
 
   useEffect(() => {
@@ -253,11 +252,11 @@ const TransferConfirm = ({
   const sendToken = () => {
     dispatchSendToken(
       token,
-      fee,
+      selectedEthFee,
       blockchainWallet,
       toWallet.address,
       transferType,
-      selectedFeeToken
+      selectedPlasmaFee
     )
   }
 
@@ -304,7 +303,7 @@ const TransferConfirm = ({
           </View>
           <View
             style={[
-              styles.transactionFeeContainer(fee),
+              styles.transactionFeeContainer(selectedEthFee),
               styles.marginSubtitle
             ]}>
             <OMGText style={styles.subtitle(theme)}>To Send</OMGText>
@@ -512,31 +511,31 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchSendToken: (
     token,
-    fee,
+    selectedEthFee,
     blockchainWallet,
     toAddress,
     transferType,
-    selectedFeeToken
+    selectedPlasmaFee
   ) =>
     dispatch(
       getAction(
         token,
-        fee,
+        selectedEthFee,
         blockchainWallet,
         toAddress,
         transferType,
-        selectedFeeToken
+        selectedPlasmaFee
       )
     )
 })
 
 const getAction = (
   token,
-  fee,
+  selectedEthFee,
   blockchainWallet,
   toAddress,
   transferType,
-  selectedFeeToken
+  selectedPlasmaFee
 ) => {
   const IS_DEPOSIT = transferType === TransferHelper.TYPE_DEPOSIT
   const ETH_TOKEN = token.contractAddress === ContractAddress.ETH_ADDRESS
@@ -552,14 +551,19 @@ const getAction = (
       blockchainWallet,
       toAddress,
       token,
-      selectedFeeToken
+      selectedPlasmaFee
     )
   } else if (ETH_TOKEN) {
-    return ethereumActions.sendEthToken(token, fee, blockchainWallet, toAddress)
+    return ethereumActions.sendEthToken(
+      token,
+      selectedEthFee,
+      blockchainWallet,
+      toAddress
+    )
   } else {
     return ethereumActions.sendErc20Token(
       token,
-      fee,
+      selectedEthFee,
       blockchainWallet,
       toAddress
     )

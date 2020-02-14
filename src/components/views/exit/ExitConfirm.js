@@ -131,7 +131,7 @@ const ExitConfirm = ({
 
   const handleBackToEditPressed = useCallback(() => {
     navigation.navigate('ExitForm', {
-      lastAmount: token.balance
+      amount: token.balance
     })
   }, [navigation, token.balance])
 

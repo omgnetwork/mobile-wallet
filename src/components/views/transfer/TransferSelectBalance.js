@@ -26,12 +26,12 @@ const TransferSelectBalance = ({
     address,
     assets,
     transferType,
-    currentToken
+    selectedToken
   } = getParamsForTransferSelectBalanceFromTransferForm(
     navigation,
     primaryWallet
   )
-  const [selectedToken, setSelectedToken] = useState(currentToken || assets[0])
+  const [token, setToken] = useState(selectedToken || assets[0])
 
   const getNavigationDestination = useCallback(() => {
     switch (transferType) {
@@ -78,9 +78,9 @@ const TransferSelectBalance = ({
             style={{ marginTop: 8 }}
             token={item}
             onPress={() => {
-              setSelectedToken(item)
+              setToken(item)
             }}
-            selected={item.contractAddress === selectedToken.contractAddress}
+            selected={item.contractAddress === token.contractAddress}
           />
         )}
       />
@@ -91,8 +91,7 @@ const TransferSelectBalance = ({
             navigation.navigate(
               destination,
               paramsForTransferSelectBalanceToAnywhere({
-                selectedToken,
-                currentToken,
+                selectedToken: token,
                 transferType,
                 address
               })

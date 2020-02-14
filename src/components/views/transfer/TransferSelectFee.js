@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import { withNavigation, SafeAreaView } from 'react-navigation'
@@ -10,15 +10,29 @@ import {
   OMGFontIcon,
   OMGText
 } from 'components/widgets'
-import { getParamsForTransferSelectFeeFromTransferForm } from './transferNavigation'
+import {
+  getParamsForTransferSelectFeeFromTransferForm,
+  paramsForTransferSelectEthFeeToTransferForm
+} from './transferNavigation'
 
 const TransferSelectFee = ({ theme, loading, navigation }) => {
   const {
     fees,
-    currentToken,
-    currentFee
+    selectedToken,
+    selectedEthFee
   } = getParamsForTransferSelectFeeFromTransferForm(navigation)
-  const [selectedFee, setSelectedFee] = useState(currentFee || fees[0])
+  const [ethFee, setEthFee] = useState(selectedEthFee || fees[0])
+
+  const navigateToTransferForm = useCallback(
+    selectedFee => {
+      const params = paramsForTransferSelectEthFeeToTransferForm({
+        selectedEthFee: ethFee,
+        amount: selectedToken.balance
+      })
+      navigation.navigate('TransferForm', params)
+    },
+    [selectedToken.balance, ethFee, navigation]
+  )
 
   return (
     <SafeAreaView style={styles.container(theme)}>
@@ -28,11 +42,7 @@ const TransferSelectFee = ({ theme, loading, navigation }) => {
           size={18}
           color={theme.colors.white}
           style={styles.headerIcon}
-          onPress={() =>
-            navigation.navigate('TransferForm', {
-              lastAmount: currentToken.balance
-            })
-          }
+          onPress={navigateToTransferForm}
         />
         <OMGText style={styles.headerTitle(theme)}>Transaction Fee</OMGText>
       </View>
@@ -58,22 +68,14 @@ const TransferSelectFee = ({ theme, loading, navigation }) => {
               style={{ marginTop: 8 }}
               fee={item}
               onPress={() => {
-                setSelectedFee(item)
+                setEthFee(item)
               }}
-              selected={item.id === selectedFee.id}
+              selected={item.id === ethFee.id}
             />
           )}
         />
         <View style={styles.buttonContainer}>
-          <OMGButton
-            onPress={() => {
-              navigation.navigate('TransferForm', {
-                selectedFee,
-                lastAmount: currentToken.balance
-              })
-            }}>
-            Apply
-          </OMGButton>
+          <OMGButton onPress={navigateToTransferForm}>Apply</OMGButton>
         </View>
       </View>
     </SafeAreaView>
