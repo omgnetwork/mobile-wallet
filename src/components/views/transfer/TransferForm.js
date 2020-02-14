@@ -105,28 +105,38 @@ const TransferForm = ({
     navigation.navigate('TransferSelectBalance', params)
   }, [navigation, selectedToken, transferType])
 
+  const valid = useCallback(
+    plasmaFee => {
+      if (!Validator.isValidAddress(addressRef.current)) {
+        setShowErrorAddress(true)
+      } else if (!Validator.isValidAmount(amountRef.current)) {
+        setErrorAmountMessage('Invalid amount')
+        setShowErrorAmount(true)
+      } else if (
+        !Validator.isEnoughToken(amountRef.current, selectedToken.balance)
+      ) {
+        setErrorAmountMessage('Not enough balance')
+        setShowErrorAmount(true)
+      } else if (
+        transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN &&
+        !plasmaFee
+      ) {
+      } else {
+        setShowErrorAddress(false)
+        setShowErrorAmount(false)
+        return true
+      }
+      return false
+    },
+    [selectedToken.balance, transferType]
+  )
+
   const submit = useCallback(() => {
     const plasmaFee =
       transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN
         ? selectedPlasmaFee || fees[0]
         : null
-    if (!Validator.isValidAddress(addressRef.current)) {
-      setShowErrorAddress(true)
-    } else if (!Validator.isValidAmount(amountRef.current)) {
-      setErrorAmountMessage('Invalid amount')
-      setShowErrorAmount(true)
-    } else if (
-      !Validator.isEnoughToken(amountRef.current, selectedToken.balance)
-    ) {
-      setErrorAmountMessage('Not enough balance')
-      setShowErrorAmount(true)
-    } else if (
-      transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN &&
-      !plasmaFee
-    ) {
-    } else {
-      setShowErrorAddress(false)
-      setShowErrorAmount(false)
+    if (valid(plasmaFee)) {
       navigation.navigate(
         'TransferConfirm',
         paramsForTransferFormToTransferConfirm({
@@ -147,6 +157,7 @@ const TransferForm = ({
     selectedPlasmaFee,
     selectedToken,
     transferType,
+    valid,
     wallet
   ])
 
