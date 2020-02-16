@@ -53,7 +53,7 @@ const OMGAssetList = ({
                 name='redo'
                 size={12}
                 style={styles.redo}
-                color={theme.colors.gray2}
+                color={theme.colors.new_gray9}
               />
             </TouchableOpacity>
           </>

@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     paddingTop: 32
   },
   divider: theme => ({
-    backgroundColor: theme.colors.black1,
+    backgroundColor: theme.colors.new_white2,
     height: 1,
     opacity: 0.3
   }),

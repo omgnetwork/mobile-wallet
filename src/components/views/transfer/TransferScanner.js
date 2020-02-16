@@ -133,7 +133,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
         style={styles.unableIcon(theme)}
         name='pending'
         size={16}
-        color={theme.colors.gray2}
+        color={theme.colors.new_gray9}
       />
       <OMGText style={styles.unableText(theme)}>
         Unable to Transfer,{'\n'}There's a pending transaction
@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
     fontSize: 18
   }),
   unableText: theme => ({
-    color: theme.colors.gray2,
+    color: theme.colors.new_gray9,
     marginTop: 24,
     textAlign: 'center'
   }),

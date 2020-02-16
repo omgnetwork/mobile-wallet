@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white
   }),
   tokenPrice: theme => ({
-    color: theme.colors.gray2
+    color: theme.colors.new_gray9
   }),
   headerContainer: {
     flexDirection: 'row',

@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }),
   amount: theme => ({
-    color: theme.colors.gray2,
+    color: theme.colors.new_gray9,
     marginRight: 10
   }),
   text: theme => ({

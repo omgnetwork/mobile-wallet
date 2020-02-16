@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }),
   subText: theme => ({
-    color: theme.colors.gray2,
+    color: theme.colors.new_gray9,
     fontSize: 10
   }),
   textAmount: theme => ({

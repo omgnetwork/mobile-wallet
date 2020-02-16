@@ -25,7 +25,7 @@ const OMGItemWallet = ({ wallet, style, theme, showCaret, onPress }) => {
         <OMGFontIcon
           name='chevron-right'
           size={24}
-          color={theme.colors.gray2}
+          color={theme.colors.new_gray9}
         />
       )}
     </TouchableOpacity>

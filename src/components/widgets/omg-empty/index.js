@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   emptyText: theme => ({
-    color: theme.colors.gray2,
+    color: theme.colors.new_gray9,
     textAlign: 'center',
     marginTop: 14
   })
