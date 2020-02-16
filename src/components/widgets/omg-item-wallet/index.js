@@ -43,11 +43,10 @@ const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
     borderWidth: 1,
-    borderColor: theme.colors.new_gray5,
+    borderColor: theme.colors.new_black7,
     backgroundColor: theme.colors.new_black7,
     alignItems: 'center',
-    paddingVertical: 20,
-    borderRadius: theme.roundness
+    paddingVertical: 20
   }),
   sectionName: {
     flex: 1,

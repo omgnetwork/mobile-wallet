@@ -9,7 +9,7 @@ const OMGMnemonicConfirmBox = ({ theme, phrases, onRemovePhrase, style }) => {
       text={phrase}
       key={phrase}
       onPress={() => onRemovePhrase(phrase)}
-      style={styles.chip}
+      style={styles.chip(theme)}
     />
   ))
   return <View style={{ ...styles.container(theme), ...style }}>{chips}</View>
@@ -18,19 +18,22 @@ const OMGMnemonicConfirmBox = ({ theme, phrases, onRemovePhrase, style }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     backgroundColor: theme.colors.new_black7,
-    borderRadius: theme.roundness,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingHorizontal: 12,
-    paddingBottom: 12,
+    paddingTop: 8,
+    paddingBottom: 16,
     minHeight: 48,
-    borderColor: theme.colors.gray4,
+    borderLeftColor: theme.colors.new_black7,
+    borderRightColor: theme.colors.new_black7,
+    borderTopColor: theme.colors.gray5,
+    borderBottomColor: theme.colors.gray5,
     borderWidth: 1
   }),
-  chip: {
+  chip: theme => ({
     marginRight: 8,
-    marginTop: 8
-  }
+    marginTop: 8,
+    backgroundColor: theme.colors.new_gray5
+  })
 })
 
 export default withTheme(OMGMnemonicConfirmBox)

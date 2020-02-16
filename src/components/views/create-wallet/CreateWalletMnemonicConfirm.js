@@ -3,7 +3,7 @@ import { withNavigation, SafeAreaView } from 'react-navigation'
 import { GoogleAnalytics } from 'common/analytics'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, ScrollView } from 'react-native'
 import { walletActions, settingActions } from 'common/actions'
 import BackupMnemonicImage from './assets/backup-mnemonic.svg'
 import {
@@ -85,27 +85,31 @@ const CreateWalletMnemonicConfirm = ({
 
   return (
     <SafeAreaView style={styles.container(theme)}>
-      <BackupMnemonicImage width={80} height={80} style={styles.image} />
-      <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
-        Confirm
-      </OMGText>
-      <OMGText style={styles.description(theme)}>
-        Please select Mnemonic Phrase in correct order
-      </OMGText>
-      <OMGMnemonicConfirmBox
-        style={styles.confirmBox}
-        phrases={orderedPhrases}
-        onRemovePhrase={onRemoveOrderedPhrase}
-      />
-      <View style={styles.mnemonicContainer}>{mnemonicPhrases}</View>
-      <View style={styles.buttonContainer}>
-        <OMGButton
-          onPress={confirm}
-          disabled={disabledBtn || loading.show}
-          loading={loading.show}>
+      <ScrollView
+        contentContainerStyle={styles.contentContainer}
+        bounces={false}>
+        <BackupMnemonicImage width={80} height={80} style={styles.image} />
+        <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
           Confirm
-        </OMGButton>
-      </View>
+        </OMGText>
+        <OMGText style={styles.description(theme)}>
+          Please select Mnemonic Phrase in correct order
+        </OMGText>
+        <OMGMnemonicConfirmBox
+          style={styles.confirmBox}
+          phrases={orderedPhrases}
+          onRemovePhrase={onRemoveOrderedPhrase}
+        />
+        <View style={styles.mnemonicContainer}>{mnemonicPhrases}</View>
+        <View style={styles.buttonContainer}>
+          <OMGButton
+            onPress={confirm}
+            disabled={disabledBtn || loading.show}
+            loading={loading.show}>
+            Confirm
+          </OMGButton>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }
@@ -113,9 +117,11 @@ const CreateWalletMnemonicConfirm = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
-    paddingHorizontal: 16,
     backgroundColor: theme.colors.new_black7
   }),
+  contentContainer: {
+    paddingHorizontal: 16
+  },
   image: {
     marginTop: 32
   },
@@ -133,19 +139,18 @@ const styles = StyleSheet.create({
   },
   mnemonicContainer: {
     flex: 1,
-    marginTop: 24,
+    marginTop: 8,
     flexDirection: 'row',
     flexWrap: 'wrap'
   },
   buttonContainer: {
     justifyContent: 'flex-end',
-    marginBottom: 8
+    marginTop: 16,
+    marginBottom: 16
   },
   chip: theme => ({
     marginRight: 8,
-    borderWidth: 1,
-    borderColor: theme.colors.gray4,
-    backgroundColor: theme.colors.gray4
+    borderWidth: 1
   })
 })
 

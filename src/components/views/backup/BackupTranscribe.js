@@ -18,13 +18,13 @@ const BackupTranscribe = ({ navigation, theme }) => {
   }
 
   const mnemonicPhrases = phrases.map(text => {
-    return <OMGTextChip text={text} style={styles.chip} key={text} />
+    return <OMGTextChip text={text} style={styles.chip(theme)} key={text} />
   })
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container(theme)}>
       <OMGItemWallet wallet={wallet} style={styles.walletItem} />
-      <OMGText style={styles.description(theme)}>
+      <OMGText style={styles.description(theme)} weight='regular'>
         Please transcribe the Mnemonic phrase properly and back up it securely
       </OMGText>
       <View style={styles.mnemonicContainer}>{mnemonicPhrases}</View>
@@ -41,21 +41,23 @@ const BackupTranscribe = ({ navigation, theme }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: theme => ({
     flex: 1,
-    padding: 16
-  },
+    padding: 16,
+    backgroundColor: theme.colors.gray4
+  }),
   walletItem: {
     marginTop: 8,
     padding: 8
   },
   description: theme => ({
-    color: theme.colors.primary,
-    marginTop: 16
+    color: theme.colors.new_gray1,
+    marginTop: 30,
+    fontSize: 16
   }),
   mnemonicContainer: {
     flex: 1,
-    marginTop: 24,
+    marginTop: 30,
     flexDirection: 'row',
     flexWrap: 'wrap'
   },
@@ -63,9 +65,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end'
   },
-  chip: {
-    marginRight: 8
-  },
+  chip: theme => ({
+    marginRight: 8,
+    backgroundColor: theme.colors.new_gray5,
+    borderWidth: 0
+  }),
   button: theme => ({
     borderWidth: 1,
     borderColor: theme.colors.gray3,
