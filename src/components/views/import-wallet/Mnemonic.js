@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, KeyboardAvoidingView } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { walletActions } from 'common/actions'
-import { Header } from 'react-navigation-stack'
 import {
   OMGText,
   OMGTextInputBox,
   OMGButton,
-  OMGDismissKeyboard
+  OMGDismissKeyboard,
+  OMGKeyboardShift
 } from 'components/widgets'
 import { useLoading } from 'common/hooks'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
-import { Validator, Dimensions } from 'common/utils'
+import { Validator } from 'common/utils'
 
 const Mnemonic = ({
   dispatchImportWalletByMnemonic,
@@ -27,7 +27,7 @@ const Mnemonic = ({
   const [showErrorMnemonic, setShowErrorMnemonic] = useState(false)
   const [showErrorName, setShowErrorName] = useState(false)
   const [shouldDisable, setShouldDisable] = useLoading(loading, 'WALLET_IMPORT')
-  const statusBarHeight = Dimensions.getStatusBarHeight()
+
   const errorMnemonicMessage = 'Invalid mnemonic'
   const errorNameMessage = 'The wallet name should not be empty'
 
@@ -68,10 +68,7 @@ const Mnemonic = ({
 
   return (
     <OMGDismissKeyboard style={styles.mnemonicContainer(theme)}>
-      <KeyboardAvoidingView
-        style={styles.keyboardAvoidingView}
-        behavior='padding'
-        keyboardVerticalOffset={Header.HEIGHT + statusBarHeight}>
+      <LayoutContainer>
         <OMGText style={styles.textBoxTitle(theme)} weight='mono-semi-bold'>
           Mnemonic Phrase
         </OMGText>
@@ -101,8 +98,19 @@ const Mnemonic = ({
             Import
           </OMGButton>
         </View>
-      </KeyboardAvoidingView>
+      </LayoutContainer>
     </OMGDismissKeyboard>
+  )
+}
+
+const LayoutContainer = ({ children }) => {
+  return (
+    <OMGKeyboardShift
+      extraHeight={24}
+      contentContainerStyle={styles.keyboardAvoidingView}
+      androidEnabled={true}>
+      {children}
+    </OMGKeyboardShift>
   )
 }
 
@@ -135,12 +143,12 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.new_black7
   }),
   keyboardAvoidingView: {
+    flex: 1,
     paddingHorizontal: 16,
-    flex: 1
+    flexGrow: 1
   },
   buttonContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
+    marginTop: 'auto',
     marginBottom: 16
   }
 })

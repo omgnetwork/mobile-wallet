@@ -31,7 +31,7 @@ const OMGTextInputBox = ({
           hideUnderline={true}
           disabled={disabled}
           maxLength={maxLength}
-          lines={lines}
+          lines={numberOfLines}
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
           placeholder={placeholder}

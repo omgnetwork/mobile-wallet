@@ -198,7 +198,9 @@ const TransferForm = ({
   return (
     <SafeAreaView style={styles.container(theme)}>
       <OMGKeyboardShift
+        extraHeight={24}
         contentContainerStyle={styles.scrollView}
+        androidEnabled={true}
         innerRef={ref => {
           keyboardAwareScrollRef.current = ref
         }}>

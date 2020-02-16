@@ -16,7 +16,7 @@ const OMGAssetHeader = ({
 }) => {
   const BlockchainIcon = rootchain ? IconEth : IconGo
   return (
-    <View style={{ ...styles.container(theme), ...style }}>
+    <View style={{ ...styles.container(theme), ...style }} ref={anchoredRef}>
       <View style={styles.balance}>
         {loading ? (
           <OMGEmpty style={styles.loading} loading={loading} />
@@ -27,7 +27,7 @@ const OMGAssetHeader = ({
           {currency}
         </OMGText>
       </View>
-      <View style={styles.footer} ref={anchoredRef}>
+      <View style={styles.footer}>
         <BlockchainIcon
           fill={theme.colors.new_gray2}
           width={rootchain ? 14 : 57.963}

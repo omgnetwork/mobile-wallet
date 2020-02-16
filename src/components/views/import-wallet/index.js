@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
   contentContainer: theme => ({
     flex: 1,
     flexDirection: 'column',
-    paddingVertical: 8,
     backgroundColor: theme.colors.gray4
   }),
   header: {

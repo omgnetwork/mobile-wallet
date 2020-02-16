@@ -3,7 +3,7 @@ import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
 import { Header } from 'react-navigation-stack'
-import { View, StyleSheet, KeyboardAvoidingView } from 'react-native'
+import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
 import { Validator, Dimensions } from 'common/utils'
 import { Alert } from 'common/constants'
 import {
@@ -20,6 +20,7 @@ const CreateWalletForm = ({ wallets, navigation, theme }) => {
     'The wallet name should not be empty'
   )
   const statusBarHeight = Dimensions.getStatusBarHeight()
+  const keyboardAvoidingBehavior = Platform.OS === 'ios' ? 'padding' : null
 
   const navigateNext = () => {
     if (!Validator.isValidWalletName(walletNameRef.current)) {
@@ -43,7 +44,7 @@ const CreateWalletForm = ({ wallets, navigation, theme }) => {
     <OMGDismissKeyboard style={styles.container(theme)}>
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
-        behavior='padding'
+        behavior={keyboardAvoidingBehavior}
         keyboardVerticalOffset={Header.HEIGHT + statusBarHeight}>
         <OMGText weight='mono-semi-bold' style={styles.textTitle(theme)}>
           Name
