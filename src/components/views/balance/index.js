@@ -1,7 +1,7 @@
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect, useCallback, useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Linking, View, StatusBar } from 'react-native'
-import { SafeAreaView } from 'react-navigation'
+import { SafeAreaView, withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
 import { Dimensions } from 'common/utils'
@@ -34,6 +34,7 @@ const Balance = ({
   navigation,
   wallets,
   unconfirmedTxs,
+  isFocused,
   loading,
   feedbackCompleteTx,
   dispatchInvalidateFeedbackCompleteTx,
@@ -76,19 +77,18 @@ const Balance = ({
     dispatchAddAnchoredComponent
   )
   const [measured, setMeasured] = useState(false)
+  const scroller = useRef({})
 
   useEffect(() => {
-    function didFocus() {
+    if (isFocused) {
       StatusBar.setBarStyle('light-content')
       StatusBar.setBackgroundColor(theme.colors.gray4)
     }
+  }, [isFocused, theme.colors.gray4])
 
-    const didFocusSubscription = navigation.addListener('didFocus', didFocus)
-
-    return () => {
-      didFocusSubscription.remove()
-    }
-  }, [navigation, primaryWallet, theme.colors.gray4])
+  useEffect(() => {
+    scroller.current.scrollTo(navigation.getParam('page'))
+  }, [navigation])
 
   useEffect(() => {
     if (
@@ -187,6 +187,8 @@ const Balance = ({
           </View>
         ) : (
           <OMGViewPager
+            scrollRef={scroller}
+            pageWidth={pageWidth}
             snapOffsets={viewPagerSnapOffsets}
             onPageChanged={handleOnPageChanged}>
             <View style={styles.firstPage}>
@@ -303,4 +305,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTheme(Balance))
+)(withNavigationFocus(withTheme(Balance)))

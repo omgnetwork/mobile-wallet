@@ -1,17 +1,31 @@
-import React, { useRef, useCallback, useState } from 'react'
+import React, { useRef, useCallback, useState, useEffect } from 'react'
 import { StyleSheet, ScrollView } from 'react-native'
 
-const OMGViewPager = ({ children, snapOffsets, onPageChanged }) => {
+const OMGViewPager = ({
+  children,
+  snapOffsets,
+  pageWidth,
+  onPageChanged,
+  scrollRef
+}) => {
   const scroll = useRef(null)
   const [lastPage, setLastPage] = useState(-1)
 
-  // const scrollTo = useCallback(
-  //   page => {
-  //     const targetPosition = (page - 1) * pageWidth - 16
-  //     scroll.current.scrollTo({ x: targetPosition, y: 0 })
-  //   },
-  //   [pageWidth]
-  // )
+  const scrollTo = useCallback(
+    page => {
+      const targetPosition = (page - 1) * pageWidth - 16
+      scroll.current.scrollTo({ x: targetPosition, y: 0 })
+    },
+    [pageWidth]
+  )
+
+  useEffect(() => {
+    if (scrollRef) {
+      scrollRef.current = {
+        scrollTo
+      }
+    }
+  }, [scrollRef, scrollTo])
 
   const handleOnScroll = useCallback(
     event => {

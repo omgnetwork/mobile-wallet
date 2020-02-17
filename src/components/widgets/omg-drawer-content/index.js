@@ -9,17 +9,25 @@ import OMGDrawerWallet from './OMGDrawerWallet'
 import { settingActions, onboardingActions } from 'common/actions'
 import { ScrollView } from 'react-native-gesture-handler'
 
-const ManageWalletMenu = ({ theme, title, style, onPress }) => {
+const ManageWalletMenu = ({
+  theme,
+  title,
+  style,
+  onPress,
+  showCaret = true
+}) => {
   return (
     <TouchableOpacity
       style={{ ...menuStyles.container, ...style }}
       onPress={onPress}>
       <OMGText style={menuStyles.titleLeft(theme)}>{title}</OMGText>
-      <OMGFontIcon
-        name='chevron-right'
-        size={14}
-        style={menuStyles.iconRight}
-      />
+      {showCaret && (
+        <OMGFontIcon
+          name='chevron-right'
+          size={14}
+          style={menuStyles.iconRight}
+        />
+      )}
     </TouchableOpacity>
   )
 }
@@ -28,6 +36,9 @@ const OMGDrawerContent = ({
   navigation,
   dispatchSetPrimaryWalletAddress,
   dispatchSetCurrentPage,
+  dispatchTakeAppTour,
+  dispatchResetBlockchainWallet,
+  provider,
   primaryWallet,
   theme,
   wallets
@@ -37,11 +48,19 @@ const OMGDrawerContent = ({
     navigation.navigate('Initializer')
   }
 
-  const handleManageWalletMenuPress = destination => {
+  const closeDrawerAndNavigate = destination => {
     dispatchSetCurrentPage(destination)
     navigation.navigate(destination)
     requestAnimationFrame(() => {
       navigation.closeDrawer()
+    })
+  }
+
+  const takeAppTour = () => {
+    navigation.closeDrawer()
+    dispatchTakeAppTour()
+    requestAnimationFrame(() => {
+      navigation.navigate('Balance', { page: 1 })
     })
   }
 
@@ -78,25 +97,32 @@ const OMGDrawerContent = ({
           <ManageWalletMenu
             title='Import Wallet'
             theme={theme}
-            onPress={() => handleManageWalletMenuPress('ImportWallet')}
+            onPress={() => closeDrawerAndNavigate('ImportWallet')}
           />
           <View style={styles.divider(theme)} />
           <ManageWalletMenu
             title='Create Wallet'
             theme={theme}
-            onPress={() => handleManageWalletMenuPress('CreateWallet')}
+            onPress={() => closeDrawerAndNavigate('CreateWallet')}
           />
           <View style={styles.divider(theme)} />
           <ManageWalletMenu
             title='Backup Wallet'
             theme={theme}
-            onPress={() => handleManageWalletMenuPress('BackupWallet')}
+            onPress={() => closeDrawerAndNavigate('BackupWallet')}
           />
           <View style={styles.divider(theme)} />
           <ManageWalletMenu
             title='Delete Wallet'
             theme={theme}
-            onPress={() => handleManageWalletMenuPress('DeleteWallet')}
+            onPress={() => closeDrawerAndNavigate('DeleteWallet')}
+          />
+          <View style={styles.divider(theme)} />
+          <ManageWalletMenu
+            title='Take App Tour'
+            theme={theme}
+            showCaret={false}
+            onPress={takeAppTour}
           />
           <View style={styles.divider(theme)} />
           <View style={styles.expander} />
@@ -225,14 +251,19 @@ const mapStateToProps = (state, ownProps) => ({
   primaryWallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
-  wallets: state.wallets
+  wallets: state.wallets,
+  provider: state.setting.provider
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchSetPrimaryWalletAddress: primaryAddress =>
     settingActions.setPrimaryAddress(dispatch, primaryAddress),
-  dispatchSetCurrentPage: (currentPage, page) => {
-    onboardingActions.setCurrentPage(dispatch, currentPage, page)
+  dispatchSetCurrentPage: (currentPage, page) =>
+    onboardingActions.setCurrentPage(dispatch, currentPage, page),
+  dispatchTakeAppTour: () =>
+    onboardingActions.setEnableOnboarding(dispatch, true),
+  dispatchResetBlockchainWallet: provider => {
+    settingActions.setBlockchainWallet(null, provider)
   }
 })
 
