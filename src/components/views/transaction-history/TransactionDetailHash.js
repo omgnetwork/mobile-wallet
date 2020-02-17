@@ -26,13 +26,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10
   }),
-  iconContainer: theme => ({
-    padding: 8,
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: theme.colors.black4
-  }),
   hashText: theme => ({
     flex: 1,
     marginRight: 24,

@@ -78,9 +78,9 @@ const TransactionHistory = ({
   useEffect(() => {
     if (wallet && isFocused) {
       StatusBar.setBarStyle('light-content')
-      StatusBar.setBackgroundColor(theme.colors.gray4)
+      StatusBar.setBackgroundColor(theme.colors.black5)
     }
-  }, [isFocused, theme.colors.gray4, wallet])
+  }, [isFocused, theme.colors.black5, wallet])
 
   useEffect(() => {
     if (isFocused) {
@@ -140,7 +140,7 @@ const TransactionHistory = ({
       forceInset={{ top: 'always' }}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.gray4}
+        backgroundColor={theme.colors.black5}
       />
       <OMGText style={styles.title(theme)}>History</OMGText>
       <OMGMenuImage
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     paddingVertical: 16,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   titleContainer: {
     flexDirection: 'row',

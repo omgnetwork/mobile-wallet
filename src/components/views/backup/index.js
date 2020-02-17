@@ -11,7 +11,7 @@ const Backup = ({ theme, navigation }) => {
     <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.gray4}
+        backgroundColor={theme.colors.black5}
       />
       <View style={styles.contentContainer(theme)}>
         <View style={styles.header}>
@@ -33,12 +33,12 @@ const Backup = ({ theme, navigation }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   contentContainer: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   header: {
     alignItems: 'center',
@@ -55,11 +55,6 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     paddingVertical: 16,
     textTransform: 'uppercase'
-  }),
-  line: theme => ({
-    marginTop: 16,
-    backgroundColor: theme.colors.white3,
-    height: 6
   })
 })
 

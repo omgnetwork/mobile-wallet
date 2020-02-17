@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   option: (theme, active) => ({
-    backgroundColor: active ? theme.colors.new_gray5 : theme.colors.new_black7,
+    backgroundColor: active ? theme.colors.gray4 : theme.colors.black3,
     paddingVertical: 8,
     paddingHorizontal: 30,
     justifyContent: 'center',

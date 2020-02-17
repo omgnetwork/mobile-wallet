@@ -39,11 +39,11 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
 const styles = StyleSheet.create({
   container: (theme, selected) => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.gray4,
+    backgroundColor: theme.colors.black5,
     alignItems: 'center',
     padding: 12,
     borderRadius: theme.roundness,
-    borderColor: theme.colors.new_gray5,
+    borderColor: theme.colors.gray4,
     borderWidth: 1
   }),
   sectionName: {
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   }),
   fiatValue: theme => ({
     textAlign: 'right',
-    color: theme.colors.new_gray7,
+    color: theme.colors.gray6,
     fontSize: 12
   })
 })

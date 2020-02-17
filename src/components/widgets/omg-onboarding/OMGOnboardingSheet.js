@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     fontSize: 14
   }),
   textBottomSmall: theme => ({
-    color: theme.colors.blue3,
+    color: theme.colors.primary,
     fontSize: 10
   }),
   imageCenter: {

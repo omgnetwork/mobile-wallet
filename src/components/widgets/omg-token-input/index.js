@@ -31,8 +31,8 @@ const OMGTokenInput = ({ theme, token, style, onPress }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.new_black7,
-    borderColor: theme.colors.new_gray5,
+    backgroundColor: theme.colors.black3,
+    borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
     padding: 12,
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     marginRight: 16
   },
   amount: theme => ({
-    color: theme.colors.new_gray7,
+    color: theme.colors.gray6,
     marginRight: 10,
     fontSize: 16,
     letterSpacing: -0.64

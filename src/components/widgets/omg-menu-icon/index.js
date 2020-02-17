@@ -33,7 +33,7 @@ const OMGMenuIcon = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.new_black7,
+    backgroundColor: theme.colors.black3,
     alignItems: 'center',
     padding: 20,
     borderRadius: theme.roundness
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: theme.colors.black4
+    borderColor: theme.colors.white
   }),
   sectionName: {
     flex: 1,
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white
   }),
   description: theme => ({
-    color: theme.colors.new_gray7,
+    color: theme.colors.gray6,
     fontSize: 12
   })
 })

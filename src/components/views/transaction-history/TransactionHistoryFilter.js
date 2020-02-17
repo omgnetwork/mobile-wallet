@@ -25,7 +25,7 @@ const TransactionHistoryFilter = ({
     <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.gray4}
+        backgroundColor={theme.colors.black5}
       />
       <View style={styles.header}>
         <OMGFontIcon
@@ -53,7 +53,7 @@ const TransactionHistoryFilter = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   titleContainer: {
     flexDirection: 'row',
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   title: theme => ({
     fontSize: 18,
     textTransform: 'uppercase',
-    color: theme.colors.gray3
+    color: theme.colors.black4
   }),
   icon: {
     padding: 16,

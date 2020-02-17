@@ -62,7 +62,7 @@ const DeleteWalletList = ({
     <SafeAreaView style={styles.safeAreaView(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.gray4}
+        backgroundColor={theme.colors.black5}
       />
       <View style={styles.contentContainer(theme)}>
         <View style={styles.header}>
@@ -95,13 +95,13 @@ const DeleteWalletList = ({
 const styles = StyleSheet.create({
   safeAreaView: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   container: theme => ({
     flex: 1,
     padding: 16,
     justifyContent: 'center',
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   walletItem: {
     marginTop: 8,
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   contentContainer: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   header: {
     alignItems: 'center',
@@ -136,11 +136,6 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     marginLeft: 8,
     textTransform: 'uppercase'
-  }),
-  line: theme => ({
-    marginTop: 16,
-    backgroundColor: theme.colors.white3,
-    height: 6
   })
 })
 

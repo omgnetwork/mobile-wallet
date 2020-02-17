@@ -48,11 +48,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     padding: 16,
-    backgroundColor: theme.colors.new_black7,
+    backgroundColor: theme.colors.black3,
     borderRadius: theme.roundness
   }),
   identicon: theme => ({
-    borderColor: theme.colors.new_gray1,
+    borderColor: theme.colors.gray,
     borderRadius: theme.roundness,
     borderWidth: 1
   }),
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   }),
   buttonContainer: theme => ({
     borderWidth: 1,
-    borderColor: theme.colors.new_gray5,
+    borderColor: theme.colors.gray4,
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 14

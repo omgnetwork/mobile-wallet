@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   detailItemValueText: theme => ({
     fontSize: 16,
     letterSpacing: -0.64,
-    color: theme.colors.new_gray7
+    color: theme.colors.gray6
   })
 })
 

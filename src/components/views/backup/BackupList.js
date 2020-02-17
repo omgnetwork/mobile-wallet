@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     justifyContent: 'center',
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   walletItem: {
     marginTop: 8,

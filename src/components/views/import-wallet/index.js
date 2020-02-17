@@ -11,7 +11,7 @@ const ImportWallet = ({ theme, navigation }) => {
     <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.gray4}
+        backgroundColor={theme.colors.black5}
       />
       <View style={styles.contentContainer(theme)}>
         <View style={styles.header}>
@@ -33,12 +33,12 @@ const ImportWallet = ({ theme, navigation }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   contentContainer: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   header: {
     alignItems: 'center',

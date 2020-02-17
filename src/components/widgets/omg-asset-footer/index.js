@@ -10,7 +10,6 @@ const OMGAssetFooter = ({
   onPressExit,
   enableDeposit,
   enableExit,
-  depositText = 'DEPOSIT',
   footerRef,
   showExit
 }) => {
@@ -18,7 +17,7 @@ const OMGAssetFooter = ({
     <View style={{ ...styles.container(theme), ...style }} ref={footerRef}>
       <TouchableOpacity style={styles.subfooter} onPress={onPressDeposit}>
         <OMGText style={styles.subfooterText(theme, enableDeposit)}>
-          {depositText}
+          DEPOSIT
         </OMGText>
       </TouchableOpacity>
       {showExit && (
@@ -50,11 +49,7 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'left',
     fontSize: 32,
-    color: theme.colors.new_black7
-  }),
-  balanceCurrency: theme => ({
-    color: theme.colors.primaryLight,
-    fontSize: 32
+    color: theme.colors.black3
   }),
   subfooter: {
     flex: 1,
@@ -65,13 +60,13 @@ const styles = StyleSheet.create({
   },
   subfooterText: (theme, enabled) => ({
     fontSize: 14,
-    color: theme.colors.black4,
+    color: theme.colors.white,
     opacity: enabled ? 1.0 : 0.4,
     marginRight: 4
   }),
   divider: theme => ({
     borderLeftWidth: 1,
-    borderLeftColor: theme.colors.new_black7,
+    borderLeftColor: theme.colors.black3,
     opacity: 0.1
   })
 })

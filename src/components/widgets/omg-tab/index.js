@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     backgroundColor: Reanimated.interpolateColors(
       focusAnim,
       [0, 1],
-      [theme.colors.gray4, theme.colors.new_gray3]
+      [theme.colors.black5, theme.colors.gray3]
     )
   }),
   tabText: (focusAnim, theme) => ({
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     color: Reanimated.interpolateColors(
       focusAnim,
       [0, 1],
-      [theme.colors.new_gray4, theme.colors.white]
+      [theme.colors.gray4, theme.colors.white]
     )
   })
 })

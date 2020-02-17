@@ -117,7 +117,7 @@ const CreateWalletMnemonicConfirm = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   contentContainer: {
     paddingHorizontal: 16

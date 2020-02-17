@@ -41,7 +41,7 @@ const OMGBottomSheet = ({
       <View style={styles.iconContainer(iconColor)}>
         <OMGFontIcon
           name={iconName || 'pending'}
-          color={theme.colors.new_gray6}
+          color={theme.colors.gray5}
           size={24}
         />
       </View>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     transform: [{ translateY: slide.current }],
     position: 'absolute',
     bottom: 0,
-    backgroundColor: theme.colors.new_gray6
+    backgroundColor: theme.colors.gray5
   }),
   iconContainer: color => ({
     width: 24,
@@ -103,11 +103,11 @@ const styles = StyleSheet.create({
     marginTop: 2,
     fontSize: 8,
     marginRight: 16,
-    color: theme.colors.new_gray2
+    color: theme.colors.gray2
   }),
   textLink: theme => ({
     fontSize: 8,
-    color: theme.colors.blue5
+    color: theme.colors.blue
   }),
   closeIcon: {
     opacity: 0.4

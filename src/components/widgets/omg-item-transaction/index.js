@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: error ? theme.colors.red : theme.colors.black4,
+    borderColor: error ? theme.colors.red : theme.colors.white,
     marginRight: 16,
     borderWidth: 1,
     borderRadius: theme.roundness
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }),
   subText: theme => ({
-    color: theme.colors.new_gray9,
+    color: theme.colors.gray8,
     fontSize: 10
   }),
   textAmount: theme => ({
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white
   }),
   textDate: theme => ({
-    color: theme.colors.new_gray2,
+    color: theme.colors.gray2,
     fontSize: 8,
     letterSpacing: -0.32
   })

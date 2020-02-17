@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     padding: 16,
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   walletItem: {
     marginTop: 16,
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white
   }),
   buttonText: theme => ({
-    color: theme.colors.gray3
+    color: theme.colors.black4
   }),
   buttonContainer: {
     flex: 1,

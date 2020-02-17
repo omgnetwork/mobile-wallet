@@ -67,7 +67,7 @@ const useProgressiveFeedback = (
           pending: true,
           subtitle: hash,
           iconName: 'pending',
-          iconColor: theme.colors.yellow3
+          iconColor: theme.colors.yellow
         }
       } else {
         return {
@@ -77,11 +77,11 @@ const useProgressiveFeedback = (
           pending: false,
           subtitle: hash,
           iconName: 'success',
-          iconColor: theme.colors.new_green1
+          iconColor: theme.colors.green
         }
       }
     },
-    [getTransactionFeedbackTitle, theme.colors.new_green1, theme.colors.yellow3]
+    [getTransactionFeedbackTitle, theme.colors.green, theme.colors.yellow]
   )
 
   const handleOnClose = useCallback(() => {

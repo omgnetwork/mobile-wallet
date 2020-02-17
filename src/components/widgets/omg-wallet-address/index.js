@@ -39,7 +39,7 @@ const OMGWalletAddress = ({ theme, name, address, style }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.new_gray6,
+    backgroundColor: theme.colors.gray5,
     borderRadius: theme.roundness,
     padding: 12,
     alignItems: 'center'
@@ -49,13 +49,13 @@ const styles = StyleSheet.create({
     height: 24,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: theme.colors.black4,
+    borderColor: theme.colors.white,
     marginRight: 16,
     borderWidth: 1,
     borderRadius: theme.roundness
   }),
   address: theme => ({
-    color: theme.colors.new_gray7,
+    color: theme.colors.gray6,
     maxWidth: 128,
     fontSize: 16,
     letterSpacing: -0.64

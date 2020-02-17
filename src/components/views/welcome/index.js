@@ -48,7 +48,7 @@ const Welcome = ({ navigation, theme }) => {
     <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.black5}
+        backgroundColor={theme.colors.black}
       />
       <Image
         style={styles.logo}
@@ -59,14 +59,14 @@ const Welcome = ({ navigation, theme }) => {
       </View>
       <CardMenu
         style={styles.cardMenu}
-        color={theme.colors.blue6}
+        color={theme.colors.primary}
         header='Sync Your Wallet'
         description='Use own Ethereum Address with this wallet'
         onPress={navigateImportWallet}
       />
       <CardMenu
         style={styles.cardMenu}
-        color={theme.colors.black6}
+        color={theme.colors.black}
         header='Create New Wallet'
         description='Create wallet for the new Ethereum Address'
         onPress={navigateCreateWallet}
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.black5,
+    backgroundColor: theme.colors.black,
     justifyContent: 'space-around'
   }),
   logo: {

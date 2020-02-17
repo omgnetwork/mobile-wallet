@@ -115,7 +115,6 @@ const RootchainBalance = ({
       <OMGAssetFooter
         enableDeposit={shouldEnableDepositAction()}
         showExit={false}
-        depositText='DEPOSIT'
         footerRef={depositButtonRef}
         onPressDeposit={handleDepositClick}
       />

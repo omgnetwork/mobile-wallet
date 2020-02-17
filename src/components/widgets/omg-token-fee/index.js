@@ -42,8 +42,8 @@ const OMGTokenFee = ({ token, theme, selected, onPress }) => {
 
 const styles = StyleSheet.create({
   container: theme => ({
-    backgroundColor: theme.colors.gray4,
-    borderColor: theme.colors.new_gray5,
+    backgroundColor: theme.colors.black5,
+    borderColor: theme.colors.gray4,
     borderWidth: 1,
     padding: 12,
     marginTop: 10,
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   textGray12: theme => ({
     fontSize: 12,
     letterSpacing: -0.48,
-    color: theme.colors.new_gray7
+    color: theme.colors.gray6
   }),
   marginTop12: {
     marginTop: 12

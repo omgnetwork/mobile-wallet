@@ -25,14 +25,14 @@ const OMGTextInput = ({
   theme
 }) => {
   const [underlineTextcolor, setUnderlineTextcolor] = useState(
-    theme.colors.gray4
+    theme.colors.black5
   )
   const numberOfLines = lines ? lines : 1
   return (
     <TextInput
       mode='flat'
       placeholder={placeholder}
-      placeholderTextColor={placeholderTextColor || theme.colors.new_gray7}
+      placeholderTextColor={placeholderTextColor || theme.colors.gray6}
       ref={focusRef}
       autoCapitalize={autoCapitalize || 'none'}
       onChangeText={text => {
@@ -45,11 +45,11 @@ const OMGTextInput = ({
       }}
       underlineColorAndroid={hideUnderline ? 'transparent' : underlineTextcolor}
       onBlur={() => {
-        setUnderlineTextcolor(theme.colors.gray4)
+        setUnderlineTextcolor(theme.colors.black5)
         onBlur?.()
       }}
       onFocus={() => {
-        setUnderlineTextcolor(theme.colors.gray5)
+        setUnderlineTextcolor(theme.colors.gray4)
         onFocus?.()
       }}
       importantForAutofill='no'
@@ -63,7 +63,7 @@ const OMGTextInput = ({
       value={value}
       textAlignVertical={lines > 1 ? 'top' : 'center'}
       keyboardType={keyboardType}
-      selectionColor={theme.colors.gray5}
+      selectionColor={theme.colors.gray4}
       style={{
         ...styles.textInput(theme),
         ...style,
@@ -78,7 +78,7 @@ const OMGTextInput = ({
 const styles = StyleSheet.create({
   textInput: theme => ({
     fontFamily: 'MessinaSansMono-Book',
-    backgroundColor: theme.colors.new_black7,
+    backgroundColor: theme.colors.black3,
     paddingVertical: Platform.OS === 'ios' ? 8 : 0,
     marginLeft: Platform.OS === 'ios' ? 0 : -4,
     letterSpacing: -0.64,

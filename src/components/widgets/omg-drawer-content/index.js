@@ -37,8 +37,6 @@ const OMGDrawerContent = ({
   dispatchSetPrimaryWalletAddress,
   dispatchSetCurrentPage,
   dispatchTakeAppTour,
-  dispatchResetBlockchainWallet,
-  provider,
   primaryWallet,
   theme,
   wallets
@@ -178,7 +176,7 @@ const menuStyles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     letterSpacing: -0.64,
-    color: theme.colors.new_gray8
+    color: theme.colors.gray7
   }),
   iconRight: {}
 })
@@ -190,7 +188,7 @@ const styles = StyleSheet.create({
     paddingTop: 32
   },
   divider: theme => ({
-    backgroundColor: theme.colors.new_white2,
+    backgroundColor: theme.colors.white2,
     height: 1,
     opacity: 0.3
   }),
@@ -210,13 +208,13 @@ const styles = StyleSheet.create({
   titleText: theme => ({
     fontSize: 18,
     textTransform: 'uppercase',
-    color: theme.colors.gray4,
+    color: theme.colors.black5,
     marginTop: 12
   }),
   envInfoCard: theme => ({
     marginTop: 16,
     padding: 16,
-    backgroundColor: theme.colors.new_white2
+    backgroundColor: theme.colors.white2
   }),
   settingItem: {
     paddingVertical: 12
@@ -229,7 +227,7 @@ const styles = StyleSheet.create({
     marginTop: 32
   },
   environmentTitleText: theme => ({
-    color: theme.colors.new_gray5,
+    color: theme.colors.gray4,
     fontSize: 12,
     letterSpacing: -0.48,
     paddingBottom: 8
@@ -237,10 +235,10 @@ const styles = StyleSheet.create({
   environmentItemText: theme => ({
     fontSize: 16,
     letterSpacing: -0.64,
-    color: theme.colors.new_gray6
+    color: theme.colors.gray5
   }),
   environmentItemTextLighter: theme => ({
-    color: theme.colors.new_gray5,
+    color: theme.colors.gray4,
     fontSize: 12,
     marginTop: 4,
     letterSpacing: -0.48
@@ -261,10 +259,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchSetCurrentPage: (currentPage, page) =>
     onboardingActions.setCurrentPage(dispatch, currentPage, page),
   dispatchTakeAppTour: () =>
-    onboardingActions.setEnableOnboarding(dispatch, true),
-  dispatchResetBlockchainWallet: provider => {
-    settingActions.setBlockchainWallet(null, provider)
-  }
+    onboardingActions.setEnableOnboarding(dispatch, true)
 })
 
 export default connect(

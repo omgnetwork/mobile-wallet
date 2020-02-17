@@ -49,12 +49,12 @@ const formatFeePrice = (amount, price) => {
 const styles = StyleSheet.create({
   container: (theme, selected) => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.new_black7,
+    backgroundColor: theme.colors.black3,
     alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 16,
     borderRadius: theme.roundness,
-    borderColor: selected ? theme.colors.new_blue1 : theme.colors.black4,
+    borderColor: selected ? theme.colors.blue : theme.colors.white,
     borderWidth: 1
   }),
   sectionFeeSpeed: {
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.64
   }),
   feeEstimateTime: theme => ({
-    color: theme.colors.new_gray1,
+    color: theme.colors.gray,
     fontSize: 12,
     marginTop: 4,
     letterSpacing: -0.48
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   }),
   feePrice: theme => ({
     textAlign: 'right',
-    color: theme.colors.new_gray1,
+    color: theme.colors.gray,
     fontSize: 12,
     marginTop: 4,
     letterSpacing: -0.48

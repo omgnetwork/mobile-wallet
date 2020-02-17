@@ -27,15 +27,15 @@ const OMGFeeInput = ({ theme, fee, style, onPress }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.new_black7,
-    borderColor: theme.colors.new_gray5,
+    backgroundColor: theme.colors.black3,
+    borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
     padding: 12,
     alignItems: 'center'
   }),
   amount: theme => ({
-    color: theme.colors.new_gray9,
+    color: theme.colors.gray8,
     marginRight: 10
   }),
   text: theme => ({

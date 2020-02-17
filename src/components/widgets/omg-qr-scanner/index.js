@@ -88,7 +88,7 @@ const OMGQRScanner = props => {
       reactivate={reactivate}
       onRead={handleOnRead}
       pendingAuthorizationView={
-        <View style={{ backgroundColor: theme.colors.new_black7 }}>
+        <View style={{ backgroundColor: theme.colors.black3 }}>
           <OMGText style={styles.loadingText(theme)}>Loading...</OMGText>
         </View>
       }
@@ -160,13 +160,13 @@ const styles = StyleSheet.create({
     flex: 0.6,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   bottomContainer: theme => ({
     width: SCREEN_WIDTH,
     alignItems: 'center',
     flex: 1,
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   renderContainer: {
     width: CONTAINER_WIDTH
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   },
   sideOverlay: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   loadingText: theme => ({
     textAlign: 'center',

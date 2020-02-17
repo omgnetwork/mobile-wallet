@@ -83,7 +83,7 @@ const TransferReceive = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.new_black7,
+    backgroundColor: theme.colors.black3,
     alignItems: 'center'
   }),
   contentContainer: theme => ({
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: theme.roundness,
     borderWidth: 0.5,
-    borderColor: theme.colors.black4
+    borderColor: theme.colors.gray
   }),
   titleContainer: {
     flex: 1,

@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   contentContainer: {
     flex: 1
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   maxTotalContainer: theme => ({
-    backgroundColor: theme.colors.new_gray5,
+    backgroundColor: theme.colors.gray4,
     flexDirection: 'column',
     paddingHorizontal: 16,
     paddingVertical: 20
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginTop: 16,
     marginHorizontal: 16,
-    backgroundColor: theme.colors.new_gray6,
+    backgroundColor: theme.colors.gray5,
     padding: 12
   }),
   totalContainer: {
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.64
   }),
   exitFeeWorth: theme => ({
-    color: theme.colors.new_gray7,
+    color: theme.colors.gray6,
     fontSize: 12,
     letterSpacing: -0.48
   }),
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
     marginTop: 16
   },
   totalText: theme => ({
-    color: theme.colors.gray3
+    color: theme.colors.black4
   })
 })
 

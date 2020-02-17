@@ -4,6 +4,7 @@ import { Animator } from 'common/anims'
 import { OMGText, OMGTokenIcon } from 'components/widgets'
 import { BlockchainRenderer } from 'common/blockchain'
 import { withTheme } from 'react-native-paper'
+
 const OMGItemToken = ({ token, style, onPress, theme }) => {
   const [animating, setAnimating] = useState(false)
   const shadowAnim = useRef(new Animated.Value(0))
@@ -72,7 +73,7 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
 const styles = StyleSheet.create({
   container: (theme, animating, shadowAnim, shadowOpacity) => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.new_black7,
+    backgroundColor: theme.colors.black3,
     shadowColor: '#000000',
     elevation: shadowAnim.current,
     paddingHorizontal: animating ? 12 : 20,
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
   }),
   fiatValue: theme => ({
     textAlign: 'right',
-    color: theme.colors.black2,
+    color: theme.colors.gray2,
     fontSize: 8
   })
 })

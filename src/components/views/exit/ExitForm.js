@@ -104,20 +104,20 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   keyboardAvoidingView: {},
   contentContainer: theme => ({
     flex: 1,
     paddingHorizontal: 16,
     paddingBottom: 16,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   warningContainer: {
     marginTop: 16
   },
   title: theme => ({
-    color: theme.colors.gray3,
+    color: theme.colors.black4,
     marginTop: 16
   }),
   tokenInput: {

@@ -149,24 +149,24 @@ const Divider = ({ theme }) => {
 
 const styles = StyleSheet.create({
   container: theme => ({
-    backgroundColor: theme.colors.new_gray8,
+    backgroundColor: theme.colors.gray7,
     padding: 16
   }),
   greenTag: theme => ({
     alignSelf: 'flex-start',
     paddingVertical: 4,
     paddingHorizontal: 8,
-    backgroundColor: theme.colors.new_green3
+    backgroundColor: theme.colors.green3
   }),
   greenTagText: theme => ({
     fontSize: 12,
     letterSpacing: -0.12,
-    color: theme.colors.gray4
+    color: theme.colors.black5
   }),
   redTag: theme => ({
     alignSelf: 'flex-start',
     padding: 4,
-    backgroundColor: theme.colors.red2,
+    backgroundColor: theme.colors.red,
     borderRadius: theme.roundness
   }),
   redTagText: theme => ({
@@ -176,12 +176,12 @@ const styles = StyleSheet.create({
     marginTop: 16
   },
   errorText: theme => ({
-    color: theme.colors.red5
+    color: theme.colors.red
   }),
   infoItemLabel: theme => ({
     fontSize: 10,
     letterSpacing: -1,
-    color: theme.colors.new_gray1
+    color: theme.colors.gray
   }),
   infoItemContent: {
     marginTop: 4,
@@ -196,10 +196,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 'auto',
     letterSpacing: -0.64,
-    color: theme.colors.new_gray7
+    color: theme.colors.gray6
   }),
   divider: theme => ({
-    backgroundColor: theme.colors.new_gray6,
+    backgroundColor: theme.colors.gray5,
     height: 1,
     marginTop: 16
   })

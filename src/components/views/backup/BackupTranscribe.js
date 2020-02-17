@@ -44,14 +44,14 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     padding: 16,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   walletItem: {
     marginTop: 8,
     padding: 8
   },
   description: theme => ({
-    color: theme.colors.new_gray1,
+    color: theme.colors.gray,
     marginTop: 30,
     fontSize: 16
   }),
@@ -67,16 +67,16 @@ const styles = StyleSheet.create({
   },
   chip: theme => ({
     marginRight: 8,
-    backgroundColor: theme.colors.new_gray5,
+    backgroundColor: theme.colors.gray4,
     borderWidth: 0
   }),
   button: theme => ({
     borderWidth: 1,
-    borderColor: theme.colors.gray3,
+    borderColor: theme.colors.black4,
     backgroundColor: theme.colors.white
   }),
   buttonText: theme => ({
-    color: theme.colors.gray3
+    color: theme.colors.black4
   })
 })
 

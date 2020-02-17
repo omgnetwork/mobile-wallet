@@ -21,7 +21,7 @@ const OMGMenuImage = ({ title, description, style, theme, onPress }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.new_black7,
+    backgroundColor: theme.colors.black3,
     alignItems: 'center',
     padding: 20
   }),
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white
   }),
   description: theme => ({
-    color: theme.colors.new_gray7,
+    color: theme.colors.gray6,
     fontSize: 12
   })
 })

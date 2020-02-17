@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   }),
   content: theme => ({
     marginTop: 10,
-    color: theme.colors.blue3,
+    color: theme.colors.primary,
     textAlign: 'center',
     fontSize: 14
   }),
@@ -62,13 +62,13 @@ const styles = StyleSheet.create({
     borderWidth: 1
   }),
   buttonTextConfirm: theme => ({
-    color: theme.colors.blue5
+    color: theme.colors.primary
   }),
   buttonDismiss: theme => ({
     color: theme.colors.white,
     borderColor: theme.colors.white,
     borderWidth: 1,
-    backgroundColor: theme.colors.blue5,
+    backgroundColor: theme.colors.primary,
     marginTop: 10
   })
 })

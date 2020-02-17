@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   header: {
     alignItems: 'center',
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     padding: 12,
     flexDirection: 'column',
-    backgroundColor: theme.colors.new_gray3,
+    backgroundColor: theme.colors.gray3,
     alignItems: 'center',
     justifyContent: 'center'
   }),
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   listContainer: theme => ({
     padding: 16,
     flex: 1,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   })
 })
 

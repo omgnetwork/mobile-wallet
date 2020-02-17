@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingBottom: 16,
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   image: {
     marginTop: 32,

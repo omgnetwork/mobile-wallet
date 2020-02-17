@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   square: theme => ({
-    backgroundColor: theme.colors.blue2,
+    backgroundColor: theme.colors.primary,
     borderRadius: 10
   }),
   triangleUp: theme => ({
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 15,
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
-    borderBottomColor: theme.colors.blue2
+    borderBottomColor: theme.colors.primary
   }),
   triangleDown: theme => ({
     width: 0,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 15,
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
-    borderBottomColor: theme.colors.blue2,
+    borderBottomColor: theme.colors.primary,
     transform: [{ rotate: '180deg' }]
   })
 })

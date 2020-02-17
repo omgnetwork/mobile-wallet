@@ -268,14 +268,14 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   scrollView: {
     flexGrow: 1
   },
   formContainer: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   dismissKeyboard: {
     flex: 1
@@ -283,20 +283,20 @@ const styles = StyleSheet.create({
   fromContainer: theme => ({
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   toContainer: theme => ({
     flexDirection: 'column',
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   amountContainer: theme => ({
     flexDirection: 'column',
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   feeContainer: (theme, transferType) => ({
     display: TransferHelper.TYPE_DEPOSIT === transferType ? 'none' : 'flex',
     flexDirection: 'column',
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   tokenInput: {
     marginTop: 16

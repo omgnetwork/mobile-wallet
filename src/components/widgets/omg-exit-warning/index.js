@@ -10,7 +10,7 @@ const OMGExitWarning = ({ theme, style }) => {
         style={styles.icon}
         size={30}
         name='attention'
-        color={theme.colors.new_blue1}
+        color={theme.colors.blue}
       />
       <OMGText style={styles.text(theme)}>
         You are about to move fund out of {'-\n'}
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
     padding: 18,
-    backgroundColor: theme.colors.new_gray3,
+    backgroundColor: theme.colors.gray3,
     alignItems: 'center'
   }),
   iconContainer: theme => ({

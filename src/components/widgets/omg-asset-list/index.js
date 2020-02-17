@@ -53,7 +53,7 @@ const OMGAssetList = ({
                 name='redo'
                 size={12}
                 style={styles.redo}
-                color={theme.colors.new_gray9}
+                color={theme.colors.gray8}
               />
             </TouchableOpacity>
           </>
@@ -87,7 +87,7 @@ const OMGAssetList = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'column',
-    backgroundColor: theme.colors.new_black7,
+    backgroundColor: theme.colors.black3,
     paddingBottom: 8
   }),
   contentContainer: {},
@@ -101,10 +101,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 20,
     alignItems: 'center',
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   updatedAt: theme => ({
-    color: theme.colors.black2,
+    color: theme.colors.gray2,
     letterSpacing: -0.7,
     fontSize: 10
   }),
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   assetContainer: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.new_black7,
+    backgroundColor: theme.colors.black3,
     paddingVertical: 8
   }),
   assetList: {},

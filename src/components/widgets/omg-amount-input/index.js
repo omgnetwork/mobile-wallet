@@ -43,8 +43,8 @@ const OMGAmountInput = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.new_black7,
-    borderColor: theme.colors.new_gray5,
+    backgroundColor: theme.colors.black3,
+    borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
     alignItems: 'center'
@@ -72,13 +72,13 @@ const styles = StyleSheet.create({
   },
   errorText: theme => ({
     marginLeft: 'auto',
-    color: theme.colors.red2,
+    color: theme.colors.red,
     marginTop: 8
   }),
   symbol: theme => ({
     fontSize: 16,
     letterSpacing: -0.64,
-    color: theme.colors.new_gray7
+    color: theme.colors.gray6
   })
 })
 

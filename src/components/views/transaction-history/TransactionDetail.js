@@ -82,7 +82,6 @@ const TransactionDetail = ({ navigation, theme }) => {
           <OMGText style={styles.linkText(theme)}>{linkTitle}</OMGText>
         </TouchableOpacity>
         <View style={styles.filler} />
-        <OMGFontIcon name='export' color={theme.colors.black2} />
       </View>
     )
   }, [handleTxClick, theme, transaction])
@@ -156,7 +155,7 @@ const TransactionDetail = ({ navigation, theme }) => {
       forceInset={{ top: 'always' }}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.gray4}
+        backgroundColor={theme.colors.black5}
       />
       <View style={styles.header}>
         <OMGFontIcon
@@ -178,7 +177,7 @@ const TransactionDetail = ({ navigation, theme }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   blockchainLabel: theme => ({
     marginTop: 16,
@@ -189,7 +188,7 @@ const styles = StyleSheet.create({
     marginTop: 16
   },
   scrollViewContainer: theme => ({
-    backgroundColor: theme.colors.gray4,
+    backgroundColor: theme.colors.black5,
     flexDirection: 'column',
     paddingHorizontal: 16,
     paddingBottom: 16
@@ -217,7 +216,7 @@ const styles = StyleSheet.create({
   },
   divider: theme => ({
     opacity: 0.25,
-    backgroundColor: theme.colors.black1,
+    backgroundColor: theme.colors.white3,
     height: 1,
     marginTop: 16
   }),
@@ -235,7 +234,7 @@ const styles = StyleSheet.create({
   linkText: theme => ({
     fontSize: 12,
     letterSpacing: -0.48,
-    color: theme.colors.new_blue1
+    color: theme.colors.blue
   }),
   exitCompleteLabel: {
     marginTop: 16

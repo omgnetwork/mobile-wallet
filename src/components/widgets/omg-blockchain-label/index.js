@@ -21,7 +21,7 @@ const OMGBlockchainLabel = ({ theme, actionText, transferType, style }) => {
       <BlockchainIcon
         width={isEthereumRootchain ? 14 : 52.17}
         height={isEthereumRootchain ? 23 : 18}
-        fill={isEthereumRootchain ? theme.colors.gray4 : theme.colors.white}
+        fill={isEthereumRootchain ? theme.colors.black5 : theme.colors.white}
       />
       <OMGText style={styles.text(theme, isEthereumRootchain)}>
         {actionText} {blockchainName}
@@ -32,20 +32,18 @@ const OMGBlockchainLabel = ({ theme, actionText, transferType, style }) => {
 
 const styles = StyleSheet.create({
   container: (theme, isRootchain) => ({
-    backgroundColor: isRootchain
-      ? theme.colors.new_green2
-      : theme.colors.primary,
+    backgroundColor: isRootchain ? theme.colors.green2 : theme.colors.primary,
     paddingVertical: 11,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center'
   }),
   icon: theme => ({
-    color: theme.colors.gray4
+    color: theme.colors.black5
   }),
   text: (theme, isEthereumRootchain) => ({
     marginLeft: 16,
-    color: isEthereumRootchain ? theme.colors.gray4 : theme.colors.white,
+    color: isEthereumRootchain ? theme.colors.black5 : theme.colors.white,
     fontSize: 12
   })
 })

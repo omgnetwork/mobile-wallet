@@ -52,9 +52,9 @@ const OMGOnboardingPopup = ({
 const styles = StyleSheet.create({
   container: theme => ({
     padding: 20,
-    borderColor: theme.colors.blue5,
+    borderColor: theme.colors.primary,
     borderRadius: theme.roundness,
-    backgroundColor: theme.colors.blue5,
+    backgroundColor: theme.colors.primary,
     flexDirection: 'column'
   }),
   title: theme => ({
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start'
   },
   text: theme => ({
-    color: theme.colors.white3,
+    color: theme.colors.white2,
     marginTop: 20
   }),
   expand: {
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     borderRadius: theme.roundness,
     borderWidth: 1,
     borderColor: theme.colors.white,
-    backgroundColor: theme.colors.blue5
+    backgroundColor: theme.colors.primary
   }),
   buttonText: theme => ({
     color: theme.colors.white

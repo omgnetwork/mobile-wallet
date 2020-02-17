@@ -25,7 +25,7 @@ const OMGItemWallet = ({ wallet, style, theme, showCaret, onPress }) => {
         <OMGFontIcon
           name='chevron-right'
           size={24}
-          color={theme.colors.new_gray9}
+          color={theme.colors.gray8}
         />
       )}
     </TouchableOpacity>
@@ -37,14 +37,14 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: theme.roundness,
-    borderColor: theme.colors.new_gray5,
+    borderColor: theme.colors.gray4,
     borderWidth: 0.5
   }),
   container: theme => ({
     flexDirection: 'row',
     borderWidth: 1,
-    borderColor: theme.colors.new_black7,
-    backgroundColor: theme.colors.new_black7,
+    borderColor: theme.colors.black3,
+    backgroundColor: theme.colors.black3,
     alignItems: 'center',
     paddingVertical: 20
   }),
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white
   }),
   address: theme => ({
-    color: theme.colors.new_gray7,
+    color: theme.colors.gray6,
     fontSize: 12,
     marginRight: 32
   })

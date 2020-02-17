@@ -16,7 +16,7 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
   useEffect(() => {
     function didFocus() {
       StatusBar.setBarStyle('light-content')
-      StatusBar.setBackgroundColor(theme.colors.gray4)
+      StatusBar.setBackgroundColor(theme.colors.black5)
     }
 
     const didFocusSubscription = navigation.addListener('didFocus', didFocus)
@@ -24,7 +24,7 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
     return () => {
       didFocusSubscription.remove()
     }
-  }, [navigation, theme.colors.gray4])
+  }, [navigation, theme.colors.black5])
 
   return (
     <SafeAreaView
@@ -32,7 +32,7 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
       forceInset={{ bottom: 'never' }}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.gray4}
+        backgroundColor={theme.colors.black5}
       />
       <View style={styles.titleContainer}>
         <OMGText style={styles.title(theme)}>Transfer</OMGText>
@@ -63,7 +63,7 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   titleContainer: {
     flexDirection: 'row',
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   }),
   iconBox: theme => ({
     padding: 16,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   })
 })
 

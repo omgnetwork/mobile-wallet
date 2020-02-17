@@ -29,7 +29,7 @@ const OMGAssetHeader = ({
       </View>
       <View style={styles.footer}>
         <BlockchainIcon
-          fill={theme.colors.new_gray2}
+          fill={theme.colors.gray2}
           width={rootchain ? 14 : 57.963}
           height={rootchain ? 23 : 18}
         />
@@ -46,7 +46,7 @@ const OMGAssetHeader = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'column',
-    backgroundColor: theme.colors.new_black7,
+    backgroundColor: theme.colors.black3,
     borderTopLeftRadius: theme.roundness,
     borderTopRightRadius: theme.roundness
   }),
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white
   }),
   balanceCurrency: theme => ({
-    color: theme.colors.black1,
+    color: theme.colors.white3,
     fontSize: 32
   }),
   footer: {
@@ -81,18 +81,18 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: 20,
     letterSpacing: -0.7,
-    color: theme.colors.new_gray2
+    color: theme.colors.gray2
   }),
   textNetwork: theme => ({
     fontSize: 12,
     marginLeft: 6,
     textTransform: 'capitalize',
-    color: theme.colors.new_gray2
+    color: theme.colors.gray2
   }),
   greenDot: theme => ({
     width: 6,
     height: 6,
-    backgroundColor: theme.colors.new_green1,
+    backgroundColor: theme.colors.green,
     borderRadius: 3
   })
 })

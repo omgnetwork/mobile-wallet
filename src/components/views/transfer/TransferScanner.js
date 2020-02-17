@@ -133,7 +133,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
         style={styles.unableIcon(theme)}
         name='pending'
         size={16}
-        color={theme.colors.new_gray9}
+        color={theme.colors.gray8}
       />
       <OMGText style={styles.unableText(theme)}>
         Unable to Transfer,{'\n'}There's a pending transaction
@@ -179,7 +179,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
       showMarker={true}
       onReceiveQR={e => setAddress(e.data)}
       cameraRef={camera}
-      borderColor={isRootchain ? theme.colors.new_green1 : theme.colors.primary}
+      borderColor={isRootchain ? theme.colors.green : theme.colors.primary}
       rootchain={isRootchain}
       renderUnconfirmedTx={unconfirmedTxComponent}
       renderEmptyComponent={emptyComponent}
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     alignContent: 'center',
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   titleContainer: theme => ({
     flexDirection: 'row',
@@ -275,9 +275,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8
   },
   button: (theme, isRootchain) => ({
-    backgroundColor: isRootchain
-      ? theme.colors.new_green2
-      : theme.colors.primary,
+    backgroundColor: isRootchain ? theme.colors.green2 : theme.colors.primary,
     borderRadius: 0,
     marginTop: 20
   }),
@@ -309,14 +307,14 @@ const styles = StyleSheet.create({
     width: CAMERA_WIDTH,
     height: CAMERA_WIDTH,
     flexDirection: 'column',
-    backgroundColor: theme.colors.new_black7,
+    backgroundColor: theme.colors.black3,
     alignItems: 'center',
     justifyContent: 'center'
   }),
   emptyView: theme => ({
     height: 240,
     flexDirection: 'column',
-    backgroundColor: theme.colors.new_black7,
+    backgroundColor: theme.colors.black3,
     alignItems: 'center',
     justifyContent: 'center'
   }),
@@ -326,7 +324,7 @@ const styles = StyleSheet.create({
     fontSize: 18
   }),
   unableText: theme => ({
-    color: theme.colors.new_gray9,
+    color: theme.colors.gray8,
     marginTop: 24,
     textAlign: 'center'
   }),
@@ -341,7 +339,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     borderWidth: 1,
     borderRadius: 12,
-    borderColor: theme.colors.gray6
+    borderColor: theme.colors.gray
   })
 })
 

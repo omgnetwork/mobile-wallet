@@ -82,9 +82,9 @@ const Balance = ({
   useEffect(() => {
     if (isFocused) {
       StatusBar.setBarStyle('light-content')
-      StatusBar.setBackgroundColor(theme.colors.gray4)
+      StatusBar.setBackgroundColor(theme.colors.black5)
     }
-  }, [isFocused, theme.colors.gray4])
+  }, [isFocused, theme.colors.black5])
 
   useEffect(() => {
     scroller.current.scrollTo(navigation.getParam('page'))
@@ -161,7 +161,7 @@ const Balance = ({
     <SafeAreaView style={styles.safeAreaView(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.gray4}
+        backgroundColor={theme.colors.black5}
       />
       <View style={styles.container(theme)}>
         <View style={styles.topContainer}>
@@ -229,7 +229,7 @@ const Balance = ({
 const styles = StyleSheet.create({
   safeAreaView: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   topContainer: {
     flexDirection: 'row',
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     paddingVertical: 20,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   firstPage: {
     width: pageWidth,

@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   logo: theme => ({
     width: 40,
     height: 40,
-    borderColor: theme.colors.gray4,
+    borderColor: theme.colors.black5,
     borderRadius: theme.roundness,
     borderWidth: 0.5
   })

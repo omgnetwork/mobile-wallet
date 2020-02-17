@@ -27,7 +27,7 @@ const OMGButton = ({
     <Fragment>
       <ActivityIndicator
         animating={loading || false}
-        color={theme.colors.new_black6}
+        color={theme.colors.black2}
         style={{ ...styles.icon }}
       />
       <OMGText
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     height: 16
   },
   text: theme => ({
-    color: theme.colors.new_black6,
+    color: theme.colors.black2,
     textAlign: 'center',
     fontSize: 16,
     textTransform: 'uppercase'

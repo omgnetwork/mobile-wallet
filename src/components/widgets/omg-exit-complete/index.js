@@ -34,10 +34,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: 14,
     paddingHorizontal: 16,
-    backgroundColor: theme.colors.new_gray6
+    backgroundColor: theme.colors.gray5
   }),
   icon: theme => ({
-    color: theme.colors.new_blue1
+    color: theme.colors.blue
   }),
   text: theme => ({
     fontSize: 12,

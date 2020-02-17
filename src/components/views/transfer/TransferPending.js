@@ -79,11 +79,11 @@ const TransferPending = ({ theme, navigation }) => {
       <SafeAreaView style={styles.container(theme)}>
         <OMGStatusBar
           barStyle='light-content'
-          backgroundColor={theme.colors.gray4}
+          backgroundColor={theme.colors.black5}
         />
         <View style={styles.headerContainer(theme)}>
           <View style={styles.icon(theme)}>
-            <OMGFontIcon name='pending' size={24} color={theme.colors.gray4} />
+            <OMGFontIcon name='pending' size={24} color={theme.colors.black5} />
           </View>
           <OMGText style={styles.title(theme)} weight='regular'>
             Pending Transaction
@@ -184,24 +184,24 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   contentContainer: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   headerContainer: theme => ({
     padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   blockchainLabel: {},
   addressContainer: {
     paddingLeft: 16
   },
   bottomContainer: theme => ({
-    backgroundColor: theme.colors.new_black7,
+    backgroundColor: theme.colors.black3,
     paddingHorizontal: 16,
     paddingBottom: 16
   }),
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: theme.colors.yellow3
+    backgroundColor: theme.colors.yellow
   }),
   edit: {
     marginLeft: 8
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   totalText: theme => ({
     fontSize: 16,
     letterSpacing: -0.64,
-    color: theme.colors.new_blue1,
+    color: theme.colors.blue,
     textTransform: 'uppercase'
   }),
   sentContainer: {
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
   },
   sentContentContainer: theme => ({
     justifyContent: 'space-between',
-    backgroundColor: theme.colors.new_gray6,
+    backgroundColor: theme.colors.gray5,
     borderRadius: theme.roundness,
     padding: 16,
     marginTop: 8
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.64
   }),
   sentDetailSecondline: theme => ({
-    color: theme.colors.new_gray7,
+    color: theme.colors.gray6,
     fontSize: 12,
     letterSpacing: -0.48
   }),

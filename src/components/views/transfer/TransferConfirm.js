@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
   }),
   scrollView: theme => ({
     flexGrow: 1,
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   contentContainer: {
     flex: 1
@@ -359,7 +359,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   blockchainLabel: {},
   amountContainer: {
@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.64
   }),
   totalUsdText: theme => ({
-    color: theme.colors.new_gray1,
+    color: theme.colors.gray,
     fontSize: 12
   }),
   balanceContainer: {
@@ -405,7 +405,7 @@ const styles = StyleSheet.create({
   tokenBalance: theme => ({
     fontSize: 32,
     width: 260,
-    color: theme.colors.gray3
+    color: theme.colors.black4
   }),
   addressContainer: {
     paddingLeft: 16
@@ -419,7 +419,7 @@ const styles = StyleSheet.create({
     display: tokenSymbol === 'ETH' ? 'flex' : 'none',
     padding: 16,
     flexDirection: 'column',
-    backgroundColor: theme.colors.new_gray5
+    backgroundColor: theme.colors.gray4
   }),
   totalContentContainer: theme => ({
     flexDirection: 'row',
@@ -433,7 +433,7 @@ const styles = StyleSheet.create({
   feeContainer: theme => ({
     flexDirection: 'column',
     marginTop: 10,
-    backgroundColor: theme.colors.new_gray6,
+    backgroundColor: theme.colors.gray5,
     paddingVertical: 16,
     paddingHorizontal: 12
   }),
@@ -456,10 +456,7 @@ const styles = StyleSheet.create({
   }),
   tokenSymbol: theme => ({
     fontSize: 18,
-    color: theme.colors.gray3
-  }),
-  tokenWorth: theme => ({
-    color: theme.colors.black2
+    color: theme.colors.black4
   }),
   subtitle: theme => ({
     textTransform: 'uppercase',
@@ -482,12 +479,12 @@ const styles = StyleSheet.create({
     letterSpacing: -0.64
   }),
   toSendWorth: theme => ({
-    color: theme.colors.new_gray7,
+    color: theme.colors.gray6,
     fontSize: 12,
     letterSpacing: -0.48
   }),
   totalText: theme => ({
-    color: theme.colors.gray3
+    color: theme.colors.black4
   })
 })
 

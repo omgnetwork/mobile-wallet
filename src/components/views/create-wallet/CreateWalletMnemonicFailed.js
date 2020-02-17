@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingBottom: 16,
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   image: {
     marginTop: 32
@@ -60,17 +60,11 @@ const styles = StyleSheet.create({
   btnCancel: theme => ({
     marginTop: 10,
     borderWidth: 1,
-    borderColor: theme.colors.gray3,
+    borderColor: theme.colors.black4,
     backgroundColor: theme.colors.white
   }),
   btnCancelTextStyle: theme => ({
-    color: theme.colors.gray3
-  }),
-  chip: theme => ({
-    marginRight: 8,
-    borderWidth: 1,
-    borderColor: theme.colors.black4,
-    backgroundColor: theme.colors.white
+    color: theme.colors.black4
   })
 })
 

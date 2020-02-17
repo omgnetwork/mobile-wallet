@@ -19,7 +19,7 @@ const Disclaimer = ({ navigation, theme }) => {
     <SafeAreaView style={styles.container} forceInset={{ top: 'never' }}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.gray4}
+        backgroundColor={theme.colors.black5}
       />
       <View style={styles.headerContainer(theme)}>
         <OnboardingDisclaimer width={98} style={styles.image} />
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: theme => ({
     padding: 30,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   headerText: theme => ({
     color: theme.colors.white,
@@ -77,21 +77,21 @@ const styles = StyleSheet.create({
     marginTop: 28
   }),
   contentContainer: theme => ({
-    backgroundColor: theme.colors.gray4,
+    backgroundColor: theme.colors.black5,
     paddingHorizontal: 30
   }),
   buttonContainer: theme => ({
     paddingHorizontal: 30,
     paddingVertical: 8,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   contentText1: theme => ({
-    color: theme.colors.new_gray7,
+    color: theme.colors.gray6,
     fontSize: 14,
     lineHeight: 20
   }),
   contentText2: theme => ({
-    color: theme.colors.new_gray7,
+    color: theme.colors.gray6,
     fontSize: 14,
     marginTop: 10,
     lineHeight: 20

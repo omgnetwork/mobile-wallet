@@ -57,7 +57,7 @@ const OMGAddressInput = ({
           <TouchableOpacity
             onPress={onPressScanQR}
             style={styles.scanQRIcon(theme)}>
-            <ScanQRIcon fill={theme.colors.new_blue1} />
+            <ScanQRIcon fill={theme.colors.blue} />
           </TouchableOpacity>
         </View>
       </View>
@@ -71,8 +71,8 @@ const OMGAddressInput = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.new_black7,
-    borderColor: theme.colors.new_gray5,
+    backgroundColor: theme.colors.black3,
+    borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
     alignItems: 'center'
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     height: 24,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: theme.colors.black4,
+    borderColor: theme.colors.gray,
     marginRight: 16,
     borderWidth: 1,
     borderRadius: theme.roundness,
@@ -95,13 +95,13 @@ const styles = StyleSheet.create({
     flex: 1
   }),
   textPaste: theme => ({
-    color: theme.colors.new_blue1,
+    color: theme.colors.blue,
     letterSpacing: -0.48,
     marginRight: 20,
     fontSize: 12
   }),
   errorText: theme => ({
-    color: theme.colors.red2,
+    color: theme.colors.red,
     marginTop: 8
   }),
   rightContainer: theme => ({

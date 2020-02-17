@@ -6,7 +6,7 @@ const OMGStatusBar = ({ theme, style, backgroundColor, barStyle }) => {
   return (
     <StatusBar
       barStyle={barStyle || 'light-content'}
-      backgroundColor={backgroundColor || theme.colors.black5}
+      backgroundColor={backgroundColor || theme.colors.black}
     />
   )
 }

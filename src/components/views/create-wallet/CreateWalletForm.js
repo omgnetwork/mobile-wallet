@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     paddingBottom: 16,
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   keyboardAvoidingView: {
     padding: 16,
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   }),
   textBox: theme => ({
     marginTop: 16,
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   })
 })
 

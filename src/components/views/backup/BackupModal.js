@@ -63,10 +63,10 @@ const styles = StyleSheet.create({
   textTitle: theme => ({
     marginTop: 46,
     fontSize: 24,
-    color: theme.colors.gray4
+    color: theme.colors.black5
   }),
   textContent: theme => ({
-    color: theme.colors.new_gray6,
+    color: theme.colors.gray5,
     textAlign: 'center',
     marginTop: 10,
     fontSize: 16,
@@ -79,11 +79,11 @@ const styles = StyleSheet.create({
   leftButton: theme => ({
     flex: 1,
     backgroundColor: theme.colors.white,
-    borderColor: theme.colors.gray4,
+    borderColor: theme.colors.black5,
     borderWidth: 1
   }),
   leftButtonText: theme => ({
-    color: theme.colors.gray3
+    color: theme.colors.black4
   }),
   rightButton: theme => ({
     backgroundColor: theme.colors.primary,

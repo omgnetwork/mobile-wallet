@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     flex: 1,
     marginLeft: 16,
-    color: theme.colors.gray3
+    color: theme.colors.black4
   }),
   iconRight: {
     marginRight: 30

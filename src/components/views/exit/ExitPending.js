@@ -73,7 +73,7 @@ const ExitPending = ({ theme, navigation, wallet }) => {
       <SafeAreaView style={styles.container(theme)}>
         <OMGStatusBar
           barStyle='light-content'
-          backgroundColor={theme.colors.gray4}
+          backgroundColor={theme.colors.black5}
         />
         <ScrollView bounces={false}>
           <View style={styles.headerContainer}>
@@ -181,34 +181,24 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   contentContainer: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   iconPending: theme => ({
     width: 36,
     height: 36,
     marginLeft: 16,
     borderRadius: 18,
-    backgroundColor: theme.colors.yellow3,
+    backgroundColor: theme.colors.yellow,
     justifyContent: 'center',
     alignItems: 'center'
   }),
   blockchainLabel: {
     marginTop: 20
   },
-  amountContainer: theme => ({
-    marginTop: 12,
-    padding: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderWidth: 1,
-    borderColor: theme.colors.black4,
-    borderRadius: theme.roundness
-  }),
   amountText: {
     marginTop: 20
   },
@@ -221,7 +211,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white
   }),
   tokenPrice: theme => ({
-    color: theme.colors.new_gray9
+    color: theme.colors.gray8
   }),
   headerContainer: {
     flexDirection: 'row',
@@ -238,7 +228,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   title: theme => ({
     fontSize: 18,
@@ -254,7 +244,7 @@ const styles = StyleSheet.create({
     borderWidth: 1
   }),
   buttonText: theme => ({
-    color: theme.colors.new_black6
+    color: theme.colors.black2
   }),
   walletAddress: {
     marginTop: 12,
@@ -283,7 +273,7 @@ const styles = StyleSheet.create({
   },
   sentContentContainer: theme => ({
     justifyContent: 'space-between',
-    backgroundColor: theme.colors.new_gray6,
+    backgroundColor: theme.colors.gray5,
     borderRadius: theme.roundness,
     padding: 16,
     marginTop: 8
@@ -294,7 +284,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.64
   }),
   sentDetailSecondline: theme => ({
-    color: theme.colors.new_gray7,
+    color: theme.colors.gray6,
     fontSize: 12,
     letterSpacing: -0.48
   }),

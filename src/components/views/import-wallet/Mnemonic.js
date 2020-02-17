@@ -119,28 +119,23 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     paddingTop: 8,
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   importByMnemonic: {
     marginTop: 16
   },
   textBox: theme => ({
     marginTop: 16,
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   textBoxTitle: theme => ({
     marginTop: 16,
     fontSize: 14,
     color: theme.colors.white
   }),
-  line: theme => ({
-    marginTop: 16,
-    backgroundColor: theme.colors.white3,
-    height: 6
-  }),
   mnemonicContainer: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.new_black7
+    backgroundColor: theme.colors.black3
   }),
   keyboardAvoidingView: {
     flex: 1,

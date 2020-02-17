@@ -64,8 +64,8 @@ const OMGFeeTokenInput = ({ theme, feeToken, style, onPress, loading }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.new_black7,
-    borderColor: theme.colors.new_gray5,
+    backgroundColor: theme.colors.black3,
+    borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
     padding: 12,
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 2,
     letterSpacing: -0.48,
-    color: theme.colors.new_gray7
+    color: theme.colors.gray6
   }),
   rightContainer: {
     flexDirection: 'row',
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end'
   },
   errorText: theme => ({
-    color: theme.colors.red2
+    color: theme.colors.red
   })
 })
 

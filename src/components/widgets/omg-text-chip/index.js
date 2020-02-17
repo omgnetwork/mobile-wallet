@@ -16,12 +16,12 @@ const OMGTextChip = ({ theme, text, style, onPress }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     width: 104,
-    backgroundColor: theme.colors.gray4,
+    backgroundColor: theme.colors.black5,
     paddingVertical: 16,
     paddingHorizontal: 8,
     marginTop: 8,
     borderWidth: 1,
-    borderColor: theme.colors.new_gray5
+    borderColor: theme.colors.gray4
   }),
   text: theme => ({
     color: theme.colors.white,

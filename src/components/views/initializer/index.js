@@ -75,7 +75,7 @@ const Initializer = ({
         <SafeAreaView style={styles.container(theme)}>
           <OMGStatusBar
             barStyle={'light-content'}
-            backgroundColor={theme.colors.gray4}
+            backgroundColor={theme.colors.black5}
           />
           <View style={styles.contentContainer}>
             <OmiseGOLogo fill={theme.colors.white} />
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   contentContainer: {
     width: 173.892,
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     transform: [{ translateX: move.current }],
     width: 50,
     height: 4,
-    backgroundColor: theme.colors.new_blue1
+    backgroundColor: theme.colors.blue
   })
 })
 
