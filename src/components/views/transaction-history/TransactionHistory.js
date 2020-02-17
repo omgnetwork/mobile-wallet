@@ -181,10 +181,6 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     backgroundColor: theme.colors.black5
   }),
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
   title: theme => ({
     fontSize: 18,
     marginLeft: 16,
@@ -192,11 +188,6 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: theme.colors.white
   }),
-  icon: {
-    paddingTop: 8,
-    paddingBottom: 16,
-    marginRight: -16
-  },
   menuItem: {
     marginTop: 16,
     marginHorizontal: 16

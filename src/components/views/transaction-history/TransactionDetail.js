@@ -214,12 +214,6 @@ const styles = StyleSheet.create({
   fromToContainer: {
     marginTop: 16
   },
-  divider: theme => ({
-    opacity: 0.25,
-    backgroundColor: theme.colors.white3,
-    height: 1,
-    marginTop: 16
-  }),
   etherscanContainer: {
     marginTop: 30,
     flexDirection: 'row',

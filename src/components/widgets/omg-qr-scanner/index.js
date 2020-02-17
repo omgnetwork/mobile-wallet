@@ -184,12 +184,7 @@ const styles = StyleSheet.create({
   }),
   qrMarkerContainer: {
     alignItems: 'center'
-  },
-  qrMarkerText: theme => ({
-    color: theme.colors.white,
-    marginTop: -30,
-    paddingBottom: 16
-  })
+  }
 })
 
 const mapStateToProps = (state, ownProps) => ({

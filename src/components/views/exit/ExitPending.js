@@ -199,19 +199,10 @@ const styles = StyleSheet.create({
   blockchainLabel: {
     marginTop: 20
   },
-  amountText: {
-    marginTop: 20
-  },
   subtitle: theme => ({
     fontSize: 12,
     color: theme.colors.white,
     textTransform: 'uppercase'
-  }),
-  tokenBalance: theme => ({
-    color: theme.colors.white
-  }),
-  tokenPrice: theme => ({
-    color: theme.colors.gray8
   }),
   headerContainer: {
     flexDirection: 'row',

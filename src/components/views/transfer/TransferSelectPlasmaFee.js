@@ -112,21 +112,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     marginVertical: 16
   },
-  gasRecommendContainer: theme => ({
-    marginTop: 16,
-    padding: 12,
-    flexDirection: 'column',
-    backgroundColor: theme.colors.gray3,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }),
-  gasRecommendText: theme => ({
-    color: theme.colors.white,
-    fontSize: 12,
-    textAlign: 'center',
-    letterSpacing: -0.48,
-    lineHeight: 18
-  }),
   listContainer: theme => ({
     padding: 16,
     flex: 1,

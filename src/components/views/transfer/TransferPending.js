@@ -209,9 +209,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   }),
-  subHeaderTitle: {
-    fontSize: 14
-  },
   title: theme => ({
     fontSize: 18,
     color: theme.colors.white,
@@ -226,9 +223,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: theme.colors.yellow
   }),
-  edit: {
-    marginLeft: 8
-  },
   subtitle: theme => ({
     fontSize: 12,
     color: theme.colors.white,

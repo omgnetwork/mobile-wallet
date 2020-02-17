@@ -195,10 +195,6 @@ const styles = StyleSheet.create({
   scrollView: {
     flexGrow: 1
   },
-  walletContainer: {
-    marginTop: 16,
-    flexDirection: 'column'
-  },
   settingContainer: {
     flex: 1,
     marginTop: 16,
@@ -216,9 +212,6 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: theme.colors.white2
   }),
-  settingItem: {
-    paddingVertical: 12
-  },
   expander: {
     flex: 1
   },

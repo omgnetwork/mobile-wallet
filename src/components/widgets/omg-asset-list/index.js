@@ -108,9 +108,6 @@ const styles = StyleSheet.create({
     letterSpacing: -0.7,
     fontSize: 10
   }),
-  add: {
-    justifyContent: 'flex-end'
-  },
   assetContainer: theme => ({
     flex: 1,
     flexDirection: 'column',

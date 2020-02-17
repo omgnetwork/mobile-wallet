@@ -217,18 +217,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10
   },
-  transactionFeeContainer: {
-    flexDirection: 'column',
-    marginTop: 8,
-    paddingHorizontal: 16
-  },
   buttonContainer: {
     justifyContent: 'flex-end',
     marginVertical: 16,
     paddingHorizontal: 16
-  },
-  subHeaderTitle: {
-    fontSize: 14
   },
   edit: theme => ({
     fontSize: 12,
@@ -272,11 +264,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.gray5,
     padding: 12
   }),
-  totalContainer: {
-    marginBottom: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
   blockchainLabel: {},
   exitwarning: {
     marginTop: 16
@@ -307,10 +294,7 @@ const styles = StyleSheet.create({
   }),
   marginExitFeeItem: {
     marginTop: 16
-  },
-  totalText: theme => ({
-    color: theme.colors.black4
-  })
+  }
 })
 
 const mapStateToProps = (state, ownProps) => {

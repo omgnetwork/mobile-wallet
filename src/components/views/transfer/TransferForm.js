@@ -277,9 +277,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.black3
   }),
-  dismissKeyboard: {
-    flex: 1
-  },
   fromContainer: theme => ({
     flexDirection: 'column',
     justifyContent: 'flex-start',

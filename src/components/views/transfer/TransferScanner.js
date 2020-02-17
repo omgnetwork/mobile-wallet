@@ -265,15 +265,6 @@ const styles = StyleSheet.create({
     textTransform: 'none',
     fontSize: 14
   }),
-  headerContainer: {
-    alignItems: 'center',
-    marginTop: 16
-  },
-  footerContainer: {
-    alignItems: 'center',
-    alignContent: 'center',
-    paddingVertical: 8
-  },
   button: (theme, isRootchain) => ({
     backgroundColor: isRootchain ? theme.colors.green2 : theme.colors.primary,
     borderRadius: 0,
@@ -296,10 +287,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1
   },
-  normalText: theme => ({
-    color: theme.colors.white,
-    marginTop: 16
-  }),
   notAuthorizedView: {
     textAlign: 'center'
   },

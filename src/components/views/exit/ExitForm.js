@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: theme.colors.black5
   }),
-  keyboardAvoidingView: {},
   contentContainer: theme => ({
     flex: 1,
     paddingHorizontal: 16,

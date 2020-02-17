@@ -115,15 +115,6 @@ const LayoutContainer = ({ children }) => {
 }
 
 const styles = StyleSheet.create({
-  contentContainer: theme => ({
-    flex: 1,
-    flexDirection: 'column',
-    paddingTop: 8,
-    backgroundColor: theme.colors.black3
-  }),
-  importByMnemonic: {
-    marginTop: 16
-  },
   textBox: theme => ({
     marginTop: 16,
     backgroundColor: theme.colors.black3

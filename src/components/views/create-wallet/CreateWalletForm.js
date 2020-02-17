@@ -76,9 +76,6 @@ const styles = StyleSheet.create({
     padding: 16,
     flex: 1
   },
-  nameContainer: {
-    marginTop: 12
-  },
   button: {
     flex: 1,
     justifyContent: 'flex-end'

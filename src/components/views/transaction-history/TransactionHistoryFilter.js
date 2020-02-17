@@ -55,10 +55,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.black5
   }),
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
   header: {
     marginHorizontal: 16,
     alignItems: 'center',
@@ -73,16 +69,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     marginLeft: 8,
     textTransform: 'uppercase'
-  }),
-  title: theme => ({
-    fontSize: 18,
-    textTransform: 'uppercase',
-    color: theme.colors.black4
-  }),
-  icon: {
-    padding: 16,
-    marginRight: -16
-  }
+  })
 })
 
 const mapStateToProps = (state, ownProps) => ({

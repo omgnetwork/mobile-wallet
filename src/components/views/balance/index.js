@@ -259,19 +259,10 @@ const styles = StyleSheet.create({
     width: pageWidth,
     marginLeft: 8
   },
-  list: {
-    flex: 1,
-    borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 4,
-    marginBottom: 32
-  },
   emptyButton: {
     flex: 1,
     justifyContent: 'center',
     marginHorizontal: 16
-  },
-  modal: {
-    marginTop: 310
   }
 })
 

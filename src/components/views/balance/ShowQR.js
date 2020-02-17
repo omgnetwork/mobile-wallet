@@ -65,10 +65,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center'
   },
-  icon: {
-    width: 40,
-    height: 40
-  },
   qrContainer: theme => ({
     alignItems: 'center',
     padding: 4

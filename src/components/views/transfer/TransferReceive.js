@@ -103,11 +103,6 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: theme.colors.gray
   }),
-  titleContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
   qrContainer: theme => ({
     marginTop: 24,
     alignItems: 'center',
@@ -120,10 +115,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 20,
     color: theme.colors.white
-  }),
-  bottomText: theme => ({
-    color: theme.colors.primary,
-    alignSelf: 'center'
   }),
   walletAddress: {
     flexDirection: 'row',

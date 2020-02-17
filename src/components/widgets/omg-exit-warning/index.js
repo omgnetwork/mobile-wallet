@@ -30,15 +30,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.gray3,
     alignItems: 'center'
   }),
-  iconContainer: theme => ({
-    width: 24,
-    height: 24,
-    marginLeft: 16,
-    backgroundColor: theme.colors.yellow,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }),
   text: theme => ({
     fontSize: 12,
     letterSpacing: -0.48,

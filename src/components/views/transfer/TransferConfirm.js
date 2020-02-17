@@ -362,11 +362,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.black5
   }),
   blockchainLabel: {},
-  amountContainer: {
-    padding: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
   totalAmountText: theme => ({
     marginRight: 16,
     color: theme.colors.white,
@@ -395,17 +390,6 @@ const styles = StyleSheet.create({
   totalUsdText: theme => ({
     color: theme.colors.gray,
     fontSize: 12
-  }),
-  balanceContainer: {
-    marginLeft: 8,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'flex-end'
-  },
-  tokenBalance: theme => ({
-    fontSize: 32,
-    width: 260,
-    color: theme.colors.black4
   }),
   addressContainer: {
     paddingLeft: 16
@@ -446,17 +430,9 @@ const styles = StyleSheet.create({
     marginTop: 48,
     marginBottom: 16
   },
-  subHeaderTitle: {
-    fontSize: 12,
-    textTransform: 'uppercase'
-  },
   edit: theme => ({
     marginLeft: 8,
     color: theme.colors.white
-  }),
-  tokenSymbol: theme => ({
-    fontSize: 18,
-    color: theme.colors.black4
   }),
   subtitle: theme => ({
     textTransform: 'uppercase',
@@ -482,9 +458,6 @@ const styles = StyleSheet.create({
     color: theme.colors.gray6,
     fontSize: 12,
     letterSpacing: -0.48
-  }),
-  totalText: theme => ({
-    color: theme.colors.black4
   })
 })
 

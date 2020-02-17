@@ -41,16 +41,6 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: theme.roundness,
     borderBottomRightRadius: theme.roundness
   }),
-  balance: {
-    flexDirection: 'row',
-    padding: 20
-  },
-  balanceAmount: theme => ({
-    flex: 1,
-    textAlign: 'left',
-    fontSize: 32,
-    color: theme.colors.black3
-  }),
   subfooter: {
     flex: 1,
     flexDirection: 'row',

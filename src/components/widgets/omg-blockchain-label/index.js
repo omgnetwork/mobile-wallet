@@ -38,9 +38,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   }),
-  icon: theme => ({
-    color: theme.colors.black5
-  }),
   text: (theme, isEthereumRootchain) => ({
     marginLeft: 16,
     color: isEthereumRootchain ? theme.colors.black5 : theme.colors.white,

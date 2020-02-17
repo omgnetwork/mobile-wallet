@@ -104,11 +104,6 @@ const styles = StyleSheet.create({
   emptyContent: theme => ({
     paddingHorizontal: 16,
     flexGrow: 1
-  }),
-  divider: theme => ({
-    backgroundColor: theme.colors.white3,
-    height: 1,
-    opacity: 0.3
   })
 })
 

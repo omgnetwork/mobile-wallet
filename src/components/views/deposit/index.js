@@ -66,9 +66,6 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: theme.colors.white
   }),
-  iconBox: {
-    padding: 16
-  },
   icon: {
     opacity: 1.0
   }
