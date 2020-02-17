@@ -3,13 +3,7 @@ import { StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGText, OMGFontIcon, OMGIdenticon } from 'components/widgets'
 
-const OMGDrawerContentItem = ({
-  wallet,
-  primary,
-  onWalletPress,
-  key,
-  theme
-}) => {
+const OMGDrawerWallet = ({ wallet, primary, onWalletPress, key, theme }) => {
   return (
     <TouchableOpacity
       key={key}
@@ -45,4 +39,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withTheme(OMGDrawerContentItem)
+export default withTheme(OMGDrawerWallet)

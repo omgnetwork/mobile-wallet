@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
 import { OMGText, OMGFontIcon } from 'components/widgets'
-import OMGDrawerContentItem from './OMGDrawerContentItem'
+import OMGDrawerWallet from './OMGDrawerWallet'
 import { settingActions, onboardingActions } from 'common/actions'
 import { ScrollView } from 'react-native-gesture-handler'
 
@@ -58,7 +58,7 @@ const OMGDrawerContent = ({
 
             {wallets.map((wallet, index) => (
               <Fragment key={index}>
-                <OMGDrawerContentItem
+                <OMGDrawerWallet
                   wallet={wallet}
                   onWalletPress={handleWalletPress}
                   primary={
