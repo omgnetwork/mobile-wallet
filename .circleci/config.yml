@@ -10,11 +10,11 @@ workflows:
   version: 2
   mobile-wallet-deploy-internal:
     jobs:
-      - instrumentation-test
+      - instrumentation-tests
       - hold:
           type: approval
           requires:
-            - instrumentation-test
+            - instrumentation-tests
       - build-deploy-internal:
           requires:
             - hold
@@ -82,8 +82,8 @@ jobs:
           name: Init fastlane supply
           command: cd ./android && bundle exec fastlane supply init
       #- run:
-          #name: Download CI data
-          #command: ./ci/download_ci_data.sh
+      #name: Download CI data
+      #command: ./ci/download_ci_data.sh
       - run:
           name: Deploy the app to the internal track
           command: cd ./android && bundle exec fastlane deploy_internal
@@ -111,11 +111,11 @@ jobs:
             npm install
       - save_cache:
           key: v1-proxy-server-node-modules-cache-{{ checksum "proxy-server/package-lock.json" }}
-          paths: "proxy-server/node_modules/"
+          paths: 'proxy-server/node_modules/'
       - persist_to_workspace:
           name: Persist workspace
           root: .
-          paths: "proxy-server/"
+          paths: 'proxy-server/'
 
   proxy-server-lint:
     docker:
