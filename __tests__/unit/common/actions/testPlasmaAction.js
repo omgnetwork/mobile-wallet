@@ -181,6 +181,7 @@ describe('Test Plasma Actions', () => {
       tokenDecimal: 18,
       contractAddress: TEST_ERC20_TOKEN_CONTRACT_ADDRESS
     }
+    const feeToken = token
 
     mockPlasmaService(transfer, {
       txhash: 'any'
@@ -189,10 +190,9 @@ describe('Test Plasma Actions', () => {
     const store = mockStore({})
 
     return store
-      .dispatch(plasmaActions.transfer(wallet, toAddress, token))
+      .dispatch(plasmaActions.transfer(wallet, toAddress, token, feeToken))
       .then(() => {
         const actions = store.getActions()
-
         expect(actions).toStrictEqual([
           { type: 'CHILDCHAIN/SEND_TOKEN/INITIATED' },
           {
@@ -205,6 +205,7 @@ describe('Test Plasma Actions', () => {
               contractAddress: token.contractAddress,
               gasUsed: 1,
               gasPrice: 1,
+              gasToken: feeToken,
               actionType: TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN,
               createdAt: actions[1].data.createdAt
             },
