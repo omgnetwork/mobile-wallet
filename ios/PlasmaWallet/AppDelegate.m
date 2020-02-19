@@ -14,6 +14,7 @@
 #import <UserNotifications/UserNotifications.h>
 #import "RNSplashScreen.h"
 #import <Firebase.h>
+#import "Intercom/intercom.h"
 @import UIKit;
 @import Firebase;
 
@@ -34,7 +35,7 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-
+  [Intercom setApiKey:@"ios_sdk-a1c234de68f8eb6d7ecb2da9004acbf09973e8bf" forAppId:@"r0u30zii"];
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   center.delegate = self;
   [RNSplashScreen show];
@@ -61,6 +62,13 @@
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
   [RNCPushNotificationIOS didReceiveLocalNotification:notification];
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+
+    // Intercom
+    [Intercom setDeviceToken:deviceToken];
+
 }
 
 //Called when a notification is delivered to a foreground app.

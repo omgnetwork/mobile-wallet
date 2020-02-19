@@ -51,6 +51,8 @@ target 'PlasmaWallet' do
   pod 'Firebase/Analytics', '~> 5.0'
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
+  pod 'react-native-intercom', :path => '../node_modules/react-native-intercom'
+
   target 'PlasmaWalletTests' do
     inherit! :search_paths
     # Pods for testing
