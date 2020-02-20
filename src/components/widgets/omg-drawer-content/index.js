@@ -130,7 +130,7 @@ const OMGDrawerContent = ({
           />
           <View style={styles.divider(theme)} />
           <ManageWalletMenu
-            title='Contact Us'
+            title='Live chat'
             theme={theme}
             showCaret={false}
             onPress={openIntercom}
