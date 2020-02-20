@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { View, StyleSheet, SafeAreaView } from 'react-native'
 import { OMGFontIcon, OMGText, OMGStatusBar } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
