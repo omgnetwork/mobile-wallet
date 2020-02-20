@@ -67,7 +67,6 @@ jobs:
       - run:
           name: Run mobile-wallet tests with JUnit as reporter
           command: |
-            npm install jest-html-reporters jest-junit --save-dev
             npm run test --ci --runInBand --reporters=default --reporters=jest-junit --reporters=jest-html-reporters
           environment:
             JEST_SUITE_NAME: 'results.xml'
