@@ -168,9 +168,16 @@
       [
         "jest-html-reporters",
         {
-          "publicPath": "./test-reports",
-          "filename": "mobile-wallet-test-results.html",
+          "publicPath": "test-results",
+          "filename": "results.html",
           "expand": true
+        }
+      ],
+      [
+        "jest-junit",
+        {
+          "outputDirectory": "test-results",
+          "outputName": "results.xml"
         }
       ]
     ]
