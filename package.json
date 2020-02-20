@@ -162,6 +162,17 @@
     "preset": "react-native",
     "testMatch": [
       "**/__tests__/unit/**/*.js"
+    ],
+    "reporters": [
+      "default",
+      [
+        "jest-html-reporters",
+        {
+          "publicPath": "./test-reports",
+          "filename": "mobile-wallet-test-results.html",
+          "expand": true
+        }
+      ]
     ]
   }
 }
