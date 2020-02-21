@@ -204,6 +204,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-intercom')
     implementation project(':react-native-firebase')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-gesture-handler')
@@ -229,6 +230,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-tagmanager:17.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.work:work-runtime:2.3.0-alpha03'
+    implementation 'io.intercom.android:intercom-sdk-base:5.+'
    if (enableHermes) {
        def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")

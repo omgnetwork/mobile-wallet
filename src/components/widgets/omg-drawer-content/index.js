@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useCallback } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { SafeAreaView, withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
@@ -8,6 +8,7 @@ import { OMGText, OMGFontIcon } from 'components/widgets'
 import OMGDrawerWallet from './OMGDrawerWallet'
 import { settingActions, onboardingActions } from 'common/actions'
 import { ScrollView } from 'react-native-gesture-handler'
+import Intercom from 'react-native-intercom'
 
 const ManageWalletMenu = ({
   theme,
@@ -60,6 +61,11 @@ const OMGDrawerContent = ({
     requestAnimationFrame(() => {
       navigation.navigate('Balance', { page: 1 })
     })
+  }
+
+  const openIntercom = () => {
+    Intercom.registerUnidentifiedUser()
+    Intercom.displayMessenger()
   }
 
   return (
@@ -121,6 +127,13 @@ const OMGDrawerContent = ({
             theme={theme}
             showCaret={false}
             onPress={takeAppTour}
+          />
+          <View style={styles.divider(theme)} />
+          <ManageWalletMenu
+            title='Live chat'
+            theme={theme}
+            showCaret={false}
+            onPress={openIntercom}
           />
           <View style={styles.divider(theme)} />
           <View style={styles.expander} />

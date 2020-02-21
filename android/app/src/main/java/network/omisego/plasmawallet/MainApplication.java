@@ -9,6 +9,8 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
 import network.omisego.plasmawallet.schedule.TaskSchedulerPackage;
+import com.robinpowered.react.Intercom.IntercomPackage;
+import io.intercom.android.sdk.Intercom;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -45,6 +47,7 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
+    Intercom.initialize(this, "android_sdk-a280efeb2688e63a8515ac6fc15912f25015e6bf", "r0u30zii");
   }
 
   /**
