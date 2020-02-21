@@ -1,107 +1,144 @@
-import React, { useCallback } from 'react'
-import { View, StyleSheet, Clipboard } from 'react-native'
+import React, { useCallback, useEffect } from 'react'
+import {
+  View,
+  StyleSheet,
+  Clipboard,
+  Share,
+  TouchableOpacity,
+  Keyboard
+} from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
+import { withNavigationFocus } from 'react-navigation'
 import {
   OMGQRCode,
-  OMGBackground,
   OMGText,
-  OMGBox,
   OMGFontIcon,
   OMGIdenticon
 } from 'components/widgets'
 import { Alert } from 'common/constants'
 import { Alerter } from 'common/utils'
 
-const TransferReceive = ({ theme, primaryWallet, primaryWalletAddress }) => {
+const TransferReceive = ({
+  theme,
+  primaryWallet,
+  primaryWalletAddress,
+  isFocused
+}) => {
+  useEffect(() => {
+    if (isFocused) {
+      Keyboard.dismiss()
+    }
+  }, [isFocused])
+
   const handleCopyClick = useCallback(() => {
     Clipboard.setString(primaryWalletAddress)
     Alerter.show(Alert.SUCCESS_COPIED_ADDRESS)
   }, [primaryWalletAddress])
+
+  const handleShareClick = useCallback(() => {
+    Share.share({
+      title: 'Share Wallet Address',
+      message: primaryWalletAddress
+    })
+  }, [primaryWalletAddress])
+
   return (
-    <OMGBackground style={styles.container(theme)}>
+    <View style={styles.container(theme)}>
       <View style={styles.contentContainer(theme)}>
-        <View style={styles.titleContainer}>
+        <View style={styles.content}>
           <OMGIdenticon
             style={styles.identicon(theme)}
             hash={primaryWalletAddress}
             size={40}
           />
-          <OMGText style={styles.title(theme)} weight='bold'>
-            {primaryWallet.name}
-          </OMGText>
+          <OMGText style={styles.title(theme)}>{primaryWallet.name}</OMGText>
+          <View style={styles.qrContainer(theme)}>
+            <OMGQRCode size={192} payload={primaryWalletAddress} />
+          </View>
           <View style={styles.walletAddress}>
             <OMGText style={styles.text(theme)}>{primaryWalletAddress}</OMGText>
-            <OMGBox style={styles.icon(theme)} onPress={handleCopyClick}>
-              <OMGFontIcon name='copy' size={14} color={theme.colors.gray3} />
-            </OMGBox>
+            <TouchableOpacity onPress={handleCopyClick}>
+              <OMGFontIcon
+                name='copy'
+                size={24}
+                color={theme.colors.white}
+                style={styles.icon}
+              />
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.qrContainer(theme)}>
-          <OMGQRCode size={180} payload={primaryWalletAddress} />
-        </View>
+        <TouchableOpacity
+          style={styles.buttonContainer(theme)}
+          onPress={handleShareClick}>
+          <OMGText style={styles.buttonText(theme)} weigth='semi-bold'>
+            Share to Receive
+          </OMGText>
+        </TouchableOpacity>
       </View>
-    </OMGBackground>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
-    flexDirection: 'column',
-    backgroundColor: theme.colors.black2,
-    padding: 16
+    backgroundColor: theme.colors.black3,
+    alignItems: 'center'
   }),
   contentContainer: theme => ({
-    borderRadius: theme.roundness,
-    backgroundColor: theme.colors.gray4
+    width: 200,
+    flexDirection: 'column',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   }),
+  content: {
+    alignItems: 'center'
+  },
   identicon: theme => ({
     width: 40,
     height: 40,
     borderRadius: theme.roundness,
     borderWidth: 0.5,
-    borderColor: theme.colors.black4,
-    marginTop: 30
+    borderColor: theme.colors.gray
   }),
-  titleContainer: {
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
   qrContainer: theme => ({
+    marginTop: 24,
     alignItems: 'center',
-    backgroundColor: theme.colors.white,
     justifyContent: 'center',
-    height: 280,
     borderBottomLeftRadius: theme.roundness,
     borderBottommRightRadius: theme.roundness
   }),
   title: theme => ({
     textTransform: 'uppercase',
-    fontSize: 18,
+    fontSize: 16,
     marginTop: 20,
-    color: theme.colors.gray3
-  }),
-  bottomText: theme => ({
-    color: theme.colors.primary,
-    alignSelf: 'center'
+    color: theme.colors.white
   }),
   walletAddress: {
-    marginTop: 4,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20
+    justifyContent: 'center'
   },
   text: theme => ({
-    marginRight: 8,
+    flex: 1,
     fontSize: 12,
-    color: theme.colors.black2
+    letterSpacing: -0.48,
+    color: theme.colors.white
   }),
-  icon: theme => ({
-    padding: 8,
-    borderRadius: 15,
-    backgroundColor: theme.colors.white2
+  icon: { marginLeft: 18 },
+  buttonContainer: theme => ({
+    width: 200,
+    borderWidth: 1,
+    borderColor: theme.colors.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 40,
+    padding: 14
+  }),
+  buttonText: theme => ({
+    color: theme.colors.white
   })
 })
 
@@ -116,4 +153,4 @@ const mapStateToProps = (state, ownProps) => ({
 export default connect(
   mapStateToProps,
   null
-)(withTheme(TransferReceive))
+)(withNavigationFocus(withTheme(TransferReceive)))

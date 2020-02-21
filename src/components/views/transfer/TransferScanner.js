@@ -10,6 +10,7 @@ import { View, StyleSheet, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
+import { Dimensions } from 'common/utils'
 import { paramsForTransferScannerToTransferSelectBalance } from './transferNavigation'
 import {
   OMGText,
@@ -18,13 +19,12 @@ import {
   OMGButton,
   OMGEmpty
 } from 'components/widgets'
-import {
-  ROOTCHAIN_OVERLAY_COLOR,
-  CHILDCHAIN_OVERLAY_COLOR
-} from 'components/widgets/omg-qr-scanner'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Animator } from 'common/anims'
 import * as BlockchainIcons from './assets'
+
+const SCREEN_WIDTH = Dimensions.windowWidth + 1
+const CAMERA_WIDTH = Math.round(SCREEN_WIDTH * 0.68)
 
 const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   const { rootchain } = getParamsForTransferScannerFromTransferForm(navigation)
@@ -40,7 +40,8 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   const hasChildchainAssets =
     wallet && wallet.childchainAssets && wallet.childchainAssets.length > 0
   const overlayColorAnim = useRef(new Animated.Value(rootchain ? 0 : 1))
-  const Icon = BlockchainIcons[isRootchain ? 'IconEth' : 'IconGo']
+  const OMGIcon = BlockchainIcons.IconGo
+  const ETHIcon = BlockchainIcons.IconEth
   const transitionOverlay = isRootChain => {
     if (isRootChain) {
       Animator.spring(overlayColorAnim, 1, 2000, false).start()
@@ -127,12 +128,12 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   }, [hasChildchainAssets, hasRootchainAssets, isRootchain, unconfirmedTx])
 
   const unconfirmedTxComponent = (
-    <Animated.View style={styles.unableView(overlayColorAnim)}>
+    <Animated.View style={styles.unableView(theme)}>
       <OMGFontIcon
         style={styles.unableIcon(theme)}
         name='pending'
         size={16}
-        color={theme.colors.gray2}
+        color={theme.colors.gray8}
       />
       <OMGText style={styles.unableText(theme)}>
         Unable to Transfer,{'\n'}There's a pending transaction
@@ -141,24 +142,34 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   )
 
   const emptyComponent = (
-    <Animated.View style={styles.emptyView(overlayColorAnim)}>
+    <Animated.View style={styles.emptyView(theme)}>
       <OMGEmpty {...getEmptyStatePayload()} />
     </Animated.View>
   )
 
-  const TopMarker = ({ textAboveLine, textBelowLine, onPressSwitch }) => {
+  const TopMarker = ({ text }) => {
     return (
       <Fragment>
         <View style={styles.titleContainer(theme)}>
-          <Icon />
-          <OMGText style={styles.title(theme)} weight='extra-bold'>
-            {textAboveLine}
+          {isRootchain ? (
+            <ETHIcon fill={theme.colors.white} width={18} height={29.27} />
+          ) : (
+            <OMGIcon
+              fill={theme.colors.white}
+              width={86.94}
+              height={30}
+              scale={1.1}
+            />
+          )}
+          {isRootchain && (
+            <OMGText style={styles.textEthereum(theme)} weight='bold'>
+              Ethereum
+            </OMGText>
+          )}
+          <OMGText style={styles.title(theme)} weight='mono-light'>
+            {text}
           </OMGText>
         </View>
-        <View style={styles.line(theme)} />
-        <TouchableOpacity onPress={onPressSwitch}>
-          <OMGText style={styles.normalText(theme)}>{textBelowLine}</OMGText>
-        </TouchableOpacity>
       </Fragment>
     )
   }
@@ -168,7 +179,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
       showMarker={true}
       onReceiveQR={e => setAddress(e.data)}
       cameraRef={camera}
-      borderColor={theme.colors.black5}
+      borderColor={isRootchain ? theme.colors.green : theme.colors.primary}
       rootchain={isRootchain}
       renderUnconfirmedTx={unconfirmedTxComponent}
       renderEmptyComponent={emptyComponent}
@@ -181,29 +192,45 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
       }
       renderTop={
         <TopMarker
-          textAboveLine={
+          text={
             isRootchain
-              ? 'Sending on \nEthereum Rootchain'
+              ? 'Sending on \nEthereum\nRootchain'
               : 'Sending on \nPlasma Childchain'
           }
-          textBelowLine={
-            isRootchain
-              ? 'Switch to Plasma Childchain'
-              : 'Switch to Ethereum Rootchain'
-          }
-          onPressSwitch={() => {
-            setIsRootchain(!isRootchain)
-            transitionOverlay(isRootchain)
-          }}
         />
       }
       renderBottom={
-        <OMGButton
-          style={styles.button(theme)}
-          disabled={shouldDisabledSendButton}
-          onPress={navigateNext}>
-          Or, Send Manually
-        </OMGButton>
+        <>
+          <OMGButton
+            style={styles.button(theme, isRootchain)}
+            disabled={shouldDisabledSendButton}
+            textStyle={styles.buttonText(theme)}
+            onPress={navigateNext}>
+            Or, Send Manually
+          </OMGButton>
+          <TouchableOpacity
+            style={styles.buttonChangeNetwork(theme)}
+            onPress={() => {
+              setIsRootchain(!isRootchain)
+              transitionOverlay(isRootchain)
+            }}>
+            {isRootchain ? (
+              <OMGIcon
+                fill={theme.colors.white}
+                width={69.56}
+                height={24}
+                scale={1.1}
+              />
+            ) : (
+              <ETHIcon fill={theme.colors.white} width={18} height={29.27} />
+            )}
+            <OMGText
+              weight='semi-bold'
+              style={styles.textChangeNetwork(theme)}>{`Switch to send on \n${
+              isRootchain ? 'Plasma Childchain' : 'Ethereum Rootchain'
+            }`}</OMGText>
+          </TouchableOpacity>
+        </>
       }
     />
   )
@@ -220,71 +247,71 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-around',
-    alignContent: 'center'
+    alignContent: 'center',
+    backgroundColor: theme.colors.black3
   }),
   titleContainer: theme => ({
     flexDirection: 'row',
+    justifyContent: 'flex-start',
     alignItems: 'center'
   }),
   title: theme => ({
     color: theme.colors.white,
-    marginLeft: 16,
-    fontSize: 18
+    marginLeft: 'auto',
+    fontSize: 14
   }),
-  line: theme => ({
-    width: 246,
-    height: 1,
-    marginTop: 16,
-    opacity: 0.5,
-    backgroundColor: theme.colors.white
+  buttonText: theme => ({
+    color: theme.colors.white,
+    textTransform: 'none',
+    fontSize: 14
   }),
-  headerContainer: {
-    alignItems: 'center',
-    marginTop: 16
-  },
-  footerContainer: {
-    alignItems: 'center',
-    alignContent: 'center',
-    paddingVertical: 8
-  },
-  button: theme => ({
-    width: 300,
-    backgroundColor: 'transparent',
+  button: (theme, isRootchain) => ({
+    backgroundColor: isRootchain ? theme.colors.green2 : theme.colors.primary,
+    borderRadius: 0,
+    marginTop: 20
+  }),
+  buttonChangeNetwork: theme => ({
+    borderWidth: 1,
     borderColor: theme.colors.white,
-    borderWidth: 1
+    flexDirection: 'row',
+    paddingVertical: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 32
+  }),
+  textChangeNetwork: theme => ({
+    color: theme.colors.white,
+    marginLeft: 16
   }),
   cameraContainer: {
     alignSelf: 'center',
     flex: 1
   },
-  normalText: theme => ({
-    color: theme.colors.white,
-    marginTop: 16
-  }),
   notAuthorizedView: {
     textAlign: 'center'
   },
-  unableView: overlayColorAnim => ({
+  unableView: theme => ({
+    width: CAMERA_WIDTH,
+    height: CAMERA_WIDTH,
     flexDirection: 'column',
-    backgroundColor: overlayColorAnim.current.interpolate({
-      inputRange: [0, 1],
-      outputRange: [ROOTCHAIN_OVERLAY_COLOR, CHILDCHAIN_OVERLAY_COLOR]
-    }),
+    backgroundColor: theme.colors.black3,
     alignItems: 'center',
     justifyContent: 'center'
   }),
-  emptyView: overlayColorAnim => ({
+  emptyView: theme => ({
     height: 240,
     flexDirection: 'column',
-    backgroundColor: overlayColorAnim.current.interpolate({
-      inputRange: [0, 1],
-      outputRange: [ROOTCHAIN_OVERLAY_COLOR, CHILDCHAIN_OVERLAY_COLOR]
-    }),
+    backgroundColor: theme.colors.black3,
     alignItems: 'center',
     justifyContent: 'center'
   }),
+  textEthereum: theme => ({
+    color: theme.colors.white,
+    marginLeft: 16,
+    fontSize: 18
+  }),
   unableText: theme => ({
-    color: theme.colors.gray2,
+    color: theme.colors.gray8,
     marginTop: 24,
     textAlign: 'center'
   }),
@@ -299,7 +326,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     borderWidth: 1,
     borderRadius: 12,
-    borderColor: theme.colors.gray6
+    borderColor: theme.colors.gray
   })
 })
 

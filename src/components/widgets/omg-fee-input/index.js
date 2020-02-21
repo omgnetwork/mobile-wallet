@@ -1,7 +1,7 @@
 import React from 'react'
 import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import OMGFontIcon from '../omg-icon'
+import OMGFontIcon from '../omg-font-icon'
 import OMGText from '../omg-text'
 
 const OMGFeeInput = ({ theme, fee, style, onPress }) => {
@@ -14,7 +14,11 @@ const OMGFeeInput = ({ theme, fee, style, onPress }) => {
         <OMGText style={styles.amount(theme)}>
           {fee.displayAmount} {fee.symbol}
         </OMGText>
-        <OMGFontIcon name='chevron-right' size={14} color={theme.colors.gray3} />
+        <OMGFontIcon
+          name='chevron-right'
+          size={14}
+          color={theme.colors.white}
+        />
       </View>
     </TouchableOpacity>
   )
@@ -23,7 +27,7 @@ const OMGFeeInput = ({ theme, fee, style, onPress }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.black3,
     borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
@@ -31,11 +35,11 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }),
   amount: theme => ({
-    color: theme.colors.gray2,
+    color: theme.colors.gray8,
     marginRight: 10
   }),
   text: theme => ({
-    color: theme.colors.primary,
+    color: theme.colors.white,
     fontSize: 14,
     flex: 1
   }),

@@ -139,8 +139,8 @@ android {
         applicationId "network.omisego.plasmawallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 9
-        versionName "0.3.1"
+        versionCode 15
+        versionName "0.4.3"
         multiDexEnabled true
         missingDimensionStrategy "react-native-camera", "general"
     }
@@ -220,7 +220,6 @@ dependencies {
     implementation project(':react-native-svg')
     implementation project(':react-native-config')
     implementation project(':react-native-sensitive-info')
-    implementation project(':react-native-vector-icons')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {

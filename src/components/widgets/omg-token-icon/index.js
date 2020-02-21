@@ -1,23 +1,44 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Image, View } from 'react-native'
 import { ContractAddress } from 'common/constants'
-import { OMGIdenticon } from 'components/widgets'
+import { OMGIdenticon, OMGEmpty } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import { Token } from 'common/blockchain'
 
 const OMGTokenIcon = ({ token, theme, style, size }) => {
   const [isError, setIsError] = useState(false)
-  const contractAddressChecksum = Token.getContractAddressChecksum(
-    token.contractAddress
+  const [isEth, setIsEth] = useState(
+    token.contractAddress === ContractAddress.ETH_ADDRESS
   )
-  const isEth = token.contractAddress === ContractAddress.ETH_ADDRESS
-  const iconUri = isEth
-    ? `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png`
-    : `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${contractAddressChecksum}/logo.png`
+  const [contractAddressChecksum, setContractAddressChecksum] = useState(null)
+  const [iconUri, setIconUri] = useState(null)
+
+  useEffect(() => {
+    const erc20Uri = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${contractAddressChecksum}/logo.png`
+    const ethUri = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png`
+    const uri = isEth ? ethUri : erc20Uri
+    setIconUri(uri)
+  }, [token, isEth, contractAddressChecksum])
+
+  useEffect(() => {
+    const checksum = Token.getContractAddressChecksum(token.contractAddress)
+    setContractAddressChecksum(checksum)
+    if (token.contractAddress === ContractAddress.ETH_ADDRESS) {
+      setIsEth(true)
+      setIsError(false)
+    } else {
+      setIsEth(false)
+    }
+  }, [contractAddressChecksum, token])
+
+  if (!contractAddressChecksum) {
+    return <OMGEmpty loading={true} />
+  }
+
   return isError ? (
     <OMGIdenticon
       hash={contractAddressChecksum}
-      size={size || 40}
+      size={style?.width || 40}
       style={[styles.iconFallback(theme), style]}
     />
   ) : (
@@ -27,7 +48,10 @@ const OMGTokenIcon = ({ token, theme, style, size }) => {
         source={{
           uri: iconUri
         }}
-        onError={() => setIsError(true)}
+        onLoad={() => setIsError(false)}
+        onError={() => {
+          if (!isEth) setIsError(true)
+        }}
       />
     </View>
   )
@@ -38,15 +62,13 @@ const styles = {
     width: 40,
     height: 40,
     borderRadius: theme.roundness,
-    borderColor: theme.colors.black4,
-    borderWidth: 0.5
+    backgroundColor: theme.colors.white
   }),
   icon: theme => ({
     width: 40,
     height: 40,
     borderRadius: theme.roundness,
-    borderColor: theme.colors.black4,
-    borderWidth: 0.5,
+    backgroundColor: theme.colors.white,
     alignItems: 'center',
     justifyContent: 'center'
   }),

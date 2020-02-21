@@ -4,12 +4,13 @@ import { Animator } from 'common/anims'
 import { OMGText, OMGTokenIcon } from 'components/widgets'
 import { BlockchainRenderer } from 'common/blockchain'
 import { withTheme } from 'react-native-paper'
+
 const OMGItemToken = ({ token, style, onPress, theme }) => {
   const [animating, setAnimating] = useState(false)
   const shadowAnim = useRef(new Animated.Value(0))
   const shadowOpacity = useRef(new Animated.Value(0))
   const balanceOpacity = useRef(new Animated.Value(1.0))
-  const balance = BlockchainRenderer.renderTokenBalance(token.balance, 4)
+  const balance = BlockchainRenderer.renderTokenBalance(token.balance, 6)
   const price = BlockchainRenderer.renderTokenPrice(token.balance, token.price)
   const [currentBalance, setCurrentBalance] = useState(balance)
   const [currentPrice, setCurrentPrice] = useState(price)
@@ -52,7 +53,7 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
       }}
       elevation={5}
       onPress={onPress}>
-      <OMGTokenIcon token={token} size={40} />
+      <OMGTokenIcon token={token} size={32} />
       <View style={styles.sectionName}>
         <OMGText style={styles.symbol(theme)}>{token.tokenSymbol}</OMGText>
       </View>
@@ -72,18 +73,11 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
 const styles = StyleSheet.create({
   container: (theme, animating, shadowAnim, shadowOpacity) => ({
     flexDirection: 'row',
-    borderRadius: theme.roundness,
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.black3,
     shadowColor: '#000000',
     elevation: shadowAnim.current,
     paddingHorizontal: animating ? 12 : 20,
     marginHorizontal: animating ? 8 : 0,
-    shadowOffset: {
-      width: 0,
-      height: shadowAnim.current
-    },
-    marginTop: 2,
-    marginBottom: 6,
     shadowRadius: shadowAnim.current,
     shadowOpacity: shadowOpacity.current,
     alignItems: 'center',
@@ -101,17 +95,17 @@ const styles = StyleSheet.create({
   }),
   symbol: theme => ({
     fontSize: 14,
-    color: theme.colors.primary
+    color: theme.colors.white
   }),
   balance: theme => ({
     textAlign: 'right',
     maxWidth: 100,
     fontSize: 14,
-    color: theme.colors.primary
+    color: theme.colors.white
   }),
   fiatValue: theme => ({
     textAlign: 'right',
-    color: theme.colors.black2,
+    color: theme.colors.gray2,
     fontSize: 8
   })
 })

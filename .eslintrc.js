@@ -11,5 +11,8 @@ module.exports = {
     'import/resolver': {
       'babel-module': {}
     }
+  },
+  rules: {
+    'react-native/no-unused-styles': 2
   }
 }

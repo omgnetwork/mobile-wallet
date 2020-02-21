@@ -13,7 +13,7 @@ const OMGButton = ({
   disabled,
   style,
   textStyle,
-  textWeight,
+  textWeight = 'semi-bold',
   children,
   onPress,
   loading,
@@ -27,15 +27,19 @@ const OMGButton = ({
     <Fragment>
       <ActivityIndicator
         animating={loading || false}
-        color='#ffffff'
+        color={theme.colors.black2}
         style={{ ...styles.icon }}
       />
-      <OMGText style={{ ...styles.text, ...textStyle }} weight={textWeight}>
+      <OMGText
+        style={{ ...styles.text(theme), ...textStyle }}
+        weight={textWeight}>
         {children}
       </OMGText>
     </Fragment>
   ) : (
-    <OMGText style={{ ...styles.text, ...textStyle }} weight={textWeight}>
+    <OMGText
+      style={{ ...styles.text(theme), ...textStyle }}
+      weight={textWeight}>
       {children}
     </OMGText>
   )
@@ -59,7 +63,7 @@ const OMGButton = ({
       onPress={onPress}
       onPressIn={() => Push.In(scale.current)}
       onPressOut={() => Push.Out(scale.current)}>
-      <Animated.View style={{ opacity: fade.current, flexDirection: 'row' }}>
+      <Animated.View style={styles.contentContainer(fade)}>
         {textLayout}
       </Animated.View>
     </TouchableOpacity>
@@ -72,20 +76,25 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16
   },
-  text: {
-    color: '#FFFFFF',
+  text: theme => ({
+    color: theme.colors.black2,
     textAlign: 'center',
+    fontSize: 16,
     textTransform: 'uppercase'
-  },
+  }),
   container: theme => ({
-    borderRadius: theme.roundness,
     justifyContent: 'center',
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.white,
     alignSelf: 'center',
     width: '100%',
     paddingHorizontal: 8,
     paddingVertical: 12,
     flexDirection: 'row'
+  }),
+  contentContainer: fade => ({
+    opacity: fade.current,
+    flexDirection: 'row',
+    alignItems: 'center'
   }),
   inactive: {
     opacity: 0.5

@@ -11,7 +11,12 @@ export const renderGasFee = (gasUsed, gasPriceWei, flatFee = '0') => {
 }
 
 // Output in USD
-export const renderGasFeeUsd = (gasUsed, gasPriceWei, usdEth) => {
+export const renderGasFeeUsd = (
+  gasUsed,
+  gasPriceWei,
+  usdEth,
+  flatFee = '0'
+) => {
   const bigNumberGasPriceWei = BigNumber.create(gasPriceWei)
   const bigNumberGasUsed = BigNumber.create(gasUsed)
   const bigNumberGasFee = bigNumberGasPriceWei.mul(bigNumberGasUsed)
@@ -60,6 +65,15 @@ export const renderTotalPrice = (tokenPrice, feePrice) => {
   return Formatter.format(totalPrice, {
     commify: true,
     maxDecimal: 2,
+    ellipsize: false
+  })
+}
+
+export const renderTotalEthAmount = (token, feeAmount) => {
+  const totalAmount = BigNumber.plus(token.balance, feeAmount)
+  return Formatter.format(totalAmount, {
+    commify: true,
+    maxDecimal: 18,
     ellipsize: false
   })
 }

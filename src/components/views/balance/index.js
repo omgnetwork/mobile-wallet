@@ -1,7 +1,7 @@
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect, useCallback, useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Linking, View, StatusBar } from 'react-native'
-import { SafeAreaView } from 'react-navigation'
+import { SafeAreaView, withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
 import { Dimensions } from 'common/utils'
@@ -34,6 +34,7 @@ const Balance = ({
   navigation,
   wallets,
   unconfirmedTxs,
+  isFocused,
   loading,
   feedbackCompleteTx,
   dispatchInvalidateFeedbackCompleteTx,
@@ -76,19 +77,18 @@ const Balance = ({
     dispatchAddAnchoredComponent
   )
   const [measured, setMeasured] = useState(false)
+  const scroller = useRef({})
 
   useEffect(() => {
-    function didFocus() {
-      StatusBar.setBarStyle('dark-content')
-      StatusBar.setBackgroundColor(theme.colors.gray4)
+    if (isFocused) {
+      StatusBar.setBarStyle('light-content')
+      StatusBar.setBackgroundColor(theme.colors.black5)
     }
+  }, [isFocused, theme.colors.black5])
 
-    const didFocusSubscription = navigation.addListener('didFocus', didFocus)
-
-    return () => {
-      didFocusSubscription.remove()
-    }
-  }, [navigation, primaryWallet, theme.colors.gray4])
+  useEffect(() => {
+    scroller.current.scrollTo(navigation.getParam('page'))
+  }, [navigation])
 
   useEffect(() => {
     if (
@@ -160,8 +160,8 @@ const Balance = ({
   return (
     <SafeAreaView style={styles.safeAreaView(theme)}>
       <OMGStatusBar
-        barStyle={'dark-content'}
-        backgroundColor={theme.colors.gray4}
+        barStyle={'light-content'}
+        backgroundColor={theme.colors.black5}
       />
       <View style={styles.container(theme)}>
         <View style={styles.topContainer}>
@@ -173,7 +173,7 @@ const Balance = ({
             size={24}
             name='hamburger'
             onPress={() => drawerNavigation.openDrawer()}
-            color={theme.colors.primary}
+            color={theme.colors.white}
           />
         </View>
         {!wallets || !primaryWallet ? (
@@ -187,6 +187,8 @@ const Balance = ({
           </View>
         ) : (
           <OMGViewPager
+            scrollRef={scroller}
+            pageWidth={pageWidth}
             snapOffsets={viewPagerSnapOffsets}
             onPageChanged={handleOnPageChanged}>
             <View style={styles.firstPage}>
@@ -227,7 +229,7 @@ const Balance = ({
 const styles = StyleSheet.create({
   safeAreaView: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   topContainer: {
     flexDirection: 'row',
@@ -238,13 +240,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 16,
     textTransform: 'uppercase',
-    color: theme.colors.primary
+    color: theme.colors.white
   }),
   topIconRight: {},
   container: theme => ({
     flex: 1,
     paddingVertical: 20,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.black5
   }),
   firstPage: {
     width: pageWidth,
@@ -257,19 +259,10 @@ const styles = StyleSheet.create({
     width: pageWidth,
     marginLeft: 8
   },
-  list: {
-    flex: 1,
-    borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 4,
-    marginBottom: 32
-  },
   emptyButton: {
     flex: 1,
     justifyContent: 'center',
     marginHorizontal: 16
-  },
-  modal: {
-    marginTop: 310
   }
 })
 
@@ -303,4 +296,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTheme(Balance))
+)(withNavigationFocus(withTheme(Balance)))

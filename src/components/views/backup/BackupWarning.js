@@ -28,7 +28,7 @@ const itemStyles = StyleSheet.create({
   text: theme => ({
     flex: 1,
     marginLeft: 16,
-    color: theme.colors.primary,
+    color: theme.colors.white,
     fontSize: 12
   })
 })
@@ -71,9 +71,9 @@ const BackupWarning = ({ theme, navigation }) => {
   }, [mnemonic, name, navigation])
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container(theme)}>
       <BackupImage width={110} height={110} style={styles.image} />
-      <OMGText weight='bold' style={styles.title(theme)}>
+      <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
         Backup Mnemonic
       </OMGText>
       <OMGText style={styles.description(theme)}>
@@ -113,23 +113,24 @@ const BackupWarning = ({ theme, navigation }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: theme => ({
     flex: 1,
     paddingHorizontal: 16,
-    paddingBottom: 8
-  },
+    paddingBottom: 16,
+    backgroundColor: theme.colors.black3
+  }),
   image: {
     marginTop: 32,
     marginLeft: 34
   },
   title: theme => ({
-    color: theme.colors.gray3,
+    color: theme.colors.white,
     marginTop: 40,
     marginLeft: 34,
     fontSize: 18
   }),
   description: theme => ({
-    color: theme.colors.primary,
+    color: theme.colors.white,
     marginHorizontal: 34,
     marginTop: 16
   }),

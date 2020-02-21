@@ -15,14 +15,13 @@ const ImportSuccess = ({ theme, navigation, dispatchSetPrimaryWallet }) => {
   })
 
   return (
-    <View style={styles.container}>
-      <OMGText style={styles.title(theme)} weight='bold'>
+    <View style={styles.container(theme)}>
+      <OMGText style={styles.title(theme)} weight='mono-semi-bold'>
         Successfully Imported!
       </OMGText>
       <OMGItemWallet wallet={wallet} style={styles.walletItem} />
       <View style={styles.buttonContainer}>
         <OMGButton
-          style={styles.button(theme)}
           textStyle={styles.buttonText(theme)}
           onPress={() => {
             navigation.navigate('Initializer')
@@ -38,24 +37,20 @@ const ImportSuccess = ({ theme, navigation, dispatchSetPrimaryWallet }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: theme => ({
     flex: 1,
-    padding: 16
-  },
+    padding: 16,
+    backgroundColor: theme.colors.black3
+  }),
   walletItem: {
     marginTop: 16,
     padding: 8
   },
   title: theme => ({
-    color: theme.colors.gray3
-  }),
-  button: theme => ({
-    backgroundColor: theme.colors.white,
-    borderColor: theme.colors.gray3,
-    borderWidth: 1
+    color: theme.colors.white
   }),
   buttonText: theme => ({
-    color: theme.colors.gray3
+    color: theme.colors.black4
   }),
   buttonContainer: {
     flex: 1,

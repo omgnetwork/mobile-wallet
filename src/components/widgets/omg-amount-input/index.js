@@ -17,7 +17,7 @@ const OMGAmountInput = ({
   return (
     <Fragment>
       <View style={{ ...styles.container(theme), ...style }}>
-        <OMGTokenIcon style={styles.logo} token={token} size={26} />
+        <OMGTokenIcon style={styles.logo} token={token} size={18} />
         <OMGTextInput
           style={styles.text(theme)}
           placeholder='00.00'
@@ -43,7 +43,7 @@ const OMGAmountInput = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.black3,
     borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
@@ -56,24 +56,29 @@ const styles = StyleSheet.create({
     marginLeft: 12
   },
   text: theme => ({
-    color: theme.colors.primary,
-    fontSize: 14,
-    flex: 1
+    color: theme.colors.white,
+    fontSize: 16,
+    letterSpacing: -0.64,
+    flex: 1,
+    textAlign: 'right',
+    marginRight: 12
   }),
   rightContainer: {
-    width: 50,
     height: 50,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 16
+    marginRight: 12
   },
   errorText: theme => ({
-    color: theme.colors.red2,
+    marginLeft: 'auto',
+    color: theme.colors.red,
     marginTop: 8
   }),
   symbol: theme => ({
-    color: theme.colors.gray2
+    fontSize: 16,
+    letterSpacing: -0.64,
+    color: theme.colors.gray6
   })
 })
 

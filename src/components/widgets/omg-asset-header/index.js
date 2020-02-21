@@ -2,40 +2,42 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGEmpty, OMGText } from 'components/widgets'
+import { IconEth, IconGo } from './assets'
 
 const OMGAssetHeader = ({
   theme,
   loading,
   amount,
   currency,
-  blockchain,
-  network,
   rootchain,
+  network,
   anchoredRef,
   style
 }) => {
+  const BlockchainIcon = rootchain ? IconEth : IconGo
   return (
-    <View style={{ ...styles.container(theme), ...style }}>
+    <View style={{ ...styles.container(theme), ...style }} ref={anchoredRef}>
       <View style={styles.balance}>
         {loading ? (
           <OMGEmpty style={styles.loading} loading={loading} />
         ) : (
           <OMGText style={styles.balanceAmount(theme)}>{amount}</OMGText>
         )}
-        <OMGText style={styles.balanceCurrency(theme)}>{currency}</OMGText>
+        <OMGText style={styles.balanceCurrency(theme)} weight='light'>
+          {currency}
+        </OMGText>
       </View>
-      <View style={styles.footer(theme, rootchain)} ref={anchoredRef}>
-        <View style={styles.subfooter}>
-          <OMGText style={styles.subfooterText1(theme)}>{blockchain}</OMGText>
-          <OMGText style={styles.subfooterText2(theme)}>
-            {rootchain ? 'RootChain' : 'Childchain'}
-          </OMGText>
-        </View>
-        <View style={styles.divider(theme)} />
-        <View style={styles.subfooter}>
-          <OMGText style={styles.subfooterText1(theme)}>{network}</OMGText>
-          <OMGText style={styles.subfooterText2(theme)}>Network</OMGText>
-        </View>
+      <View style={styles.footer}>
+        <BlockchainIcon
+          fill={theme.colors.gray2}
+          width={rootchain ? 14 : 57.963}
+          height={rootchain ? 23 : 18}
+        />
+        <OMGText style={styles.textChain(theme)}>
+          {rootchain ? 'Ethereum Rootchain' : 'Plasma Childchain'}
+        </OMGText>
+        <View style={styles.greenDot(theme)} />
+        <OMGText style={styles.textNetwork(theme)}>{network}</OMGText>
       </View>
     </View>
   )
@@ -44,8 +46,7 @@ const OMGAssetHeader = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'column',
-    backgroundColor: theme.colors.white,
-    paddingBottom: 16,
+    backgroundColor: theme.colors.black3,
     borderTopLeftRadius: theme.roundness,
     borderTopRightRadius: theme.roundness
   }),
@@ -63,40 +64,36 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'left',
     fontSize: 32,
-    color: theme.colors.black3
+    letterSpacing: -3,
+    color: theme.colors.white
   }),
   balanceCurrency: theme => ({
-    color: theme.colors.black1,
+    color: theme.colors.white3,
     fontSize: 32
   }),
-  footer: (theme, rootchain) => ({
+  footer: {
     flexDirection: 'row',
-    backgroundColor: rootchain ? theme.colors.purple : theme.colors.blue2,
-    borderRadius: theme.roundness,
-    marginHorizontal: 20
-  }),
-  subfooter: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 8
+    marginHorizontal: 20,
+    alignItems: 'center'
   },
-  subfooterText1: theme => ({
+  textChain: theme => ({
+    flex: 1,
     fontSize: 12,
-    textTransform: 'capitalize',
-    color: theme.colors.white,
-    marginRight: 4
+    marginLeft: 20,
+    letterSpacing: -0.7,
+    color: theme.colors.gray2
   }),
-  subfooterText2: theme => ({
+  textNetwork: theme => ({
     fontSize: 12,
+    marginLeft: 6,
     textTransform: 'capitalize',
-    color: theme.colors.black1
+    color: theme.colors.gray2
   }),
-  divider: theme => ({
-    borderLeftWidth: 1,
-    borderLeftColor: theme.colors.black4,
-    opacity: 0.3
+  greenDot: theme => ({
+    width: 6,
+    height: 6,
+    backgroundColor: theme.colors.green,
+    borderRadius: 3
   })
 })
 

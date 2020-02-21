@@ -1,6 +1,6 @@
 import { ContractAddress } from 'common/constants'
 import { Token } from 'common/blockchain'
-import { Transaction, Datetime } from 'common/utils'
+import { Transaction, Datetime, BigNumber } from 'common/utils'
 import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
 import BN from 'bn.js'
 
@@ -9,6 +9,8 @@ export const mapChildchainTx = (tx, tokens, walletAddress) => {
   const output = mapOutputTransfer(input, tx.outputs)
   const contractAddress = output.currency
   const token = Token.find(contractAddress, tokens)
+  const feeCurrency = getFeeCurrency(tx)
+  const feeAmount = getFeeAmount(tx, feeCurrency)
   return {
     hash: tx.txhash,
     network: BlockchainNetworkType.TYPE_OMISEGO_NETWORK,
@@ -16,8 +18,9 @@ export const mapChildchainTx = (tx, tokens, walletAddress) => {
     type: mapChildchainTransactionType(output, walletAddress),
     from: input.owner,
     to: output.owner,
-    gasUsed: 1,
-    gasPrice: '0',
+    gasUsed: feeAmount,
+    gasPrice: '1',
+    gasCurrency: feeCurrency,
     contractAddress,
     tokenName: token.tokenName,
     tokenSymbol: token.tokenSymbol,
@@ -80,8 +83,21 @@ export const mapOutputTransfer = (inputTransfer, outputs) => {
   return outputs.find(output => output.owner !== inputTransfer.owner)
 }
 
-export const mapInputFee = tx => {
+export const getFeeCurrency = tx => {
   return tx.inputs.find(input => isInputGreaterThanOutput(input, tx.outputs))
+    ?.currency
+}
+
+export const getFeeAmount = (tx, feeCurrency) => {
+  const totalOutputAmount = tx.outputs
+    .filter(output => output.currency === feeCurrency)
+    .reduce((acc, output) => BigNumber.plus(acc, output.amount), 0)
+
+  const totalInputAmount = tx.inputs
+    .filter(input => input.currency === feeCurrency)
+    .reduce((acc, input) => BigNumber.plus(acc, input.amount), 0)
+
+  return BigNumber.minus(totalInputAmount, totalOutputAmount)
 }
 
 const isInputGreaterThanOutput = (input, outputs) => {
@@ -111,6 +127,7 @@ const mapRootchainEthTx = (tx, address) => {
     gasLimit: tx.gasLimit,
     gasUsed: tx.gasUsed,
     gasPrice: tx.gasPrice,
+    gasCurrency: ContractAddress.ETH_ADDRESS,
     contractAddress: ContractAddress.ETH_ADDRESS,
     tokenName: 'Ether',
     tokenSymbol: 'ETH',
@@ -131,6 +148,7 @@ const mapRootchainErc20Tx = (tx, address) => {
     gas: tx.gas,
     gasUsed: tx.gasUsed,
     gasPrice: tx.gasPrice,
+    gasCurrency: ContractAddress.ETH_ADDRESS,
     contractAddress: tx.contractAddress,
     tokenName: tx.tokenName,
     tokenSymbol: tx.tokenSymbol,

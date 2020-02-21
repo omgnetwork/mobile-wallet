@@ -7,9 +7,9 @@ import { OMGButton, OMGText } from 'components/widgets'
 
 const CreateWalletMnemonicFailed = ({ theme, navigation }) => {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container(theme)}>
       <BackupMnemonicError width={80} height={80} style={styles.image} />
-      <OMGText weight='bold' style={styles.title(theme)}>
+      <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
         Incorrect order
       </OMGText>
       <OMGText style={styles.description(theme)}>
@@ -29,28 +29,24 @@ const CreateWalletMnemonicFailed = ({ theme, navigation }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: theme => ({
     flex: 1,
-    paddingHorizontal: 16
-  },
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+    backgroundColor: theme.colors.black3
+  }),
   image: {
     marginTop: 32
   },
   title: theme => ({
-    color: theme.colors.gray3,
+    color: theme.colors.white,
     marginTop: 30,
     fontSize: 18
   }),
   description: theme => ({
-    color: theme.colors.primary,
+    color: theme.colors.white,
     marginTop: 10
   }),
-  mnemonicContainer: {
-    flex: 1,
-    marginTop: 24,
-    flexDirection: 'row',
-    flexWrap: 'wrap'
-  },
   buttonContainer: {
     flex: 1,
     justifyContent: 'flex-end'
@@ -58,17 +54,11 @@ const styles = StyleSheet.create({
   btnCancel: theme => ({
     marginTop: 10,
     borderWidth: 1,
-    borderColor: theme.colors.gray3,
+    borderColor: theme.colors.black4,
     backgroundColor: theme.colors.white
   }),
   btnCancelTextStyle: theme => ({
-    color: theme.colors.gray3
-  }),
-  chip: theme => ({
-    marginRight: 8,
-    borderWidth: 1,
-    borderColor: theme.colors.black4,
-    backgroundColor: theme.colors.white
+    color: theme.colors.black4
   })
 })
 

@@ -1,6 +1,8 @@
 import { Plasma, PlasmaUtils, web3 } from 'common/clients'
 import { ContractABI, Transaction } from 'common/utils'
+import axios from 'axios'
 import { Gas } from 'common/constants'
+import Config from 'react-native-config'
 import BN from 'bn.js'
 import { TxOptions } from 'common/blockchain'
 
@@ -38,12 +40,8 @@ export const createPayment = (address, tokenContractAddress, amount) => {
   ]
 }
 
-export const createFee = (
-  amount,
-  currency = PlasmaUtils.transaction.ETH_CURRENCY
-) => ({
-  currency: currency,
-  amount: Number(amount)
+export const createFee = (currency = PlasmaUtils.transaction.ETH_CURRENCY) => ({
+  currency: currency
 })
 
 export const depositEth = async (
@@ -203,7 +201,7 @@ export const waitForRootchainTransaction = ({
 }) => {
   return PlasmaUtils.waitForRootchainTransaction({
     web3,
-    hash,
+    transactionHash: hash,
     checkIntervalMs: intervalMs,
     blocksToWait: confirmationThreshold,
     onCountdown: onCountdown
@@ -214,8 +212,13 @@ export const getPaymentExitGameAddress = () => {
   return Plasma.RootChain.getPaymentExitGame()
 }
 
-export const getErrorReason = hash => {
-  return PlasmaUtils.ethErrorReason({ web3, hash })
+export const getErrorReason = async hash => {
+  try {
+    return await PlasmaUtils.ethErrorReason({ web3, hash }).catch()
+  } catch (e) {
+    console.log(e)
+    return 'Cannot retrieve error reason'
+  }
 }
 
 export const isDepositUtxo = utxo => {
@@ -324,4 +327,19 @@ export const getTxs = (address, options) => {
 
 export const getTx = hash => {
   return Plasma.ChildChain.getTransaction(hash)
+}
+
+export const getFees = (currencies = []) => {
+  return axios
+    .post(`${Config.CHILDCHAIN_WATCHER_URL}fees.all`, {
+      params: {
+        currencies,
+        tx_types: []
+      }
+    })
+    .then(response => {
+      return response.data.data['1'].filter(
+        fee => currencies.indexOf(fee.currency) > -1
+      )
+    })
 }

@@ -10,11 +10,11 @@ const BackupModal = ({ visible, theme, onPressOk, onPressCancel }) => {
     <View style={styles.container(theme)}>
       <Modal isVisible={visible} style={styles.modal} useNativeDriver={true}>
         <View style={styles.contentContainer(theme)}>
-          <BackupCamera width={85} height={55} style={styles.image} />
-          <OMGText style={styles.textTitle(theme)} weight='bold'>
+          <BackupCamera width={84} height={60} style={styles.image} />
+          <OMGText style={styles.textTitle(theme)} weight='semi-bold'>
             Do not take screenshot
           </OMGText>
-          <OMGText style={styles.textContent(theme)}>
+          <OMGText style={styles.textContent(theme)} weight='regular'>
             Please do not share or store the screenshot, which may be collected
             by third-party, resulting in loss of assets
           </OMGText>
@@ -22,10 +22,15 @@ const BackupModal = ({ visible, theme, onPressOk, onPressCancel }) => {
             <OMGButton
               style={styles.leftButton(theme)}
               onPress={onPressCancel}
+              textWeight='regular'
               textStyle={styles.leftButtonText(theme)}>
               Cancel
             </OMGButton>
-            <OMGButton style={styles.rightButton(theme)} onPress={onPressOk}>
+            <OMGButton
+              style={styles.rightButton(theme)}
+              textStyle={styles.rightButtonText(theme)}
+              onPress={onPressOk}
+              textWeight='book'>
               Understood
             </OMGButton>
           </View>
@@ -49,21 +54,23 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: theme.colors.white,
     borderRadius: theme.roundness,
-    padding: 16
+    padding: 16,
+    paddingHorizontal: 30
   }),
   image: {
     marginTop: 30
   },
   textTitle: theme => ({
     marginTop: 46,
-    fontSize: 18,
-    color: theme.colors.gray3
+    fontSize: 24,
+    color: theme.colors.black5
   }),
   textContent: theme => ({
-    color: theme.colors.primary,
+    color: theme.colors.gray5,
     textAlign: 'center',
     marginTop: 10,
-    marginHorizontal: 34
+    fontSize: 16,
+    marginHorizontal: 30
   }),
   buttonContainer: {
     marginTop: 40,
@@ -72,15 +79,19 @@ const styles = StyleSheet.create({
   leftButton: theme => ({
     flex: 1,
     backgroundColor: theme.colors.white,
-    borderColor: theme.colors.gray3,
+    borderColor: theme.colors.black5,
     borderWidth: 1
   }),
   leftButtonText: theme => ({
-    color: theme.colors.gray3
+    color: theme.colors.black4
   }),
   rightButton: theme => ({
+    backgroundColor: theme.colors.primary,
     flex: 1,
     marginLeft: 16
+  }),
+  rightButtonText: theme => ({
+    color: theme.colors.white
   })
 })
 

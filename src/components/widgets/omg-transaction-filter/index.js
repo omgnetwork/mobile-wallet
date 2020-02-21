@@ -92,19 +92,17 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   option: (theme, active) => ({
-    backgroundColor: theme.colors.black4,
-    opacity: active ? 1.0 : 0.3,
+    backgroundColor: active ? theme.colors.gray4 : theme.colors.black3,
     paddingVertical: 8,
     paddingHorizontal: 30,
-    borderRadius: theme.roundness,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 8
   }),
   optionText: theme => ({
-    fontSize: 14,
-    color: theme.colors.gray3,
-    textTransform: 'capitalize'
+    fontSize: 12,
+    color: theme.colors.white,
+    textTransform: 'uppercase'
   })
 })
 

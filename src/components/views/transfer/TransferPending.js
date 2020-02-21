@@ -7,8 +7,8 @@ import { BlockchainRenderer } from 'common/blockchain'
 import * as TransferHelper from './transferHelper'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
+import { BigNumber } from 'common/utils'
 import {
-  OMGBox,
   OMGButton,
   OMGText,
   OMGWalletAddress,
@@ -36,12 +36,15 @@ const TransferPending = ({ theme, navigation }) => {
     token.balance,
     token.price
   )
-  const { gasUsed, gasPrice, hash, actionType } = unconfirmedTx
+  const { gasUsed, gasPrice, hash, actionType, gasToken } = unconfirmedTx
 
   const gasDetailAvailable = gasUsed && gasPrice
+  const sendAmount = BigNumber.multiply(token.balance, token.price)
   const gasFee = useCallback(() => {
     return estimatedGasFee || BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
   }, [estimatedGasFee, gasPrice, gasUsed])
+
+  const gasTokenSymbol = gasToken?.tokenSymbol ?? 'ETH'
 
   const gasFeeUsd = useCallback(() => {
     return (
@@ -75,32 +78,28 @@ const TransferPending = ({ theme, navigation }) => {
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
       <SafeAreaView style={styles.container(theme)}>
         <OMGStatusBar
-          barStyle='dark-content'
-          backgroundColor={theme.colors.white}
+          barStyle='light-content'
+          backgroundColor={theme.colors.black5}
         />
-        <View style={styles.contentContainer}>
-          <View style={styles.headerContainer}>
-            <View style={styles.icon(theme)}>
-              <OMGFontIcon
-                name='pending'
-                size={24}
-                color={theme.colors.white}
-              />
-            </View>
-            <OMGText style={styles.title(theme)} weight='bold'>
-              Pending Transaction
-            </OMGText>
+        <View style={styles.headerContainer(theme)}>
+          <View style={styles.icon(theme)}>
+            <OMGFontIcon name='pending' size={24} color={theme.colors.black5} />
           </View>
-          <OMGBlockchainLabel
-            style={styles.blockchainLabel}
-            actionText={BlockchainLabel.getBlockchainTextActionLabel(
-              'TransferPending',
-              transferType
-            )}
-            transferType={transferType}
-          />
-          <OMGBox style={styles.addressContainer}>
-            <OMGText style={styles.subtitle(theme)} weight='bold'>
+          <OMGText style={styles.title(theme)} weight='regular'>
+            Pending Transaction
+          </OMGText>
+        </View>
+        <OMGBlockchainLabel
+          style={styles.blockchainLabel}
+          actionText={BlockchainLabel.getBlockchainTextActionLabel(
+            'TransferPending',
+            transferType
+          )}
+          transferType={transferType}
+        />
+        <View style={styles.contentContainer(theme)}>
+          <View style={styles.addressContainer}>
+            <OMGText style={[styles.subtitle(theme), styles.marginSubtitle]}>
               From
             </OMGText>
             <OMGWalletAddress
@@ -108,9 +107,7 @@ const TransferPending = ({ theme, navigation }) => {
               address={fromWallet.address}
               style={styles.walletAddress}
             />
-            <OMGText
-              style={[styles.subtitle(theme), styles.marginSubtitle]}
-              weight='bold'>
+            <OMGText style={[styles.subtitle(theme), styles.marginSubtitle]}>
               To
             </OMGText>
             <OMGWalletAddress
@@ -118,14 +115,14 @@ const TransferPending = ({ theme, navigation }) => {
               name={toWallet.name}
               style={styles.walletAddress}
             />
-          </OMGBox>
+          </View>
           <View style={styles.sentContainer}>
-            <OMGText weight='bold' style={styles.subtitle(theme)}>
+            <OMGText style={[styles.subtitle(theme), styles.marginSubtitle]}>
               Sent
             </OMGText>
             <View style={styles.sentContentContainer(theme)}>
               <View style={styles.sentSection1}>
-                <OMGText style={styles.sentTitle}>Amount</OMGText>
+                <OMGText style={styles.sentTitle(theme)}>Amount</OMGText>
                 <View style={styles.sentDetail}>
                   <OMGText style={styles.sentDetailFirstline(theme)}>
                     {BlockchainRenderer.renderTokenBalance(token.balance)}{' '}
@@ -137,12 +134,12 @@ const TransferPending = ({ theme, navigation }) => {
                 </View>
               </View>
               <View style={styles.sentSection2}>
-                <OMGText style={styles.sentTitle}>
+                <OMGText style={styles.sentTitle(theme)}>
                   {gasDetailAvailable ? '' : 'Estimated '}Fee
                 </OMGText>
                 <View style={styles.sentDetail}>
                   <OMGText style={styles.sentDetailFirstline(theme)}>
-                    {gasFee()} ETH
+                    {gasFee()} {gasTokenSymbol}
                   </OMGText>
                   <OMGText style={styles.sentDetailSecondline(theme)}>
                     {gasFeeUsd()} USD
@@ -152,11 +149,11 @@ const TransferPending = ({ theme, navigation }) => {
             </View>
           </View>
         </View>
-        <View style={styles.bottomContainer}>
+        <View style={styles.bottomContainer(theme)}>
           <View style={styles.totalContainer(theme)}>
             <OMGText style={styles.totalText(theme)}>Total</OMGText>
             <OMGText style={styles.totalText(theme)}>
-              {BlockchainRenderer.renderTotalPrice(tokenPrice, gasFeeUsd())} USD
+              {BlockchainRenderer.renderTotalPrice(sendAmount, gasFeeUsd())} USD
             </OMGText>
           </View>
           <OMGButton
@@ -187,35 +184,36 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.white
+    backgroundColor: theme.colors.black5
   }),
-  contentContainer: {
-    flex: 1
-  },
-  headerContainer: {
+  contentContainer: theme => ({
+    flex: 1,
+    backgroundColor: theme.colors.black3
+  }),
+  headerContainer: theme => ({
     padding: 16,
     flexDirection: 'row',
-    alignItems: 'center'
-  },
+    alignItems: 'center',
+    backgroundColor: theme.colors.black5
+  }),
   blockchainLabel: {},
   addressContainer: {
     paddingLeft: 16
   },
-  bottomContainer: {
-    marginVertical: 16,
-    paddingHorizontal: 16
-  },
+  bottomContainer: theme => ({
+    backgroundColor: theme.colors.black3,
+    paddingHorizontal: 16,
+    paddingBottom: 16
+  }),
   totalContainer: theme => ({
     flexDirection: 'row',
     justifyContent: 'space-between'
   }),
-  subHeaderTitle: {
-    fontSize: 14
-  },
   title: theme => ({
     fontSize: 18,
-    color: theme.colors.gray3,
-    marginLeft: 16
+    color: theme.colors.white,
+    marginLeft: 16,
+    textTransform: 'uppercase'
   }),
   icon: theme => ({
     width: 36,
@@ -223,36 +221,40 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: theme.colors.yellow3
+    backgroundColor: theme.colors.yellow
   }),
-  edit: {
-    marginLeft: 8
-  },
   subtitle: theme => ({
-    color: theme.colors.gray3
+    fontSize: 12,
+    color: theme.colors.white,
+    textTransform: 'uppercase'
   }),
   marginSubtitle: {
-    marginTop: 16
+    marginTop: 30
   },
   walletAddress: {
     marginTop: 12,
     flexDirection: 'row'
   },
   totalText: theme => ({
-    color: theme.colors.gray3
+    fontSize: 16,
+    letterSpacing: -0.64,
+    color: theme.colors.blue,
+    textTransform: 'uppercase'
   }),
   sentContainer: {
     marginHorizontal: 16
   },
   sentContentContainer: theme => ({
     justifyContent: 'space-between',
-    backgroundColor: theme.colors.white3,
+    backgroundColor: theme.colors.gray5,
     borderRadius: theme.roundness,
-    padding: 12,
+    padding: 16,
     marginTop: 8
   }),
   sentTitle: theme => ({
-    color: theme.colors.primary
+    color: theme.colors.white,
+    fontSize: 16,
+    letterSpacing: -0.64
   }),
   sentDetail: {
     flexDirection: 'column',
@@ -265,26 +267,30 @@ const styles = StyleSheet.create({
   sentSection2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 8
+    marginTop: 16
   },
   sentDetailFirstline: theme => ({
-    color: theme.colors.primary,
-    fontSize: 14
+    color: theme.colors.white,
+    fontSize: 16,
+    letterSpacing: -0.64
   }),
   sentDetailSecondline: theme => ({
-    color: theme.colors.gray2,
-    fontSize: 12
+    color: theme.colors.gray6,
+    fontSize: 12,
+    letterSpacing: -0.48
   }),
   trackEtherscanButton: {
     padding: 8,
     marginTop: 16
   },
   trackEtherscanText: theme => ({
-    color: theme.colors.gray3,
-    textAlign: 'center'
+    color: theme.colors.white,
+    textAlign: 'center',
+    fontSize: 12,
+    letterSpacing: -0.48
   }),
   button: {
-    marginTop: 40
+    marginTop: 24
   }
 })
 

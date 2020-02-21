@@ -3,7 +3,7 @@ import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
 import { Header } from 'react-navigation-stack'
-import { View, StyleSheet, KeyboardAvoidingView } from 'react-native'
+import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
 import { Validator, Dimensions } from 'common/utils'
 import { Alert } from 'common/constants'
 import {
@@ -13,13 +13,14 @@ import {
   OMGDismissKeyboard
 } from 'components/widgets'
 
-const CreateWalletForm = ({ wallets, navigation }) => {
+const CreateWalletForm = ({ wallets, navigation, theme }) => {
   const walletNameRef = useRef()
   const [showErrorName, setShowErrorName] = useState(false)
   const [errorNameMessage, setErrorNameMessage] = useState(
     'The wallet name should not be empty'
   )
   const statusBarHeight = Dimensions.getStatusBarHeight()
+  const keyboardAvoidingBehavior = Platform.OS === 'ios' ? 'padding' : null
 
   const navigateNext = () => {
     if (!Validator.isValidWalletName(walletNameRef.current)) {
@@ -40,19 +41,21 @@ const CreateWalletForm = ({ wallets, navigation }) => {
   }
 
   return (
-    <OMGDismissKeyboard style={styles.container}>
+    <OMGDismissKeyboard style={styles.container(theme)}>
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
-        behavior='padding'
+        behavior={keyboardAvoidingBehavior}
         keyboardVerticalOffset={Header.HEIGHT + statusBarHeight}>
-        <OMGText weight='bold'>Name</OMGText>
+        <OMGText weight='mono-semi-bold' style={styles.textTitle(theme)}>
+          Name
+        </OMGText>
         <OMGTextInputBox
-          placeholder='Name'
+          style={styles.textBox(theme)}
+          placeholder='Your wallet name'
           inputRef={walletNameRef}
           showError={showErrorName}
           errorMessage={errorNameMessage}
           maxLength={20}
-          style={styles.nameContainer}
         />
 
         <View style={styles.button}>
@@ -64,21 +67,26 @@ const CreateWalletForm = ({ wallets, navigation }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
+  container: theme => ({
+    flex: 1,
+    paddingBottom: 16,
+    backgroundColor: theme.colors.black3
+  }),
   keyboardAvoidingView: {
     padding: 16,
     flex: 1
   },
-  nameContainer: {
-    marginTop: 16
-  },
   button: {
     flex: 1,
-    justifyContent: 'flex-end',
-    marginBottom: 8
-  }
+    justifyContent: 'flex-end'
+  },
+  textTitle: theme => ({
+    color: theme.colors.white
+  }),
+  textBox: theme => ({
+    marginTop: 16,
+    backgroundColor: theme.colors.black3
+  })
 })
 
 const mapStateToProps = (state, ownProps) => ({

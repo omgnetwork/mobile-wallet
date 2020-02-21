@@ -40,7 +40,7 @@ const OMGAssetList = ({
   return (
     <View style={{ ...styles.container(theme), ...style }}>
       <View style={styles.header(theme)}>
-        <OMGText style={styles.title(theme)} weight='bold'>
+        <OMGText style={styles.title(theme)} weight='regular'>
           ASSETS
         </OMGText>
         {updatedAt && (
@@ -53,7 +53,7 @@ const OMGAssetList = ({
                 name='redo'
                 size={12}
                 style={styles.redo}
-                color={theme.colors.gray2}
+                color={theme.colors.gray8}
               />
             </TouchableOpacity>
           </>
@@ -87,7 +87,7 @@ const OMGAssetList = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'column',
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.black3,
     paddingBottom: 8
   }),
   contentContainer: {},
@@ -101,19 +101,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 20,
     alignItems: 'center',
-    backgroundColor: theme.colors.white
+    backgroundColor: theme.colors.black3
   }),
   updatedAt: theme => ({
-    color: theme.colors.black2,
-    fontSize: 12
+    color: theme.colors.gray2,
+    letterSpacing: -0.7,
+    fontSize: 10
   }),
-  add: {
-    justifyContent: 'flex-end'
-  },
   assetContainer: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.black3,
     paddingVertical: 8
   }),
   assetList: {},
@@ -121,7 +119,7 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'left',
     justifyContent: 'flex-start',
-    color: theme.colors.black3,
+    color: theme.colors.white,
     fontSize: 14
   }),
   redo: {

@@ -26,12 +26,12 @@ const TransferSelectBalance = ({
     address,
     assets,
     transferType,
-    currentToken
+    selectedToken
   } = getParamsForTransferSelectBalanceFromTransferForm(
     navigation,
     primaryWallet
   )
-  const [selectedToken, setSelectedToken] = useState(currentToken || assets[0])
+  const [token, setToken] = useState(selectedToken || assets[0])
 
   const getNavigationDestination = useCallback(() => {
     switch (transferType) {
@@ -50,13 +50,15 @@ const TransferSelectBalance = ({
         <OMGFontIcon
           name='chevron-left'
           size={18}
-          color={theme.colors.gray3}
+          color={theme.colors.white}
           style={styles.headerIcon}
           onPress={() => {
             navigation.goBack()
           }}
         />
-        <OMGText style={styles.headerTitle(theme)}>Select Balance</OMGText>
+        <OMGText weight='regular' style={styles.headerTitle(theme)}>
+          Select Balance
+        </OMGText>
       </View>
       <FlatList
         data={assets || []}
@@ -76,9 +78,9 @@ const TransferSelectBalance = ({
             style={{ marginTop: 8 }}
             token={item}
             onPress={() => {
-              setSelectedToken(item)
+              setToken(item)
             }}
-            selected={item.contractAddress === selectedToken.contractAddress}
+            selected={item.contractAddress === token.contractAddress}
           />
         )}
       />
@@ -89,8 +91,7 @@ const TransferSelectBalance = ({
             navigation.navigate(
               destination,
               paramsForTransferSelectBalanceToAnywhere({
-                selectedToken,
-                currentToken,
+                selectedToken: token,
                 transferType,
                 address
               })
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.white
+    backgroundColor: theme.colors.black5
   }),
   header: {
     alignItems: 'center',
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: theme => ({
     fontSize: 18,
-    color: theme.colors.gray3,
+    color: theme.colors.white,
     marginLeft: 8,
     alignSelf: 'center',
     textTransform: 'uppercase'

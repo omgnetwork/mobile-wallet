@@ -33,7 +33,6 @@ target 'PlasmaWallet' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
   pod 'react-native-sensitive-info', :path => '../node_modules/react-native-sensitive-info'
   pod 'react-native-config', :path => '../node_modules/react-native-config'
   pod 'RNSVG', :path => '../node_modules/react-native-svg'

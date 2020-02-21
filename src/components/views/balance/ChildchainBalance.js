@@ -2,6 +2,7 @@ import React, { useState, Fragment, useEffect, useCallback } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
+import { useLoading } from 'common/hooks'
 import { plasmaActions, walletActions } from 'common/actions'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
@@ -28,7 +29,10 @@ const ChildchainBalance = ({
 }) => {
   const currency = 'USD'
   const [totalBalance, setTotalBalance] = useState(0.0)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useLoading(
+    globalLoading,
+    'CHILDCHAIN_FETCH_ASSETS'
+  )
   const hasPendingTransaction = unconfirmedTxs.length > 0
   const hasRootchainAssets =
     wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
@@ -80,7 +84,13 @@ const ChildchainBalance = ({
       dispatchLoadAssets(provider, wallet)
       dispatchSetShouldRefreshChildchain(wallet.address, false)
     }
-  }, [dispatchLoadAssets, dispatchSetShouldRefreshChildchain, provider, wallet])
+  }, [
+    dispatchLoadAssets,
+    dispatchSetShouldRefreshChildchain,
+    provider,
+    setLoading,
+    wallet
+  ])
 
   const handleReload = useCallback(() => {
     dispatchSetShouldRefreshChildchain(wallet.address, true)
@@ -98,12 +108,6 @@ const ChildchainBalance = ({
     }
   }, [wallet.childchainAssets])
 
-  useEffect(() => {
-    if (globalLoading.action === 'CHILDCHAIN_FETCH_ASSETS') {
-      setLoading(globalLoading.show)
-    }
-  }, [globalLoading.action, globalLoading.show])
-
   return (
     <Fragment>
       <OMGAssetHeader
@@ -111,9 +115,8 @@ const ChildchainBalance = ({
         currency={currency}
         rootchain={false}
         loading={loading}
-        blockchain={'Plasma'}
-        anchoredRef={blockchainLabelRef}
         network={Config.OMISEGO_NETWORK}
+        anchoredRef={blockchainLabelRef}
       />
       <OMGAssetList
         data={wallet.childchainAssets || []}
@@ -143,8 +146,7 @@ const ChildchainBalance = ({
 const styles = StyleSheet.create({
   list: {
     flex: 1,
-    borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 4
+    paddingTop: 40
   }
 })
 

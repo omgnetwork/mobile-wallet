@@ -14,15 +14,13 @@
 export const onboardingReducer = (state = {}, action) => {
   switch (action.type) {
     case 'ONBOARDING/SET_ENABLED/OK':
-      return action.data.enabled
-        ? { ...state, enabled: true }
-        : {
-            ...state,
-            enabled: false,
-            currentPage: null,
-            currentPopup: null,
-            viewedPopups: []
-          }
+      return {
+        ...state,
+        enabled: action.data.enabled,
+        currentPage: action.data.enabled ? 'childchain-balance' : null,
+        currentPopup: null,
+        viewedPopups: []
+      }
     case 'ONBOARDING/SET_CURRENT_PAGE/OK':
       return {
         ...state,

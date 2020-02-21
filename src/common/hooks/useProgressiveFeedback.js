@@ -1,7 +1,6 @@
 import { useState, useCallback, useEffect } from 'react'
 import Config from 'react-native-config'
 import { TransactionActionTypes } from 'common/constants'
-import { Transaction } from 'common/utils'
 
 const emptyFeedback = {
   title: null,
@@ -68,7 +67,7 @@ const useProgressiveFeedback = (
           pending: true,
           subtitle: hash,
           iconName: 'pending',
-          iconColor: theme.colors.yellow3
+          iconColor: theme.colors.yellow
         }
       } else {
         return {
@@ -78,11 +77,11 @@ const useProgressiveFeedback = (
           pending: false,
           subtitle: hash,
           iconName: 'success',
-          iconColor: theme.colors.green2
+          iconColor: theme.colors.green
         }
       }
     },
-    [getTransactionFeedbackTitle, theme.colors.green2, theme.colors.yellow3]
+    [getTransactionFeedbackTitle, theme.colors.green, theme.colors.yellow]
   )
 
   const handleOnClose = useCallback(() => {

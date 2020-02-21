@@ -44,13 +44,6 @@ const OMGTransactionList = ({
     }
   }, [type])
 
-  const renderSeparator = useCallback(
-    ({ leadingItem }) => {
-      return <View style={styles.divider(theme)} />
-    },
-    [theme]
-  )
-
   const handleClickTx = useCallback(
     transaction => {
       navigation.navigate('TransactionDetail', {
@@ -69,7 +62,7 @@ const OMGTransactionList = ({
         return 'Exit Details'
       case TransactionTypes.TYPE_SENT:
       case TransactionTypes.TYPE_RECEIVED:
-        return 'Transfer Details'
+        return 'Transaction Details'
       case TransactionTypes.TYPE_FAILED:
         return 'Failed Details'
     }
@@ -84,11 +77,8 @@ const OMGTransactionList = ({
           ListHeaderComponent={renderHeader && renderHeader()}
           data={transactions}
           keyExtractor={(tx, index) => tx.hash}
-          ItemSeparatorComponent={renderSeparator}
           contentContainerStyle={
-            transactions && transactions.length
-              ? styles.content
-              : styles.emptyContent(theme)
+            transactions?.length ? styles.content : styles.emptyContent(theme)
           }
           ListEmptyComponent={<OMGEmpty {...getEmptyStatePayload()} />}
           renderItem={({ item }) => (
@@ -114,11 +104,6 @@ const styles = StyleSheet.create({
   emptyContent: theme => ({
     paddingHorizontal: 16,
     flexGrow: 1
-  }),
-  divider: theme => ({
-    backgroundColor: theme.colors.black1,
-    height: 1,
-    opacity: 0.3
   })
 })
 

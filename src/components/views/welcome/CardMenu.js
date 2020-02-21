@@ -10,7 +10,9 @@ const CardMenu = ({ theme, color, header, description, onPress, style }) => {
       onPress={onPress}
       style={{ ...styles.container, backgroundColor: color, ...style }}>
       <View>
-        <OMGText style={[styles.text(theme), styles.header]} weight='bold'>
+        <OMGText
+          style={[styles.text(theme), styles.header]}
+          weight='mono-semi-bold'>
           {header}
         </OMGText>
         <OMGText style={[styles.text(theme), styles.subheader]}>

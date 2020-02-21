@@ -21,15 +21,15 @@
                     </g>
                     <g id="You're-here" transform="translate(122.000000, 0.000000)">
                         <rect id="Rectangle" stroke="#0F3AAA" fill="#0F3AAA" x="0" y="0" width="72" height="21" rx="10.5"></rect>
-                        <text id="You’re-here" font-family="CircularStd-Bold, Circular Std" font-size="10" font-weight="bold" fill="#FFFFFF">
+                        <text id="You’re-here" font-family="MessinaSansMono-SemiBold" font-size="10" font-weight="bold" fill="#FFFFFF">
                             <tspan x="10.035" y="14">You’re here</tspan>
                         </text>
                         <path id="Line-6" d="M37,21 L37.0007074,28.0275426 C39.2503421,28.2765864 41,30.1839659 41,32.5 C41,34.9852814 38.9852814,37 36.5,37 C34.0147186,37 32,34.9852814 32,32.5 C32,30.1836212 33.7501788,28.2760186 36.000297,28.0274316 L36,21 L37,21 Z" fill="#0F3AAA" fill-rule="nonzero"></path>
                     </g>
-                    <text id="Plasma-pocket" font-family="CircularStd-Book, Circular Std" font-size="10" font-weight="300" fill="#FFFFFF">
+                    <text id="Plasma-pocket" font-family="MessinaSansMono-Book" font-size="10" font-weight="300" fill="#FFFFFF">
                         <tspan x="18.9719718" y="112">Plasma pocket</tspan>
                     </text>
-                    <text id="Ethereum-pocket" font-family="CircularStd-Book, Circular Std" font-size="10" font-weight="300" fill="#1A56F0">
+                    <text id="Ethereum-pocket" font-family="MessinaSansMono-Book" font-size="10" font-weight="300" fill="#1A56F0">
                         <tspan x="121.661972" y="112">Ethereum pocket</tspan>
                     </text>
                 </g>

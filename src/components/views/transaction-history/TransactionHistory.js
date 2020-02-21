@@ -77,19 +77,10 @@ const TransactionHistory = ({
 
   useEffect(() => {
     if (wallet && isFocused) {
-      StatusBar.setBarStyle('dark-content')
-      StatusBar.setBackgroundColor(theme.colors.white)
+      StatusBar.setBarStyle('light-content')
+      StatusBar.setBackgroundColor(theme.colors.black5)
     }
-  }, [
-    isFocused,
-    dispatchFetchTxHistory,
-    navigation,
-    provider,
-    theme.colors.white,
-    wallet,
-    loading.action,
-    fetching
-  ])
+  }, [isFocused, theme.colors.black5, wallet])
 
   useEffect(() => {
     if (isFocused) {
@@ -144,10 +135,12 @@ const TransactionHistory = ({
   }, [navigation])
 
   return (
-    <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
+    <SafeAreaView
+      style={styles.container(theme)}
+      forceInset={{ top: 'always' }}>
       <OMGStatusBar
-        barStyle={'dark-content'}
-        backgroundColor={theme.colors.white}
+        barStyle={'light-content'}
+        backgroundColor={theme.colors.black5}
       />
       <OMGText style={styles.title(theme)}>History</OMGText>
       <OMGMenuImage
@@ -171,9 +164,7 @@ const TransactionHistory = ({
         menuRef={transactionHistoryRef}
         description='From Plasma Chain'
       />
-      <OMGText style={styles.subheader(theme)} weight='bold'>
-        Recent
-      </OMGText>
+      <OMGText style={styles.subheader(theme)}>Recent</OMGText>
       <OMGTransactionList
         transactions={txs}
         loading={fetching}
@@ -185,32 +176,25 @@ const TransactionHistory = ({
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: theme => ({
     flex: 1,
-    paddingVertical: 16
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
+    paddingVertical: 16,
+    backgroundColor: theme.colors.black5
+  }),
   title: theme => ({
     fontSize: 18,
     marginLeft: 16,
     marginTop: 8,
     textTransform: 'uppercase',
-    color: theme.colors.gray3
+    color: theme.colors.white
   }),
-  icon: {
-    paddingTop: 8,
-    paddingBottom: 16,
-    marginRight: -16
-  },
   menuItem: {
     marginTop: 16,
     marginHorizontal: 16
   },
   subheader: theme => ({
-    color: theme.colors.primary,
+    fontSize: 12,
+    color: theme.colors.white,
     textTransform: 'uppercase',
     marginLeft: 16,
     marginBottom: 8,

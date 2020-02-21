@@ -14,7 +14,7 @@ const OMGItemWallet = ({ wallet, style, theme, showCaret, onPress }) => {
         size={40}
       />
       <View style={styles.sectionName}>
-        <OMGText style={styles.name(theme)} weight='bold'>
+        <OMGText style={styles.name(theme)} weight='mono-semi-bold'>
           {wallet.name}
         </OMGText>
         <OMGText style={styles.address(theme)} numberOfLines={1}>
@@ -25,7 +25,7 @@ const OMGItemWallet = ({ wallet, style, theme, showCaret, onPress }) => {
         <OMGFontIcon
           name='chevron-right'
           size={24}
-          color={theme.colors.gray2}
+          color={theme.colors.gray8}
         />
       )}
     </TouchableOpacity>
@@ -37,15 +37,16 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: theme.roundness,
-    borderColor: theme.colors.black4,
+    borderColor: theme.colors.gray4,
     borderWidth: 0.5
   }),
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.white3,
+    borderWidth: 1,
+    borderColor: theme.colors.black3,
+    backgroundColor: theme.colors.black3,
     alignItems: 'center',
-    paddingVertical: 20,
-    borderRadius: theme.roundness
+    paddingVertical: 20
   }),
   sectionName: {
     flex: 1,
@@ -55,10 +56,10 @@ const styles = StyleSheet.create({
   },
   name: theme => ({
     fontSize: 16,
-    color: theme.colors.primary
+    color: theme.colors.white
   }),
   address: theme => ({
-    color: theme.colors.gray5,
+    color: theme.colors.gray6,
     fontSize: 12,
     marginRight: 32
   })

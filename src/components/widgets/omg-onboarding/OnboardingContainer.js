@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     alignItems: 'center',
-    backgroundColor: theme.colors.blue5
+    backgroundColor: theme.colors.primary
   }),
   popupModalContainer: {
     flex: 1,
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     left: arrowOffset,
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
-    borderBottomColor: theme.colors.blue5,
+    borderBottomColor: theme.colors.primary,
     transform: [{ rotate: arrowDirection === 'up' ? '0deg' : '180deg' }]
   }),
   slide: slideAnim => ({

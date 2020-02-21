@@ -17,12 +17,12 @@ const OMGExitComplete = ({ theme, style, createdAt }) => {
   const datetimeFormatToken = 'MMM DD, hh:mm A' // Apr 05, 12:02 PM
   return (
     <View style={{ ...styles.container(theme), ...style }}>
-      <OMGFontIcon name='time' size={24} style={styles.icon(theme)} />
+      <OMGFontIcon name='time' size={30} style={styles.icon(theme)} />
       <OMGText style={styles.text(theme)}>
         Exit will be approximately completed on
-        <OMGText weight='bold'>{renderProcessedAt()}</OMGText>
-        You can track the transaction status in the
-        <OMGText weight='bold'> History </OMGText>
+        <OMGText weight='mono-semi-bold'>{renderProcessedAt()}</OMGText>
+        You can track the exit status in the
+        <OMGText weight='mono-semi-bold'> History </OMGText>
         menu.
       </OMGText>
     </View>
@@ -32,17 +32,20 @@ const OMGExitComplete = ({ theme, style, createdAt }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    padding: 16,
-    borderRadius: theme.roundness,
-    backgroundColor: theme.colors.yellow4
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    backgroundColor: theme.colors.gray5
   }),
   icon: theme => ({
-    color: theme.colors.black
+    color: theme.colors.blue
   }),
   text: theme => ({
-    color: theme.colors.primary,
+    fontSize: 12,
+    letterSpacing: -0.48,
+    lineHeight: 18,
+    color: theme.colors.white,
     marginLeft: 16,
-    marginRight: 16
+    marginRight: 24
   })
 })
 

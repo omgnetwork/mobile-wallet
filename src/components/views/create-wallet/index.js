@@ -8,23 +8,22 @@ const CreateWallet = ({ theme, navigation }) => {
   const CreateWalletNavigator = navigation.getParam('navigator')
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar
-        barStyle={'dark-content'}
-        backgroundColor={theme.colors.white}
+        barStyle={'light-content'}
+        backgroundColor={theme.colors.black5}
       />
       <View style={styles.contentContainer(theme)}>
         <View style={styles.header}>
           <OMGFontIcon
             name='chevron-left'
             size={18}
-            color={theme.colors.gray3}
+            color={theme.colors.white}
             style={styles.headerIcon}
             onPress={() => navigation.goBack()}
           />
           <OMGText style={styles.headerTitle(theme)}>Create Wallet</OMGText>
         </View>
-        <View style={styles.line(theme)} />
         <CreateWalletNavigator navigation={navigation} />
       </View>
     </SafeAreaView>
@@ -32,14 +31,14 @@ const CreateWallet = ({ theme, navigation }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
+  container: theme => ({
+    flex: 1,
+    backgroundColor: theme.colors.black5
+  }),
   contentContainer: theme => ({
     flex: 1,
     flexDirection: 'column',
-    paddingVertical: 8,
-    backgroundColor: theme.colors.white
+    backgroundColor: theme.colors.black5
   }),
   header: {
     alignItems: 'center',
@@ -52,14 +51,10 @@ const styles = StyleSheet.create({
   },
   headerTitle: theme => ({
     fontSize: 18,
-    color: theme.colors.gray3,
+    paddingVertical: 16,
+    color: theme.colors.white,
     marginLeft: 8,
     textTransform: 'uppercase'
-  }),
-  line: theme => ({
-    marginTop: 16,
-    backgroundColor: theme.colors.white3,
-    height: 6
   })
 })
 

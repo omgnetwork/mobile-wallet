@@ -21,7 +21,7 @@ const OMGOnboardingSheetWithButton = ({
 
   return (
     <OnboardingContainer visible={visible} isModal={true} tourKey={content.key}>
-      <OMGText style={styles.title(theme)} weight='bold'>
+      <OMGText style={styles.title(theme)} weight='mono-semi-bold'>
         {content.title}
       </OMGText>
       {TextContent}
@@ -36,6 +36,7 @@ const OMGOnboardingSheetWithButton = ({
       {content.buttonTextDismiss && (
         <OMGButton
           style={styles.buttonDismiss(theme)}
+          textStyle={styles.buttonTextDismiss(theme)}
           onPress={onPressedDismiss}>
           {content.buttonTextDismiss}
         </OMGButton>
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
   }),
   content: theme => ({
     marginTop: 10,
-    color: theme.colors.blue3,
+    color: theme.colors.white,
     textAlign: 'center',
     fontSize: 14
   }),
@@ -62,14 +63,16 @@ const styles = StyleSheet.create({
     borderWidth: 1
   }),
   buttonTextConfirm: theme => ({
-    color: theme.colors.blue5
+    color: theme.colors.primary
   }),
   buttonDismiss: theme => ({
-    color: theme.colors.white,
     borderColor: theme.colors.white,
     borderWidth: 1,
-    backgroundColor: theme.colors.blue5,
+    backgroundColor: theme.colors.primary,
     marginTop: 10
+  }),
+  buttonTextDismiss: theme => ({
+    color: theme.colors.white
   })
 })
 

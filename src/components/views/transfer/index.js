@@ -6,6 +6,7 @@ import TransferReceive from './TransferReceive'
 import TransferScanner from './TransferScanner'
 import TransferSelectBalance from './TransferSelectBalance'
 import TransferSelectFee from './TransferSelectFee'
+import TransferSelectPlasmaFee from './TransferSelectPlasmaFee'
 import * as TransferHelper from './transferHelper'
 import * as TransferNavigation from './transferNavigation'
 
@@ -19,5 +20,6 @@ export {
   TransferReceive,
   TransferScanner,
   TransferSelectBalance,
-  TransferSelectFee
+  TransferSelectFee,
+  TransferSelectPlasmaFee
 }

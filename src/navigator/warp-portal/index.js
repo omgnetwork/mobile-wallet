@@ -80,7 +80,10 @@ const WarpPortalNavigator = createStackNavigator(
       navigationOptions: ({ navigation }) => ({
         title: 'Preview',
         headerRight: (
-          <OMGFontIcon name='plus' onPress={() => navigation.navigate('Deposit')} />
+          <OMGFontIcon
+            name='plus'
+            onPress={() => navigation.navigate('Deposit')}
+          />
         )
       })
     },
@@ -110,7 +113,7 @@ const WarpPortalNavigator = createStackNavigator(
 const WarpPortalContainer = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <OMGStatusBar barStyle='dark-content' backgroundColor='#FFFFFF' />
+      <OMGStatusBar barStyle='light-content' backgroundColor='#FFFFFF' />
       <WarpPortalNavigator navigation={navigation} />
     </SafeAreaView>
   )

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { View, StyleSheet, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-navigation'
@@ -15,8 +15,8 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
 
   useEffect(() => {
     function didFocus() {
-      StatusBar.setBarStyle('dark-content')
-      StatusBar.setBackgroundColor(theme.colors.white)
+      StatusBar.setBarStyle('light-content')
+      StatusBar.setBackgroundColor(theme.colors.black5)
     }
 
     const didFocusSubscription = navigation.addListener('didFocus', didFocus)
@@ -24,13 +24,15 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
     return () => {
       didFocusSubscription.remove()
     }
-  }, [navigation, theme.colors.white])
+  }, [navigation, theme.colors.black5])
 
   return (
-    <SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
+    <SafeAreaView
+      style={styles.container(theme)}
+      forceInset={{ bottom: 'never' }}>
       <OMGStatusBar
-        barStyle={'dark-content'}
-        backgroundColor={theme.colors.white}
+        barStyle={'light-content'}
+        backgroundColor={theme.colors.black5}
       />
       <View style={styles.titleContainer}>
         <OMGText style={styles.title(theme)}>Transfer</OMGText>
@@ -38,11 +40,11 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
           onPress={() => {
             navigation.goBack()
           }}
-          style={styles.iconBox}>
+          style={styles.iconBox(theme)}>
           <OMGFontIcon
             name='x-mark'
             size={18}
-            color={theme.colors.gray3}
+            color={theme.colors.white}
             style={styles.icon}
           />
         </OMGBox>
@@ -59,9 +61,10 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
+  container: theme => ({
+    flex: 1,
+    backgroundColor: theme.colors.black5
+  }),
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center'
@@ -71,14 +74,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     fontSize: 18,
     textTransform: 'uppercase',
-    color: theme.colors.gray3
+    color: theme.colors.white
   }),
-  iconBox: {
-    padding: 16
-  },
-  icon: {
-    opacity: 1.0
-  }
+  iconBox: theme => ({
+    padding: 16,
+    backgroundColor: theme.colors.black5
+  })
 })
 
 const mapStateToProps = (state, ownProps) => ({

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, Platform, InteractionManager } from 'react-native'
+import { View, StyleSheet, InteractionManager } from 'react-native'
 import { withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import {
@@ -17,12 +17,12 @@ import { OMGBlockchainLabel } from 'components/widgets'
 import { ScrollView } from 'react-native-gesture-handler'
 
 const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
-  const defaultAmount = navigation.getParam('lastAmount')
+  const amount = navigation.getParam('amount')
   const selectedToken = navigation.getParam(
     'selectedToken',
     wallet.childchainAssets[0]
   )
-  const amountRef = useRef(defaultAmount)
+  const amountRef = useRef(amount)
   const amountFocusRef = useRef(null)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
   const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
@@ -57,14 +57,14 @@ const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
   }, [navigation, selectedToken])
 
   return (
-    <OMGDismissKeyboard style={styles.container}>
+    <OMGDismissKeyboard style={styles.container(theme)}>
       <OMGBlockchainLabel
-        actionText='Sending to'
-        transferType={TransferHelper.TYPE_TRANSFER_ROOTCHAIN}
+        actionText='Exit to'
+        transferType={TransferHelper.TYPE_EXIT}
       />
-      <View style={styles.contentContainer}>
+      <View style={styles.contentContainer(theme)}>
         <ScrollView>
-          <OMGText weight='bold' style={styles.title(theme)}>
+          <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
             Select Exit Amount
           </OMGText>
           <OMGTokenInput
@@ -74,7 +74,7 @@ const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
               navigation.navigate('TransferSelectBalance', {
                 transferType: TransferHelper.TYPE_EXIT,
                 currentToken: selectedToken,
-                lastAmount: amountRef.current,
+                amount: amountRef.current,
                 assets: wallet.childchainAssets,
                 exit: true
               })
@@ -86,10 +86,10 @@ const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
             focusRef={amountFocusRef}
             showError={showErrorAmount}
             errorMessage={errorAmountMessage}
-            defaultValue={navigation.getParam('lastAmount')}
+            defaultValue={amount}
             style={styles.amountInput}
           />
-          <OMGExitWarning style={styles.textWarning} />
+          <OMGExitWarning style={styles.warningContainer} />
         </ScrollView>
 
         <View style={styles.buttonContainer}>
@@ -101,22 +101,22 @@ const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: theme => ({
     flex: 1,
-    flexDirection: 'column'
-  },
-  keyboardAvoidingView: {},
-  contentContainer: {
+    flexDirection: 'column',
+    backgroundColor: theme.colors.black5
+  }),
+  contentContainer: theme => ({
     flex: 1,
     paddingHorizontal: 16,
-    paddingBottom: 16
-  },
-  textWarning: {
-    marginTop: 16,
-    marginHorizontal: -16
+    paddingBottom: 16,
+    backgroundColor: theme.colors.black5
+  }),
+  warningContainer: {
+    marginTop: 16
   },
   title: theme => ({
-    color: theme.colors.gray3,
+    color: theme.colors.black4,
     marginTop: 16
   }),
   tokenInput: {

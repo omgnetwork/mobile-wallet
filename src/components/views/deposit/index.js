@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react'
-import { View, StyleSheet, StatusBar } from 'react-native'
+import { View, StyleSheet, StatusBar, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
-import { OMGFontIcon, OMGBox, OMGText, OMGStatusBar } from 'components/widgets'
+import { OMGFontIcon, OMGText, OMGStatusBar } from 'components/widgets'
 
 const Deposit = ({ navigation, theme }) => {
   const ChildChainTransferNavigator = navigation.getParam('navigator')
 
   useEffect(() => {
     function didFocus() {
-      StatusBar.setBarStyle('dark-content')
-      StatusBar.setBackgroundColor(theme.colors.white)
+      StatusBar.setBarStyle('light-content')
+      StatusBar.setBackgroundColor(theme.colors.black5)
     }
 
     const didFocusSubscription = navigation.addListener('didFocus', didFocus)
@@ -19,28 +19,29 @@ const Deposit = ({ navigation, theme }) => {
     return () => {
       didFocusSubscription.remove()
     }
-  }, [navigation, theme.colors.white])
+  }, [navigation, theme.colors.black5])
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar
-        barStyle={'dark-content'}
-        backgroundColor={theme.colors.white}
+        barStyle={'light-content'}
+        backgroundColor={theme.colors.black5}
       />
       <View style={styles.titleContainer}>
-        <OMGText style={styles.title(theme)}>Deposit</OMGText>
-        <OMGBox
+        <OMGText style={styles.title(theme)} weight='regular'>
+          Deposit
+        </OMGText>
+        <TouchableOpacity
           onPress={() => {
             navigation.navigate('Balance')
-          }}
-          style={styles.iconBox}>
+          }}>
           <OMGFontIcon
             name='x-mark'
             size={18}
-            color={theme.colors.gray3}
+            color={theme.colors.white}
             style={styles.icon}
           />
-        </OMGBox>
+        </TouchableOpacity>
       </View>
       <ChildChainTransferNavigator navigation={navigation} />
     </SafeAreaView>
@@ -48,10 +49,13 @@ const Deposit = ({ navigation, theme }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
+  container: theme => ({
+    flex: 1,
+    backgroundColor: theme.colors.black5
+  }),
   titleContainer: {
+    paddingVertical: 24,
+    paddingRight: 16,
     flexDirection: 'row',
     alignItems: 'center'
   },
@@ -60,11 +64,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     fontSize: 18,
     textTransform: 'uppercase',
-    color: theme.colors.gray3
+    color: theme.colors.white
   }),
-  iconBox: {
-    padding: 16
-  },
   icon: {
     opacity: 1.0
   }

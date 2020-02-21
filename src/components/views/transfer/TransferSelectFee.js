@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import { withNavigation, SafeAreaView } from 'react-navigation'
@@ -10,15 +10,29 @@ import {
   OMGFontIcon,
   OMGText
 } from 'components/widgets'
-import { getParamsForTransferSelectFeeFromTransferForm } from './transferNavigation'
+import {
+  getParamsForTransferSelectFeeFromTransferForm,
+  paramsForTransferSelectEthFeeToTransferForm
+} from './transferNavigation'
 
 const TransferSelectFee = ({ theme, loading, navigation }) => {
   const {
     fees,
-    currentToken,
-    currentFee
+    selectedToken,
+    selectedEthFee
   } = getParamsForTransferSelectFeeFromTransferForm(navigation)
-  const [selectedFee, setSelectedFee] = useState(currentFee || fees[0])
+  const [ethFee, setEthFee] = useState(selectedEthFee || fees[0])
+
+  const navigateToTransferForm = useCallback(
+    selectedFee => {
+      const params = paramsForTransferSelectEthFeeToTransferForm({
+        selectedEthFee: ethFee,
+        amount: selectedToken.balance
+      })
+      navigation.navigate('TransferForm', params)
+    },
+    [selectedToken.balance, ethFee, navigation]
+  )
 
   return (
     <SafeAreaView style={styles.container(theme)}>
@@ -26,22 +40,18 @@ const TransferSelectFee = ({ theme, loading, navigation }) => {
         <OMGFontIcon
           name='chevron-left'
           size={18}
-          color={theme.colors.gray3}
+          color={theme.colors.white}
           style={styles.headerIcon}
-          onPress={() =>
-            navigation.navigate('TransferForm', {
-              lastAmount: currentToken.balance
-            })
-          }
+          onPress={navigateToTransferForm}
         />
         <OMGText style={styles.headerTitle(theme)}>Transaction Fee</OMGText>
       </View>
       <View style={styles.gasRecommendContainer(theme)}>
         <OMGText style={styles.gasRecommendText(theme)}>
-          Recommended Gas Prices estimated by ethgasstation.info
+          {`Recommended Gas Prices estimated\nby ethgasstation.info`}
         </OMGText>
       </View>
-      <View style={styles.listContainer}>
+      <View style={styles.listContainer(theme)}>
         <FlatList
           data={fees || []}
           keyExtractor={item => item.id}
@@ -58,22 +68,14 @@ const TransferSelectFee = ({ theme, loading, navigation }) => {
               style={{ marginTop: 8 }}
               fee={item}
               onPress={() => {
-                setSelectedFee(item)
+                setEthFee(item)
               }}
-              selected={item.id === selectedFee.id}
+              selected={item.id === ethFee.id}
             />
           )}
         />
         <View style={styles.buttonContainer}>
-          <OMGButton
-            onPress={() => {
-              navigation.navigate('TransferForm', {
-                selectedFee,
-                lastAmount: currentToken.balance
-              })
-            }}>
-            Apply
-          </OMGButton>
+          <OMGButton onPress={navigateToTransferForm}>Apply</OMGButton>
         </View>
       </View>
     </SafeAreaView>
@@ -84,7 +86,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.white
+    backgroundColor: theme.colors.black5
   }),
   header: {
     alignItems: 'center',
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: theme => ({
     fontSize: 18,
-    color: theme.colors.gray3,
+    color: theme.colors.white,
     marginLeft: 8,
     textTransform: 'uppercase'
   }),
@@ -109,19 +111,24 @@ const styles = StyleSheet.create({
   },
   gasRecommendContainer: theme => ({
     marginTop: 16,
-    padding: 16,
-    backgroundColor: theme.colors.white3,
+    padding: 12,
+    flexDirection: 'column',
+    backgroundColor: theme.colors.gray3,
     alignItems: 'center',
     justifyContent: 'center'
   }),
   gasRecommendText: theme => ({
-    color: theme.colors.black2,
-    fontSize: 12
+    color: theme.colors.white,
+    fontSize: 12,
+    textAlign: 'center',
+    letterSpacing: -0.48,
+    lineHeight: 18
   }),
-  listContainer: {
+  listContainer: theme => ({
     padding: 16,
-    flex: 1
-  }
+    flex: 1,
+    backgroundColor: theme.colors.black3
+  })
 })
 
 const mapStateToProps = (state, ownProps) => ({

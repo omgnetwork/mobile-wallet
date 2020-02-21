@@ -11,13 +11,13 @@ const OMGOnboardingSheet = ({ theme, content, visible }) => {
 
   return (
     <OnboardingContainer visible={visible} tourKey={content.key}>
-      <OMGText style={styles.title(theme)} weight='bold'>
+      <OMGText style={styles.title(theme)} weight='mono-semi-bold'>
         {content.title}
       </OMGText>
       <ImageCenter width={280} style={styles.imageCenter} />
       <View style={styles.bottomContainer}>
         <View style={styles.bottomTextContainer}>
-          <OMGText style={styles.textBottomBig(theme)} weight='bold'>
+          <OMGText style={styles.textBottomBig(theme)} weight='mono-semi-bold'>
             {content.textBottomBig}
           </OMGText>
           <OMGText style={styles.textBottomSmall(theme)}>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     fontSize: 14
   }),
   textBottomSmall: theme => ({
-    color: theme.colors.blue3,
+    color: theme.colors.primary,
     fontSize: 10
   }),
   imageCenter: {

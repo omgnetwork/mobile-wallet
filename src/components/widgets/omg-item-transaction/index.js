@@ -5,7 +5,7 @@ import { Datetime } from 'common/utils'
 import { TransactionTypes } from 'common/constants'
 import { BlockchainRenderer } from 'common/blockchain'
 import OMGText from '../omg-text'
-import OMGFontIcon from '../omg-icon'
+import OMGFontIcon from '../omg-font-icon'
 
 const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
   const isError = tx.type === TransactionTypes.TYPE_FAILED
@@ -27,7 +27,7 @@ const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
         <OMGFontIcon
           name={iconName}
           size={14}
-          color={isError ? theme.colors.red : theme.colors.black5}
+          color={isError ? theme.colors.red : theme.colors.white}
         />
       </View>
       <View style={styles.centerContainer}>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: error ? theme.colors.red : theme.colors.black4,
+    borderColor: error ? theme.colors.red : theme.colors.white,
     marginRight: 16,
     borderWidth: 1,
     borderRadius: theme.roundness
@@ -96,20 +96,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   textHash: theme => ({
-    color: theme.colors.primary,
+    fontSize: 16,
+    letterSpacing: -0.64,
+    color: theme.colors.white,
     alignItems: 'center',
     justifyContent: 'center'
   }),
   subText: theme => ({
-    color: theme.colors.gray2,
+    color: theme.colors.gray8,
     fontSize: 10
   }),
   textAmount: theme => ({
-    color: theme.colors.primary
+    fontSize: 16,
+    letterSpacing: -0.64,
+    color: theme.colors.white
   }),
   textDate: theme => ({
     color: theme.colors.gray2,
-    fontSize: 8
+    fontSize: 8,
+    letterSpacing: -0.32
   })
 })
 

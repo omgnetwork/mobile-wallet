@@ -117,6 +117,7 @@ class KeyboardShift extends React.Component {
         keyboardDismissMode={keyboardDismissMode}
         automaticallyAdjustContentInsets={false}
         scrollEventThrottle={16}
+        bounces={false}
         onScroll={this.onScroll}
         onScrollEndDrag={this.onScrollEndDrag}
         {...rest}

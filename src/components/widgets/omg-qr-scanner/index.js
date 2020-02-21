@@ -1,12 +1,14 @@
 import React, { useCallback } from 'react'
 import { connect } from 'react-redux'
 import QRCodeScanner from 'react-native-qrcode-scanner'
-import { View, StyleSheet, Animated } from 'react-native'
+import { View, StyleSheet } from 'react-native'
+import { withTheme } from 'react-native-paper'
 import Svg, { Rect, Path } from 'react-native-svg'
 import { Dimensions } from 'common/utils'
 import { OMGText } from 'components/widgets'
 
-const SCREEN_WIDTH = Dimensions.windowWidth
+const SCREEN_WIDTH = Dimensions.windowWidth + 1
+const CONTAINER_WIDTH = Math.round(SCREEN_WIDTH * 0.68)
 export const ROOTCHAIN_OVERLAY_COLOR = 'rgba(125, 85, 246, 0.50)'
 export const CHILDCHAIN_OVERLAY_COLOR = 'rgba(33, 118, 255, 0.50)'
 
@@ -18,21 +20,26 @@ const OMGQRScanner = props => {
     borderColor,
     rootchain,
     borderStrokeWidth,
-    overlayColorAnim,
     cameraRef,
     renderUnconfirmedTx,
     renderEmptyComponent,
     unconfirmedTx,
-    wallet
+    wallet,
+    theme
   } = props
-  const hasRootchainAssets =
-    wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
-  const hasChildchainAssets =
-    wallet && wallet.childchainAssets && wallet.childchainAssets.length > 0
+
+  const hasRootchainAssets = wallet?.rootchainAssets?.length > 0
+  const hasChildchainAssets = wallet?.childchainAssets?.length > 0
   const shouldRenderEmptyView =
     (rootchain && !hasRootchainAssets) || (!rootchain && !hasChildchainAssets)
   const renderQRMarker = (
-    <QRMarker borderColor={borderColor} borderStrokeWidth={borderStrokeWidth} />
+    <View style={styles.qrMarkerContainer}>
+      <QRMarker
+        borderColor={borderColor}
+        borderStrokeWidth={borderStrokeWidth}
+      />
+      {/* <OMGText style={styles.qrMarkerText(theme)}>Scan QR to send</OMGText> */}
+    </View>
   )
 
   const renderContent = useCallback(() => {
@@ -63,53 +70,53 @@ const OMGQRScanner = props => {
   }
 
   const disableScanner = useCallback(() => {
-    cameraRef.current && cameraRef.current.disable()
+    cameraRef.current?.disable()
   }, [cameraRef])
 
   const enableScanner = useCallback(() => {
-    cameraRef.current && cameraRef.current.enable()
+    cameraRef.current?.enable()
   }, [cameraRef])
 
   return (
-    <View style={styles.container}>
-      <QRCodeScanner
-        {...props}
-        cameraProps={{
-          useCamera2Api: false,
-          androidCameraPermissionOptions: null
-        }}
-        ref={cameraRef}
-        reactivate={reactivate}
-        onRead={handleOnRead}
-        pendingAuthorizationView={
-          <OMGText style={styles.loadingText}>Loading...</OMGText>
-        }
-        customMarker={
-          <View style={styles.contentContainer}>
-            <Animated.View style={styles.topContainer(overlayColorAnim)}>
-              {renderTop}
-            </Animated.View>
-            <View style={styles.scannerContainer}>
-              <Animated.View style={styles.sideOverlay(overlayColorAnim)} />
-              {renderContent()}
-              <Animated.View style={styles.sideOverlay(overlayColorAnim)} />
-            </View>
-            <Animated.View style={styles.bottomContainer(overlayColorAnim)}>
-              {renderBottom}
-            </Animated.View>
+    <QRCodeScanner
+      {...props}
+      cameraProps={{
+        useCamera2Api: false,
+        androidCameraPermissionOptions: null
+      }}
+      ref={cameraRef}
+      reactivate={reactivate}
+      onRead={handleOnRead}
+      pendingAuthorizationView={
+        <View style={{ backgroundColor: theme.colors.black3 }}>
+          <OMGText style={styles.loadingText(theme)}>Loading...</OMGText>
+        </View>
+      }
+      customMarker={
+        <View style={styles.contentContainer}>
+          <View style={styles.topContainer(theme)}>
+            <View style={styles.renderContainer}>{renderTop}</View>
           </View>
-        }
-      />
-    </View>
+          <View style={styles.scannerContainer}>
+            <View style={styles.sideOverlay(theme)} />
+            {renderContent()}
+            <View style={styles.sideOverlay(theme)} />
+          </View>
+          <View style={styles.bottomContainer(theme)}>
+            <View style={styles.renderContainer}>{renderBottom}</View>
+          </View>
+        </View>
+      }
+    />
   )
 }
 
 const QRMarker = ({ borderColor, borderStrokeWidth, borderStrokeLength }) => {
-  const width = Math.round(SCREEN_WIDTH * 0.68)
+  const width = CONTAINER_WIDTH
   const height = width
   const strokeColor = borderColor || 'white'
-  const strokeWidth = borderStrokeWidth || 4
-  const strokeLength = borderStrokeLength || 30
+  const strokeWidth = borderStrokeWidth || 8
+  const strokeLength = borderStrokeLength || 54
   return (
     <Svg width={width} height={height}>
       <Rect width={width} height={height} fill='transparent' />
@@ -142,50 +149,41 @@ const QRMarker = ({ borderColor, borderStrokeWidth, borderStrokeLength }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    alignContent: 'center'
-  },
-  contentContainer: {
+  contentContainer: theme => ({
     flex: 1,
     width: SCREEN_WIDTH,
     alignItems: 'center',
     justifyContent: 'space-around'
+  }),
+  topContainer: theme => ({
+    width: SCREEN_WIDTH,
+    flex: 0.6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: theme.colors.black3
+  }),
+  bottomContainer: theme => ({
+    width: SCREEN_WIDTH,
+    alignItems: 'center',
+    flex: 1,
+    backgroundColor: theme.colors.black3
+  }),
+  renderContainer: {
+    width: CONTAINER_WIDTH
   },
-  topContainer: overlayColorAnim => ({
-    width: SCREEN_WIDTH,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: overlayColorAnim.current.interpolate({
-      inputRange: [0, 1],
-      outputRange: [ROOTCHAIN_OVERLAY_COLOR, CHILDCHAIN_OVERLAY_COLOR]
-    })
-  }),
-  bottomContainer: overlayColorAnim => ({
-    width: SCREEN_WIDTH,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-    backgroundColor: overlayColorAnim.current.interpolate({
-      inputRange: [0, 1],
-      outputRange: [ROOTCHAIN_OVERLAY_COLOR, CHILDCHAIN_OVERLAY_COLOR]
-    })
-  }),
   scannerContainer: {
     flexDirection: 'row'
   },
-  sideOverlay: overlayColorAnim => ({
+  sideOverlay: theme => ({
     flex: 1,
-    backgroundColor: overlayColorAnim.current.interpolate({
-      inputRange: [0, 1],
-      outputRange: [ROOTCHAIN_OVERLAY_COLOR, CHILDCHAIN_OVERLAY_COLOR]
-    })
+    backgroundColor: theme.colors.black3
   }),
-  loadingText: {
-    textAlign: 'center'
+  loadingText: theme => ({
+    textAlign: 'center',
+    color: theme.colors.white
+  }),
+  qrMarkerContainer: {
+    alignItems: 'center'
   }
 })
 
@@ -199,4 +197,4 @@ const mapStateToProps = (state, ownProps) => ({
 export default connect(
   mapStateToProps,
   null
-)(OMGQRScanner)
+)(withTheme(OMGQRScanner))

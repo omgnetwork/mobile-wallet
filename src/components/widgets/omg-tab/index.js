@@ -2,21 +2,25 @@ import React from 'react'
 import Animated from 'react-native-reanimated'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { Reanimated } from 'common/utils'
-const { color } = Animated
+import { withTheme } from 'react-native-paper'
 
-const Tab = ({ focusAnim, title, onPress }) => {
+const Tab = ({ focusAnim, title, onPress, theme }) => {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.tabContainer}>
-      <Animated.View style={styles.tab(title, focusAnim)}>
-        <Animated.Text style={styles.tabText(focusAnim)}>{title}</Animated.Text>
+    <TouchableOpacity
+      onPress={onPress}
+      style={styles.tabContainer}
+      activeOpacity={0.78}>
+      <Animated.View style={styles.tab(title, focusAnim, theme)}>
+        <Animated.Text style={styles.tabText(focusAnim, theme)}>
+          {title}
+        </Animated.Text>
       </Animated.View>
-      <Animated.View style={styles.tabBottomLine} />
     </TouchableOpacity>
   )
 }
 
 const OMGTab = props => {
-  const { navigationState, navigation, position } = props
+  const { navigationState, navigation, position, theme } = props
   return (
     <View style={styles.omgTab}>
       {navigationState.routes.map((route, index) => {
@@ -28,6 +32,7 @@ const OMGTab = props => {
           <Tab
             key={index}
             focusAnim={focusAnim}
+            theme={theme}
             title={route.routeName}
             onPress={() => navigation.navigate(route.routeName)}
           />
@@ -48,32 +53,24 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column'
   },
-  tab: (title, focusAnim) => ({
-    padding: 12,
+  tab: (title, focusAnim, theme) => ({
+    paddingVertical: 16,
     justifyContent: 'center',
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-    marginLeft: title === 'Send' ? 16 : 0,
-    marginRight: title === 'Receive' ? 16 : 0,
     backgroundColor: Reanimated.interpolateColors(
       focusAnim,
       [0, 1],
-      ['#FFFFFF', '#04070D']
+      [theme.colors.black5, theme.colors.gray3]
     )
   }),
-  tabText: focusAnim => ({
+  tabText: (focusAnim, theme) => ({
     textAlign: 'center',
     textTransform: 'uppercase',
     color: Reanimated.interpolateColors(
       focusAnim,
       [0, 1],
-      ['#3C414D', '#FFFFFF']
+      [theme.colors.gray4, theme.colors.white]
     )
-  }),
-  tabBottomLine: {
-    backgroundColor: '#04070d',
-    height: 4
-  }
+  })
 })
 
-export default OMGTab
+export default withTheme(OMGTab)

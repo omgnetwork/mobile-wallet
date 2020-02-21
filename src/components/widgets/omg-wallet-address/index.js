@@ -12,13 +12,18 @@ const OMGWalletAddress = ({ theme, name, address, style }) => {
     <View style={{ ...styles.container(theme), ...style }}>
       {IS_PLASMA_CONTRACT ? (
         <View style={styles.logo(theme)}>
-          <PlasmaContractIcon name='files' width={24} height={24} />
+          <PlasmaContractIcon width={24} height={24} />
         </View>
       ) : (
         <OMGIdenticon style={styles.logo(theme)} size={24} hash={address} />
       )}
 
-      <OMGText style={styles.text(theme)}>{name}</OMGText>
+      <OMGText
+        style={styles.text(theme)}
+        numberOfLines={1}
+        weight='mono-regular'>
+        {name}
+      </OMGText>
       <View style={styles.rightContainer}>
         <OMGText
           style={styles.address(theme)}
@@ -34,10 +39,8 @@ const OMGWalletAddress = ({ theme, name, address, style }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.white3,
-    borderColor: theme.colors.gray4,
+    backgroundColor: theme.colors.gray5,
     borderRadius: theme.roundness,
-    borderWidth: 1,
     padding: 12,
     alignItems: 'center'
   }),
@@ -46,22 +49,25 @@ const styles = StyleSheet.create({
     height: 24,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: theme.colors.black4,
+    borderColor: theme.colors.white,
     marginRight: 16,
     borderWidth: 1,
     borderRadius: theme.roundness
   }),
   address: theme => ({
-    color: theme.colors.gray2,
+    color: theme.colors.gray6,
     maxWidth: 128,
-    marginRight: 10
+    fontSize: 16,
+    letterSpacing: -0.64
   }),
   text: theme => ({
-    color: theme.colors.primary,
-    fontSize: 14,
+    color: theme.colors.white,
+    letterSpacing: -0.64,
+    fontSize: 16,
     flex: 1
   }),
   rightContainer: {
+    marginLeft: 'auto',
     flexDirection: 'row',
     alignItems: 'center'
   }

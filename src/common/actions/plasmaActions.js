@@ -77,12 +77,13 @@ export const depositErc20 = (blockchainWallet, token) => {
   })
 }
 
-export const transfer = (blockchainWallet, toAddress, token) => {
+export const transfer = (blockchainWallet, toAddress, token, feeToken) => {
   const asyncAction = async () => {
     const { txhash } = await plasmaService.transfer(
       blockchainWallet,
       toAddress,
-      token
+      token,
+      feeToken
     )
 
     return {
@@ -94,6 +95,7 @@ export const transfer = (blockchainWallet, toAddress, token) => {
       contractAddress: token.contractAddress,
       gasUsed: 1,
       gasPrice: 1,
+      gasToken: feeToken,
       actionType: TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN,
       createdAt: Datetime.now()
     }
@@ -141,6 +143,21 @@ export const exit = (blockchainWallet, token) => {
   }
   return createAsyncAction({
     type: 'CHILDCHAIN/EXIT',
+    operation: asyncAction
+  })
+}
+
+export const getFees = tokens => {
+  const asyncAction = async () => {
+    const { fees, updatedAt } = await plasmaService.getFees(tokens)
+    return {
+      data: fees,
+      updatedAt
+    }
+  }
+
+  return createAsyncAction({
+    type: 'CHILDCHAIN/FEES',
     operation: asyncAction
   })
 }

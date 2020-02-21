@@ -5,6 +5,7 @@ import { withNavigation, SafeAreaView } from 'react-navigation'
 import { BlockchainRenderer } from 'common/blockchain'
 import { withTheme } from 'react-native-paper'
 import * as TransferHelper from './transferHelper'
+import { BigNumber } from 'common/utils'
 import {
   paramsForTransferConfirmToTransferPending,
   paramsForTransferConfirmToTransferForm,
@@ -17,7 +18,6 @@ import {
 } from 'common/constants'
 import { ethereumActions, plasmaActions } from 'common/actions'
 import {
-  OMGBox,
   OMGButton,
   OMGText,
   OMGFontIcon,
@@ -40,43 +40,86 @@ const TransferConfirm = ({
     token,
     fromWallet,
     toWallet,
-    fee,
-    transferType
+    transferType,
+    selectedEthFee,
+    selectedPlasmaFee
   } = getParamsForTransferConfirmFromTransferForm(navigation)
   const [estimatedFee, setEstimatedFee] = useState(null)
+  const [estimatedFeeSymbol, setEstimatedFeeSymbol] = useState(null)
   const [estimatedFeeUsd, setEstimatedFeeUsd] = useState(null)
   const [estimatedTotalPrice, setEstimatedTotalPrice] = useState(null)
+  const [estimatedTotalAmount, setEstimatedTotalAmount] = useState(null)
 
   const tokenBalance = BlockchainRenderer.renderTokenBalance(token.balance)
   const tokenPrice = BlockchainRenderer.renderTokenPrice(
     token.balance,
     token.price
   )
+  const sendAmount = BigNumber.multiply(token.balance, token.price)
 
   useEffect(() => {
     async function calculateEstimatedFee() {
-      const gasUsed = await TransferHelper.getGasUsed(transferType, token, {
-        wallet: blockchainWallet,
-        to: toWallet.address,
-        fee: fee
-      })
-      const gasPrice = fee && fee.amount
-      const gasFee = BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
-      const usdPerEth = ethToken && ethToken.price
-      const gasFeeUsd = BlockchainRenderer.renderTokenPrice(gasFee, usdPerEth)
-      const totalPrice = BlockchainRenderer.renderTotalPrice(
-        tokenPrice,
-        gasFeeUsd
-      )
-      setEstimatedFee(gasFee)
-      setEstimatedFeeUsd(gasFeeUsd)
-      setEstimatedTotalPrice(totalPrice)
+      if (selectedPlasmaFee) {
+        const plasmaFee = BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+          selectedPlasmaFee.amount,
+          selectedPlasmaFee.tokenDecimal
+        )
+        const plasmaFeeUsd = BlockchainRenderer.renderTokenPrice(
+          plasmaFee,
+          selectedPlasmaFee.price
+        )
+        const totalPrice = BlockchainRenderer.renderTotalPrice(
+          sendAmount,
+          plasmaFeeUsd
+        )
+        const totalAmount = BlockchainRenderer.renderTotalEthAmount(
+          token,
+          plasmaFee
+        )
+        setEstimatedFee(plasmaFee)
+        setEstimatedFeeSymbol(selectedPlasmaFee?.tokenSymbol ?? 'ETH')
+        setEstimatedFeeUsd(plasmaFeeUsd)
+        setEstimatedTotalPrice(totalPrice)
+        setEstimatedTotalAmount(totalAmount)
+      } else {
+        try {
+          const gasUsed = await TransferHelper.getGasUsed(transferType, token, {
+            wallet: blockchainWallet,
+            to: toWallet.address,
+            fee: selectedEthFee
+          })
+          const gasPrice = selectedEthFee && selectedEthFee.amount
+          const gasFee = BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
+          const usdPerEth = ethToken && ethToken.price
+          const gasFeeUsd = BlockchainRenderer.renderTokenPrice(
+            gasFee,
+            usdPerEth
+          )
+          const totalPrice = BlockchainRenderer.renderTotalPrice(
+            sendAmount,
+            gasFeeUsd
+          )
+          const totalAmount = BlockchainRenderer.renderTotalEthAmount(
+            token,
+            gasFee
+          )
+          setEstimatedFee(gasFee)
+          setEstimatedFeeSymbol('ETH')
+          setEstimatedFeeUsd(gasFeeUsd)
+          setEstimatedTotalPrice(totalPrice)
+          setEstimatedTotalAmount(totalAmount)
+        } catch (err) {
+          console.log(err)
+        }
+      }
     }
     calculateEstimatedFee()
   }, [
     blockchainWallet,
     ethToken,
-    fee,
+    selectedEthFee,
+    selectedPlasmaFee,
+    sendAmount,
     toWallet.address,
     token,
     tokenPrice,
@@ -108,13 +151,11 @@ const TransferConfirm = ({
           transferType,
           estimatedFee,
           estimatedFeeUsd,
-          lastUnconfirmedTx,
-          fee
+          lastUnconfirmedTx
         })
       )
     }
   }, [
-    fee,
     fromWallet,
     loading,
     navigation,
@@ -124,7 +165,8 @@ const TransferConfirm = ({
     token,
     estimatedFee,
     estimatedFeeUsd,
-    transferType
+    transferType,
+    selectedEthFee
   ])
 
   useEffect(() => {
@@ -161,51 +203,77 @@ const TransferConfirm = ({
   }, [navigation, token])
 
   const renderEstimatedFeeElement = useCallback(() => {
-    return estimatedFee ? (
-      <>
-        <OMGText style={styles.feeAmount(theme)}>{estimatedFee} ETH</OMGText>
-        <OMGText style={styles.feeWorth(theme)}>{estimatedFeeUsd} USD</OMGText>
-      </>
-    ) : (
-      <OMGEmpty loading={true} />
+    return (
+      <View style={[styles.toSendContainer, styles.marginToSendItem]}>
+        <OMGText style={styles.toSendTitle(theme)}>Fee</OMGText>
+        <View style={styles.toSendContainerRight}>
+          {estimatedFee ? (
+            <>
+              <OMGText
+                style={styles.toSendAmount(theme)}
+                ellipsizeMode='tail'
+                numberOfLines={1}>
+                {estimatedFee} {estimatedFeeSymbol}
+              </OMGText>
+              <OMGText style={styles.toSendWorth(theme)}>
+                {estimatedFeeUsd} USD
+              </OMGText>
+            </>
+          ) : (
+            <OMGEmpty loading={true} />
+          )}
+        </View>
+      </View>
     )
-  }, [estimatedFee, estimatedFeeUsd, theme])
+  }, [estimatedFee, estimatedFeeSymbol, estimatedFeeUsd, theme])
 
-  const renderEstimatedFeeUsdElement = useCallback(() => {
-    return estimatedTotalPrice ? (
-      <>
-        <OMGText style={styles.totalText(theme)}>Total</OMGText>
-        <OMGText style={styles.totalText(theme)}>
-          {estimatedTotalPrice} USD
+  const renderMaxTotal = useCallback(() => {
+    return estimatedFee ? (
+      <View style={styles.totalContentContainer(theme)}>
+        <OMGText
+          style={styles.totalAmountText(theme)}
+          weight='mono-semi-bold'
+          numberOfLines={1}
+          ellipsizeMode='tail'>
+          {estimatedTotalAmount}
         </OMGText>
-      </>
+        <View style={styles.totalContentRightContainer}>
+          <OMGText style={styles.totalSymbolText(theme)}>ETH</OMGText>
+          <OMGText style={styles.totalUsdText(theme)}>
+            {estimatedTotalPrice} USD
+          </OMGText>
+        </View>
+      </View>
     ) : (
       <OMGEmpty loading={true} />
     )
-  }, [estimatedTotalPrice, theme])
+  }, [estimatedFee, estimatedTotalAmount, estimatedTotalPrice, theme])
 
   const sendToken = () => {
     dispatchSendToken(
       token,
-      fee,
+      selectedEthFee,
       blockchainWallet,
       toWallet.address,
-      transferType
+      transferType,
+      selectedPlasmaFee
     )
   }
 
   return (
     <SafeAreaView style={styles.container(theme)}>
-      <ScrollView contentContainerStyle={styles.scrollView}>
+      <ScrollView
+        contentContainerStyle={styles.scrollView(theme)}
+        bounces={false}>
         <View style={styles.contentContainer}>
           <TouchableHighlight onPress={handleBackToEditPressed}>
-            <View style={styles.subHeaderContainer}>
+            <View style={styles.subHeaderContainer(theme)}>
               <OMGFontIcon
                 name='chevron-left'
                 size={14}
-                color={theme.colors.gray3}
+                color={theme.colors.white}
               />
-              <OMGText style={styles.edit}>Edit</OMGText>
+              <OMGText style={styles.edit(theme)}>EDIT</OMGText>
             </View>
           </TouchableHighlight>
           <OMGBlockchainLabel
@@ -213,34 +281,18 @@ const TransferConfirm = ({
             actionText={blockchainLabelActionText}
             transferType={transferType}
           />
-          <View style={styles.amountContainer(theme)}>
-            <OMGText
-              style={styles.tokenBalance(theme)}
-              ellipsizeMode='middle'
-              numberOfLines={1}>
-              {tokenBalance}
-            </OMGText>
-            <View style={styles.balanceContainer}>
-              <OMGText style={styles.tokenSymbol(theme)}>
-                {token.tokenSymbol}
-              </OMGText>
-              <OMGText style={styles.tokenWorth(theme)}>
-                {tokenPrice} USD
-              </OMGText>
-            </View>
+          <View style={styles.totalContainer(theme, token.tokenSymbol)}>
+            <OMGText style={styles.subtitle(theme)}>MAX TOTAL</OMGText>
+            {renderMaxTotal()}
           </View>
-          <OMGBox style={styles.addressContainer}>
-            <OMGText style={styles.subtitle(theme)} weight='bold'>
-              From
-            </OMGText>
+          <View style={[styles.addressContainer, styles.marginSubtitle]}>
+            <OMGText style={styles.subtitle(theme)}>From</OMGText>
             <OMGWalletAddress
               address={fromWallet.address}
               name={fromWallet.name}
               style={styles.walletAddress}
             />
-            <OMGText
-              style={[styles.subtitle(theme), styles.marginSubtitle]}
-              weight='bold'>
+            <OMGText style={[styles.subtitle(theme), styles.marginSubtitle]}>
               To
             </OMGText>
             <OMGWalletAddress
@@ -248,20 +300,33 @@ const TransferConfirm = ({
               name={toWallet.name}
               style={styles.walletAddress}
             />
-          </OMGBox>
-          <View style={styles.transactionFeeContainer(fee)}>
-            <OMGText weight='bold' style={styles.subtitle(theme)}>
-              Estimated Fee
-            </OMGText>
+          </View>
+          <View
+            style={[
+              styles.transactionFeeContainer(selectedEthFee),
+              styles.marginSubtitle
+            ]}>
+            <OMGText style={styles.subtitle(theme)}>To Send</OMGText>
             <View style={styles.feeContainer(theme)}>
+              <View style={styles.toSendContainer}>
+                <OMGText style={styles.toSendTitle(theme)}>Amount</OMGText>
+                <View style={styles.toSendContainerRight}>
+                  <OMGText
+                    style={styles.toSendAmount(theme)}
+                    ellipsizeMode='tail'
+                    numberOfLines={1}>
+                    {tokenBalance} {token.tokenSymbol}
+                  </OMGText>
+                  <OMGText style={styles.toSendWorth(theme)}>
+                    {tokenPrice} USD
+                  </OMGText>
+                </View>
+              </View>
               {renderEstimatedFeeElement()}
             </View>
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <View style={styles.totalContainer(fee)}>
-            {renderEstimatedFeeUsdElement()}
-          </View>
           <OMGButton
             style={styles.button}
             loading={loadingVisible}
@@ -281,35 +346,50 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: theme.colors.white
   }),
-  scrollView: {
-    flexGrow: 1
-  },
+  scrollView: theme => ({
+    flexGrow: 1,
+    backgroundColor: theme.colors.black3
+  }),
   contentContainer: {
     flex: 1
   },
-  subHeaderContainer: {
-    paddingBottom: 16,
+  subHeaderContainer: theme => ({
+    paddingBottom: 30,
+    paddingTop: 14,
     paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: theme.colors.black5
+  }),
+  blockchainLabel: {},
+  totalAmountText: theme => ({
+    marginRight: 16,
+    color: theme.colors.white,
+    fontSize: 32,
+    letterSpacing: -3,
+    flex: 1
+  }),
+  totalSymbolText: theme => ({
+    color: theme.colors.white,
+    fontSize: 16
+  }),
+  toSendContainer: {
     flexDirection: 'row',
     alignItems: 'center'
   },
-  blockchainLabel: {},
-  amountContainer: theme => ({
-    padding: 20,
-    backgroundColor: theme.colors.gray4,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  }),
-  balanceContainer: {
-    marginLeft: 8,
+  toSendContainerRight: {
+    marginLeft: 'auto',
     flexDirection: 'column',
-    justifyContent: 'center',
     alignItems: 'flex-end'
   },
-  tokenBalance: theme => ({
-    fontSize: 32,
-    width: 260,
-    color: theme.colors.gray3
+  toSendTitle: theme => ({
+    color: theme.colors.white,
+    fontSize: 16,
+    letterSpacing: -0.64
+  }),
+  totalUsdText: theme => ({
+    color: theme.colors.gray,
+    fontSize: 12
   }),
   addressContainer: {
     paddingLeft: 16
@@ -317,26 +397,29 @@ const styles = StyleSheet.create({
   transactionFeeContainer: fee => ({
     display: fee ? 'flex' : 'none',
     flexDirection: 'column',
-    marginTop: 8,
     paddingHorizontal: 16
   }),
-  feeContainer: theme => ({
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 16,
-    backgroundColor: theme.colors.white3,
-    borderColor: theme.colors.gray4,
-    borderRadius: theme.roundness,
-    borderWidth: 1,
-    padding: 12,
-    alignItems: 'center'
+  totalContainer: (theme, tokenSymbol) => ({
+    display: tokenSymbol === 'ETH' ? 'flex' : 'none',
+    padding: 16,
+    flexDirection: 'column',
+    backgroundColor: theme.colors.gray4
   }),
-  totalContainer: fee => ({
-    // display: fee ? 'flex' : 'none',
-    display: 'none',
-    marginTop: 16,
+  totalContentContainer: theme => ({
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    alignItems: 'center',
+    marginTop: 10
+  }),
+  totalContentRightContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-end'
+  },
+  feeContainer: theme => ({
+    flexDirection: 'column',
+    marginTop: 10,
+    backgroundColor: theme.colors.gray5,
+    paddingVertical: 16,
+    paddingHorizontal: 12
   }),
   buttonContainer: {
     justifyContent: 'flex-end',
@@ -344,39 +427,37 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16
   },
   button: {
-    marginTop: 48
+    marginTop: 48,
+    marginBottom: 16
   },
-  subHeaderTitle: {
-    fontSize: 14
-  },
-  edit: {
-    marginLeft: 8
-  },
-  tokenSymbol: theme => ({
-    fontSize: 18,
-    color: theme.colors.gray3
-  }),
-  tokenWorth: theme => ({
-    color: theme.colors.black2
+  edit: theme => ({
+    marginLeft: 8,
+    color: theme.colors.white
   }),
   subtitle: theme => ({
-    color: theme.colors.gray3
+    textTransform: 'uppercase',
+    fontSize: 12,
+    color: theme.colors.white
   }),
   marginSubtitle: {
+    marginTop: 30
+  },
+  marginToSendItem: {
     marginTop: 16
   },
   walletAddress: {
     marginTop: 12,
     flexDirection: 'row'
   },
-  feeAmount: theme => ({
-    color: theme.colors.primary
+  toSendAmount: theme => ({
+    color: theme.colors.white,
+    fontSize: 16,
+    letterSpacing: -0.64
   }),
-  feeWorth: theme => ({
-    color: theme.colors.gray2
-  }),
-  totalText: theme => ({
-    color: theme.colors.gray3
+  toSendWorth: theme => ({
+    color: theme.colors.gray6,
+    fontSize: 12,
+    letterSpacing: -0.48
   })
 })
 
@@ -398,11 +479,34 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchSendToken: (token, fee, blockchainWallet, toAddress, transferType) =>
-    dispatch(getAction(token, fee, blockchainWallet, toAddress, transferType))
+  dispatchSendToken: (
+    token,
+    selectedEthFee,
+    blockchainWallet,
+    toAddress,
+    transferType,
+    selectedPlasmaFee
+  ) =>
+    dispatch(
+      getAction(
+        token,
+        selectedEthFee,
+        blockchainWallet,
+        toAddress,
+        transferType,
+        selectedPlasmaFee
+      )
+    )
 })
 
-const getAction = (token, fee, blockchainWallet, toAddress, transferType) => {
+const getAction = (
+  token,
+  selectedEthFee,
+  blockchainWallet,
+  toAddress,
+  transferType,
+  selectedPlasmaFee
+) => {
   const IS_DEPOSIT = transferType === TransferHelper.TYPE_DEPOSIT
   const ETH_TOKEN = token.contractAddress === ContractAddress.ETH_ADDRESS
   const TRANFER_CHILDCHAIN =
@@ -413,13 +517,23 @@ const getAction = (token, fee, blockchainWallet, toAddress, transferType) => {
   } else if (IS_DEPOSIT && !ETH_TOKEN) {
     return plasmaActions.depositErc20(blockchainWallet, token)
   } else if (TRANFER_CHILDCHAIN) {
-    return plasmaActions.transfer(blockchainWallet, toAddress, token)
+    return plasmaActions.transfer(
+      blockchainWallet,
+      toAddress,
+      token,
+      selectedPlasmaFee
+    )
   } else if (ETH_TOKEN) {
-    return ethereumActions.sendEthToken(token, fee, blockchainWallet, toAddress)
+    return ethereumActions.sendEthToken(
+      token,
+      selectedEthFee,
+      blockchainWallet,
+      toAddress
+    )
   } else {
     return ethereumActions.sendErc20Token(
       token,
-      fee,
+      selectedEthFee,
       blockchainWallet,
       toAddress
     )

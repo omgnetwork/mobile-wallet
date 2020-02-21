@@ -9,17 +9,19 @@ const OMGTokenInput = ({ theme, token, style, onPress }) => {
     <TouchableOpacity
       onPress={onPress}
       style={{ ...styles.container(theme), ...style }}>
-      <OMGTokenIcon token={token} style={styles.logo} size={26} />
-      <OMGText style={styles.text(theme)}>{token.tokenSymbol}</OMGText>
+      <OMGTokenIcon token={token} style={styles.logo} size={18} />
+      <OMGText style={styles.text(theme)} weight='mono-regular'>
+        {token.tokenSymbol}
+      </OMGText>
       <View style={styles.rightContainer}>
         <OMGText style={styles.amount(theme)}>
-          {BlockchainRenderer.renderTokenBalance(token.balance, 4)}{' '}
+          {BlockchainRenderer.renderTokenBalance(token.balance, 6)}{' '}
           {token.tokenSymbol}
         </OMGText>
         <OMGFontIcon
           name='chevron-right'
           size={14}
-          color={theme.colors.gray3}
+          color={theme.colors.white}
         />
       </View>
     </TouchableOpacity>
@@ -29,7 +31,7 @@ const OMGTokenInput = ({ theme, token, style, onPress }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.black3,
     borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
@@ -42,13 +44,16 @@ const styles = StyleSheet.create({
     marginRight: 16
   },
   amount: theme => ({
-    color: theme.colors.gray2,
-    marginRight: 10
+    color: theme.colors.gray6,
+    marginRight: 10,
+    fontSize: 16,
+    letterSpacing: -0.64
   }),
   text: theme => ({
-    color: theme.colors.primary,
-    fontSize: 14,
+    color: theme.colors.white,
+    fontSize: 16,
     textTransform: 'uppercase',
+    letterSpacing: -0.64,
     flex: 1
   }),
   rightContainer: {

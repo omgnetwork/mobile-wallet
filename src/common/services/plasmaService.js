@@ -1,6 +1,6 @@
 import { Formatter, Parser, Polling, Datetime, Mapper } from 'common/utils'
 import { Plasma, Token } from 'common/blockchain'
-import { Gas } from 'common/constants'
+import { Gas, ContractAddress } from 'common/constants'
 import BN from 'bn.js'
 
 export const fetchAssets = async (provider, address) => {
@@ -75,21 +75,48 @@ export const getTx = hash => {
   })
 }
 
-export const transfer = (fromBlockchainWallet, toAddress, token, metadata) => {
+export const getFees = async tokens => {
+  try {
+    const currencies = tokens.map(token => token.contractAddress)
+    const fees = await Plasma.getFees(currencies).then(feeTokens => {
+      return feeTokens.map(feeToken => {
+        const token = tokens.find(t => t.contractAddress === feeToken.currency)
+        return {
+          ...feeToken,
+          ...token
+        }
+      })
+    })
+    return { fees, updatedAt: fees[0] ? fees[0].updated_at : null }
+  } catch (err) {
+    throw err
+  }
+}
+
+export const transfer = (
+  fromBlockchainWallet,
+  toAddress,
+  token,
+  feeToken,
+  metadata
+) => {
   return new Promise(async (resolve, reject) => {
     try {
+      const feeCurrency =
+        feeToken?.contractAddress ?? ContractAddress.ETH_ADDRESS
       const payments = Plasma.createPayment(
         toAddress,
         token.contractAddress,
         Parser.parseUnits(token.balance, token.tokenDecimal).toString(10)
       )
-      const childchainFee = Plasma.createFee('1')
+      const childchainFee = Plasma.createFee(feeCurrency)
       const createdTransactions = await Plasma.createTx(
         fromBlockchainWallet.address,
         payments,
         childchainFee,
         metadata
       )
+
       const transaction = createdTransactions.transactions[0]
       const typedData = Plasma.getTypedData(transaction)
       const privateKeys = new Array(transaction.inputs.length).fill(

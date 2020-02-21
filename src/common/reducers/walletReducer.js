@@ -31,12 +31,9 @@ export const walletsReducer = (state = [], action) => {
     case 'ROOTCHAIN/FETCH_ASSETS/SUCCESS':
       return state.map(wallet => {
         if (wallet.address === action.data.address) {
-          const rootchainAssets = wallet.rootchainAssets || []
           return {
             ...wallet,
-            rootchainAssets: fromSameEthereumNetwork(wallet)
-              ? mergeAssets(rootchainAssets, action.data.rootchainAssets)
-              : action.data.rootchainAssets,
+            rootchainAssets: action.data.rootchainAssets,
             shouldRefresh: false,
             updatedAt: action.data.updatedAt,
             updatedBlock: action.data.updatedBlock,
@@ -48,16 +45,19 @@ export const walletsReducer = (state = [], action) => {
       })
     case 'CHILDCHAIN/FETCH_ASSETS/SUCCESS':
       return state.map(wallet => {
-        if (wallet.address === action.data.address) {
-          const childchainAssets = wallet.childchainAssets || []
+        const {
+          address,
+          childchainAssets,
+          updatedAt,
+          fromUtxoPos
+        } = action.data
+        if (wallet.address === address) {
           return {
             ...wallet,
-            childchainAssets: fromSamePlasmaContract(wallet)
-              ? mergeAssets(childchainAssets, action.data.childchainAssets)
-              : action.data.childchainAssets,
-            updatedAt: action.data.updatedAt,
+            childchainAssets,
+            updatedAt,
+            fromUtxoPos,
             shouldRefreshChildchain: false,
-            fromUtxoPos: action.data.fromUtxoPos,
             plasmaFrameworkContractAddress:
               Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
           }

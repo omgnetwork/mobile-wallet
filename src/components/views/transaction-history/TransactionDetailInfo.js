@@ -1,17 +1,34 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { OMGText } from 'components/widgets'
 import { Formatter } from 'common/utils'
 import { BlockchainRenderer, Plasma } from 'common/blockchain'
+import { connect } from 'react-redux'
+import { priceService } from 'common/services'
 
-const TransactionDetailInfo = ({ theme, tx, style }) => {
+const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
   const [errorReason, setErrorReason] = useState(null)
+  const [feePrice, setFeePrice] = useState(null)
+
+  const tokens = primaryWallet.childchainAssets
   const textExactDatetime = Formatter.formatTimeStamp(
     tx.timestamp,
     'MMMM-DD-YYYY, HH:mm:ss A Z'
   )
+  const feeAmount = BlockchainRenderer.renderGasFee(
+    tx.gasUsed,
+    tx.gasPrice,
+    tx.flatFee
+  )
   const textFromNowDatetime = Formatter.formatTimeStampFromNow(tx.timestamp)
   const isFailed = tx.type === 'failed'
+
+  const getFeeTokenSymbol = useCallback(() => {
+    return (
+      tokens.find(token => token.contractAddress === tx.gasCurrency)
+        ?.tokenSymbol ?? 'ETH'
+    )
+  }, [tokens, tx.gasCurrency])
 
   const renderLabel = () => {
     if (isFailed) {
@@ -23,11 +40,26 @@ const TransactionDetailInfo = ({ theme, tx, style }) => {
     } else {
       return (
         <View style={styles.greenTag(theme)}>
-          <OMGText style={styles.greenTagText(theme)}>Success</OMGText>
+          <OMGText style={styles.greenTagText(theme)} weight='regular'>
+            Success
+          </OMGText>
         </View>
       )
     }
   }
+
+  useEffect(() => {
+    async function calculateFeePrice() {
+      const price = await priceService.fetchPriceUsd(tx.gasCurrency)
+      const feeUsd = BlockchainRenderer.renderGasFeeUsd(
+        tx.gasUsed,
+        tx.gasPrice,
+        price
+      )
+      setFeePrice(feeUsd)
+    }
+    calculateFeePrice()
+  })
 
   useEffect(() => {
     async function getErrorReason() {
@@ -42,11 +74,15 @@ const TransactionDetailInfo = ({ theme, tx, style }) => {
   const renderFee = () => {
     return (
       <View style={styles.infoItem}>
-        <OMGText style={styles.infoItemLabel(theme, isFailed)}>TXN Fee</OMGText>
-        <OMGText style={styles.infoItemValue(theme)} weight='bold'>
-          {BlockchainRenderer.renderGasFee(tx.gasUsed, tx.gasPrice, tx.flatFee)}{' '}
-          ETH
-        </OMGText>
+        <OMGText style={styles.infoItemLabel(theme, isFailed)}>Fee</OMGText>
+        <View style={styles.infoItemContent}>
+          <OMGText style={styles.infoItemValue(theme)}>
+            {feeAmount} {getFeeTokenSymbol()}
+          </OMGText>
+          <OMGText style={styles.infoItemValueLighter(theme)}>
+            {feePrice} USD
+          </OMGText>
+        </View>
       </View>
     )
   }
@@ -74,28 +110,32 @@ const TransactionDetailInfo = ({ theme, tx, style }) => {
   }
 
   return (
-    <View style={{ ...styles.container(theme, isFailed), ...style }}>
+    <View style={{ ...styles.container(theme), ...style }}>
       {renderLabel()}
       <View style={styles.infoItem}>
-        <OMGText style={styles.infoItemLabel(theme, isFailed)}>
+        <OMGText style={styles.infoItemLabel(theme)}>
           {`${textExactDatetime} UTC`}
         </OMGText>
-        <OMGText style={styles.infoItemValue(theme)} weight='bold'>
-          {textFromNowDatetime}
-        </OMGText>
+        <View style={styles.infoItemContent}>
+          <OMGText style={styles.infoItemValue(theme)}>
+            {textFromNowDatetime}
+          </OMGText>
+        </View>
       </View>
       <Divider theme={theme} />
       <View style={styles.infoItem}>
         <OMGText style={styles.infoItemLabel(theme, isFailed)}>
-          Total Value Transacted
+          Transact Value
         </OMGText>
-        <OMGText style={styles.infoItemValue(theme)} weight='bold'>
-          {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
-            tx.value,
-            tx.tokenDecimal
-          )}{' '}
-          {tx.tokenSymbol}
-        </OMGText>
+        <View style={styles.infoItemContent}>
+          <OMGText style={styles.infoItemValue(theme)}>
+            {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+              tx.value,
+              tx.tokenDecimal
+            )}{' '}
+            {tx.tokenSymbol}
+          </OMGText>
+        </View>
       </View>
       <Divider theme={theme} />
       {isFailed ? renderErrorReason() : renderFee()}
@@ -108,50 +148,70 @@ const Divider = ({ theme }) => {
 }
 
 const styles = StyleSheet.create({
-  container: (theme, isFailed) => ({
-    backgroundColor: isFailed ? theme.colors.red4 : theme.colors.green1,
-    borderRadius: theme.roundness,
-    paddingVertical: 16
+  container: theme => ({
+    backgroundColor: theme.colors.gray7,
+    padding: 16
   }),
   greenTag: theme => ({
     alignSelf: 'flex-start',
-    padding: 4,
-    marginLeft: 8,
-    backgroundColor: theme.colors.green2,
-    borderRadius: theme.roundness
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    backgroundColor: theme.colors.green3
   }),
   greenTagText: theme => ({
-    color: theme.colors.white
+    fontSize: 12,
+    letterSpacing: -0.12,
+    color: theme.colors.black5
   }),
   redTag: theme => ({
     alignSelf: 'flex-start',
     padding: 4,
-    marginLeft: 8,
-    backgroundColor: theme.colors.red2,
+    backgroundColor: theme.colors.red,
     borderRadius: theme.roundness
   }),
   redTagText: theme => ({
     color: theme.colors.white
   }),
   infoItem: {
-    marginTop: 16,
-    marginHorizontal: 10
+    marginTop: 16
   },
   errorText: theme => ({
-    color: theme.colors.red5
+    color: theme.colors.red
   }),
-  infoItemLabel: (theme, isFailed) => ({
-    color: isFailed ? theme.colors.gray5 : theme.colors.gray2
+  infoItemLabel: theme => ({
+    fontSize: 10,
+    letterSpacing: -1,
+    color: theme.colors.gray
   }),
+  infoItemContent: {
+    marginTop: 4,
+    flexDirection: 'row'
+  },
   infoItemValue: theme => ({
-    color: theme.colors.primary
+    fontSize: 16,
+    letterSpacing: -0.64,
+    color: theme.colors.white
+  }),
+  infoItemValueLighter: theme => ({
+    fontSize: 16,
+    marginLeft: 'auto',
+    letterSpacing: -0.64,
+    color: theme.colors.gray6
   }),
   divider: theme => ({
-    opacity: 0.25,
-    backgroundColor: theme.colors.black1,
+    backgroundColor: theme.colors.gray5,
     height: 1,
     marginTop: 16
   })
 })
 
-export default TransactionDetailInfo
+const mapStateToProps = (state, ownProps) => ({
+  primaryWallet: state.wallets.find(
+    wallet => wallet.address === state.setting.primaryWalletAddress
+  )
+})
+
+export default connect(
+  mapStateToProps,
+  null
+)(TransactionDetailInfo)

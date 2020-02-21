@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, Linking } from 'react-native'
+import { View, StyleSheet, Linking, ScrollView } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { BlockchainRenderer } from 'common/blockchain'
@@ -13,19 +13,53 @@ import {
   OMGBlockchainLabel,
   OMGStatusBar,
   OMGFontIcon,
-  OMGExitComplete
+  OMGExitComplete,
+  OMGWalletAddress
 } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { GoogleAnalytics } from 'common/analytics'
 
-const ExitPending = ({ theme, navigation }) => {
+const ExitPending = ({ theme, navigation, wallet }) => {
   const unconfirmedTx = navigation.getParam('unconfirmedTx')
   const token = navigation.getParam('token')
+  const estimatedGasFee = navigation.getParam('estimatedFee')
+  const estimatedGasFeeUsd = navigation.getParam('estimatedFeeUsd')
+  const fromWallet = wallet
+  const toWallet = {
+    name: 'Plasma Contract',
+    address: Config.PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
+  }
   const tokenPrice = BlockchainRenderer.renderTokenPrice(
     token.balance,
     token.price
   )
-  const tokenBalance = BlockchainRenderer.renderTokenBalance(token.balance)
+
+  const gasDetailAvailable = unconfirmedTx.gasUsed && unconfirmedTx.gasPrice
+  const gasFee = useCallback(() => {
+    return (
+      estimatedGasFee ||
+      BlockchainRenderer.renderGasFee(
+        unconfirmedTx.gasUsed,
+        unconfirmedTx.gasPrice
+      )
+    )
+  }, [estimatedGasFee, unconfirmedTx.gasPrice, unconfirmedTx.gasUsed])
+
+  const gasFeeUsd = useCallback(() => {
+    return (
+      estimatedGasFeeUsd ||
+      BlockchainRenderer.renderGasFeeUsd(
+        unconfirmedTx.gasUsed,
+        unconfirmedTx.gasPrice,
+        token.price
+      )
+    )
+  }, [
+    estimatedGasFeeUsd,
+    unconfirmedTx.gasUsed,
+    unconfirmedTx.gasPrice,
+    token.price
+  ])
   const handleOnBackPressedAndroid = () => {
     return true
   }
@@ -38,57 +72,106 @@ const ExitPending = ({ theme, navigation }) => {
     <AndroidBackHandler onBackPress={handleOnBackPressedAndroid}>
       <SafeAreaView style={styles.container(theme)}>
         <OMGStatusBar
-          barStyle='dark-content'
-          backgroundColor={theme.colors.white}
+          barStyle='light-content'
+          backgroundColor={theme.colors.black5}
         />
-        <View style={styles.headerContainer}>
-          <View style={styles.iconPending(theme)}>
-            <OMGFontIcon name='pending' size={24} style={styles.icon(theme)} />
-          </View>
-          <OMGText style={styles.title(theme)} weight='bold'>
-            Pending Transaction
-          </OMGText>
-        </View>
-        <OMGBlockchainLabel
-          actionText='Sent to'
-          transferType={TransferHelper.TYPE_TRANSFER_ROOTCHAIN}
-          style={styles.blockchainLabel}
-        />
-        <View style={styles.contentContainer}>
-          <OMGText weight='bold' style={styles.amountText}>
-            Amount
-          </OMGText>
-          <View style={styles.amountContainer(theme)}>
-            <OMGText style={styles.tokenBalance(theme)}>
-              {tokenBalance} {token.tokenSymbol}
+        <ScrollView bounces={false}>
+          <View style={styles.headerContainer}>
+            <View style={styles.iconPending(theme)}>
+              <OMGFontIcon
+                name='pending'
+                size={24}
+                color={theme.colors.white}
+              />
+            </View>
+            <OMGText style={styles.title(theme)} weight='mono-semi-bold'>
+              Pending Transaction
             </OMGText>
-            <OMGText style={styles.tokenPrice(theme)}>{tokenPrice} USD</OMGText>
           </View>
-          <OMGExitComplete
-            style={styles.exitCompleteLabel}
-            createdAt={unconfirmedTx.createdAt}
+          <OMGBlockchainLabel
+            actionText='Exit to'
+            transferType={TransferHelper.TYPE_EXIT}
+            style={styles.blockchainLabel}
           />
-        </View>
+          <View style={styles.contentContainer(theme)}>
+            <View style={styles.addressContainer}>
+              <OMGText style={[styles.subtitle(theme), styles.marginSubtitle]}>
+                From
+              </OMGText>
+              <OMGWalletAddress
+                name={fromWallet.name}
+                address={fromWallet.address}
+                style={styles.walletAddress}
+              />
+              <OMGText style={[styles.subtitle(theme), styles.marginSubtitle]}>
+                To
+              </OMGText>
+              <OMGWalletAddress
+                address={toWallet.address}
+                name={toWallet.name}
+                style={styles.walletAddress}
+              />
+            </View>
+            <View style={styles.sentContainer}>
+              <OMGText style={[styles.subtitle(theme), styles.marginSubtitle]}>
+                To Exit
+              </OMGText>
+              <View style={styles.sentContentContainer(theme)}>
+                <View style={styles.sentSection1}>
+                  <OMGText style={styles.sentTitle(theme)}>Exit Amount</OMGText>
+                  <View style={styles.sentDetail}>
+                    <OMGText style={styles.sentDetailFirstline(theme)}>
+                      {BlockchainRenderer.renderTokenBalance(token.balance)}{' '}
+                      {token.tokenSymbol}
+                    </OMGText>
+                    <OMGText style={styles.sentDetailSecondline(theme)}>
+                      {tokenPrice} USD
+                    </OMGText>
+                  </View>
+                </View>
+                <View style={styles.sentSection2}>
+                  <OMGText style={styles.sentTitle(theme)}>
+                    {gasDetailAvailable ? 'Exit ' : 'Estimated Exit '}Fee
+                  </OMGText>
+                  <View style={styles.sentDetail}>
+                    <OMGText style={styles.sentDetailFirstline(theme)}>
+                      {gasFee()} ETH
+                    </OMGText>
+                    <OMGText style={styles.sentDetailSecondline(theme)}>
+                      {gasFeeUsd()} USD
+                    </OMGText>
+                  </View>
+                </View>
+              </View>
+              <OMGExitComplete
+                style={styles.exitCompleteLabel}
+                createdAt={unconfirmedTx.createdAt}
+              />
+            </View>
+          </View>
 
-        <View style={styles.bottomContainer}>
-          <OMGButton
-            style={styles.button(theme)}
-            textStyle={styles.buttonText(theme)}
-            onPress={() => {
-              navigation.navigate({ routeName: 'Balance' })
-            }}>
-            Done
-          </OMGButton>
-          <TouchableOpacity
-            style={styles.trackEtherscanButton}
-            onPress={() => {
-              Linking.openURL(`${Config.ETHERSCAN_TX_URL}${unconfirmedTx.hash}`)
-            }}>
-            <OMGText style={styles.trackEtherscanText(theme)}>
-              Track on Etherscan
-            </OMGText>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.bottomContainer(theme)}>
+            <OMGButton
+              style={styles.button(theme)}
+              textStyle={styles.buttonText(theme)}
+              onPress={() => {
+                navigation.navigate({ routeName: 'Balance' })
+              }}>
+              Done
+            </OMGButton>
+            <TouchableOpacity
+              style={styles.trackEtherscanButton}
+              onPress={() => {
+                Linking.openURL(
+                  `${Config.ETHERSCAN_TX_URL}${unconfirmedTx.hash}`
+                )
+              }}>
+              <OMGText style={styles.trackEtherscanText(theme)}>
+                Track on Etherscan
+              </OMGText>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </SafeAreaView>
     </AndroidBackHandler>
   )
@@ -98,45 +181,28 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.white
+    backgroundColor: theme.colors.black5
   }),
-  contentContainer: {
+  contentContainer: theme => ({
     flex: 1,
-    paddingHorizontal: 16
-  },
+    backgroundColor: theme.colors.black3
+  }),
   iconPending: theme => ({
     width: 36,
     height: 36,
     marginLeft: 16,
     borderRadius: 18,
-    backgroundColor: theme.colors.yellow3,
+    backgroundColor: theme.colors.yellow,
     justifyContent: 'center',
     alignItems: 'center'
   }),
   blockchainLabel: {
     marginTop: 20
   },
-  icon: theme => ({
-    color: theme.colors.white
-  }),
-  amountContainer: theme => ({
-    marginTop: 12,
-    padding: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderWidth: 1,
-    borderColor: theme.colors.black4,
-    borderRadius: theme.roundness
-  }),
-  amountText: {
-    marginTop: 20
-  },
-  tokenBalance: theme => ({
-    color: theme.colors.primary
-  }),
-  tokenPrice: theme => ({
-    color: theme.colors.gray2
+  subtitle: theme => ({
+    fontSize: 12,
+    color: theme.colors.white,
+    textTransform: 'uppercase'
   }),
   headerContainer: {
     flexDirection: 'row',
@@ -144,44 +210,88 @@ const styles = StyleSheet.create({
     marginTop: 28
   },
   addressContainer: {
-    marginTop: 16,
     paddingLeft: 16
   },
-  bottomContainer: {
+  marginSubtitle: {
+    marginTop: 30
+  },
+  bottomContainer: theme => ({
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginVertical: 16,
-    paddingHorizontal: 16
-  },
+    padding: 16,
+    backgroundColor: theme.colors.black3
+  }),
   title: theme => ({
     fontSize: 18,
     marginLeft: 16,
-    color: theme.colors.gray3
+    color: theme.colors.white
   }),
   exitCompleteLabel: {
     marginTop: 16
   },
   button: theme => ({
     backgroundColor: theme.colors.white,
-    borderColor: theme.colors.gray3,
+    borderColor: theme.colors.white,
     borderWidth: 1
   }),
   buttonText: theme => ({
-    color: theme.colors.gray3
+    color: theme.colors.black2
+  }),
+  walletAddress: {
+    marginTop: 12,
+    flexDirection: 'row'
+  },
+  sentContainer: {
+    marginHorizontal: 16
+  },
+  sentTitle: theme => ({
+    color: theme.colors.white,
+    fontSize: 16,
+    letterSpacing: -0.64
+  }),
+  sentDetail: {
+    flexDirection: 'column',
+    alignItems: 'flex-end'
+  },
+  sentSection1: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  sentSection2: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 16
+  },
+  sentContentContainer: theme => ({
+    justifyContent: 'space-between',
+    backgroundColor: theme.colors.gray5,
+    borderRadius: theme.roundness,
+    padding: 16,
+    marginTop: 8
+  }),
+  sentDetailFirstline: theme => ({
+    color: theme.colors.white,
+    fontSize: 16,
+    letterSpacing: -0.64
+  }),
+  sentDetailSecondline: theme => ({
+    color: theme.colors.gray6,
+    fontSize: 12,
+    letterSpacing: -0.48
   }),
   trackEtherscanButton: {
     padding: 8,
     marginTop: 16
   },
   trackEtherscanText: theme => ({
-    color: theme.colors.gray3
+    fontSize: 12,
+    letterSpacing: -0.48,
+    color: theme.colors.white,
+    textAlign: 'center'
   })
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  unconfirmedTxs: state.transaction.unconfirmedTxs,
-  loading: state.loading,
-  provider: state.setting.provider,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   )

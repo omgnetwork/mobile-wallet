@@ -20,6 +20,7 @@ import {
   OMGTokenSelect
 } from 'components/widgets'
 import OMGItemToken from 'components/widgets/omg-item-token'
+import Config from 'react-native-config'
 
 const mockToken = {
   tokenName: 'Ether',
@@ -57,7 +58,7 @@ const Preview = ({ navigation, theme }) => {
       style={{
         flex: 1,
         paddingHorizontal: 16,
-        backgroundColor: theme.colors.gray4
+        backgroundColor: theme.colors.black5
       }}>
       <ScrollView>
         <OMGRadioButton
@@ -68,8 +69,8 @@ const Preview = ({ navigation, theme }) => {
         />
         <OMGBox style={{ marginVertical: 16 }}>
           <OMGText weight='normal'>Book</OMGText>
-          <OMGText weight='medium'>Medium</OMGText>
-          <OMGText weight='bold'>Bold</OMGText>
+          <OMGText weight='regular'>Medium</OMGText>
+          <OMGText weight='mono-semi-bold'>Bold</OMGText>
           <OMGText weight='extra-bold'>Black</OMGText>
           <OMGTokenInput token={mockToken} theme={theme} />
           <OMGWalletAddress wallet={mockWallet} style={{ marginTop: 16 }} />
@@ -111,7 +112,7 @@ const Preview = ({ navigation, theme }) => {
           amount='2,090.00'
           currency='USD'
           blockchain='Ethereum'
-          network='Mainnet'
+          network={Config.ETHERSCAN_NETWORK}
           style={{ marginTop: 16 }}
         />
         <OMGAssetList theme={theme} />

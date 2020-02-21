@@ -1,26 +1,33 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { SafeAreaView, withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
-import { colors } from 'common/styles'
 import { OMGText, OMGFontIcon } from 'components/widgets'
-import OMGDrawerContentItem from './OMGDrawerContentItem'
+import OMGDrawerWallet from './OMGDrawerWallet'
 import { settingActions, onboardingActions } from 'common/actions'
 import { ScrollView } from 'react-native-gesture-handler'
 
-const ManageWalletMenu = ({ theme, title, style, onPress }) => {
+const ManageWalletMenu = ({
+  theme,
+  title,
+  style,
+  onPress,
+  showCaret = true
+}) => {
   return (
     <TouchableOpacity
       style={{ ...menuStyles.container, ...style }}
       onPress={onPress}>
       <OMGText style={menuStyles.titleLeft(theme)}>{title}</OMGText>
-      <OMGFontIcon
-        name='chevron-right'
-        size={14}
-        style={menuStyles.iconRight}
-      />
+      {showCaret && (
+        <OMGFontIcon
+          name='chevron-right'
+          size={14}
+          style={menuStyles.iconRight}
+        />
+      )}
     </TouchableOpacity>
   )
 }
@@ -29,6 +36,7 @@ const OMGDrawerContent = ({
   navigation,
   dispatchSetPrimaryWalletAddress,
   dispatchSetCurrentPage,
+  dispatchTakeAppTour,
   primaryWallet,
   theme,
   wallets
@@ -38,11 +46,19 @@ const OMGDrawerContent = ({
     navigation.navigate('Initializer')
   }
 
-  const handleManageWalletMenuPress = destination => {
+  const closeDrawerAndNavigate = destination => {
     dispatchSetCurrentPage(destination)
     navigation.navigate(destination)
     requestAnimationFrame(() => {
       navigation.closeDrawer()
+    })
+  }
+
+  const takeAppTour = () => {
+    navigation.closeDrawer()
+    dispatchTakeAppTour()
+    requestAnimationFrame(() => {
+      navigation.navigate('Balance', { page: 1 })
     })
   }
 
@@ -52,58 +68,64 @@ const OMGDrawerContent = ({
       forceInset={{ top: 'always', horizontal: 'never' }}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         {wallets.length > 0 && (
-          <View>
-            <OMGText weight='bold' style={styles.titleText}>
+          <View key='wallet-container'>
+            <OMGText weight='regular' style={styles.titleText(theme)}>
               WALLETS
             </OMGText>
 
-            {wallets.map(wallet => (
-              <>
-                <OMGDrawerContentItem
+            {wallets.map((wallet, index) => (
+              <Fragment key={index}>
+                <OMGDrawerWallet
                   wallet={wallet}
-                  key={wallet.address}
                   onWalletPress={handleWalletPress}
                   primary={
                     primaryWallet && primaryWallet.address === wallet.address
                   }
                 />
                 <View style={styles.divider(theme)} />
-              </>
+              </Fragment>
             ))}
           </View>
         )}
 
-        <View style={styles.settingContainer}>
-          <OMGText weight='bold' style={styles.titleText}>
-            SETTINGS
+        <View style={styles.settingContainer} key={'setting-container'}>
+          <OMGText weight='regular' style={styles.titleText(theme)}>
+            Manage
           </OMGText>
           <ManageWalletMenu
             title='Import Wallet'
             theme={theme}
-            onPress={() => handleManageWalletMenuPress('ImportWallet')}
+            onPress={() => closeDrawerAndNavigate('ImportWallet')}
           />
           <View style={styles.divider(theme)} />
           <ManageWalletMenu
             title='Create Wallet'
             theme={theme}
-            onPress={() => handleManageWalletMenuPress('CreateWallet')}
+            onPress={() => closeDrawerAndNavigate('CreateWallet')}
           />
           <View style={styles.divider(theme)} />
           <ManageWalletMenu
             title='Backup Wallet'
             theme={theme}
-            onPress={() => handleManageWalletMenuPress('BackupWallet')}
+            onPress={() => closeDrawerAndNavigate('BackupWallet')}
           />
           <View style={styles.divider(theme)} />
           <ManageWalletMenu
             title='Delete Wallet'
             theme={theme}
-            onPress={() => handleManageWalletMenuPress('DeleteWallet')}
+            onPress={() => closeDrawerAndNavigate('DeleteWallet')}
+          />
+          <View style={styles.divider(theme)} />
+          <ManageWalletMenu
+            title='Take App Tour'
+            theme={theme}
+            showCaret={false}
+            onPress={takeAppTour}
           />
           <View style={styles.divider(theme)} />
           <View style={styles.expander} />
           <View style={styles.environment}>
-            <OMGText weight='bold' style={styles.environmentTitleText(theme)}>
+            <OMGText style={styles.environmentTitleText(theme)}>
               Environment Info
             </OMGText>
             <View style={styles.envInfoCard(theme)}>
@@ -130,6 +152,14 @@ const OMGDrawerContent = ({
                 {Config.CHILDCHAIN_WATCHER_URL}
               </OMGText>
             </View>
+            <View style={styles.envInfoCard(theme)}>
+              <OMGText style={styles.environmentItemText(theme)}>
+                Version
+              </OMGText>
+              <OMGText style={styles.environmentItemTextLighter(theme)}>
+                {Config.VERSION}
+              </OMGText>
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -144,7 +174,9 @@ const menuStyles = StyleSheet.create({
   },
   titleLeft: theme => ({
     flex: 1,
-    color: theme.colors.primary
+    fontSize: 16,
+    letterSpacing: -0.64,
+    color: theme.colors.gray7
   }),
   iconRight: {}
 })
@@ -152,20 +184,16 @@ const menuStyles = StyleSheet.create({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingLeft: 30,
+    paddingLeft: 16,
     paddingTop: 32
   },
   divider: theme => ({
-    backgroundColor: theme.colors.black1,
+    backgroundColor: theme.colors.white2,
     height: 1,
     opacity: 0.3
   }),
   scrollView: {
     flexGrow: 1
-  },
-  walletContainer: {
-    marginTop: 16,
-    flexDirection: 'column'
   },
   settingContainer: {
     flex: 1,
@@ -173,39 +201,40 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     flexDirection: 'column'
   },
-  titleText: {
-    color: colors.gray3
-  },
-  settingItemText: {
-    color: colors.black3
-  },
-  envInfoCard: theme => ({
-    marginTop: 4,
-    padding: 12,
-    borderRadius: theme.roundness,
-    backgroundColor: theme.colors.gray4
+  titleText: theme => ({
+    fontSize: 18,
+    textTransform: 'uppercase',
+    color: theme.colors.black5,
+    marginTop: 12
   }),
-  settingItem: {
-    paddingVertical: 12
-  },
+  envInfoCard: theme => ({
+    marginTop: 16,
+    padding: 16,
+    backgroundColor: theme.colors.white2
+  }),
   expander: {
     flex: 1
   },
   environment: {
     marginBottom: 24,
-    marginTop: 16
+    marginTop: 32
   },
   environmentTitleText: theme => ({
-    opacity: 0.5,
-    color: theme.colors.gray3,
+    color: theme.colors.gray4,
+    fontSize: 12,
+    letterSpacing: -0.48,
     paddingBottom: 8
   }),
   environmentItemText: theme => ({
-    fontSize: 14,
-    color: theme.colors.primary
+    fontSize: 16,
+    letterSpacing: -0.64,
+    color: theme.colors.gray5
   }),
   environmentItemTextLighter: theme => ({
-    color: theme.colors.black2
+    color: theme.colors.gray4,
+    fontSize: 12,
+    marginTop: 4,
+    letterSpacing: -0.48
   })
 })
 
@@ -213,15 +242,17 @@ const mapStateToProps = (state, ownProps) => ({
   primaryWallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
-  wallets: state.wallets
+  wallets: state.wallets,
+  provider: state.setting.provider
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchSetPrimaryWalletAddress: primaryAddress =>
     settingActions.setPrimaryAddress(dispatch, primaryAddress),
-  dispatchSetCurrentPage: (currentPage, page) => {
-    onboardingActions.setCurrentPage(dispatch, currentPage, page)
-  }
+  dispatchSetCurrentPage: (currentPage, page) =>
+    onboardingActions.setCurrentPage(dispatch, currentPage, page),
+  dispatchTakeAppTour: () =>
+    onboardingActions.setEnableOnboarding(dispatch, true)
 })
 
 export default connect(

@@ -22,20 +22,22 @@ const TransactionHistoryFilter = ({
   const types = navigation.getParam('types')
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar
-        barStyle={'dark-content'}
-        backgroundColor={theme.colors.white}
+        barStyle={'light-content'}
+        backgroundColor={theme.colors.black5}
       />
       <View style={styles.header}>
         <OMGFontIcon
           name='chevron-left'
           size={18}
-          color={theme.colors.gray3}
+          color={theme.colors.white}
           style={styles.headerIcon}
           onPress={() => navigation.goBack()}
         />
-        <OMGText style={styles.headerTitle(theme)}>{title}</OMGText>
+        <OMGText style={styles.headerTitle(theme)} weight='regular'>
+          {title}
+        </OMGText>
       </View>
       <OMGTransactionFilter
         transactions={transactions}
@@ -49,13 +51,10 @@ const TransactionHistoryFilter = ({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
+  container: theme => ({
+    flex: 1,
+    backgroundColor: theme.colors.black5
+  }),
   header: {
     marginHorizontal: 16,
     alignItems: 'center',
@@ -67,19 +66,10 @@ const styles = StyleSheet.create({
   },
   headerTitle: theme => ({
     fontSize: 18,
-    color: theme.colors.gray3,
+    color: theme.colors.white,
     marginLeft: 8,
     textTransform: 'uppercase'
-  }),
-  title: theme => ({
-    fontSize: 18,
-    textTransform: 'uppercase',
-    color: theme.colors.gray3
-  }),
-  icon: {
-    padding: 16,
-    marginRight: -16
-  }
+  })
 })
 
 const mapStateToProps = (state, ownProps) => ({

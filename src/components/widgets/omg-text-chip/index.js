@@ -15,14 +15,18 @@ const OMGTextChip = ({ theme, text, style, onPress }) => {
 
 const styles = StyleSheet.create({
   container: theme => ({
-    backgroundColor: theme.colors.blue3,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
+    width: 104,
+    backgroundColor: theme.colors.black5,
+    paddingVertical: 16,
+    paddingHorizontal: 8,
     marginTop: 8,
-    borderRadius: theme.roundness
+    borderWidth: 1,
+    borderColor: theme.colors.gray4
   }),
   text: theme => ({
-    color: theme.colors.primary,
+    color: theme.colors.white,
+    fontSize: 18,
+    letterSpacing: -0.72,
     textTransform: 'capitalize'
   })
 })

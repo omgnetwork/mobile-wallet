@@ -16,6 +16,7 @@ module.exports = {
         extensions: ['.ios.js', '.android.js', '.js', '.json']
       }
     ],
-    'babel-plugin-react-native-nodeify-hack'
+    'babel-plugin-react-native-nodeify-hack',
+    '@babel/plugin-proposal-optional-chaining'
   ]
 }
