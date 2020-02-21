@@ -36,6 +36,7 @@ const OMGOnboardingSheetWithButton = ({
       {content.buttonTextDismiss && (
         <OMGButton
           style={styles.buttonDismiss(theme)}
+          textStyle={styles.buttonTextDismiss(theme)}
           onPress={onPressedDismiss}>
           {content.buttonTextDismiss}
         </OMGButton>
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
   }),
   content: theme => ({
     marginTop: 10,
-    color: theme.colors.primary,
+    color: theme.colors.white,
     textAlign: 'center',
     fontSize: 14
   }),
@@ -65,11 +66,13 @@ const styles = StyleSheet.create({
     color: theme.colors.primary
   }),
   buttonDismiss: theme => ({
-    color: theme.colors.white,
     borderColor: theme.colors.white,
     borderWidth: 1,
     backgroundColor: theme.colors.primary,
     marginTop: 10
+  }),
+  buttonTextDismiss: theme => ({
+    color: theme.colors.white
   })
 })
 

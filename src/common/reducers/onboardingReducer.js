@@ -17,7 +17,7 @@ export const onboardingReducer = (state = {}, action) => {
       return {
         ...state,
         enabled: action.data.enabled,
-        currentPage: null,
+        currentPage: action.data.enabled ? 'childchain-balance' : null,
         currentPopup: null,
         viewedPopups: []
       }
