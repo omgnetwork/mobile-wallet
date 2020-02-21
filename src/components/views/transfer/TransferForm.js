@@ -66,15 +66,15 @@ const TransferForm = ({
   )
   const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
 
-  // Focus on amount input when the TransferForm screen is active.
-  // So the keyboard is show automatically for the UX sake.
-  useEffect(() => {
-    if (isFocused) {
-      if (!amountRef.current) {
-        focusOn(amountFocusRef)
-      }
-    }
-  }, [dispatchGetFees, focusOn, isFocused, wallet.childchainAssets])
+  // Feel not quite useful since the user will be likely to select the token to send first.
+  // Immediately set focus to amount input will require more effort for selecting a token.
+  // useEffect(() => {
+  //   if (isFocused) {
+  //     if (!amountRef.current) {
+  //       focusOn(amountFocusRef)
+  //     }
+  //   }
+  // }, [dispatchGetFees, focusOn, isFocused, wallet.childchainAssets])
 
   // Retrieve fees from /fees.all when the component is mounted
   useEffect(() => {
@@ -82,7 +82,7 @@ const TransferForm = ({
   }, [dispatchGetFees, wallet.childchainAssets])
 
   const focusOn = useCallback(inputRef => {
-    InteractionManager.runAfterInteractions(inputRef?.current?.focus)
+    inputRef?.current?.focus()
   }, [])
 
   const navigateToSelectPlasmaFee = useCallback(() => {
