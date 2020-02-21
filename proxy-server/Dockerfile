@@ -7,7 +7,7 @@ WORKDIR /app
 
 COPY . /app
 
-RUN apk add --no-cache python
+RUN apk add --no-cache python make g++
 RUN npm install
 
 #
