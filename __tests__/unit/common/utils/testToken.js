@@ -31,7 +31,7 @@ describe('Test Token Util', () => {
         expect(contractAddress).toBeDefined()
       }
     )
-  }, 15000)
+  }, 30000)
 
   it('fetchTokens should return [contractAddress: {tokenName, tokenSymbol, tokenDecimal, price, balance}]', () => {
     const testProvider = ethers.getDefaultProvider('homestead')
