@@ -45,13 +45,19 @@ export const walletsReducer = (state = [], action) => {
       })
     case 'CHILDCHAIN/FETCH_ASSETS/SUCCESS':
       return state.map(wallet => {
-        if (wallet.address === action.data.address) {
+        const {
+          address,
+          childchainAssets,
+          updatedAt,
+          fromUtxoPos
+        } = action.data
+        if (wallet.address === address) {
           return {
             ...wallet,
-            childchainAssets: action.data.childchainAssets,
-            updatedAt: action.data.updatedAt,
+            childchainAssets,
+            updatedAt,
+            fromUtxoPos,
             shouldRefreshChildchain: false,
-            fromUtxoPos: action.data.fromUtxoPos,
             plasmaFrameworkContractAddress:
               Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
           }
