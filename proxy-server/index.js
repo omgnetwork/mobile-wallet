@@ -8,7 +8,6 @@ const Sentry = require('./utils/error-reporter')
 
 console.log('Initializing mobile wallet proxy-server app...')
 console.log('PORT:', CONFIG.PORT)
-console.log('ETHEREUM_RPC_URL:', CONFIG.ETHEREUM_RPC_URL)
 console.log('LOG_LEVEL:', CONFIG.LOG_LEVEL)
 
 const app = express()
