@@ -119,7 +119,7 @@ export const depositErc20 = async (
     depositGasPrice
   )
 
-  const receipt = await Plasma.RootChain.depositToken({
+  const receipt = await Plasma.RootChain.deposit({
     depositTx: encodedDepositTx,
     txOptions: depositOptions
   })

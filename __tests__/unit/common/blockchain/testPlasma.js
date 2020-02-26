@@ -7,7 +7,7 @@ import BN from 'bn.js'
 jest.mock('@omisego/omg-js')
 
 const { getBalance, getUtxos } = PlasmaClient.ChildChain
-const { depositEth, getErc20Vault, depositToken } = PlasmaClient.RootChain
+const { deposit, getErc20Vault } = PlasmaClient.RootChain
 const { encodeDeposit } = PlasmaUtils.transaction
 const {
   TEST_ADDRESS,
@@ -27,11 +27,11 @@ const mockGetUtxosResponse = resp => {
 }
 
 const mockDepositEthResponse = resp => {
-  depositEth.mockReturnValueOnce(Promise.resolve(resp))
+  deposit.mockReturnValueOnce(Promise.resolve(resp))
 }
 
 const mockDepositErc20Response = resp => {
-  depositToken.mockReturnValueOnce(Promise.resolve(resp))
+  deposit.mockReturnValueOnce(Promise.resolve(resp))
 }
 
 const mockGetErc20Vault = resp => {
@@ -433,7 +433,7 @@ describe('Test Plasma Boundary', () => {
         amount,
         PlasmaUtils.transaction.ETH_CURRENCY
       )
-      expect(depositEth).toBeCalledWith({
+      expect(deposit).toBeCalledWith({
         amount,
         depositTx: 'encodedDepositEth',
         txOptions: {
@@ -446,7 +446,7 @@ describe('Test Plasma Boundary', () => {
     })
   })
 
-  it('depositErc20 should delegate the call to real depositToken with expected parameters', () => {
+  it('depositErc20 should delegate the call to real deposit with expected parameters', () => {
     const from = TEST_ADDRESS
     const privateKey = TEST_PRIVATE_KEY
     const tokenContractAddress = TEST_ERC20_TOKEN_CONTRACT_ADDRESS
@@ -491,7 +491,7 @@ describe('Test Plasma Boundary', () => {
       )
 
       expect(encodeDeposit).toBeCalledWith(from, amount, tokenContractAddress)
-      expect(depositToken).toBeCalledWith({
+      expect(deposit).toBeCalledWith({
         depositTx: 'encodedDepositErc20',
         txOptions: {
           from,
