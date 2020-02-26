@@ -16,7 +16,7 @@ const Disclaimer = ({ navigation, theme }) => {
   }, [navigation])
 
   return (
-    <SafeAreaView style={styles.container} forceInset={{ top: 'never' }}>
+    <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
         backgroundColor={theme.colors.black5}
@@ -60,10 +60,11 @@ const Disclaimer = ({ navigation, theme }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: theme => ({
     flex: 1,
+    backgroundColor: theme.colors.black5,
     flexDirection: 'column'
-  },
+  }),
   image: {
     marginTop: 16
   },
