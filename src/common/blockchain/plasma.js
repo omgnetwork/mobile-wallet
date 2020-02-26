@@ -66,7 +66,7 @@ export const depositEth = async (
     depositGasPrice
   )
 
-  const receipt = await Plasma.RootChain.depositEth({
+  const receipt = await Plasma.RootChain.deposit({
     depositTx: encodedDepositTx,
     amount: weiAmount,
     txOptions: depositOptions
