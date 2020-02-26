@@ -64,8 +64,7 @@ export const mapChildchainTxDetail = (oldTx, newTx) => {
   }
 }
 
-export const mapRootchainTx = (tx, address, cachedErc20Tx) => {
-  const erc20Tx = cachedErc20Tx[tx.hash]
+export const mapRootchainTx = (tx, address, erc20Tx) => {
   if (erc20Tx) {
     return mapRootchainErc20Tx(erc20Tx, address)
   } else {
