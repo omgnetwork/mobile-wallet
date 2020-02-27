@@ -47,11 +47,15 @@ export const formatTokenBalance = (amount, maxDecimal = 18) => {
   })
 }
 
-export const formatTokenBalanceFromSmallestUnit = (amount, maxDecimal = 18) => {
-  const balance = Formatter.formatUnits(amount.toString(), maxDecimal)
+export const formatTokenBalanceFromSmallestUnit = (
+  amount,
+  tokenDecimal = 18,
+  displayDecimals = 5
+) => {
+  const balance = Formatter.formatUnits(amount.toString(), tokenDecimal)
   return Formatter.format(balance, {
     commify: true,
-    maxDecimal: maxDecimal,
+    maxDecimal: displayDecimals,
     ellipsize: false
   })
 }
