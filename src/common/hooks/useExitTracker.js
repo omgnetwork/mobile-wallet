@@ -1,12 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Datetime } from 'common/utils'
-import Config from 'react-native-config'
+import { Plasma } from 'common/blockchain'
 import { NotificationMessages, ExitStatus } from 'common/constants'
 import BackgroundTimer from 'react-native-background-timer'
 
 const useExitTracker = blockchainWallet => {
-  const EXIT_PERIOD = Config.EXIT_PERIOD * 2
-  const INTERVAL_PERIOD = 60000
+  const INTERVAL_PERIOD = 15000
   const [startedExitTxs, setStartedExitTxs] = useState([])
   const [notification, setNotification] = useState(null)
 
@@ -14,10 +13,10 @@ const useExitTracker = blockchainWallet => {
     return startedExitTxs.filter(tx => {
       const currentDatetime = Datetime.fromNow()
       const startedExitAt = Datetime.fromString(tx.startedExitAt)
-      const exitableAt = Datetime.add(startedExitAt, EXIT_PERIOD)
+      const exitableAt = Plasma.getProcessExitAt(startedExitAt)
       return currentDatetime.isSameOrAfter(exitableAt)
     })
-  }, [EXIT_PERIOD, startedExitTxs])
+  }, [startedExitTxs])
 
   // const processExit = useCallback(async () => {
   //   const readyExitTxs = getExitReadyTxs()
