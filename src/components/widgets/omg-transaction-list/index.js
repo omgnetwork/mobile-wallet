@@ -63,9 +63,12 @@ const OMGTransactionList = ({
       if (transaction.status === ExitStatus.EXIT_STARTED) {
         handleClickTx(transaction)
       } else {
+        navigation.navigate('ProcessExit', {
+          transaction
+        })
       }
     },
-    [handleClickTx]
+    [handleClickTx, navigation]
   )
 
   const getTransactionDetailTitle = tx => {

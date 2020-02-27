@@ -38,6 +38,10 @@ import {
   TransferSelectPlasmaFee,
   TransferSelectFee
 } from './transfer'
+import {
+  ProcessExitContainer as ProcessExit,
+  ProcessExitForm
+} from './process-exit'
 import Wallets from './wallets'
 import WarpPortal from './warp-portal'
 import Welcome from './welcome'
@@ -68,6 +72,8 @@ export {
   Main,
   OnboardingTourGuide,
   Preview,
+  ProcessExit,
+  ProcessExitForm,
   Setting,
   Transfer,
   TransferConfirm,

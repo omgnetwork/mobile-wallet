@@ -36,7 +36,7 @@ export const formatEthFromWei = wei => {
 }
 
 export const formatProcessExitAt = datetime => {
-  return ` ${Datetime.format(datetime, DateFormat.processExitDateFormat)}. `
+  return ` ${Datetime.format(datetime, DateFormat.PROCESS_EXIT_DATE)}. `
 }
 
 export const formatTokenBalance = (amount, maxDecimal = 18) => {

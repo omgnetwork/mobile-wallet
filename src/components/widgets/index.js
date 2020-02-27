@@ -55,6 +55,8 @@ import OMGItemTransaction from './omg-item-transaction'
 import OMGWalletAddress from './omg-wallet-address'
 import OMGTransactionFilter from './omg-transaction-filter'
 import OMGTransactionList from './omg-transaction-list'
+import OMGUtxoDetail from './omg-utxo-detail'
+
 export {
   OMGAddressInput,
   OMGAmountInput,
@@ -110,5 +112,6 @@ export {
   OMGViewPager,
   OMGWalletAddress,
   OMGTransactionFilter,
-  OMGTransactionList
+  OMGTransactionList,
+  OMGUtxoDetail
 }
