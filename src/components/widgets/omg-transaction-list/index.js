@@ -2,8 +2,12 @@ import React, { useCallback } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
-import { OMGEmpty, OMGItemTransaction } from 'components/widgets'
-import { TransactionTypes } from 'common/constants'
+import {
+  OMGEmpty,
+  OMGItemTransaction,
+  OMGItemExitTransaction
+} from 'components/widgets'
+import { TransactionTypes, ExitStatus } from 'common/constants'
 
 const OMGTransactionList = ({
   transactions,
@@ -54,6 +58,16 @@ const OMGTransactionList = ({
     [navigation]
   )
 
+  const handleClickExitTx = useCallback(
+    transaction => {
+      if (transaction.status === ExitStatus.EXIT_STARTED) {
+        handleClickTx(transaction)
+      } else {
+      }
+    },
+    [handleClickTx]
+  )
+
   const getTransactionDetailTitle = tx => {
     switch (tx.type) {
       case TransactionTypes.TYPE_DEPOSIT:
@@ -68,6 +82,29 @@ const OMGTransactionList = ({
     }
   }
 
+  const getItemTransactionComponent = useCallback(
+    tx => {
+      if (tx.type === TransactionTypes.TYPE_EXIT) {
+        return (
+          <OMGItemExitTransaction
+            tx={tx}
+            address={address}
+            onPress={handleClickExitTx}
+          />
+        )
+      } else {
+        return (
+          <OMGItemTransaction
+            tx={tx}
+            address={address}
+            onPress={handleClickTx}
+          />
+        )
+      }
+    },
+    [address, handleClickExitTx, handleClickTx]
+  )
+
   return (
     <View style={{ ...styles.container, ...style }}>
       {loading ? (
@@ -81,13 +118,7 @@ const OMGTransactionList = ({
             transactions?.length ? styles.content : styles.emptyContent(theme)
           }
           ListEmptyComponent={<OMGEmpty {...getEmptyStatePayload()} />}
-          renderItem={({ item }) => (
-            <OMGItemTransaction
-              tx={item}
-              address={address}
-              onPress={handleClickTx}
-            />
-          )}
+          renderItem={({ item }) => getItemTransactionComponent(item)}
         />
       )}
     </View>

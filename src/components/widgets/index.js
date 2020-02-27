@@ -50,6 +50,7 @@ import OMGTokenIcon from './omg-token-icon'
 import OMGTokenInput from './omg-token-input'
 import OMGTokenSelect from './omg-token-select'
 import OMGViewPager from './omg-view-pager'
+import OMGItemExitTransaction from './omg-item-exit-transaction'
 import OMGItemTransaction from './omg-item-transaction'
 import OMGWalletAddress from './omg-wallet-address'
 import OMGTransactionFilter from './omg-transaction-filter'
@@ -80,6 +81,7 @@ export {
   OMGImage,
   OMGItemWallet,
   OMGItemToken,
+  OMGItemExitTransaction,
   OMGItemTransaction,
   OMGKeyboardShift,
   OMGMenu,
