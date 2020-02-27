@@ -11,8 +11,7 @@ export const transactionReducer = (
     case 'ROOTCHAIN/SEND_ETH_TOKEN/SUCCESS':
     case 'ROOTCHAIN/SEND_ERC20_TOKEN/SUCCESS':
     case 'CHILDCHAIN/SEND_TOKEN/SUCCESS':
-    case 'CHILDCHAIN/DEPOSIT_ETH_TOKEN/SUCCESS':
-    case 'CHILDCHAIN/DEPOSIT_ERC20_TOKEN/SUCCESS':
+    case 'CHILDCHAIN/DEPOSIT/SUCCESS':
     case 'CHILDCHAIN/EXIT/SUCCESS':
       return {
         ...state,

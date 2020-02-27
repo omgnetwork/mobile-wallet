@@ -24,12 +24,11 @@
 		492E820E806DC3A1CB78E963 /* libPods-PlasmaWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C667482EA634796EC80FD4C7 /* libPods-PlasmaWalletTests.a */; };
 		71B952FEB1694F4E838D28C6 /* MessinaSansMono-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4BD391ABF0B04F5DBC7C4B8D /* MessinaSansMono-Book.otf */; };
 		78BB2462972B45E282E97D4E /* MessinaSans-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 494129B0817C40B2B566300D /* MessinaSans-Bold.otf */; };
-		ACCD3CC46AFD4DE5935A40FE /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A42FB0BFEA441FBBBE39BFC /* FontAwesome5_Solid.ttf */; };
 		AF93B4D6639E460B9DACAB68 /* MessinaSans-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BAFF502928C4ECF85C816AB /* MessinaSans-SemiBold.otf */; };
 		C49E761123660727003B0D52 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */; };
-		C4AD05DB230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
-		C4AD05DC230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
-		C4AD05DD230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DB230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DC230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DD230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		D2A2277A48E64BA1A6CA92BA /* MessinaSans-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0359736497A843F3972493C8 /* MessinaSans-Light.otf */; };
 		D6DD8AB8C90447CCBFFCC6A7 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2752A0B5F702467A8625AC5D /* RNBackgroundFetch+AppDelegate.m */; };
 		D764F9A350CA45E88C984E40 /* MessinaSansMono-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 720399F0D2A44BE8B2D7918E /* MessinaSansMono-SemiBold.otf */; };
@@ -379,9 +378,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4AD05DB230AF9C30027E763 /* BuildFile in Resources */,
-				C4AD05DC230AF9C30027E763 /* BuildFile in Resources */,
-				C4AD05DD230AF9C30027E763 /* BuildFile in Resources */,
+				C4AD05DB230AF9C30027E763 /* (null) in Resources */,
+				C4AD05DC230AF9C30027E763 /* (null) in Resources */,
+				C4AD05DD230AF9C30027E763 /* (null) in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,7 +397,6 @@
 				F5453F5A0F6C41A1ADCB7C88 /* MessinaSansMono-Regular.otf in Resources */,
 				D764F9A350CA45E88C984E40 /* MessinaSansMono-SemiBold.otf in Resources */,
 				3E988AC7244C4F22B03B7046 /* OMGFontIcon.ttf in Resources */,
-				ACCD3CC46AFD4DE5935A40FE /* FontAwesome5_Solid.ttf in Resources */,
 				D2A2277A48E64BA1A6CA92BA /* MessinaSans-Light.otf in Resources */,
 				3A7EEF073014497B89EDC811 /* MessinaSansMono-Light.otf in Resources */,
 				78BB2462972B45E282E97D4E /* MessinaSans-Bold.otf in Resources */,

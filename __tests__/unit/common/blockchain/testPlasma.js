@@ -3,6 +3,7 @@ import { ContractABI } from 'common/utils'
 import { Plasma as PlasmaClient, PlasmaUtils, web3 } from 'common/clients'
 import Config from 'react-native-config'
 import BN from 'bn.js'
+import { ContractAddress } from 'common/constants'
 
 jest.mock('@omisego/omg-js')
 
@@ -26,20 +27,12 @@ const mockGetUtxosResponse = resp => {
   getUtxos.mockReturnValueOnce(Promise.resolve(resp))
 }
 
-const mockDepositEthResponse = resp => {
-  deposit.mockReturnValueOnce(Promise.resolve(resp))
-}
-
-const mockDepositErc20Response = resp => {
+const mockDepositResponse = resp => {
   deposit.mockReturnValueOnce(Promise.resolve(resp))
 }
 
 const mockGetErc20Vault = resp => {
   getErc20Vault.mockReturnValueOnce(Promise.resolve(resp))
-}
-
-const mockEncodeDeposit = resp => {
-  encodeDeposit.mockReturnValueOnce(resp)
 }
 
 const mockWeb3SignTransaction = resp => {
@@ -407,14 +400,14 @@ describe('Test Plasma Boundary', () => {
     })
   })
 
-  it('depositEth should delegate the call to real depositEth with expected parameters', () => {
+  it('deposit with eth should invoke the deposit function with expected parameters', () => {
     const from = TEST_ADDRESS
     const privateKey = TEST_PRIVATE_KEY
     const amount = FIVE_GWEI
     const gas = 30000
     const gasPrice = '6000000'
 
-    mockDepositEthResponse({
+    mockDepositResponse({
       hash: 'any',
       from: 'any',
       to: 'any',
@@ -422,20 +415,20 @@ describe('Test Plasma Boundary', () => {
       blockHash: 'any',
       gasUsed: 'any'
     })
-    mockEncodeDeposit('encodedDepositEth')
 
-    return Plasma.depositEth(from, privateKey, amount, {
-      gas,
-      gasPrice
-    }).then(_ => {
-      expect(encodeDeposit).toBeCalledWith(
-        from,
-        amount,
-        PlasmaUtils.transaction.ETH_CURRENCY
-      )
+    return Plasma.deposit(
+      from,
+      privateKey,
+      amount,
+      ContractAddress.ETH_ADDRESS,
+      {
+        gas,
+        gasPrice
+      }
+    ).then(_ => {
       expect(deposit).toBeCalledWith({
         amount,
-        depositTx: 'encodedDepositEth',
+        currency: ContractAddress.ETH_ADDRESS,
         txOptions: {
           from,
           gas,
@@ -446,7 +439,7 @@ describe('Test Plasma Boundary', () => {
     })
   })
 
-  it('depositErc20 should delegate the call to real deposit with expected parameters', () => {
+  it('deposit with erc20 should invoke the deposit function with expected parameters', () => {
     const from = TEST_ADDRESS
     const privateKey = TEST_PRIVATE_KEY
     const tokenContractAddress = TEST_ERC20_TOKEN_CONTRACT_ADDRESS
@@ -457,7 +450,7 @@ describe('Test Plasma Boundary', () => {
     mockGetErc20Vault({ address: TEST_ERC20_VAULT_ADDRESS })
     mockWeb3SignTransaction({ rawTransaction: 'rawTransaction' })
     mockWeb3SendSignedTransaction({ gasUsed: gas })
-    mockDepositErc20Response({
+    mockDepositResponse({
       hash: 'any',
       from: 'any',
       to: 'any',
@@ -465,7 +458,6 @@ describe('Test Plasma Boundary', () => {
       blockHash: 'any',
       gasUsed: 'any'
     })
-    mockEncodeDeposit('encodedDepositErc20')
 
     const expectedApproveABIData = new web3.eth.Contract(
       ContractABI.erc20Abi(),
@@ -474,7 +466,7 @@ describe('Test Plasma Boundary', () => {
       .approve(TEST_ERC20_VAULT_ADDRESS, amount)
       .encodeABI()
 
-    return Plasma.depositErc20(from, privateKey, amount, tokenContractAddress, {
+    return Plasma.deposit(from, privateKey, amount, tokenContractAddress, {
       gas,
       gasPrice
     }).then(_ => {
@@ -490,9 +482,9 @@ describe('Test Plasma Boundary', () => {
         privateKey
       )
 
-      expect(encodeDeposit).toBeCalledWith(from, amount, tokenContractAddress)
       expect(deposit).toBeCalledWith({
-        depositTx: 'encodedDepositErc20',
+        amount,
+        currency: tokenContractAddress,
         txOptions: {
           from,
           gas,
