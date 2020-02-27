@@ -1,7 +1,8 @@
-import { Parser, BigNumber, Formatter } from 'common/utils'
+import { Parser, BigNumber, Formatter, Datetime } from 'common/utils'
+import { DateFormat } from 'common/constants'
 
 // Output in ETH
-export const renderGasFee = (gasUsed, gasPriceWei, flatFee = '0') => {
+export const formatGasFee = (gasUsed, gasPriceWei, flatFee = '0') => {
   const bigNumberFlatFee = BigNumber.create(flatFee)
   const bigNumberGasPriceWei = BigNumber.create(gasPriceWei)
   const bigNumberGasUsed = BigNumber.create(gasUsed)
@@ -11,7 +12,7 @@ export const renderGasFee = (gasUsed, gasPriceWei, flatFee = '0') => {
 }
 
 // Output in USD
-export const renderGasFeeUsd = (
+export const formatGasFeeUsd = (
   gasUsed,
   gasPriceWei,
   usdEth,
@@ -28,13 +29,17 @@ export const renderGasFeeUsd = (
   })
 }
 
-export const renderEthFromWei = wei => {
+export const formatEthFromWei = wei => {
   if (!wei) return '0'
   const weiFee = Parser.parseUnits(wei, 'wei')
   return Formatter.formatUnits(weiFee, 'ether')
 }
 
-export const renderTokenBalance = (amount, maxDecimal = 18) => {
+export const formatProcessExitAt = datetime => {
+  return ` ${Datetime.format(datetime, DateFormat.processExitDateFormat)}. `
+}
+
+export const formatTokenBalance = (amount, maxDecimal = 18) => {
   return Formatter.format(amount, {
     commify: true,
     maxDecimal: maxDecimal,
@@ -42,7 +47,7 @@ export const renderTokenBalance = (amount, maxDecimal = 18) => {
   })
 }
 
-export const renderTokenBalanceFromSmallestUnit = (amount, maxDecimal = 18) => {
+export const formatTokenBalanceFromSmallestUnit = (amount, maxDecimal = 18) => {
   const balance = Formatter.formatUnits(amount.toString(), maxDecimal)
   return Formatter.format(balance, {
     commify: true,
@@ -51,7 +56,7 @@ export const renderTokenBalanceFromSmallestUnit = (amount, maxDecimal = 18) => {
   })
 }
 
-export const renderTokenPrice = (amount, price = 1) => {
+export const formatTokenPrice = (amount, price = 1) => {
   const tokenPrice = BigNumber.multiply(amount, price)
   return Formatter.format(tokenPrice, {
     commify: true,
@@ -60,7 +65,7 @@ export const renderTokenPrice = (amount, price = 1) => {
   })
 }
 
-export const renderTotalPrice = (tokenPrice, feePrice) => {
+export const formatTotalPrice = (tokenPrice, feePrice) => {
   const totalPrice = BigNumber.plus(tokenPrice, feePrice)
   return Formatter.format(totalPrice, {
     commify: true,
@@ -69,7 +74,7 @@ export const renderTotalPrice = (tokenPrice, feePrice) => {
   })
 }
 
-export const renderTotalEthAmount = (token, feeAmount) => {
+export const formatTotalEthAmount = (token, feeAmount) => {
   const totalAmount = BigNumber.plus(token.balance, feeAmount)
   return Formatter.format(totalAmount, {
     commify: true,

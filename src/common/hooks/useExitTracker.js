@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Datetime } from 'common/utils'
 import Config from 'react-native-config'
-import { NotificationMessages } from 'common/constants'
+import { NotificationMessages, ExitStatus } from 'common/constants'
 import BackgroundTimer from 'react-native-background-timer'
 
 const useExitTracker = blockchainWallet => {
@@ -41,7 +41,7 @@ const useExitTracker = blockchainWallet => {
     return readyToExitTxs.map(tx => {
       return {
         ...tx,
-        status: 'ready'
+        status: ExitStatus.EXIT_READY
       }
     })
   }, [getExitReadyTxs])

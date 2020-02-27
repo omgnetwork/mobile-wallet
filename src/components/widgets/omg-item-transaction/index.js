@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { Datetime } from 'common/utils'
 import { TransactionTypes } from 'common/constants'
-import { BlockchainRenderer } from 'common/blockchain'
+import { BlockchainDataFormatter } from 'common/blockchain'
 import OMGText from '../omg-text'
 import OMGFontIcon from '../omg-font-icon'
 
@@ -12,7 +12,7 @@ const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
   const iconName = getIconName(tx.type)
 
   const renderValue = useCallback(() => {
-    return `${BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+    return `${BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
       tx.value,
       tx.tokenDecimal
     )} ${tx.tokenSymbol}`
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: error ? theme.colors.red : theme.colors.white,
-    marginRight: 16,
+    marginRight: 10,
     borderWidth: 1,
     borderRadius: theme.roundness
   }),

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { OMGText } from 'components/widgets'
 import { Formatter } from 'common/utils'
-import { BlockchainRenderer, Plasma } from 'common/blockchain'
+import { BlockchainDataFormatter, Plasma } from 'common/blockchain'
 import { connect } from 'react-redux'
 import { priceService } from 'common/services'
 
@@ -15,7 +15,7 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
     tx.timestamp,
     'MMMM-DD-YYYY, HH:mm:ss A Z'
   )
-  const feeAmount = BlockchainRenderer.renderGasFee(
+  const feeAmount = BlockchainDataFormatter.formatGasFee(
     tx.gasUsed,
     tx.gasPrice,
     tx.flatFee
@@ -51,7 +51,7 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
   useEffect(() => {
     async function calculateFeePrice() {
       const price = await priceService.fetchPriceUsd(tx.gasCurrency)
-      const feeUsd = BlockchainRenderer.renderGasFeeUsd(
+      const feeUsd = BlockchainDataFormatter.formatGasFeeUsd(
         tx.gasUsed,
         tx.gasPrice,
         price
@@ -129,7 +129,7 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
         </OMGText>
         <View style={styles.infoItemContent}>
           <OMGText style={styles.infoItemValue(theme)}>
-            {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+            {BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
               tx.value,
               tx.tokenDecimal
             )}{' '}

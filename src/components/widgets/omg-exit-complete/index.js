@@ -4,6 +4,7 @@ import { OMGText, OMGFontIcon } from 'components/widgets'
 import Config from 'react-native-config'
 import { withTheme } from 'react-native-paper'
 import { Datetime } from 'common/utils'
+import { BlockchainDataFormatter } from 'common/blockchain'
 
 const OMGExitComplete = ({ theme, style, createdAt }) => {
   const renderProcessedAt = useCallback(() => {

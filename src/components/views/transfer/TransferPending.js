@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { View, StyleSheet, Linking } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { BlockchainRenderer } from 'common/blockchain'
+import { BlockchainDataFormatter } from 'common/blockchain'
 import * as TransferHelper from './transferHelper'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
@@ -32,7 +32,7 @@ const TransferPending = ({ theme, navigation }) => {
     estimatedGasFee,
     estimatedGasFeeUsd
   } = getParamsForTransferPendingFromTransferConfirm(navigation)
-  const tokenPrice = BlockchainRenderer.renderTokenPrice(
+  const tokenPrice = BlockchainDataFormatter.formatTokenPrice(
     token.balance,
     token.price
   )
@@ -41,7 +41,9 @@ const TransferPending = ({ theme, navigation }) => {
   const gasDetailAvailable = gasUsed && gasPrice
   const sendAmount = BigNumber.multiply(token.balance, token.price)
   const gasFee = useCallback(() => {
-    return estimatedGasFee || BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
+    return (
+      estimatedGasFee || BlockchainDataFormatter.formatGasFee(gasUsed, gasPrice)
+    )
   }, [estimatedGasFee, gasPrice, gasUsed])
 
   const gasTokenSymbol = gasToken?.tokenSymbol ?? 'ETH'
@@ -49,7 +51,7 @@ const TransferPending = ({ theme, navigation }) => {
   const gasFeeUsd = useCallback(() => {
     return (
       estimatedGasFeeUsd ||
-      BlockchainRenderer.renderGasFeeUsd(gasUsed, gasPrice, token.price)
+      BlockchainDataFormatter.formatGasFeeUsd(gasUsed, gasPrice, token.price)
     )
   }, [estimatedGasFeeUsd, gasUsed, gasPrice, token.price])
 
@@ -125,7 +127,7 @@ const TransferPending = ({ theme, navigation }) => {
                 <OMGText style={styles.sentTitle(theme)}>Amount</OMGText>
                 <View style={styles.sentDetail}>
                   <OMGText style={styles.sentDetailFirstline(theme)}>
-                    {BlockchainRenderer.renderTokenBalance(token.balance)}{' '}
+                    {BlockchainDataFormatter.formatTokenBalance(token.balance)}{' '}
                     {token.tokenSymbol}
                   </OMGText>
                   <OMGText style={styles.sentDetailSecondline(theme)}>
@@ -153,7 +155,11 @@ const TransferPending = ({ theme, navigation }) => {
           <View style={styles.totalContainer(theme)}>
             <OMGText style={styles.totalText(theme)}>Total</OMGText>
             <OMGText style={styles.totalText(theme)}>
-              {BlockchainRenderer.renderTotalPrice(sendAmount, gasFeeUsd())} USD
+              {BlockchainDataFormatter.formatTotalPrice(
+                sendAmount,
+                gasFeeUsd()
+              )}{' '}
+              USD
             </OMGText>
           </View>
           <OMGButton

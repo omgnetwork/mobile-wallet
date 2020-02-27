@@ -2,7 +2,7 @@ import React from 'react'
 import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGTokenIcon, OMGFontIcon, OMGText } from 'components/widgets'
-import { BlockchainRenderer } from 'common/blockchain'
+import { BlockchainDataFormatter } from 'common/blockchain'
 
 const OMGTokenInput = ({ theme, token, style, onPress }) => {
   return (
@@ -15,7 +15,7 @@ const OMGTokenInput = ({ theme, token, style, onPress }) => {
       </OMGText>
       <View style={styles.rightContainer}>
         <OMGText style={styles.amount(theme)}>
-          {BlockchainRenderer.renderTokenBalance(token.balance, 6)}{' '}
+          {BlockchainDataFormatter.formatTokenBalance(token.balance, 6)}{' '}
           {token.tokenSymbol}
         </OMGText>
         <OMGFontIcon

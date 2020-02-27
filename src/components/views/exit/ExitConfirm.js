@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableHighlight } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
-import { BlockchainRenderer } from 'common/blockchain'
+import { BlockchainDataFormatter } from 'common/blockchain'
 import { plasmaActions } from 'common/actions'
 import { ActionAlert, Gas, ContractAddress } from 'common/constants'
 import { TransferHelper } from 'components/views/transfer'
@@ -26,8 +26,8 @@ const ExitConfirm = ({
   dispatchExit
 }) => {
   const token = navigation.getParam('token')
-  const tokenBalance = BlockchainRenderer.renderTokenBalance(token.balance)
-  const tokenPrice = BlockchainRenderer.renderTokenPrice(
+  const tokenBalance = BlockchainDataFormatter.formatTokenBalance(token.balance)
+  const tokenPrice = BlockchainDataFormatter.formatTokenPrice(
     token.balance,
     token.price
   )
@@ -76,9 +76,12 @@ const ExitConfirm = ({
         }
       )
       const gasPrice = Gas.EXIT_GAS_PRICE
-      const gasFee = BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
+      const gasFee = BlockchainDataFormatter.formatGasFee(gasUsed, gasPrice)
       const usdPerEth = ethToken && ethToken.price
-      const gasFeeUsd = BlockchainRenderer.renderTokenPrice(gasFee, usdPerEth)
+      const gasFeeUsd = BlockchainDataFormatter.formatTokenPrice(
+        gasFee,
+        usdPerEth
+      )
       setEstimatedFee(gasFee)
       setEstimatedFeeUsd(gasFeeUsd)
     }

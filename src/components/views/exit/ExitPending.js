@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { View, StyleSheet, Linking, ScrollView } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { BlockchainRenderer } from 'common/blockchain'
+import { BlockchainDataFormatter } from 'common/blockchain'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
 import { TransferHelper } from 'components/views/transfer'
@@ -29,7 +29,7 @@ const ExitPending = ({ theme, navigation, wallet }) => {
     name: 'Plasma Contract',
     address: Config.PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
   }
-  const tokenPrice = BlockchainRenderer.renderTokenPrice(
+  const tokenPrice = BlockchainDataFormatter.formatTokenPrice(
     token.balance,
     token.price
   )
@@ -38,7 +38,7 @@ const ExitPending = ({ theme, navigation, wallet }) => {
   const gasFee = useCallback(() => {
     return (
       estimatedGasFee ||
-      BlockchainRenderer.renderGasFee(
+      BlockchainDataFormatter.formatGasFee(
         unconfirmedTx.gasUsed,
         unconfirmedTx.gasPrice
       )
@@ -48,7 +48,7 @@ const ExitPending = ({ theme, navigation, wallet }) => {
   const gasFeeUsd = useCallback(() => {
     return (
       estimatedGasFeeUsd ||
-      BlockchainRenderer.renderGasFeeUsd(
+      BlockchainDataFormatter.formatGasFeeUsd(
         unconfirmedTx.gasUsed,
         unconfirmedTx.gasPrice,
         token.price
@@ -121,7 +121,9 @@ const ExitPending = ({ theme, navigation, wallet }) => {
                   <OMGText style={styles.sentTitle(theme)}>Exit Amount</OMGText>
                   <View style={styles.sentDetail}>
                     <OMGText style={styles.sentDetailFirstline(theme)}>
-                      {BlockchainRenderer.renderTokenBalance(token.balance)}{' '}
+                      {BlockchainDataFormatter.formatTokenBalance(
+                        token.balance
+                      )}{' '}
                       {token.tokenSymbol}
                     </OMGText>
                     <OMGText style={styles.sentDetailSecondline(theme)}>

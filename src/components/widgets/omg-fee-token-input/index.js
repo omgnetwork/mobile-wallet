@@ -7,7 +7,7 @@ import {
   OMGText,
   OMGEmpty
 } from 'components/widgets'
-import { BlockchainRenderer } from 'common/blockchain'
+import { BlockchainDataFormatter } from 'common/blockchain'
 
 const OMGFeeTokenInput = ({ theme, feeToken, style, onPress, loading }) => {
   const renderContent = useCallback(() => {
@@ -21,7 +21,7 @@ const OMGFeeTokenInput = ({ theme, feeToken, style, onPress, loading }) => {
       )
     } else {
       const { tokenSymbol, tokenDecimal, amount, price } = feeToken
-      const displayAmount = BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+      const displayAmount = BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
         amount,
         tokenDecimal
       )
@@ -37,7 +37,8 @@ const OMGFeeTokenInput = ({ theme, feeToken, style, onPress, loading }) => {
                 {displayAmount} {tokenSymbol}
               </OMGText>
               <OMGText style={styles.usd(theme)}>
-                {BlockchainRenderer.renderTokenPrice(displayAmount, price)} USD
+                {BlockchainDataFormatter.formatTokenPrice(displayAmount, price)}{' '}
+                USD
               </OMGText>
             </View>
 

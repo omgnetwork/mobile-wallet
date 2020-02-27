@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useState } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, ScrollView, TouchableHighlight } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
-import { BlockchainRenderer } from 'common/blockchain'
+import { BlockchainDataFormatter } from 'common/blockchain'
 import { withTheme } from 'react-native-paper'
 import * as TransferHelper from './transferHelper'
 import { BigNumber } from 'common/utils'
@@ -50,8 +50,8 @@ const TransferConfirm = ({
   const [estimatedTotalPrice, setEstimatedTotalPrice] = useState(null)
   const [estimatedTotalAmount, setEstimatedTotalAmount] = useState(null)
 
-  const tokenBalance = BlockchainRenderer.renderTokenBalance(token.balance)
-  const tokenPrice = BlockchainRenderer.renderTokenPrice(
+  const tokenBalance = BlockchainDataFormatter.formatTokenBalance(token.balance)
+  const tokenPrice = BlockchainDataFormatter.formatTokenPrice(
     token.balance,
     token.price
   )
@@ -60,19 +60,19 @@ const TransferConfirm = ({
   useEffect(() => {
     async function calculateEstimatedFee() {
       if (selectedPlasmaFee) {
-        const plasmaFee = BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+        const plasmaFee = BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
           selectedPlasmaFee.amount,
           selectedPlasmaFee.tokenDecimal
         )
-        const plasmaFeeUsd = BlockchainRenderer.renderTokenPrice(
+        const plasmaFeeUsd = BlockchainDataFormatter.formatTokenPrice(
           plasmaFee,
           selectedPlasmaFee.price
         )
-        const totalPrice = BlockchainRenderer.renderTotalPrice(
+        const totalPrice = BlockchainDataFormatter.formatTotalPrice(
           sendAmount,
           plasmaFeeUsd
         )
-        const totalAmount = BlockchainRenderer.renderTotalEthAmount(
+        const totalAmount = BlockchainDataFormatter.formatTotalEthAmount(
           token,
           plasmaFee
         )
@@ -89,17 +89,17 @@ const TransferConfirm = ({
             fee: selectedEthFee
           })
           const gasPrice = selectedEthFee && selectedEthFee.amount
-          const gasFee = BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
+          const gasFee = BlockchainDataFormatter.formatGasFee(gasUsed, gasPrice)
           const usdPerEth = ethToken && ethToken.price
-          const gasFeeUsd = BlockchainRenderer.renderTokenPrice(
+          const gasFeeUsd = BlockchainDataFormatter.formatTokenPrice(
             gasFee,
             usdPerEth
           )
-          const totalPrice = BlockchainRenderer.renderTotalPrice(
+          const totalPrice = BlockchainDataFormatter.formatTotalPrice(
             sendAmount,
             gasFeeUsd
           )
-          const totalAmount = BlockchainRenderer.renderTotalEthAmount(
+          const totalAmount = BlockchainDataFormatter.formatTotalEthAmount(
             token,
             gasFee
           )

@@ -2,10 +2,10 @@ import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { OMGText, OMGTokenIcon, OMGFontIcon } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
-import { BlockchainRenderer } from 'common/blockchain'
+import { BlockchainDataFormatter } from 'common/blockchain'
 
 const OMGTokenFee = ({ token, theme, selected, onPress }) => {
-  const displayAmount = BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
+  const displayAmount = BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
     token.amount,
     token.tokenDecimal
   )
@@ -20,11 +20,12 @@ const OMGTokenFee = ({ token, theme, selected, onPress }) => {
           {displayAmount} {token.tokenSymbol}
         </OMGText>
         <OMGText style={styles.textWhite12(theme)}>
-          {BlockchainRenderer.renderTokenPrice(displayAmount, token.price)} USD
+          {BlockchainDataFormatter.formatTokenPrice(displayAmount, token.price)}{' '}
+          USD
         </OMGText>
         <OMGText style={[styles.textGray12(theme), styles.marginTop12]}>
           Balance{' '}
-          {BlockchainRenderer.renderTokenBalance(
+          {BlockchainDataFormatter.formatTokenBalance(
             token.balance,
             token.tokenDecimal
           )}{' '}

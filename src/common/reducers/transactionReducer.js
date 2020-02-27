@@ -1,3 +1,5 @@
+import { ExitStatus } from 'common/constants'
+
 export const transactionReducer = (
   state = {
     unconfirmedTxs: [],
@@ -39,7 +41,7 @@ export const transactionReducer = (
       return {
         ...state,
         startedExitTxs: [
-          { ...action.data.exitTx, status: 'started' },
+          { ...action.data.exitTx, status: ExitStatus.EXIT_STARTED },
           ...state.startedExitTxs
         ]
       }
