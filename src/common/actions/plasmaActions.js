@@ -135,30 +135,31 @@ export const getFees = tokens => {
   })
 }
 
-// We're not using this right now but let's keep it because it still has potential to be used in the future.
-// export const processExits = (blockchainWallet, transaction) => {
-//   const asyncAction = async () => {
-//     const { value, symbol, contractAddress, gasPrice, exitId } = transaction
-//     const { transactionHash } = await plasmaService.processExits(
-//       blockchainWallet,
-//       exitId,
-//       contractAddress
-//     )
-//     return {
-//       hash: transactionHash,
-//       from: blockchainWallet.address,
-//       value,
-//       symbol,
-//       contractAddress,
-//       gasPrice,
-//       actionType: TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT,
-//       createdAt: Datetime.now()
-//     }
-//   }
+export const processExits = (blockchainWallet, utxo, maxExitsToProcess) => {
+  const asyncAction = async () => {
+    const { value, tokenSymbol, contractAddress, exitId } = utxo
+    const response = await plasmaService.processExits(
+      blockchainWallet,
+      0,
+      contractAddress,
+      maxExitsToProcess
+    )
+    console.log(response)
+    const { transactionHash } = response
+    return {
+      hash: transactionHash,
+      from: blockchainWallet.address,
+      value,
+      tokenSymbol,
+      exitId,
+      contractAddress,
+      actionType: TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT,
+      createdAt: Datetime.now()
+    }
+  }
 
-//   return createAsyncAction({
-//     type: 'CHILDCHAIN/PROCESS_EXIT',
-//     operation: asyncAction,
-//     isBackgroundTask: true
-//   })
-// }
+  return createAsyncAction({
+    type: 'CHILDCHAIN/PROCESS_EXIT',
+    operation: asyncAction
+  })
+}

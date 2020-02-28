@@ -7,7 +7,7 @@ import { DateFormat } from 'common/constants'
 import { BlockchainDataFormatter } from 'common/blockchain'
 
 const OMGUtxoDetail = ({ theme, utxo, style }) => {
-  const { hash, startedExitAt, tokenDecimal, value } = utxo
+  const { hash, startedExitAt, tokenDecimal, tokenSymbol, value } = utxo
   const balance = BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
     value,
     tokenDecimal
@@ -22,7 +22,7 @@ const OMGUtxoDetail = ({ theme, utxo, style }) => {
           {hash}
         </OMGText>
         <OMGText style={[styles.textWhite16(theme), styles.textRight]}>
-          {balance} ETH
+          {balance} {tokenSymbol}
         </OMGText>
       </View>
       <OMGText style={styles.textSubmitOn(theme)}>

@@ -1,60 +1,32 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
+import { connect } from 'react-redux'
 import {
   OMGText,
   OMGBlockchainLabel,
   OMGUtxoDetail,
   OMGTokenID,
-  OMGProcessExitInput,
+  OMGProcessExitText,
   OMGKeyboardShift,
   OMGButton
 } from 'components/widgets'
+import { plasmaActions } from 'common/actions'
 import { Plasma } from 'common/blockchain'
 import { StyleSheet, View } from 'react-native'
 
-const ProcessExitForm = ({ theme, navigation }) => {
+const ProcessExitForm = ({
+  theme,
+  navigation,
+  blockchainWallet,
+  dispatchProcessExit
+}) => {
   const transaction = navigation.getParam('transaction')
-  const processExitInput = useRef(null)
-  const [queue, setQueue] = useState(null)
-  const [maxQueue, setMaxQueue] = useState(null)
-  const [error, setError] = useState(null)
-  const [buttonEnable, setButtonEnable] = useState(false)
-  const [exitInputTintColor, setExitInputTintColor] = useState(
-    theme.colors.gray4
-  )
+  const [maxExits, setMaxExits] = useState(null)
 
-  const onChangeExitInput = useCallback(
-    text => {
-      if (text < queue) {
-        setError('Should not be less than current queue')
-        setExitInputTintColor(theme.colors.red)
-        setButtonEnable(false)
-      } else if (text > maxQueue) {
-      } else if (text > queue) {
-        setError('Should be ≥ current exit queue and ≤ queue length')
-        setExitInputTintColor(theme.colors.red)
-        setButtonEnable(false)
-      } else {
-        setError(null)
-        setButtonEnable(true)
-        setExitInputTintColor(theme.colors.primary)
-      }
-    },
-    [maxQueue, queue, theme.colors.primary, theme.colors.red]
-  )
-
-  const handleOnFocus = useCallback(() => {
-    if (!error) setExitInputTintColor(theme.colors.primary)
-  }, [error, theme.colors.primary])
-
-  const handleOnBlur = useCallback(() => {
-    if (!error) setExitInputTintColor(theme.colors.gray4)
-  }, [error, theme.colors.gray4])
-
-  const handleOnSubmit = useCallback(() => {
-    const exits = processExitInput.current
-  }, [])
+  const handleOnSubmit = useCallback(async () => {
+    dispatchProcessExit(blockchainWallet, transaction, maxExits)
+  }, [blockchainWallet, dispatchProcessExit, maxExits, transaction])
 
   useEffect(() => {
     async function getExitQueue() {
@@ -62,9 +34,7 @@ const ProcessExitForm = ({ theme, navigation }) => {
       let position = exitQueue.queue.findIndex(
         q => q.exitId === transaction.exitId
       )
-      setQueue(position + 1)
-      setMaxQueue(exitQueue.queue.length)
-      setButtonEnable(true)
+      setMaxExits(position + 1)
     }
 
     getExitQueue()
@@ -92,21 +62,9 @@ const ProcessExitForm = ({ theme, navigation }) => {
         <OMGText style={[styles.title(theme), styles.marginMedium]}>
           MAX EXIT TO PROCESS
         </OMGText>
-        <OMGProcessExitInput
-          inputRef={processExitInput}
-          focusColor={exitInputTintColor}
-          error={error}
-          onChangeText={onChangeExitInput}
-          onFocus={handleOnFocus}
-          onBlur={handleOnBlur}
-          exitQueue={queue}
-          maxQueue={maxQueue}
-          style={styles.marginSmall}
-        />
+        <OMGProcessExitText exitQueue={maxExits} style={styles.marginSmall} />
         <View style={styles.buttonContainer}>
-          <OMGButton onPress={handleOnSubmit} disabled={!buttonEnable}>
-            Next
-          </OMGButton>
+          <OMGButton onPress={handleOnSubmit}>Process Exit</OMGButton>
         </View>
       </OMGKeyboardShift>
     </View>
@@ -139,4 +97,21 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withNavigation(withTheme(ProcessExitForm))
+const mapStateToProps = (state, ownProps) => {
+  return {
+    blockchainWallet: state.setting.blockchainWallet
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatchProcessExit: (blockchainWallet, utxo, maxExitsToProcess) => {
+    dispatch(
+      plasmaActions.processExits(blockchainWallet, utxo, maxExitsToProcess)
+    )
+  }
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withNavigation(withTheme(ProcessExitForm)))

@@ -38,7 +38,7 @@ import OMGKeyboardShift from './omg-keyboard-shift'
 import OMGQRCode from './omg-qr-code'
 import OMGQRScanner from './omg-qr-scanner'
 import OMGPasswordTextInput from './omg-password-text-input'
-import OMGProcessExitInput from './omg-process-exit-input'
+import OMGProcessExitText from './omg-process-exit-text'
 import OMGRadioButton from './omg-radio-button'
 import OMGStatusBar from './omg-status-bar'
 import OMGTab from './omg-tab'
@@ -99,7 +99,7 @@ export {
   OMGQRCode,
   OMGQRScanner,
   OMGPasswordTextInput,
-  OMGProcessExitInput,
+  OMGProcessExitText,
   OMGRadioButton,
   OMGAlert,
   OMGStatusBar,

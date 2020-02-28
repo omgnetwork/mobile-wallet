@@ -1,7 +1,7 @@
 import { Formatter, Parser, Polling, Datetime, Mapper } from 'common/utils'
 import { Plasma, Token } from 'common/blockchain'
 import { Gas, ContractAddress } from 'common/constants'
-import BN from 'bn.js'
+import Config from 'react-native-config'
 
 export const fetchAssets = async (provider, address) => {
   try {
@@ -220,37 +220,32 @@ export const exit = (blockchainWallet, token) => {
   })
 }
 
-// We're not using this right now but let's keep it because it still has potential to be used in the future.
-// export const processExits = (blockchainWallet, exitId, contractAddress) => {
-//   return new Promise(async (resolve, reject) => {
-//     try {
-//       const { transactionHash } = await Plasma.processExits(
-//         contractAddress,
-//         exitId,
-//         {
-//           gas: Gas.HIGH_LIMIT,
-//           from: blockchainWallet.address,
-//           privateKey: blockchainWallet.privateKey
-//         }
-//       )
+export const processExits = (
+  blockchainWallet,
+  exitId,
+  contractAddress,
+  maxExitsToProcess
+) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await Plasma.processExits(
+        contractAddress,
+        exitId,
+        maxExitsToProcess,
+        {
+          gas: Gas.HIGH_LIMIT,
+          from: blockchainWallet.address,
+          privateKey: blockchainWallet.privateKey
+        }
+      )
 
-//       await Plasma.waitForRootchainTransaction({
-//         transactionHash,
-//         intervalMs: 15000,
-//         confirmationThreshold: Config.CHILDCHAIN_EXIT_CONFIRMATION_BLOCKS,
-//         onCountdown: remaining =>
-//           console.log(
-//             `Process exit confirmation is remaining by ${remaining} blocks`
-//           )
-//       })
-
-//       resolve({ transactionHash })
-//     } catch (err) {
-//       console.log(err)
-//       reject(err)
-//     }
-//   })
-// }
+      resolve(response)
+    } catch (err) {
+      console.log(err)
+      reject(err)
+    }
+  })
+}
 
 const getOrCreateUtxoWithAmount = async (
   desiredAmount,
