@@ -9,6 +9,7 @@ const OMGProcessExitInput = ({
   style,
   focusColor,
   exitQueue,
+  maxQueue,
   onChangeText,
   onFocus,
   onBlur,
@@ -45,7 +46,7 @@ const OMGProcessExitInput = ({
       <View style={styles.blueContainer(focusColor)}>
         {exitQueue ? (
           <OMGText style={styles.textWhite(theme)}>
-            Current Exit Queue : {exitQueue}
+            Current Exit Queue : {exitQueue}/{maxQueue}
           </OMGText>
         ) : (
           <OMGEmpty loading={true} style={styles.loading} />

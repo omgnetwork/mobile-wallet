@@ -17,6 +17,7 @@ const ProcessExitForm = ({ theme, navigation }) => {
   const transaction = navigation.getParam('transaction')
   const processExitInput = useRef(null)
   const [queue, setQueue] = useState(null)
+  const [maxQueue, setMaxQueue] = useState(null)
   const [error, setError] = useState(null)
   const [buttonEnable, setButtonEnable] = useState(false)
   const [exitInputTintColor, setExitInputTintColor] = useState(
@@ -25,8 +26,13 @@ const ProcessExitForm = ({ theme, navigation }) => {
 
   const onChangeExitInput = useCallback(
     text => {
-      if (text <= 0 || text > queue) {
-        setError('Invalid exits')
+      if (text < queue) {
+        setError('Should not be less than current queue')
+        setExitInputTintColor(theme.colors.red)
+        setButtonEnable(false)
+      } else if (text > maxQueue) {
+      } else if (text > queue) {
+        setError('Should be ≥ current exit queue and ≤ queue length')
         setExitInputTintColor(theme.colors.red)
         setButtonEnable(false)
       } else {
@@ -35,8 +41,16 @@ const ProcessExitForm = ({ theme, navigation }) => {
         setExitInputTintColor(theme.colors.primary)
       }
     },
-    [queue, theme.colors.primary, theme.colors.red]
+    [maxQueue, queue, theme.colors.primary, theme.colors.red]
   )
+
+  const handleOnFocus = useCallback(() => {
+    if (!error) setExitInputTintColor(theme.colors.primary)
+  }, [error, theme.colors.primary])
+
+  const handleOnBlur = useCallback(() => {
+    if (!error) setExitInputTintColor(theme.colors.gray4)
+  }, [error, theme.colors.gray4])
 
   const handleOnSubmit = useCallback(() => {
     const exits = processExitInput.current
@@ -45,7 +59,11 @@ const ProcessExitForm = ({ theme, navigation }) => {
   useEffect(() => {
     async function getExitQueue() {
       const exitQueue = await Plasma.getExitQueue(transaction.contractAddress)
-      setQueue(exitQueue.queue.length)
+      let position = exitQueue.queue.findIndex(
+        q => q.exitId === transaction.exitId
+      )
+      setQueue(position + 1)
+      setMaxQueue(exitQueue.queue.length)
       setButtonEnable(true)
     }
 
@@ -62,9 +80,7 @@ const ProcessExitForm = ({ theme, navigation }) => {
         extraHeight={70}
         contentContainerStyle={styles.contentContainer}
         androidEnabled={true}>
-        <OMGText style={[styles.title(theme), styles.marginMedium]}>
-          UTXO DETAILS
-        </OMGText>
+        <OMGText style={[styles.title(theme)]}>UTXO DETAILS</OMGText>
         <OMGUtxoDetail utxo={transaction} style={styles.marginSmall} />
         <OMGText style={[styles.title(theme), styles.marginMedium]}>
           TOKEN ID
@@ -81,9 +97,10 @@ const ProcessExitForm = ({ theme, navigation }) => {
           focusColor={exitInputTintColor}
           error={error}
           onChangeText={onChangeExitInput}
-          onFocus={() => setExitInputTintColor(theme.colors.primary)}
-          onBlur={() => setExitInputTintColor(theme.colors.gray4)}
+          onFocus={handleOnFocus}
+          onBlur={handleOnBlur}
           exitQueue={queue}
+          maxQueue={maxQueue}
           style={styles.marginSmall}
         />
         <View style={styles.buttonContainer}>
