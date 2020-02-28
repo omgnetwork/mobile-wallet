@@ -4,19 +4,26 @@ import { OMGText } from 'components/widgets'
 import { Datetime } from 'common/utils'
 import { withTheme } from 'react-native-paper'
 import { DateFormat } from 'common/constants'
+import { BlockchainDataFormatter } from 'common/blockchain'
 
 const OMGUtxoDetail = ({ theme, utxo, style }) => {
-  const { hash, startedExitAt } = utxo
+  const { hash, startedExitAt, tokenDecimal, value } = utxo
+  const balance = BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
+    value,
+    tokenDecimal
+  )
   return (
     <View style={[styles.container(theme), style]}>
       <View style={styles.topContainer}>
         <OMGText
           numberOfLines={1}
           ellipsizeMode='tail'
-          style={styles.textWhite16(theme)}>
+          style={[styles.textWhite16(theme), styles.textLeft]}>
           {hash}
         </OMGText>
-        <OMGText style={[styles.textWhite16(theme), styles.textRight]} />
+        <OMGText style={[styles.textWhite16(theme), styles.textRight]}>
+          {balance} ETH
+        </OMGText>
       </View>
       <OMGText style={styles.textSubmitOn(theme)}>
         {`Submited Exit on ${Datetime.format(
@@ -31,6 +38,7 @@ const OMGUtxoDetail = ({ theme, utxo, style }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     borderColor: theme.colors.gray4,
+    borderWidth: 1,
     paddingHorizontal: 12,
     paddingVertical: 16
   }),
@@ -42,8 +50,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     letterSpacing: -0.64
   }),
+  textLeft: {
+    flex: 1
+  },
   textRight: {
-    marginLeft: 'auto'
+    marginLeft: 24
   },
   textSubmitOn: theme => ({
     fontSize: 10,

@@ -282,6 +282,17 @@ export const getExitData = utxo => {
   return Plasma.ChildChain.getExitData(utxo)
 }
 
+export const getExitQueue = async tokenContractAddress => {
+  const queue = await Plasma.RootChain.getExitQueue(tokenContractAddress)
+  return {
+    tokenContractAddress,
+    queue: queue.map(q => ({
+      ...q,
+      tokenContractAddress
+    }))
+  }
+}
+
 export const signTx = (typedData, privateKeys) => {
   return Plasma.ChildChain.signTransaction(typedData, privateKeys)
 }

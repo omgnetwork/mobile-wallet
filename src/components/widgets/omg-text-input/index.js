@@ -13,6 +13,7 @@ const OMGTextInput = ({
   defaultValue,
   placeholderTextColor,
   maxLength,
+  onChange,
   onChangeText,
   value,
   inputRef,
@@ -20,6 +21,7 @@ const OMGTextInput = ({
   focusRef,
   returnKeyType,
   onSubmitEditing,
+  selectionColor,
   onBlur,
   disabled,
   theme
@@ -37,7 +39,7 @@ const OMGTextInput = ({
       autoCapitalize={autoCapitalize || 'none'}
       onChangeText={text => {
         if (onChangeText) {
-          onChangeText()
+          onChangeText(text)
         }
         if (inputRef) {
           inputRef.current = text
@@ -63,7 +65,7 @@ const OMGTextInput = ({
       value={value}
       textAlignVertical={lines > 1 ? 'top' : 'center'}
       keyboardType={keyboardType}
-      selectionColor={theme.colors.gray4}
+      selectionColor={selectionColor || theme.colors.gray4}
       style={{
         ...styles.textInput(theme),
         ...style,

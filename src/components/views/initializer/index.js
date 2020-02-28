@@ -31,6 +31,7 @@ const Initializer = ({
     if (wallets.length === 0) {
       navigation.navigate('Welcome')
     } else if (wallet && provider && blockchainWallet) {
+      console.log(blockchainWallet)
       navigation.navigate('MainContent')
       if (Platform.OS === 'android') {
         registerHeadlessService()

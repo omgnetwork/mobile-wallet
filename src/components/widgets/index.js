@@ -38,6 +38,7 @@ import OMGKeyboardShift from './omg-keyboard-shift'
 import OMGQRCode from './omg-qr-code'
 import OMGQRScanner from './omg-qr-scanner'
 import OMGPasswordTextInput from './omg-password-text-input'
+import OMGProcessExitInput from './omg-process-exit-input'
 import OMGRadioButton from './omg-radio-button'
 import OMGStatusBar from './omg-status-bar'
 import OMGTab from './omg-tab'
@@ -55,6 +56,7 @@ import OMGItemTransaction from './omg-item-transaction'
 import OMGWalletAddress from './omg-wallet-address'
 import OMGTransactionFilter from './omg-transaction-filter'
 import OMGTransactionList from './omg-transaction-list'
+import OMGTokenID from './omg-token-id'
 import OMGUtxoDetail from './omg-utxo-detail'
 
 export {
@@ -97,6 +99,7 @@ export {
   OMGQRCode,
   OMGQRScanner,
   OMGPasswordTextInput,
+  OMGProcessExitInput,
   OMGRadioButton,
   OMGAlert,
   OMGStatusBar,
@@ -113,5 +116,6 @@ export {
   OMGWalletAddress,
   OMGTransactionFilter,
   OMGTransactionList,
+  OMGTokenID,
   OMGUtxoDetail
 }
