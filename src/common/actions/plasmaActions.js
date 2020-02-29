@@ -23,36 +23,9 @@ export const fetchAssets = (provider, address) => {
   })
 }
 
-export const depositEth = (blockchainWallet, token) => {
+export const deposit = (blockchainWallet, token) => {
   const asyncAction = async () => {
-    const { hash, gasPrice, gasUsed } = await plasmaService.depositEth(
-      blockchainWallet.address,
-      blockchainWallet.privateKey,
-      token.balance
-    )
-
-    return {
-      hash,
-      from: blockchainWallet.address,
-      value: token.balance,
-      symbol: token.tokenSymbol,
-      tokenDecimal: token.tokenDecimal,
-      contractAddress: token.contractAddress,
-      gasPrice: gasPrice,
-      gasUsed: gasUsed,
-      actionType: TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT,
-      createdAt: Datetime.now()
-    }
-  }
-  return createAsyncAction({
-    type: 'CHILDCHAIN/DEPOSIT_ETH_TOKEN',
-    operation: asyncAction
-  })
-}
-
-export const depositErc20 = (blockchainWallet, token) => {
-  const asyncAction = async () => {
-    const { hash, gasPrice, gasUsed } = await plasmaService.depositErc20(
+    const { hash, gasPrice, gasUsed } = await plasmaService.deposit(
       blockchainWallet.address,
       blockchainWallet.privateKey,
       token
@@ -72,7 +45,7 @@ export const depositErc20 = (blockchainWallet, token) => {
     }
   }
   return createAsyncAction({
-    type: 'CHILDCHAIN/DEPOSIT_ERC20_TOKEN',
+    type: 'CHILDCHAIN/DEPOSIT',
     operation: asyncAction
   })
 }

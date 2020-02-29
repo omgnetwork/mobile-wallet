@@ -1,7 +1,7 @@
 import { Plasma, PlasmaUtils, web3 } from 'common/clients'
 import { ContractABI, Transaction } from 'common/utils'
 import axios from 'axios'
-import { Gas } from 'common/constants'
+import { Gas, ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
 import BN from 'bn.js'
 import { TxOptions } from 'common/blockchain'
@@ -44,73 +44,42 @@ export const createFee = (currency = PlasmaUtils.transaction.ETH_CURRENCY) => ({
   currency: currency
 })
 
-export const depositEth = async (
-  address,
-  privateKey,
-  weiAmount,
-  options = {}
-) => {
-  const depositGas = options.gas || Gas.MEDIUM_LIMIT
-  const depositGasPrice = options.gasPrice || Gas.DEPOSIT_GAS_PRICE
-
-  const encodedDepositTx = PlasmaUtils.transaction.encodeDeposit(
-    address,
-    weiAmount,
-    PlasmaUtils.transaction.ETH_CURRENCY
-  )
-
-  const depositOptions = TxOptions.createDepositOptions(
-    address,
-    privateKey,
-    depositGas,
-    depositGasPrice
-  )
-
-  const receipt = await Plasma.RootChain.depositEth({
-    depositTx: encodedDepositTx,
-    amount: weiAmount,
-    txOptions: depositOptions
-  })
-
-  return receiptWithGasPrice(receipt, depositGasPrice)
-}
-
-export const depositErc20 = async (
+export const deposit = async (
   address,
   privateKey,
   weiAmount,
   tokenContractAddress,
   options = {}
 ) => {
-  const { address: erc20VaultAddress } = await Plasma.RootChain.getErc20Vault()
   const erc20Contract = new web3.eth.Contract(
     ContractABI.erc20Abi(),
     tokenContractAddress
   )
   const depositGas = options.gas || Gas.MEDIUM_LIMIT
   const depositGasPrice = options.gasPrice || Gas.DEPOSIT_GAS_PRICE
+  const isEth = tokenContractAddress === ContractAddress.ETH_ADDRESS
 
   // SEND ERC20 APPROVAL TRANSACTION 👇
 
-  const approveOptions = TxOptions.createApproveErc20Options(
-    address,
-    tokenContractAddress,
-    erc20Contract,
-    erc20VaultAddress,
-    weiAmount,
-    depositGas,
-    depositGasPrice
-  )
+  let approveReceipt
+  if (!isEth) {
+    const {
+      address: erc20VaultAddress
+    } = await Plasma.RootChain.getErc20Vault()
+    const approveOptions = TxOptions.createApproveErc20Options(
+      address,
+      tokenContractAddress,
+      erc20Contract,
+      erc20VaultAddress,
+      weiAmount,
+      depositGas,
+      depositGasPrice
+    )
 
-  const approveReceipt = await approveErc20(approveOptions, privateKey)
+    approveReceipt = await approveErc20(approveOptions, privateKey)
+  }
 
   // SEND DEPOSIT TRANSACTION 👇
-
-  const encodedDepositTx = PlasmaUtils.transaction.encodeDeposit(
-    address,
-    weiAmount,
-    tokenContractAddress
-  )
 
   const depositOptions = TxOptions.createDepositOptions(
     address,
@@ -119,12 +88,17 @@ export const depositErc20 = async (
     depositGasPrice
   )
 
-  const receipt = await Plasma.RootChain.depositToken({
-    depositTx: encodedDepositTx,
+  const receipt = await Plasma.RootChain.deposit({
+    amount: weiAmount,
+    currency: tokenContractAddress,
     txOptions: depositOptions
   })
 
-  return receiptWithGasPrice(receipt, depositGasPrice, approveReceipt.gasUsed)
+  if (approveReceipt) {
+    return receiptWithGasPrice(receipt, depositGasPrice, approveReceipt.gasUsed)
+  } else {
+    return receiptWithGasPrice(receipt, depositGasPrice)
+  }
 }
 
 const approveErc20 = async (approveOptions, ownerPrivateKey) => {

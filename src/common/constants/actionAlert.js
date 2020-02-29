@@ -10,7 +10,7 @@ export const transferChildchain = {
 }
 
 export const deposit = {
-  actions: ['CHILDCHAIN_DEPOSIT_ETH_TOKEN', 'CHILDCHAIN_DEPOSIT_ERC20_TOKEN'],
+  actions: ['CHILDCHAIN_DEPOSIT'],
   msgSuccess:
     'The transaction is depositing. Track the progress at the Etherscan'
 }

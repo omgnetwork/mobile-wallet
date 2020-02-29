@@ -137,29 +137,7 @@ export const transfer = (
   })
 }
 
-export const depositEth = (address, privateKey, amount) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const weiAmount = Parser.parseUnits(amount, 'ether').toString(10)
-
-      const { hash, gasPrice, gasUsed } = await Plasma.depositEth(
-        address,
-        privateKey,
-        new BN(weiAmount)
-      )
-
-      resolve({
-        hash,
-        gasPrice,
-        gasUsed
-      })
-    } catch (err) {
-      reject(err)
-    }
-  })
-}
-
-export const depositErc20 = (address, privateKey, token) => {
+export const deposit = (address, privateKey, token) => {
   return new Promise(async (resolve, reject) => {
     try {
       const weiAmount = Parser.parseUnits(
@@ -167,7 +145,7 @@ export const depositErc20 = (address, privateKey, token) => {
         token.tokenDecimal
       ).toString(10)
 
-      const { hash, gasPrice, gasUsed } = await Plasma.depositErc20(
+      const { hash, gasPrice, gasUsed } = await Plasma.deposit(
         address,
         privateKey,
         weiAmount,

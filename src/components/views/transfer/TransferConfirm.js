@@ -512,10 +512,8 @@ const getAction = (
   const TRANFER_CHILDCHAIN =
     transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN
 
-  if (IS_DEPOSIT && ETH_TOKEN) {
-    return plasmaActions.depositEth(blockchainWallet, token)
-  } else if (IS_DEPOSIT && !ETH_TOKEN) {
-    return plasmaActions.depositErc20(blockchainWallet, token)
+  if (IS_DEPOSIT) {
+    return plasmaActions.deposit(blockchainWallet, token)
   } else if (TRANFER_CHILDCHAIN) {
     return plasmaActions.transfer(
       blockchainWallet,
