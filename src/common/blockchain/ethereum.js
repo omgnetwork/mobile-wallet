@@ -18,7 +18,7 @@ export const importWalletPrivateKey = privateKey => {
 
 // Transaction Management
 export const getERC20Txs = (address, options) => {
-  const { lastBlockNumber, limit, page } = options
+  const { lastEthBlockNumber, limit, page } = options
   return axios.get(Config.ETHERSCAN_API_URL, {
     params: {
       module: 'account',
@@ -28,14 +28,14 @@ export const getERC20Txs = (address, options) => {
       page: page || 1,
       address: address,
       action: 'tokentx',
-      startblock: lastBlockNumber || '0',
+      startblock: lastEthBlockNumber || '0',
       endblock: '99999999'
     }
   })
 }
 
 export const getTxs = (address, options) => {
-  const { lastBlockNumber, limit, page } = options
+  const { lastEthBlockNumber, limit, page } = options
   return axios.get(Config.ETHERSCAN_API_URL, {
     params: {
       module: 'account',
@@ -45,7 +45,7 @@ export const getTxs = (address, options) => {
       offset: limit || 0,
       page: page || 1,
       action: 'txlist',
-      startblock: lastBlockNumber || '0',
+      startblock: lastEthBlockNumber || '0',
       endblock: '99999999'
     }
   })

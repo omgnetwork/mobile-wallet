@@ -112,15 +112,25 @@ const mergeTxs = async (txs, address, tokens) => {
     }
   })
 
-  const mappedRootchainTxs = rootchainTxs.map(tx =>
-    Mapper.mapRootchainTx(tx, address, cachedErc20)
+  // Contains every transactions except incoming erc20 transactions
+  const mappedRootchainTxs = rootchainTxs.map(tx => {
+    const erc20Tx = cachedErc20[tx.hash]
+    delete cachedErc20[tx.hash]
+    return Mapper.mapRootchainTx(tx, address, erc20Tx)
+  })
+
+  // Contains incoming erc20 transactions
+  const mappedReceivedErc20Txs = Object.keys(cachedErc20).map(key =>
+    Mapper.mapRootchainTx(null, address, cachedErc20[key])
   )
 
   const mappedChildchainTxs = childchainTxs.map(tx =>
     Mapper.mapChildchainTx(tx, tokens, address)
   )
 
-  return [...mappedRootchainTxs, ...mappedChildchainTxs].sort(
-    (a, b) => b.timestamp - a.timestamp
-  )
+  return [
+    ...mappedRootchainTxs,
+    ...mappedReceivedErc20Txs,
+    ...mappedChildchainTxs
+  ].sort((a, b) => b.timestamp - a.timestamp)
 }
