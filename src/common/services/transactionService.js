@@ -1,5 +1,6 @@
 import { ethereumService, plasmaService } from 'common/services'
 import { Token, Plasma } from 'common/blockchain'
+import { BigNumber } from 'common/utils'
 import { Mapper } from 'common/utils'
 
 export const getPlasmaTx = oldTransaction => {
@@ -109,7 +110,15 @@ const mergeTxs = async (txs, address, tokens, standardExitBondSize) => {
 
   // Cache tx details
   rootchainErc20Txs.forEach(tx => {
-    cachedErc20[tx.hash] = tx
+    if (cachedErc20[tx.hash]) {
+      // process exits transaction. including multiple transfers under single transaction.
+      cachedErc20[tx.hash] = {
+        ...cachedErc20[tx.hash],
+        value: BigNumber.plus(cachedErc20[tx.hash].value, tx.value)
+      }
+    } else {
+      cachedErc20[tx.hash] = tx
+    }
   })
 
   rootchainTxs.forEach(tx => {
