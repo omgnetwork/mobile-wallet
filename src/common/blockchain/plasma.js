@@ -11,6 +11,8 @@ const mappingAmount = obj => ({
   amount: obj.amount.toString(10)
 })
 
+export let standardExitBond
+
 export const getBalances = address => {
   return Plasma.ChildChain.getBalance(address).then(balances => {
     return balances.map(mappingAmount)
@@ -138,11 +140,7 @@ export const standardExit = (exitData, blockchainWallet, options) => {
 
 export const getExitTxDetails = async (exitTx, { from, gas, gasPrice }) => {
   const { utxo_pos, txbytes, proof } = exitTx
-  const {
-    contract,
-    address,
-    bonds
-  } = await Plasma.RootChain.getPaymentExitGame()
+  const { contract, address, bonds } = await getPaymentExitGame()
   const data = getTxData(contract, 'startStandardExit', [
     utxo_pos.toString(),
     txbytes,
@@ -156,6 +154,30 @@ export const getExitTxDetails = async (exitTx, { from, gas, gasPrice }) => {
     data,
     gas,
     gasPrice
+  }
+}
+
+export const getExitTxs = async address => {
+  const { contract } = await Plasma.RootChain.getPaymentExitGame()
+  const allExitTxs = await contract.getPastEvents('ExitStarted', {
+    filter: { owner: address },
+    fromBlock: 0
+  })
+  const pendingFinalizedArr = allExitTxs.map(exitTx => {
+    const exitId = exitTx.returnValues.exitId.toString()
+    return contract.getPastEvents('ExitFinalized', {
+      filter: { exitId },
+      fromBlock: 0
+    })
+  })
+
+  const finalizedArr = await Promise.all(pendingFinalizedArr)
+  const filteredUnfinalized = (_, index) => finalizedArr[index].length === 0
+  const filteredFinalized = (_, index) => finalizedArr[index].length > 0
+
+  return {
+    unprocessed: allExitTxs.filter(filteredUnfinalized),
+    processed: allExitTxs.filter(filteredFinalized)
   }
 }
 
@@ -186,8 +208,25 @@ export const waitForRootchainTransaction = ({
   })
 }
 
-export const getPaymentExitGameAddress = () => {
+export const getPaymentExitGame = () => {
   return Plasma.RootChain.getPaymentExitGame()
+}
+
+export const getStandardExitBond = async () => {
+  if (!standardExitBond) {
+    const { bonds } = await getPaymentExitGame()
+    standardExitBond = bonds.standardExit.toString()
+  }
+  return standardExitBond
+}
+
+export const isPaymentExitGameContract = async address => {
+  const code = await web3.eth.getCode(address)
+  const hash = web3.eth.abi.encodeFunctionSignature(
+    'startStandardExitBondSize()'
+  )
+  // Remove 0x prefix
+  return code.indexOf(hash.slice(2)) > -1
 }
 
 export const getErrorReason = async hash => {

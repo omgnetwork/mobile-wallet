@@ -59,6 +59,13 @@ export const transactionReducer = (
           }
         })
       }
+    case 'TRANSACTION/FILTERED_STARTED_EXIT_TXS/SUCCESS':
+      return {
+        ...state,
+        startedExitTxs: state.startedExitTxs.filter(s =>
+          action.data.remoteStartedExitTxs.includes(s.hash)
+        )
+      }
     case 'TRANSACTION/INVALIDATE_FEEDBACK_COMPLETE_TX/OK':
       return {
         ...state,

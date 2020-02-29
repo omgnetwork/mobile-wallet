@@ -1,5 +1,5 @@
 import { ethereumService, plasmaService } from 'common/services'
-import { Token } from 'common/blockchain'
+import { Token, Plasma } from 'common/blockchain'
 import { Mapper } from 'common/utils'
 
 export const getPlasmaTx = oldTransaction => {
@@ -45,6 +45,8 @@ export const getTxs = (address, provider, options) => {
         queryChildchainOptions
       )
 
+      const standardExitBondSize = await Plasma.getStandardExitBond()
+
       const pristineChildchainTxs = excludeSplittedTxs(childchainTxs)
 
       const currencies = pristineChildchainTxs.map(
@@ -72,7 +74,7 @@ export const getTxs = (address, provider, options) => {
           rootchainErc20Txs,
           childchainTxs: pristineChildchainTxs
         }
-        return mergeTxs(txs, address, tokens)
+        return mergeTxs(txs, address, tokens, standardExitBondSize)
       })
 
       // Return result
@@ -84,6 +86,14 @@ export const getTxs = (address, provider, options) => {
   })
 }
 
+export const getExitTxs = async address => {
+  const { unprocessed, processed } = await Plasma.getExitTxs(address)
+  return {
+    unprocessed: unprocessed.map(u => u.transactionHash),
+    processed: processed.map(p => p.transactionHash)
+  }
+}
+
 const excludeSplittedTxs = txs => {
   return txs.filter(tx => {
     const inputAddresses = tx.inputs.map(input => input.owner)
@@ -92,7 +102,7 @@ const excludeSplittedTxs = txs => {
   })
 }
 
-const mergeTxs = async (txs, address, tokens) => {
+const mergeTxs = async (txs, address, tokens, standardExitBondSize) => {
   const cachedErc20 = {}
 
   const { rootchainTxs, rootchainErc20Txs, childchainTxs } = txs
@@ -116,13 +126,21 @@ const mergeTxs = async (txs, address, tokens) => {
   const mappedRootchainTxs = rootchainTxs.map(tx => {
     const erc20Tx = cachedErc20[tx.hash]
     delete cachedErc20[tx.hash]
-    return Mapper.mapRootchainTx(tx, address, erc20Tx)
+    if (erc20Tx) {
+      return Mapper.mapRootchainTx(erc20Tx, address)
+    } else {
+      return Mapper.mapRootchainTx(tx, address, standardExitBondSize)
+    }
   })
 
   // Contains incoming erc20 transactions
   const mappedReceivedErc20Txs = Object.keys(cachedErc20).map(key =>
-    Mapper.mapRootchainTx(null, address, cachedErc20[key])
+    Mapper.mapRootchainErc20Tx(cachedErc20[key], address)
   )
+
+  // const mappedRootchainTxs = rootchainTxs.map(tx =>
+  //   Mapper.mapRootchainTx(tx, address, cachedErc20, standardExitBondSize)
+  // )
 
   const mappedChildchainTxs = childchainTxs.map(tx =>
     Mapper.mapChildchainTx(tx, tokens, address)

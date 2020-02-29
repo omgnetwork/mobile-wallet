@@ -18,23 +18,6 @@ const useExitTracker = blockchainWallet => {
     })
   }, [startedExitTxs])
 
-  // const processExit = useCallback(async () => {
-  //   const readyExitTxs = getExitReadyTxs()
-  //   const pendingProcessExits = readyExitTxs.map(tx => {
-  //     return plasmaService.processExits(
-  //       blockchainWallet,
-  //       tx.exitId,
-  //       tx.contractAddress
-  //     )
-  //   })
-
-  //   if (pendingProcessExits.length) {
-  //     const receipts = await Promise.all(pendingProcessExits)
-  //     return readyExitTxs
-  //   }
-  //   return []
-  // }, [blockchainWallet, getExitReadyTxs])
-
   const updateTransactionStatus = useCallback(() => {
     const readyToExitTxs = getExitReadyTxs()
     return readyToExitTxs.map(tx => {

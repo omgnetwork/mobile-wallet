@@ -203,14 +203,13 @@ export const exit = (blockchainWallet, token) => {
         { gasPrice }
       )
       const exitId = await Plasma.getStandardExitId(utxoToExit, exitData)
-      const { address, bonds } = await Plasma.getPaymentExitGameAddress()
-      const standardExitBond = bonds.standardExit.toString()
+      const standardExitBond = await Plasma.getStandardExitBond()
 
       resolve({
         hash,
         exitId,
         blknum: utxoToExit.blknum,
-        to: address,
+        to: Config.PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS,
         flatFee: standardExitBond,
         gasPrice
       })

@@ -61,3 +61,20 @@ export const fetchTransactionHistory = (address, provider, options) => {
     type: 'TRANSACTION/ALL'
   })
 }
+
+export const filteredStartedExitTxs = address => {
+  const asyncAction = async () => {
+    const {
+      unprocessed: remoteStartedExitTxs
+    } = await transactionService.getExitTxs(address)
+
+    return {
+      remoteStartedExitTxs
+    }
+  }
+
+  return createAsyncAction({
+    operation: asyncAction,
+    type: 'TRANSACTION/FILTERED_STARTED_EXIT_TXS'
+  })
+}

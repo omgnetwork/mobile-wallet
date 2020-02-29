@@ -64,11 +64,11 @@ export const mapChildchainTxDetail = (oldTx, newTx) => {
   }
 }
 
-export const mapRootchainTx = (tx, address, erc20Tx) => {
+export const mapRootchainTx = (tx, address, erc20Tx, standardExitBondSize) => {
   if (erc20Tx) {
     return mapRootchainErc20Tx(erc20Tx, address)
   } else {
-    return mapRootchainEthTx(tx, address)
+    return mapRootchainEthTx(tx, address, standardExitBondSize)
   }
 }
 
@@ -115,11 +115,11 @@ const isInputGreaterThanOutput = (input, outputs) => {
 
 export const mapAssetCurrency = asset => asset.currency
 
-const mapRootchainEthTx = (tx, address) => {
+export const mapRootchainEthTx = (tx, address, standardExitBondSize) => {
   return {
     hash: tx.hash,
     network: BlockchainNetworkType.TYPE_ETHEREUM_NETWORK,
-    type: mapRootchainTransactionType(tx, address),
+    type: mapRootchainTransactionType(tx, address, standardExitBondSize),
     confirmations: tx.confirmations,
     from: tx.from,
     to: tx.to,
@@ -136,7 +136,7 @@ const mapRootchainEthTx = (tx, address) => {
   }
 }
 
-const mapRootchainErc20Tx = (tx, address) => {
+export const mapRootchainErc20Tx = (tx, address) => {
   return {
     hash: tx.hash,
     network: BlockchainNetworkType.TYPE_ETHEREUM_NETWORK,
@@ -167,7 +167,7 @@ export const mapStartedExitTx = tx => {
   }
 }
 
-const mapRootchainTransactionType = (tx, address) => {
+const mapRootchainTransactionType = (tx, address, standardExitBondSize) => {
   const methodName = Transaction.decodePlasmaInputMethod(tx.input)
   if (tx.isError === '1') {
     return TransactionTypes.TYPE_FAILED
@@ -181,7 +181,7 @@ const mapRootchainTransactionType = (tx, address) => {
     case 'addToken':
       return TransactionTypes.TYPE_PLASMA_ADD_TOKEN
     default:
-      if (Transaction.isPlasmaCallTx(tx)) {
+      if (Transaction.isPlasmaCallTx(tx, standardExitBondSize)) {
         return TransactionTypes.TYPE_UNIDENTIFIED
       } else if (Transaction.isReceiveTx(address, tx.to)) {
         return TransactionTypes.TYPE_RECEIVED
