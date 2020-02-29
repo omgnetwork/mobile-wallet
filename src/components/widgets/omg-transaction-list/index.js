@@ -60,12 +60,12 @@ const OMGTransactionList = ({
 
   const handleClickExitTx = useCallback(
     transaction => {
-      if (transaction.status === ExitStatus.EXIT_STARTED) {
-        handleClickTx(transaction)
-      } else {
+      if (transaction.status === ExitStatus.EXIT_READY) {
         navigation.navigate('ProcessExit', {
           transaction
         })
+      } else {
+        handleClickTx(transaction)
       }
     },
     [handleClickTx, navigation]

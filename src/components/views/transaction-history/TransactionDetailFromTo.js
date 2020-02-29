@@ -5,6 +5,7 @@ import { BlockchainDataFormatter } from 'common/blockchain'
 import Config from 'react-native-config'
 import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
 import PlasmaContractIcon from './assets/ic-plasma-contract.svg'
+import { Transaction } from 'common/utils'
 
 const TransactionDetailFromTo = ({ theme, tx, style }) => {
   const handleAddressClick = useCallback(
@@ -18,12 +19,27 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
     [tx.network]
   )
 
+  const renderAddressIcon = useCallback(
+    (address, type) => {
+      const isDeposit = type === TransactionTypes.TYPE_DEPOSIT
+      const isExitTransfer = Transaction.isExitTransferTx({ from: address })
+      if (isDeposit || isExitTransfer) {
+        return <PlasmaContractIcon width={18} height={18} />
+      } else {
+        return (
+          <OMGFontIcon name='wallet' size={18} color={theme.colors.white} />
+        )
+      }
+    },
+    [theme.colors.white]
+  )
+
   return (
     <View style={{ ...styles.container(theme), ...style }}>
       <View style={styles.detailContainer}>
         <OMGText style={styles.title(theme)}>From</OMGText>
         <View style={styles.detailItem}>
-          <OMGFontIcon name='wallet' size={18} color={theme.colors.white} />
+          {renderAddressIcon(tx.from, tx.type)}
           <TouchableOpacity
             style={styles.detailItemAddress}
             onPress={() => handleAddressClick(tx.from)}>
@@ -46,11 +62,7 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
       <View style={styles.detailContainer}>
         <OMGText style={styles.title(theme)}>To</OMGText>
         <View style={styles.detailItem}>
-          {tx.type === TransactionTypes.TYPE_DEPOSIT ? (
-            <PlasmaContractIcon width={18} height={18} />
-          ) : (
-            <OMGFontIcon name='wallet' size={18} color={theme.colors.white} />
-          )}
+          {renderAddressIcon(null, tx.type)}
           <TouchableOpacity
             style={styles.detailItemAddress}
             onPress={() => handleAddressClick(tx.to)}>
