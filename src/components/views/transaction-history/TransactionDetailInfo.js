@@ -94,7 +94,7 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
       case null:
         return 'Fetching...'
       default:
-        return errorReason
+        return 'Out of gas'
     }
   }
 
@@ -190,6 +190,7 @@ const styles = StyleSheet.create({
   infoItemValue: theme => ({
     fontSize: 16,
     letterSpacing: -0.64,
+    marginTop: 4,
     color: theme.colors.white
   }),
   infoItemValueLighter: theme => ({
