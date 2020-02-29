@@ -221,28 +221,13 @@ export const exit = (blockchainWallet, token) => {
 
 export const processExits = (
   blockchainWallet,
-  exitId,
   contractAddress,
   maxExitsToProcess
 ) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const response = await Plasma.processExits(
-        contractAddress,
-        exitId,
-        maxExitsToProcess,
-        {
-          gas: Gas.HIGH_LIMIT,
-          from: blockchainWallet.address,
-          privateKey: blockchainWallet.privateKey
-        }
-      )
-
-      resolve(response)
-    } catch (err) {
-      console.log(err)
-      reject(err)
-    }
+  return Plasma.processExits(contractAddress, maxExitsToProcess, {
+    gas: Gas.HIGH_LIMIT,
+    from: blockchainWallet.address,
+    privateKey: blockchainWallet.privateKey
   })
 }
 

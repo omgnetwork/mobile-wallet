@@ -140,11 +140,9 @@ export const processExits = (blockchainWallet, utxo, maxExitsToProcess) => {
     const { value, tokenSymbol, contractAddress, exitId } = utxo
     const response = await plasmaService.processExits(
       blockchainWallet,
-      0,
       contractAddress,
       maxExitsToProcess
     )
-    console.log(response)
     const { transactionHash } = response
     return {
       hash: transactionHash,

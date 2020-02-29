@@ -266,16 +266,10 @@ export const addToken = async (tokenContractAddress, options) => {
   }
 }
 
-export const processExits = (
-  contractAddress,
-  exitId,
-  maxExitsToProcess,
-  txOptions
-) => {
+export const processExits = (contractAddress, maxExitsToProcess, txOptions) => {
   return Plasma.RootChain.processExits({
     token: contractAddress,
-    exitId: exitId || 0,
-    maxExitsToProcess: maxExitsToProcess,
+    maxExitsToProcess: parseInt(maxExitsToProcess, 10),
     txOptions
   })
 }
