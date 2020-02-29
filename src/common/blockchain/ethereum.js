@@ -51,6 +51,23 @@ export const getTxs = (address, options) => {
   })
 }
 
+export const getInternalTxs = (address, options) => {
+  const { lastBlockNumber, limit, page } = options
+  return axios.get(Config.ETHERSCAN_API_URL, {
+    params: {
+      module: 'account',
+      sort: 'desc',
+      apikey: Config.ETHERSCAN_API_KEY,
+      address: address,
+      offset: limit || 0,
+      page: page || 1,
+      action: 'txlistinternal',
+      startblock: lastBlockNumber || '0',
+      endblock: '99999999'
+    }
+  })
+}
+
 export const sendEthToken = (wallet, options) => {
   const { fee, token, toAddress } = options
   return wallet.sendTransaction({
