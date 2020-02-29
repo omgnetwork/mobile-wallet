@@ -1,11 +1,13 @@
 package network.omisego.plasmawallet;
 
+import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
-import org.devio.rn.splashscreen.SplashScreen;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
+import org.devio.rn.splashscreen.SplashScreen;
 
 public class MainActivity extends ReactActivity {
 
@@ -21,6 +23,9 @@ public class MainActivity extends ReactActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         SplashScreen.show(this);  // here
         super.onCreate(savedInstanceState);
 
