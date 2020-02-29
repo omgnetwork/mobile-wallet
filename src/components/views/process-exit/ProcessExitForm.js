@@ -19,14 +19,22 @@ const ProcessExitForm = ({
   theme,
   navigation,
   blockchainWallet,
-  dispatchProcessExit
+  dispatchProcessExit,
+  loading
 }) => {
   const transaction = navigation.getParam('transaction')
   const [maxExits, setMaxExits] = useState(null)
+  const [btnLoading, setBtnLoading] = useState(false)
 
   const handleOnSubmit = useCallback(async () => {
     dispatchProcessExit(blockchainWallet, transaction, maxExits)
   }, [blockchainWallet, dispatchProcessExit, maxExits, transaction])
+
+  useEffect(() => {
+    if (loading.action === 'CHILDCHAIN_PROCESS_EXIT') {
+      setBtnLoading(loading.show)
+    }
+  }, [loading.action, loading.show])
 
   useEffect(() => {
     async function getExitQueue() {
@@ -64,7 +72,9 @@ const ProcessExitForm = ({
         </OMGText>
         <OMGProcessExitText exitQueue={maxExits} style={styles.marginSmall} />
         <View style={styles.buttonContainer}>
-          <OMGButton onPress={handleOnSubmit}>Process Exit</OMGButton>
+          <OMGButton loading={btnLoading} onPress={handleOnSubmit}>
+            Process Exit
+          </OMGButton>
         </View>
       </OMGKeyboardShift>
     </View>
@@ -99,7 +109,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    blockchainWallet: state.setting.blockchainWallet
+    blockchainWallet: state.setting.blockchainWallet,
+    loading: state.loading
   }
 }
 
