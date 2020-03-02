@@ -13,8 +13,7 @@ const useExitTracker = blockchainWallet => {
     return startedExitTxs.filter(tx => {
       const currentDatetime = Datetime.fromNow()
       const startedExitAt = Datetime.fromString(tx.startedExitAt)
-      const exitableAt = Plasma.getProcessExitAt(startedExitAt)
-      return currentDatetime.isSameOrAfter(exitableAt)
+      return currentDatetime.isSameOrAfter(tx.exitableAt)
     })
   }, [startedExitTxs])
 
@@ -57,6 +56,7 @@ const useExitTracker = blockchainWallet => {
       intervalId = BackgroundTimer.setInterval(() => {
         track()
       }, INTERVAL_PERIOD)
+      track()
     }
 
     return () => {

@@ -19,17 +19,16 @@ const OMGItemExitTransaction = ({ theme, tx, style, key, onPress }) => {
   }, [tx])
 
   const renderTransactionStatusIfNeeded = useCallback(() => {
-    const { type, status } = tx
+    const { type, status, exitableAt } = tx
     switch (type) {
       case TransactionTypes.TYPE_EXIT:
         if (status === ExitStatus.EXIT_STARTED) {
-          const processExitAt = Plasma.getProcessExitAt(tx.createdAt)
           return (
             <View style={styles.exitStatusContainer}>
               <View style={styles.statusIndicator(theme)} />
               <OMGText style={styles.statusText(theme)}>
                 {`Pending : Eligible to process on${BlockchainDataFormatter.formatProcessExitAt(
-                  processExitAt
+                  exitableAt
                 )}`}
               </OMGText>
             </View>

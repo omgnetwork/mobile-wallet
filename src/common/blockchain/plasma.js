@@ -189,10 +189,6 @@ const getTxData = (contract, method, ...args) => {
   }
 }
 
-export const getProcessExitAt = createdAt => {
-  return Datetime.add(Datetime.fromString(createdAt), Config.EXIT_PERIOD * 2)
-}
-
 export const waitForRootchainTransaction = ({
   hash,
   intervalMs,
@@ -252,6 +248,13 @@ export const getStandardExitId = (utxoToExit, exitData) => {
 
 export const hasToken = tokenContractAddress => {
   return Plasma.RootChain.hasToken(tokenContractAddress)
+}
+
+export const getExitTime = (exitRequestBlockNumber, submissionBlockNumber) => {
+  return Plasma.RootChain.getExitTime({
+    exitRequestBlockNumber,
+    submissionBlockNumber
+  })
 }
 
 export const addToken = async (tokenContractAddress, options) => {

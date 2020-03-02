@@ -7,6 +7,7 @@ import { BlockchainDataFormatter } from 'common/blockchain'
 const OMGTokenFee = ({ token, theme, selected, onPress }) => {
   const displayAmount = BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
     token.amount,
+    token.tokenDecimal,
     token.tokenDecimal
   )
   return (
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
   },
   select: {
     width: 14,
-    marginLeft: 20
+    marginLeft: 12
   }
 })
 

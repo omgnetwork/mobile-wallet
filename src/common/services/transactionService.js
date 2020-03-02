@@ -111,7 +111,7 @@ const excludeSplittedTxs = txs => {
 
 const mergeTxs = async (txs, address, tokens, standardExitBondSize) => {
   const erc20Map = {}
-  const ethMap = {}
+  const internalTxMap = {}
 
   const {
     rootchainTxs,
@@ -120,63 +120,71 @@ const mergeTxs = async (txs, address, tokens, standardExitBondSize) => {
     childchainTxs
   } = txs
 
-  // 1. Cache erc20 tx
   rootchainErc20Txs.forEach(tx => {
-    erc20Map[tx.hash] = tx
-  })
-
-  // rootchainTxs.forEach(tx => {
-  //   if (erc20Map[tx.hash]) {
-  //     erc20Map[tx.hash] = {
-  //       ...erc20Map[tx.hash],
-  //       input: tx.input,
-  //       success: tx.isError === '0'
-  //     }
-  //   }
-  // })
-
-  // rootchainInternalTxs.forEach(tx => {
-  //   if (ethMap[tx.hash]) {
-  //     ethMap[tx.hash] = {
-  //       ...ethMap[tx.hash],
-  //       value: BigNumber.plus(ethMap[tx.hash].value, tx.value)
-  //     }
-  //   } else {
-  //     ethMap[tx.hash] = tx
-  //   }
-  // })
-
-  // Contains every transactions except incoming erc20 transactions
-  const mappedRootchainTxs = rootchainTxs.map(tx => {
-    const erc20Tx = erc20Map[tx.hash]
-    delete erc20Map[tx.hash]
-    if (erc20Tx) {
-      return Mapper.mapRootchainTx(erc20Tx, address)
+    if (erc20Map[tx.hash]) {
+      // If we found duplicate transaction hash, meaning that this transaction contains multiple transfer.
+      // Therefore, we need to aggregate all transacted values.
+      erc20Map[tx.hash].value = BigNumber.plus(
+        tx.value,
+        erc20Map[tx.hash].value
+      )
     } else {
-      return Mapper.mapRootchainTx(tx, address, standardExitBondSize)
+      erc20Map[tx.hash] = tx
     }
   })
 
-  // Contains incoming erc20 transactions
+  rootchainInternalTxs.forEach(tx => {
+    const { value, hash, isError } = tx
+
+    // Failed transaction will already be included in the rootchainTxs
+    if (isError === '1') return
+
+    // Internal transactions can be contain an erc20 transaction which has multiple transfers.
+    // Since it has already been calculated in the erc20Map, so we skip here.
+    if (erc20Map[hash]) return
+
+    if (internalTxMap[hash]) {
+      internalTxMap[hash].value = BigNumber.plus(
+        value,
+        internalTxMap[hash].value
+      )
+    } else {
+      internalTxMap[hash] = tx
+    }
+  })
+
+  const excludedInternalRootchainTxs = rootchainTxs.filter(
+    tx => !internalTxMap[tx.hash]
+  )
+
+  // Contains every transactions except incoming erc20 transactions
+  const mappedRootchainTxs = excludedInternalRootchainTxs.map(tx => {
+    const erc20Tx = erc20Map[tx.hash]
+    delete erc20Map[tx.hash]
+    if (erc20Tx) {
+      // Sent erc20 transactions
+      return Mapper.mapRootchainErc20Tx(
+        {
+          ...erc20Tx,
+          input: tx.input
+        },
+        address
+      )
+    } else {
+      return Mapper.mapRootchainEthTx(tx, address, standardExitBondSize)
+    }
+  })
+
+  // Contains successfully process exit transaction.
+  const mappedInternalTxs = Object.keys(internalTxMap).map(hash => {
+    const internalTx = internalTxMap[hash]
+    return Mapper.mapRootchainEthTx(internalTx, address, standardExitBondSize)
+  })
+
+  // Contains all received erc20 transactions
   const mappedReceivedErc20Txs = Object.keys(erc20Map).map(key =>
     Mapper.mapRootchainErc20Tx(erc20Map[key], address)
   )
-
-  // const mappedRootchainTxs = rootchainTxs.map(tx =>
-  //   Mapper.mapRootchainTx(tx, address, cachedErc20, standardExitBondSize)
-  // )
-  // const mappedRootchainTxs = rootchainTxs.map(tx =>
-  //   Mapper.mapRootchainTx(tx, address, erc20Map, standardExitBondSize)
-  // )
-
-  const mappedInternalTxs = Object.keys(ethMap).map(key => {
-    return Mapper.mapRootchainTx(
-      ethMap[key],
-      address,
-      erc20Map,
-      standardExitBondSize
-    )
-  })
 
   const mappedChildchainTxs = childchainTxs.map(tx =>
     Mapper.mapChildchainTx(tx, tokens, address)

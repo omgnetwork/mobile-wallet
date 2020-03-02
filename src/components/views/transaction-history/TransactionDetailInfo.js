@@ -9,7 +9,6 @@ import { priceService } from 'common/services'
 const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
   const [errorReason, setErrorReason] = useState(null)
   const [feePrice, setFeePrice] = useState(null)
-
   const tokens = primaryWallet.childchainAssets
   const textExactDatetime = Formatter.formatTimeStamp(
     tx.timestamp,
@@ -54,7 +53,7 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
       const feeUsd = BlockchainDataFormatter.formatGasFeeUsd(
         tx.gasUsed,
         tx.gasPrice,
-        price
+        2
       )
       setFeePrice(feeUsd)
     }
@@ -197,6 +196,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 'auto',
     letterSpacing: -0.64,
+    marginTop: 4,
     color: theme.colors.gray6
   }),
   divider: theme => ({

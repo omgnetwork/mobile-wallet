@@ -23,6 +23,7 @@ const OMGFeeTokenInput = ({ theme, feeToken, style, onPress, loading }) => {
       const { tokenSymbol, tokenDecimal, amount, price } = feeToken
       const displayAmount = BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
         amount,
+        tokenDecimal,
         tokenDecimal
       )
       return (

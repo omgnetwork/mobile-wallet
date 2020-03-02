@@ -53,6 +53,7 @@ export const fetchTransactionHistory = (address, provider, options) => {
       options
     )
 
+    const set = new Set(transactions.map(t => t.hash))
     return { transactions }
   }
 

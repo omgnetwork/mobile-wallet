@@ -20,7 +20,7 @@ const {
   TEST_PRIVATE_KEY,
   TEST_ADDRESS,
   ETHERSCAN_NETWORK,
-  TEST_ERC20_TOKEN_CONTRACT_ADDRESS
+  ERC20_VAULT_CONTRACT_ADDRESS
 } = Config
 
 const mockStore = getMockStore()
@@ -141,7 +141,7 @@ describe('Test Plasma Actions', () => {
       balance: '0.001',
       tokenSymbol: 'EUR',
       tokenDecimal: 18,
-      contractAddress: TEST_ERC20_TOKEN_CONTRACT_ADDRESS
+      contractAddress: ERC20_VAULT_CONTRACT_ADDRESS
     }
     mockPlasmaService(deposit, mockDepositTxReceipt)
 
@@ -176,7 +176,7 @@ describe('Test Plasma Actions', () => {
       balance: '0.001',
       tokenSymbol: 'EUR',
       tokenDecimal: 18,
-      contractAddress: TEST_ERC20_TOKEN_CONTRACT_ADDRESS
+      contractAddress: ERC20_VAULT_CONTRACT_ADDRESS
     }
     const feeToken = token
 
@@ -219,7 +219,7 @@ describe('Test Plasma Actions', () => {
       balance: '0.001',
       tokenSymbol: 'EUR',
       tokenDecimal: 18,
-      contractAddress: TEST_ERC20_TOKEN_CONTRACT_ADDRESS
+      contractAddress: ERC20_VAULT_CONTRACT_ADDRESS
     }
 
     mockPlasmaService(exit, mockExitTxReceipt)

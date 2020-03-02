@@ -11,11 +11,13 @@ export default {
   WEB3_HTTP_PROVIDER:
     'https://ropsten.infura.io/v3/510b6d5b3c56497b8070626a54f565a9',
   PLASMA_FRAMEWORK_CONTRACT_ADDRESS:
-    '0x0414b180bdb58d001e147496c2127a2fff790942',
+    '0xeeed49aff230ce3d8ae5ef044555f3c29e8b65d0',
+  ETH_VAULT_CONTRACT_ADDRESS: '0x77cb4e1472298326275aabd54cd94810599e7090',
+  ERC20_VAULT_CONTRACT_ADDRESS: '0x2649b4e6711137070de27fb8c58ef458e6bcc016',
   CHILDCHAIN_WATCHER_URL:
-    'https://dev-6f757ea-watcher-info-ropsten-01.omg.network/',
+    'https://dev-7c3f796-watcher-info-ropsten-01.omg.network/',
   BLOCK_EXPLORER_URL:
-    'https://dev-6f757ea-blockexplorer-ropsten-01.omg.network/',
+    'https://dev-7c3f796-blockexplorer-ropsten-01.omg.network/',
   EXIT_PERIOD: 300000,
 
   // For Testing
@@ -25,6 +27,5 @@ export default {
   TEST_MNEMONIC:
     'quarter vote usage diagram antique inner lock actress fine dentist crisp uncover',
   TEST_ERC20_TOKEN_CONTRACT_ADDRESS:
-    '0xD74eF52053204C9887Df4A0e921B1Ae024F6Fe31',
-  TEST_ERC20_VAULT_ADDRESS: '0x88D38A42946C62D32F159880FE2735C0149cCa3f'
+    '0x11b7592274b344a6be0ace7e5d5df4348473e2fa'
 }

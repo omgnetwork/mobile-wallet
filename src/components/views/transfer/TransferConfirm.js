@@ -62,6 +62,7 @@ const TransferConfirm = ({
       if (selectedPlasmaFee) {
         const plasmaFee = BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
           selectedPlasmaFee.amount,
+          selectedPlasmaFee.tokenDecimal,
           selectedPlasmaFee.tokenDecimal
         )
         const plasmaFeeUsd = BlockchainDataFormatter.formatTokenPrice(

@@ -24,7 +24,7 @@ export const formatGasFeeUsd = (
   const gasFeeString = Formatter.formatUnits(bigNumberGasFee, 18)
   return Formatter.format(BigNumber.multiply(gasFeeString, usdEth), {
     commify: true,
-    maxDecimal: 3,
+    maxDecimal: 2,
     ellipsize: false
   })
 }

@@ -33,7 +33,7 @@ describe('Test BlockchainDataFormatter', () => {
       gasPrice,
       usdPerEth
     )
-    expect(gasFeeUsd).toBe('0.010')
+    expect(gasFeeUsd).toBe('0.01')
   })
 
   it('formatEthFromWei should be equal to Wei / 10^18', () => {
