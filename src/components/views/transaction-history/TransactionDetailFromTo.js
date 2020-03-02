@@ -39,7 +39,7 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
       <View style={styles.detailContainer}>
         <OMGText style={styles.title(theme)}>From</OMGText>
         <View style={styles.detailItem}>
-          {renderAddressIcon(tx.from, tx.type)}
+          {renderAddressIcon(tx.from, null)}
           <TouchableOpacity
             style={styles.detailItemAddress}
             onPress={() => handleAddressClick(tx.from)}>
