@@ -41,6 +41,10 @@ export const getTxs = (address, provider, options) => {
         queryRootchainOptions,
         true
       )
+      const pendingEthereumInternalTxs = ethereumService.getInternalTxs(
+        address,
+        queryRootchainOptions
+      )
       const childchainTxs = await plasmaService.getTxs(
         address,
         queryChildchainOptions
@@ -68,11 +72,13 @@ export const getTxs = (address, provider, options) => {
 
       const transactions = await Promise.all([
         pendingEthereumTxs,
-        pendingEthereumERC20Txs
-      ]).then(([rootchainTxs, rootchainErc20Txs]) => {
+        pendingEthereumERC20Txs,
+        pendingEthereumInternalTxs
+      ]).then(([rootchainTxs, rootchainErc20Txs, rootchainInternalTxs]) => {
         const txs = {
           rootchainTxs,
           rootchainErc20Txs,
+          rootchainInternalTxs,
           childchainTxs: pristineChildchainTxs
         }
         return mergeTxs(txs, address, tokens, standardExitBondSize)
@@ -104,37 +110,46 @@ const excludeSplittedTxs = txs => {
 }
 
 const mergeTxs = async (txs, address, tokens, standardExitBondSize) => {
-  const cachedErc20 = {}
+  const erc20Map = {}
+  const ethMap = {}
 
-  const { rootchainTxs, rootchainErc20Txs, childchainTxs } = txs
+  const {
+    rootchainTxs,
+    rootchainErc20Txs,
+    rootchainInternalTxs,
+    childchainTxs
+  } = txs
 
-  // Cache tx details
+  // 1. Cache erc20 tx
   rootchainErc20Txs.forEach(tx => {
-    if (cachedErc20[tx.hash]) {
-      // process exits transaction. including multiple transfers under single transaction.
-      cachedErc20[tx.hash] = {
-        ...cachedErc20[tx.hash],
-        value: BigNumber.plus(cachedErc20[tx.hash].value, tx.value)
-      }
-    } else {
-      cachedErc20[tx.hash] = tx
-    }
+    erc20Map[tx.hash] = tx
   })
 
-  rootchainTxs.forEach(tx => {
-    if (cachedErc20[tx.hash]) {
-      cachedErc20[tx.hash] = {
-        ...cachedErc20[tx.hash],
-        input: tx.input,
-        success: tx.isError === '0'
-      }
-    }
-  })
+  // rootchainTxs.forEach(tx => {
+  //   if (erc20Map[tx.hash]) {
+  //     erc20Map[tx.hash] = {
+  //       ...erc20Map[tx.hash],
+  //       input: tx.input,
+  //       success: tx.isError === '0'
+  //     }
+  //   }
+  // })
+
+  // rootchainInternalTxs.forEach(tx => {
+  //   if (ethMap[tx.hash]) {
+  //     ethMap[tx.hash] = {
+  //       ...ethMap[tx.hash],
+  //       value: BigNumber.plus(ethMap[tx.hash].value, tx.value)
+  //     }
+  //   } else {
+  //     ethMap[tx.hash] = tx
+  //   }
+  // })
 
   // Contains every transactions except incoming erc20 transactions
   const mappedRootchainTxs = rootchainTxs.map(tx => {
-    const erc20Tx = cachedErc20[tx.hash]
-    delete cachedErc20[tx.hash]
+    const erc20Tx = erc20Map[tx.hash]
+    delete erc20Map[tx.hash]
     if (erc20Tx) {
       return Mapper.mapRootchainTx(erc20Tx, address)
     } else {
@@ -143,13 +158,25 @@ const mergeTxs = async (txs, address, tokens, standardExitBondSize) => {
   })
 
   // Contains incoming erc20 transactions
-  const mappedReceivedErc20Txs = Object.keys(cachedErc20).map(key =>
-    Mapper.mapRootchainErc20Tx(cachedErc20[key], address)
+  const mappedReceivedErc20Txs = Object.keys(erc20Map).map(key =>
+    Mapper.mapRootchainErc20Tx(erc20Map[key], address)
   )
 
   // const mappedRootchainTxs = rootchainTxs.map(tx =>
   //   Mapper.mapRootchainTx(tx, address, cachedErc20, standardExitBondSize)
   // )
+  // const mappedRootchainTxs = rootchainTxs.map(tx =>
+  //   Mapper.mapRootchainTx(tx, address, erc20Map, standardExitBondSize)
+  // )
+
+  const mappedInternalTxs = Object.keys(ethMap).map(key => {
+    return Mapper.mapRootchainTx(
+      ethMap[key],
+      address,
+      erc20Map,
+      standardExitBondSize
+    )
+  })
 
   const mappedChildchainTxs = childchainTxs.map(tx =>
     Mapper.mapChildchainTx(tx, tokens, address)
@@ -158,6 +185,7 @@ const mergeTxs = async (txs, address, tokens, standardExitBondSize) => {
   return [
     ...mappedRootchainTxs,
     ...mappedReceivedErc20Txs,
+    ...mappedInternalTxs,
     ...mappedChildchainTxs
   ].sort((a, b) => b.timestamp - a.timestamp)
 }
