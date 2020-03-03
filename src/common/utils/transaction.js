@@ -42,11 +42,13 @@ export const isPlasmaCallTx = (tx, standardExitBondSize) => {
 export const isExitTransferTx = tx => {
   const {
     ETH_VAULT_CONTRACT_ADDRESS,
-    ERC20_VAULT_CONTRACT_ADDRESS
+    ERC20_VAULT_CONTRACT_ADDRESS,
+    PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
   } = ContractAddress
   const vaultsContractAddress = [
     ETH_VAULT_CONTRACT_ADDRESS,
-    ERC20_VAULT_CONTRACT_ADDRESS
+    ERC20_VAULT_CONTRACT_ADDRESS,
+    PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
   ]
   return vaultsContractAddress.includes(tx.from)
 }
