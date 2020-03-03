@@ -1,7 +1,10 @@
-import { ContractAddress } from 'common/constants'
+import {
+  ContractAddress,
+  TransactionTypes,
+  BlockchainNetworkType
+} from 'common/constants'
 import { Token } from 'common/blockchain'
-import { Transaction, Datetime, BigNumber } from 'common/utils'
-import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
+import { Transaction, BigNumber } from 'common/utils'
 import BN from 'bn.js'
 
 export const mapChildchainTx = (tx, tokens, walletAddress) => {
@@ -166,6 +169,7 @@ export const mapRootchainErc20Tx = (tx, address) => {
 export const mapStartedExitTx = tx => {
   return {
     ...tx,
+    type: TransactionTypes.TYPE_EXIT,
     gasUsed: tx.gasUsed.toString(),
     value: tx.smallestValue,
     tokenSymbol: tx.symbol.toString()
@@ -188,6 +192,8 @@ const mapRootchainTransactionType = (tx, address, standardExitBondSize) => {
     default:
       if (Transaction.isPlasmaCallTx(tx, standardExitBondSize)) {
         return TransactionTypes.TYPE_UNIDENTIFIED
+      } else if (Transaction.isExitTransferTx(tx)) {
+        return TransactionTypes.TYPE_PROCESS_EXIT
       } else if (Transaction.isReceiveTx(address, tx.to)) {
         return TransactionTypes.TYPE_RECEIVED
       } else {

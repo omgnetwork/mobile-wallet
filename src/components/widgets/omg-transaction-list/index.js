@@ -77,6 +77,8 @@ const OMGTransactionList = ({
         return 'Deposit Details'
       case TransactionTypes.TYPE_EXIT:
         return 'Exit Details'
+      case TransactionTypes.TYPE_PROCESS_EXIT:
+        return 'Process Exit Details'
       case TransactionTypes.TYPE_SENT:
       case TransactionTypes.TYPE_RECEIVED:
         return 'Transaction Details'

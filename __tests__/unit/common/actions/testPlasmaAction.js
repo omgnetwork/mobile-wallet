@@ -6,7 +6,7 @@ import {
 } from 'common/services/plasmaService.js'
 import { ethers } from 'ethers'
 import { Datetime } from 'common/utils'
-import { TransactionActionTypes } from 'common/constants'
+import { TransactionActionTypes, TransactionTypes } from 'common/constants'
 import Config from 'react-native-config'
 import { getMockStore } from '../../../helpers'
 import { plasmaActions } from 'common/actions'
@@ -241,7 +241,7 @@ describe('Test Plasma Actions', () => {
             symbol: token.tokenSymbol,
             timestamp: actions[1].data.timestamp,
             tokenDecimal: token.tokenDecimal,
-            type: 'exit',
+            type: TransactionTypes.TYPE_EXIT,
             value: token.balance
           },
           type: 'CHILDCHAIN/EXIT/SUCCESS'

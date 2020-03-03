@@ -76,6 +76,13 @@ const selectTransactionsByType = (type, transactions, startedExitTxs) => {
       )
     case TransactionTypes.TYPE_EXIT:
       return startedExitTxs.map(tx => Mapper.mapStartedExitTx(tx))
+    case TransactionTypes.TYPE_PROCESS_EXIT:
+      return transactions.filter(tx =>
+        [
+          TransactionTypes.TYPE_EXIT,
+          TransactionTypes.TYPE_PROCESS_EXIT
+        ].includes(tx.type)
+      )
     default:
       return transactions.filter(tx => {
         return tx.type === type

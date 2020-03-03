@@ -57,13 +57,13 @@ const getIconName = type => {
     case TransactionTypes.TYPE_DEPOSIT:
       return 'download'
     case TransactionTypes.TYPE_EXIT:
+    case TransactionTypes.TYPE_PROCESS_EXIT:
       return 'upload'
     case TransactionTypes.TYPE_RECEIVED:
       return 'arrow-down'
     case TransactionTypes.TYPE_FAILED:
     case TransactionTypes.TYPE_SENT:
       return 'arrow-up'
-    case TransactionTypes.TYPE_UNIDENTIFIED:
     default:
       return 'transaction'
   }

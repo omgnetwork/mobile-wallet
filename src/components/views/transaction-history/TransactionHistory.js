@@ -141,7 +141,7 @@ const TransactionHistory = ({
   const handleClickExit = useCallback(() => {
     navigation.navigate('TransactionHistoryFilter', {
       title: 'Exit',
-      types: [TransactionTypes.TYPE_EXIT]
+      types: [TransactionTypes.TYPE_EXIT, TransactionTypes.TYPE_PROCESS_EXIT]
     })
   }, [navigation])
 
