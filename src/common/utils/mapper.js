@@ -168,8 +168,7 @@ export const mapStartedExitTx = tx => {
     ...tx,
     gasUsed: tx.gasUsed.toString(),
     value: tx.smallestValue,
-    tokenSymbol: tx.symbol.toString(),
-    timestamp: Datetime.toTimestamp(tx.startedExitAt)
+    tokenSymbol: tx.symbol.toString()
   }
 }
 

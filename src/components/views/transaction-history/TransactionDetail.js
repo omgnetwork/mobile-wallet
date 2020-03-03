@@ -90,7 +90,7 @@ const TransactionDetail = ({ navigation, theme }) => {
     return tx.type === TransactionTypes.TYPE_EXIT ? (
       <OMGExitComplete
         style={styles.exitCompleteLabel}
-        createdAt={tx.createdAt}
+        exitableAt={tx.exitableAt}
       />
     ) : null
   }, [tx])

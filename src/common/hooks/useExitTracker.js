@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Datetime } from 'common/utils'
-import { Plasma } from 'common/blockchain'
 import { NotificationMessages, ExitStatus } from 'common/constants'
 import BackgroundTimer from 'react-native-background-timer'
 
@@ -12,8 +11,8 @@ const useExitTracker = blockchainWallet => {
   const getExitReadyTxs = useCallback(() => {
     return startedExitTxs.filter(tx => {
       const currentDatetime = Datetime.fromNow()
-      const startedExitAt = Datetime.fromString(tx.startedExitAt)
-      return currentDatetime.isSameOrAfter(tx.exitableAt)
+      const exitableAt = Datetime.fromTimestamp(tx.exitableAt)
+      return currentDatetime.isSameOrAfter(exitableAt)
     })
   }, [startedExitTxs])
 

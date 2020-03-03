@@ -87,6 +87,7 @@ export const exit = (blockchainWallet, token) => {
       exitId,
       blknum,
       flatFee,
+      exitableAt,
       to,
       gasPrice
     } = await plasmaService.exit(blockchainWallet, token)
@@ -101,6 +102,7 @@ export const exit = (blockchainWallet, token) => {
         token.tokenDecimal
       ).toString(),
       symbol: token.tokenSymbol,
+      exitableAt,
       exitId: exitId,
       blknum,
       tokenDecimal: token.tokenDecimal,

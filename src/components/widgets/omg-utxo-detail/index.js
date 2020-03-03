@@ -7,7 +7,7 @@ import { DateFormat } from 'common/constants'
 import { BlockchainDataFormatter } from 'common/blockchain'
 
 const OMGUtxoDetail = ({ theme, utxo, style }) => {
-  const { hash, startedExitAt, tokenDecimal, tokenSymbol, value } = utxo
+  const { hash, createdAt, tokenDecimal, tokenSymbol, value } = utxo
   const balance = BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
     value,
     tokenDecimal
@@ -27,7 +27,7 @@ const OMGUtxoDetail = ({ theme, utxo, style }) => {
       </View>
       <OMGText style={styles.textSubmitOn(theme)}>
         {`Submited Exit on ${Datetime.format(
-          startedExitAt,
+          createdAt,
           DateFormat.STARTED_EXIT_DATE
         )}`}
       </OMGText>

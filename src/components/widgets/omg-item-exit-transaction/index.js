@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { Datetime } from 'common/utils'
 import { TransactionTypes, ExitStatus } from 'common/constants'
-import { BlockchainDataFormatter, Plasma } from 'common/blockchain'
+import { BlockchainDataFormatter } from 'common/blockchain'
 import OMGText from '../omg-text'
 import OMGFontIcon from '../omg-font-icon'
 
@@ -165,7 +164,7 @@ const styles = StyleSheet.create({
   textAmount: theme => ({
     fontSize: 16,
     letterSpacing: -0.64,
-    marginLeft: 46,
+    marginLeft: 'auto',
     color: theme.colors.white
   })
 })

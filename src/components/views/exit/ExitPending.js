@@ -147,7 +147,7 @@ const ExitPending = ({ theme, navigation, wallet }) => {
               </View>
               <OMGExitComplete
                 style={styles.exitCompleteLabel}
-                createdAt={unconfirmedTx.createdAt}
+                exitableAt={unconfirmedTx.exitableAt}
               />
             </View>
           </View>
