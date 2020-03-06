@@ -24,7 +24,6 @@ const ProcessExitForm = ({
   loading
 }) => {
   const transaction = navigation.getParam('transaction')
-  console.log(transaction)
   const [maxExits, setMaxExits] = useState(null)
   const [btnLoading, setBtnLoading] = useState(false)
 
