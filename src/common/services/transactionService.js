@@ -141,7 +141,15 @@ const mergeTxs = async (txs, address, tokens, standardExitBondSize) => {
 
     // Internal transactions can be contain an erc20 transaction which has multiple transfers.
     // Since it has already been calculated in the erc20Map, so we skip here.
-    if (erc20Map[hash]) return
+    if (erc20Map[hash]) {
+      erc20Map[hash] = {
+        ...erc20Map[hash],
+        exitBondFrom: tx.from,
+        exitBondTo: tx.to,
+        exitBond: BigNumber.plus(value, erc20Map[hash].exitBond || 0)
+      }
+      return
+    }
 
     if (internalTxMap[hash]) {
       internalTxMap[hash].value = BigNumber.plus(

@@ -8,20 +8,21 @@ import PlasmaContractIcon from './assets/ic-plasma-contract.svg'
 import { Transaction } from 'common/utils'
 
 const TransactionDetailFromTo = ({ theme, tx, style }) => {
+  const { network, from, to, value, tokenSymbol, tokenDecimal, type } = tx
   const handleAddressClick = useCallback(
     address => {
-      if (tx.network === BlockchainNetworkType.TYPE_OMISEGO_NETWORK) {
+      if (network === BlockchainNetworkType.TYPE_OMISEGO_NETWORK) {
         Linking.openURL(`${Config.BLOCK_EXPLORER_URL}address/${address}`)
       } else {
         Linking.openURL(`${Config.ETHERSCAN_ADDRESS_URL}${address}`)
       }
     },
-    [tx.network]
+    [network]
   )
 
   const renderAddressIcon = useCallback(
-    (address, type) => {
-      const isDeposit = type === TransactionTypes.TYPE_DEPOSIT
+    (address, txType) => {
+      const isDeposit = txType === TransactionTypes.TYPE_DEPOSIT
       const isExitTransfer = Transaction.isExitTransferTx({ from: address })
       if (isDeposit || isExitTransfer) {
         return <PlasmaContractIcon width={18} height={18} />
@@ -39,46 +40,48 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
       <View style={styles.detailContainer}>
         <OMGText style={styles.title(theme)}>From</OMGText>
         <View style={styles.detailItem}>
-          {renderAddressIcon(tx.from, null)}
+          {renderAddressIcon(from, null)}
           <TouchableOpacity
             style={styles.detailItemAddress}
-            onPress={() => handleAddressClick(tx.from)}>
+            onPress={() => handleAddressClick(from)}>
             <OMGText
               numberOfLines={1}
               ellipsizeMode='tail'
               style={styles.detailItemAddressText(theme)}>
-              {tx.from || 'Unidentified'}
+              {from || 'Unidentified'}
             </OMGText>
           </TouchableOpacity>
           <OMGText style={styles.detailItemValueText(theme)}>
             {BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
-              tx.value,
-              tx.tokenDecimal
+              value,
+              tokenDecimal
             )}{' '}
-            {tx.tokenSymbol}
+            {tokenSymbol}
           </OMGText>
         </View>
       </View>
       <View style={styles.detailContainer}>
-        <OMGText style={styles.title(theme)}>To</OMGText>
+        <OMGText style={[styles.title(theme), styles.marginTopMedium]}>
+          To
+        </OMGText>
         <View style={styles.detailItem}>
-          {renderAddressIcon(null, tx.type)}
+          {renderAddressIcon(null, type)}
           <TouchableOpacity
             style={styles.detailItemAddress}
-            onPress={() => handleAddressClick(tx.to)}>
+            onPress={() => handleAddressClick(to)}>
             <OMGText
               numberOfLines={1}
               ellipsizeMode='tail'
               style={styles.detailItemAddressText(theme)}>
-              {tx.to || 'Unidentified'}
+              {to || 'Unidentified'}
             </OMGText>
           </TouchableOpacity>
           <OMGText style={styles.detailItemValueText(theme)}>
             {BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
-              tx.value,
-              tx.tokenDecimal
+              value,
+              tokenDecimal
             )}{' '}
-            {tx.tokenSymbol}
+            {tokenSymbol}
           </OMGText>
         </View>
       </View>
@@ -96,7 +99,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     fontSize: 12,
     textTransform: 'uppercase',
-    paddingVertical: 16
+    marginBottom: 16
   }),
   detailContainer: {},
   detailItem: {
@@ -117,7 +120,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     letterSpacing: -0.64,
     color: theme.colors.gray6
-  })
+  }),
+  marginTopMedium: {
+    marginTop: 16
+  }
 })
 
 export default TransactionDetailFromTo

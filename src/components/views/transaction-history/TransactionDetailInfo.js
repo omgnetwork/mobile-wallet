@@ -97,6 +97,28 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
     }
   }
 
+  const renderTotalExitBond = () => {
+    return (
+      <>
+        <View style={styles.infoItem}>
+          <OMGText style={styles.infoItemLabel(theme, isFailed)}>
+            Total Exit Bond
+          </OMGText>
+          <View style={styles.infoItemContent}>
+            <OMGText style={styles.infoItemValue(theme)}>
+              {BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
+                tx.exitBond,
+                18
+              )}{' '}
+              ETH
+            </OMGText>
+          </View>
+        </View>
+        <Divider theme={theme} />
+      </>
+    )
+  }
+
   const renderErrorReason = () => {
     return (
       <View style={styles.infoItem}>
@@ -124,7 +146,7 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
       <Divider theme={theme} />
       <View style={styles.infoItem}>
         <OMGText style={styles.infoItemLabel(theme, isFailed)}>
-          Transact Value
+          Total Transact Value
         </OMGText>
         <View style={styles.infoItemContent}>
           <OMGText style={styles.infoItemValue(theme)}>
@@ -137,6 +159,7 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
         </View>
       </View>
       <Divider theme={theme} />
+      {tx.exitBond && renderTotalExitBond()}
       {isFailed ? renderErrorReason() : renderFee()}
     </View>
   )
