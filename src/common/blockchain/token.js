@@ -85,7 +85,7 @@ export const getContractAddressChecksum = contractAddress => {
   return ethers.utils.getAddress(contractAddress)
 }
 
-const fetchPrice = (contractAddress, chainNetwork) => {
+export const fetchPrice = (contractAddress, chainNetwork) => {
   return priceService.fetchPriceUsd(contractAddress, chainNetwork)
 }
 

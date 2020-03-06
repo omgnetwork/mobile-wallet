@@ -6,6 +6,9 @@ export default createStackNavigator(
   {
     ProcessExitForm: {
       screen: Views.ProcessExitForm
+    },
+    ProcessExitPending: {
+      screen: Views.ProcessExitPending
     }
   },
   {

@@ -2,12 +2,11 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGText, OMGIdenticon } from 'components/widgets'
-import Config from 'react-native-config'
+import { Transaction } from 'common/utils'
 import PlasmaContractIcon from './assets/ic-plasma-contract.svg'
 
 const OMGWalletAddress = ({ theme, name, address, style }) => {
-  const IS_PLASMA_CONTRACT =
-    address === Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
+  const IS_PLASMA_CONTRACT = Transaction.isExitTransferTx({ from: address })
   return (
     <View style={{ ...styles.container(theme), ...style }}>
       {IS_PLASMA_CONTRACT ? (

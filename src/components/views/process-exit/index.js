@@ -1,4 +1,5 @@
 import ProcessExitForm from './ProcessExitForm'
 import ProcessExitContainer from './ProcessExitContainer'
+import ProcessExitPending from './ProcessExitPending'
 
-export { ProcessExitForm, ProcessExitContainer }
+export { ProcessExitForm, ProcessExitContainer, ProcessExitPending }

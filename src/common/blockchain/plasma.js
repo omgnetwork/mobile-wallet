@@ -1,5 +1,5 @@
 import { Plasma, PlasmaUtils, web3 } from 'common/clients'
-import { ContractABI, Transaction, Datetime } from 'common/utils'
+import { ContractABI, Transaction } from 'common/utils'
 import axios from 'axios'
 import { Gas, ContractAddress } from 'common/constants'
 import Config from 'react-native-config'

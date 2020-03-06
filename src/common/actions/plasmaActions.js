@@ -1,6 +1,6 @@
 import { createAsyncAction } from './actionCreators'
 import { plasmaService } from 'common/services'
-import { TransactionActionTypes, TransactionTypes } from 'common/constants'
+import { TransactionActionTypes, TransactionTypes, Gas } from 'common/constants'
 import { Datetime, Parser } from 'common/utils'
 
 export const fetchAssets = (provider, address) => {
@@ -89,7 +89,8 @@ export const exit = (blockchainWallet, token) => {
       flatFee,
       exitableAt,
       to,
-      gasPrice
+      gasPrice,
+      gasUsed
     } = await plasmaService.exit(blockchainWallet, token)
 
     return {
@@ -106,10 +107,11 @@ export const exit = (blockchainWallet, token) => {
       exitId: exitId,
       blknum,
       tokenDecimal: token.tokenDecimal,
+      tokenPrice: token.price,
       contractAddress: token.contractAddress,
       flatFee,
       gasPrice,
-      gasUsed: 1,
+      gasUsed,
       actionType: TransactionActionTypes.TYPE_CHILDCHAIN_EXIT,
       type: TransactionTypes.TYPE_EXIT,
       createdAt: Datetime.now(),
@@ -139,22 +141,46 @@ export const getFees = tokens => {
 
 export const processExits = (blockchainWallet, utxo, maxExitsToProcess) => {
   const asyncAction = async () => {
-    const { value, tokenSymbol, contractAddress, exitId } = utxo
+    console.log(utxo)
+    const {
+      symbol,
+      contractAddress,
+      exitId,
+      value,
+      smallestValue,
+      tokenDecimal,
+      tokenPrice
+    } = utxo
+    const gasOption = {
+      gas: Gas.HIGH_LIMIT,
+      gasPrice: Gas.EXIT_GAS_PRICE
+    }
     const response = await plasmaService.processExits(
       blockchainWallet,
       contractAddress,
-      maxExitsToProcess
+      maxExitsToProcess,
+      gasOption
     )
-    const { transactionHash } = response
+    const { transactionHash, from, to, gasUsed } = response
+
     return {
       hash: transactionHash,
-      from: blockchainWallet.address,
-      value,
-      tokenSymbol,
+      from,
+      to,
+      symbol,
       exitId,
+      tokenDecimal,
+      tokenPrice,
+      value,
+      smallestValue,
       contractAddress,
+      gasPrice: gasOption.gasPrice,
+      gasUsed,
+      maxExitsToProcess,
       actionType: TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT,
-      createdAt: Datetime.now()
+      type: TransactionTypes.TYPE_PROCESS_EXIT,
+      createdAt: Datetime.now(),
+      timestamp: Datetime.timestamp()
     }
   }
 

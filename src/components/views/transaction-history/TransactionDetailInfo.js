@@ -53,7 +53,7 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
       const feeUsd = BlockchainDataFormatter.formatGasFeeUsd(
         tx.gasUsed,
         tx.gasPrice,
-        2
+        price
       )
       setFeePrice(feeUsd)
     }
@@ -129,7 +129,7 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
         <View style={styles.infoItemContent}>
           <OMGText style={styles.infoItemValue(theme)}>
             {BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
-              tx.value,
+              tx.smallestValue || tx.value,
               tx.tokenDecimal
             )}{' '}
             {tx.tokenSymbol}

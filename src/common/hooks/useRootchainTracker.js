@@ -45,6 +45,19 @@ const useRootchainTracker = wallet => {
           type: 'childchain',
           confirmedTxs: [confirmedTx]
         }
+      } else if (
+        confirmedTx.actionType ===
+        TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT
+      ) {
+        return {
+          ...NotificationMessages.NOTIFY_TRANSACTION_PROCESSED_EXIT(
+            wallet.current.name,
+            confirmedTx.value,
+            confirmedTx.symbol
+          ),
+          type: 'childchain',
+          confirmedTxs: [confirmedTx]
+        }
       } else {
         return {
           ...NotificationMessages.NOTIFY_TRANSACTION_SENT_ETH_NETWORK(

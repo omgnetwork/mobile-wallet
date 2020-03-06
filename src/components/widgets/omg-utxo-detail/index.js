@@ -7,11 +7,8 @@ import { DateFormat } from 'common/constants'
 import { BlockchainDataFormatter } from 'common/blockchain'
 
 const OMGUtxoDetail = ({ theme, utxo, style }) => {
-  const { hash, createdAt, tokenDecimal, tokenSymbol, value } = utxo
-  const balance = BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
-    value,
-    tokenDecimal
-  )
+  const { hash, createdAt, tokenSymbol, value } = utxo
+  const balance = BlockchainDataFormatter.formatTokenBalance(value)
   return (
     <View style={[styles.container(theme), style]}>
       <View style={styles.topContainer}>

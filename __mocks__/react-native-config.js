@@ -9,7 +9,7 @@ export default {
   ETHERSCAN_NETWORK: 'ropsten',
   OMISEGO_NETWORK: 'lumpini',
   WEB3_HTTP_PROVIDER:
-    'https://ropsten.infura.io/v3/510b6d5b3c56497b8070626a54f565a9',
+    'https://ropsten.infura.io/v3/b61d6b723f3c4e3eae4f7026dc1703a0',
   PLASMA_FRAMEWORK_CONTRACT_ADDRESS:
     '0xeeed49aff230ce3d8ae5ef044555f3c29e8b65d0',
   ETH_VAULT_CONTRACT_ADDRESS: '0x77cb4e1472298326275aabd54cd94810599e7090',

@@ -15,6 +15,7 @@ export const transactionReducer = (
     case 'CHILDCHAIN/SEND_TOKEN/SUCCESS':
     case 'CHILDCHAIN/DEPOSIT/SUCCESS':
     case 'CHILDCHAIN/EXIT/SUCCESS':
+    case 'CHILDCHAIN/PROCESS_EXIT/SUCCESS':
       return {
         ...state,
         unconfirmedTxs: [...state.unconfirmedTxs, action.data],

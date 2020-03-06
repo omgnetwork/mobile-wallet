@@ -35,6 +35,11 @@ const OMGTransactionList = ({
         imageName: 'EmptyTxExit',
         text: 'Empty Exits History.'
       }
+    } else if (type === TransactionTypes.TYPE_PROCESS_EXIT) {
+      return {
+        imageName: 'EmptyTxExit',
+        text: 'Empty Process Exits History.'
+      }
     } else if (type === TransactionTypes.TYPE_FAILED) {
       return {
         imageName: 'EmptyTxAll',

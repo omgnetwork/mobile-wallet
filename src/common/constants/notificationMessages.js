@@ -39,6 +39,15 @@ export const NOTIFY_TRANSACTION_START_STANDARD_EXITED = (
   message: `${tokenValue} ${tokenSymbol}`
 })
 
+export const NOTIFY_TRANSACTION_PROCESSED_EXIT = (
+  walletName,
+  tokenValue,
+  tokenSymbol
+) => ({
+  title: `${walletName} has processed an exit`,
+  message: `${tokenValue} ${tokenSymbol}`
+})
+
 export const NOTIFY_TRANSACTION_READY_TO_PROCESS_EXITED = (
   tokenValue,
   tokenSymbol

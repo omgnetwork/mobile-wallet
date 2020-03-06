@@ -11,10 +11,9 @@ const OMGItemExitTransaction = ({ theme, tx, style, key, onPress }) => {
   const iconName = getIconName(tx.type)
 
   const renderValue = useCallback(() => {
-    return `${BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
-      tx.value,
-      tx.tokenDecimal
-    )} ${tx.tokenSymbol}`
+    return `${BlockchainDataFormatter.formatTokenBalance(tx.value)} ${
+      tx.tokenSymbol
+    }`
   }, [tx])
 
   const renderTransactionStatusIfNeeded = useCallback(() => {

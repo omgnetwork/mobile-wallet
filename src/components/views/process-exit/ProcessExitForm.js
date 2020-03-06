@@ -20,9 +20,11 @@ const ProcessExitForm = ({
   navigation,
   blockchainWallet,
   dispatchProcessExit,
+  unconfirmedTx,
   loading
 }) => {
   const transaction = navigation.getParam('transaction')
+  console.log(transaction)
   const [maxExits, setMaxExits] = useState(null)
   const [btnLoading, setBtnLoading] = useState(false)
 
@@ -33,8 +35,20 @@ const ProcessExitForm = ({
   useEffect(() => {
     if (loading.action === 'CHILDCHAIN_PROCESS_EXIT') {
       setBtnLoading(loading.show)
+      if (loading.success) {
+        navigation.navigate('ProcessExitPending', {
+          transaction: unconfirmedTx
+        })
+      }
     }
-  }, [loading.action, loading.show])
+  }, [
+    loading.action,
+    loading.show,
+    loading.success,
+    navigation,
+    transaction,
+    unconfirmedTx
+  ])
 
   useEffect(() => {
     async function getExitQueue() {
@@ -110,7 +124,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, ownProps) => {
   return {
     blockchainWallet: state.setting.blockchainWallet,
-    loading: state.loading
+    loading: state.loading,
+    unconfirmedTx: state.transaction.unconfirmedTxs.slice(-1)[0]
   }
 }
 

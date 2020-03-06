@@ -40,7 +40,8 @@ import {
 } from './transfer'
 import {
   ProcessExitContainer as ProcessExit,
-  ProcessExitForm
+  ProcessExitForm,
+  ProcessExitPending
 } from './process-exit'
 import Wallets from './wallets'
 import WarpPortal from './warp-portal'
@@ -74,6 +75,7 @@ export {
   Preview,
   ProcessExit,
   ProcessExitForm,
+  ProcessExitPending,
   Setting,
   Transfer,
   TransferConfirm,

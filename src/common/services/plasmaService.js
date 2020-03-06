@@ -2,6 +2,7 @@ import { Formatter, Parser, Polling, Datetime, Mapper } from 'common/utils'
 import { Plasma, Token } from 'common/blockchain'
 import { Gas, ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
+import { Wait } from 'common/utils'
 
 export const fetchAssets = async (provider, address) => {
   try {
@@ -199,10 +200,13 @@ export const exit = (blockchainWallet, token) => {
 
       const {
         transactionHash: hash,
-        blockNumber: startedExitBlkNum
+        blockNumber: startedExitBlkNum,
+        gasUsed
       } = await Plasma.standardExit(exitData, blockchainWallet, { gasPrice })
       const exitId = await Plasma.getStandardExitId(utxoToExit, exitData)
       const standardExitBond = await Plasma.getStandardExitBond()
+
+      await Wait.waitFor(5000)
 
       const {
         scheduledFinalizationTime: exitableAt
@@ -215,9 +219,11 @@ export const exit = (blockchainWallet, token) => {
         blknum: utxoToExit.blknum,
         to: Config.PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS,
         flatFee: standardExitBond,
-        gasPrice
+        gasPrice,
+        gasUsed
       })
     } catch (err) {
+      console.log(err)
       reject(err)
     }
   })
@@ -226,10 +232,11 @@ export const exit = (blockchainWallet, token) => {
 export const processExits = (
   blockchainWallet,
   contractAddress,
-  maxExitsToProcess
+  maxExitsToProcess,
+  gasOption
 ) => {
   return Plasma.processExits(contractAddress, maxExitsToProcess, {
-    gas: Gas.HIGH_LIMIT,
+    ...gasOption,
     from: blockchainWallet.address,
     privateKey: blockchainWallet.privateKey
   })
