@@ -38,7 +38,9 @@ const mockExitTxReceipt = {
   blknum: 'any',
   flatFee: 'any',
   to: 'any',
-  gasPrice: 'any'
+  gasPrice: 'any',
+  gasUsed: 'any',
+  exitableAt: 'any'
 }
 
 const mockPlasmaService = (method, resp) => {
@@ -219,6 +221,7 @@ describe('Test Plasma Actions', () => {
       balance: '0.001',
       tokenSymbol: 'EUR',
       tokenDecimal: 18,
+      price: 'any',
       contractAddress: ERC20_VAULT_CONTRACT_ADDRESS
     }
 
@@ -236,7 +239,7 @@ describe('Test Plasma Actions', () => {
             contractAddress: token.contractAddress,
             createdAt: actions[1].data.createdAt,
             from: wallet.address,
-            gasUsed: 1,
+            tokenPrice: 'any',
             smallestValue: '1000000000000000',
             symbol: token.tokenSymbol,
             timestamp: actions[1].data.timestamp,
