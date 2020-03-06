@@ -171,7 +171,6 @@ export const mapStartedExitTx = tx => {
     ...tx,
     type: TransactionTypes.TYPE_EXIT,
     gasUsed: tx.gasUsed.toString(),
-    value: tx.smallestValue,
     tokenSymbol: tx.symbol.toString()
   }
 }
