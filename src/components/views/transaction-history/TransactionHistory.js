@@ -111,7 +111,8 @@ const TransactionHistory = ({
             TransactionTypes.TYPE_RECEIVED,
             TransactionTypes.TYPE_SENT,
             TransactionTypes.TYPE_DEPOSIT,
-            TransactionTypes.TYPE_EXIT
+            TransactionTypes.TYPE_EXIT,
+            TransactionTypes.TYPE_PROCESS_EXIT
           ].includes(tx.type)
         )
         .slice(0, 5)
