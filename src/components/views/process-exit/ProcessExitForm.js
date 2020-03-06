@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
@@ -26,6 +26,7 @@ const ProcessExitForm = ({
   const transaction = navigation.getParam('transaction')
   const [maxExits, setMaxExits] = useState(null)
   const [btnLoading, setBtnLoading] = useState(false)
+  const [disabled, setDisabled] = useState(false)
 
   const handleOnSubmit = useCallback(async () => {
     dispatchProcessExit(blockchainWallet, transaction, maxExits)
@@ -61,6 +62,11 @@ const ProcessExitForm = ({
     getExitQueue()
   }, [transaction])
 
+  useEffect(() => {
+    const hasPendingTransaction = !!unconfirmedTx
+    setDisabled(hasPendingTransaction)
+  }, [unconfirmedTx])
+
   return (
     <View style={styles.container(theme)}>
       <OMGBlockchainLabel
@@ -84,8 +90,17 @@ const ProcessExitForm = ({
           MAX EXIT TO PROCESS
         </OMGText>
         <OMGProcessExitText exitQueue={maxExits} style={styles.marginSmall} />
+
         <View style={styles.buttonContainer}>
-          <OMGButton loading={btnLoading} onPress={handleOnSubmit}>
+          {disabled && (
+            <OMGText style={styles.textWarning(theme)}>
+              Please wait the pending transaction to be completed.
+            </OMGText>
+          )}
+          <OMGButton
+            loading={btnLoading}
+            disabled={disabled}
+            onPress={handleOnSubmit}>
             Process Exit
           </OMGButton>
         </View>
@@ -117,7 +132,13 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     justifyContent: 'flex-end'
-  }
+  },
+  textWarning: theme => ({
+    fontSize: 12,
+    letterSpacing: -0.48,
+    marginBottom: 12,
+    color: theme.colors.gray6
+  })
 })
 
 const mapStateToProps = (state, ownProps) => {
