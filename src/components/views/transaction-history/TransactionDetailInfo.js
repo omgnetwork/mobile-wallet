@@ -102,7 +102,7 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
       <>
         <View style={styles.infoItem}>
           <OMGText style={styles.infoItemLabel(theme, isFailed)}>
-            Total Exit Bond
+            Total Exit Bonds
           </OMGText>
           <View style={styles.infoItemContent}>
             <OMGText style={styles.infoItemValue(theme)}>
@@ -159,7 +159,7 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
         </View>
       </View>
       <Divider theme={theme} />
-      {tx.exitBond && renderTotalExitBond()}
+      {!!tx.exitBond && renderTotalExitBond()}
       {isFailed ? renderErrorReason() : renderFee()}
     </View>
   )
