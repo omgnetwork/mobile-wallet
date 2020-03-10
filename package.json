@@ -19,8 +19,6 @@
     "android-ropsten": "ENVFILE=.env.ropsten react-native run-android",
     "ios-local": "ENVFILE=.env.local react-native run-ios --simulator='iPhone 7'",
     "android-local": "ENVFILE=.env.local react-native run-android",
-    "ios-local-2": "ENVFILE=.env.local2 react-native run-ios --simulator='iPhone 7'",
-    "android-local-2": "ENVFILE=.env.local2 react-native run-android",
     "build-android": "cd android && ./gradlew assembleRelease && cd .. && mkdir -p artifacts && cp android/app/build/outputs/apk/release/*.apk artifacts/",
     "build-ios": "npm run ios-archive && npm run ios-export && mkdir -p artifacts && cp ios/build/Apps/PlasmaWallet.ipa artifacts/",
     "ios-archive": "xcodebuild archive -archivePath ios/PlasmaWallet/PlasmaWallet.xcarchive -workspace ios/PlasmaWallet.xcworkspace -scheme PlasmaWallet",
