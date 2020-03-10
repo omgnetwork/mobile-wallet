@@ -66,6 +66,9 @@ function ethereumRpcProxy() {
     changeOrigin: true, // To support name-based virtual hosts
     xfwd: true, // Let the host sees whom the request is being forwarded for
     ws: false, // No plans to interact with Ethereum client via websockets
+    ignorePath: true, // Ignore the request path as we always want to request to https://<NETWORK>.infura.io/v3/<INFURA_API_KEY>.
+    // Otherwise, the response will be failed because the client will override target to https://<NETWORK>.infura.io/
+    // Reference: https://github.com/http-party/node-http-proxy/blob/master/lib/http-proxy/common.js#L86-L97
     logLevel: CONFIG.LOG_LEVEL,
     logProvider: logProvider, // A logger customized for more info
     onProxyReq: requestReceivedHandler,
