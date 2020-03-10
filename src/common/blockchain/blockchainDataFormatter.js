@@ -3,6 +3,8 @@ import { DateFormat } from 'common/constants'
 
 // Output in ETH
 export const formatGasFee = (gasUsed, gasPriceWei, flatFee = '0') => {
+  if (!gasUsed) return '0'
+
   const bigNumberFlatFee = BigNumber.create(flatFee)
   const bigNumberGasPriceWei = BigNumber.create(gasPriceWei)
   const bigNumberGasUsed = BigNumber.create(gasUsed)
