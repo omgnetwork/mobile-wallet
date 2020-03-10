@@ -144,7 +144,7 @@ const TransactionDetail = ({ navigation, theme }) => {
           transaction
         )}
         <Divider theme={theme} />
-        {transaction.exitBond &&
+        {!!transaction.exitBond &&
           renderTransactionDetailFromToIfNeeded('Exit Bond Transferred', {
             ...transaction,
             from: transaction.exitBondFrom,
