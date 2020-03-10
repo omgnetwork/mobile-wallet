@@ -72,7 +72,8 @@ const ExitConfirm = ({
         TransferHelper.TYPE_EXIT,
         token,
         {
-          wallet: blockchainWallet
+          wallet: blockchainWallet,
+          includeExitBond: true
         }
       )
       const gasPrice = Gas.EXIT_GAS_PRICE
