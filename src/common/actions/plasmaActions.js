@@ -141,7 +141,6 @@ export const getFees = tokens => {
 
 export const processExits = (blockchainWallet, utxo, maxExitsToProcess) => {
   const asyncAction = async () => {
-    console.log(utxo)
     const {
       symbol,
       contractAddress,
