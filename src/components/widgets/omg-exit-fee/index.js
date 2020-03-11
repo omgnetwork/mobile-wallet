@@ -60,7 +60,7 @@ const OMGExitFee = ({ theme, feeValue, exitBondValue, style }) => {
           {!!subtitle && (
             <OMGText
               style={[
-                styles.textPrimary(textColor),
+                styles.textPrimary(theme.colors.gray),
                 styles.textSmall,
                 styles.textMargin,
                 styles.stretch
