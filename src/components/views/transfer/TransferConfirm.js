@@ -263,9 +263,7 @@ const TransferConfirm = ({
 
   return (
     <SafeAreaView style={styles.container(theme)}>
-      <ScrollView
-        contentContainerStyle={styles.scrollView(theme)}
-        bounces={false}>
+      <ScrollView contentContainerStyle={styles.scrollView} bounces={false}>
         <View style={styles.contentContainer}>
           <TouchableHighlight onPress={handleBackToEditPressed}>
             <View style={styles.subHeaderContainer(theme)}>
@@ -345,12 +343,11 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.white
-  }),
-  scrollView: theme => ({
-    flexGrow: 1,
     backgroundColor: theme.colors.black3
   }),
+  scrollView: {
+    flexGrow: 1
+  },
   contentContainer: {
     flex: 1
   },
