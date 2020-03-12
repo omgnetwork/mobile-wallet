@@ -27,9 +27,7 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
   }, [navigation, theme.colors.black5])
 
   return (
-    <SafeAreaView
-      style={styles.container(theme)}
-      forceInset={{ bottom: 'never' }}>
+    <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
         backgroundColor={theme.colors.black5}
