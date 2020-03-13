@@ -19,7 +19,7 @@ describe('rateLimiter with backend available', function() {
     app && app.close()
   })
 
-  it('should returns rate limit error when number of requests is exceeded max', function(done) {
+  it('should returns error when number of requests exceeded the limit', function(done) {
     http.get('http://localhost:3001/api', res => {
       res.on('data', chunk => {
         const responseBody = chunk.toString()
