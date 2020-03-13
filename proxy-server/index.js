@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 
 const CONFIG = require('./config')
 const ethereumRpcProxy = require('./handlers/ethereum-rpc-proxy')
+const status = require('./handlers/status')
 const rateLimiter = require('./utils/rate-limiter')
 const Sentry = require('./utils/error-reporter')
 
@@ -15,7 +16,8 @@ const app = express()
 app.use(Sentry.Handlers.requestHandler())
 app.use(rateLimiter)
 app.use(bodyParser.json())
-app.use('/', ethereumRpcProxy())
+app.use('/api', ethereumRpcProxy())
+app.use('/', status)
 app.use(Sentry.Handlers.errorHandler())
 
 app.listen(CONFIG.PORT)
