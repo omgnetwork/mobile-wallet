@@ -33,6 +33,7 @@ const OMGOnboardingSheet = ({ theme, content, visible }) => {
 const styles = StyleSheet.create({
   title: theme => ({
     color: theme.colors.white,
+    letterSpacing: -1,
     fontSize: 24
   }),
   bottomContainer: {
@@ -45,11 +46,13 @@ const styles = StyleSheet.create({
   },
   textBottomBig: theme => ({
     color: theme.colors.white,
-    fontSize: 14
+    fontSize: 14,
+    letterSpacing: -0.48
   }),
   textBottomSmall: theme => ({
     color: theme.colors.primary,
-    fontSize: 10
+    fontSize: 10,
+    letterSpacing: -0.24
   }),
   imageCenter: {
     marginVertical: 20
