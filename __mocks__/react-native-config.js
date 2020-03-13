@@ -11,13 +11,13 @@ export default {
   WEB3_HTTP_PROVIDER:
     'https://ropsten.infura.io/v3/' + process.env.INFURA_API_KEY,
   PLASMA_FRAMEWORK_CONTRACT_ADDRESS:
-    '0xeeed49aff230ce3d8ae5ef044555f3c29e8b65d0',
-  ETH_VAULT_CONTRACT_ADDRESS: '0x77cb4e1472298326275aabd54cd94810599e7090',
-  ERC20_VAULT_CONTRACT_ADDRESS: '0x2649b4e6711137070de27fb8c58ef458e6bcc016',
+    '0x1499442e7ee8c7cf2ae33f5e096d1a5b9c013cff',
+  ETH_VAULT_CONTRACT_ADDRESS: '0xe637769f388f309e1cca8dd679a95a7b64a5bd06',
+  ERC20_VAULT_CONTRACT_ADDRESS: '0x3fa3ae3aa4348f98da81511a6a2ca5a228fa2c8a',
   CHILDCHAIN_WATCHER_URL:
-    'https://dev-7c3f796-watcher-info-ropsten-01.omg.network/',
+    'https://dev-a69c763-watcher-info-ropsten-01.omg.network/',
   BLOCK_EXPLORER_URL:
-    'https://dev-7c3f796-blockexplorer-ropsten-01.omg.network/',
+    'https://dev-a69c763-blockexplorer-ropsten-01.omg.network/',
   EXIT_PERIOD: 300000,
 
   // For Testing
