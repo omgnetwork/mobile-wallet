@@ -37,7 +37,6 @@ export const getERC20Txs = (address, options) => {
     params: {
       module: 'account',
       sort: 'desc',
-      headers: { 'content-type': 'application/x-www-form-urlencoded' },
       apikey: Config.ETHERSCAN_API_KEY,
       offset: limit || 0,
       page: page || 1,
@@ -54,7 +53,6 @@ export const getTxs = (address, options) => {
   return axios.get(Config.ETHERSCAN_API_URL, {
     params: {
       module: 'account',
-      headers: { 'content-type': 'application/x-www-form-urlencoded' },
       sort: 'desc',
       apikey: Config.ETHERSCAN_API_KEY,
       address: address,
@@ -73,7 +71,6 @@ export const getInternalTxs = (address, options) => {
     params: {
       module: 'account',
       sort: 'desc',
-      headers: { 'content-type': 'application/x-www-form-urlencoded' },
       apikey: Config.ETHERSCAN_API_KEY,
       address: address,
       offset: limit || 0,

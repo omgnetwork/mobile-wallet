@@ -14,7 +14,7 @@ describe('Test Transaction Service', () => {
     mockStandardExitBond()
   })
 
-  it('getTxs should return unique transaction hash', () => {
+  it.skip('getTxs should return unique transaction hash', () => {
     return transactionService
       .getTxs(testAddress, provider, { page: 1, limit: 200 })
       .then(transactions => {
