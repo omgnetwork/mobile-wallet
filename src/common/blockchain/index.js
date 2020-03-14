@@ -2,6 +2,6 @@ import * as Ethereum from './ethereum'
 import * as Plasma from './plasma'
 import * as TxOptions from './txOptions'
 import * as Token from './token'
-import * as BlockchainRenderer from './blockchainRenderer'
+import * as BlockchainDataFormatter from './blockchainDataFormatter'
 
-export { Ethereum, Plasma, TxOptions, BlockchainRenderer, Token }
+export { Ethereum, Plasma, TxOptions, BlockchainDataFormatter, Token }

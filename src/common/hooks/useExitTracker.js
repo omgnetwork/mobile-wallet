@@ -1,47 +1,31 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Datetime } from 'common/utils'
-import Config from 'react-native-config'
-import { NotificationMessages } from 'common/constants'
+import {
+  NotificationMessages,
+  ExitStatus,
+  TransactionTypes
+} from 'common/constants'
 import BackgroundTimer from 'react-native-background-timer'
 
 const useExitTracker = blockchainWallet => {
-  const EXIT_PERIOD = Config.EXIT_PERIOD * 2
-  const INTERVAL_PERIOD = 60000
+  const INTERVAL_PERIOD = 15000
   const [startedExitTxs, setStartedExitTxs] = useState([])
   const [notification, setNotification] = useState(null)
 
   const getExitReadyTxs = useCallback(() => {
     return startedExitTxs.filter(tx => {
       const currentDatetime = Datetime.fromNow()
-      const startedExitAt = Datetime.fromString(tx.startedExitAt)
-      const exitableAt = Datetime.add(startedExitAt, EXIT_PERIOD)
+      const exitableAt = Datetime.fromTimestamp(tx.exitableAt)
       return currentDatetime.isSameOrAfter(exitableAt)
     })
-  }, [EXIT_PERIOD, startedExitTxs])
-
-  // const processExit = useCallback(async () => {
-  //   const readyExitTxs = getExitReadyTxs()
-  //   const pendingProcessExits = readyExitTxs.map(tx => {
-  //     return plasmaService.processExits(
-  //       blockchainWallet,
-  //       tx.exitId,
-  //       tx.contractAddress
-  //     )
-  //   })
-
-  //   if (pendingProcessExits.length) {
-  //     const receipts = await Promise.all(pendingProcessExits)
-  //     return readyExitTxs
-  //   }
-  //   return []
-  // }, [blockchainWallet, getExitReadyTxs])
+  }, [startedExitTxs])
 
   const updateTransactionStatus = useCallback(() => {
     const readyToExitTxs = getExitReadyTxs()
     return readyToExitTxs.map(tx => {
       return {
         ...tx,
-        status: 'ready'
+        status: ExitStatus.EXIT_READY
       }
     })
   }, [getExitReadyTxs])
@@ -56,7 +40,7 @@ const useExitTracker = blockchainWallet => {
         txs[0].value,
         txs[0].symbol
       ),
-      type: 'exit',
+      type: TransactionTypes.TYPE_EXIT,
       confirmedTxs: txs
     }
   }, [])
@@ -75,6 +59,7 @@ const useExitTracker = blockchainWallet => {
       intervalId = BackgroundTimer.setInterval(() => {
         track()
       }, INTERVAL_PERIOD)
+      track()
     }
 
     return () => {

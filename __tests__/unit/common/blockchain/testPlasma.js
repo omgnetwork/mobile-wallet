@@ -1,6 +1,6 @@
 import { Plasma } from 'common/blockchain'
 import { ContractABI } from 'common/utils'
-import { Plasma as PlasmaClient, PlasmaUtils, web3 } from 'common/clients'
+import { Plasma as PlasmaClient, web3 } from 'common/clients'
 import Config from 'react-native-config'
 import BN from 'bn.js'
 import { ContractAddress } from 'common/constants'
@@ -9,13 +9,7 @@ jest.mock('@omisego/omg-js')
 
 const { getBalance, getUtxos } = PlasmaClient.ChildChain
 const { deposit, getErc20Vault } = PlasmaClient.RootChain
-const { encodeDeposit } = PlasmaUtils.transaction
-const {
-  TEST_ADDRESS,
-  TEST_PRIVATE_KEY,
-  TEST_ERC20_TOKEN_CONTRACT_ADDRESS,
-  TEST_ERC20_VAULT_ADDRESS
-} = Config
+const { TEST_ADDRESS, TEST_PRIVATE_KEY, ERC20_VAULT_CONTRACT_ADDRESS } = Config
 
 const FIVE_GWEI = '5000000000'
 
@@ -442,12 +436,12 @@ describe('Test Plasma Boundary', () => {
   it('deposit with erc20 should invoke the deposit function with expected parameters', () => {
     const from = TEST_ADDRESS
     const privateKey = TEST_PRIVATE_KEY
-    const tokenContractAddress = TEST_ERC20_TOKEN_CONTRACT_ADDRESS
+    const tokenContractAddress = ERC20_VAULT_CONTRACT_ADDRESS
     const amount = FIVE_GWEI
     const gas = 30000
     const gasPrice = '6000000'
 
-    mockGetErc20Vault({ address: TEST_ERC20_VAULT_ADDRESS })
+    mockGetErc20Vault({ address: ERC20_VAULT_CONTRACT_ADDRESS })
     mockWeb3SignTransaction({ rawTransaction: 'rawTransaction' })
     mockWeb3SendSignedTransaction({ gasUsed: gas })
     mockDepositResponse({
@@ -463,7 +457,7 @@ describe('Test Plasma Boundary', () => {
       ContractABI.erc20Abi(),
       tokenContractAddress
     ).methods
-      .approve(TEST_ERC20_VAULT_ADDRESS, amount)
+      .approve(ERC20_VAULT_CONTRACT_ADDRESS, amount)
       .encodeABI()
 
     return Plasma.deposit(from, privateKey, amount, tokenContractAddress, {

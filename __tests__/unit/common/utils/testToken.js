@@ -3,13 +3,12 @@ import { ethers } from 'ethers'
 import Config from '../../../config'
 
 const {
-  ETHERSCAN_NETWORK,
   TEST_ERC20_TOKEN_CONTRACT_ADDRESS,
-  TEST_WALLET_ADDRESS_FOR_TOKENS,
-  TEST_TOKENS
+  TEST_TOKENS,
+  ETHERSCAN_NETWORK
 } = Config
 
-const testWalletAddress = TEST_WALLET_ADDRESS_FOR_TOKENS
+const testWalletAddress = '0x4522fb44C2aB359e76eCc75C22C9409690F12241'
 const [ETH, DAI, OMG, KCK, HYP] = TEST_TOKENS
 
 describe('Test Token Util', () => {

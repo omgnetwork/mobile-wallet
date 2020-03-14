@@ -6,7 +6,7 @@ import {
 } from 'common/services/plasmaService.js'
 import { ethers } from 'ethers'
 import { Datetime } from 'common/utils'
-import { TransactionActionTypes } from 'common/constants'
+import { TransactionActionTypes, TransactionTypes } from 'common/constants'
 import Config from 'react-native-config'
 import { getMockStore } from '../../../helpers'
 import { plasmaActions } from 'common/actions'
@@ -20,7 +20,7 @@ const {
   TEST_PRIVATE_KEY,
   TEST_ADDRESS,
   ETHERSCAN_NETWORK,
-  TEST_ERC20_TOKEN_CONTRACT_ADDRESS
+  ERC20_VAULT_CONTRACT_ADDRESS
 } = Config
 
 const mockStore = getMockStore()
@@ -38,7 +38,9 @@ const mockExitTxReceipt = {
   blknum: 'any',
   flatFee: 'any',
   to: 'any',
-  gasPrice: 'any'
+  gasPrice: 'any',
+  gasUsed: 'any',
+  exitableAt: 'any'
 }
 
 const mockPlasmaService = (method, resp) => {
@@ -141,7 +143,7 @@ describe('Test Plasma Actions', () => {
       balance: '0.001',
       tokenSymbol: 'EUR',
       tokenDecimal: 18,
-      contractAddress: TEST_ERC20_TOKEN_CONTRACT_ADDRESS
+      contractAddress: ERC20_VAULT_CONTRACT_ADDRESS
     }
     mockPlasmaService(deposit, mockDepositTxReceipt)
 
@@ -176,7 +178,7 @@ describe('Test Plasma Actions', () => {
       balance: '0.001',
       tokenSymbol: 'EUR',
       tokenDecimal: 18,
-      contractAddress: TEST_ERC20_TOKEN_CONTRACT_ADDRESS
+      contractAddress: ERC20_VAULT_CONTRACT_ADDRESS
     }
     const feeToken = token
 
@@ -219,7 +221,8 @@ describe('Test Plasma Actions', () => {
       balance: '0.001',
       tokenSymbol: 'EUR',
       tokenDecimal: 18,
-      contractAddress: TEST_ERC20_TOKEN_CONTRACT_ADDRESS
+      price: 'any',
+      contractAddress: ERC20_VAULT_CONTRACT_ADDRESS
     }
 
     mockPlasmaService(exit, mockExitTxReceipt)
@@ -236,12 +239,12 @@ describe('Test Plasma Actions', () => {
             contractAddress: token.contractAddress,
             createdAt: actions[1].data.createdAt,
             from: wallet.address,
-            gasUsed: 1,
+            tokenPrice: 'any',
             smallestValue: '1000000000000000',
             symbol: token.tokenSymbol,
             timestamp: actions[1].data.timestamp,
             tokenDecimal: token.tokenDecimal,
-            type: 'exit',
+            type: TransactionTypes.TYPE_EXIT,
             value: token.balance
           },
           type: 'CHILDCHAIN/EXIT/SUCCESS'

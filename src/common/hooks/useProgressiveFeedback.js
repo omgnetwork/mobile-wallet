@@ -39,6 +39,8 @@ const useProgressiveFeedback = (
           return 'Pending Deposit...'
         case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
           return 'Pending Start Exit...'
+        case TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT:
+          return 'Pending Process Exit...'
         default:
           return 'Pending Transaction...'
       }
@@ -48,6 +50,8 @@ const useProgressiveFeedback = (
           return 'Successfully Deposited!'
         case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
           return 'Successfully Started Exit!'
+        case TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT:
+          return 'Successfully Processed Exit!'
         default:
           return 'Successfully Transferred!'
       }

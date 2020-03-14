@@ -56,7 +56,11 @@ export const estimateDeposit = async (from, to, token) => {
   }
 }
 
-export const estimateExit = async (blockchainWallet, token) => {
+export const estimateExit = async (
+  blockchainWallet,
+  token,
+  includeExitBond = false
+) => {
   const utxoToExit = await Plasma.getUtxos(blockchainWallet.address, {
     currency: token.contractAddress
   }).then(utxos => utxos[0])
@@ -73,11 +77,14 @@ export const estimateExit = async (blockchainWallet, token) => {
   const bondFee = txDetails.value / gasPrice
   try {
     const exitGas = await web3EstimateGas(txDetails)
-    const totalGas = exitGas + bondFee
-    return totalGas
+    if (includeExitBond) {
+      return exitGas + bondFee
+    } else {
+      return exitGas
+    }
   } catch (err) {
     console.log(err)
-    return Gas.EXIT_ESTIMATED_GAS_USED + bondFee
+    return Gas.EXIT_ESTIMATED_GAS_USED
   }
 }
 

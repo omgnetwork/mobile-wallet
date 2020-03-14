@@ -11,6 +11,8 @@ const mappingAmount = obj => ({
   amount: obj.amount.toString(10)
 })
 
+export let standardExitBond
+
 export const getBalances = address => {
   return Plasma.ChildChain.getBalance(address).then(balances => {
     return balances.map(mappingAmount)
@@ -138,11 +140,7 @@ export const standardExit = (exitData, blockchainWallet, options) => {
 
 export const getExitTxDetails = async (exitTx, { from, gas, gasPrice }) => {
   const { utxo_pos, txbytes, proof } = exitTx
-  const {
-    contract,
-    address,
-    bonds
-  } = await Plasma.RootChain.getPaymentExitGame()
+  const { contract, address, bonds } = await getPaymentExitGame()
   const data = getTxData(contract, 'startStandardExit', [
     utxo_pos.toString(),
     txbytes,
@@ -156,6 +154,30 @@ export const getExitTxDetails = async (exitTx, { from, gas, gasPrice }) => {
     data,
     gas,
     gasPrice
+  }
+}
+
+export const getExitTxs = async address => {
+  const { contract } = await Plasma.RootChain.getPaymentExitGame()
+  const allExitTxs = await contract.getPastEvents('ExitStarted', {
+    filter: { owner: address },
+    fromBlock: 0
+  })
+  const pendingFinalizedArr = allExitTxs.map(exitTx => {
+    const exitId = exitTx.returnValues.exitId.toString()
+    return contract.getPastEvents('ExitFinalized', {
+      filter: { exitId },
+      fromBlock: 0
+    })
+  })
+
+  const finalizedArr = await Promise.all(pendingFinalizedArr)
+  const filteredUnfinalized = (_, index) => finalizedArr[index].length === 0
+  const filteredFinalized = (_, index) => finalizedArr[index].length > 0
+
+  return {
+    unprocessed: allExitTxs.filter(filteredUnfinalized),
+    processed: allExitTxs.filter(filteredFinalized)
   }
 }
 
@@ -182,8 +204,25 @@ export const waitForRootchainTransaction = ({
   })
 }
 
-export const getPaymentExitGameAddress = () => {
+export const getPaymentExitGame = () => {
   return Plasma.RootChain.getPaymentExitGame()
+}
+
+export const getStandardExitBond = async () => {
+  if (!standardExitBond) {
+    const { bonds } = await getPaymentExitGame()
+    standardExitBond = bonds.standardExit.toString()
+  }
+  return standardExitBond
+}
+
+export const isPaymentExitGameContract = async address => {
+  const code = await web3.eth.getCode(address)
+  const hash = web3.eth.abi.encodeFunctionSignature(
+    'startStandardExitBondSize()'
+  )
+  // Remove 0x prefix
+  return code.indexOf(hash.slice(2)) > -1
 }
 
 export const getErrorReason = async hash => {
@@ -211,6 +250,13 @@ export const hasToken = tokenContractAddress => {
   return Plasma.RootChain.hasToken(tokenContractAddress)
 }
 
+export const getExitTime = (exitRequestBlockNumber, submissionBlockNumber) => {
+  return Plasma.RootChain.getExitTime({
+    exitRequestBlockNumber,
+    submissionBlockNumber
+  })
+}
+
 export const addToken = async (tokenContractAddress, options) => {
   try {
     const receipt = await Plasma.RootChain.addToken({
@@ -223,15 +269,14 @@ export const addToken = async (tokenContractAddress, options) => {
   }
 }
 
-// We're not using this right now but let's keep it because it still has potential to be used in the future.
-// export const processExits = (contractAddress, exitId, txOptions) => {
-//   return Plasma.RootChain.processExits({
-//     token: contractAddress,
-//     exitId: exitId || 0,
-//     maxExitsToProcess: 1,
-//     txOptions
-//   })
-// }
+export const processExits = (contractAddress, maxExitsToProcess, txOptions) => {
+  return Plasma.RootChain.processExits({
+    token: contractAddress,
+    exitId: 0,
+    maxExitsToProcess: parseInt(maxExitsToProcess, 10),
+    txOptions
+  })
+}
 
 // Transaction management
 export const createTx = (fromAddress, payments, fee, metadata) => {
@@ -276,6 +321,17 @@ export const getTypedData = tx => {
 
 export const getExitData = utxo => {
   return Plasma.ChildChain.getExitData(utxo)
+}
+
+export const getExitQueue = async tokenContractAddress => {
+  const queue = await Plasma.RootChain.getExitQueue(tokenContractAddress)
+  return {
+    tokenContractAddress,
+    queue: queue.map(q => ({
+      ...q,
+      tokenContractAddress
+    }))
+  }
 }
 
 export const signTx = (typedData, privateKeys) => {

@@ -9,14 +9,22 @@ import {
   OMGAmountInput,
   OMGExitWarning,
   OMGButton,
-  OMGDismissKeyboard
+  OMGDismissKeyboard,
+  OMGExitFee
 } from 'components/widgets'
 import { TransferHelper } from 'components/views/transfer'
-import { Validator } from 'common/utils'
+import { Validator, GasEstimator } from 'common/utils'
+import { Plasma } from 'common/blockchain'
 import { OMGBlockchainLabel } from 'components/widgets'
 import { ScrollView } from 'react-native-gesture-handler'
 
-const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
+const ExitForm = ({
+  wallet,
+  theme,
+  navigation,
+  isFocused,
+  blockchainWallet
+}) => {
   const amount = navigation.getParam('amount')
   const selectedToken = navigation.getParam(
     'selectedToken',
@@ -24,6 +32,9 @@ const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
   )
   const amountRef = useRef(amount)
   const amountFocusRef = useRef(null)
+  const [exitBond, setExitBond] = useState(null)
+  const [exitToken, setExitToken] = useState(null)
+  const [exitFee, setExitFee] = useState(null)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
   const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
 
@@ -34,10 +45,28 @@ const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
   }, [])
 
   useEffect(() => {
+    async function getStandardExitBond() {
+      const bond = await Plasma.getStandardExitBond()
+      setExitBond(bond)
+    }
+
+    async function getEstimateExitFee() {
+      const fee = await GasEstimator.estimateExit(blockchainWallet, exitToken)
+      setExitFee(fee)
+    }
+
     if (isFocused) {
       focusOn(amountFocusRef)
+      getStandardExitBond()
+      if (exitToken) {
+        getEstimateExitFee()
+      }
     }
-  }, [focusOn, isFocused])
+  }, [blockchainWallet, exitToken, focusOn, isFocused])
+
+  useEffect(() => {
+    setExitToken({ ...selectedToken, balance: 1 })
+  }, [selectedToken])
 
   const navigateNext = useCallback(() => {
     if (!Validator.isValidAmount(amountRef.current)) {
@@ -57,46 +86,55 @@ const ExitForm = ({ wallet, theme, navigation, isFocused }) => {
   }, [navigation, selectedToken])
 
   return (
-    <OMGDismissKeyboard style={styles.container(theme)}>
+    <ScrollView style={styles.container(theme)}>
       <OMGBlockchainLabel
         actionText='Exit to'
         transferType={TransferHelper.TYPE_EXIT}
       />
       <View style={styles.contentContainer(theme)}>
-        <ScrollView>
-          <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
-            Select Exit Amount
-          </OMGText>
-          <OMGTokenInput
-            token={selectedToken}
-            style={styles.tokenInput}
-            onPress={() =>
-              navigation.navigate('TransferSelectBalance', {
-                transferType: TransferHelper.TYPE_EXIT,
-                currentToken: selectedToken,
-                amount: amountRef.current,
-                assets: wallet.childchainAssets,
-                exit: true
-              })
-            }
-          />
-          <OMGAmountInput
-            token={selectedToken}
-            inputRef={amountRef}
-            focusRef={amountFocusRef}
-            showError={showErrorAmount}
-            errorMessage={errorAmountMessage}
-            defaultValue={amount}
-            style={styles.amountInput}
-          />
-          <OMGExitWarning style={styles.warningContainer} />
-        </ScrollView>
+        <OMGText style={[styles.title(theme), styles.marginHigh]}>
+          Token
+        </OMGText>
+        <OMGTokenInput
+          token={selectedToken}
+          style={styles.marginSmall}
+          onPress={() =>
+            navigation.navigate('TransferSelectBalance', {
+              transferType: TransferHelper.TYPE_EXIT,
+              currentToken: selectedToken,
+              amount: amountRef.current,
+              assets: wallet.childchainAssets,
+              exit: true
+            })
+          }
+        />
+        <OMGText style={[styles.title(theme), styles.marginHigh]}>
+          Amount
+        </OMGText>
+        <OMGAmountInput
+          token={selectedToken}
+          inputRef={amountRef}
+          focusRef={amountFocusRef}
+          showError={showErrorAmount}
+          errorMessage={errorAmountMessage}
+          defaultValue={amount}
+          style={styles.marginSmall}
+        />
+        <OMGText style={[styles.title(theme), styles.marginHigh]}>
+          Exit Fee
+        </OMGText>
+        <OMGExitFee
+          feeValue={exitFee}
+          exitBondValue={exitBond}
+          style={styles.marginSmall}
+        />
+        <OMGExitWarning style={styles.marginMedium} />
 
-        <View style={styles.buttonContainer}>
+        <View style={[styles.buttonContainer, styles.marginHigh]}>
           <OMGButton onPress={navigateNext}>Next</OMGButton>
         </View>
       </View>
-    </OMGDismissKeyboard>
+    </ScrollView>
   )
 }
 
@@ -112,18 +150,19 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     backgroundColor: theme.colors.black5
   }),
-  warningContainer: {
-    marginTop: 16
-  },
   title: theme => ({
-    color: theme.colors.black4,
-    marginTop: 16
+    fontSize: 12,
+    color: theme.colors.white,
+    textTransform: 'uppercase'
   }),
-  tokenInput: {
+  marginHigh: {
+    marginTop: 30
+  },
+  marginMedium: {
     marginTop: 16
   },
-  amountInput: {
-    marginTop: 16
+  marginSmall: {
+    marginTop: 10
   },
   buttonContainer: {
     flex: 1,
@@ -134,7 +173,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, ownProps) => ({
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
-  )
+  ),
+  blockchainWallet: state.setting.blockchainWallet
 })
 
 export default connect(

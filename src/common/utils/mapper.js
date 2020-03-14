@@ -1,7 +1,10 @@
-import { ContractAddress } from 'common/constants'
+import {
+  ContractAddress,
+  TransactionTypes,
+  BlockchainNetworkType
+} from 'common/constants'
 import { Token } from 'common/blockchain'
-import { Transaction, Datetime, BigNumber } from 'common/utils'
-import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
+import { Transaction, BigNumber } from 'common/utils'
 import BN from 'bn.js'
 
 export const mapChildchainTx = (tx, tokens, walletAddress) => {
@@ -64,11 +67,17 @@ export const mapChildchainTxDetail = (oldTx, newTx) => {
   }
 }
 
-export const mapRootchainTx = (tx, address, erc20Tx) => {
+export const mapRootchainTx = (
+  tx,
+  address,
+  erc20TxMap,
+  standardExitBondSize
+) => {
+  const erc20Tx = erc20TxMap[tx.hash]
   if (erc20Tx) {
     return mapRootchainErc20Tx(erc20Tx, address)
   } else {
-    return mapRootchainEthTx(tx, address)
+    return mapRootchainEthTx(tx, address, standardExitBondSize)
   }
 }
 
@@ -115,17 +124,17 @@ const isInputGreaterThanOutput = (input, outputs) => {
 
 export const mapAssetCurrency = asset => asset.currency
 
-const mapRootchainEthTx = (tx, address) => {
+export const mapRootchainEthTx = (tx, address, standardExitBondSize) => {
   return {
     hash: tx.hash,
     network: BlockchainNetworkType.TYPE_ETHEREUM_NETWORK,
-    type: mapRootchainTransactionType(tx, address),
+    type: mapRootchainTransactionType(tx, address, standardExitBondSize),
     confirmations: tx.confirmations,
     from: tx.from,
     to: tx.to,
-    gasLimit: tx.gasLimit,
+    gasLimit: tx.gasLimit || tx.gas,
     gasUsed: tx.gasUsed,
-    gasPrice: tx.gasPrice,
+    gasPrice: tx.gasPrice || 0,
     gasCurrency: ContractAddress.ETH_ADDRESS,
     contractAddress: ContractAddress.ETH_ADDRESS,
     tokenName: 'Ether',
@@ -136,7 +145,7 @@ const mapRootchainEthTx = (tx, address) => {
   }
 }
 
-const mapRootchainErc20Tx = (tx, address) => {
+export const mapRootchainErc20Tx = (tx, address) => {
   return {
     hash: tx.hash,
     network: BlockchainNetworkType.TYPE_ETHEREUM_NETWORK,
@@ -144,9 +153,12 @@ const mapRootchainErc20Tx = (tx, address) => {
     confirmations: tx.confirmations,
     from: tx.from,
     to: tx.to,
+    exitBond: tx.exitBond || 0,
+    exitBondFrom: tx.exitBondFrom,
+    exitBondTo: tx.exitBondTo,
     gas: tx.gas,
     gasUsed: tx.gasUsed,
-    gasPrice: tx.gasPrice,
+    gasPrice: tx.gasPrice || 0,
     gasCurrency: ContractAddress.ETH_ADDRESS,
     contractAddress: tx.contractAddress,
     tokenName: tx.tokenName,
@@ -160,14 +172,13 @@ const mapRootchainErc20Tx = (tx, address) => {
 export const mapStartedExitTx = tx => {
   return {
     ...tx,
+    type: TransactionTypes.TYPE_EXIT,
     gasUsed: tx.gasUsed.toString(),
-    value: tx.smallestValue,
-    tokenSymbol: tx.symbol.toString(),
-    timestamp: Datetime.toTimestamp(tx.startedExitAt)
+    tokenSymbol: tx.symbol.toString()
   }
 }
 
-const mapRootchainTransactionType = (tx, address) => {
+const mapRootchainTransactionType = (tx, address, standardExitBondSize) => {
   const methodName = Transaction.decodePlasmaInputMethod(tx.input)
   if (tx.isError === '1') {
     return TransactionTypes.TYPE_FAILED
@@ -181,8 +192,10 @@ const mapRootchainTransactionType = (tx, address) => {
     case 'addToken':
       return TransactionTypes.TYPE_PLASMA_ADD_TOKEN
     default:
-      if (Transaction.isPlasmaCallTx(tx)) {
+      if (Transaction.isPlasmaCallTx(tx, standardExitBondSize)) {
         return TransactionTypes.TYPE_UNIDENTIFIED
+      } else if (Transaction.isExitTransferTx(tx)) {
+        return TransactionTypes.TYPE_PROCESS_EXIT
       } else if (Transaction.isReceiveTx(address, tx.to)) {
         return TransactionTypes.TYPE_RECEIVED
       } else {

@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableHighlight } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
-import { BlockchainRenderer } from 'common/blockchain'
+import { BlockchainDataFormatter } from 'common/blockchain'
 import { plasmaActions } from 'common/actions'
 import { ActionAlert, Gas, ContractAddress } from 'common/constants'
 import { TransferHelper } from 'components/views/transfer'
@@ -26,8 +26,8 @@ const ExitConfirm = ({
   dispatchExit
 }) => {
   const token = navigation.getParam('token')
-  const tokenBalance = BlockchainRenderer.renderTokenBalance(token.balance)
-  const tokenPrice = BlockchainRenderer.renderTokenPrice(
+  const tokenBalance = BlockchainDataFormatter.formatTokenBalance(token.balance)
+  const tokenPrice = BlockchainDataFormatter.formatTokenPrice(
     token.balance,
     token.price
   )
@@ -72,13 +72,17 @@ const ExitConfirm = ({
         TransferHelper.TYPE_EXIT,
         token,
         {
-          wallet: blockchainWallet
+          wallet: blockchainWallet,
+          includeExitBond: true
         }
       )
       const gasPrice = Gas.EXIT_GAS_PRICE
-      const gasFee = BlockchainRenderer.renderGasFee(gasUsed, gasPrice)
+      const gasFee = BlockchainDataFormatter.formatGasFee(gasUsed, gasPrice)
       const usdPerEth = ethToken && ethToken.price
-      const gasFeeUsd = BlockchainRenderer.renderTokenPrice(gasFee, usdPerEth)
+      const gasFeeUsd = BlockchainDataFormatter.formatTokenPrice(
+        gasFee,
+        usdPerEth
+      )
       setEstimatedFee(gasFee)
       setEstimatedFeeUsd(gasFeeUsd)
     }
@@ -110,25 +114,6 @@ const ExitConfirm = ({
     )
   }, [estimatedFee, estimatedFeeUsd, theme])
 
-  const renderMaxTotal = useCallback(() => {
-    return (
-      <View style={styles.maxTotalContainer(theme)}>
-        <OMGText style={styles.maxTotalTitle(theme)}>MAX TOTAL</OMGText>
-        <View style={styles.amountContainer}>
-          <OMGText style={styles.tokenBalance(theme)} weight='mono-semi-bold'>
-            {tokenBalance}
-          </OMGText>
-          <View style={styles.balanceContainer}>
-            <OMGText style={styles.tokenSymbol(theme)}>
-              {token.tokenSymbol}
-            </OMGText>
-            <OMGText style={styles.tokenWorth(theme)}>{tokenPrice} USD</OMGText>
-          </View>
-        </View>
-      </View>
-    )
-  }, [theme, token.tokenSymbol, tokenBalance, tokenPrice])
-
   const handleBackToEditPressed = useCallback(() => {
     navigation.navigate('ExitForm', {
       amount: token.balance
@@ -155,7 +140,6 @@ const ExitConfirm = ({
           transferType={TransferHelper.TYPE_TRANSFER_ROOTCHAIN}
           style={styles.blockchainLabel}
         />
-        {token.tokenSymbol === 'ETH' && renderMaxTotal()}
         <OMGText style={styles.subtitle(theme)}>To Exit</OMGText>
         <View style={styles.feeContainer(theme)}>
           <View style={styles.exitFeeContainer}>

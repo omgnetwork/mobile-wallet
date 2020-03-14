@@ -67,15 +67,22 @@ const OMGTransactionFilter = ({
 const selectTransactionsByType = (type, transactions, startedExitTxs) => {
   switch (type) {
     case TransactionTypes.TYPE_ALL:
-      return transactions.filter(tx => {
-        return [
+      return transactions.filter(tx =>
+        [
           TransactionTypes.TYPE_FAILED,
           TransactionTypes.TYPE_RECEIVED,
           TransactionTypes.TYPE_SENT
         ].includes(tx.type)
-      })
+      )
     case TransactionTypes.TYPE_EXIT:
       return startedExitTxs.map(tx => Mapper.mapStartedExitTx(tx))
+    case TransactionTypes.TYPE_PROCESS_EXIT:
+      return transactions.filter(tx =>
+        [
+          TransactionTypes.TYPE_EXIT,
+          TransactionTypes.TYPE_PROCESS_EXIT
+        ].includes(tx.type)
+      )
     default:
       return transactions.filter(tx => {
         return tx.type === type

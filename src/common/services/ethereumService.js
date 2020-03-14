@@ -96,3 +96,9 @@ export const getTxs = (address, options, onlyErc20) => {
     }
   })
 }
+
+export const getInternalTxs = async (address, options) => {
+  const response = await Ethereum.getInternalTxs(address, options)
+  const internalTxs = response.data.result
+  return internalTxs
+}

@@ -14,7 +14,12 @@ const rootchain = new RootChain({
   web3: web3,
   plasmaContractAddress: Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
 })
-const childchain = new ChildChain({ watcherUrl: Config.CHILDCHAIN_WATCHER_URL })
+
+// Assume Config.CHILDCHAIN_WATCHER_URL is always has '/' at the end.
+const watcherUrl = Config.CHILDCHAIN_WATCHER_URL.slice(0, -1)
+const childchain = new ChildChain({
+  watcherUrl
+})
 
 export const Plasma = {
   RootChain: rootchain,

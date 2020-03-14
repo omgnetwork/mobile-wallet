@@ -26,6 +26,7 @@ const TransactionHistory = ({
   dispatchFetchTxHistory,
   dispatchAddAnchoredComponent,
   dispatchSetCurrentPage,
+  dispatchFilteredStartedExits,
   currentPage,
   startedExitTxs,
   transactions
@@ -53,7 +54,8 @@ const TransactionHistory = ({
     loading.action,
     loading.show,
     loading.success,
-    measureTransactionHistoryMenu
+    measureTransactionHistoryMenu,
+    wallet.address
   ])
 
   useEffect(() => {
@@ -63,10 +65,19 @@ const TransactionHistory = ({
     }
 
     if (wallet && wallet.address && !fetching && !fetched) {
+      dispatchFilteredStartedExits(wallet.address)
       dispatchFetchTxHistory(wallet.address, provider, options)
       setFetching(true)
     }
-  }, [fetching, dispatchFetchTxHistory, wallet, provider, fetched])
+  }, [
+    fetching,
+    dispatchFetchTxHistory,
+    wallet,
+    provider,
+    fetched,
+    dispatchFilteredStartedExits,
+    startedExitTxs
+  ])
 
   useEffect(() => {
     if (!measured) {
@@ -100,7 +111,8 @@ const TransactionHistory = ({
             TransactionTypes.TYPE_RECEIVED,
             TransactionTypes.TYPE_SENT,
             TransactionTypes.TYPE_DEPOSIT,
-            TransactionTypes.TYPE_EXIT
+            TransactionTypes.TYPE_EXIT,
+            TransactionTypes.TYPE_PROCESS_EXIT
           ].includes(tx.type)
         )
         .slice(0, 5)
@@ -130,7 +142,7 @@ const TransactionHistory = ({
   const handleClickExit = useCallback(() => {
     navigation.navigate('TransactionHistoryFilter', {
       title: 'Exit',
-      types: [TransactionTypes.TYPE_EXIT]
+      types: [TransactionTypes.TYPE_EXIT, TransactionTypes.TYPE_PROCESS_EXIT]
     })
   }, [navigation])
 
@@ -221,6 +233,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(
       transactionActions.fetchTransactionHistory(address, provider, options)
     ),
+  dispatchFilteredStartedExits: address => {
+    dispatch(transactionActions.filteredStartedExitTxs(address))
+  },
   dispatchSetCurrentPage: (currentPage, page) => {
     onboardingActions.setCurrentPage(dispatch, currentPage, page)
   },

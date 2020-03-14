@@ -53,11 +53,29 @@ export const fetchTransactionHistory = (address, provider, options) => {
       options
     )
 
+    const set = new Set(transactions.map(t => t.hash))
     return { transactions }
   }
 
   return createAsyncAction({
     operation: asyncAction,
     type: 'TRANSACTION/ALL'
+  })
+}
+
+export const filteredStartedExitTxs = address => {
+  const asyncAction = async () => {
+    const {
+      unprocessed: remoteStartedExitTxs
+    } = await transactionService.getExitTxs(address)
+
+    return {
+      remoteStartedExitTxs
+    }
+  }
+
+  return createAsyncAction({
+    operation: asyncAction,
+    type: 'TRANSACTION/FILTERED_STARTED_EXIT_TXS'
   })
 }

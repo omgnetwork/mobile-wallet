@@ -15,6 +15,7 @@ import OMGDismissKeyboard from './omg-dismiss-keyboard'
 import OMGDrawerContent from './omg-drawer-content'
 import OMGEmpty from './omg-empty'
 import OMGExitComplete from './omg-exit-complete'
+import OMGExitFee from './omg-exit-fee'
 import OMGExitWarning from './omg-exit-warning'
 import OMGFeeInput from './omg-fee-input'
 import OMGFeeSelect from './omg-fee-select'
@@ -38,6 +39,7 @@ import OMGKeyboardShift from './omg-keyboard-shift'
 import OMGQRCode from './omg-qr-code'
 import OMGQRScanner from './omg-qr-scanner'
 import OMGPasswordTextInput from './omg-password-text-input'
+import OMGProcessExitText from './omg-process-exit-text'
 import OMGRadioButton from './omg-radio-button'
 import OMGStatusBar from './omg-status-bar'
 import OMGTab from './omg-tab'
@@ -50,10 +52,14 @@ import OMGTokenIcon from './omg-token-icon'
 import OMGTokenInput from './omg-token-input'
 import OMGTokenSelect from './omg-token-select'
 import OMGViewPager from './omg-view-pager'
+import OMGItemExitTransaction from './omg-item-exit-transaction'
 import OMGItemTransaction from './omg-item-transaction'
 import OMGWalletAddress from './omg-wallet-address'
 import OMGTransactionFilter from './omg-transaction-filter'
 import OMGTransactionList from './omg-transaction-list'
+import OMGTokenID from './omg-token-id'
+import OMGUtxoDetail from './omg-utxo-detail'
+
 export {
   OMGAddressInput,
   OMGAmountInput,
@@ -71,6 +77,7 @@ export {
   OMGDrawerContent,
   OMGEmpty,
   OMGExitComplete,
+  OMGExitFee,
   OMGExitWarning,
   OMGFeeInput,
   OMGFeeSelect,
@@ -80,6 +87,7 @@ export {
   OMGImage,
   OMGItemWallet,
   OMGItemToken,
+  OMGItemExitTransaction,
   OMGItemTransaction,
   OMGKeyboardShift,
   OMGMenu,
@@ -93,6 +101,7 @@ export {
   OMGQRCode,
   OMGQRScanner,
   OMGPasswordTextInput,
+  OMGProcessExitText,
   OMGRadioButton,
   OMGAlert,
   OMGStatusBar,
@@ -108,5 +117,7 @@ export {
   OMGViewPager,
   OMGWalletAddress,
   OMGTransactionFilter,
-  OMGTransactionList
+  OMGTransactionList,
+  OMGTokenID,
+  OMGUtxoDetail
 }

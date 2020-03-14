@@ -17,7 +17,7 @@ export const getTypes = (isRootchain, isDeposit) => {
 }
 
 export const getGasUsed = (type, token, options) => {
-  const { wallet, to, fee } = options
+  const { wallet, to, fee, includeExitBond } = options
   switch (type) {
     case TYPE_DEPOSIT:
       return GasEstimator.estimateDeposit(wallet.address, to, token)
@@ -29,7 +29,7 @@ export const getGasUsed = (type, token, options) => {
     case TYPE_TRANSFER_CHILDCHAIN:
       return GasEstimator.estimateTransferChildchain()
     case TYPE_EXIT:
-      return GasEstimator.estimateExit(wallet, token)
+      return GasEstimator.estimateExit(wallet, token, includeExitBond)
   }
 }
 

@@ -1,7 +1,8 @@
 import { transaction } from '@omisego/omg-js-util'
 import { ContractABI } from 'common/utils'
-import { TransactionActionTypes, ContractAddress } from 'common/constants'
+import { TransactionActionTypes, ContractAddress, Gas } from 'common/constants'
 import InputDataDecoder from 'ethereum-input-data-decoder'
+import { Plasma } from 'common/blockchain'
 
 const plasmaInputDecoder = new InputDataDecoder(ContractABI.plasmaAbi())
 
@@ -22,11 +23,34 @@ export const isReceiveTx = (walletAddress, toAddress) => {
   return walletAddress.toLowerCase() === toAddress.toLowerCase()
 }
 
-export const isPlasmaCallTx = tx => {
-  return [
-    ContractAddress.PLASMA_FRAMEWORK_CONTRACT_ADDRESS,
-    ContractAddress.PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
-  ].includes(tx.to)
+export const isPlasmaCallTx = (tx, standardExitBondSize) => {
+  const { to, value, gasUsed } = tx
+  const {
+    PLASMA_FRAMEWORK_CONTRACT_ADDRESS,
+    PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
+  } = ContractAddress
+  const isCurrentPlasmaContract = [
+    PLASMA_FRAMEWORK_CONTRACT_ADDRESS,
+    PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
+  ].includes(to)
+  const isOldPaymentExitGameContract =
+    value === standardExitBondSize && gasUsed > Gas.MINIMUM_GAS_USED
+
+  return isCurrentPlasmaContract || isOldPaymentExitGameContract
+}
+
+export const isExitTransferTx = tx => {
+  const {
+    ETH_VAULT_CONTRACT_ADDRESS,
+    ERC20_VAULT_CONTRACT_ADDRESS,
+    PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
+  } = ContractAddress
+  const vaultsContractAddress = [
+    ETH_VAULT_CONTRACT_ADDRESS,
+    ERC20_VAULT_CONTRACT_ADDRESS,
+    PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
+  ]
+  return vaultsContractAddress.includes(tx.from)
 }
 
 export const isUnconfirmStartedExitTx = tx => {

@@ -17,6 +17,7 @@ import * as Address from './address'
 import * as Validator from './validator'
 import * as Dimensions from './dimensions'
 import * as Reanimated from './reanimated'
+import * as Wait from './wait'
 
 export {
   Address,
@@ -37,5 +38,6 @@ export {
   Transaction,
   Token,
   Validator,
-  Reanimated
+  Reanimated,
+  Wait
 }

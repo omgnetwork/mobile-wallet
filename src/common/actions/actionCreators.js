@@ -13,10 +13,7 @@ export const createAsyncAction = ({
         const result = await doAsyncAction()
         dispatch({ type: `${actionType}/SUCCESS`, data: result })
       } catch (err) {
-        console.log(
-          `%c [ERROR] ${err.message}`,
-          'font-weight: bold; color: #ff0000'
-        )
+        console.log(`${err.message}`)
         dispatch({ type: `${actionType}/FAILED`, data: err })
         CrashAnalytics.log(err)
       }

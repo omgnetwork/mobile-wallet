@@ -1,3 +1,5 @@
+import { ExitStatus } from 'common/constants'
+
 export const transactionReducer = (
   state = {
     unconfirmedTxs: [],
@@ -13,6 +15,7 @@ export const transactionReducer = (
     case 'CHILDCHAIN/SEND_TOKEN/SUCCESS':
     case 'CHILDCHAIN/DEPOSIT/SUCCESS':
     case 'CHILDCHAIN/EXIT/SUCCESS':
+    case 'CHILDCHAIN/PROCESS_EXIT/SUCCESS':
       return {
         ...state,
         unconfirmedTxs: [...state.unconfirmedTxs, action.data],
@@ -39,7 +42,7 @@ export const transactionReducer = (
       return {
         ...state,
         startedExitTxs: [
-          { ...action.data.exitTx, status: 'started' },
+          { ...action.data.exitTx, status: ExitStatus.EXIT_STARTED },
           ...state.startedExitTxs
         ]
       }
@@ -56,6 +59,13 @@ export const transactionReducer = (
             return tx
           }
         })
+      }
+    case 'TRANSACTION/FILTERED_STARTED_EXIT_TXS/SUCCESS':
+      return {
+        ...state,
+        startedExitTxs: state.startedExitTxs.filter(s =>
+          action.data.remoteStartedExitTxs.includes(s.hash)
+        )
       }
     case 'TRANSACTION/INVALIDATE_FEEDBACK_COMPLETE_TX/OK':
       return {

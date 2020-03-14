@@ -2,20 +2,19 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { OMGText } from 'components/widgets'
 import { Formatter } from 'common/utils'
-import { BlockchainRenderer, Plasma } from 'common/blockchain'
+import { BlockchainDataFormatter, Plasma } from 'common/blockchain'
 import { connect } from 'react-redux'
 import { priceService } from 'common/services'
 
 const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
   const [errorReason, setErrorReason] = useState(null)
   const [feePrice, setFeePrice] = useState(null)
-
   const tokens = primaryWallet.childchainAssets
   const textExactDatetime = Formatter.formatTimeStamp(
     tx.timestamp,
     'MMMM-DD-YYYY, HH:mm:ss A Z'
   )
-  const feeAmount = BlockchainRenderer.renderGasFee(
+  const feeAmount = BlockchainDataFormatter.formatGasFee(
     tx.gasUsed,
     tx.gasPrice,
     tx.flatFee
@@ -51,7 +50,7 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
   useEffect(() => {
     async function calculateFeePrice() {
       const price = await priceService.fetchPriceUsd(tx.gasCurrency)
-      const feeUsd = BlockchainRenderer.renderGasFeeUsd(
+      const feeUsd = BlockchainDataFormatter.formatGasFeeUsd(
         tx.gasUsed,
         tx.gasPrice,
         price
@@ -94,8 +93,30 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
       case null:
         return 'Fetching...'
       default:
-        return errorReason
+        return 'Out of gas'
     }
+  }
+
+  const renderTotalExitBond = () => {
+    return (
+      <>
+        <View style={styles.infoItem}>
+          <OMGText style={styles.infoItemLabel(theme, isFailed)}>
+            Total Exit Bonds
+          </OMGText>
+          <View style={styles.infoItemContent}>
+            <OMGText style={styles.infoItemValue(theme)}>
+              {BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
+                tx.exitBond,
+                18
+              )}{' '}
+              ETH
+            </OMGText>
+          </View>
+        </View>
+        <Divider theme={theme} />
+      </>
+    )
   }
 
   const renderErrorReason = () => {
@@ -125,12 +146,12 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
       <Divider theme={theme} />
       <View style={styles.infoItem}>
         <OMGText style={styles.infoItemLabel(theme, isFailed)}>
-          Transact Value
+          Total Transact Value
         </OMGText>
         <View style={styles.infoItemContent}>
           <OMGText style={styles.infoItemValue(theme)}>
-            {BlockchainRenderer.renderTokenBalanceFromSmallestUnit(
-              tx.value,
+            {BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
+              tx.smallestValue || tx.value,
               tx.tokenDecimal
             )}{' '}
             {tx.tokenSymbol}
@@ -138,6 +159,7 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
         </View>
       </View>
       <Divider theme={theme} />
+      {!!tx.exitBond && renderTotalExitBond()}
       {isFailed ? renderErrorReason() : renderFee()}
     </View>
   )
@@ -190,12 +212,14 @@ const styles = StyleSheet.create({
   infoItemValue: theme => ({
     fontSize: 16,
     letterSpacing: -0.64,
+    marginTop: 4,
     color: theme.colors.white
   }),
   infoItemValueLighter: theme => ({
     fontSize: 16,
     marginLeft: 'auto',
     letterSpacing: -0.64,
+    marginTop: 4,
     color: theme.colors.gray6
   }),
   divider: theme => ({

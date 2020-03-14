@@ -89,25 +89,32 @@ const TransactionDetail = ({ navigation, theme }) => {
   const renderPendingExitIfNeeded = useCallback(() => {
     return tx.type === TransactionTypes.TYPE_EXIT ? (
       <OMGExitComplete
-        style={styles.exitCompleteLabel}
-        createdAt={tx.createdAt}
+        style={styles.marginTopMedium}
+        exitableAt={tx.exitableAt}
       />
     ) : null
   }, [tx])
 
-  const renderTransactionDetailFromToIfNeeded = useCallback(() => {
-    return [
-      TransactionTypes.TYPE_SENT,
-      TransactionTypes.TYPE_RECEIVED,
-      TransactionTypes.TYPE_DEPOSIT
-    ].includes(tx.type) ? (
-      <TransactionDetailFromTo
-        tx={transaction}
-        theme={theme}
-        style={styles.fromToContainer}
-      />
-    ) : null
-  }, [theme, transaction, tx.type])
+  const renderTransactionDetailFromToIfNeeded = useCallback(
+    (txnTitle, txn) => {
+      return [
+        TransactionTypes.TYPE_SENT,
+        TransactionTypes.TYPE_RECEIVED,
+        TransactionTypes.TYPE_DEPOSIT,
+        TransactionTypes.TYPE_PROCESS_EXIT
+      ].includes(txn.type) ? (
+        <View style={styles.marginTopMedium}>
+          <OMGText style={styles.fromToTitle(theme)}>{txnTitle}</OMGText>
+          <TransactionDetailFromTo
+            tx={txn}
+            theme={theme}
+            style={styles.marginTopSmall}
+          />
+        </View>
+      ) : null
+    },
+    [theme]
+  )
 
   const renderTransactionDetail = useCallback(() => {
     return (
@@ -115,7 +122,7 @@ const TransactionDetail = ({ navigation, theme }) => {
         contentContainerStyle={styles.scrollViewContainer(theme)}
         bounces={false}>
         <OMGBlockchainLabel
-          style={styles.blockchainLabel(theme)}
+          style={[styles.blockchainLabel(theme), styles.marginTopMedium]}
           transferType={transferType}
           actionText={BlockchainLabels.getBlockchainTextActionLabel(
             transaction
@@ -123,16 +130,29 @@ const TransactionDetail = ({ navigation, theme }) => {
         />
         <TransactionDetailHash
           hash={transaction.hash}
-          style={styles.addressContainer}
+          style={styles.marginTopMedium}
           theme={theme}
         />
         <TransactionDetailInfo
           tx={transaction}
           theme={theme}
-          style={styles.infoContainer}
+          style={styles.marginTopMedium}
         />
         {renderPendingExitIfNeeded()}
-        {renderTransactionDetailFromToIfNeeded()}
+        {renderTransactionDetailFromToIfNeeded(
+          'Token Transferred',
+          transaction
+        )}
+        <Divider theme={theme} />
+        {!!transaction.exitBond &&
+          renderTransactionDetailFromToIfNeeded('Exit Bond Transferred', {
+            ...transaction,
+            from: transaction.exitBondFrom,
+            to: transaction.exitBondTo,
+            value: transaction.exitBond,
+            tokenDecimal: 18,
+            tokenSymbol: 'ETH'
+          })}
         {renderExternalLink()}
       </ScrollView>
     )
@@ -174,18 +194,24 @@ const TransactionDetail = ({ navigation, theme }) => {
   )
 }
 
+const Divider = ({ theme }) => {
+  return <View style={styles.divider(theme)} />
+}
+
 const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     backgroundColor: theme.colors.black5
   }),
   blockchainLabel: theme => ({
-    marginTop: 16,
     marginHorizontal: -16,
     paddingVertical: 10
   }),
-  addressContainer: {
+  marginTopMedium: {
     marginTop: 16
+  },
+  marginTopSmall: {
+    marginTop: 8
   },
   scrollViewContainer: theme => ({
     backgroundColor: theme.colors.black5,
@@ -208,12 +234,6 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     textTransform: 'uppercase'
   }),
-  infoContainer: {
-    marginTop: 16
-  },
-  fromToContainer: {
-    marginTop: 16
-  },
   etherscanContainer: {
     marginTop: 30,
     flexDirection: 'row',
@@ -230,12 +250,19 @@ const styles = StyleSheet.create({
     letterSpacing: -0.48,
     color: theme.colors.blue
   }),
-  exitCompleteLabel: {
-    marginTop: 16
-  },
   filler: {
     flex: 1
-  }
+  },
+  fromToTitle: theme => ({
+    color: theme.colors.gray6,
+    fontSize: 12,
+    letterSpacing: -0.64
+  }),
+  divider: theme => ({
+    backgroundColor: theme.colors.gray5,
+    height: 1,
+    marginTop: 16
+  })
 })
 
 export default withNavigation(withTheme(TransactionDetail))

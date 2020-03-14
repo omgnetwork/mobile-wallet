@@ -7,6 +7,7 @@ import ExitNavigator from './exit'
 import ImportWalletNavigator from './import-wallet'
 import BackupWalletNavigator from './backup-wallet'
 import CreateWalletNavigator from './create-wallet'
+import ProcessExitNavigator from './process-exit'
 import TransactionHistoryNavigator from './transaction-history'
 import createWelcomeNavigator from './welcome'
 import WarpPortal from './warp-portal'
@@ -24,6 +25,7 @@ Views.Exit.router = ExitNavigator.router
 Views.ImportWallet.router = ImportWalletNavigator.router
 Views.CreateWallet.router = CreateWalletNavigator.router
 Views.Backup.router = BackupWalletNavigator.router
+Views.ProcessExit.router = ProcessExitNavigator.router
 
 const WelcomeNavigator = createWelcomeNavigator(
   ImportWalletNavigator,
@@ -70,6 +72,12 @@ export const AppNavigator = createStackNavigator(
     },
     DeleteWallet: {
       screen: Views.DeleteWallet
+    },
+    ProcessExit: {
+      screen: Views.ProcessExit,
+      params: {
+        navigator: ProcessExitNavigator
+      }
     },
     TransferSelectBalance: {
       screen: Views.TransferSelectBalance

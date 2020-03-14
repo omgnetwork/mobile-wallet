@@ -1,7 +1,8 @@
 import { Formatter, Parser, Polling, Datetime, Mapper } from 'common/utils'
 import { Plasma, Token } from 'common/blockchain'
 import { Gas, ContractAddress } from 'common/constants'
-import BN from 'bn.js'
+import Config from 'react-native-config'
+import { Wait } from 'common/utils'
 
 export const fetchAssets = async (provider, address) => {
   try {
@@ -197,60 +198,49 @@ export const exit = (blockchainWallet, token) => {
       const exitData = await Plasma.getExitData(acceptableUtxoParams)
       const gasPrice = Gas.EXIT_GAS_PRICE
 
-      const { transactionHash: hash } = await Plasma.standardExit(
-        exitData,
-        blockchainWallet,
-        { gasPrice }
-      )
+      const {
+        transactionHash: hash,
+        blockNumber: startedExitBlkNum,
+        gasUsed
+      } = await Plasma.standardExit(exitData, blockchainWallet, { gasPrice })
       const exitId = await Plasma.getStandardExitId(utxoToExit, exitData)
-      const { address, bonds } = await Plasma.getPaymentExitGameAddress()
-      const standardExitBond = bonds.standardExit.toString()
+      const standardExitBond = await Plasma.getStandardExitBond()
+
+      await Wait.waitFor(5000)
+
+      const {
+        scheduledFinalizationTime: exitableAt
+      } = await Plasma.getExitTime(startedExitBlkNum, utxoToExit.blknum)
 
       resolve({
         hash,
         exitId,
+        exitableAt,
         blknum: utxoToExit.blknum,
-        to: address,
+        to: Config.PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS,
         flatFee: standardExitBond,
-        gasPrice
+        gasPrice,
+        gasUsed
       })
     } catch (err) {
+      console.log(err)
       reject(err)
     }
   })
 }
 
-// We're not using this right now but let's keep it because it still has potential to be used in the future.
-// export const processExits = (blockchainWallet, exitId, contractAddress) => {
-//   return new Promise(async (resolve, reject) => {
-//     try {
-//       const { transactionHash } = await Plasma.processExits(
-//         contractAddress,
-//         exitId,
-//         {
-//           gas: Gas.HIGH_LIMIT,
-//           from: blockchainWallet.address,
-//           privateKey: blockchainWallet.privateKey
-//         }
-//       )
-
-//       await Plasma.waitForRootchainTransaction({
-//         transactionHash,
-//         intervalMs: 15000,
-//         confirmationThreshold: Config.CHILDCHAIN_EXIT_CONFIRMATION_BLOCKS,
-//         onCountdown: remaining =>
-//           console.log(
-//             `Process exit confirmation is remaining by ${remaining} blocks`
-//           )
-//       })
-
-//       resolve({ transactionHash })
-//     } catch (err) {
-//       console.log(err)
-//       reject(err)
-//     }
-//   })
-// }
+export const processExits = (
+  blockchainWallet,
+  contractAddress,
+  maxExitsToProcess,
+  gasOption
+) => {
+  return Plasma.processExits(contractAddress, maxExitsToProcess, {
+    ...gasOption,
+    from: blockchainWallet.address,
+    privateKey: blockchainWallet.privateKey
+  })
+}
 
 const getOrCreateUtxoWithAmount = async (
   desiredAmount,

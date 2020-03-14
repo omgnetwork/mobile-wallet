@@ -61,4 +61,18 @@ describe('Test Ethereum Boundary', () => {
       gasLimit: Gas.LOW_LIMIT
     })
   })
+
+  it('generateWalletMnemonic must not contain duplicate words', () => {
+    let validCount = 0
+    for (let i = 0; i < 1000; i++) {
+      const mnemonic = Ethereum.generateWalletMnemonic()
+      const words = mnemonic.split(' ')
+      const totalUniqueWords = new Set(words).size
+      const totalWords = words.length
+      if (totalUniqueWords === totalWords) {
+        validCount++
+      }
+    }
+    expect(validCount).toBe(1000)
+  })
 })

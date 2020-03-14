@@ -32,8 +32,7 @@ const RootchainTransactionTracker = ({
 
       if (Transaction.isUnconfirmStartedExitTx(confirmedTx)) {
         dispatchAddStartedExitTx({
-          ...confirmedTx,
-          startedExitAt: Datetime.now()
+          ...confirmedTx
         })
       }
 

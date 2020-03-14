@@ -2,8 +2,12 @@ import React, { useCallback } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
-import { OMGEmpty, OMGItemTransaction } from 'components/widgets'
-import { TransactionTypes } from 'common/constants'
+import {
+  OMGEmpty,
+  OMGItemTransaction,
+  OMGItemExitTransaction
+} from 'components/widgets'
+import { TransactionTypes, ExitStatus } from 'common/constants'
 
 const OMGTransactionList = ({
   transactions,
@@ -31,6 +35,11 @@ const OMGTransactionList = ({
         imageName: 'EmptyTxExit',
         text: 'Empty Exits History.'
       }
+    } else if (type === TransactionTypes.TYPE_PROCESS_EXIT) {
+      return {
+        imageName: 'EmptyTxExit',
+        text: 'Empty Process Exits History.'
+      }
     } else if (type === TransactionTypes.TYPE_FAILED) {
       return {
         imageName: 'EmptyTxAll',
@@ -54,12 +63,27 @@ const OMGTransactionList = ({
     [navigation]
   )
 
+  const handleClickExitTx = useCallback(
+    transaction => {
+      if (transaction.status === ExitStatus.EXIT_READY) {
+        navigation.navigate('ProcessExit', {
+          transaction
+        })
+      } else {
+        handleClickTx(transaction)
+      }
+    },
+    [handleClickTx, navigation]
+  )
+
   const getTransactionDetailTitle = tx => {
     switch (tx.type) {
       case TransactionTypes.TYPE_DEPOSIT:
         return 'Deposit Details'
       case TransactionTypes.TYPE_EXIT:
         return 'Exit Details'
+      case TransactionTypes.TYPE_PROCESS_EXIT:
+        return 'Process Exit Details'
       case TransactionTypes.TYPE_SENT:
       case TransactionTypes.TYPE_RECEIVED:
         return 'Transaction Details'
@@ -67,6 +91,29 @@ const OMGTransactionList = ({
         return 'Failed Details'
     }
   }
+
+  const getItemTransactionComponent = useCallback(
+    tx => {
+      if (tx.type === TransactionTypes.TYPE_EXIT) {
+        return (
+          <OMGItemExitTransaction
+            tx={tx}
+            address={address}
+            onPress={handleClickExitTx}
+          />
+        )
+      } else {
+        return (
+          <OMGItemTransaction
+            tx={tx}
+            address={address}
+            onPress={handleClickTx}
+          />
+        )
+      }
+    },
+    [address, handleClickExitTx, handleClickTx]
+  )
 
   return (
     <View style={{ ...styles.container, ...style }}>
@@ -81,13 +128,7 @@ const OMGTransactionList = ({
             transactions?.length ? styles.content : styles.emptyContent(theme)
           }
           ListEmptyComponent={<OMGEmpty {...getEmptyStatePayload()} />}
-          renderItem={({ item }) => (
-            <OMGItemTransaction
-              tx={item}
-              address={address}
-              onPress={handleClickTx}
-            />
-          )}
+          renderItem={({ item }) => getItemTransactionComponent(item)}
         />
       )}
     </View>
