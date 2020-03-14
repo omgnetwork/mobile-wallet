@@ -1,8 +1,9 @@
 const rateLimit = require('express-rate-limit')
+const IPAddress = require('./ip-address')
 const CONFIG = require('../config')
 
 const keyGenerator = req => {
-  return req.ip
+  return IPAddress.getOriginalRequestIPFromCloudFlare(req) || req.ip
 }
 
 const rateLimiter = () =>
