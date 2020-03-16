@@ -13,9 +13,8 @@ console.log('LOG_LEVEL:', CONFIG.LOG_LEVEL)
 const app = express()
 
 app.use(Sentry.Handlers.requestHandler())
-app.use(rateLimiter)
 app.use(bodyParser.json())
-app.use('/api', ethereumRpcProxy())
+app.use('/api', rateLimiter(), ethereumRpcProxy())
 app.use('/', (req, res) => res.send('OK'))
 app.use(Sentry.Handlers.errorHandler())
 

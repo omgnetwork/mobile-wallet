@@ -4,18 +4,24 @@ const CONFIG = require('../config')
 const errorReporter = require('../utils/error-reporter')
 const { logger, logProvider } = require('../utils/logger')
 const metrics = require('../utils/metrics')
+const ipAddress = require('../utils/ip-address')
 
 // Collect metrics on incoming requests
 function requestReceivedHandler(proxyReq, req) {
   metrics.increment('mobile_api_proxy.num_requests')
-
+  const originalIPAddress =
+    ipAddress.getOriginalRequestIPFromCloudFlare(req) || req.ip
   // Log and measure the Ethereum's JSON-RPC method if `method` is provided.
   if (req.body.method) {
     metrics.increment('mobile_api_proxy.num_requests.' + req.body.method)
-    logger.info('Proxying ETH: ' + req.ip + ' -> ' + req.body.method)
+    logger.info('Proxying ETH: ' + originalIPAddress + ' -> ' + req.body.method)
   } else {
     logger.info(
-      'Proxying HTTP: ' + req.ip + ' -> ' + req.headers.host + req.url
+      'Proxying HTTP: ' +
+        originalIPAddress +
+        ' -> ' +
+        req.headers.host +
+        req.url
     )
   }
 
