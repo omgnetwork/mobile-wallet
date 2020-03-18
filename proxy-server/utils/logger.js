@@ -1,7 +1,7 @@
 const winston = require('winston')
 const CONFIG = require('../config')
 
-const urlRegex = /(\(.*?)?\b((?:http(s)?):\/\/[-a-z0-9+&@#\/%?=~_()|!:,.;]*[-a-z0-9+&@#\/%=~_()|])/gi
+const urlRegex = /(\(.*?)?\b((?:http(s)?):\/\/[-a-z0-9+&@#/%?=~_()|!:,.;]*[-a-z0-9+&@#/%=~_()|])/gi
 
 // Need to be put before winston.format.json() in the winston.format.combine function.
 const hideUrlFormat = winston.format(info => {
