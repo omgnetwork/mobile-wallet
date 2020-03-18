@@ -9,7 +9,6 @@ import {
   OMGAmountInput,
   OMGExitWarning,
   OMGButton,
-  OMGDismissKeyboard,
   OMGExitFee
 } from 'components/widgets'
 import { TransferHelper } from 'components/views/transfer'
