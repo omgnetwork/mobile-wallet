@@ -4,7 +4,7 @@ import axios from 'axios'
 import { Gas, ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
 import BN from 'bn.js'
-import { TxOptions } from 'common/blockchain'
+import { TxOptions, Contract } from 'common/blockchain'
 
 const mappingAmount = obj => ({
   ...obj,
@@ -69,7 +69,11 @@ export const deposit = async (
       address: erc20VaultAddress
     } = await Plasma.RootChain.getErc20Vault()
 
-    const approved = await isApproved(erc20Contract, address, erc20VaultAddress)
+    const approved = await Contract.isApproved(
+      erc20Contract,
+      address,
+      erc20VaultAddress
+    )
 
     if (!approved) {
       const approveOptions = TxOptions.createApproveErc20Options(
@@ -133,14 +137,6 @@ const receiptWithGasPrice = (txReceipt, gasPrice, additionalGasUsed = 0) => {
     gasUsed: txReceipt.gasUsed + additionalGasUsed,
     gasPrice: gasPrice
   }
-}
-
-export const isApproved = async (erc20Contract, address, erc20VaultAddress) => {
-  const allowance = await erc20Contract.methods
-    .allowance(address, erc20VaultAddress)
-    .call()
-
-  return allowance !== '0'
 }
 
 export const standardExit = (exitData, blockchainWallet, options) => {

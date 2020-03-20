@@ -1,9 +1,9 @@
 import { Formatter, Parser, Polling, Datetime, Mapper } from 'common/utils'
 import { Plasma, Token } from 'common/blockchain'
-import { Gas, ContractAddress } from 'common/constants'
+import { ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
-import { Wait } from 'common/utils'
-import { ethereumService } from 'common/services'
+import { web3 } from 'common/clients'
+import { Wait, ContractABI } from 'common/utils'
 
 export const fetchAssets = async (provider, address) => {
   try {

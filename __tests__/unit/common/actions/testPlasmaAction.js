@@ -115,26 +115,28 @@ describe('Test Plasma Actions', () => {
 
     const store = mockStore({})
 
-    return store.dispatch(plasmaActions.deposit(wallet, token)).then(() => {
-      const actions = store.getActions()
-      expect(actions).toStrictEqual([
-        { type: 'CHILDCHAIN/DEPOSIT/INITIATED' },
-        {
-          type: 'CHILDCHAIN/DEPOSIT/SUCCESS',
-          data: {
-            ...mockDepositTxReceipt,
-            from: TEST_ADDRESS,
-            value: token.balance,
-            symbol: token.tokenSymbol,
-            tokenDecimal: token.tokenDecimal,
-            contractAddress: token.contractAddress,
-            actionType: 'CHILDCHAIN_DEPOSIT',
-            createdAt: actions[1].data.createdAt
-          }
-        },
-        { type: 'LOADING/CHILDCHAIN_DEPOSIT/IDLE' }
-      ])
-    })
+    return store
+      .dispatch(plasmaActions.deposit(wallet, token, 'any'))
+      .then(() => {
+        const actions = store.getActions()
+        expect(actions).toStrictEqual([
+          { type: 'CHILDCHAIN/DEPOSIT/INITIATED' },
+          {
+            type: 'CHILDCHAIN/DEPOSIT/SUCCESS',
+            data: {
+              ...mockDepositTxReceipt,
+              from: TEST_ADDRESS,
+              value: token.balance,
+              symbol: token.tokenSymbol,
+              tokenDecimal: token.tokenDecimal,
+              contractAddress: token.contractAddress,
+              actionType: 'CHILDCHAIN_DEPOSIT',
+              createdAt: actions[1].data.createdAt
+            }
+          },
+          { type: 'LOADING/CHILDCHAIN_DEPOSIT/IDLE' }
+        ])
+      })
   })
 
   it('depositErc20 should dispatch actions as expected', () => {
@@ -149,26 +151,28 @@ describe('Test Plasma Actions', () => {
 
     const store = mockStore({})
 
-    return store.dispatch(plasmaActions.deposit(wallet, token)).then(() => {
-      const actions = store.getActions()
-      expect(actions).toStrictEqual([
-        { type: 'CHILDCHAIN/DEPOSIT/INITIATED' },
-        {
-          type: 'CHILDCHAIN/DEPOSIT/SUCCESS',
-          data: {
-            ...mockDepositTxReceipt,
-            from: TEST_ADDRESS,
-            value: token.balance,
-            symbol: token.tokenSymbol,
-            tokenDecimal: token.tokenDecimal,
-            contractAddress: token.contractAddress,
-            actionType: 'CHILDCHAIN_DEPOSIT',
-            createdAt: actions[1].data.createdAt
-          }
-        },
-        { type: 'LOADING/CHILDCHAIN_DEPOSIT/IDLE' }
-      ])
-    })
+    return store
+      .dispatch(plasmaActions.deposit(wallet, token, 'any'))
+      .then(() => {
+        const actions = store.getActions()
+        expect(actions).toStrictEqual([
+          { type: 'CHILDCHAIN/DEPOSIT/INITIATED' },
+          {
+            type: 'CHILDCHAIN/DEPOSIT/SUCCESS',
+            data: {
+              ...mockDepositTxReceipt,
+              from: TEST_ADDRESS,
+              value: token.balance,
+              symbol: token.tokenSymbol,
+              tokenDecimal: token.tokenDecimal,
+              contractAddress: token.contractAddress,
+              actionType: 'CHILDCHAIN_DEPOSIT',
+              createdAt: actions[1].data.createdAt
+            }
+          },
+          { type: 'LOADING/CHILDCHAIN_DEPOSIT/IDLE' }
+        ])
+      })
   })
 
   it('transfer should dispatch actions as expected', () => {
