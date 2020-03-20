@@ -24,7 +24,11 @@ const mockGetUtxosResponse = resp => {
 }
 
 const mockApprove = () => {
+<<<<<<< HEAD
   allowanceTokenForTransfer.mockReturnValueOnce(Promise.resolve(false))
+=======
+  isApproved.mockReturnValueOnce(Promise.resolve(false))
+>>>>>>> Fix tests
 }
 
 const mockDepositResponse = resp => {
