@@ -68,7 +68,7 @@ export const paramsForTransferFormToTransferSelectFee = ({
   selectedEthFee,
   gasOptions,
   amount,
-  fromScreen = 'TransferFrom'
+  fromScreen = 'TransferForm'
 }) => {
   return {
     selectedToken: {

@@ -139,18 +139,13 @@ export const transfer = (
   })
 }
 
-export const deposit = (address, privateKey, token) => {
+export const deposit = (address, privateKey, token, gasPrice) => {
   return new Promise(async (resolve, reject) => {
     try {
       const weiAmount = Parser.parseUnits(
         token.balance,
         token.tokenDecimal
       ).toString(10)
-
-      const gasOptions = await ethereumService.getRecommendedGas()
-      const gasPrice = gasOptions[1].amount
-
-      console.log('gasPrice for Deposit', gasPrice)
 
       const { hash, gasUsed } = await Plasma.deposit(
         address,

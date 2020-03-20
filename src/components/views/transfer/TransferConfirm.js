@@ -511,7 +511,11 @@ const getAction = (
     transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN
 
   if (IS_DEPOSIT) {
-    return plasmaActions.deposit(blockchainWallet, token)
+    return plasmaActions.deposit(
+      blockchainWallet,
+      token,
+      selectedEthFee?.amount
+    )
   } else if (TRANFER_CHILDCHAIN) {
     return plasmaActions.transfer(
       blockchainWallet,
