@@ -68,17 +68,28 @@ export const deposit = async (
     const {
       address: erc20VaultAddress
     } = await Plasma.RootChain.getErc20Vault()
-    const approveOptions = TxOptions.createApproveErc20Options(
-      address,
-      tokenContractAddress,
-      erc20Contract,
-      erc20VaultAddress,
-      weiAmount,
-      depositGas,
-      depositGasPrice
-    )
 
-    approveReceipt = await approveErc20(approveOptions, privateKey)
+    const approved = await isApproved(erc20Contract, address, erc20VaultAddress)
+
+    if (!approved) {
+      const approveOptions = TxOptions.createApproveErc20Options(
+        address,
+        tokenContractAddress,
+        erc20Contract,
+        erc20VaultAddress,
+        weiAmount,
+        depositGas,
+        depositGasPrice
+      )
+      approveReceipt = await approveErc20(approveOptions, privateKey)
+
+      // Wait approve transaction for 1 block
+      await waitForRootchainTransaction({
+        hash: approveReceipt.transactionHash,
+        intervalMs: 3000,
+        confirmationThreshold: 1
+      })
+    }
   }
 
   // SEND DEPOSIT TRANSACTION 👇
@@ -122,6 +133,14 @@ const receiptWithGasPrice = (txReceipt, gasPrice, additionalGasUsed = 0) => {
     gasUsed: txReceipt.gasUsed + additionalGasUsed,
     gasPrice: gasPrice
   }
+}
+
+export const isApproved = async (erc20Contract, address, erc20VaultAddress) => {
+  const allowance = await erc20Contract.methods
+    .allowance(address, erc20VaultAddress)
+    .call()
+
+  return allowance !== '0'
 }
 
 export const standardExit = (exitData, blockchainWallet, options) => {
