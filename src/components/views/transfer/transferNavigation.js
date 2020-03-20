@@ -67,7 +67,8 @@ export const paramsForTransferFormToTransferSelectFee = ({
   selectedToken,
   selectedEthFee,
   gasOptions,
-  amount
+  amount,
+  fromScreen = 'TransferFrom'
 }) => {
   return {
     selectedToken: {
@@ -75,7 +76,8 @@ export const paramsForTransferFormToTransferSelectFee = ({
       balance: amount
     },
     selectedEthFee,
-    fees: gasOptions
+    fees: gasOptions,
+    fromScreen
   }
 }
 
@@ -182,7 +184,8 @@ export const getParamsForTransferSelectFeeFromTransferForm = navigation => {
   return {
     fees: navigation.getParam('fees'),
     selectedToken: navigation.getParam('selectedToken'),
-    selectedEthFee: navigation.getParam('selectedEthFee')
+    selectedEthFee: navigation.getParam('selectedEthFee'),
+    fromScreen: navigation.getParam('fromScreen')
   }
 }
 

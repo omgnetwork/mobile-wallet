@@ -83,7 +83,6 @@ export const estimateExit = async (
       return exitGas
     }
   } catch (err) {
-    console.log(err)
     return Gas.EXIT_ESTIMATED_GAS_USED
   }
 }

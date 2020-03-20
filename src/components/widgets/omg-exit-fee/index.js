@@ -1,33 +1,38 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { withTheme } from 'react-native-paper'
-import { connect } from 'react-redux'
 import { BlockchainDataFormatter, Token } from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
 import { View, StyleSheet, TouchableOpacity, Linking } from 'react-native'
 import { OMGText, OMGEmpty } from 'components/widgets'
 
-const OMGExitFee = ({ theme, feeValue, exitBondValue, gasOptions, style }) => {
+const OMGExitFee = ({
+  theme,
+  gasUsed,
+  exitBondValue,
+  loading,
+  gasPrice,
+  style
+}) => {
   const [ethPrice, setEthPrice] = useState()
-  const gasPrice = gasOptions[3].amount
 
   const formatBond = useCallback(() => {
     return BlockchainDataFormatter.formatEthFromWei(exitBondValue)
   }, [exitBondValue])
 
   const formatGasFee = useCallback(() => {
-    return BlockchainDataFormatter.formatGasFee(feeValue, gasPrice)
-  }, [feeValue, gasPrice])
+    return BlockchainDataFormatter.formatGasFee(gasUsed, gasPrice)
+  }, [gasUsed, gasPrice])
 
   const formatTotalExitFee = useCallback(() => {
-    if (feeValue && exitBondValue) {
+    if (gasUsed && exitBondValue) {
       return BlockchainDataFormatter.formatGasFee(
-        feeValue,
+        gasUsed,
         gasPrice,
         exitBondValue
       )
     }
-  }, [exitBondValue, feeValue, gasPrice])
+  }, [exitBondValue, gasUsed, gasPrice])
 
   useEffect(() => {
     async function fetchEthPrice() {
@@ -48,6 +53,7 @@ const OMGExitFee = ({ theme, feeValue, exitBondValue, gasOptions, style }) => {
     title,
     subtitle,
     value,
+    isLoading,
     itemStyle,
     textColor = theme.colors.gray
   }) => {
@@ -72,7 +78,7 @@ const OMGExitFee = ({ theme, feeValue, exitBondValue, gasOptions, style }) => {
           )}
         </View>
         <View style={[styles.itemSubContainer, styles.alignRight]}>
-          {value.toString() * 1 ? (
+          {!loading && value > 0 ? (
             <>
               <OMGText style={[styles.textPrimary(textColor), styles.textBig]}>
                 {value} ETH
@@ -87,7 +93,7 @@ const OMGExitFee = ({ theme, feeValue, exitBondValue, gasOptions, style }) => {
               </OMGText>
             </>
           ) : (
-            <OMGEmpty loading={true} />
+            <OMGEmpty loading={loading} />
           )}
         </View>
       </View>
@@ -97,7 +103,11 @@ const OMGExitFee = ({ theme, feeValue, exitBondValue, gasOptions, style }) => {
   return (
     <>
       <View style={[styles.container(theme), style]}>
-        <Item title='Transaction Fee' value={formatGasFee(feeValue)} />
+        <Item
+          title='Transaction Fee'
+          value={formatGasFee(gasUsed)}
+          isLoading={loading}
+        />
         <Item
           title='Exit Bond'
           subtitle='You’ll get this back after successfully exited'
@@ -113,6 +123,7 @@ const OMGExitFee = ({ theme, feeValue, exitBondValue, gasOptions, style }) => {
       <View style={[styles.container(theme), styles.gapMargin]}>
         <Item
           title='Total Exit Fee'
+          isLoading={loading}
           textColor={theme.colors.white}
           value={formatTotalExitFee() || 0}
         />
@@ -171,11 +182,4 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
-  gasOptions: state.gasOptions
-})
-
-export default connect(
-  mapStateToProps,
-  null
-)(withTheme(OMGExitFee))
+export default withTheme(OMGExitFee)

@@ -15,7 +15,6 @@ import {
   OMGBlockchainLabel,
   OMGEmpty
 } from 'components/widgets'
-import { ethereumService } from 'common/services'
 
 const ExitConfirm = ({
   theme,
@@ -27,6 +26,9 @@ const ExitConfirm = ({
   dispatchExit
 }) => {
   const token = navigation.getParam('token')
+  const gasUsed = navigation.getParam('gasUsed')
+  const gasPrice = navigation.getParam('gasPrice')
+  const exitBond = navigation.getParam('exitBond')
   const tokenBalance = BlockchainDataFormatter.formatTokenBalance(token.balance)
   const tokenPrice = BlockchainDataFormatter.formatTokenPrice(
     token.balance,
@@ -37,8 +39,8 @@ const ExitConfirm = ({
   const [loadingVisible, setLoadingVisible] = useState(false)
 
   const exit = useCallback(() => {
-    dispatchExit(blockchainWallet, token)
-  }, [blockchainWallet, dispatchExit, token])
+    dispatchExit(blockchainWallet, token, gasPrice)
+  }, [blockchainWallet, dispatchExit, gasPrice, token])
 
   useEffect(() => {
     if (loading.show && ActionAlert.exit.actions.indexOf(loading.action) > -1) {
@@ -68,18 +70,13 @@ const ExitConfirm = ({
   })
 
   useEffect(() => {
-    async function calculateEstimatedFee() {
-      const gasUsed = await TransferHelper.getGasUsed(
-        TransferHelper.TYPE_EXIT,
-        token,
-        {
-          wallet: blockchainWallet,
-          includeExitBond: true
-        }
+    function calculateEstimatedFee() {
+      const gasFee = BlockchainDataFormatter.formatGasFee(
+        gasUsed,
+        gasPrice,
+        exitBond
       )
-      const gasOptions = await ethereumService.getRecommendedGas()
-      const gasPrice = gasOptions[1].amount
-      const gasFee = BlockchainDataFormatter.formatGasFee(gasUsed, gasPrice)
+      console.log(gasFee)
       const usdPerEth = ethToken && ethToken.price
       const gasFeeUsd = BlockchainDataFormatter.formatTokenPrice(
         gasFee,
@@ -89,7 +86,15 @@ const ExitConfirm = ({
       setEstimatedFeeUsd(gasFeeUsd)
     }
     calculateEstimatedFee()
-  }, [blockchainWallet, ethToken, token, tokenPrice])
+  }, [
+    blockchainWallet,
+    ethToken,
+    exitBond,
+    gasPrice,
+    gasUsed,
+    token,
+    tokenPrice
+  ])
 
   const renderEstimatedFeeElement = useCallback(() => {
     return (
@@ -265,8 +270,8 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchExit: (blockchainWallet, token) =>
-    dispatch(plasmaActions.exit(blockchainWallet, token))
+  dispatchExit: (blockchainWallet, token, gasPrice) =>
+    dispatch(plasmaActions.exit(blockchainWallet, token, gasPrice))
 })
 
 export default connect(

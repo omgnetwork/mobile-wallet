@@ -25,7 +25,8 @@ const TransferSelectFee = ({
   const {
     fees,
     selectedToken,
-    selectedEthFee
+    selectedEthFee,
+    fromScreen
   } = getParamsForTransferSelectFeeFromTransferForm(navigation)
   const [ethFee, setEthFee] = useState(selectedEthFee || fees[0])
 
@@ -34,16 +35,16 @@ const TransferSelectFee = ({
       selectedEthFee: ethFee,
       amount: selectedToken.balance
     })
-    navigation.navigate('TransferForm', params)
-  }, [selectedToken.balance, ethFee, navigation])
+    navigation.navigate(fromScreen, params)
+  }, [ethFee, selectedToken.balance, navigation, fromScreen])
 
   const navigateBack = useCallback(() => {
     const params = paramsForTransferSelectEthFeeToTransferForm({
       selectedEthFee,
       amount: selectedToken.balance
     })
-    navigation.navigate('TransferForm', params)
-  }, [navigation, selectedEthFee, selectedToken.balance])
+    navigation.navigate(fromScreen, params)
+  }, [fromScreen, navigation, selectedEthFee, selectedToken.balance])
 
   useEffect(() => {
     dispatchGetRecommendedGas()

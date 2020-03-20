@@ -172,7 +172,7 @@ export const deposit = (address, privateKey, token) => {
   })
 }
 
-export const exit = (blockchainWallet, token) => {
+export const exit = (blockchainWallet, token, gasPrice) => {
   return new Promise(async (resolve, reject) => {
     try {
       // Check if the token has been unlocked
@@ -181,7 +181,8 @@ export const exit = (blockchainWallet, token) => {
       if (!hasToken) {
         await Plasma.addToken(token.contractAddress, {
           from: blockchainWallet.address,
-          privateKey: blockchainWallet.privateKey
+          privateKey: blockchainWallet.privateKey,
+          gasPrice
         })
       }
 
@@ -205,9 +206,6 @@ export const exit = (blockchainWallet, token) => {
       )
       const acceptableUtxoParams = Plasma.createAcceptableUtxoParams(utxoToExit)
       const exitData = await Plasma.getExitData(acceptableUtxoParams)
-      const gasOptions = await ethereumService.getRecommendedGas()
-      const gasPrice = gasOptions[1].amount
-      console.log('gasPrice for Exit', gasPrice)
 
       const {
         transactionHash: hash,
