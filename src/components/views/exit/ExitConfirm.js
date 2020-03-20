@@ -5,7 +5,7 @@ import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { BlockchainDataFormatter } from 'common/blockchain'
 import { plasmaActions } from 'common/actions'
-import { ActionAlert, Gas, ContractAddress } from 'common/constants'
+import { ActionAlert, ContractAddress } from 'common/constants'
 import { TransferHelper } from 'components/views/transfer'
 import {
   OMGText,
@@ -15,6 +15,7 @@ import {
   OMGBlockchainLabel,
   OMGEmpty
 } from 'components/widgets'
+import { ethereumService } from 'common/services'
 
 const ExitConfirm = ({
   theme,
@@ -76,7 +77,8 @@ const ExitConfirm = ({
           includeExitBond: true
         }
       )
-      const gasPrice = Gas.EXIT_GAS_PRICE
+      const gasOptions = await ethereumService.getRecommendedGas()
+      const gasPrice = gasOptions[1].amount
       const gasFee = BlockchainDataFormatter.formatGasFee(gasUsed, gasPrice)
       const usdPerEth = ethToken && ethToken.price
       const gasFeeUsd = BlockchainDataFormatter.formatTokenPrice(
@@ -188,19 +190,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
-  maxTotalContainer: theme => ({
-    backgroundColor: theme.colors.gray4,
-    flexDirection: 'column',
-    paddingHorizontal: 16,
-    paddingVertical: 20
-  }),
-  balanceContainer: {},
-  amountContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 10
-  },
   buttonContainer: {
     justifyContent: 'flex-end',
     marginVertical: 16,
@@ -211,28 +200,6 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     textTransform: 'uppercase',
     marginLeft: 3
-  }),
-  tokenBalance: theme => ({
-    fontSize: 32,
-    letterSpacing: -3,
-    color: theme.colors.white
-  }),
-  tokenSymbol: theme => ({
-    textAlign: 'right',
-    fontSize: 18,
-    letterSpacing: -0.64,
-    color: theme.colors.white
-  }),
-  tokenWorth: theme => ({
-    color: theme.colors.white,
-    fontSize: 12,
-    letterSpacing: -0.48,
-    marginTop: 2
-  }),
-  maxTotalTitle: theme => ({
-    fontSize: 12,
-    textTransform: 'uppercase',
-    color: theme.colors.white
   }),
   subtitle: theme => ({
     marginTop: 30,

@@ -1,31 +1,33 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { withTheme } from 'react-native-paper'
+import { connect } from 'react-redux'
 import { BlockchainDataFormatter, Token } from 'common/blockchain'
-import { ContractAddress, Gas } from 'common/constants'
+import { ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
 import { View, StyleSheet, TouchableOpacity, Linking } from 'react-native'
 import { OMGText, OMGEmpty } from 'components/widgets'
 
-const OMGExitFee = ({ theme, feeValue, exitBondValue, style }) => {
+const OMGExitFee = ({ theme, feeValue, exitBondValue, gasOptions, style }) => {
   const [ethPrice, setEthPrice] = useState()
+  const gasPrice = gasOptions[3].amount
 
   const formatBond = useCallback(() => {
     return BlockchainDataFormatter.formatEthFromWei(exitBondValue)
   }, [exitBondValue])
 
   const formatGasFee = useCallback(() => {
-    return BlockchainDataFormatter.formatGasFee(feeValue, Gas.EXIT_GAS_PRICE)
-  }, [feeValue])
+    return BlockchainDataFormatter.formatGasFee(feeValue, gasPrice)
+  }, [feeValue, gasPrice])
 
   const formatTotalExitFee = useCallback(() => {
     if (feeValue && exitBondValue) {
       return BlockchainDataFormatter.formatGasFee(
         feeValue,
-        Gas.EXIT_GAS_PRICE,
+        gasPrice,
         exitBondValue
       )
     }
-  }, [exitBondValue, feeValue])
+  }, [exitBondValue, feeValue, gasPrice])
 
   useEffect(() => {
     async function fetchEthPrice() {
@@ -169,4 +171,11 @@ const styles = StyleSheet.create({
   })
 })
 
-export default withTheme(OMGExitFee)
+const mapStateToProps = (state, ownProps) => ({
+  gasOptions: state.gasOptions
+})
+
+export default connect(
+  mapStateToProps,
+  null
+)(withTheme(OMGExitFee))

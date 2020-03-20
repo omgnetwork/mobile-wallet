@@ -66,6 +66,17 @@ export const sendEthToken = (token, fee, blockchainWallet, toAddress) => {
   })
 }
 
+export const getRecommendedGas = () => {
+  const asyncAction = async () => {
+    return await ethereumService.getRecommendedGas()
+  }
+
+  return createAsyncAction({
+    type: 'ROOTCHAIN/GET_RECOMMENDED_GAS',
+    operation: asyncAction
+  })
+}
+
 export const fetchAssets = (provider, address, lastBlockNumber) => {
   const asyncAction = async () => {
     const updatedAssets = await ethereumService.fetchAssets(

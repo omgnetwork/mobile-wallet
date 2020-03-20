@@ -1,10 +1,10 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, InteractionManager } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { withNavigationFocus, SafeAreaView } from 'react-navigation'
 import * as TransferHelper from './transferHelper'
 import { withTheme } from 'react-native-paper'
-import { plasmaActions } from 'common/actions'
+import { plasmaActions, ethereumActions } from 'common/actions'
 import { useLoading } from 'common/hooks'
 import {
   OMGBox,
@@ -37,6 +37,8 @@ const TransferForm = ({
   navigation,
   isFocused,
   dispatchGetFees,
+  dispatchGetRecommendedGas,
+  gasOptions,
   fees,
   loading
 }) => {
@@ -59,10 +61,16 @@ const TransferForm = ({
   const keyboardAwareScrollRef = useRef(null)
   const [showErrorAddress, setShowErrorAddress] = useState(false)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
+  const [ethFee, setEthFee] = useState(selectedEthFee)
   const [loadingFeeToken] = useLoading(
     loading,
     'CHILDCHAIN_FEES',
     fees.length === 0
+  )
+  const [loadingGas] = useLoading(
+    loading,
+    'ROOTCHAIN_GET_RECOMMENDED_GAS',
+    !ethFee
   )
   const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
 
@@ -79,7 +87,20 @@ const TransferForm = ({
   // Retrieve fees from /fees.all when the component is mounted
   useEffect(() => {
     dispatchGetFees(wallet.childchainAssets)
-  }, [dispatchGetFees, wallet.childchainAssets])
+
+    if (!selectedEthFee) {
+      dispatchGetRecommendedGas()
+    }
+  }, [
+    dispatchGetFees,
+    dispatchGetRecommendedGas,
+    selectedEthFee,
+    wallet.childchainAssets
+  ])
+
+  useEffect(() => {
+    setEthFee(selectedEthFee || gasOptions[0])
+  }, [gasOptions, selectedEthFee])
 
   const focusOn = useCallback(inputRef => {
     inputRef?.current?.focus()
@@ -144,14 +165,14 @@ const TransferForm = ({
           selectedPlasmaFee: plasmaFee,
           wallet,
           transferType,
-          selectedEthFee
+          selectedEthFee: ethFee
         })
       )
     }
   }, [
+    ethFee,
     fees,
     navigation,
-    selectedEthFee,
     selectedPlasmaFee,
     selectedToken,
     transferType,
@@ -171,11 +192,12 @@ const TransferForm = ({
   const navigationToTransferSelectFee = useCallback(() => {
     const params = paramsForTransferFormToTransferSelectFee({
       selectedToken,
-      selectedEthFee,
+      selectedEthFee: ethFee,
+      gasOptions,
       amount: amountRef.current
     })
     navigation.navigate('TransferSelectFee', params)
-  }, [navigation, selectedEthFee, selectedToken])
+  }, [ethFee, gasOptions, navigation, selectedToken])
 
   const renderAddressElement = useCallback(() => {
     return transferType === TransferHelper.TYPE_DEPOSIT ? (
@@ -240,18 +262,19 @@ const TransferForm = ({
           </OMGBox>
           <OMGBox style={styles.feeContainer(theme, transferType)}>
             <OMGText style={styles.title(theme)}>Transaction Fee</OMGText>
-            {transferType === TransferHelper.TYPE_TRANSFER_ROOTCHAIN ? (
-              <OMGFeeInput
-                fee={selectedEthFee}
-                style={styles.feeInput}
-                onPress={navigationToTransferSelectFee}
-              />
-            ) : (
+            {transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN ? (
               <OMGFeeTokenInput
                 onPress={navigateToSelectPlasmaFee}
                 style={styles.feeInput}
                 feeToken={selectedPlasmaFee || fees[0]}
                 loading={loadingFeeToken}
+              />
+            ) : (
+              <OMGFeeInput
+                fee={ethFee}
+                loading={loadingGas}
+                style={styles.feeInput}
+                onPress={navigationToTransferSelectFee}
               />
             )}
           </OMGBox>
@@ -291,7 +314,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.black3
   }),
   feeContainer: (theme, transferType) => ({
-    display: TransferHelper.TYPE_DEPOSIT === transferType ? 'none' : 'flex',
     flexDirection: 'column',
     backgroundColor: theme.colors.black3
   }),
@@ -327,11 +349,13 @@ const mapStateToProps = (state, ownProps) => ({
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
   loading: state.loading,
-  fees: state.fees.data
+  fees: state.fees.data,
+  gasOptions: state.gasOptions
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchGetFees: tokens => dispatch(plasmaActions.getFees(tokens))
+  dispatchGetFees: tokens => dispatch(plasmaActions.getFees(tokens)),
+  dispatchGetRecommendedGas: () => dispatch(ethereumActions.getRecommendedGas())
 })
 
 export default connect(

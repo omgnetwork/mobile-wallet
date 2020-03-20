@@ -3,6 +3,7 @@ import { Plasma, Token } from 'common/blockchain'
 import { Gas, ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
 import { Wait } from 'common/utils'
+import { ethereumService } from 'common/services'
 
 export const fetchAssets = async (provider, address) => {
   try {
@@ -146,11 +147,19 @@ export const deposit = (address, privateKey, token) => {
         token.tokenDecimal
       ).toString(10)
 
-      const { hash, gasPrice, gasUsed } = await Plasma.deposit(
+      const gasOptions = await ethereumService.getRecommendedGas()
+      const gasPrice = gasOptions[1].amount
+
+      console.log('gasPrice for Deposit', gasPrice)
+
+      const { hash, gasUsed } = await Plasma.deposit(
         address,
         privateKey,
         weiAmount,
-        token.contractAddress
+        token.contractAddress,
+        {
+          gasPrice
+        }
       )
       resolve({
         hash,
@@ -196,7 +205,9 @@ export const exit = (blockchainWallet, token) => {
       )
       const acceptableUtxoParams = Plasma.createAcceptableUtxoParams(utxoToExit)
       const exitData = await Plasma.getExitData(acceptableUtxoParams)
-      const gasPrice = Gas.EXIT_GAS_PRICE
+      const gasOptions = await ethereumService.getRecommendedGas()
+      const gasPrice = gasOptions[1].amount
+      console.log('gasPrice for Exit', gasPrice)
 
       const {
         transactionHash: hash,

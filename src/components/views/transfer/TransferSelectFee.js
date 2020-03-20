@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
+import { ethereumActions } from 'common/actions'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import {
@@ -15,7 +16,12 @@ import {
   paramsForTransferSelectEthFeeToTransferForm
 } from './transferNavigation'
 
-const TransferSelectFee = ({ theme, loading, navigation }) => {
+const TransferSelectFee = ({
+  theme,
+  loading,
+  dispatchGetRecommendedGas,
+  navigation
+}) => {
   const {
     fees,
     selectedToken,
@@ -23,16 +29,25 @@ const TransferSelectFee = ({ theme, loading, navigation }) => {
   } = getParamsForTransferSelectFeeFromTransferForm(navigation)
   const [ethFee, setEthFee] = useState(selectedEthFee || fees[0])
 
-  const navigateToTransferForm = useCallback(
-    selectedFee => {
-      const params = paramsForTransferSelectEthFeeToTransferForm({
-        selectedEthFee: ethFee,
-        amount: selectedToken.balance
-      })
-      navigation.navigate('TransferForm', params)
-    },
-    [selectedToken.balance, ethFee, navigation]
-  )
+  const apply = useCallback(() => {
+    const params = paramsForTransferSelectEthFeeToTransferForm({
+      selectedEthFee: ethFee,
+      amount: selectedToken.balance
+    })
+    navigation.navigate('TransferForm', params)
+  }, [selectedToken.balance, ethFee, navigation])
+
+  const navigateBack = useCallback(() => {
+    const params = paramsForTransferSelectEthFeeToTransferForm({
+      selectedEthFee,
+      amount: selectedToken.balance
+    })
+    navigation.navigate('TransferForm', params)
+  }, [navigation, selectedEthFee, selectedToken.balance])
+
+  useEffect(() => {
+    dispatchGetRecommendedGas()
+  }, [dispatchGetRecommendedGas])
 
   return (
     <SafeAreaView style={styles.container(theme)}>
@@ -42,7 +57,7 @@ const TransferSelectFee = ({ theme, loading, navigation }) => {
           size={18}
           color={theme.colors.white}
           style={styles.headerIcon}
-          onPress={navigateToTransferForm}
+          onPress={navigateBack}
         />
         <OMGText style={styles.headerTitle(theme)}>Transaction Fee</OMGText>
       </View>
@@ -54,7 +69,7 @@ const TransferSelectFee = ({ theme, loading, navigation }) => {
       <View style={styles.listContainer(theme)}>
         <FlatList
           data={fees || []}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.speed}
           keyboardShouldPersistTaps='always'
           ListEmptyComponent={
             <OMGEmpty text='Empty fees' loading={loading.show} />
@@ -64,18 +79,18 @@ const TransferSelectFee = ({ theme, loading, navigation }) => {
           }
           renderItem={({ item }) => (
             <OMGFeeSelect
-              key={item.id}
+              key={item.speed}
               style={{ marginTop: 8 }}
               fee={item}
               onPress={() => {
                 setEthFee(item)
               }}
-              selected={item.id === ethFee.id}
+              selected={item.speed === ethFee.speed}
             />
           )}
         />
         <View style={styles.buttonContainer}>
-          <OMGButton onPress={navigateToTransferForm}>Apply</OMGButton>
+          <OMGButton onPress={apply}>Apply</OMGButton>
         </View>
       </View>
     </SafeAreaView>
@@ -135,10 +150,15 @@ const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
-  )
+  ),
+  gasOptions: state.gasOptions
+})
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatchGetRecommendedGas: () => dispatch(ethereumActions.getRecommendedGas())
 })
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withNavigation(withTheme(TransferSelectFee)))

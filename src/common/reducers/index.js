@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import { errorReducer } from './errorReducer'
 import { feeReducer } from './feeReducer'
+import { gasReducer } from './gasReducer'
 import { loadingReducer } from './loadingReducer'
 import { walletsReducer } from './walletReducer'
 import { transactionReducer } from './transactionReducer'
@@ -26,6 +27,7 @@ export default combineReducers({
   loading: loadingReducer,
   transaction: transactionReducer,
   fees: feeReducer,
+  gasOptions: gasReducer,
   onboarding: persistReducer(persistOnboardingConfig, onboardingReducer),
   setting: persistReducer(persistSettingConfig, settingReducer),
   error: errorReducer

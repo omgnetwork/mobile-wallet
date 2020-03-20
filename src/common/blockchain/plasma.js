@@ -83,12 +83,16 @@ export const deposit = async (
 
   // SEND DEPOSIT TRANSACTION 👇
 
+  const nonce = await web3.eth.getTransactionCount(address)
+
   const depositOptions = TxOptions.createDepositOptions(
     address,
     privateKey,
     depositGas,
     depositGasPrice
   )
+
+  console.log(depositOptions)
 
   const receipt = await Plasma.RootChain.deposit({
     amount: weiAmount,

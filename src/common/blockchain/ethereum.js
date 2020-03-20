@@ -105,6 +105,12 @@ export const sendErc20Token = (contract, options) => {
   return contract.transfer(toAddress, amount, gasOptions)
 }
 
+export const getGasFromGasStation = () => {
+  return axios
+    .get('https://ethgasstation.info/json/ethgasAPI.json')
+    .then(response => response.data)
+}
+
 export const getContract = (tokenContractAddress, abi, walletOrProvider) => {
   return new ethers.Contract(tokenContractAddress, abi, walletOrProvider)
 }

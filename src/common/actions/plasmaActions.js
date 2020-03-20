@@ -150,6 +150,7 @@ export const processExits = (blockchainWallet, utxo, maxExitsToProcess) => {
       tokenDecimal,
       tokenPrice
     } = utxo
+
     const gasOption = {
       gas: Gas.HIGH_LIMIT,
       gasPrice: Gas.EXIT_GAS_PRICE
