@@ -102,10 +102,6 @@ const TransferForm = ({
     setEthFee(selectedEthFee || gasOptions[0])
   }, [gasOptions, selectedEthFee])
 
-  const focusOn = useCallback(inputRef => {
-    inputRef?.current?.focus()
-  }, [])
-
   const navigateToSelectPlasmaFee = useCallback(() => {
     const params = paramsForTransferFormToTransferSelectPlasmaFee({
       selectedPlasmaFee,

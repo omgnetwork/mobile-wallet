@@ -85,7 +85,7 @@ const ExitForm = ({
 
   useEffect(() => {
     if (gasOptions) {
-      setGasPrice(selectedEthFee || gasOptions[1])
+      setGasPrice(selectedEthFee || gasOptions[0])
     }
   }, [gasOptions, gasPrice, selectedEthFee])
 

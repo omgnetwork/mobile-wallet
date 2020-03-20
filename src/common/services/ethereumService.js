@@ -93,14 +93,6 @@ export const getRecommendedGas = () => {
       safeLowWait
     }) => [
       {
-        speed: 'Fastest',
-        estimateTime: `${fastestWait * 60} seconds`,
-        amount: Parser.parseUnits(fastest.toString(), 8).toString(10),
-        displayAmount: fastest / 10,
-        symbol: 'Gwei',
-        price: '1'
-      },
-      {
         speed: 'Fast',
         estimateTime: `${fastWait * 60} seconds`,
         amount: Parser.parseUnits(fast.toString(), 8).toString(10),
