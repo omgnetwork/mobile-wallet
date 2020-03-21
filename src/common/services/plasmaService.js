@@ -294,23 +294,23 @@ export const waitForExitUtxo = (
   blockchainWallet,
   token
 ) => {
+  let utxoPos = fromUtxoPos
   return Polling.pollUntilSuccess(async () => {
-    const utxo = await getNewUtxoByAmount(
-      desiredAmount,
-      fromUtxoPos + 1,
-      blockchainWallet,
-      token
-    )
+    const utxos = await getNewUtxos(utxoPos + 1, blockchainWallet, token)
+    const hasNewUtxos = utxos.length > 0
+    const desiredAmountUtxo = utxos.find(utxo => utxo.amount === desiredAmount)
 
-    if (utxo) {
+    if (hasNewUtxos && desiredAmountUtxo) {
       return {
         success: true,
-        data: utxo
+        data: desiredAmountUtxo
       }
-    } else {
-      return {
-        success: false
-      }
+    } else if (hasNewUtxos) {
+      await transfer(blockchainWallet, blockchainWallet.address, token)
+      utxoPos = utxos[0].utxo_pos
+    }
+    return {
+      success: false
     }
   }, 3000)
 }
@@ -323,16 +323,9 @@ const getUtxoByAmount = async (amount, blockchainWallet, token) => {
   return utxos.find(utxo => utxo.amount === amount)
 }
 
-const getNewUtxoByAmount = async (
-  amount,
-  fromUtxoPos,
-  blockchainWallet,
-  token
-) => {
-  const utxos = await Plasma.getUtxos(blockchainWallet.address, {
+const getNewUtxos = async (fromUtxoPos, blockchainWallet, token) => {
+  return Plasma.getUtxos(blockchainWallet.address, {
     fromUtxoPos: fromUtxoPos,
     currency: token.contractAddress
   })
-
-  return utxos.find(utxo => utxo.amount === amount)
 }
