@@ -19,10 +19,12 @@ export const invalidatePendingExitTx = (dispatch, resolvedTx) => {
   })
 }
 
-export const invalidateFeedbackCompleteTx = dispatch => {
+export const invalidateFeedbackCompleteTx = (dispatch, wallet) => {
   return createAction(dispatch, {
     type: 'TRANSACTION/INVALIDATE_FEEDBACK_COMPLETE_TX',
-    operation: () => ({})
+    operation: () => ({
+      wallet
+    })
   })
 }
 

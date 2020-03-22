@@ -81,6 +81,27 @@ export const transfer = (blockchainWallet, toAddress, token, feeToken) => {
   })
 }
 
+export const mergeUTXOsIfNeeded = (address, privateKey) => {
+  const asyncAction = async () => {
+    const receipts = await plasmaService.mergeUTXOsIfNeeded(address, privateKey)
+
+    if (!receipts) return
+
+    // Get latest transaction hash
+    const { txhash } = receipts.sort((a, b) => b.blknum - a.blknum)[0]
+    return {
+      address,
+      hash: txhash,
+      actionType: TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
+    }
+  }
+
+  return createAsyncAction({
+    type: 'CHILDCHAIN/MERGE_UTXOS_IF_NEEDED',
+    operation: asyncAction
+  })
+}
+
 export const exit = (blockchainWallet, token) => {
   const asyncAction = async () => {
     const {

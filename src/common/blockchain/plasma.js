@@ -32,6 +32,54 @@ export const getUtxos = (address, options) => {
     .then(utxos => utxos.sort(sortingUtxoPos))
 }
 
+export const getRequiredMergeUtxos = (address, mergeThreshold = 4) => {
+  return getUtxos(address)
+    .then(utxos =>
+      utxos.reduce((acc, utxo) => {
+        const { currency } = utxo
+        if (!acc[currency]) {
+          acc[currency] = []
+        }
+        acc[currency].push(utxo)
+        return acc
+      }, {})
+    )
+    .then(map =>
+      Object.keys(map)
+        .filter(key => map[key].length > mergeThreshold)
+        .map(key => map[key])
+    )
+}
+
+export const mergeListOfUtxos = (address, privateKey, listOfUtxos) => {
+  const pendingMergeUtxos = listOfUtxos.map(utxos =>
+    mergeUtxos(address, privateKey, utxos.slice(0, 4))
+  )
+  return Promise.all(pendingMergeUtxos)
+}
+
+export const mergeUtxos = async (address, privateKey, utxos) => {
+  const _metadata = 'Merge UTXOs'
+  const { currency } = utxos[0]
+  const totalAmount = utxos.reduce((sum, utxo) => {
+    return sum.add(new BN(utxo.amount))
+  }, new BN(0))
+  const payments = createPayment(address, currency, totalAmount)
+  const fee = { ...createFee(), amount: 0 }
+  const txBody = PlasmaUtils.transaction.createTransactionBody({
+    fromAddress: address,
+    fromUtxos: utxos,
+    payments,
+    fee,
+    metadata: Transaction.encodeMetadata(_metadata)
+  })
+  const typedData = getTypedData(txBody)
+  const privateKeys = new Array(txBody.inputs.length).fill(privateKey)
+  const signatures = signTx(typedData, privateKeys)
+  const signedTxn = buildSignedTx(typedData, signatures)
+  return submitTx(signedTxn)
+}
+
 export const createPayment = (address, tokenContractAddress, amount) => {
   return [
     {

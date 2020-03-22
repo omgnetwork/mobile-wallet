@@ -11,7 +11,9 @@ export const createAsyncAction = ({
     return requestAnimationFrame(async () => {
       try {
         const result = await doAsyncAction()
-        dispatch({ type: `${actionType}/SUCCESS`, data: result })
+        if (result) {
+          dispatch({ type: `${actionType}/SUCCESS`, data: result })
+        }
       } catch (err) {
         console.log(`${err.message}`)
         dispatch({ type: `${actionType}/FAILED`, data: err })

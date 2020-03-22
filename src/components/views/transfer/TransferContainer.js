@@ -36,7 +36,7 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
         <OMGText style={styles.title(theme)}>Transfer</OMGText>
         <OMGBox
           onPress={() => {
-            navigation.goBack()
+            navigation.navigate('Balance')
           }}
           style={styles.iconBox(theme)}>
           <OMGFontIcon

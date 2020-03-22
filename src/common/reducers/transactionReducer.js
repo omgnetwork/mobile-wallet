@@ -16,11 +16,15 @@ export const transactionReducer = (
     case 'CHILDCHAIN/DEPOSIT/SUCCESS':
     case 'CHILDCHAIN/EXIT/SUCCESS':
     case 'CHILDCHAIN/PROCESS_EXIT/SUCCESS':
-      return {
-        ...state,
-        unconfirmedTxs: [...state.unconfirmedTxs, action.data],
-        feedbackCompleteTx: null
+    case 'CHILDCHAIN/MERGE_UTXOS_IF_NEEDED/SUCCESS':
+      if (action.data) {
+        return {
+          ...state,
+          unconfirmedTxs: [...state.unconfirmedTxs, action.data],
+          feedbackCompleteTx: null
+        }
       }
+      return state
     case 'TRANSACTION/INVALIDATE_PENDING_TX/OK':
       return {
         ...state,

@@ -14,6 +14,7 @@ const emptyFeedback = {
 
 const useProgressiveFeedback = (
   theme,
+  primaryWallet,
   dispatchInvalidateFeedbackCompleteTx
 ) => {
   const MILLIS_TO_DISMISS = 5000
@@ -41,6 +42,8 @@ const useProgressiveFeedback = (
           return 'Pending Start Exit...'
         case TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT:
           return 'Pending Process Exit...'
+        case TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS:
+          return 'Merging UTXOs...'
         default:
           return 'Pending Transaction...'
       }
@@ -52,6 +55,8 @@ const useProgressiveFeedback = (
           return 'Successfully Started Exit!'
         case TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT:
           return 'Successfully Processed Exit!'
+        case TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS:
+          return 'Successfully Merged UTXOs!'
         default:
           return 'Successfully Transferred!'
       }
@@ -90,11 +95,11 @@ const useProgressiveFeedback = (
 
   const handleOnClose = useCallback(() => {
     if (completeFeedbackTx) {
-      dispatchInvalidateFeedbackCompleteTx()
+      dispatchInvalidateFeedbackCompleteTx(primaryWallet)
     } else {
       setVisible(false)
     }
-  }, [completeFeedbackTx, dispatchInvalidateFeedbackCompleteTx])
+  }, [completeFeedbackTx, dispatchInvalidateFeedbackCompleteTx, primaryWallet])
 
   const getLearnMoreLink = useCallback(() => {
     if (
@@ -115,7 +120,7 @@ const useProgressiveFeedback = (
     const formattedFeedback = formatFeedbackTx(feedbackTx)
     setFeedback(formattedFeedback)
     setVisible(feedbackTx !== null)
-    if (formattedFeedback && !formattedFeedback.pending) {
+    if (formattedFeedback.pending === false) {
       startAutoDismiss()
     }
   }, [formatFeedbackTx, handleOnClose, selectFeedbackTx, startAutoDismiss])
