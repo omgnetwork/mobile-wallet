@@ -72,6 +72,7 @@ export const deposit = async (
     const approved = await Contract.isApproved(
       erc20Contract,
       address,
+      weiAmount,
       erc20VaultAddress
     )
 
