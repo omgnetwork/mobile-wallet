@@ -69,14 +69,40 @@ export const deposit = async (
       address: erc20VaultAddress
     } = await Plasma.RootChain.getErc20Vault()
 
-    const approved = await Contract.isApproved(
+    const allowance = await Contract.allowanceTokenForTransfer(
       erc20Contract,
       address,
-      weiAmount,
       erc20VaultAddress
     )
 
-    if (!approved) {
+    let bnAllowance = new BN(allowance)
+    const bnAmount = new BN(weiAmount)
+    const bnZero = new BN(0)
+
+    // If the allowance less than the desired amount, we need to reset to zero first inorder to update it.
+    // Some erc20 contract prevent to update non-zero allowance e.g. OmiseGO Token.
+    if (bnAllowance.gt(bnZero) && bnAllowance.lt(bnAmount)) {
+      const approveOptions = TxOptions.createApproveErc20Options(
+        address,
+        tokenContractAddress,
+        erc20Contract,
+        erc20VaultAddress,
+        '0',
+        depositGas,
+        depositGasPrice
+      )
+      approveReceipt = await approveErc20(approveOptions, privateKey)
+
+      // Wait approve transaction for 1 block
+      await waitForRootchainTransaction({
+        hash: approveReceipt.transactionHash,
+        intervalMs: 3000,
+        confirmationThreshold: 1
+      })
+      bnAllowance = new BN(0)
+    }
+
+    if (bnAllowance.eq(bnZero)) {
       const approveOptions = TxOptions.createApproveErc20Options(
         address,
         tokenContractAddress,
