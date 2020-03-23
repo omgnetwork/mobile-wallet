@@ -139,8 +139,8 @@ android {
         applicationId "network.omisego.plasmawallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 21
-        versionName "0.4.9"
+        versionCode 22
+        versionName "0.4.10"
         multiDexEnabled true
         missingDimensionStrategy "react-native-camera", "general"
     }
