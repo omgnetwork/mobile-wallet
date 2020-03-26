@@ -173,7 +173,7 @@ const TransferPending = ({ theme, navigation }) => {
             <TouchableOpacity
               style={styles.trackEtherscanButton}
               onPress={() => {
-                Linking.openURL(`${Config.ETHERSCAN_TX_URL}${hash}`)
+                Linking.openURL(`${Config.ETHERSCAN_URL}tx/${hash}`)
               }}>
               <OMGText style={styles.trackEtherscanText(theme)}>
                 Track on Etherscan

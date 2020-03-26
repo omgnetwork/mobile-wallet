@@ -67,7 +67,7 @@ const TransactionDetail = ({ navigation, theme }) => {
         `${Config.BLOCK_EXPLORER_URL}transaction/${transaction.hash}`
       )
     } else {
-      Linking.openURL(`${Config.ETHERSCAN_TX_URL}${transaction.hash}`)
+      Linking.openURL(`${Config.ETHERSCAN_URL}tx/${transaction.hash}`)
     }
   }, [transaction])
 
