@@ -31,7 +31,6 @@
     ]
   },
   "dependencies": {
-    "@omisego/omg-js": "^3.1.0-0.4.6",
     "@omisego/react-native-omg-js": "^3.1.0-0.4.6",
     "@react-native-community/async-storage": "^1.6.1",
     "@react-native-community/push-notification-ios": "^1.0.2",
