@@ -38,7 +38,7 @@
 		</dict>
 	</dict>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Unused</string>
+	<string>Send photos to help resolve app issues</string>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Unused</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
