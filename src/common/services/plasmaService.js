@@ -2,8 +2,7 @@ import { Formatter, Parser, Polling, Datetime, Mapper } from 'common/utils'
 import { Plasma, Token } from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
-import { web3 } from 'common/clients'
-import { Wait, ContractABI } from 'common/utils'
+import { Wait } from 'common/utils'
 
 export const fetchAssets = async (provider, address) => {
   try {
@@ -77,14 +76,14 @@ export const getTx = hash => {
   })
 }
 
-export const mergeUTXOsIfNeeded = async (address, privateKey) => {
+export const mergeUTXOsIfNeeded = async (address, privateKey, threshold) => {
   const listOfUtxos = await Plasma.getRequiredMergeUtxos(address, 4)
   console.log('need to merge?', listOfUtxos.length > 0)
-  console.log(listOfUtxos.map(utxos => utxos.map(u => u.utxo_pos)))
   if (listOfUtxos.length > 0) {
     const receipts = await Plasma.mergeListOfUtxos(
       address,
       privateKey,
+      threshold,
       listOfUtxos
     )
     return receipts

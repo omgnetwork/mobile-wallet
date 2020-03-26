@@ -81,9 +81,13 @@ export const transfer = (blockchainWallet, toAddress, token, feeToken) => {
   })
 }
 
-export const mergeUTXOsIfNeeded = (address, privateKey) => {
+export const mergeUTXOsIfNeeded = (address, privateKey, threshold) => {
   const asyncAction = async () => {
-    const receipts = await plasmaService.mergeUTXOsIfNeeded(address, privateKey)
+    const receipts = await plasmaService.mergeUTXOsIfNeeded(
+      address,
+      privateKey,
+      threshold
+    )
 
     if (!receipts) return
 

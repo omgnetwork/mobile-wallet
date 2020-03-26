@@ -7,7 +7,7 @@ export default {
   ETHERSCAN_URL: 'https://ropsten.etherscan.io/',
   ETHERSCAN_NETWORK: 'ropsten',
   OMISEGO_NETWORK: 'lumpini',
-  WEB3_HTTP_PROVIDER: 'https://dev-a69c763-mwproxy-ropsten-01.omg.network/api',
+  WEB3_HTTP_PROVIDER: 'https://mwproxy.mainnet.v1.omg.network/api',
   PLASMA_FRAMEWORK_CONTRACT_ADDRESS:
     '0x1499442e7ee8c7cf2ae33f5e096d1a5b9c013cff',
   ETH_VAULT_CONTRACT_ADDRESS: '0xe637769f388f309e1cca8dd679a95a7b64a5bd06',
@@ -19,6 +19,9 @@ export default {
   EXIT_PERIOD: 300000,
 
   // For Testing
+  TEST_FUND_ADDRESS: '0x358303D2Dcc6924F634E37b805b62b820bB1E1B5',
+  TEST_FUND_PRIVATE_KEY:
+    '0x06a1d80022dcf7acb1eaecf567f607d29fd0483c318fbadf084041edc5f75e17',
   TEST_ADDRESS: '0xba5D7f4C1860e99C0AB9917b141006B81fCC7b13',
   TEST_PRIVATE_KEY:
     '0x57a8e244a3235d1322dd64f7423912a5a1bd1a93eca59c411c478c5d442ba154',

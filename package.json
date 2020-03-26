@@ -122,7 +122,8 @@
   "jest": {
     "preset": "react-native",
     "testMatch": [
-      "**/__tests__/unit/**/*.js"
+      "**/__tests__/unit/**/*.js",
+      "**/__tests__/scenario/**/*.js"
     ],
     "reporters": [
       "default",

@@ -1,5 +1,5 @@
 import { Plasma, PlasmaUtils, web3 } from 'common/clients'
-import { ContractABI, Transaction } from 'common/utils'
+import { ContractABI, Transaction, Wait } from 'common/utils'
 import axios from 'axios'
 import { Gas, ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
@@ -51,9 +51,14 @@ export const getRequiredMergeUtxos = (address, mergeThreshold = 4) => {
     )
 }
 
-export const mergeListOfUtxos = (address, privateKey, listOfUtxos) => {
+export const mergeListOfUtxos = (
+  address,
+  privateKey,
+  threshold = 4,
+  listOfUtxos
+) => {
   const pendingMergeUtxos = listOfUtxos.map(utxos =>
-    mergeUtxos(address, privateKey, utxos.slice(0, 4))
+    mergeUtxosUntilThreshold(address, privateKey, threshold, utxos)
   )
   return Promise.all(pendingMergeUtxos)
 }
@@ -78,6 +83,45 @@ export const mergeUtxos = async (address, privateKey, utxos) => {
   const signatures = signTx(typedData, privateKeys)
   const signedTxn = buildSignedTx(typedData, signatures)
   return submitTx(signedTxn)
+}
+
+export const mergeUtxosUntilThreshold = async (
+  address,
+  privateKey,
+  threshold,
+  utxos
+) => {
+  if (utxos.length <= threshold) return utxos
+
+  let listOfUtxosGroup = []
+  let utxosGroup = []
+  for (let i = 0; i < utxos.length; i++) {
+    utxosGroup.push(utxos[i])
+    if (
+      utxosGroup.length === 4 ||
+      (i === utxos.length - 1 && utxosGroup.length > 1)
+    ) {
+      listOfUtxosGroup.push(utxosGroup)
+      utxosGroup = []
+    }
+  }
+
+  const pendingTxs = listOfUtxosGroup.map(groupOfUtxos =>
+    mergeUtxos(address, privateKey, groupOfUtxos)
+  )
+
+  const receipts = await Promise.all(pendingTxs)
+  const { blknum } = receipts.sort((a, b) => b.blknum - a.blknum)[0]
+  await Wait.waitChildChainBlknum(address, blknum)
+  const newUtxos = await getUtxos(address, {
+    currency: utxos[0].currency
+  })
+  return await mergeUtxosUntilThreshold(
+    address,
+    privateKey,
+    threshold,
+    newUtxos
+  )
 }
 
 export const createPayment = (address, tokenContractAddress, amount) => {

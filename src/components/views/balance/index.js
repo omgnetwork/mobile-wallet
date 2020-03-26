@@ -32,6 +32,8 @@ const viewPagerSnapOffsets = [
   Math.round(pageWidth * 2 - 32)
 ]
 
+const MAXIMUM_UTXOS_PER_CURRENCY = 4
+
 const Balance = ({
   theme,
   primaryWallet,
@@ -131,11 +133,15 @@ const Balance = ({
 
   const checkToMergeUtxos = useCallback(() => {
     const { address, privateKey } = blockchainWallet
-    dispatchMergeUTXOsIfNeeded(address, privateKey)
+    dispatchMergeUTXOsIfNeeded(address, privateKey, MAXIMUM_UTXOS_PER_CURRENCY)
   }, [blockchainWallet, dispatchMergeUTXOsIfNeeded])
 
   useInterval(() => {
-    if (primaryWallet.shouldCheckUtxosToMerge && unconfirmedTxs.length === 0) {
+    if (
+      primaryWallet.shouldCheckUtxosToMerge &&
+      unconfirmedTxs.length === 0 &&
+      !loading.show
+    ) {
       checkToMergeUtxos()
     }
   }, 10000)
@@ -164,7 +170,6 @@ const Balance = ({
   }, [getLearnMoreLink])
 
   useEffect(() => {
-    console.log(unconfirmedTxs)
     setUnconfirmedTxs(unconfirmedTxs)
     setCompleteFeedbackTx(feedbackCompleteTx)
   }, [
@@ -304,8 +309,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchSetCurrentPage: (currentPage, page) => {
     onboardingActions.setCurrentPage(dispatch, currentPage, page)
   },
-  dispatchMergeUTXOsIfNeeded: (address, privateKey) =>
-    dispatch(plasmaActions.mergeUTXOsIfNeeded(address, privateKey)),
+  dispatchMergeUTXOsIfNeeded: (address, privateKey, threshold) =>
+    dispatch(plasmaActions.mergeUTXOsIfNeeded(address, privateKey, threshold)),
   dispatchAddAnchoredComponent: (anchoredComponentName, position) =>
     onboardingActions.addAnchoredComponent(
       dispatch,
