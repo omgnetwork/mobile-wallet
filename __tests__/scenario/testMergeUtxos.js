@@ -8,7 +8,7 @@ import Config from '../config'
 
 describe('Test Merge UTXOs', () => {
   // Make sure that the fund wallet has more than 1 ETH in the OMG Network.
-  it('given >= 1024 utxos, mergeUTXOsIfNeeded should reduce the number of utxos until it is <= 4', async () => {
+  it('given >= 16 utxos, mergeUTXOsIfNeeded should reduce the number of utxos until it is <= 4', async () => {
     const MAXIMUM_UTXOS_PER_CURRENCY = 4
     const MINIMUM_ETH_REQUIRED = new BN('10000000000000000') // 0.01 ETH
     const fundWallet = {
@@ -61,7 +61,7 @@ describe('Test Merge UTXOs', () => {
         testWallet.address,
         fundedToken.contractAddress,
         testWallet.privateKey,
-        4
+        2
       )
       console.log(`Split has done, now we have ${newUtxos.length} utxos.`)
     }
@@ -81,5 +81,5 @@ describe('Test Merge UTXOs', () => {
     })
 
     expect(mergedUtxos.length).toBeLessThanOrEqual(MAXIMUM_UTXOS_PER_CURRENCY)
-  }, 600000)
+  }, 300000)
 })
