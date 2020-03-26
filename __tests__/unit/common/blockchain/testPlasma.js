@@ -5,7 +5,7 @@ import Config from 'react-native-config'
 import BN from 'bn.js'
 import { ContractAddress } from 'common/constants'
 
-jest.mock('@omisego/omg-js')
+jest.mock('@omisego/react-native-omg-js')
 
 const { getBalance, getUtxos } = PlasmaClient.ChildChain
 const { deposit, getErc20Vault } = PlasmaClient.RootChain
