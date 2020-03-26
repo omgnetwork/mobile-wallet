@@ -24,7 +24,6 @@ export const getUtxos = (address, options) => {
   const filteringCurrency = utxo => utxo.currency === currency
   const filteringFromUtxoPos = utxo => utxo.utxo_pos >= (fromUtxoPos || 0)
   const sortingUtxoPos = (first, second) => second.utxo_pos - first.utxo_pos
-
   return Plasma.ChildChain.getUtxos(address)
     .then(utxos => utxos.map(mappingAmount))
     .then(utxos => (currency ? utxos.filter(filteringCurrency) : utxos))
@@ -34,8 +33,8 @@ export const getUtxos = (address, options) => {
 
 export const getRequiredMergeUtxos = (address, mergeThreshold = 4) => {
   return getUtxos(address)
-    .then(utxos =>
-      utxos.reduce((acc, utxo) => {
+    .then(utxos => {
+      return utxos.reduce((acc, utxo) => {
         const { currency } = utxo
         if (!acc[currency]) {
           acc[currency] = []
@@ -43,7 +42,7 @@ export const getRequiredMergeUtxos = (address, mergeThreshold = 4) => {
         acc[currency].push(utxo)
         return acc
       }, {})
-    )
+    })
     .then(map =>
       Object.keys(map)
         .filter(key => map[key].length > mergeThreshold)
