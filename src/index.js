@@ -10,7 +10,8 @@ import {
   BackgroundTaskTracker,
   RootchainTransactionTracker,
   ChildchainTransactionTracker,
-  ProcessExitTransactionTracker
+  ProcessExitTransactionTracker,
+  MergeUtxosTracker
 } from 'common/tracker'
 import { OMGAlert } from 'components/widgets'
 import { notificationService } from 'common/services'
@@ -42,6 +43,7 @@ const App = () => {
           <ChildchainTransactionTracker />
           <ProcessExitTransactionTracker />
           <BackgroundTaskTracker />
+          <MergeUtxosTracker />
         </>
       )
     } else {
@@ -50,6 +52,7 @@ const App = () => {
           <RootchainTransactionTracker />
           <ChildchainTransactionTracker />
           <ProcessExitTransactionTracker />
+          <MergeUtxosTracker />
         </>
       )
     }

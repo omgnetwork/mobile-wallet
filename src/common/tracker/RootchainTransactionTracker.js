@@ -101,8 +101,8 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchAddStartedExitTx: tx =>
     transactionActions.addStartedExitTx(dispatch, tx),
-  dispatchInvalidateUnconfirmedTx: resolvedUnconfirmedTx =>
-    transactionActions.invalidateUnconfirmedTx(dispatch, resolvedUnconfirmedTx),
+  dispatchInvalidateUnconfirmedTx: confirmedTx =>
+    transactionActions.invalidateUnconfirmedTx(dispatch, confirmedTx),
   dispatchRefreshRootchain: address =>
     walletActions.refreshRootchain(dispatch, address, true),
   dispatchRefreshAll: address =>

@@ -1,4 +1,4 @@
-import { ExitStatus } from 'common/constants'
+import { ExitStatus, TransactionActionTypes } from 'common/constants'
 
 export const transactionReducer = (
   state = {
@@ -16,22 +16,55 @@ export const transactionReducer = (
     case 'CHILDCHAIN/DEPOSIT/SUCCESS':
     case 'CHILDCHAIN/EXIT/SUCCESS':
     case 'CHILDCHAIN/PROCESS_EXIT/SUCCESS':
-    case 'CHILDCHAIN/MERGE_UTXOS_IF_NEEDED/SUCCESS':
-      if (action.data) {
-        return {
-          ...state,
-          unconfirmedTxs: [...state.unconfirmedTxs, action.data],
-          feedbackCompleteTx: null
-        }
+      return {
+        ...state,
+        unconfirmedTxs: [action.data],
+        feedbackCompleteTx: null
       }
-      return state
+    case 'TRANSACTION/UPDATE_MERGE_UTXOS_BLKNUM/OK':
+      return {
+        ...state,
+        unconfirmedTxs: state.unconfirmedTxs.map(tx =>
+          tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
+            ? action.data
+            : tx
+        ),
+        feedbackCompleteTx: null
+      }
+    case 'CHILDCHAIN/MERGE_UTXOS_IF_NEEDED/INITIATED':
+      return {
+        ...state,
+        unconfirmedTxs: [
+          ...state.unconfirmedTxs,
+          { actionType: TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS }
+        ],
+        feedbackCompleteTx: null
+      }
+    case 'CHILDCHAIN/MERGE_UTXOS_IF_NEEDED/FAILED':
+      return {
+        ...state,
+        unconfirmedTxs: state.unconfirmedTxs.filter(
+          tx =>
+            tx.actionType !== TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
+        ),
+        feedbackCompleteTx: null
+      }
+    case 'CHILDCHAIN/MERGE_UTXOS_IF_NEEDED/SUCCESS':
+      return {
+        ...state,
+        unconfirmedTxs: state.unconfirmedTxs.filter(
+          unconfirmedTx =>
+            unconfirmedTx.actionType !==
+            TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
+        ),
+        feedbackCompleteTx: action.data
+      }
     case 'TRANSACTION/INVALIDATE_PENDING_TX/OK':
       return {
         ...state,
-        feedbackCompleteTx: action.data.resolvedUnconfirmedTx,
+        feedbackCompleteTx: action.data.confirmedTx,
         unconfirmedTxs: state.unconfirmedTxs.filter(
-          unconfirmedTx =>
-            unconfirmedTx.hash !== action.data.resolvedUnconfirmedTx.hash
+          unconfirmedTx => unconfirmedTx.hash !== action.data.confirmedTx.hash
         )
       }
     case 'WALLET/DELETE_ALL/OK':

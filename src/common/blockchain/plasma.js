@@ -53,11 +53,20 @@ export const getRequiredMergeUtxos = (address, mergeThreshold = 4) => {
 export const mergeListOfUtxos = (
   address,
   privateKey,
-  threshold = 4,
-  listOfUtxos
+  maximumUtxosPerCurrency = 4,
+  listOfUtxos,
+  lastBlknum,
+  callback = () => {}
 ) => {
   const pendingMergeUtxos = listOfUtxos.map(utxos =>
-    mergeUtxosUntilThreshold(address, privateKey, threshold, utxos)
+    mergeUtxosUntilThreshold(
+      address,
+      privateKey,
+      maximumUtxosPerCurrency,
+      utxos,
+      lastBlknum,
+      callback
+    )
   )
   return Promise.all(pendingMergeUtxos)
 }
@@ -87,10 +96,26 @@ export const mergeUtxos = async (address, privateKey, utxos) => {
 export const mergeUtxosUntilThreshold = async (
   address,
   privateKey,
-  threshold,
-  utxos
+  maximumUtxosPerCurrency,
+  utxos,
+  lastBlknum,
+  callback
 ) => {
-  if (utxos.length <= threshold) return utxos
+  let updatedUtxos = utxos
+
+  console.log('utxos.length', utxos.length)
+  console.log('lastBlknum', lastBlknum)
+
+  // For continue to wait for blknum if the app is restarted in the middle of waiting.
+  if (lastBlknum) {
+    await Wait.waitChildChainBlknum(address, blknum)
+    updatedUtxos = await getUtxos(address, {
+      currency: utxos[0].currency
+    })
+    return { blknum: lastBlknum }
+  }
+
+  if (updatedUtxos.length <= maximumUtxosPerCurrency) return updatedUtxos
 
   let listOfUtxosGroup = []
   let utxosGroup = []
@@ -111,15 +136,21 @@ export const mergeUtxosUntilThreshold = async (
 
   const receipts = await Promise.all(pendingTxs)
   const { blknum } = receipts.sort((a, b) => b.blknum - a.blknum)[0]
+
+  // Save blknum to local storage.
+  callback(blknum, utxos)
+
   await Wait.waitChildChainBlknum(address, blknum)
-  const newUtxos = await getUtxos(address, {
+  updatedUtxos = await getUtxos(address, {
     currency: utxos[0].currency
   })
   return await mergeUtxosUntilThreshold(
     address,
     privateKey,
-    threshold,
-    newUtxos
+    maximumUtxosPerCurrency,
+    updatedUtxos,
+    null,
+    callback
   )
 }
 

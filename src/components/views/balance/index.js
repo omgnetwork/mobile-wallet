@@ -132,32 +132,6 @@ const Balance = ({
     measured
   ])
 
-  const checkToMergeUtxos = useCallback(
-    listOfUtxos => {
-      const { address, privateKey } = blockchainWallet
-      if (unconfirmedTxs.length === 0 && !loading.show) {
-        dispatchMergeUTXOs(
-          address,
-          privateKey,
-          MAXIMUM_UTXOS_PER_CURRENCY,
-          listOfUtxos
-        )
-      }
-    },
-    [blockchainWallet, dispatchMergeUTXOs, loading.show, unconfirmedTxs.length]
-  )
-
-  useInterval(async () => {
-    const listOfUtxos = await Plasma.getRequiredMergeUtxos(
-      primaryWallet.address,
-      4
-    )
-    console.log(listOfUtxos)
-    if (listOfUtxos.length > 0) {
-      checkToMergeUtxos(listOfUtxos)
-    }
-  }, 10000)
-
   const handleOnPageChanged = useCallback(
     page => {
       switch (page) {

@@ -76,8 +76,22 @@ export const getTx = hash => {
   })
 }
 
-export const mergeUtxos = (address, privateKey, threshold, listOfUtxos) => {
-  return Plasma.mergeListOfUtxos(address, privateKey, threshold, listOfUtxos)
+export const mergeUTXOs = (
+  address,
+  privateKey,
+  maximumUtxosPerCurrency,
+  listOfUtxos,
+  lastBlknum,
+  callback
+) => {
+  return Plasma.mergeListOfUtxos(
+    address,
+    privateKey,
+    maximumUtxosPerCurrency,
+    listOfUtxos,
+    lastBlknum,
+    callback
+  )
 }
 
 export const getFees = async tokens => {

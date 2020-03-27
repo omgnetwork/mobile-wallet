@@ -29,12 +29,7 @@ const ChildchainTransactionTracker = ({
 
       dispatchInvalidateUnconfirmedTx(confirmedTx)
 
-      if (
-        confirmedTx.actionType ===
-        TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
-      ) {
-        notificationService.sendNotification(childNotification)
-      }
+      notificationService.sendNotification(childNotification)
 
       setChildNotification(null)
 
@@ -55,10 +50,9 @@ const ChildchainTransactionTracker = ({
 
   const getChildTxs = useCallback(() => {
     return filterTxs(unconfirmedTx =>
-      [
-        TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN,
-        TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
-      ].includes(unconfirmedTx.actionType)
+      [TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN].includes(
+        unconfirmedTx.actionType
+      )
     )
   }, [filterTxs])
 
@@ -87,8 +81,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchInvalidateUnconfirmedTx: resolvedUnconfirmedTx =>
-    transactionActions.invalidateUnconfirmedTx(dispatch, resolvedUnconfirmedTx),
+  dispatchInvalidateUnconfirmedTx: confirmedTx =>
+    transactionActions.invalidateUnconfirmedTx(dispatch, confirmedTx),
   dispatchRefreshChildchain: address =>
     walletActions.refreshChildchain(dispatch, address, true)
 })

@@ -1,20 +1,21 @@
 import { createAction, createAsyncAction } from './actionCreators'
+import { TransactionActionTypes } from 'common/constants'
 import { transactionService } from 'common/services'
 
-export const invalidateUnconfirmedTx = (dispatch, resolvedTx) => {
+export const invalidateUnconfirmedTx = (dispatch, confirmedTx) => {
   return createAction(dispatch, {
     type: 'TRANSACTION/INVALIDATE_PENDING_TX',
     operation: () => ({
-      resolvedUnconfirmedTx: resolvedTx
+      confirmedTx
     })
   })
 }
 
-export const invalidatePendingExitTx = (dispatch, resolvedTx) => {
+export const invalidatePendingExitTx = (dispatch, confirmedTx) => {
   return createAction(dispatch, {
     type: 'TRANSACTION/INVALIDATE_PENDING_EXIT_TX',
     operation: () => ({
-      resolvedUnconfirmedTx: resolvedTx
+      confirmedTx
     })
   })
 }
@@ -24,6 +25,17 @@ export const invalidateFeedbackCompleteTx = (dispatch, wallet) => {
     type: 'TRANSACTION/INVALIDATE_FEEDBACK_COMPLETE_TX',
     operation: () => ({
       wallet
+    })
+  })
+}
+
+export const updateMergeUtxosBlknum = (dispatch, address, blknum) => {
+  return createAction(dispatch, {
+    type: 'TRANSACTION/UPDATE_MERGE_UTXOS_BLKNUM',
+    operation: () => ({
+      address,
+      blknum,
+      actionType: TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
     })
   })
 }
