@@ -12,32 +12,6 @@ export const walletsReducer = (state = [], action) => {
           shouldRefresh: false
         }
       ]
-    case 'TRANSACTION/INVALIDATE_FEEDBACK_COMPLETE_TX/OK':
-      return state.map(wallet => {
-        if (wallet.address === action.data.wallet.address) {
-          return {
-            ...wallet,
-            shouldCheckUtxosToMerge: true
-          }
-        } else {
-          return wallet
-        }
-      })
-    case 'CHILDCHAIN/MERGE_UTXOS_IF_NEEDED/SUCCESS':
-      if (!action.data) {
-        return state
-      }
-
-      return state.map(wallet => {
-        if (wallet.address === action.data.address) {
-          return {
-            ...wallet,
-            shouldCheckUtxosToMerge: false
-          }
-        } else {
-          return wallet
-        }
-      })
     case 'WALLET/SYNC/SUCCESS':
       return action.data.wallets
     case 'WALLET/DELETE_ALL/OK':
@@ -139,8 +113,7 @@ export const walletsReducer = (state = [], action) => {
           return {
             ...wallet,
             shouldRefresh: true,
-            shouldRefreshChildchain: true,
-            shouldCheckUtxosToMerge: true
+            shouldRefreshChildchain: true
           }
         } else {
           return wallet

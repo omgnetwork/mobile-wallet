@@ -9,8 +9,6 @@ export const waitChildChainBlknum = (address, blknum) => {
   return Polling.pollUntilSuccess(async () => {
     const utxos = await Plasma.getUtxos(address)
     const found = utxos.find(utxo => utxo.blknum === blknum)
-    Plasma.getUtxos(address)
-    console.log(`Looking for block ${blknum}..., found?`, !!found)
     if (found) {
       return {
         success: true,

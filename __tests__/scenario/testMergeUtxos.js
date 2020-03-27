@@ -8,7 +8,7 @@ import Config from '../config'
 
 describe('Test Merge UTXOs', () => {
   // Make sure that the fund wallet has more than 1 ETH in the OMG Network.
-  it('given >= 16 utxos, mergeUTXOsIfNeeded should reduce the number of utxos until it is <= 4', async () => {
+  it('given >= 16 utxos, mergeUTXOs should reduce the number of utxos until it is <= 4', async () => {
     const MAXIMUM_UTXOS_PER_CURRENCY = 4
     const MINIMUM_ETH_REQUIRED = new BN('10000000000000000') // 0.01 ETH
     const fundWallet = {
@@ -68,11 +68,17 @@ describe('Test Merge UTXOs', () => {
 
     console.log('Waiting for merging...')
 
+    const listOfUtxos = await Plasma.getRequiredMergeUtxos(
+      testWallet.address,
+      MAXIMUM_UTXOS_PER_CURRENCY
+    )
+
     // Merge utxos recursively
-    await plasmaService.mergeUTXOsIfNeeded(
+    await plasmaService.mergeUTXOs(
       testWallet.address,
       testWallet.privateKey,
-      MAXIMUM_UTXOS_PER_CURRENCY
+      MAXIMUM_UTXOS_PER_CURRENCY,
+      listOfUtxos
     )
 
     // Assert if the number of utxos is less than or equal to MAXIMUM_UTXOS_PER_CURRENCY

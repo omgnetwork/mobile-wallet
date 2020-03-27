@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { StyleSheet, Linking, View, StatusBar } from 'react-native'
 import { SafeAreaView, withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
+import { Plasma } from 'common/blockchain'
 import { useInterval, useProgressiveFeedback } from 'common/hooks'
 import { Dimensions } from 'common/utils'
 import { usePositionMeasurement } from 'common/hooks'
@@ -44,7 +45,7 @@ const Balance = ({
   isFocused,
   loading,
   feedbackCompleteTx,
-  dispatchMergeUTXOsIfNeeded,
+  dispatchMergeUTXOs,
   dispatchInvalidateFeedbackCompleteTx,
   dispatchSetCurrentPage,
   dispatchAddAnchoredComponent,
@@ -131,18 +132,29 @@ const Balance = ({
     measured
   ])
 
-  const checkToMergeUtxos = useCallback(() => {
-    const { address, privateKey } = blockchainWallet
-    dispatchMergeUTXOsIfNeeded(address, privateKey, MAXIMUM_UTXOS_PER_CURRENCY)
-  }, [blockchainWallet, dispatchMergeUTXOsIfNeeded])
+  const checkToMergeUtxos = useCallback(
+    listOfUtxos => {
+      const { address, privateKey } = blockchainWallet
+      if (unconfirmedTxs.length === 0 && !loading.show) {
+        dispatchMergeUTXOs(
+          address,
+          privateKey,
+          MAXIMUM_UTXOS_PER_CURRENCY,
+          listOfUtxos
+        )
+      }
+    },
+    [blockchainWallet, dispatchMergeUTXOs, loading.show, unconfirmedTxs.length]
+  )
 
-  useInterval(() => {
-    if (
-      primaryWallet.shouldCheckUtxosToMerge &&
-      unconfirmedTxs.length === 0 &&
-      !loading.show
-    ) {
-      checkToMergeUtxos()
+  useInterval(async () => {
+    const listOfUtxos = await Plasma.getRequiredMergeUtxos(
+      primaryWallet.address,
+      4
+    )
+    console.log(listOfUtxos)
+    if (listOfUtxos.length > 0) {
+      checkToMergeUtxos(listOfUtxos)
     }
   }, 10000)
 
@@ -309,8 +321,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchSetCurrentPage: (currentPage, page) => {
     onboardingActions.setCurrentPage(dispatch, currentPage, page)
   },
-  dispatchMergeUTXOsIfNeeded: (address, privateKey, threshold) =>
-    dispatch(plasmaActions.mergeUTXOsIfNeeded(address, privateKey, threshold)),
+  dispatchMergeUTXOs: (address, privateKey, threshold, listOfUtxos) =>
+    dispatch(
+      plasmaActions.mergeUTXOs(address, privateKey, threshold, listOfUtxos)
+    ),
   dispatchAddAnchoredComponent: (anchoredComponentName, position) =>
     onboardingActions.addAnchoredComponent(
       dispatch,

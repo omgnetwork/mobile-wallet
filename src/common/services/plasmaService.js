@@ -76,18 +76,8 @@ export const getTx = hash => {
   })
 }
 
-export const mergeUTXOsIfNeeded = async (address, privateKey, threshold) => {
-  const listOfUtxos = await Plasma.getRequiredMergeUtxos(address, 4)
-  console.log('need to merge?', listOfUtxos.length > 0)
-  if (listOfUtxos.length > 0) {
-    const receipts = await Plasma.mergeListOfUtxos(
-      address,
-      privateKey,
-      threshold,
-      listOfUtxos
-    )
-    return receipts
-  }
+export const mergeUtxos = (address, privateKey, threshold, listOfUtxos) => {
+  return Plasma.mergeListOfUtxos(address, privateKey, threshold, listOfUtxos)
 }
 
 export const getFees = async tokens => {
