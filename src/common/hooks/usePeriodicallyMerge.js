@@ -7,7 +7,7 @@ const DEFAULT_INTERVAL = 15000 // 15s
 const MERGE_UTXOS_LOADING_ACTION = 'CHILDCHAIN_MERGE_UTXOS'
 
 const usePeriodicallyMerge = (
-  dispatchMergeUtxosStatus,
+  dispatchUpdateMergeUtxosStatus,
   dispatchMergeUtxos,
   lastBlknum,
   interval = DEFAULT_INTERVAL
@@ -20,11 +20,11 @@ const usePeriodicallyMerge = (
   const updateMergeStatus = useCallback(
     (blknum, utxos) => {
       if (blockchainWallet) {
-        dispatchMergeUtxosStatus(address, blknum)
+        dispatchUpdateMergeUtxosStatus(address, blknum)
         const { address } = blockchainWallet
       }
     },
-    [blockchainWallet, dispatchMergeUtxosStatus]
+    [blockchainWallet, dispatchUpdateMergeUtxosStatus]
   )
 
   useEffect(() => {

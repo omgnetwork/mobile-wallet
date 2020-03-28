@@ -9,7 +9,7 @@ const MergeUtxosTracker = ({
   blockchainWallet,
   unconfirmedTxs,
   loading,
-  dispatchMergeUtxosStatus,
+  dispatchUpdateMergeUtxosStatus,
   dispatchMergeUtxos
 }) => {
   const lastBlknum = unconfirmedTxs?.slice(-1)?.[0]?.blknum
@@ -18,7 +18,7 @@ const MergeUtxosTracker = ({
     setBlockchainWallet,
     setUnconfirmedTx
   ] = usePeriodicallyMerge(
-    dispatchMergeUtxosStatus,
+    dispatchUpdateMergeUtxosStatus,
     dispatchMergeUtxos,
     lastBlknum
   )
@@ -45,7 +45,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchMergeUtxosStatus: (address, blknum) =>
+  dispatchUpdateMergeUtxosStatus: (address, blknum) =>
     transactionActions.updateMergeUtxosBlknum(dispatch, address, blknum),
   dispatchMergeUtxos: (
     address,
