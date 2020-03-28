@@ -1,8 +1,10 @@
 import { useCallback, useState, useEffect, useRef } from 'react'
+import { Vibration } from 'react-native'
 import { Plasma } from 'common/blockchain'
 import { useInterval } from 'common/hooks'
 
 const DEFAULT_INTERVAL = 10000 // 10s
+const MERGE_UTXOS_LOADING_ACTION = 'CHILDCHAIN_MERGE_UTXOS_IF_NEEDED'
 
 const usePeriodicallyMerge = (
   dispatchMergeUtxosStatus,
@@ -26,18 +28,27 @@ const usePeriodicallyMerge = (
   )
 
   useEffect(() => {
-    if (loading.action === 'CHILDCHAIN_MERGE_UTXOS_IF_NEEDED') {
+    if (loading.action === MERGE_UTXOS_LOADING_ACTION) {
       merging.current === loading.show
     }
   }, [loading])
 
+  // Vibrate after the merging is done
+  useEffect(() => {
+    if (loading.action === MERGE_UTXOS_LOADING_ACTION && loading.success) {
+      Vibration.vibrate()
+    }
+  })
+
   useInterval(() => {
+    const pendingTx = unconfirmedTx
+    const unconfirmedBlknum = !!lastBlknum
+
     async function checkAndMerge() {
       const { address, privateKey } = blockchainWallet
       const listOfUtxos = await Plasma.getRequiredMergeUtxos(address)
 
-      if (listOfUtxos.length > 0 || (!!lastBlknum && !merging)) {
-        console.log('dispatch merge utxos')
+      if (unconfirmedBlknum || listOfUtxos.length > 0) {
         dispatchMergeUtxos(
           address,
           privateKey,
@@ -48,14 +59,10 @@ const usePeriodicallyMerge = (
       }
     }
 
-    const pendingTx = unconfirmedTx
-    const continueFromLastMerging = !!lastBlknum
-
-    if (blockchainWallet && !merging.current) {
-      if (continueFromLastMerging || !pendingTx) {
-        checkAndMerge()
-      }
-    }
+    if (!blockchainWallet) return
+    if (merging.current) return
+    if (pendingTx) return
+    checkAndMerge()
   }, interval)
 
   return [setLoading, setBlockchainWallet, setUnconfirmedTx]
