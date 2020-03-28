@@ -104,18 +104,21 @@ export const mergeUtxosUntilThreshold = async (
   let updatedUtxos = utxos
 
   console.log('utxos.length', utxos.length)
-  console.log('lastBlknum', lastBlknum)
 
   // For continue to wait for blknum if the app is restarted in the middle of waiting.
   if (lastBlknum) {
-    await Wait.waitChildChainBlknum(address, blknum)
+    await Wait.waitChildChainBlknum(address, lastBlknum)
     updatedUtxos = await getUtxos(address, {
       currency: utxos[0].currency
     })
-    return { blknum: lastBlknum }
   }
 
-  if (updatedUtxos.length <= maximumUtxosPerCurrency) return updatedUtxos
+  if (updatedUtxos.length <= maximumUtxosPerCurrency) {
+    return {
+      blknum: lastBlknum,
+      utxos: updatedUtxos
+    }
+  }
 
   let listOfUtxosGroup = []
   let utxosGroup = []

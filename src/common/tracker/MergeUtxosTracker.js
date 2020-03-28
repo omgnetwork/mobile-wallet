@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { usePeriodicallyMerge } from 'common/hooks'
 import { plasmaActions, transactionActions } from 'common/actions'
@@ -13,22 +13,23 @@ const MergeUtxosTracker = ({
   dispatchMergeUtxos
 }) => {
   const lastBlknum = unconfirmedTxs?.slice(-1)?.[0]?.blknum
-  const [setBusy, setBlockchainWallet, setUnconfirmedTx] = usePeriodicallyMerge(
+  const [
+    setLoading,
+    setBlockchainWallet,
+    setUnconfirmedTx
+  ] = usePeriodicallyMerge(
     dispatchMergeUtxosStatus,
     dispatchMergeUtxos,
     lastBlknum
   )
 
   useEffect(() => {
-    setBusy(loading.show || !blockchainWallet)
+    setLoading(loading)
+  }, [loading, setLoading])
+
+  useEffect(() => {
     setUnconfirmedTx(unconfirmedTxs?.[0])
-  }, [
-    blockchainWallet,
-    loading.show,
-    setBusy,
-    setUnconfirmedTx,
-    unconfirmedTxs
-  ])
+  }, [setUnconfirmedTx, unconfirmedTxs])
 
   useEffect(() => {
     setBlockchainWallet(blockchainWallet)

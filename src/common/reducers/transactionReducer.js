@@ -21,25 +21,13 @@ export const transactionReducer = (
         unconfirmedTxs: [action.data],
         feedbackCompleteTx: null
       }
-    case 'TRANSACTION/UPDATE_MERGE_UTXOS_BLKNUM/OK':
+    case 'TRANSACTION/UPDATE_MERGE_UTXOS_BLKNUM/OK': {
       return {
         ...state,
-        unconfirmedTxs: state.unconfirmedTxs.map(tx =>
-          tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
-            ? action.data
-            : tx
-        ),
+        unconfirmedTxs: [...state.unconfirmedTxs, action.data],
         feedbackCompleteTx: null
       }
-    case 'CHILDCHAIN/MERGE_UTXOS_IF_NEEDED/INITIATED':
-      return {
-        ...state,
-        unconfirmedTxs: [
-          ...state.unconfirmedTxs,
-          { actionType: TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS }
-        ],
-        feedbackCompleteTx: null
-      }
+    }
     case 'CHILDCHAIN/MERGE_UTXOS_IF_NEEDED/FAILED':
       return {
         ...state,
