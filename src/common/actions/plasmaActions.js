@@ -112,7 +112,7 @@ export const mergeUTXOs = (
   }
 
   return createAsyncAction({
-    type: 'CHILDCHAIN/MERGE_UTXOS_IF_NEEDED',
+    type: 'CHILDCHAIN/MERGE_UTXOS',
     operation: asyncAction
   })
 }

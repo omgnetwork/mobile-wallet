@@ -28,7 +28,7 @@ export const transactionReducer = (
         feedbackCompleteTx: null
       }
     }
-    case 'CHILDCHAIN/MERGE_UTXOS_IF_NEEDED/FAILED':
+    case 'CHILDCHAIN/MERGE_UTXOS/FAILED':
       return {
         ...state,
         unconfirmedTxs: state.unconfirmedTxs.filter(
@@ -37,7 +37,7 @@ export const transactionReducer = (
         ),
         feedbackCompleteTx: null
       }
-    case 'CHILDCHAIN/MERGE_UTXOS_IF_NEEDED/SUCCESS':
+    case 'CHILDCHAIN/MERGE_UTXOS/SUCCESS':
       return {
         ...state,
         unconfirmedTxs: state.unconfirmedTxs.filter(
