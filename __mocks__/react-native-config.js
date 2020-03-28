@@ -7,7 +7,7 @@ export default {
   ETHERSCAN_URL: 'https://ropsten.etherscan.io/',
   ETHERSCAN_NETWORK: 'ropsten',
   OMISEGO_NETWORK: 'lumpini',
-  WEB3_HTTP_PROVIDER: 'https://mwproxy.mainnet.v1.omg.network/api',
+  WEB3_HTTP_PROVIDER: 'https://dev-a69c763-mwproxy-ropsten-01.omg.network/api',
   PLASMA_FRAMEWORK_CONTRACT_ADDRESS:
     '0x1499442e7ee8c7cf2ae33f5e096d1a5b9c013cff',
   ETH_VAULT_CONTRACT_ADDRESS: '0xe637769f388f309e1cca8dd679a95a7b64a5bd06',
