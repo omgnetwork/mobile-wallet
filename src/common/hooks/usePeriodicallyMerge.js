@@ -3,7 +3,7 @@ import { Vibration } from 'react-native'
 import { Plasma } from 'common/blockchain'
 import { useInterval } from 'common/hooks'
 
-const DEFAULT_INTERVAL = 10000 // 10s
+const DEFAULT_INTERVAL = 15000 // 15s
 const MERGE_UTXOS_LOADING_ACTION = 'CHILDCHAIN_MERGE_UTXOS_IF_NEEDED'
 
 const usePeriodicallyMerge = (
