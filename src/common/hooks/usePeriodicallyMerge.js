@@ -15,7 +15,7 @@ const usePeriodicallyMerge = (
   const [blockchainWallet, setBlockchainWallet] = useState(null)
   const [loading, setLoading] = useState(true)
   const [unconfirmedTx, setUnconfirmedTx] = useState(false)
-  const merging = useRef(false)
+  const [merging, setMerging] = useRef(false)
 
   const updateMergeStatus = useCallback(
     (blknum, utxos) => {
@@ -29,9 +29,9 @@ const usePeriodicallyMerge = (
 
   useEffect(() => {
     if (loading.action === MERGE_UTXOS_LOADING_ACTION) {
-      merging.current === loading.show
+      setMerging(loading.show)
     }
-  }, [loading])
+  }, [loading, setMerging])
 
   // Vibrate after the merging is done
   useEffect(() => {
@@ -60,7 +60,7 @@ const usePeriodicallyMerge = (
     }
 
     if (!blockchainWallet) return
-    if (merging.current) return
+    if (merging) return
     if (pendingTx) return
     checkAndMerge()
   }, interval)
