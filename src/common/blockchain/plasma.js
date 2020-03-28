@@ -31,7 +31,7 @@ export const getUtxos = (address, options) => {
     .then(utxos => utxos.sort(sortingUtxoPos))
 }
 
-export const getRequiredMergeUtxos = (address, mergeThreshold = 4) => {
+export const getRequiredMergeUtxos = (address, maximumUtxosPerCurrency = 4) => {
   return getUtxos(address)
     .then(utxos => {
       return utxos.reduce((acc, utxo) => {
@@ -45,7 +45,7 @@ export const getRequiredMergeUtxos = (address, mergeThreshold = 4) => {
     })
     .then(map =>
       Object.keys(map)
-        .filter(key => map[key].length > mergeThreshold)
+        .filter(key => map[key].length > maximumUtxosPerCurrency)
         .map(key => map[key])
     )
 }
