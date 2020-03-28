@@ -101,7 +101,7 @@ export const mergeUTXOs = (
 
     if (!receipts) return
 
-    // Get latest transaction hash
+    // Get highest blk num
     const { blknum } = receipts.sort((a, b) => b.blknum - a.blknum)[0]
 
     return {
