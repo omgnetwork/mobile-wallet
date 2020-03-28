@@ -23,7 +23,13 @@ export const split = (address, privateKey, utxo, amount) => {
   return Plasma.submitTx(signedTxn)
 }
 
-// Return list of pending arrays
+// Recursively split the utxos for the given currency until the given round is zero
+// For example, the address has 1 utxo with 10000 wei amount.
+// Given rounds = 2, it will split the utxo as following:
+// Round 2: [10000] -> [1000*4] (1000*4 is a short-handed for [600, 600, 600, 600])
+// Round 1: [6000, 1000, 1000, 1000, 1000] -> [600*4, 100*4, 100*4, 100*4, 100*4]
+// Round 0: Returns [600*4, 100*4, 100*4, 100*4, 100*4] (Total 20 UTXOs)
+// Note: Cloudflare is starting to deny the request when rounds >= 7.
 export const splitUntilRoundZero = async (
   address,
   currency,
@@ -43,9 +49,8 @@ export const splitUntilRoundZero = async (
   })
   console.log('Round', rounds)
   const receipts = await Promise.all(splittedUtxos)
-  console.log('Splitted')
   const { blknum } = receipts.sort((a, b) => b.blknum - a.blknum)[0]
+  console.log(`Splitted successfully. Waiting for block ${blknum}...`)
   await Wait.waitChildChainBlknum(address, blknum)
-  console.log('Finish round', rounds)
   return await splitUntilRoundZero(address, currency, privateKey, rounds - 1)
 }
