@@ -5,7 +5,7 @@ export const waitFor = ms => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export const waitChildChainBlknum = (address, blknum) => {
+export const waitChildChainBlknum = (address, blknum, interval) => {
   return Polling.pollUntilSuccess(async () => {
     const utxos = await Plasma.getUtxos(address)
     const found = utxos.find(utxo => utxo.blknum === blknum)
@@ -17,5 +17,5 @@ export const waitChildChainBlknum = (address, blknum) => {
     }
 
     return { success: false }
-  }, 3000)
+  }, interval)
 }
