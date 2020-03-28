@@ -82,7 +82,7 @@ export const mergeUTXOs = (
   maximumUtxosPerCurrency,
   listOfUtxos,
   lastBlknum,
-  callback
+  storeBlknum
 ) => {
   return Plasma.mergeListOfUtxos(
     address,
@@ -90,7 +90,7 @@ export const mergeUTXOs = (
     maximumUtxosPerCurrency,
     listOfUtxos,
     lastBlknum,
-    callback
+    storeBlknum
   )
 }
 

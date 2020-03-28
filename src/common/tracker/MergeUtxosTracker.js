@@ -52,7 +52,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     privateKey,
     listOfUtxos,
     lastBlknum,
-    callback
+    storeBlknum
   ) =>
     dispatch(
       plasmaActions.mergeUTXOs(
@@ -61,7 +61,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
         MAXIMUM_UTXOS_PER_CURRENCY,
         listOfUtxos,
         lastBlknum,
-        callback
+        storeBlknum
       )
     )
 })

@@ -87,7 +87,7 @@ export const mergeUTXOs = (
   maximumUtxosPerCurrency,
   listOfUtxos,
   lastBlknum,
-  callback
+  storeBlknum
 ) => {
   const asyncAction = async () => {
     const receipts = await plasmaService.mergeUTXOs(
@@ -96,7 +96,7 @@ export const mergeUTXOs = (
       maximumUtxosPerCurrency,
       listOfUtxos,
       lastBlknum,
-      callback
+      storeBlknum
     )
 
     if (!receipts) return

@@ -56,7 +56,7 @@ export const mergeListOfUtxos = (
   maximumUtxosPerCurrency = 4,
   listOfUtxos,
   lastBlknum,
-  callback = () => {}
+  storeBlknum = () => {}
 ) => {
   const pendingMergeUtxos = listOfUtxos.map(utxos =>
     mergeUtxosUntilThreshold(
@@ -65,7 +65,7 @@ export const mergeListOfUtxos = (
       maximumUtxosPerCurrency,
       utxos,
       lastBlknum,
-      callback
+      storeBlknum
     )
   )
   return Promise.all(pendingMergeUtxos)
@@ -99,11 +99,11 @@ export const mergeUtxosUntilThreshold = async (
   maximumUtxosPerCurrency,
   utxos,
   lastBlknum,
-  callback
+  storeBlknum
 ) => {
   let updatedUtxos = utxos
 
-  // For continue to wait for blknum if the app is restarted in the middle of waiting.
+  // Wait for the last blknum if the app was restarted in the middle of waiting.
   if (lastBlknum) {
     await Wait.waitChildChainBlknum(address, lastBlknum)
     updatedUtxos = await getUtxos(address, {
@@ -138,8 +138,8 @@ export const mergeUtxosUntilThreshold = async (
   const receipts = await Promise.all(pendingTxs)
   const { blknum } = receipts.sort((a, b) => b.blknum - a.blknum)[0]
 
-  // Save blknum to local storage.
-  callback(blknum, utxos)
+  // Store blknum to the local storage.
+  storeBlknum(blknum, utxos)
 
   await Wait.waitChildChainBlknum(address, blknum)
   updatedUtxos = await getUtxos(address, {
@@ -151,7 +151,7 @@ export const mergeUtxosUntilThreshold = async (
     maximumUtxosPerCurrency,
     updatedUtxos,
     null,
-    callback
+    storeBlknum
   )
 }
 
