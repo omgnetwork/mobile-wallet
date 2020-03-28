@@ -167,7 +167,7 @@ export const createPayment = (address, tokenContractAddress, amount) => {
   ]
 }
 
-export const createFee = (currency = PlasmaUtils.transaction.ETH_CURRENCY) => ({
+export const createFee = (currency = ContractAddress.ETH_ADDRESS) => ({
   currency: currency
 })
 
