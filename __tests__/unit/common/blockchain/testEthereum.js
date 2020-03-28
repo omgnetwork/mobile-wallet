@@ -7,22 +7,18 @@ const mockWalletTransfer = wallet => {
   wallet.sendTransaction = jest.fn()
 }
 
-const {
-  TEST_MNEMONIC,
-  TEST_PRIVATE_KEY,
-  TEST_ADDRESS,
-  ETHERSCAN_NETWORK
-} = Config
+const { TEST_PRIVATE_KEY, TEST_ADDRESS, ETHERSCAN_NETWORK } = Config
 
 const testProvider = Ethereum.createProvider(ETHERSCAN_NETWORK)
 
 describe('Test Ethereum Boundary', () => {
   it('importWalletMnemonic should return a wallet when given 12-words mnemonic', () => {
-    const { signingKey, address } = Ethereum.importWalletMnemonic(TEST_MNEMONIC)
+    const newMnemonic = Ethereum.generateWalletMnemonic()
+    const { signingKey, address } = Ethereum.importWalletMnemonic(newMnemonic)
     const { mnemonic, privateKey } = signingKey
-    expect(mnemonic).toBe(TEST_MNEMONIC)
-    expect(privateKey).toBe(TEST_PRIVATE_KEY)
-    expect(address).toBe(TEST_ADDRESS)
+    expect(mnemonic).toBe(newMnemonic)
+    expect(privateKey).toBeDefined()
+    expect(address).toBeDefined()
   })
 
   it('sendEthToken should send expected parameters', () => {

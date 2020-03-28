@@ -103,8 +103,6 @@ export const mergeUtxosUntilThreshold = async (
 ) => {
   let updatedUtxos = utxos
 
-  console.log('utxos.length', utxos.length)
-
   // For continue to wait for blknum if the app is restarted in the middle of waiting.
   if (lastBlknum) {
     await Wait.waitChildChainBlknum(address, lastBlknum)
