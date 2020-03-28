@@ -16,7 +16,6 @@ describe('Test Merge UTXOs', () => {
       privateKey: Config.TEST_FUND_PRIVATE_KEY
     }
 
-    // Check if the test wallet have more than 0.1 ETH
     const testWallet = {
       address: Config.TEST_ADDRESS,
       privateKey: Config.TEST_PRIVATE_KEY
@@ -24,7 +23,7 @@ describe('Test Merge UTXOs', () => {
 
     const fundedToken = {
       contractAddress: ContractAddress.ETH_ADDRESS,
-      balance: '1', // 1 ETH
+      balance: '1', // 1 ETH, not 1 Wei
       tokenDecimal: 18
     }
 
@@ -32,18 +31,16 @@ describe('Test Merge UTXOs', () => {
       currency: fundedToken.contractAddress
     })
 
-    console.log('Initial number of utxos: ', utxos.length)
+    console.log('Number of UTXOs: ', utxos.length)
 
-    const highestAmountUtxo = utxos.sort(
-      (a, b) => b.amount.length - a.amount.length
-    )[0]
-    const shouldFund = new BN(highestAmountUtxo.amount).lt(MINIMUM_ETH_REQUIRED)
+    const bigUtxo = utxos.sort((a, b) => b.amount.length - a.amount.length)[0]
 
-    console.log('Need more ETH?', shouldFund)
+    // Check if the test wallet have more than 0.1 ETH
+    const shouldFund = new BN(bigUtxo.amount).lt(MINIMUM_ETH_REQUIRED)
 
-    // Prepare data
-    // Split utxos recursively
     if (utxos.length < 10) {
+      // Check before split if we need to get more fund in the test wallet.
+      console.log('Need more ETH?', shouldFund)
       if (shouldFund) {
         console.log('Waiting for funding 1 ETH...')
         const { blknum: transferBlkNum } = await plasmaService.transfer(
@@ -56,17 +53,16 @@ describe('Test Merge UTXOs', () => {
         console.log('test wallet has been funded successfully.')
       }
 
-      console.log('Need more utxos, waiting for splitting...')
       const newUtxos = await Utxos.splitUntilRoundZero(
         testWallet.address,
         fundedToken.contractAddress,
         testWallet.privateKey,
         2
       )
-      console.log(`Split has done, now we have ${newUtxos.length} utxos.`)
+      console.log(
+        `Split has done, now the wallet ${testWallet.address} has ${newUtxos.length} utxos.`
+      )
     }
-
-    console.log('Waiting for merging...')
 
     const listOfUtxos = await Plasma.getRequiredMergeUtxos(
       testWallet.address,
@@ -74,6 +70,7 @@ describe('Test Merge UTXOs', () => {
     )
 
     // Merge utxos recursively
+    console.log('Waiting for merging...')
     await plasmaService.mergeUTXOs(
       testWallet.address,
       testWallet.privateKey,
