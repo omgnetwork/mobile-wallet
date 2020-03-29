@@ -29,8 +29,6 @@ const useMergeInterval = (
 
   const checkAndMerge = useCallback(async () => {
     const { address, privateKey } = blockchainWallet
-    running.current = true
-
     const unsubmittedBlknum = unconfirmedTx?.blknum
     const listOfUtxos = await Plasma.getRequiredMergeUtxos(
       address,
@@ -38,7 +36,6 @@ const useMergeInterval = (
     )
 
     if (listOfUtxos.length > 0) {
-      console.log('Merge')
       dispatchMergeUtxos(address, privateKey, listOfUtxos, updateMergeStatus)
     }
   }, [blockchainWallet, dispatchMergeUtxos, unconfirmedTx, updateMergeStatus])
