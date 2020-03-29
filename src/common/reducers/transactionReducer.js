@@ -16,12 +16,40 @@ export const transactionReducer = (
     case 'CHILDCHAIN/DEPOSIT/SUCCESS':
     case 'CHILDCHAIN/EXIT/SUCCESS':
     case 'CHILDCHAIN/PROCESS_EXIT/SUCCESS':
-    case 'TRANSACTION/UPDATE_MERGE_UTXOS_BLKNUM/OK':
       return {
         ...state,
         unconfirmedTxs: [...state.unconfirmedTxs, action.data],
         feedbackCompleteTx: null
       }
+    case 'TRANSACTION/UPDATE_MERGE_UTXOS_BLKNUM/OK': {
+      const hasMergeTransaction = state.unconfirmedTxs.find(
+        tx =>
+          tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
+      )
+      if (hasMergeTransaction) {
+        return {
+          ...state,
+          unconfirmedTxs: state.unconfirmedTxs.map(tx => {
+            if (
+              tx.actionType ===
+              TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
+            ) {
+              return action.data
+            } else {
+              return tx
+            }
+          }),
+          feedbackCompleteTx: null
+        }
+      } else {
+        return {
+          ...state,
+          unconfirmedTxs: [...state.unconfirmedTxs, action.data],
+          feedbackCompleteTx: null
+        }
+      }
+    }
+
     case 'CHILDCHAIN/MERGE_UTXOS/FAILED':
     case 'CHILDCHAIN/MERGE_UTXOS/SUCCESS':
       return {

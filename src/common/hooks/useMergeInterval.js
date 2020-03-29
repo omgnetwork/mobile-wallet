@@ -20,8 +20,8 @@ const useMergeInterval = (
   const updateMergeStatus = useCallback(
     (blknum, utxos) => {
       if (blockchainWallet) {
-        dispatchUpdateMergeUtxosStatus(address, blknum)
         const { address } = blockchainWallet
+        dispatchUpdateMergeUtxosStatus(address, blknum)
       }
     },
     [blockchainWallet, dispatchUpdateMergeUtxosStatus]
@@ -35,8 +35,14 @@ const useMergeInterval = (
       unsubmittedBlknum
     )
 
-    if (listOfUtxos.length > 0) {
-      dispatchMergeUtxos(address, privateKey, listOfUtxos, updateMergeStatus)
+    if (unsubmittedBlknum || listOfUtxos.length > 0) {
+      dispatchMergeUtxos(
+        address,
+        privateKey,
+        listOfUtxos,
+        unsubmittedBlknum,
+        updateMergeStatus
+      )
     }
   }, [blockchainWallet, dispatchMergeUtxos, unconfirmedTx, updateMergeStatus])
 

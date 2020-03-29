@@ -86,9 +86,19 @@ export const mergeUTXOs = (
   privateKey,
   maximumUtxosPerCurrency,
   listOfUtxos,
+  blknum,
   storeBlknum
 ) => {
   const asyncAction = async () => {
+    console.log(listOfUtxos)
+    if (listOfUtxos.length === 0) {
+      return {
+        address,
+        blknum,
+        actionType: TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
+      }
+    }
+
     const receipts = await plasmaService.mergeUTXOs(
       address,
       privateKey,
@@ -100,11 +110,13 @@ export const mergeUTXOs = (
     if (!receipts) return
 
     // Get highest blk num
-    const { blknum } = receipts.sort((a, b) => b.blknum - a.blknum)[0]
+    const { blknum: lastBlknum } = receipts.sort(
+      (a, b) => b.blknum - a.blknum
+    )[0]
 
     return {
       address,
-      blknum: blknum,
+      blknum: lastBlknum,
       actionType: TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
     }
   }

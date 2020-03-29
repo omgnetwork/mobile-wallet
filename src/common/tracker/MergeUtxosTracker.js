@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react'
+import { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useMergeInterval } from 'common/hooks'
 import { plasmaActions, transactionActions } from 'common/actions'
@@ -41,13 +41,14 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchUpdateMergeUtxosStatus: (address, blknum) =>
     transactionActions.updateMergeUtxosBlknum(dispatch, address, blknum),
-  dispatchMergeUtxos: (address, privateKey, listOfUtxos, storeBlknum) =>
+  dispatchMergeUtxos: (address, privateKey, listOfUtxos, blknum, storeBlknum) =>
     dispatch(
       plasmaActions.mergeUTXOs(
         address,
         privateKey,
         MAXIMUM_UTXOS_PER_CURRENCY,
         listOfUtxos,
+        blknum,
         storeBlknum
       )
     )
