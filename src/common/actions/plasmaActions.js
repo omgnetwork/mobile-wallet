@@ -90,7 +90,6 @@ export const mergeUTXOs = (
   storeBlknum
 ) => {
   const asyncAction = async () => {
-    console.log(listOfUtxos)
     if (listOfUtxos.length === 0) {
       return {
         address,

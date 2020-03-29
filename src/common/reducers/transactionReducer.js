@@ -30,14 +30,10 @@ export const transactionReducer = (
         return {
           ...state,
           unconfirmedTxs: state.unconfirmedTxs.map(tx => {
-            if (
-              tx.actionType ===
+            return tx.actionType ===
               TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
-            ) {
-              return action.data
-            } else {
-              return tx
-            }
+              ? action.data
+              : tx
           }),
           feedbackCompleteTx: null
         }
