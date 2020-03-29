@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { usePeriodicallyMerge } from 'common/hooks'
+import { useMergeInterval } from 'common/hooks'
 import { plasmaActions, transactionActions } from 'common/actions'
 
 const MAXIMUM_UTXOS_PER_CURRENCY = 4
@@ -12,15 +12,9 @@ const MergeUtxosTracker = ({
   dispatchUpdateMergeUtxosStatus,
   dispatchMergeUtxos
 }) => {
-  const lastBlknum = unconfirmedTxs?.slice(-1)?.[0]?.blknum
-  const [
-    setLoading,
-    setBlockchainWallet,
-    setUnconfirmedTx
-  ] = usePeriodicallyMerge(
+  const [setLoading, setBlockchainWallet, setUnconfirmedTx] = useMergeInterval(
     dispatchUpdateMergeUtxosStatus,
-    dispatchMergeUtxos,
-    lastBlknum
+    dispatchMergeUtxos
   )
 
   useEffect(() => {
@@ -47,20 +41,13 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchUpdateMergeUtxosStatus: (address, blknum) =>
     transactionActions.updateMergeUtxosBlknum(dispatch, address, blknum),
-  dispatchMergeUtxos: (
-    address,
-    privateKey,
-    listOfUtxos,
-    lastBlknum,
-    storeBlknum
-  ) =>
+  dispatchMergeUtxos: (address, privateKey, listOfUtxos, storeBlknum) =>
     dispatch(
       plasmaActions.mergeUTXOs(
         address,
         privateKey,
         MAXIMUM_UTXOS_PER_CURRENCY,
         listOfUtxos,
-        lastBlknum,
         storeBlknum
       )
     )

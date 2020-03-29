@@ -16,7 +16,7 @@ export const createAsyncAction = ({
         }
       } catch (err) {
         console.log(`${err.message}`)
-        dispatch({ type: `${actionType}/FAILED`, data: err })
+        dispatch({ type: `${actionType}/FAILED`, err })
         CrashAnalytics.log(err)
       }
       const actionName = actionType.replace('/', '_')

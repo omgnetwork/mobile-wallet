@@ -7,11 +7,6 @@ function useInterval(callback, interval) {
     savedCallback.current = callback
   })
 
-  // Run only once, when mounted.
-  useEffect(() => {
-    savedCallback.current()
-  }, [])
-
   // Run periodically every `interval` ms.
   useEffect(() => {
     function tick() {

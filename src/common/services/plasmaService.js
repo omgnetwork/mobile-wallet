@@ -81,7 +81,6 @@ export const mergeUTXOs = (
   privateKey,
   maximumUtxosPerCurrency,
   listOfUtxos,
-  lastBlknum,
   storeBlknum
 ) => {
   return Plasma.mergeListOfUtxos(
@@ -89,7 +88,6 @@ export const mergeUTXOs = (
     privateKey,
     maximumUtxosPerCurrency,
     listOfUtxos,
-    lastBlknum,
     storeBlknum
   )
 }

@@ -86,7 +86,6 @@ export const mergeUTXOs = (
   privateKey,
   maximumUtxosPerCurrency,
   listOfUtxos,
-  lastBlknum,
   storeBlknum
 ) => {
   const asyncAction = async () => {
@@ -95,7 +94,6 @@ export const mergeUTXOs = (
       privateKey,
       maximumUtxosPerCurrency,
       listOfUtxos,
-      lastBlknum,
       storeBlknum
     )
 

@@ -31,7 +31,15 @@ export const getUtxos = (address, options) => {
     .then(utxos => utxos.sort(sortingUtxoPos))
 }
 
-export const getRequiredMergeUtxos = (address, maximumUtxosPerCurrency = 4) => {
+export const getRequiredMergeUtxos = async (
+  address,
+  unsubmittedBlknum,
+  maximumUtxosPerCurrency = 4
+) => {
+  if (unsubmittedBlknum) {
+    await Wait.waitChildChainBlknum(address, unsubmittedBlknum)
+  }
+
   return getUtxos(address)
     .then(utxos => {
       return utxos.reduce((acc, utxo) => {
@@ -50,12 +58,11 @@ export const getRequiredMergeUtxos = (address, maximumUtxosPerCurrency = 4) => {
     )
 }
 
-export const mergeListOfUtxos = (
+export const mergeListOfUtxos = async (
   address,
   privateKey,
   maximumUtxosPerCurrency = 4,
   listOfUtxos,
-  lastBlknum,
   storeBlknum = () => {}
 ) => {
   const pendingMergeUtxos = listOfUtxos.map(utxos =>
@@ -64,7 +71,6 @@ export const mergeListOfUtxos = (
       privateKey,
       maximumUtxosPerCurrency,
       utxos,
-      lastBlknum,
       storeBlknum
     )
   )
@@ -98,23 +104,13 @@ export const mergeUtxosUntilThreshold = async (
   privateKey,
   maximumUtxosPerCurrency,
   utxos,
-  lastBlknum,
   storeBlknum
 ) => {
-  let updatedUtxos = utxos
-
-  // Wait for the last blknum if the app was restarted in the middle of waiting.
-  if (lastBlknum) {
-    await Wait.waitChildChainBlknum(address, lastBlknum)
-    updatedUtxos = await getUtxos(address, {
-      currency: utxos[0].currency
-    })
-  }
-
-  if (updatedUtxos.length <= maximumUtxosPerCurrency) {
+  if (utxos.length <= maximumUtxosPerCurrency) {
+    const blknum = utxos[0].blknum
     return {
-      blknum: lastBlknum,
-      utxos: updatedUtxos
+      blknum,
+      utxos
     }
   }
 
@@ -142,15 +138,14 @@ export const mergeUtxosUntilThreshold = async (
   storeBlknum(blknum, utxos)
 
   await Wait.waitChildChainBlknum(address, blknum)
-  updatedUtxos = await getUtxos(address, {
+  let newUtxos = await getUtxos(address, {
     currency: utxos[0].currency
   })
   return await mergeUtxosUntilThreshold(
     address,
     privateKey,
     maximumUtxosPerCurrency,
-    updatedUtxos,
-    null,
+    newUtxos,
     storeBlknum
   )
 }
