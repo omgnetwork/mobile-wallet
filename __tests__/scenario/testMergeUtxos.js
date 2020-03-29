@@ -64,6 +64,12 @@ describe('Test Merge UTXOs', () => {
       )
     }
 
+    const listOfUtxos = await Plasma.getRequiredMergeUtxos(
+      testWallet.address,
+      null,
+      MAXIMUM_UTXOS_PER_CURRENCY
+    )
+
     // Merge utxos recursively
     console.log('Waiting for merging...')
     await plasmaService.mergeUTXOs(
