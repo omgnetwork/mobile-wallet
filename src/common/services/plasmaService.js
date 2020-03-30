@@ -117,47 +117,22 @@ export const transfer = (
   fee,
   metadata
 ) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const payments = Plasma.createPayment(
-        toAddress,
-        token.contractAddress,
-        Parser.parseUnits(token.balance, token.tokenDecimal)
-      )
-      const childchainFee = Plasma.createFee(
-        fee.contractAddress,
-        new BN(fee.amount)
-      )
-      const { address } = fromBlockchainWallet
-      const utxos = await Plasma.getUtxos(address, {
-        currency: token.contractAddress,
-        sort: (a, b) => new BN(b.amount).sub(new BN(a.amount))
-      })
-      const txBody = Plasma.createTransactionBody(
-        fromBlockchainWallet.address,
-        utxos,
-        payments,
-        childchainFee,
-        metadata
-      )
-
-      const typedData = Plasma.getTypedData(txBody)
-      const privateKeys = new Array(txBody.inputs.length).fill(
-        fromBlockchainWallet.privateKey
-      )
-      const signatures = Plasma.signTx(typedData, privateKeys)
-      const signedTransaction = Plasma.buildSignedTx(typedData, signatures)
-      const transactionReceipt = await Plasma.submitTx(signedTransaction)
-      resolve(transactionReceipt)
-    } catch (err) {
+  try {
+    return Plasma.transfer(
+      fromBlockchainWallet,
+      toAddress,
+      token,
+      fee,
+      metadata
+    )
+  } catch (err) {
+    if (err.message === 'submit:client_error') {
       console.log(err)
-      if (err.message === 'submit:client_error') {
-        reject(new Error('Something went wrong on the childchain'))
-      } else {
-        reject(err)
-      }
+      throw new Error('Something went wrong on the childchain')
+    } else {
+      throw err
     }
-  })
+  }
 }
 
 export const deposit = (address, privateKey, token, gasPrice) => {

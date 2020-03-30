@@ -29,7 +29,7 @@ import {
   paramsForTransferFormToTransferSelectFee,
   paramsForTransferFormToTransferSelectPlasmaFee
 } from './transferNavigation'
-// const testAddress = '0xf1deFf59DA938E31673DA1300b479896C743d968'
+const testAddress = '0x358303D2Dcc6924F634E37b805b62b820bB1E1B5'
 
 const TransferForm = ({
   wallet,
@@ -55,7 +55,7 @@ const TransferForm = ({
     'TransferForm',
     transferType
   )
-  const addressRef = useRef(address)
+  const addressRef = useRef(address || testAddress)
   const amountRef = useRef(amount)
   const amountFocusRef = useRef(null)
   const keyboardAwareScrollRef = useRef(null)

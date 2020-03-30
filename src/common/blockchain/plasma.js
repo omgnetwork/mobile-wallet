@@ -1,5 +1,5 @@
 import { Plasma, PlasmaUtils, web3 } from 'common/clients'
-import { ContractABI, Transaction, Wait } from 'common/utils'
+import { ContractABI, Transaction, Wait, Parser } from 'common/utils'
 import axios from 'axios'
 import { Gas, ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
@@ -59,6 +59,41 @@ export const getRequiredMergeUtxos = async (
     )
 }
 
+export const transfer = async (
+  fromBlockchainWallet,
+  toAddress,
+  token,
+  fee,
+  metadata
+) => {
+  const payments = createPayment(
+    toAddress,
+    token.contractAddress,
+    Parser.parseUnits(token.balance, token.tokenDecimal).toString(16)
+  )
+  const childchainFee = createFee(fee.contractAddress, new BN(fee.amount))
+  const { address } = fromBlockchainWallet
+  const utxos = await getUtxos(address, {
+    currency: token.contractAddress,
+    sort: (a, b) => new BN(b.amount).sub(new BN(a.amount))
+  })
+  const txBody = createTransactionBody(
+    fromBlockchainWallet.address,
+    utxos,
+    payments,
+    childchainFee,
+    metadata
+  )
+
+  const typedData = getTypedData(txBody)
+  const privateKeys = new Array(txBody.inputs.length).fill(
+    fromBlockchainWallet.privateKey
+  )
+  const signatures = signTx(typedData, privateKeys)
+  const signedTransaction = buildSignedTx(typedData, signatures)
+  return submitTx(signedTransaction)
+}
+
 export const mergeListOfUtxos = async (
   address,
   privateKey,
@@ -85,7 +120,7 @@ export const mergeUtxos = async (address, privateKey, utxos) => {
     return sum.add(new BN(utxo.amount))
   }, new BN(0))
   const payments = createPayment(address, currency, totalAmount)
-  const fee = { ...createFee(), amount: 0 }
+  const fee = createFee(currency, 0)
   const txBody = createTransactionBody({
     fromAddress: address,
     fromUtxos: utxos,

@@ -8,7 +8,7 @@ export const split = (address, privateKey, utxo, amount) => {
   const { currency } = fromUtxo
   const payment = Plasma.createPayment(address, currency, amount)[0]
   const payments = new Array(3).fill(payment)
-  const fee = { ...Plasma.createFee(), amount: 1 }
+  const fee = Plasma.createFee(currency, 1)
   const txBody = PlasmaUtils.transaction.createTransactionBody({
     fromAddress: address,
     fromUtxos: [fromUtxo],
