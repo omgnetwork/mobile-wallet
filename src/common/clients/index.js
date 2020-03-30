@@ -1,4 +1,4 @@
-import { ChildChain, RootChain, OmgUtil } from '@omisego/omg-js'
+import { ChildChain, RootChain, OmgUtil } from '@omisego/react-native-omg-js'
 import Config from 'react-native-config'
 import Web3 from 'web3'
 

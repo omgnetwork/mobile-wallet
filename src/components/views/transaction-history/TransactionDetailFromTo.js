@@ -14,7 +14,7 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
       if (network === BlockchainNetworkType.TYPE_OMISEGO_NETWORK) {
         Linking.openURL(`${Config.BLOCK_EXPLORER_URL}address/${address}`)
       } else {
-        Linking.openURL(`${Config.ETHERSCAN_ADDRESS_URL}${address}`)
+        Linking.openURL(`${Config.ETHERSCAN_URL}address/${address}`)
       }
     },
     [network]

@@ -321,8 +321,6 @@ PODS:
     - React
   - RNVectorIcons (6.6.0):
     - React
-  - TcpSockets (3.3.2):
-    - React
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -373,7 +371,6 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
-  - TcpSockets (from `../node_modules/react-native-tcp`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -473,8 +470,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
-  TcpSockets:
-    :path: "../node_modules/react-native-tcp"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -531,7 +526,6 @@ SPEC CHECKSUMS:
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
-  TcpSockets: 8d839b9b14f6f344d98e4642ded13ab3112b462d
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
 PODFILE CHECKSUM: 6f8449b0769b60c201f8439fac817352a49942a9

@@ -4,8 +4,7 @@ export default {
   ROOTCHAIN_TRANSFER_CONFIRMATION_BLOCKS: 1,
   ETHERSCAN_API_KEY: 'VCKWHFAA6M5AR8SFVXC43DEMEA8JN2H3WZ',
   ETHERSCAN_API_URL: 'https://api-ropsten.etherscan.io/api/',
-  ETHERSCAN_TX_URL: 'https://ropsten.etherscan.io/tx/',
-  ETHERSCAN_ADDRESS_URL: 'https://ropsten.etherscan.io/address/',
+  ETHERSCAN_URL: 'https://ropsten.etherscan.io/',
   ETHERSCAN_NETWORK: 'ropsten',
   OMISEGO_NETWORK: 'lumpini',
   WEB3_HTTP_PROVIDER:

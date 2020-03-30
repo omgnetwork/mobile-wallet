@@ -25,13 +25,14 @@
 		78BB2462972B45E282E97D4E /* MessinaSans-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 494129B0817C40B2B566300D /* MessinaSans-Bold.otf */; };
 		AF93B4D6639E460B9DACAB68 /* MessinaSans-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BAFF502928C4ECF85C816AB /* MessinaSans-SemiBold.otf */; };
 		C49E761123660727003B0D52 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */; };
-		C4AD05DB230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		C4AD05DC230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		C4AD05DD230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DB230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DC230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DD230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		D2A2277A48E64BA1A6CA92BA /* MessinaSans-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0359736497A843F3972493C8 /* MessinaSans-Light.otf */; };
 		D6DD8AB8C90447CCBFFCC6A7 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2752A0B5F702467A8625AC5D /* RNBackgroundFetch+AppDelegate.m */; };
 		D764F9A350CA45E88C984E40 /* MessinaSansMono-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 720399F0D2A44BE8B2D7918E /* MessinaSansMono-SemiBold.otf */; };
 		E2F77AF6594346FAB542CE8E /* MessinaSans-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5CFFB4E20C3E4050B9091133 /* MessinaSans-Book.otf */; };
+		E938D89CF40B049FEE51F7A6 /* libPods-PlasmaWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0AD69EDCD02A10814EFA4D4 /* libPods-PlasmaWallet.a */; };
 		F5453F5A0F6C41A1ADCB7C88 /* MessinaSansMono-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511878A4CE6B4B38834A201F /* MessinaSansMono-Regular.otf */; };
 /* End PBXBuildFile section */
 
@@ -105,6 +106,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F856FFAE0AF45D49F1346DA /* TSBackgroundFetch.framework in Frameworks */,
+				E938D89CF40B049FEE51F7A6 /* libPods-PlasmaWallet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,9 +378,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4AD05DB230AF9C30027E763 /* (null) in Resources */,
-				C4AD05DC230AF9C30027E763 /* (null) in Resources */,
-				C4AD05DD230AF9C30027E763 /* (null) in Resources */,
+				C4AD05DB230AF9C30027E763 /* BuildFile in Resources */,
+				C4AD05DC230AF9C30027E763 /* BuildFile in Resources */,
+				C4AD05DD230AF9C30027E763 /* BuildFile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

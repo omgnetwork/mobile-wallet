@@ -165,7 +165,7 @@ const ExitPending = ({ theme, navigation, wallet }) => {
               style={styles.trackEtherscanButton}
               onPress={() => {
                 Linking.openURL(
-                  `${Config.ETHERSCAN_TX_URL}${unconfirmedTx.hash}`
+                  `${Config.ETHERSCAN_URL}tx/${unconfirmedTx.hash}`
                 )
               }}>
               <OMGText style={styles.trackEtherscanText(theme)}>

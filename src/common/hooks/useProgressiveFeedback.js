@@ -102,7 +102,7 @@ const useProgressiveFeedback = (
     ) {
       return `${Config.BLOCK_EXPLORER_URL}transaction/${feedback.hash}`
     } else {
-      return `${Config.ETHERSCAN_TX_URL}${feedback.hash}`
+      return `${Config.ETHERSCAN_URL}tx/${feedback.hash}`
     }
   }, [feedback.actionType, feedback.hash])
 
