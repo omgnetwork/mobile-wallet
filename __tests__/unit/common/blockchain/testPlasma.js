@@ -444,11 +444,13 @@ describe('Test Plasma Boundary', () => {
       }
     ]
     mockGetUtxosResponse(utxos)
-    return Plasma.getRequiredMergeUtxos(TEST_ADDRESS, 4).then(arrayOfUtxos => {
-      expect(arrayOfUtxos).toEqual([
-        [utxos[5], utxos[4], utxos[3], utxos[2], utxos[1]]
-      ])
-    })
+    return Plasma.getRequiredMergeUtxos(TEST_ADDRESS, null, 4).then(
+      arrayOfUtxos => {
+        expect(arrayOfUtxos).toEqual([
+          [utxos[5], utxos[4], utxos[3], utxos[2], utxos[1]]
+        ])
+      }
+    )
   })
 
   it('deposit with eth should invoke the deposit function with expected parameters', () => {
