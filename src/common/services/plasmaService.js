@@ -1,6 +1,6 @@
 import { Formatter, Parser, Polling, Datetime, Mapper } from 'common/utils'
 import { Plasma, Token } from 'common/blockchain'
-import { ContractAddress } from 'common/constants'
+import BN from 'bn.js'
 import Config from 'react-native-config'
 import { Wait } from 'common/utils'
 
@@ -114,29 +114,35 @@ export const transfer = (
   fromBlockchainWallet,
   toAddress,
   token,
-  feeToken,
+  fee,
   metadata
 ) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const feeCurrency =
-        feeToken?.contractAddress ?? ContractAddress.ETH_ADDRESS
       const payments = Plasma.createPayment(
         toAddress,
         token.contractAddress,
-        Parser.parseUnits(token.balance, token.tokenDecimal).toString(10)
+        Parser.parseUnits(token.balance, token.tokenDecimal)
       )
-      const childchainFee = Plasma.createFee(feeCurrency)
-      const createdTransactions = await Plasma.createTx(
+      const childchainFee = Plasma.createFee(
+        fee.contractAddress,
+        new BN(fee.amount)
+      )
+      const { address } = fromBlockchainWallet
+      const utxos = await Plasma.getUtxos(address, {
+        currency: token.contractAddress,
+        sort: (a, b) => new BN(b.amount).sub(new BN(a.amount))
+      })
+      const txBody = Plasma.createTransactionBody(
         fromBlockchainWallet.address,
+        utxos,
         payments,
         childchainFee,
         metadata
       )
 
-      const transaction = createdTransactions.transactions[0]
-      const typedData = Plasma.getTypedData(transaction)
-      const privateKeys = new Array(transaction.inputs.length).fill(
+      const typedData = Plasma.getTypedData(txBody)
+      const privateKeys = new Array(txBody.inputs.length).fill(
         fromBlockchainWallet.privateKey
       )
       const signatures = Plasma.signTx(typedData, privateKeys)

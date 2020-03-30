@@ -20,7 +20,8 @@ export const getBalances = address => {
 }
 
 export const getUtxos = (address, options) => {
-  const { currency, fromUtxoPos } = options || {}
+  const { currency, fromUtxoPos, sort } = options || {}
+
   const filteringCurrency = utxo => utxo.currency === currency
   const filteringFromUtxoPos = utxo => utxo.utxo_pos >= (fromUtxoPos || 0)
   const sortingUtxoPos = (first, second) => second.utxo_pos - first.utxo_pos
@@ -28,7 +29,7 @@ export const getUtxos = (address, options) => {
     .then(utxos => utxos.map(mappingAmount))
     .then(utxos => (currency ? utxos.filter(filteringCurrency) : utxos))
     .then(utxos => utxos.filter(filteringFromUtxoPos))
-    .then(utxos => utxos.sort(sortingUtxoPos))
+    .then(utxos => utxos.sort(sort || sortingUtxoPos))
 }
 
 export const getRequiredMergeUtxos = async (
@@ -85,7 +86,7 @@ export const mergeUtxos = async (address, privateKey, utxos) => {
   }, new BN(0))
   const payments = createPayment(address, currency, totalAmount)
   const fee = { ...createFee(), amount: 0 }
-  const txBody = PlasmaUtils.transaction.createTransactionBody({
+  const txBody = createTransactionBody({
     fromAddress: address,
     fromUtxos: utxos,
     payments,
@@ -150,6 +151,26 @@ export const mergeUtxosUntilThreshold = async (
   )
 }
 
+export const createTransactionBody = (
+  address,
+  utxos,
+  payments,
+  fee,
+  metadata
+) => {
+  const encodedMetadata =
+    (metadata && Transaction.encodeMetadata(metadata)) ||
+    PlasmaUtils.transaction.NULL_METADATA
+
+  return PlasmaUtils.transaction.createTransactionBody({
+    fromAddress: address,
+    fromUtxos: utxos,
+    payments,
+    fee,
+    metadata: encodedMetadata
+  })
+}
+
 export const createPayment = (address, tokenContractAddress, amount) => {
   return [
     {
@@ -160,8 +181,9 @@ export const createPayment = (address, tokenContractAddress, amount) => {
   ]
 }
 
-export const createFee = (currency = ContractAddress.ETH_ADDRESS) => ({
-  currency: currency
+export const createFee = (currency = ContractAddress.ETH_ADDRESS, amount) => ({
+  currency,
+  amount
 })
 
 export const deposit = async (
