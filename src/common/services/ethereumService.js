@@ -82,16 +82,7 @@ export const sendEthToken = (wallet, options) => {
 
 export const getRecommendedGas = () => {
   return Ethereum.getGasFromGasStation().then(
-    ({
-      fastest,
-      fast,
-      average,
-      safeLow,
-      fastestWait,
-      fastWait,
-      avgWait,
-      safeLowWait
-    }) => [
+    ({ fast, average, safeLow, fastWait, avgWait, safeLowWait }) => [
       {
         speed: 'Fast',
         estimateTime: `${fastWait * 60} seconds`,
