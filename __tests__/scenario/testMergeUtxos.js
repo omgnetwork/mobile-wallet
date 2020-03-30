@@ -38,7 +38,7 @@ describe('Test Merge UTXOs', () => {
     // Check if the test wallet have more than 0.1 ETH
     const shouldFund = new BN(bigUtxo.amount).lt(MINIMUM_ETH_REQUIRED)
 
-    if (utxos.length < 10) {
+    if (utxos.length <= MAXIMUM_UTXOS_PER_CURRENCY) {
       // Check before split if we need to get more fund in the test wallet.
       console.log('Need more ETH?', shouldFund)
       if (shouldFund) {
