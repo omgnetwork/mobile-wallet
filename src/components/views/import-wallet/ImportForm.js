@@ -14,7 +14,7 @@ import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { Validator } from 'common/utils'
 
-const Mnemonic = ({
+const ImportForm = ({
   dispatchImportWalletByMnemonic,
   loading,
   provider,
@@ -26,7 +26,7 @@ const Mnemonic = ({
   const walletNameRef = useRef(null)
   const [showErrorMnemonic, setShowErrorMnemonic] = useState(false)
   const [showErrorName, setShowErrorName] = useState(false)
-  const [shouldDisable, setShouldDisable] = useLoading(loading, 'WALLET_IMPORT')
+  const [shouldDisableConfirmBtn, _] = useLoading(loading, 'WALLET_IMPORT')
 
   const errorMnemonicMessage = 'Invalid mnemonic'
   const errorNameMessage = 'The wallet name should not be empty'
@@ -67,8 +67,11 @@ const Mnemonic = ({
   }, [loading, loading.action, loading.success, navigation, wallets])
 
   return (
-    <OMGDismissKeyboard style={styles.mnemonicContainer(theme)}>
-      <LayoutContainer>
+    <View style={styles.mnemonicContainer(theme)}>
+      <OMGKeyboardShift
+        extraHeight={24}
+        contentContainerStyle={{ flexGrow: 1 }}
+        androidEnabled={true}>
         <OMGText style={styles.textBoxTitle(theme)} weight='mono-semi-bold'>
           Mnemonic Phrase
         </OMGText>
@@ -91,26 +94,16 @@ const Mnemonic = ({
           showError={showErrorName}
           errorMessage={errorNameMessage}
           maxLength={20}
-          disabled={shouldDisable}
+          disabled={shouldDisableConfirmBtn}
         />
+        <View style={styles.mgButtom} />
         <View style={styles.buttonContainer}>
-          <OMGButton loading={shouldDisable} onPress={importWallet}>
+          <OMGButton loading={shouldDisableConfirmBtn} onPress={importWallet}>
             Import
           </OMGButton>
         </View>
-      </LayoutContainer>
-    </OMGDismissKeyboard>
-  )
-}
-
-const LayoutContainer = ({ children }) => {
-  return (
-    <OMGKeyboardShift
-      extraHeight={24}
-      contentContainerStyle={styles.keyboardAvoidingView}
-      androidEnabled={true}>
-      {children}
-    </OMGKeyboardShift>
+      </OMGKeyboardShift>
+    </View>
   )
 }
 
@@ -124,15 +117,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: theme.colors.white
   }),
+  mgButtom: {
+    marginBottom: 16
+  },
   mnemonicContainer: theme => ({
     flex: 1,
+    paddingHorizontal: 16,
     backgroundColor: theme.colors.black3
   }),
-  keyboardAvoidingView: {
-    flex: 1,
-    paddingHorizontal: 16,
-    flexGrow: 1
-  },
   buttonContainer: {
     marginTop: 'auto',
     marginBottom: 16
@@ -154,4 +146,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNavigation(withTheme(Mnemonic)))
+)(withNavigation(withTheme(ImportForm)))

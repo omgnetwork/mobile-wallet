@@ -16,7 +16,7 @@ import ExitForm from './exit/ExitForm'
 import ExitConfirm from './exit/ExitConfirm'
 import ExitPending from './exit/ExitPending'
 import ImportWallet from './import-wallet'
-import ImportWalletMnemonic from './import-wallet/Mnemonic'
+import ImportWalletForm from './import-wallet/ImportForm'
 import ImportWalletSuccess from './import-wallet/ImportSuccess'
 import Initializer from './initializer'
 import Main from './main'
@@ -67,7 +67,7 @@ export {
   ExitConfirm,
   ExitPending,
   ImportWallet,
-  ImportWalletMnemonic,
+  ImportWalletForm,
   ImportWalletSuccess,
   Initializer,
   Main,

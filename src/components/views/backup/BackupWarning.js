@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { View, StyleSheet } from 'react-native'
@@ -39,15 +39,23 @@ const BackupWarning = ({ theme, navigation }) => {
   const [showBackupModal, setShowBackupModal] = useState(false)
   const [mnemonic, setMnemonic] = useState(null)
 
-  async function navigateToBackupTranscribe() {
+  const navigateToBackupTranscribe = useCallback(async () => {
     navigation.navigate('BackupTranscribe', {
       mnemonic: await walletStorage.getMnemonic(wallet.address),
       wallet: wallet
     })
-  }
+  }, [navigation, wallet])
 
-  const navigateNext = () => {
+  const closeModal = useCallback(() => {
     setShowBackupModal(false)
+  }, [])
+
+  const openModal = useCallback(() => {
+    setShowBackupModal(true)
+  }, [])
+
+  const navigateNext = useCallback(() => {
+    closeModal()
     if (wallet) {
       navigateToBackupTranscribe()
     } else {
@@ -55,7 +63,7 @@ const BackupWarning = ({ theme, navigation }) => {
         setMnemonic(Ethereum.generateWalletMnemonic())
       })
     }
-  }
+  }, [closeModal, navigateToBackupTranscribe, wallet])
 
   useEffect(() => {
     function navigateToCreateWalletBackupMnemonic() {
@@ -101,11 +109,11 @@ const BackupWarning = ({ theme, navigation }) => {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <OMGButton onPress={() => setShowBackupModal(true)}>Next</OMGButton>
+        <OMGButton onPress={openModal}>Next</OMGButton>
       </View>
       <BackupModal
         visible={showBackupModal}
-        onPressCancel={() => setShowBackupModal(false)}
+        onPressCancel={closeModal}
         onPressOk={navigateNext}
       />
     </SafeAreaView>

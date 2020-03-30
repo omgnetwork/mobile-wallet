@@ -13,7 +13,7 @@ const OMGOnboardingSheetWithButton = ({
 }) => {
   const TextContent = content.paragraphs.map((paragraph, index) => {
     return (
-      <OMGText style={styles.content(theme)} key={index}>
+      <OMGText style={styles.content(theme)} weight='regular' key={index}>
         {paragraph}
       </OMGText>
     )
@@ -21,7 +21,7 @@ const OMGOnboardingSheetWithButton = ({
 
   return (
     <OnboardingContainer visible={visible} isModal={true} tourKey={content.key}>
-      <OMGText style={styles.title(theme)} weight='mono-semi-bold'>
+      <OMGText style={styles.title(theme)} weight='bold'>
         {content.title}
       </OMGText>
       {TextContent}

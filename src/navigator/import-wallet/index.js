@@ -3,13 +3,13 @@ import * as Views from 'components/views'
 
 export default createStackNavigator(
   {
-    ImportWalletMnemonic: Views.ImportWalletMnemonic,
+    ImportWalletForm: Views.ImportWalletForm,
     ImportWalletSuccess: {
       screen: Views.ImportWalletSuccess
     }
   },
   {
-    initialRouteName: 'ImportWalletMnemonic',
+    initialRouteName: 'ImportWalletForm',
     headerMode: 'none'
   }
 )

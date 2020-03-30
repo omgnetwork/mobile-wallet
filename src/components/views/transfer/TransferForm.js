@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 16,
-    marginBottom: 16,
+    marginBottom: 32,
     paddingHorizontal: 16
   },
   title: theme => ({
