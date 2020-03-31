@@ -1,8 +1,9 @@
 import { Formatter, Parser, Polling, Datetime, Mapper } from 'common/utils'
 import { Plasma, Token } from 'common/blockchain'
-import { Gas, ContractAddress } from 'common/constants'
+import { ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
-import { Wait } from 'common/utils'
+import { web3 } from 'common/clients'
+import { Wait, ContractABI } from 'common/utils'
 
 export const fetchAssets = async (provider, address) => {
   try {
@@ -138,7 +139,7 @@ export const transfer = (
   })
 }
 
-export const deposit = (address, privateKey, token) => {
+export const deposit = (address, privateKey, token, gasPrice) => {
   return new Promise(async (resolve, reject) => {
     try {
       const weiAmount = Parser.parseUnits(
@@ -146,11 +147,14 @@ export const deposit = (address, privateKey, token) => {
         token.tokenDecimal
       ).toString(10)
 
-      const { hash, gasPrice, gasUsed } = await Plasma.deposit(
+      const { hash, gasUsed } = await Plasma.deposit(
         address,
         privateKey,
         weiAmount,
-        token.contractAddress
+        token.contractAddress,
+        {
+          gasPrice
+        }
       )
       resolve({
         hash,
@@ -163,7 +167,7 @@ export const deposit = (address, privateKey, token) => {
   })
 }
 
-export const exit = (blockchainWallet, token) => {
+export const exit = (blockchainWallet, token, gasPrice) => {
   return new Promise(async (resolve, reject) => {
     try {
       // Check if the token has been unlocked
@@ -172,7 +176,8 @@ export const exit = (blockchainWallet, token) => {
       if (!hasToken) {
         await Plasma.addToken(token.contractAddress, {
           from: blockchainWallet.address,
-          privateKey: blockchainWallet.privateKey
+          privateKey: blockchainWallet.privateKey,
+          gasPrice
         })
       }
 
@@ -196,7 +201,6 @@ export const exit = (blockchainWallet, token) => {
       )
       const acceptableUtxoParams = Plasma.createAcceptableUtxoParams(utxoToExit)
       const exitData = await Plasma.getExitData(acceptableUtxoParams)
-      const gasPrice = Gas.EXIT_GAS_PRICE
 
       const {
         transactionHash: hash,
@@ -290,23 +294,23 @@ export const waitForExitUtxo = (
   blockchainWallet,
   token
 ) => {
+  let utxoPos = fromUtxoPos
   return Polling.pollUntilSuccess(async () => {
-    const utxo = await getNewUtxoByAmount(
-      desiredAmount,
-      fromUtxoPos + 1,
-      blockchainWallet,
-      token
-    )
+    const utxos = await getNewUtxos(utxoPos + 1, blockchainWallet, token)
+    const hasNewUtxos = utxos.length > 0
+    const desiredAmountUtxo = utxos.find(utxo => utxo.amount === desiredAmount)
 
-    if (utxo) {
+    if (hasNewUtxos && desiredAmountUtxo) {
       return {
         success: true,
-        data: utxo
+        data: desiredAmountUtxo
       }
-    } else {
-      return {
-        success: false
-      }
+    } else if (hasNewUtxos) {
+      await transfer(blockchainWallet, blockchainWallet.address, token)
+      utxoPos = utxos[0].utxo_pos
+    }
+    return {
+      success: false
     }
   }, 3000)
 }
@@ -319,16 +323,9 @@ const getUtxoByAmount = async (amount, blockchainWallet, token) => {
   return utxos.find(utxo => utxo.amount === amount)
 }
 
-const getNewUtxoByAmount = async (
-  amount,
-  fromUtxoPos,
-  blockchainWallet,
-  token
-) => {
-  const utxos = await Plasma.getUtxos(blockchainWallet.address, {
+const getNewUtxos = async (fromUtxoPos, blockchainWallet, token) => {
+  return Plasma.getUtxos(blockchainWallet.address, {
     fromUtxoPos: fromUtxoPos,
     currency: token.contractAddress
   })
-
-  return utxos.find(utxo => utxo.amount === amount)
 }

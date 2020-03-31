@@ -4,7 +4,7 @@ import feeOptions from './feeOptions'
 export const getParamsForTransferForm = (navigation, wallet) => {
   const transferType = navigation.getParam('transferType')
   return {
-    selectedEthFee: navigation.getParam('selectedEthFee', feeOptions[0]),
+    selectedEthFee: navigation.getParam('selectedEthFee'),
     selectedPlasmaFee: navigation.getParam('selectedPlasmaFee'),
     selectedToken: navigation.getParam(
       'selectedToken',
@@ -66,7 +66,9 @@ export const paramsForTransferFormToTransferScanner = ({ isRootchain }) => {
 export const paramsForTransferFormToTransferSelectFee = ({
   selectedToken,
   selectedEthFee,
-  amount
+  gasOptions,
+  amount,
+  fromScreen = 'TransferForm'
 }) => {
   return {
     selectedToken: {
@@ -74,7 +76,8 @@ export const paramsForTransferFormToTransferSelectFee = ({
       balance: amount
     },
     selectedEthFee,
-    fees: feeOptions
+    fees: gasOptions,
+    fromScreen
   }
 }
 
@@ -179,9 +182,10 @@ export const getParamsForTransferScannerFromTransferForm = navigation => {
 
 export const getParamsForTransferSelectFeeFromTransferForm = navigation => {
   return {
-    fees: feeOptions,
+    fees: navigation.getParam('fees'),
     selectedToken: navigation.getParam('selectedToken'),
-    selectedEthFee: navigation.getParam('selectedEthFee')
+    selectedEthFee: navigation.getParam('selectedEthFee'),
+    fromScreen: navigation.getParam('fromScreen')
   }
 }
 

@@ -1,6 +1,6 @@
 import { Ethereum, Token } from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
-import { ContractABI, Datetime } from 'common/utils'
+import { ContractABI, Datetime, Parser } from 'common/utils'
 import { providerService } from 'common/services'
 
 export const fetchAssets = async (provider, address, lastBlockNumber) => {
@@ -78,6 +78,37 @@ export const sendEthToken = (wallet, options) => {
       reject(err)
     }
   })
+}
+
+export const getRecommendedGas = () => {
+  return Ethereum.getGasFromGasStation().then(
+    ({ fast, average, safeLow, fastWait, avgWait, safeLowWait }) => [
+      {
+        speed: 'Fast',
+        estimateTime: `${fastWait * 60} seconds`,
+        amount: Parser.parseUnits(fast.toString(), 8).toString(10),
+        displayAmount: fast / 10,
+        symbol: 'Gwei',
+        price: '1'
+      },
+      {
+        speed: 'Average',
+        estimateTime: `${avgWait * 60} seconds`,
+        amount: Parser.parseUnits(average.toString(), 8).toString(10),
+        displayAmount: average / 10,
+        symbol: 'Gwei',
+        price: '1'
+      },
+      {
+        speed: 'Safe low',
+        estimateTime: `${safeLowWait * 60} seconds`,
+        amount: Parser.parseUnits(safeLow.toString(), 8).toString(10),
+        displayAmount: safeLow / 10,
+        symbol: 'Gwei',
+        price: '1'
+      }
+    ]
+  )
 }
 
 export const getTxs = (address, options, onlyErc20) => {

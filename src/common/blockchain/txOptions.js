@@ -12,8 +12,8 @@ export const createDepositOptions = (
   return {
     from: ownerAddress,
     privateKey: ownerPrivateKey,
-    gas: gas,
-    gasPrice: gasPrice
+    gas,
+    gasPrice
   }
 }
 

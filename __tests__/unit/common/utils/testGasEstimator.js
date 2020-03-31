@@ -22,12 +22,7 @@ describe('Test Gas Estimator', () => {
       tokenDecimal: 18
     }
 
-    const pendingGasUsed = GasEstimator.estimateTransferErc20(
-      wallet,
-      to,
-      fee,
-      token
-    )
+    const pendingGasUsed = GasEstimator.estimateTransferErc20(wallet, to, token)
 
     return pendingGasUsed.then(gasUsed => {
       expect(gasUsed.toString(10)).toBeDefined()

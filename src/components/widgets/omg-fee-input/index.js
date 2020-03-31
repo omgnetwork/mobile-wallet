@@ -1,25 +1,30 @@
 import React from 'react'
 import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import OMGFontIcon from '../omg-font-icon'
-import OMGText from '../omg-text'
+import { OMGFontIcon, OMGText, OMGEmpty } from 'components/widgets'
 
-const OMGFeeInput = ({ theme, fee, style, onPress }) => {
+const OMGFeeInput = ({ theme, fee, loading, style, onPress }) => {
   return (
     <TouchableOpacity
       style={{ ...styles.container(theme), ...style }}
       onPress={onPress}>
-      <OMGText style={styles.text(theme)}>{fee.speed}</OMGText>
-      <View style={styles.rightContainer}>
-        <OMGText style={styles.amount(theme)}>
-          {fee.displayAmount} {fee.symbol}
-        </OMGText>
-        <OMGFontIcon
-          name='chevron-right'
-          size={14}
-          color={theme.colors.white}
-        />
-      </View>
+      {loading ? (
+        <OMGEmpty loading={true} />
+      ) : (
+        <>
+          <OMGText style={styles.text(theme)}>{fee.speed}</OMGText>
+          <View style={styles.rightContainer}>
+            <OMGText style={styles.amount(theme)}>
+              {fee.displayAmount} {fee.symbol}
+            </OMGText>
+            <OMGFontIcon
+              name='chevron-right'
+              size={14}
+              color={theme.colors.white}
+            />
+          </View>
+        </>
+      )}
     </TouchableOpacity>
   )
 }

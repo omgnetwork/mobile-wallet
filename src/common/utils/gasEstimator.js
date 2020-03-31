@@ -3,13 +3,13 @@ import { Ethereum, TxOptions, Plasma } from 'common/blockchain'
 import { web3, Plasma as PlasmaClient } from 'common/clients'
 import { ContractABI, Parser } from 'common/utils'
 
-export const estimateTransferErc20 = (wallet, to, fee, token) => {
+export const estimateTransferErc20 = (wallet, to, token) => {
   const abi = ContractABI.erc20Abi()
   const contract = new Ethereum.getContract(token.contractAddress, abi, wallet)
   const amount = Parser.parseUnits(token.balance, token.tokenDecimal)
   const gasOptions = {
     gasLimit: Gas.LOW_LIMIT,
-    gasPrice: Parser.parseUnits(fee.amount, 'wei')
+    gasPrice: Parser.parseUnits(Gas.LOW_TRANSFER_GAS_PRICE, 'wei')
   }
 
   return contract.estimate.transfer(to, amount, gasOptions)
@@ -83,7 +83,6 @@ export const estimateExit = async (
       return exitGas
     }
   } catch (err) {
-    console.log(err)
     return Gas.EXIT_ESTIMATED_GAS_USED
   }
 }

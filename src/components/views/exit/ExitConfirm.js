@@ -5,7 +5,7 @@ import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { BlockchainDataFormatter } from 'common/blockchain'
 import { plasmaActions } from 'common/actions'
-import { ActionAlert, Gas, ContractAddress } from 'common/constants'
+import { ActionAlert, ContractAddress } from 'common/constants'
 import { TransferHelper } from 'components/views/transfer'
 import {
   OMGText,
@@ -26,6 +26,9 @@ const ExitConfirm = ({
   dispatchExit
 }) => {
   const token = navigation.getParam('token')
+  const gasUsed = navigation.getParam('gasUsed')
+  const gasPrice = navigation.getParam('gasPrice')
+  const exitBond = navigation.getParam('exitBond')
   const tokenBalance = BlockchainDataFormatter.formatTokenBalance(token.balance)
   const tokenPrice = BlockchainDataFormatter.formatTokenPrice(
     token.balance,
@@ -36,8 +39,8 @@ const ExitConfirm = ({
   const [loadingVisible, setLoadingVisible] = useState(false)
 
   const exit = useCallback(() => {
-    dispatchExit(blockchainWallet, token)
-  }, [blockchainWallet, dispatchExit, token])
+    dispatchExit(blockchainWallet, token, gasPrice)
+  }, [blockchainWallet, dispatchExit, gasPrice, token])
 
   useEffect(() => {
     if (loading.show && ActionAlert.exit.actions.indexOf(loading.action) > -1) {
@@ -67,17 +70,13 @@ const ExitConfirm = ({
   })
 
   useEffect(() => {
-    async function calculateEstimatedFee() {
-      const gasUsed = await TransferHelper.getGasUsed(
-        TransferHelper.TYPE_EXIT,
-        token,
-        {
-          wallet: blockchainWallet,
-          includeExitBond: true
-        }
+    function calculateEstimatedFee() {
+      const gasFee = BlockchainDataFormatter.formatGasFee(
+        gasUsed,
+        gasPrice,
+        exitBond
       )
-      const gasPrice = Gas.EXIT_GAS_PRICE
-      const gasFee = BlockchainDataFormatter.formatGasFee(gasUsed, gasPrice)
+      console.log(gasFee)
       const usdPerEth = ethToken && ethToken.price
       const gasFeeUsd = BlockchainDataFormatter.formatTokenPrice(
         gasFee,
@@ -87,7 +86,15 @@ const ExitConfirm = ({
       setEstimatedFeeUsd(gasFeeUsd)
     }
     calculateEstimatedFee()
-  }, [blockchainWallet, ethToken, token, tokenPrice])
+  }, [
+    blockchainWallet,
+    ethToken,
+    exitBond,
+    gasPrice,
+    gasUsed,
+    token,
+    tokenPrice
+  ])
 
   const renderEstimatedFeeElement = useCallback(() => {
     return (
@@ -188,19 +195,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
-  maxTotalContainer: theme => ({
-    backgroundColor: theme.colors.gray4,
-    flexDirection: 'column',
-    paddingHorizontal: 16,
-    paddingVertical: 20
-  }),
-  balanceContainer: {},
-  amountContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 10
-  },
   buttonContainer: {
     justifyContent: 'flex-end',
     marginVertical: 16,
@@ -211,28 +205,6 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     textTransform: 'uppercase',
     marginLeft: 3
-  }),
-  tokenBalance: theme => ({
-    fontSize: 32,
-    letterSpacing: -3,
-    color: theme.colors.white
-  }),
-  tokenSymbol: theme => ({
-    textAlign: 'right',
-    fontSize: 18,
-    letterSpacing: -0.64,
-    color: theme.colors.white
-  }),
-  tokenWorth: theme => ({
-    color: theme.colors.white,
-    fontSize: 12,
-    letterSpacing: -0.48,
-    marginTop: 2
-  }),
-  maxTotalTitle: theme => ({
-    fontSize: 12,
-    textTransform: 'uppercase',
-    color: theme.colors.white
   }),
   subtitle: theme => ({
     marginTop: 30,
@@ -298,8 +270,8 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchExit: (blockchainWallet, token) =>
-    dispatch(plasmaActions.exit(blockchainWallet, token))
+  dispatchExit: (blockchainWallet, token, gasPrice) =>
+    dispatch(plasmaActions.exit(blockchainWallet, token, gasPrice))
 })
 
 export default connect(

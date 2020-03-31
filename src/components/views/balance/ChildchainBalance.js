@@ -7,6 +7,7 @@ import { plasmaActions, walletActions } from 'common/actions'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
 import { TransferHelper } from 'components/views/transfer'
+import { ethereumActions } from 'common/actions'
 import { Formatter, Datetime, Alerter } from 'common/utils'
 import {
   OMGItemToken,
@@ -21,6 +22,7 @@ const ChildchainBalance = ({
   exitButtonRef,
   dispatchLoadAssets,
   dispatchSetShouldRefreshChildchain,
+  dispatchGetRecommendedGas,
   unconfirmedTxs,
   globalLoading,
   wallet,
@@ -82,9 +84,11 @@ const ChildchainBalance = ({
     if (wallet.shouldRefreshChildchain) {
       setLoading(true)
       dispatchLoadAssets(provider, wallet)
+      dispatchGetRecommendedGas()
       dispatchSetShouldRefreshChildchain(wallet.address, false)
     }
   }, [
+    dispatchGetRecommendedGas,
     dispatchLoadAssets,
     dispatchSetShouldRefreshChildchain,
     provider,
@@ -171,7 +175,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchLoadAssets: (provider, wallet) =>
     dispatch(plasmaActions.fetchAssets(provider, wallet.address)),
   dispatchSetShouldRefreshChildchain: (address, shouldRefreshChildchain) =>
-    walletActions.refreshChildchain(dispatch, address, shouldRefreshChildchain)
+    walletActions.refreshChildchain(dispatch, address, shouldRefreshChildchain),
+  dispatchGetRecommendedGas: () => dispatch(ethereumActions.getRecommendedGas())
 })
 
 export default connect(
