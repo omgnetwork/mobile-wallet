@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { TransactionTypes, ExitStatus } from 'common/constants'
-import { BlockchainDataFormatter } from 'common/blockchain'
+import { BlockchainFormatter } from 'common/blockchain'
 import OMGText from '../omg-text'
 import OMGFontIcon from '../omg-font-icon'
 
@@ -11,7 +11,7 @@ const OMGItemExitTransaction = ({ theme, tx, style, key, onPress }) => {
   const iconName = getIconName(tx.type)
 
   const renderValue = useCallback(() => {
-    return `${BlockchainDataFormatter.formatTokenBalance(tx.value)} ${
+    return `${BlockchainFormatter.formatTokenBalance(tx.value)} ${
       tx.tokenSymbol
     }`
   }, [tx])
@@ -25,7 +25,7 @@ const OMGItemExitTransaction = ({ theme, tx, style, key, onPress }) => {
             <View style={styles.exitStatusContainer}>
               <View style={styles.statusIndicator(theme)} />
               <OMGText style={styles.statusText(theme)}>
-                {`Pending : Eligible to process on${BlockchainDataFormatter.formatProcessExitAt(
+                {`Pending : Eligible to process on${BlockchainFormatter.formatProcessExitAt(
                   exitableAt
                 )}`}
               </OMGText>

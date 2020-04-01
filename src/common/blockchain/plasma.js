@@ -1,5 +1,5 @@
 import { Plasma, web3 } from 'common/clients'
-import { Parser, OmgUtil } from 'common/utils'
+import { Parser } from 'common/utils'
 import axios from 'axios'
 import { Gas, ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
@@ -9,6 +9,7 @@ import {
   Contract,
   ContractABI,
   Transaction,
+  OmgUtil,
   Wait
 } from 'common/blockchain'
 
@@ -89,7 +90,7 @@ export const transfer = async (
     metadata
   )
 
-  const typedData = getTypedData(txBody)
+  const typedData = Transaction.getTypedData(txBody)
   const privateKeys = new Array(txBody.inputs.length).fill(
     fromBlockchainWallet.privateKey
   )
@@ -125,14 +126,14 @@ export const mergeUtxos = async (address, privateKey, utxos) => {
   }, new BN(0))
   const payments = createPayment(address, currency, totalAmount)
   const fee = createFee(currency, 0)
-  const txBody = createTransactionBody({
-    fromAddress: address,
-    fromUtxos: utxos,
+  const txBody = createTransactionBody(
+    address,
+    utxos,
     payments,
     fee,
-    metadata: Transaction.encodeMetadata(_metadata)
-  })
-  const typedData = getTypedData(txBody)
+    Transaction.encodeMetadata(_metadata)
+  )
+  const typedData = Transaction.getTypedData(txBody)
   const privateKeys = new Array(txBody.inputs.length).fill(privateKey)
   const signatures = signTx(typedData, privateKeys)
   const signedTxn = buildSignedTx(typedData, signatures)
@@ -507,13 +508,6 @@ export const createAcceptableUtxoParams = ({
     txindex,
     utxo_pos
   }
-}
-
-export const getTypedData = tx => {
-  return OmgUtil.transaction.getTypedData(
-    tx,
-    Plasma.RootChain.plasmaContractAddress
-  )
 }
 
 export const getExitData = utxo => {

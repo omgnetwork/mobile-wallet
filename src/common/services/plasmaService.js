@@ -1,5 +1,5 @@
-import { Formatter, Parser, Polling, Datetime, Mapper } from 'common/utils'
-import { Plasma, Token, Wait } from 'common/blockchain'
+import { Parser, Polling, Datetime, Mapper } from 'common/utils'
+import { BlockchainFormatter, Plasma, Token, Wait } from 'common/blockchain'
 import BN from 'bn.js'
 import Config from 'react-native-config'
 import { ContractAddress } from 'common/constants'
@@ -22,7 +22,10 @@ export const fetchAssets = async (provider, address) => {
       return {
         ...token,
         contractAddress: balance.currency,
-        balance: Formatter.formatUnits(balance.amount, token.tokenDecimal)
+        balance: BlockchainFormatter.formatUnits(
+          balance.amount,
+          token.tokenDecimal
+        )
       }
     })
 

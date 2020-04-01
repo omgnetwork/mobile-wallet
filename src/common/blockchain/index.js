@@ -1,3 +1,4 @@
+import { OmgUtil } from '@omisego/react-native-omg-js'
 import * as Ethereum from './ethereum'
 import * as Plasma from './plasma'
 import * as Contract from './contract'
@@ -8,7 +9,7 @@ import * as Token from './token'
 import * as Transaction from './transaction'
 import * as Wait from './wait'
 import * as Validator from './validator'
-import * as BlockchainDataFormatter from './blockchainDataFormatter'
+import * as BlockchainFormatter from './blockchainFormatter'
 
 export {
   Ethereum,
@@ -17,7 +18,8 @@ export {
   ContractABI,
   GasEstimator,
   TxOptions,
-  BlockchainDataFormatter,
+  BlockchainFormatter,
+  OmgUtil,
   Transaction,
   Token,
   Validator,

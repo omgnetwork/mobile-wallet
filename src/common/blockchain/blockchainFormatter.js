@@ -1,5 +1,13 @@
+import { ethers } from 'ethers'
 import { Parser, BigNumber, Formatter, Datetime } from 'common/utils'
 import { DateFormat } from 'common/constants'
+
+export const formatUnits = (wei, decimalsOrUnitName) => {
+  return ethers.utils.formatUnits(
+    wei,
+    Number(decimalsOrUnitName) || decimalsOrUnitName
+  )
+}
 
 // Output in ETH
 export const formatGasFee = (gasUsed, gasPriceWei, flatFee = '0') => {
@@ -10,7 +18,7 @@ export const formatGasFee = (gasUsed, gasPriceWei, flatFee = '0') => {
   const bigNumberGasUsed = BigNumber.create(gasUsed)
   const bigNumberGasFee = bigNumberGasPriceWei.mul(bigNumberGasUsed)
   const bigNumberTotalFee = bigNumberGasFee.add(bigNumberFlatFee)
-  return Formatter.formatUnits(bigNumberTotalFee, 18)
+  return formatUnits(bigNumberTotalFee, 18)
 }
 
 // Output in USD
@@ -23,7 +31,7 @@ export const formatGasFeeUsd = (
   const bigNumberGasPriceWei = BigNumber.create(gasPriceWei)
   const bigNumberGasUsed = BigNumber.create(gasUsed)
   const bigNumberGasFee = bigNumberGasPriceWei.mul(bigNumberGasUsed)
-  const gasFeeString = Formatter.formatUnits(bigNumberGasFee, 18)
+  const gasFeeString = formatUnits(bigNumberGasFee, 18)
   return Formatter.format(BigNumber.multiply(gasFeeString, usdEth), {
     commify: true,
     maxDecimal: 2,
@@ -34,7 +42,7 @@ export const formatGasFeeUsd = (
 export const formatEthFromWei = wei => {
   if (!wei) return '0'
   const weiFee = Parser.parseUnits(wei, 'wei')
-  return Formatter.formatUnits(weiFee, 'ether')
+  return formatUnits(weiFee, 'ether')
 }
 
 export const formatProcessExitAt = datetime => {
@@ -55,7 +63,7 @@ export const formatTokenBalanceFromSmallestUnit = (
   tokenDecimal = 18,
   displayDecimals = 5
 ) => {
-  const balance = Formatter.formatUnits(amount.toString(), tokenDecimal)
+  const balance = formatUnits(amount.toString(), tokenDecimal)
   return Formatter.format(balance, {
     commify: true,
     maxDecimal: displayDecimals,

@@ -1,4 +1,3 @@
-import OmgUtil from '@omisego/react-native-omg-js'
 import * as Price from './price'
 import * as Storage from './storage'
 import * as Datetime from './datetime'
@@ -22,7 +21,6 @@ export {
   Formatter,
   Mapper,
   Notification,
-  OmgUtil,
   Identicon,
   Parser,
   Polling,

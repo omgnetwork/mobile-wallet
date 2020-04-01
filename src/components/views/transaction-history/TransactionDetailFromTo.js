@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { View, StyleSheet, Linking, TouchableOpacity } from 'react-native'
 import { OMGFontIcon, OMGText } from 'components/widgets'
-import { BlockchainDataFormatter, Transaction } from 'common/blockchain'
+import { BlockchainFormatter, Transaction } from 'common/blockchain'
 import Config from 'react-native-config'
 import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
 import PlasmaContractIcon from './assets/ic-plasma-contract.svg'
@@ -51,7 +51,7 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
             </OMGText>
           </TouchableOpacity>
           <OMGText style={styles.detailItemValueText(theme)}>
-            {BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
+            {BlockchainFormatter.formatTokenBalanceFromSmallestUnit(
               value,
               tokenDecimal
             )}{' '}
@@ -76,7 +76,7 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
             </OMGText>
           </TouchableOpacity>
           <OMGText style={styles.detailItemValueText(theme)}>
-            {BlockchainDataFormatter.formatTokenBalanceFromSmallestUnit(
+            {BlockchainFormatter.formatTokenBalanceFromSmallestUnit(
               value,
               tokenDecimal
             )}{' '}

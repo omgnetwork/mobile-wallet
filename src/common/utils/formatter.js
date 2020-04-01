@@ -1,15 +1,6 @@
 import { ethers } from 'ethers'
 import { Datetime } from 'common/utils'
 
-export const formatEther = wei => {
-  return ethers.utils.formatEther(wei)
-}
-
-export const formatUnits = (amount, numberOfDecimals) => {
-  const decimal = Number(numberOfDecimals) || numberOfDecimals
-  return ethers.utils.formatUnits(amount, decimal)
-}
-
 export const formatComma = (number, commify) => {
   if (commify) {
     return ethers.utils.commify(number)

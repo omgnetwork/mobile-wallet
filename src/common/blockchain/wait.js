@@ -1,6 +1,6 @@
-import { Polling, OmgUtil } from 'common/utils'
+import { Polling } from 'common/utils'
 import { web3 } from 'common/clients'
-import { Plasma } from 'common/blockchain'
+import { OmgUtil, Plasma } from 'common/blockchain'
 
 export const waitFor = ms => {
   return new Promise(resolve => setTimeout(resolve, ms))

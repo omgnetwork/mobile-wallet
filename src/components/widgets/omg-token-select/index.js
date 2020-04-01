@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { OMGText, OMGFontIcon, OMGTokenIcon } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
-import { BlockchainDataFormatter } from 'common/blockchain'
+import { BlockchainFormatter } from 'common/blockchain'
 
 const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
   return (
@@ -21,10 +21,10 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
           ellipsizeMode='tail'
           weight='mono-regular'
           numberOfLines={1}>
-          {BlockchainDataFormatter.formatTokenBalance(token.balance, 6)}
+          {BlockchainFormatter.formatTokenBalance(token.balance, 6)}
         </OMGText>
         <OMGText style={styles.fiatValue(theme)} weight='mono-regular'>
-          {BlockchainDataFormatter.formatTokenPrice(token.balance, token.price)}{' '}
+          {BlockchainFormatter.formatTokenPrice(token.balance, token.price)}{' '}
           USD
         </OMGText>
       </View>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { View, StyleSheet, TouchableOpacity, Linking } from 'react-native'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { BlockchainDataFormatter, Token } from 'common/blockchain'
+import { BlockchainFormatter, Token } from 'common/blockchain'
 import Config from 'react-native-config'
 import {
   OMGBlockchainLabel,
@@ -25,12 +25,12 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
     gasPrice,
     maxExitsToProcess
   } = navigation.getParam('transaction')
-  const tokenValue = BlockchainDataFormatter.formatTokenBalance(value)
-  const tokenPriceUsd = BlockchainDataFormatter.formatTokenPrice(
+  const tokenValue = BlockchainFormatter.formatTokenBalance(value)
+  const tokenPriceUsd = BlockchainFormatter.formatTokenPrice(
     value,
     tokenPrice
   )
-  const gasFee = BlockchainDataFormatter.formatGasFee(gasUsed, gasPrice)
+  const gasFee = BlockchainFormatter.formatGasFee(gasUsed, gasPrice)
   const [gasFeeUsd, setGasFeeUsd] = useState(0)
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
         contractAddress,
         Config.ETHERSCAN_NETWORK
       )
-      const gasUsd = BlockchainDataFormatter.formatGasFeeUsd(
+      const gasUsd = BlockchainFormatter.formatGasFeeUsd(
         gasUsed,
         gasPrice,
         price

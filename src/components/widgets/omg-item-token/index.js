@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { StyleSheet, View, Animated } from 'react-native'
 import { Animator } from 'common/anims'
 import { OMGText, OMGTokenIcon } from 'components/widgets'
-import { BlockchainDataFormatter } from 'common/blockchain'
+import { BlockchainFormatter } from 'common/blockchain'
 import { withTheme } from 'react-native-paper'
 
 const OMGItemToken = ({ token, style, onPress, theme }) => {
@@ -10,8 +10,8 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
   const shadowAnim = useRef(new Animated.Value(0))
   const shadowOpacity = useRef(new Animated.Value(0))
   const balanceOpacity = useRef(new Animated.Value(1.0))
-  const balance = BlockchainDataFormatter.formatTokenBalance(token.balance, 6)
-  const price = BlockchainDataFormatter.formatTokenPrice(
+  const balance = BlockchainFormatter.formatTokenBalance(token.balance, 6)
+  const price = BlockchainFormatter.formatTokenPrice(
     token.balance,
     token.price
   )
