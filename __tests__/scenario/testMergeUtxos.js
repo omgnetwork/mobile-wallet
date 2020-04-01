@@ -84,5 +84,5 @@ describe('Test Merge UTXOs', () => {
     })
 
     expect(mergedUtxos.length).toBeLessThanOrEqual(MAXIMUM_UTXOS_PER_CURRENCY)
-  }, 300000)
+  }, 600000)
 })
