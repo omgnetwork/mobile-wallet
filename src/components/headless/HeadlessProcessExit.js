@@ -1,7 +1,7 @@
 import { Notification } from 'common/utils'
 import { NotificationMessages } from 'common/constants'
 import { transactionActions } from 'common/actions'
-import { Transaction } from 'common/utils'
+import { Transaction } from 'common/blockchain'
 export default async (store, taskData) => {
   try {
     const { taskId } = taskData

@@ -1,10 +1,16 @@
 import { Plasma, web3 } from 'common/clients'
-import { Transaction, Parser, OmgUtil } from 'common/utils'
+import { Parser, OmgUtil } from 'common/utils'
 import axios from 'axios'
 import { Gas, ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
 import BN from 'bn.js'
-import { TxOptions, Contract, ContractABI, Wait } from 'common/blockchain'
+import {
+  TxOptions,
+  Contract,
+  ContractABI,
+  Transaction,
+  Wait
+} from 'common/blockchain'
 
 const mappingAmount = obj => ({
   ...obj,

@@ -1,11 +1,10 @@
 import React, { useCallback } from 'react'
 import { View, StyleSheet, Linking, TouchableOpacity } from 'react-native'
 import { OMGFontIcon, OMGText } from 'components/widgets'
-import { BlockchainDataFormatter } from 'common/blockchain'
+import { BlockchainDataFormatter, Transaction } from 'common/blockchain'
 import Config from 'react-native-config'
 import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
 import PlasmaContractIcon from './assets/ic-plasma-contract.svg'
-import { Transaction } from 'common/utils'
 
 const TransactionDetailFromTo = ({ theme, tx, style }) => {
   const { network, from, to, value, tokenSymbol, tokenDecimal, type } = tx

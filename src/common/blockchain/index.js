@@ -5,7 +5,9 @@ import * as ContractABI from './contractAbi'
 import * as GasEstimator from './gasEstimator'
 import * as TxOptions from './txOptions'
 import * as Token from './token'
+import * as Transaction from './transaction'
 import * as Wait from './wait'
+import * as Validator from './validator'
 import * as BlockchainDataFormatter from './blockchainDataFormatter'
 
 export {
@@ -16,6 +18,8 @@ export {
   GasEstimator,
   TxOptions,
   BlockchainDataFormatter,
+  Transaction,
   Token,
+  Validator,
   Wait
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGText, OMGIdenticon } from 'components/widgets'
-import { Transaction } from 'common/utils'
+import { Transaction } from 'common/blockchain'
 import PlasmaContractIcon from './assets/ic-plasma-contract.svg'
 
 const OMGWalletAddress = ({ theme, name, address, style }) => {

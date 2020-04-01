@@ -6,13 +6,12 @@ import {
   OMGText,
   OMGTextInputBox,
   OMGButton,
-  OMGDismissKeyboard,
   OMGKeyboardShift
 } from 'components/widgets'
 import { useLoading } from 'common/hooks'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
-import { Validator } from 'common/utils'
+import { Validator } from 'common/blockchain'
 
 const ImportForm = ({
   dispatchImportWalletByMnemonic,

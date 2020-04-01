@@ -3,8 +3,8 @@ import {
   TransactionTypes,
   BlockchainNetworkType
 } from 'common/constants'
-import { Token } from 'common/blockchain'
-import { Transaction, BigNumber } from 'common/utils'
+import { Token, Transaction } from 'common/blockchain'
+import { BigNumber } from 'common/utils'
 import BN from 'bn.js'
 
 export const mapChildchainTx = (tx, tokens, walletAddress) => {

@@ -9,11 +9,9 @@ import * as Notification from './notification'
 import * as Parser from './parser'
 import * as Polling from './polling'
 import * as BigNumber from './bignumber'
-import * as Transaction from './transaction'
 import * as Token from '../blockchain/token'
 import * as Mapper from './mapper'
 import * as Address from './address'
-import * as Validator from './validator'
 import * as Dimensions from './dimensions'
 import * as Reanimated from './reanimated'
 
@@ -32,8 +30,6 @@ export {
   Polling,
   Price,
   Storage,
-  Transaction,
   Token,
-  Validator,
   Reanimated
 }

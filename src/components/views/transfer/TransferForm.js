@@ -19,7 +19,7 @@ import {
   OMGBlockchainLabel,
   OMGFeeTokenInput
 } from 'components/widgets'
-import { Validator } from 'common/utils'
+import { Validator } from 'common/blockchain'
 import * as BlockchainLabel from './blockchainLabel'
 import {
   getParamsForTransferForm,
@@ -29,7 +29,8 @@ import {
   paramsForTransferFormToTransferSelectFee,
   paramsForTransferFormToTransferSelectPlasmaFee
 } from './transferNavigation'
-const testAddress = '0x358303D2Dcc6924F634E37b805b62b820bB1E1B5'
+
+// const testAddress = '0x358303D2Dcc6924F634E37b805b62b820bB1E1B5'
 
 const TransferForm = ({
   wallet,
@@ -55,7 +56,7 @@ const TransferForm = ({
     'TransferForm',
     transferType
   )
-  const addressRef = useRef(address || testAddress)
+  const addressRef = useRef(address)
   const amountRef = useRef(amount)
   const amountFocusRef = useRef(null)
   const keyboardAwareScrollRef = useRef(null)

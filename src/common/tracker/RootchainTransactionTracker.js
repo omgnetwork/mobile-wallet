@@ -2,7 +2,7 @@ import { useEffect, useRef, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { TransactionActionTypes } from 'common/constants'
 import { useRootchainTracker } from 'common/hooks'
-import { Transaction } from 'common/utils'
+import { Transaction } from 'common/blockchain'
 import { walletActions, transactionActions } from 'common/actions'
 import { notificationService } from 'common/services'
 

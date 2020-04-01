@@ -15,8 +15,7 @@ import {
   OMGFeeInput
 } from 'components/widgets'
 import { TransferHelper } from 'components/views/transfer'
-import { Validator } from 'common/utils'
-import { Plasma, GasEstimator } from 'common/blockchain'
+import { Plasma, GasEstimator, Validator } from 'common/blockchain'
 import { OMGBlockchainLabel } from 'components/widgets'
 import { ScrollView } from 'react-native-gesture-handler'
 import { paramsForTransferFormToTransferSelectFee } from 'components/views/transfer/transferNavigation'

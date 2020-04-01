@@ -18,7 +18,7 @@ import {
   OMGExitComplete
 } from 'components/widgets'
 import Config from 'react-native-config'
-import { Validator } from 'common/utils'
+import { Validator } from 'common/blockchain'
 import { transactionService } from 'common/services'
 import TransactionDetailHash from './TransactionDetailHash'
 import TransactionDetailInfo from './TransactionDetailInfo'
