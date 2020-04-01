@@ -1,6 +1,5 @@
 import { plasmaService } from 'common/services'
-import { Plasma } from 'common/blockchain'
-import { Wait } from 'common/utils'
+import { Plasma, Wait } from 'common/blockchain'
 import { Utxos } from '../helpers'
 import BN from 'bn.js'
 import { ContractAddress } from 'common/constants'

@@ -1,5 +1,4 @@
-import { Plasma } from 'common/blockchain'
-import { Wait } from 'common/utils'
+import { Plasma, Wait } from 'common/blockchain'
 
 export const split = (address, privateKey, utxo, amount) => {
   const _metadata = 'Split UTXOs'

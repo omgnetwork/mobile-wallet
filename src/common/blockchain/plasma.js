@@ -1,10 +1,10 @@
 import { Plasma, web3 } from 'common/clients'
-import { ContractABI, Transaction, Wait, Parser, OmgUtil } from 'common/utils'
+import { ContractABI, Transaction, Parser, OmgUtil } from 'common/utils'
 import axios from 'axios'
 import { Gas, ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
 import BN from 'bn.js'
-import { TxOptions, Contract } from 'common/blockchain'
+import { TxOptions, Contract, Wait } from 'common/blockchain'
 
 const mappingAmount = obj => ({
   ...obj,
@@ -270,7 +270,7 @@ export const deposit = async (
       approveReceipt = await approveErc20(approveOptions, privateKey)
 
       // Wait approve transaction for 1 block
-      await OmgUtil.waitForRootchainTransaction({
+      await Wait.waitForRootchainTransaction({
         hash: approveReceipt.transactionHash,
         intervalMs: 3000,
         confirmationThreshold: 1
@@ -291,7 +291,7 @@ export const deposit = async (
       approveReceipt = await approveErc20(approveOptions, privateKey)
 
       // Wait approve transaction for 1 block
-      await OmgUtil.waitForRootchainTransaction({
+      await Wait.waitForRootchainTransaction({
         hash: approveReceipt.transactionHash,
         intervalMs: 3000,
         confirmationThreshold: 1
@@ -483,19 +483,6 @@ export const processExits = (contractAddress, maxExitsToProcess, txOptions) => {
 }
 
 // Transaction management
-export const createTx = (fromAddress, payments, fee, metadata) => {
-  const encodedMetadata =
-    (metadata && Transaction.encodeMetadata(metadata)) ||
-    OmgUtil.transaction.NULL_METADATA
-
-  return Plasma.ChildChain.createTransaction({
-    owner: fromAddress,
-    payments,
-    fee,
-    metadata: encodedMetadata
-  })
-}
-
 export const createAcceptableUtxoParams = ({
   amount,
   blknum,

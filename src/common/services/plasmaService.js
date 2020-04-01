@@ -1,8 +1,7 @@
 import { Formatter, Parser, Polling, Datetime, Mapper } from 'common/utils'
-import { Plasma, Token } from 'common/blockchain'
+import { Plasma, Token, Wait } from 'common/blockchain'
 import BN from 'bn.js'
 import Config from 'react-native-config'
-import { Wait } from 'common/utils'
 import { ContractAddress } from 'common/constants'
 
 export const fetchAssets = async (provider, address) => {
@@ -202,6 +201,7 @@ export const exit = (blockchainWallet, token, gasPrice) => {
       const exitId = await Plasma.getStandardExitId(utxoToExit, exitData)
       const standardExitBond = await Plasma.getStandardExitBond()
 
+      console.log('standard exit hash', hash)
       await Wait.waitFor(5000)
 
       const {
