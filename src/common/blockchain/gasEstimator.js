@@ -1,7 +1,7 @@
 import { Gas, ContractAddress } from 'common/constants'
-import { Ethereum, TxOptions, Plasma } from 'common/blockchain'
+import { Ethereum, TxOptions, Plasma, ContractABI } from 'common/blockchain'
 import { web3, Plasma as PlasmaClient } from 'common/clients'
-import { ContractABI, Parser } from 'common/utils'
+import { Parser } from 'common/utils'
 
 export const estimateTransferErc20 = (wallet, to, token) => {
   const abi = ContractABI.erc20Abi()

@@ -1,5 +1,6 @@
-import { ContractABI, OmgUtil } from 'common/utils'
+import { OmgUtil } from 'common/utils'
 import { TransactionActionTypes, ContractAddress, Gas } from 'common/constants'
+import { ContractABI } from 'common/blockchain'
 import InputDataDecoder from 'ethereum-input-data-decoder'
 
 const plasmaInputDecoder = new InputDataDecoder(ContractABI.plasmaAbi())

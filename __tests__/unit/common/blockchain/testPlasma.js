@@ -1,5 +1,4 @@
-import { Plasma, Contract } from 'common/blockchain'
-import { ContractABI } from 'common/utils'
+import { Plasma, Contract, ContractABI } from 'common/blockchain'
 import { Plasma as PlasmaClient, web3 } from 'common/clients'
 import Config from 'react-native-config'
 import BN from 'bn.js'

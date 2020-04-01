@@ -8,7 +8,6 @@ import * as Identicon from './identicon'
 import * as Notification from './notification'
 import * as Parser from './parser'
 import * as Polling from './polling'
-import * as ContractABI from './contractAbi'
 import * as BigNumber from './bignumber'
 import * as Transaction from './transaction'
 import * as Token from '../blockchain/token'
@@ -22,7 +21,6 @@ export {
   Address,
   Alerter,
   BigNumber,
-  ContractABI,
   Datetime,
   Dimensions,
   Formatter,
