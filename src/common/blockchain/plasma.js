@@ -1,5 +1,4 @@
 import { Plasma, web3 } from 'common/clients'
-import { Parser } from 'common/utils'
 import axios from 'axios'
 import { Gas, ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
@@ -10,6 +9,7 @@ import {
   ContractABI,
   Transaction,
   OmgUtil,
+  Parser,
   Wait
 } from 'common/blockchain'
 

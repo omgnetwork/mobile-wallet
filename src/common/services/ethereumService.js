@@ -1,6 +1,6 @@
-import { Ethereum, Token, ContractABI } from 'common/blockchain'
+import { Ethereum, Token, ContractABI, Parser } from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
-import { Datetime, Parser } from 'common/utils'
+import { Datetime } from 'common/utils'
 import { providerService } from 'common/services'
 
 export const fetchAssets = async (provider, address, lastBlockNumber) => {

@@ -1,6 +1,5 @@
 import { ethers } from 'ethers'
-import { ContractABI, BlockchainFormatter } from 'common/blockchain'
-import { Parser } from 'common/utils'
+import { ContractABI, BlockchainFormatter, Parser } from 'common/blockchain'
 import { ContractAddress } from 'common/constants/'
 import { priceService } from 'common/services'
 import Config from 'react-native-config'

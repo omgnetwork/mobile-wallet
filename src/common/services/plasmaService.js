@@ -1,6 +1,11 @@
-import { Parser, Polling, Datetime, Mapper } from 'common/utils'
-import { BlockchainFormatter, Plasma, Token, Wait } from 'common/blockchain'
-import BN from 'bn.js'
+import { Polling, Datetime, Mapper } from 'common/utils'
+import {
+  BlockchainFormatter,
+  Plasma,
+  Token,
+  Parser,
+  Wait
+} from 'common/blockchain'
 import Config from 'react-native-config'
 import { ContractAddress } from 'common/constants'
 

@@ -7,6 +7,7 @@ import * as GasEstimator from './gasEstimator'
 import * as TxOptions from './txOptions'
 import * as Token from './token'
 import * as Transaction from './transaction'
+import * as Parser from './parser'
 import * as Wait from './wait'
 import * as Validator from './validator'
 import * as BlockchainFormatter from './blockchainFormatter'
@@ -19,6 +20,7 @@ export {
   GasEstimator,
   TxOptions,
   BlockchainFormatter,
+  Parser,
   OmgUtil,
   Transaction,
   Token,

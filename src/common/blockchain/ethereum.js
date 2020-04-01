@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { Parser } from 'common/utils'
+import { Parser } from 'common/blockchain'
 import { Gas } from 'common/constants/'
 import axios from 'axios'
 import Config from 'react-native-config'

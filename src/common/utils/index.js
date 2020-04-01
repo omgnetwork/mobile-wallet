@@ -5,7 +5,6 @@ import * as Formatter from './formatter'
 import * as Alerter from './alerter'
 import * as Identicon from './identicon'
 import * as Notification from './notification'
-import * as Parser from './parser'
 import * as Polling from './polling'
 import * as BigNumber from './bignumber'
 import * as Token from '../blockchain/token'
@@ -22,7 +21,6 @@ export {
   Mapper,
   Notification,
   Identicon,
-  Parser,
   Polling,
   Price,
   Storage,

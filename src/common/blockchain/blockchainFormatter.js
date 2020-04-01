@@ -1,5 +1,6 @@
 import { ethers } from 'ethers'
-import { Parser, BigNumber, Formatter, Datetime } from 'common/utils'
+import { Parser } from 'common/blockchain'
+import { BigNumber, Formatter, Datetime } from 'common/utils'
 import { DateFormat } from 'common/constants'
 
 export const formatUnits = (wei, decimalsOrUnitName) => {
