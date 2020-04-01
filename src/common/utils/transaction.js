@@ -1,16 +1,15 @@
-import { PlasmaUtils } from 'common/clients'
-import { ContractABI } from 'common/utils'
+import { ContractABI, OmgUtil } from 'common/utils'
 import { TransactionActionTypes, ContractAddress, Gas } from 'common/constants'
 import InputDataDecoder from 'ethereum-input-data-decoder'
 
 const plasmaInputDecoder = new InputDataDecoder(ContractABI.plasmaAbi())
 
 export const encodeMetadata = metadata => {
-  return PlasmaUtils.transaction.encodeMetadata(metadata)
+  return OmgUtil.transaction.encodeMetadata(metadata)
 }
 
 export const decodeMetadata = encodedMetadata => {
-  return PlasmaUtils.transaction.decodeMetadata(encodedMetadata)
+  return OmgUtil.transaction.decodeMetadata(encodedMetadata)
 }
 
 export const decodePlasmaInputMethod = input => {

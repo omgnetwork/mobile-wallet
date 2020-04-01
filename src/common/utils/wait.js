@@ -1,4 +1,5 @@
-import { Polling } from 'common/utils'
+import { Polling, OmgUtil } from 'common/utils'
+import { web3 } from 'common/clients'
 import { Plasma } from 'common/blockchain'
 
 export const waitFor = ms => {
@@ -18,4 +19,19 @@ export const waitChildChainBlknum = (address, blknum, interval) => {
 
     return { success: false }
   }, interval)
+}
+
+export const waitForRootchainTransaction = ({
+  hash,
+  intervalMs,
+  confirmationThreshold,
+  onCountdown = remaining => {}
+}) => {
+  return OmgUtil.waitForRootchainTransaction({
+    web3,
+    transactionHash: hash,
+    checkIntervalMs: intervalMs,
+    blocksToWait: confirmationThreshold,
+    onCountdown: onCountdown
+  })
 }

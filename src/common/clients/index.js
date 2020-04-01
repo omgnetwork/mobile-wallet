@@ -1,4 +1,4 @@
-import { ChildChain, RootChain, OmgUtil } from '@omisego/react-native-omg-js'
+import { ChildChain, RootChain } from '@omisego/react-native-omg-js'
 import Config from 'react-native-config'
 import Web3 from 'web3'
 
@@ -25,4 +25,3 @@ export const Plasma = {
   RootChain: rootchain,
   ChildChain: childchain
 }
-export const PlasmaUtils = OmgUtil

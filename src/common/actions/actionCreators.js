@@ -15,7 +15,7 @@ export const createAsyncAction = ({
           dispatch({ type: `${actionType}/SUCCESS`, data: result })
         }
       } catch (err) {
-        console.log(`${err.message}`)
+        console.log(err)
         dispatch({ type: `${actionType}/FAILED`, err })
         CrashAnalytics.log(err)
       }

@@ -3,6 +3,7 @@ import { Plasma, Token } from 'common/blockchain'
 import BN from 'bn.js'
 import Config from 'react-native-config'
 import { Wait } from 'common/utils'
+import { ContractAddress } from 'common/constants'
 
 export const fetchAssets = async (provider, address) => {
   try {
@@ -110,24 +111,25 @@ export const getFees = async tokens => {
   }
 }
 
-export const transfer = (
+export const transfer = async (
   fromBlockchainWallet,
   toAddress,
   token,
-  fee,
+  fee = { contractAddress: ContractAddress.ETH_ADDRESS, amount: 1 },
   metadata
 ) => {
   try {
-    return Plasma.transfer(
+    const receipt = await Plasma.transfer(
       fromBlockchainWallet,
       toAddress,
       token,
       fee,
       metadata
     )
+
+    return receipt
   } catch (err) {
     if (err.message === 'submit:client_error') {
-      console.log(err)
       throw new Error('Something went wrong on the childchain')
     } else {
       throw err
@@ -135,32 +137,26 @@ export const transfer = (
   }
 }
 
-export const deposit = (address, privateKey, token, gasPrice) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const weiAmount = Parser.parseUnits(
-        token.balance,
-        token.tokenDecimal
-      ).toString(10)
+export const deposit = async (address, privateKey, token, gasPrice) => {
+  const weiAmount = Parser.parseUnits(
+    token.balance,
+    token.tokenDecimal
+  ).toString(10)
 
-      const { hash, gasUsed } = await Plasma.deposit(
-        address,
-        privateKey,
-        weiAmount,
-        token.contractAddress,
-        {
-          gasPrice
-        }
-      )
-      resolve({
-        hash,
-        gasPrice,
-        gasUsed
-      })
-    } catch (err) {
-      reject(err)
+  const { hash, gasUsed } = await Plasma.deposit(
+    address,
+    privateKey,
+    weiAmount,
+    token.contractAddress,
+    {
+      gasPrice
     }
-  })
+  )
+  return {
+    hash,
+    gasPrice,
+    gasUsed
+  }
 }
 
 export const exit = (blockchainWallet, token, gasPrice) => {

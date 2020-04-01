@@ -1,6 +1,5 @@
 import { Plasma } from 'common/blockchain'
-import { PlasmaUtils } from 'common/clients'
-import { Transaction, Wait } from 'common/utils'
+import { Wait } from 'common/utils'
 
 export const split = (address, privateKey, utxo, amount) => {
   const _metadata = 'Split UTXOs'
@@ -9,13 +8,13 @@ export const split = (address, privateKey, utxo, amount) => {
   const payment = Plasma.createPayment(address, currency, amount)[0]
   const payments = new Array(3).fill(payment)
   const fee = Plasma.createFee(currency, 1)
-  const txBody = PlasmaUtils.transaction.createTransactionBody({
-    fromAddress: address,
-    fromUtxos: [fromUtxo],
+  const txBody = Plasma.createTransactionBody(
+    address,
+    fromUtxo,
     payments,
     fee,
-    metadata: Transaction.encodeMetadata(_metadata)
-  })
+    _metadata
+  )
   const typedData = Plasma.getTypedData(txBody)
   const privateKeys = new Array(txBody.inputs.length).fill(privateKey)
   const signatures = Plasma.signTx(typedData, privateKeys)

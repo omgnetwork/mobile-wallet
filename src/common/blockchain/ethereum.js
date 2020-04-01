@@ -115,10 +115,6 @@ export const getContract = (tokenContractAddress, abi, walletOrProvider) => {
   return new ethers.Contract(tokenContractAddress, abi, walletOrProvider)
 }
 
-export const subscribeTx = (provider, tx, confirmations) => {
-  return provider.waitForTransaction(tx.hash, confirmations)
-}
-
 export const createProvider = providerName => {
   return ethers.getDefaultProvider(providerName)
 }

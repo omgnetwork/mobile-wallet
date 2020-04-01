@@ -1,5 +1,5 @@
-import { Plasma, PlasmaUtils, web3 } from 'common/clients'
-import { ContractABI, Transaction, Wait, Parser } from 'common/utils'
+import { Plasma, web3 } from 'common/clients'
+import { ContractABI, Transaction, Wait, Parser, OmgUtil } from 'common/utils'
 import axios from 'axios'
 import { Gas, ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
@@ -10,8 +10,6 @@ const mappingAmount = obj => ({
   ...obj,
   amount: obj.amount.toString(10)
 })
-
-export let standardExitBond
 
 export const getBalances = address => {
   return Plasma.ChildChain.getBalance(address).then(balances => {
@@ -71,7 +69,7 @@ export const transfer = async (
     token.contractAddress,
     Parser.parseUnits(token.balance, token.tokenDecimal).toString(16)
   )
-  const childchainFee = createFee(fee.contractAddress, new BN(fee.amount))
+  const childchainFee = createFee(fee.contractAddress, fee.amount)
   const { address } = fromBlockchainWallet
   const utxos = await getUtxos(address, {
     currency: token.contractAddress,
@@ -195,9 +193,9 @@ export const createTransactionBody = (
 ) => {
   const encodedMetadata =
     (metadata && Transaction.encodeMetadata(metadata)) ||
-    PlasmaUtils.transaction.NULL_METADATA
+    OmgUtil.transaction.NULL_METADATA
 
-  return PlasmaUtils.transaction.createTransactionBody({
+  return OmgUtil.transaction.createTransactionBody({
     fromAddress: address,
     fromUtxos: utxos,
     payments,
@@ -216,9 +214,12 @@ export const createPayment = (address, tokenContractAddress, amount) => {
   ]
 }
 
-export const createFee = (currency = ContractAddress.ETH_ADDRESS, amount) => ({
+export const createFee = (
+  currency = ContractAddress.ETH_ADDRESS,
+  amount = 0
+) => ({
   currency,
-  amount
+  amount: new BN(amount)
 })
 
 export const deposit = async (
@@ -269,7 +270,7 @@ export const deposit = async (
       approveReceipt = await approveErc20(approveOptions, privateKey)
 
       // Wait approve transaction for 1 block
-      await waitForRootchainTransaction({
+      await OmgUtil.waitForRootchainTransaction({
         hash: approveReceipt.transactionHash,
         intervalMs: 3000,
         confirmationThreshold: 1
@@ -290,7 +291,7 @@ export const deposit = async (
       approveReceipt = await approveErc20(approveOptions, privateKey)
 
       // Wait approve transaction for 1 block
-      await waitForRootchainTransaction({
+      await OmgUtil.waitForRootchainTransaction({
         hash: approveReceipt.transactionHash,
         intervalMs: 3000,
         confirmationThreshold: 1
@@ -406,25 +407,11 @@ const getTxData = (contract, method, ...args) => {
   }
 }
 
-export const waitForRootchainTransaction = ({
-  hash,
-  intervalMs,
-  confirmationThreshold,
-  onCountdown = remaining => {}
-}) => {
-  return PlasmaUtils.waitForRootchainTransaction({
-    web3,
-    transactionHash: hash,
-    checkIntervalMs: intervalMs,
-    blocksToWait: confirmationThreshold,
-    onCountdown: onCountdown
-  })
-}
-
 export const getPaymentExitGame = () => {
   return Plasma.RootChain.getPaymentExitGame()
 }
 
+let standardExitBond
 export const getStandardExitBond = async () => {
   if (!standardExitBond) {
     const { bonds } = await getPaymentExitGame()
@@ -444,7 +431,7 @@ export const isPaymentExitGameContract = async address => {
 
 export const getErrorReason = async hash => {
   try {
-    return await PlasmaUtils.ethErrorReason({ web3, hash }).catch()
+    return await OmgUtil.ethErrorReason({ web3, hash }).catch()
   } catch (e) {
     console.log(e)
     return 'Cannot retrieve error reason'
@@ -499,7 +486,7 @@ export const processExits = (contractAddress, maxExitsToProcess, txOptions) => {
 export const createTx = (fromAddress, payments, fee, metadata) => {
   const encodedMetadata =
     (metadata && Transaction.encodeMetadata(metadata)) ||
-    PlasmaUtils.transaction.NULL_METADATA
+    OmgUtil.transaction.NULL_METADATA
 
   return Plasma.ChildChain.createTransaction({
     owner: fromAddress,
@@ -530,7 +517,7 @@ export const createAcceptableUtxoParams = ({
 }
 
 export const getTypedData = tx => {
-  return PlasmaUtils.transaction.getTypedData(
+  return OmgUtil.transaction.getTypedData(
     tx,
     Plasma.RootChain.plasmaContractAddress
   )
