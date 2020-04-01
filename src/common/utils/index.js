@@ -11,12 +11,10 @@ import * as Polling from './polling'
 import * as BigNumber from './bignumber'
 import * as Token from '../blockchain/token'
 import * as Mapper from './mapper'
-import * as Address from './address'
 import * as Dimensions from './dimensions'
 import * as Reanimated from './reanimated'
 
 export {
-  Address,
   Alerter,
   BigNumber,
   Datetime,
