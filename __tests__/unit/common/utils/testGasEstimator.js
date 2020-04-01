@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import Config from '../../../config'
 import { Gas } from 'common/constants'
-import { GasEstimator } from 'common/utils'
+import { GasEstimator } from 'common/blockchain'
 
 const {
   TEST_PRIVATE_KEY,

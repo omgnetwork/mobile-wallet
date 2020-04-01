@@ -1,5 +1,5 @@
-import { GasEstimator } from 'common/utils'
-import { ContractAddress, Gas } from 'common/constants'
+import { GasEstimator } from 'common/blockchain'
+import { ContractAddress } from 'common/constants'
 
 export const TYPE_DEPOSIT = 1
 export const TYPE_TRANSFER_ROOTCHAIN = 2
