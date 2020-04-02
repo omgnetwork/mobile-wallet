@@ -91,6 +91,11 @@ export const mapOutputTransfer = (inputTransfer, outputs) => {
   return outputs.find(output => output.owner !== inputTransfer.owner)
 }
 
+export const mapChildchainAmount = balance => ({
+  ...balance,
+  amount: balance.amount.toString(10)
+})
+
 export const getFeeCurrency = tx => {
   return tx.inputs.find(input => isInputGreaterThanOutput(input, tx.outputs))
     ?.currency
@@ -192,11 +197,11 @@ const mapRootchainTransactionType = (tx, address, standardExitBondSize) => {
     case 'addToken':
       return TransactionTypes.TYPE_PLASMA_ADD_TOKEN
     default:
-      if (Transaction.isPlasmaCallTx(tx, standardExitBondSize)) {
+      if (Transaction.isPlasmaContractCall(tx, standardExitBondSize)) {
         return TransactionTypes.TYPE_UNIDENTIFIED
-      } else if (Transaction.isExitTransferTx(tx)) {
+      } else if (Transaction.isProcessedExit(tx)) {
         return TransactionTypes.TYPE_PROCESS_EXIT
-      } else if (Transaction.isReceiveTx(address, tx.to)) {
+      } else if (Transaction.isReceive(address, tx.to)) {
         return TransactionTypes.TYPE_RECEIVED
       } else {
         return TransactionTypes.TYPE_SENT
@@ -205,7 +210,7 @@ const mapRootchainTransactionType = (tx, address, standardExitBondSize) => {
 }
 
 const mapChildchainTransactionType = (output, address) => {
-  if (Transaction.isReceiveTx(address, output.owner)) {
+  if (Transaction.isReceive(address, output.owner)) {
     return TransactionTypes.TYPE_RECEIVED
   } else {
     return TransactionTypes.TYPE_SENT

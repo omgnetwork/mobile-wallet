@@ -1,6 +1,7 @@
 import { Plasma, web3 } from 'common/clients'
 import axios from 'axios'
 import { Gas, ContractAddress } from 'common/constants'
+import { Mapper } from 'common/utils'
 import Config from 'react-native-config'
 import BN from 'bn.js'
 import {
@@ -13,14 +14,9 @@ import {
   Wait
 } from 'common/blockchain'
 
-const mappingAmount = obj => ({
-  ...obj,
-  amount: obj.amount.toString(10)
-})
-
 export const getBalances = address => {
   return Plasma.ChildChain.getBalance(address).then(balances => {
-    return balances.map(mappingAmount)
+    return balances.map(Mapper.mapChildchainAmount)
   })
 }
 
@@ -31,7 +27,7 @@ export const getUtxos = (address, options) => {
   const filteringFromUtxoPos = utxo => utxo.utxo_pos >= (fromUtxoPos || 0)
   const sortingUtxoPos = (first, second) => second.utxo_pos - first.utxo_pos
   return Plasma.ChildChain.getUtxos(address)
-    .then(utxos => utxos.map(mappingAmount))
+    .then(utxos => utxos.map(Mapper.mapChildchainAmount))
     .then(utxos => (currency ? utxos.filter(filteringCurrency) : utxos))
     .then(utxos => utxos.filter(filteringFromUtxoPos))
     .then(utxos => utxos.sort(sort || sortingUtxoPos))
@@ -71,21 +67,21 @@ export const transfer = async (
   fee,
   metadata
 ) => {
-  const payments = createPayment(
+  const payment = Transaction.createPayment(
     toAddress,
     token.contractAddress,
     Parser.parseUnits(token.balance, token.tokenDecimal).toString(16)
   )
-  const childchainFee = createFee(fee.contractAddress, fee.amount)
+  const childchainFee = Transaction.createFee(fee.contractAddress, fee.amount)
   const { address } = fromBlockchainWallet
   const utxos = await getUtxos(address, {
     currency: token.contractAddress,
     sort: (a, b) => new BN(b.amount).sub(new BN(a.amount))
   })
-  const txBody = createTransactionBody(
+  const txBody = Transaction.createBody(
     fromBlockchainWallet.address,
     utxos,
-    payments,
+    [payment],
     childchainFee,
     metadata
   )
@@ -94,9 +90,9 @@ export const transfer = async (
   const privateKeys = new Array(txBody.inputs.length).fill(
     fromBlockchainWallet.privateKey
   )
-  const signatures = signTx(typedData, privateKeys)
-  const signedTransaction = buildSignedTx(typedData, signatures)
-  return submitTx(signedTransaction)
+  const signatures = Transaction.sign(typedData, privateKeys)
+  const signedTxn = Transaction.buildSigned(typedData, signatures)
+  return Transaction.submit(signedTxn)
 }
 
 export const mergeListOfUtxos = async (
@@ -124,20 +120,20 @@ export const mergeUtxos = async (address, privateKey, utxos) => {
   const totalAmount = utxos.reduce((sum, utxo) => {
     return sum.add(new BN(utxo.amount))
   }, new BN(0))
-  const payments = createPayment(address, currency, totalAmount)
-  const fee = createFee(currency, 0)
-  const txBody = createTransactionBody(
+  const payment = Transaction.createPayment(address, currency, totalAmount)
+  const fee = Transaction.createFee(currency, 0)
+  const txBody = Transaction.createBody(
     address,
     utxos,
-    payments,
+    [payment],
     fee,
     Transaction.encodeMetadata(_metadata)
   )
   const typedData = Transaction.getTypedData(txBody)
   const privateKeys = new Array(txBody.inputs.length).fill(privateKey)
-  const signatures = signTx(typedData, privateKeys)
-  const signedTxn = buildSignedTx(typedData, signatures)
-  return submitTx(signedTxn)
+  const signatures = Transaction.sign(typedData, privateKeys)
+  const signedTxn = Transaction.buildSigned(typedData, signatures)
+  return Transaction.submit(signedTxn)
 }
 
 export const mergeUtxosUntilThreshold = async (
@@ -190,44 +186,6 @@ export const mergeUtxosUntilThreshold = async (
     storeBlknum
   )
 }
-
-export const createTransactionBody = (
-  address,
-  utxos,
-  payments,
-  fee,
-  metadata
-) => {
-  const encodedMetadata =
-    (metadata && Transaction.encodeMetadata(metadata)) ||
-    OmgUtil.transaction.NULL_METADATA
-
-  return OmgUtil.transaction.createTransactionBody({
-    fromAddress: address,
-    fromUtxos: utxos,
-    payments,
-    fee,
-    metadata: encodedMetadata
-  })
-}
-
-export const createPayment = (address, tokenContractAddress, amount) => {
-  return [
-    {
-      owner: address,
-      currency: tokenContractAddress,
-      amount: new BN(amount)
-    }
-  ]
-}
-
-export const createFee = (
-  currency = ContractAddress.ETH_ADDRESS,
-  amount = 0
-) => ({
-  currency,
-  amount: new BN(amount)
-})
 
 export const deposit = async (
   address,
@@ -363,37 +321,25 @@ export const standardExit = (exitData, blockchainWallet, options) => {
   })
 }
 
-export const getExitTxDetails = async (exitTx, { from, gas, gasPrice }) => {
-  const { utxo_pos, txbytes, proof } = exitTx
-  const { contract, address, bonds } = await getPaymentExitGame()
-  const data = getTxData(contract, 'startStandardExit', [
-    utxo_pos.toString(),
-    txbytes,
-    proof
-  ])
-  const value = bonds.standardExit
-  return {
-    from,
-    to: address,
-    value,
-    data,
-    gas,
-    gasPrice
-  }
-}
-
 export const getExitTxs = async address => {
-  const { contract } = await Plasma.RootChain.getPaymentExitGame()
-  const allExitTxs = await contract.getPastEvents('ExitStarted', {
-    filter: { owner: address },
-    fromBlock: 0
-  })
+  const exitStartedOptions = {
+    filter: {
+      owner: address
+    }
+  }
+
+  const allExitTxs = await Contract.getExitEvents(
+    'ExitStarted',
+    exitStartedOptions
+  )
   const pendingFinalizedArr = allExitTxs.map(exitTx => {
     const exitId = exitTx.returnValues.exitId.toString()
-    return contract.getPastEvents('ExitFinalized', {
-      filter: { exitId },
-      fromBlock: 0
-    })
+    const exitFinalizedOptions = {
+      filter: {
+        exitId
+      }
+    }
+    return Contract.getExitEvents('ExitFinalized', exitFinalizedOptions)
   })
 
   const finalizedArr = await Promise.all(pendingFinalizedArr)
@@ -406,14 +352,6 @@ export const getExitTxs = async address => {
   }
 }
 
-const getTxData = (contract, method, ...args) => {
-  if (web3.version.api && web3.version.api.startsWith('0.2')) {
-    return contract[method].getData(...args)
-  } else {
-    return contract.methods[method](...args).encodeABI()
-  }
-}
-
 export const getPaymentExitGame = () => {
   return Plasma.RootChain.getPaymentExitGame()
 }
@@ -421,19 +359,10 @@ export const getPaymentExitGame = () => {
 let standardExitBond
 export const getStandardExitBond = async () => {
   if (!standardExitBond) {
-    const { bonds } = await getPaymentExitGame()
+    const { bonds } = await Contract.getPaymentExitGame()
     standardExitBond = bonds.standardExit.toString()
   }
   return standardExitBond
-}
-
-export const isPaymentExitGameContract = async address => {
-  const code = await web3.eth.getCode(address)
-  const hash = web3.eth.abi.encodeFunctionSignature(
-    'startStandardExitBondSize()'
-  )
-  // Remove 0x prefix
-  return code.indexOf(hash.slice(2)) > -1
 }
 
 export const getErrorReason = async hash => {
@@ -523,18 +452,6 @@ export const getExitQueue = async tokenContractAddress => {
       tokenContractAddress
     }))
   }
-}
-
-export const signTx = (typedData, privateKeys) => {
-  return Plasma.ChildChain.signTransaction(typedData, privateKeys)
-}
-
-export const buildSignedTx = (typedData, signatures) => {
-  return Plasma.ChildChain.buildSignedTransaction(typedData, signatures)
-}
-
-export const submitTx = signedTx => {
-  return Plasma.ChildChain.submitTransaction(signedTx)
 }
 
 export const getTxs = (address, options) => {

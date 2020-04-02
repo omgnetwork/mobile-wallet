@@ -7,7 +7,7 @@ export default async (store, taskData) => {
     const { taskId } = taskData
     const startedExitTxs = store.getState().transaction.startedExitTxs
     const confirmedStartedExitTxs = startedExitTxs.filter(
-      Transaction.isConfirmedStartedExitTx
+      Transaction.isConfirmedStartedExit
     )
     const processExitReadyTx = confirmedStartedExitTxs.find(
       tx => tx.hash === taskId

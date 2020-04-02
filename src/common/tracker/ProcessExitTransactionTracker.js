@@ -22,13 +22,13 @@ const ProcessExitTransactionTracker = ({
   ] = useExitTracker(blockchainWallet)
 
   const getConfirmedStartedExitTxs = useCallback(() => {
-    return startedExitTxs.filter(Transaction.isConfirmedStartedExitTx)
+    return startedExitTxs.filter(Transaction.isConfirmedStartedExit)
   }, [startedExitTxs])
 
   useEffect(() => {
     if (exitNotification) {
       exitNotification.confirmedTxs.forEach(tx => {
-        if (Transaction.isReadyToProcessExitTx(tx)) {
+        if (Transaction.isReadyToProcessExit(tx)) {
           dispatchUpdateStartedExitTxStatus(tx)
         }
       })

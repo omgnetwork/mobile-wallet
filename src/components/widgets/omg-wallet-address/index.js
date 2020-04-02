@@ -6,7 +6,7 @@ import { Transaction } from 'common/blockchain'
 import PlasmaContractIcon from './assets/ic-plasma-contract.svg'
 
 const OMGWalletAddress = ({ theme, name, address, style }) => {
-  const IS_PLASMA_CONTRACT = Transaction.isExitTransferTx({ from: address })
+  const IS_PLASMA_CONTRACT = Transaction.isProcessedExit({ from: address })
   return (
     <View style={{ ...styles.container(theme), ...style }}>
       {IS_PLASMA_CONTRACT ? (

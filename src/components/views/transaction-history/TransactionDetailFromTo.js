@@ -22,7 +22,7 @@ const TransactionDetailFromTo = ({ theme, tx, style }) => {
   const renderAddressIcon = useCallback(
     (address, txType) => {
       const isDeposit = txType === TransactionTypes.TYPE_DEPOSIT
-      const isExitTransfer = Transaction.isExitTransferTx({ from: address })
+      const isExitTransfer = Transaction.isProcessedExit({ from: address })
       if (isDeposit || isExitTransfer) {
         return <PlasmaContractIcon width={18} height={18} />
       } else {

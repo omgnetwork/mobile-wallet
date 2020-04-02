@@ -273,7 +273,7 @@ export const createUtxoWithAmount = async (
   await transfer(blockchainWallet, blockchainWallet.address, token)
 
   // Wait for found matched UTXO after merge or split.
-  const selectedUtxo = await waitForExitUtxo(
+  const selectedUtxo = await Wait.waitForChildChainUtxoAmount(
     desiredAmount,
     latestUtxoPos,
     blockchainWallet,
@@ -288,44 +288,10 @@ export const createUtxoWithAmount = async (
   }
 }
 
-export const waitForExitUtxo = (
-  desiredAmount,
-  fromUtxoPos,
-  blockchainWallet,
-  token
-) => {
-  let utxoPos = fromUtxoPos
-  return Polling.pollUntilSuccess(async () => {
-    const utxos = await getNewUtxos(utxoPos + 1, blockchainWallet, token)
-    const hasNewUtxos = utxos.length > 0
-    const desiredAmountUtxo = utxos.find(utxo => utxo.amount === desiredAmount)
-
-    if (hasNewUtxos && desiredAmountUtxo) {
-      return {
-        success: true,
-        data: desiredAmountUtxo
-      }
-    } else if (hasNewUtxos) {
-      await transfer(blockchainWallet, blockchainWallet.address, token)
-      utxoPos = utxos[0].utxo_pos
-    }
-    return {
-      success: false
-    }
-  }, 3000)
-}
-
 const getUtxoByAmount = async (amount, blockchainWallet, token) => {
   const utxos = await Plasma.getUtxos(blockchainWallet.address, {
     currency: token.contractAddress
   })
 
   return utxos.find(utxo => utxo.amount === amount)
-}
-
-const getNewUtxos = async (fromUtxoPos, blockchainWallet, token) => {
-  return Plasma.getUtxos(blockchainWallet.address, {
-    fromUtxoPos: fromUtxoPos,
-    currency: token.contractAddress
-  })
 }
