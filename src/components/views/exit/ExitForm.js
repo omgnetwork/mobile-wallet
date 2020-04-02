@@ -16,7 +16,6 @@ import {
 } from 'components/widgets'
 import { TransferHelper } from 'components/views/transfer'
 import { Plasma, GasEstimator, Validator } from 'common/blockchain'
-import { OMGBlockchainLabel } from 'components/widgets'
 import { ScrollView } from 'react-native-gesture-handler'
 import { paramsForTransferFormToTransferSelectFee } from 'components/views/transfer/transferNavigation'
 
@@ -125,10 +124,6 @@ const ExitForm = ({
 
   return (
     <ScrollView style={styles.container(theme)}>
-      <OMGBlockchainLabel
-        actionText='Exit to'
-        transferType={TransferHelper.TYPE_EXIT}
-      />
       <View style={styles.contentContainer(theme)}>
         <OMGText style={[styles.title(theme), styles.marginHigh]}>
           Token

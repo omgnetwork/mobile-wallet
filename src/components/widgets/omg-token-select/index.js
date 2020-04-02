@@ -7,7 +7,7 @@ import { BlockchainFormatter } from 'common/blockchain'
 const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
   return (
     <TouchableOpacity
-      style={{ ...styles.container(theme, selected), ...style }}
+      style={{ ...styles.container(theme), ...style }}
       onPress={onPress}>
       <OMGTokenIcon token={token} size={32} />
       <View style={styles.sectionName}>
@@ -24,13 +24,18 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
           {BlockchainFormatter.formatTokenBalance(token.balance, 6)}
         </OMGText>
         <OMGText style={styles.fiatValue(theme)} weight='mono-regular'>
-          {BlockchainFormatter.formatTokenPrice(token.balance, token.price)}{' '}
-          USD
+          {BlockchainFormatter.formatTokenPrice(token.balance, token.price)} USD
         </OMGText>
       </View>
       <View style={styles.sectionSelect}>
-        {selected && (
+        {selected ? (
           <OMGFontIcon name='check-mark' size={14} color={theme.colors.white} />
+        ) : (
+          <OMGFontIcon
+            name='chevron-right'
+            size={14}
+            color={theme.colors.white}
+          />
         )}
       </View>
     </TouchableOpacity>
@@ -38,14 +43,11 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
 }
 
 const styles = StyleSheet.create({
-  container: (theme, selected) => ({
+  container: theme => ({
     flexDirection: 'row',
     backgroundColor: theme.colors.black5,
     alignItems: 'center',
-    padding: 12,
-    borderRadius: theme.roundness,
-    borderColor: theme.colors.gray4,
-    borderWidth: 1
+    paddingVertical: 16
   }),
   sectionName: {
     flex: 1,

@@ -7,9 +7,10 @@ import {
   OMGFontIcon,
   OMGText,
   OMGStatusBar,
-  OMGEmpty
+  OMGEmpty,
+  OMGBlockchainLabel
 } from 'components/widgets'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { TransferHelper } from 'components/views/transfer'
 
 const Exit = ({ navigation, theme, primaryWallet }) => {
   const ExitNavigator = navigation.getParam('navigator')
@@ -34,15 +35,21 @@ const Exit = ({ navigation, theme, primaryWallet }) => {
         backgroundColor={theme.colors.black5}
       />
       <View style={styles.titleContainer}>
-        <OMGText style={styles.title(theme)}>Exit</OMGText>
-        <TouchableOpacity
+        <OMGFontIcon
+          name='chevron-left'
+          size={18}
+          color={theme.colors.white}
+          style={styles.headerIcon}
           onPress={() => {
             navigation.navigate('Balance')
           }}
-          style={styles.icon}>
-          <OMGFontIcon name='x-mark' size={18} color={theme.colors.white} />
-        </TouchableOpacity>
+        />
+        <OMGText style={styles.title(theme)}>Exit</OMGText>
       </View>
+      <OMGBlockchainLabel
+        actionText='Exit to'
+        transferType={TransferHelper.TYPE_EXIT}
+      />
       {primaryWallet ? (
         <ExitNavigator navigation={navigation} />
       ) : (
@@ -61,17 +68,19 @@ const styles = StyleSheet.create({
   }),
   titleContainer: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginLeft: 8,
+    paddingVertical: 16
   },
   title: theme => ({
     flex: 1,
-    marginHorizontal: 16,
+    marginHorizontal: 8,
     fontSize: 18,
     textTransform: 'uppercase',
     color: theme.colors.white
   }),
-  icon: {
-    padding: 16
+  headerIcon: {
+    padding: 8
   }
 })
 

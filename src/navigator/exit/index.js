@@ -3,11 +3,12 @@ import * as Views from 'components/views'
 
 export default createStackNavigator(
   {
+    ExitSelectBalance: Views.ExitSelectBalance,
     ExitForm: Views.ExitForm,
     ExitConfirm: Views.ExitConfirm
   },
   {
-    initialRouteName: 'ExitForm',
+    initialRouteName: 'ExitSelectBalance',
     headerMode: 'none'
   }
 )

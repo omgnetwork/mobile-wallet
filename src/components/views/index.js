@@ -12,6 +12,7 @@ import DeleteWallet from './delete-wallet'
 import Deposit from './deposit'
 import Disclaimer from './disclaimer'
 import Exit from './exit'
+import ExitSelectBalance from './exit/ExitSelectBalance'
 import ExitForm from './exit/ExitForm'
 import ExitConfirm from './exit/ExitConfirm'
 import ExitPending from './exit/ExitPending'
@@ -63,6 +64,7 @@ export {
   Deposit,
   Disclaimer,
   Exit,
+  ExitSelectBalance,
   ExitForm,
   ExitConfirm,
   ExitPending,
