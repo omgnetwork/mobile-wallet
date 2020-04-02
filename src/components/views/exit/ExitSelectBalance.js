@@ -10,7 +10,7 @@ const ExitSelectBalance = ({ theme, primaryWallet, navigation, loading }) => {
 
   const confirm = useCallback(
     token => {
-      navigation.navigate('ExitForm', { token })
+      navigation.navigate('ExitSelectUtxo', { token })
     },
     [navigation]
   )

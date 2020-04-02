@@ -59,6 +59,7 @@ import OMGTransactionFilter from './omg-transaction-filter'
 import OMGTransactionList from './omg-transaction-list'
 import OMGTokenID from './omg-token-id'
 import OMGUtxoDetail from './omg-utxo-detail'
+import OMGUtxoSelect from './omg-utxo-select'
 
 export {
   OMGAddressInput,
@@ -119,5 +120,6 @@ export {
   OMGTransactionFilter,
   OMGTransactionList,
   OMGTokenID,
-  OMGUtxoDetail
+  OMGUtxoDetail,
+  OMGUtxoSelect
 }

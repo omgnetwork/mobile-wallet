@@ -13,6 +13,7 @@ import Deposit from './deposit'
 import Disclaimer from './disclaimer'
 import Exit from './exit'
 import ExitSelectBalance from './exit/ExitSelectBalance'
+import ExitSelectUtxo from './exit/ExitSelectUtxo'
 import ExitForm from './exit/ExitForm'
 import ExitConfirm from './exit/ExitConfirm'
 import ExitPending from './exit/ExitPending'
@@ -65,6 +66,7 @@ export {
   Disclaimer,
   Exit,
   ExitSelectBalance,
+  ExitSelectUtxo,
   ExitForm,
   ExitConfirm,
   ExitPending,
