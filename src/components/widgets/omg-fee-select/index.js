@@ -5,10 +5,10 @@ import OMGFontIcon from '../omg-font-icon'
 import { withTheme } from 'react-native-paper'
 import { Formatter } from 'common/utils'
 
-const OMGFeeSelect = ({ style, onPress, fee, selected, theme }) => {
+const OMGFeeSelect = ({ style, onPress, fee, theme }) => {
   return (
     <TouchableOpacity
-      style={{ ...styles.container(theme, selected), ...style }}
+      style={{ ...styles.container(theme), ...style }}
       onPress={onPress}>
       <View style={styles.sectionFeeSpeed}>
         <OMGText style={styles.feeSpeed(theme)}>{fee.speed}</OMGText>
@@ -28,9 +28,11 @@ const OMGFeeSelect = ({ style, onPress, fee, selected, theme }) => {
         </OMGText>
       </View>
       <View style={styles.sectionSelect}>
-        {selected && (
-          <OMGFontIcon name='check-mark' size={14} color={theme.colors.white} />
-        )}
+        <OMGFontIcon
+          name='chevron-right'
+          size={14}
+          color={theme.colors.white}
+        />
       </View>
     </TouchableOpacity>
   )
@@ -47,15 +49,12 @@ const formatFeePrice = (amount, price) => {
 }
 
 const styles = StyleSheet.create({
-  container: (theme, selected) => ({
+  container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.black3,
     alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 16,
-    borderRadius: theme.roundness,
-    borderColor: selected ? theme.colors.blue : theme.colors.white,
-    borderWidth: 1
+    borderRadius: theme.roundness
   }),
   sectionFeeSpeed: {
     flex: 1,

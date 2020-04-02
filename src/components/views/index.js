@@ -14,6 +14,7 @@ import Disclaimer from './disclaimer'
 import Exit from './exit'
 import ExitSelectBalance from './exit/ExitSelectBalance'
 import ExitSelectUtxo from './exit/ExitSelectUtxo'
+import ExitSelectFee from './exit/ExitSelectFee'
 import ExitForm from './exit/ExitForm'
 import ExitConfirm from './exit/ExitConfirm'
 import ExitPending from './exit/ExitPending'
@@ -67,6 +68,7 @@ export {
   Exit,
   ExitSelectBalance,
   ExitSelectUtxo,
+  ExitSelectFee,
   ExitForm,
   ExitConfirm,
   ExitPending,

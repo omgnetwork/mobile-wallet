@@ -41,8 +41,8 @@ const ExitSelectUtxo = ({ theme, primaryWallet, navigation }) => {
   }, [])
 
   const confirm = useCallback(() => {
-    navigation.navigate('ExitForm', { utxos })
-  }, [navigation, utxos])
+    navigation.navigate('ExitSelectFee', { utxos: selectedUtxos.current })
+  }, [navigation])
 
   return (
     <View style={styles.container(theme)}>

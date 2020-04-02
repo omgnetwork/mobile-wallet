@@ -5,6 +5,7 @@ export default createStackNavigator(
   {
     ExitSelectBalance: Views.ExitSelectBalance,
     ExitSelectUtxo: Views.ExitSelectUtxo,
+    ExitSelectFee: Views.ExitSelectFee,
     ExitForm: Views.ExitForm,
     ExitConfirm: Views.ExitConfirm
   },
