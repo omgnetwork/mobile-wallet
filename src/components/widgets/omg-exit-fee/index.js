@@ -6,7 +6,14 @@ import Config from 'react-native-config'
 import { View, StyleSheet, TouchableOpacity, Linking } from 'react-native'
 import { OMGText, OMGEmpty, OMGEditItem } from 'components/widgets'
 
-const OMGExitFee = ({ theme, gasUsed, exitBondValue, gasPrice, style }) => {
+const OMGExitFee = ({
+  theme,
+  gasUsed,
+  exitBondValue,
+  gasPrice,
+  style,
+  onPressEdit
+}) => {
   const [ethPrice, setEthPrice] = useState()
 
   const formatBond = useCallback(() => {
@@ -45,6 +52,7 @@ const OMGExitFee = ({ theme, gasUsed, exitBondValue, gasPrice, style }) => {
           title='Fee'
           loading={!gasUsed || !exitBondValue}
           value={formatTotalExitFee() || 0}
+          onPress={onPressEdit}
           price={ethPrice}
         />
       </View>

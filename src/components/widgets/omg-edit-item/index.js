@@ -11,7 +11,8 @@ const OMGEditItem = ({
   symbol = 'ETH',
   price,
   style,
-  loading
+  loading,
+  onPress
 }) => {
   const feeUsd = BlockchainFormatter.formatTokenPrice(value, price)
 
@@ -21,7 +22,9 @@ const OMGEditItem = ({
         <OMGText style={[styles.textWhite(theme), styles.textBig]}>
           {title}
         </OMGText>
-        <TouchableOpacity style={[styles.row, styles.textMargin]}>
+        <TouchableOpacity
+          style={[styles.row, styles.textMargin]}
+          onPress={onPress}>
           <OMGText
             style={[
               styles.textBlue(theme),

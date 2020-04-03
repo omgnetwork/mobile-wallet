@@ -49,6 +49,14 @@ const ExitForm = ({ theme, navigation, blockchainWallet }) => {
     getEstimateExitFee()
   }, [blockchainWallet, utxos])
 
+  const navigateEditAmount = useCallback(() => {
+    navigation.navigate('ExitSelectBalance')
+  }, [navigation])
+
+  const navigateEditFee = useCallback(() => {
+    navigation.navigate('ExitSelectFee')
+  }, [navigation])
+
   const navigateNext = useCallback(() => {
     navigation.navigate('ExitConfirm', {
       token: { ...token, balance: exitAmount },
@@ -67,12 +75,14 @@ const ExitForm = ({ theme, navigation, blockchainWallet }) => {
         <OMGEditItem
           title='Amount'
           value={exitAmount}
+          onPress={navigateEditAmount}
           symbol={token.tokenSymbol}
           price={token.price}
           style={[styles.marginMedium, styles.paddingMedium]}
         />
         <OMGExitFee
           gasUsed={gasUsed}
+          onPressEdit={navigateEditFee}
           gasPrice={fee.amount}
           exitBondValue={exitBond}
           style={[styles.marginSmall]}
