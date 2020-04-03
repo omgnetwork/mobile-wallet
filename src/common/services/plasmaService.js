@@ -164,37 +164,30 @@ export const deposit = async (address, privateKey, token, gasPrice) => {
   }
 }
 
-export const exit = (blockchainWallet, token, gasPrice) => {
+export const exit = (blockchainWallet, token, utxos, gasPrice) => {
   return new Promise(async (resolve, reject) => {
     try {
       const hasExitQueue = await Token.hasExitQueue(token.contractAddress)
-
+      const { address, privateKey } = blockchainWallet
       if (!hasExitQueue) {
         await Token.createExitQueue(token.contractAddress, {
-          from: blockchainWallet.address,
-          privateKey: blockchainWallet.privateKey,
+          from: address,
+          privateKey,
           gasPrice
         })
       }
 
-      const desiredAmount = Parser.parseUnits(
-        token.balance,
-        token.tokenDecimal
-      ).toString(10)
+      let utxoToExit
+      if (utxos.length === 1) {
+        utxoToExit = utxos[0]
+      } else {
+        const { blknum } = await Utxos.merge(address, privateKey, utxos)
+        await Wait.waitChildChainBlknum(address, blknum)
+        utxoToExit = await Utxos.get(address, {
+          currency: token.contractAddress
+        }).then(latestUtxos => latestUtxos.find(utxo => utxo.blknum === blknum))
+      }
 
-      // For now `getUtxos` includes exited utxos, so after this issue https://github.com/omisego/elixir-omg/issues/1151 has been solved,
-      // we can then  uncomment the function below to reduce unnecessary api call.
-      // const utxoToExit = await getOrCreateUtxoWithAmount(
-      //   desiredAmount,
-      //   blockchainWallet,
-      //   token
-      // )
-
-      const utxoToExit = await createUtxoWithAmount(
-        desiredAmount,
-        blockchainWallet,
-        token
-      )
       const exitData = await Plasma.getExitData(utxoToExit)
 
       const {
@@ -206,7 +199,11 @@ export const exit = (blockchainWallet, token, gasPrice) => {
       const standardExitBond = await Plasma.getStandardExitBond()
 
       console.log('standard exit hash', hash)
-      await Wait.waitFor(5000)
+      await Wait.waitForRootchainTransaction({
+        hash,
+        intervalMs: 1000,
+        confirmationThreshold: 1
+      })
 
       const {
         scheduledFinalizationTime: exitableAt

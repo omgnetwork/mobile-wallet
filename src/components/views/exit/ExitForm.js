@@ -4,6 +4,7 @@ import { View, StyleSheet } from 'react-native'
 import { withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useLoading } from 'common/hooks'
+import { plasmaActions } from 'common/actions'
 import {
   OMGText,
   OMGExitWarning,
@@ -19,7 +20,13 @@ import {
 } from 'common/blockchain'
 import { ScrollView } from 'react-native-gesture-handler'
 
-const ExitForm = ({ theme, navigation, blockchainWallet }) => {
+const ExitForm = ({
+  theme,
+  navigation,
+  blockchainWallet,
+  dispatchExit,
+  loading
+}) => {
   const utxos = navigation.getParam('utxos')
   const token = navigation.getParam('token')
   const fee = navigation.getParam('fee')
@@ -29,6 +36,7 @@ const ExitForm = ({ theme, navigation, blockchainWallet }) => {
   )
   const [exitBond, setExitBond] = useState(null)
   const [gasUsed, setGasUsed] = useState(null)
+  const [submitting] = useLoading(loading, 'CHILDCHAIN_EXIT')
 
   useEffect(() => {
     async function getStandardExitBond() {
@@ -49,6 +57,12 @@ const ExitForm = ({ theme, navigation, blockchainWallet }) => {
     getEstimateExitFee()
   }, [blockchainWallet, utxos])
 
+  useEffect(() => {
+    if (loading.success && loading.action === 'CHILDCHAIN_EXIT') {
+      navigation.navigate('Balance')
+    }
+  })
+
   const navigateEditAmount = useCallback(() => {
     navigation.navigate('ExitSelectBalance')
   }, [navigation])
@@ -57,14 +71,14 @@ const ExitForm = ({ theme, navigation, blockchainWallet }) => {
     navigation.navigate('ExitSelectFee')
   }, [navigation])
 
-  const navigateNext = useCallback(() => {
-    navigation.navigate('ExitConfirm', {
-      token: { ...token, balance: exitAmount },
-      gasUsed: gasUsed,
-      gasPrice: fee.amount,
-      exitBond
-    })
-  }, [exitAmount, exitBond, fee.amount, gasUsed, navigation, token])
+  const submit = useCallback(() => {
+    dispatchExit(
+      blockchainWallet,
+      { ...token, balance: exitAmount },
+      utxos,
+      fee.amount
+    )
+  }, [blockchainWallet, dispatchExit, exitAmount, fee.amount, token, utxos])
 
   return (
     <ScrollView style={styles.container(theme)}>
@@ -89,7 +103,9 @@ const ExitForm = ({ theme, navigation, blockchainWallet }) => {
         />
         <OMGExitWarning style={styles.marginMedium} />
         <View style={[styles.buttonContainer, styles.marginHigh]}>
-          <OMGButton onPress={navigateNext}>Next</OMGButton>
+          <OMGButton onPress={submit} loading={submitting}>
+            Confirm Exit
+          </OMGButton>
         </View>
       </View>
     </ScrollView>
@@ -136,7 +152,12 @@ const mapStateToProps = (state, ownProps) => ({
   blockchainWallet: state.setting.blockchainWallet
 })
 
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatchExit: (blockchainWallet, token, utxos, gasPrice) =>
+    dispatch(plasmaActions.exit(blockchainWallet, token, utxos, gasPrice))
+})
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withNavigationFocus(withTheme(ExitForm)))
