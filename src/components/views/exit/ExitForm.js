@@ -5,6 +5,7 @@ import { withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useLoading } from 'common/hooks'
 import { plasmaActions } from 'common/actions'
+import { GoogleAnalytics } from 'common/analytics'
 import {
   OMGText,
   OMGExitWarning,
@@ -25,6 +26,7 @@ const ExitForm = ({
   navigation,
   blockchainWallet,
   dispatchExit,
+  unconfirmedTx,
   loading
 }) => {
   const utxos = navigation.getParam('utxos')
@@ -59,6 +61,7 @@ const ExitForm = ({
 
   useEffect(() => {
     if (loading.success && loading.action === 'CHILDCHAIN_EXIT') {
+      GoogleAnalytics.sendEvent('transfer_exited', { hash: unconfirmedTx.hash })
       navigation.navigate('Balance')
     }
   })
@@ -149,7 +152,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
-  blockchainWallet: state.setting.blockchainWallet
+  blockchainWallet: state.setting.blockchainWallet,
+  unconfirmedTx: state.transaction.unconfirmedTxs.slice(-1).pop()
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
