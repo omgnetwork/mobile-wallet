@@ -1,10 +1,12 @@
-import { Polling, Datetime, Mapper } from 'common/utils'
+import { Datetime, Mapper } from 'common/utils'
 import {
   BlockchainFormatter,
   Plasma,
   Token,
   Parser,
-  Wait
+  Wait,
+  Transaction,
+  Utxos
 } from 'common/blockchain'
 import Config from 'react-native-config'
 import { ContractAddress } from 'common/constants'
@@ -13,15 +15,11 @@ export const fetchAssets = async (provider, address) => {
   try {
     const [balances, utxos] = await Promise.all([
       Plasma.getBalances(address),
-      Plasma.getUtxos(address)
+      Utxos.get(address)
     ])
 
     const tokenContractAddresses = getTokenContractAddresses(balances)
-    const tokenMap = await Token.fetchTokens(
-      provider,
-      tokenContractAddresses,
-      address
-    )
+    const tokenMap = await Token.all(provider, tokenContractAddresses, address)
     const childchainAssets = balances.map(balance => {
       const token = tokenMap[balance.currency]
       return {
@@ -57,7 +55,7 @@ const getUtxoPos = utxos =>
 export const getTxs = (address, options) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const transactions = await Plasma.getTxs(address, options)
+      const transactions = await Transaction.all(address, options)
       const currentWatcherTxs = transactions.map(tx => ({
         ...tx,
         hash: tx.txhash
@@ -73,7 +71,7 @@ export const getTxs = (address, options) => {
 export const getTx = hash => {
   return new Promise(async (resolve, reject) => {
     try {
-      const transaction = await Plasma.getTx(hash)
+      const transaction = await Transaction.get(hash)
       resolve({
         hash: transaction.txhash,
         ...transaction
@@ -169,11 +167,10 @@ export const deposit = async (address, privateKey, token, gasPrice) => {
 export const exit = (blockchainWallet, token, gasPrice) => {
   return new Promise(async (resolve, reject) => {
     try {
-      // Check if the token has been unlocked
-      const hasToken = await Plasma.hasToken(token.contractAddress)
+      const hasExitQueue = await Token.hasExitQueue(token.contractAddress)
 
-      if (!hasToken) {
-        await Plasma.addToken(token.contractAddress, {
+      if (!hasExitQueue) {
+        await Token.createExitQueue(token.contractAddress, {
           from: blockchainWallet.address,
           privateKey: blockchainWallet.privateKey,
           gasPrice
@@ -198,8 +195,7 @@ export const exit = (blockchainWallet, token, gasPrice) => {
         blockchainWallet,
         token
       )
-      const acceptableUtxoParams = Plasma.createAcceptableUtxoParams(utxoToExit)
-      const exitData = await Plasma.getExitData(acceptableUtxoParams)
+      const exitData = await Plasma.getExitData(utxoToExit)
 
       const {
         transactionHash: hash,
@@ -263,7 +259,7 @@ export const createUtxoWithAmount = async (
   blockchainWallet,
   token
 ) => {
-  const { utxo_pos: latestUtxoPos } = await Plasma.getUtxos(
+  const { utxo_pos: latestUtxoPos } = await Utxos.get(
     blockchainWallet.address,
     {
       currency: token.contractAddress
@@ -289,7 +285,7 @@ export const createUtxoWithAmount = async (
 }
 
 const getUtxoByAmount = async (amount, blockchainWallet, token) => {
-  const utxos = await Plasma.getUtxos(blockchainWallet.address, {
+  const utxos = await Utxos.get(blockchainWallet.address, {
     currency: token.contractAddress
   })
 

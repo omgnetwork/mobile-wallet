@@ -4,7 +4,8 @@ import {
   Ethereum,
   TxOptions,
   Plasma,
-  ContractABI
+  ContractABI,
+  Transaction
 } from 'common/blockchain'
 import { web3, Plasma as PlasmaClient } from 'common/clients'
 
@@ -63,18 +64,15 @@ export const estimateDeposit = async (from, to, token) => {
 
 export const estimateExit = async (
   blockchainWallet,
-  token,
+  utxos,
   includeExitBond = false
 ) => {
-  const utxoToExit = await Plasma.getUtxos(blockchainWallet.address, {
-    currency: token.contractAddress
-  }).then(utxos => utxos[0])
-  const acceptableUtxoParams = Plasma.createAcceptableUtxoParams(utxoToExit)
-  const exitTx = await Plasma.getExitData(acceptableUtxoParams)
+  const sampleUtxoToExit = utxos[0]
+  const exitTx = await Plasma.getExitData(sampleUtxoToExit)
   const from = blockchainWallet.address
   const gas = Gas.EXIT_ESTIMATED_GAS_USED
   const gasPrice = Gas.EXIT_GAS_PRICE
-  const txDetails = await Plasma.getExitTxDetails(exitTx, {
+  const txDetails = await Transaction.getExitDetails(exitTx, {
     from,
     gas,
     gasPrice

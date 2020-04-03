@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
-import { Plasma } from 'common/blockchain'
+import { Plasma, BlockchainFormatter, Utxos } from 'common/blockchain'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { OMGEmpty, OMGText, OMGUtxoSelect, OMGButton } from 'components/widgets'
@@ -15,7 +15,7 @@ const ExitSelectUtxo = ({ theme, primaryWallet, navigation }) => {
 
   const fetchUtxos = useCallback(async () => {
     setLoading(true)
-    const result = await Plasma.getUtxos(primaryWallet.address, {
+    const result = await Utxos.get(primaryWallet.address, {
       currency: token.contractAddress
     })
     setUtxos(result)
@@ -41,8 +41,11 @@ const ExitSelectUtxo = ({ theme, primaryWallet, navigation }) => {
   }, [])
 
   const confirm = useCallback(() => {
-    navigation.navigate('ExitSelectFee', { utxos: selectedUtxos.current })
-  }, [navigation])
+    navigation.navigate('ExitSelectFee', {
+      utxos: selectedUtxos.current,
+      token
+    })
+  }, [navigation, token])
 
   return (
     <View style={styles.container(theme)}>

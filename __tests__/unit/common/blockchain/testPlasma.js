@@ -1,4 +1,4 @@
-import { Plasma, Contract, ContractABI } from 'common/blockchain'
+import { Plasma, Contract, ContractABI, Utxos } from 'common/blockchain'
 import { Plasma as PlasmaClient, web3 } from 'common/clients'
 import Config from 'react-native-config'
 import BN from 'bn.js'
@@ -80,7 +80,7 @@ describe('Test Plasma Boundary', () => {
     ]
     mockGetUtxosResponse(utxos)
 
-    return Plasma.getUtxos(TEST_ADDRESS).then(data => {
+    return Utxos.get(TEST_ADDRESS).then(data => {
       expect(data).toEqual([
         {
           amount: '5000000000000000000',
@@ -122,7 +122,7 @@ describe('Test Plasma Boundary', () => {
       currency: '0xa1c9d0c6ed627fb2197fd16cd3afde37cc5e8da5'
     }
 
-    return Plasma.getUtxos(TEST_ADDRESS, requestOptions).then(data => {
+    return Utxos.get(TEST_ADDRESS, requestOptions).then(data => {
       expect(data).toEqual([
         {
           amount: '5000000000000000000',
@@ -162,7 +162,7 @@ describe('Test Plasma Boundary', () => {
 
     const requestOptions = {}
 
-    return Plasma.getUtxos(TEST_ADDRESS, requestOptions).then(data => {
+    return Utxos.get(TEST_ADDRESS, requestOptions).then(data => {
       expect(data).toEqual([
         {
           amount: '5000000000000000000',
@@ -232,7 +232,7 @@ describe('Test Plasma Boundary', () => {
       fromUtxoPos: 1008000000000
     }
 
-    return Plasma.getUtxos(TEST_ADDRESS, requestOptions).then(data => {
+    return Utxos.get(TEST_ADDRESS, requestOptions).then(data => {
       expect(data).toEqual([
         {
           amount: '5000000000000000000',
@@ -300,7 +300,7 @@ describe('Test Plasma Boundary', () => {
     const requestOptions = {
       fromUtxoPos: 1006000000000
     }
-    return Plasma.getUtxos(TEST_ADDRESS, requestOptions).then(data => {
+    return Utxos.get(TEST_ADDRESS, requestOptions).then(data => {
       expect(data).toEqual([
         {
           amount: '5000000000000000000',
@@ -366,7 +366,7 @@ describe('Test Plasma Boundary', () => {
     mockGetUtxosResponse(utxos)
 
     const requestOptions = {}
-    return Plasma.getUtxos(TEST_ADDRESS, requestOptions).then(data => {
+    return Utxos.get(TEST_ADDRESS, requestOptions).then(data => {
       expect(data).toEqual([
         {
           amount: '5000000000000000000',
@@ -399,7 +399,7 @@ describe('Test Plasma Boundary', () => {
     })
   })
 
-  it('getRequiredMergeUtxos should returns utxos with length > 1', () => {
+  it('getRequiredMerge should returns utxos with length > 1', () => {
     const utxos = [
       {
         amount: '10000000000000000',
@@ -439,13 +439,11 @@ describe('Test Plasma Boundary', () => {
       }
     ]
     mockGetUtxosResponse(utxos)
-    return Plasma.getRequiredMergeUtxos(TEST_ADDRESS, null, 4).then(
-      arrayOfUtxos => {
-        expect(arrayOfUtxos).toEqual([
-          [utxos[5], utxos[4], utxos[3], utxos[2], utxos[1]]
-        ])
-      }
-    )
+    return Utxos.getRequiredMerge(TEST_ADDRESS, null, 4).then(arrayOfUtxos => {
+      expect(arrayOfUtxos).toEqual([
+        [utxos[5], utxos[4], utxos[3], utxos[2], utxos[1]]
+      ])
+    })
   })
 
   it('deposit with eth should invoke the deposit function with expected parameters', () => {

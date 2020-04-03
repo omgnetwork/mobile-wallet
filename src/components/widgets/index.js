@@ -13,6 +13,7 @@ import OMGButton from './omg-button'
 import OMGDotViewPager from './omg-dot-view-pager'
 import OMGDismissKeyboard from './omg-dismiss-keyboard'
 import OMGDrawerContent from './omg-drawer-content'
+import OMGEditItem from './omg-edit-item'
 import OMGEmpty from './omg-empty'
 import OMGExitComplete from './omg-exit-complete'
 import OMGExitFee from './omg-exit-fee'
@@ -76,6 +77,7 @@ export {
   OMGDotViewPager,
   OMGDismissKeyboard,
   OMGDrawerContent,
+  OMGEditItem,
   OMGEmpty,
   OMGExitComplete,
   OMGExitFee,

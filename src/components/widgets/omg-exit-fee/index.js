@@ -4,16 +4,9 @@ import { BlockchainFormatter, Token } from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
 import { View, StyleSheet, TouchableOpacity, Linking } from 'react-native'
-import { OMGText, OMGEmpty } from 'components/widgets'
+import { OMGText, OMGEmpty, OMGEditItem } from 'components/widgets'
 
-const OMGExitFee = ({
-  theme,
-  gasUsed,
-  exitBondValue,
-  loading,
-  gasPrice,
-  style
-}) => {
+const OMGExitFee = ({ theme, gasUsed, exitBondValue, gasPrice, style }) => {
   const [ethPrice, setEthPrice] = useState()
 
   const formatBond = useCallback(() => {
@@ -26,17 +19,13 @@ const OMGExitFee = ({
 
   const formatTotalExitFee = useCallback(() => {
     if (gasUsed && exitBondValue) {
-      return BlockchainFormatter.formatGasFee(
-        gasUsed,
-        gasPrice,
-        exitBondValue
-      )
+      return BlockchainFormatter.formatGasFee(gasUsed, gasPrice, exitBondValue)
     }
   }, [exitBondValue, gasUsed, gasPrice])
 
   useEffect(() => {
     async function fetchEthPrice() {
-      const price = await Token.fetchPrice(
+      const price = await Token.getPrice(
         ContractAddress.ETH_ADDRESS,
         Config.ETHERSCAN_NETWORK
       )
@@ -49,68 +38,31 @@ const OMGExitFee = ({
     Linking.openURL('https://docs.omg.network/exitbonds')
   }, [])
 
-  const Item = ({
-    title,
-    subtitle,
-    value,
-    isLoading,
-    itemStyle,
-    textColor = theme.colors.gray
-  }) => {
-    const feeUsd = BlockchainFormatter.formatTokenPrice(value, ethPrice)
-
-    return (
-      <View style={[styles.itemContainer, itemStyle]}>
-        <View style={[styles.itemSubContainer, styles.stretch]}>
-          <OMGText style={[styles.textPrimary(textColor), styles.textBig]}>
-            {title}
-          </OMGText>
-          {!!subtitle && (
-            <OMGText
-              style={[
-                styles.textPrimary(theme.colors.gray),
-                styles.textSmall,
-                styles.textMargin,
-                styles.stretch
-              ]}>
-              {subtitle}
-            </OMGText>
-          )}
-        </View>
-        <View style={[styles.itemSubContainer, styles.alignRight]}>
-          {!loading && value > 0 ? (
-            <>
-              <OMGText style={[styles.textPrimary(textColor), styles.textBig]}>
-                {value} ETH
-              </OMGText>
-              <OMGText
-                style={[
-                  styles.textPrimary(textColor),
-                  styles.textSmall,
-                  styles.textMargin
-                ]}>
-                {feeUsd} USD
-              </OMGText>
-            </>
-          ) : (
-            <OMGEmpty loading={loading} />
-          )}
-        </View>
-      </View>
-    )
-  }
-
   return (
-    <>
-      <View style={[styles.container(theme), style]}>
+    <View style={[styles.background(theme), style]}>
+      <View style={[styles.container(theme)]}>
+        <OMGEditItem
+          title='Fee'
+          loading={!gasUsed || !exitBondValue}
+          value={formatTotalExitFee() || 0}
+          price={ethPrice}
+        />
+      </View>
+      <Divider theme={theme} />
+      <View style={[styles.container(theme)]}>
         <Item
           title='Transaction Fee'
+          loading={!gasUsed}
+          theme={theme}
+          ethPrice={ethPrice}
           value={formatGasFee(gasUsed)}
-          isLoading={loading}
         />
         <Item
           title='Exit Bond'
           subtitle='You’ll get this back after successfully exited'
+          loading={!exitBondValue}
+          theme={theme}
+          ethPrice={ethPrice}
           value={formatBond()}
           itemStyle={styles.itemMargin}
         />
@@ -120,23 +72,74 @@ const OMGExitFee = ({
           <OMGText style={styles.hyperlinkText(theme)}>Learn more</OMGText>
         </TouchableOpacity>
       </View>
-      <View style={[styles.container(theme), styles.gapMargin]}>
-        <Item
-          title='Total Exit Fee'
-          isLoading={loading}
-          textColor={theme.colors.white}
-          value={formatTotalExitFee() || 0}
-        />
-      </View>
-    </>
+    </View>
   )
 }
 
+const Item = ({
+  title,
+  subtitle,
+  value,
+  itemStyle,
+  theme,
+  ethPrice,
+  loading
+}) => {
+  const feeUsd = BlockchainFormatter.formatTokenPrice(value, ethPrice)
+
+  return (
+    <View style={[styles.itemContainer, itemStyle]}>
+      <View style={[styles.itemSubContainer, styles.stretch]}>
+        <OMGText style={[styles.textWhite(theme), styles.textSmall]}>
+          {title}
+        </OMGText>
+        {!!subtitle && (
+          <OMGText
+            style={[
+              styles.textGray(theme),
+              styles.textSmall,
+              styles.textMargin,
+              styles.stretch
+            ]}>
+            {subtitle}
+          </OMGText>
+        )}
+      </View>
+      <View style={[styles.itemSubContainer, styles.alignRight]}>
+        {!loading && value > 0 ? (
+          <>
+            <OMGText style={[styles.textWhite(theme), styles.textSmall]}>
+              {value} ETH
+            </OMGText>
+            <OMGText
+              style={[
+                styles.textWhite(theme),
+                styles.textSmall,
+                styles.textMargin
+              ]}>
+              {feeUsd} USD
+            </OMGText>
+          </>
+        ) : (
+          <OMGEmpty loading={loading} />
+        )}
+      </View>
+    </View>
+  )
+}
+
+const Divider = ({ theme }) => {
+  return <View style={styles.divider(theme)} />
+}
+
 const styles = StyleSheet.create({
+  background: theme => ({
+    backgroundColor: theme.colors.gray7
+  }),
   container: theme => ({
     flexDirection: 'column',
-    backgroundColor: theme.colors.gray5,
-    padding: 12
+    paddingVertical: 16,
+    paddingHorizontal: 12
   }),
   itemContainer: {
     flexDirection: 'row',
@@ -149,24 +152,20 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     alignItems: 'flex-end'
   },
-  textPrimary: color => ({
-    color: color
+  textWhite: theme => ({
+    color: theme.colors.white
+  }),
+  textGray: theme => ({
+    color: theme.colors.gray
   }),
   stretch: {
     flex: 1
-  },
-  textBig: {
-    fontSize: 16,
-    letterSpacing: -0.64
   },
   textSmall: {
     fontSize: 12,
     letterSpacing: -0.48
   },
   textMargin: {
-    marginTop: 2
-  },
-  gapMargin: {
     marginTop: 2
   },
   itemMargin: {
@@ -179,6 +178,11 @@ const styles = StyleSheet.create({
     color: theme.colors.blue,
     fontSize: 12,
     letterSpacing: -0.48
+  }),
+  divider: theme => ({
+    backgroundColor: theme.colors.gray4,
+    height: 1,
+    marginHorizontal: 16
   })
 })
 

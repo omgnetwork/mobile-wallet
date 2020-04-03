@@ -13,6 +13,8 @@ const TransferSelectFee = ({
   gasOptions,
   navigation
 }) => {
+  const token = navigation.getParam('token')
+  const utxos = navigation.getParam('utxos')
   const [loadingFees, setLoadingFees] = useState(false)
 
   useEffect(() => {
@@ -29,10 +31,11 @@ const TransferSelectFee = ({
     fee => {
       navigation.navigate('ExitForm', {
         fee,
-        utxos: navigation.getParam('utxos')
+        utxos,
+        token
       })
     },
-    [navigation]
+    [navigation, token, utxos]
   )
 
   return (
