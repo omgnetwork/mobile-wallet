@@ -11,7 +11,7 @@ const OMGItemExitTransaction = ({ theme, tx, style, key, onPress }) => {
   const iconName = getIconName(tx.type)
 
   const renderValue = useCallback(() => {
-    return `${BlockchainFormatter.formatTokenBalance(tx.value)} ${
+    return `${BlockchainFormatter.formatTokenBalance(tx.value, 8)} ${
       tx.tokenSymbol
     }`
   }, [tx])
@@ -141,8 +141,8 @@ const styles = StyleSheet.create({
     color: theme.colors.gray2
   }),
   textHash: theme => ({
+    flex: 1,
     fontSize: 16,
-    width: 171,
     letterSpacing: -0.64,
     color: theme.colors.white
   }),
