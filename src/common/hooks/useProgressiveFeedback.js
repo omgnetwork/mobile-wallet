@@ -3,11 +3,10 @@ import Config from 'react-native-config'
 import { TransactionActionTypes } from 'common/constants'
 
 const useProgressiveFeedback = (
-  theme,
   primaryWallet,
   dispatchInvalidateFeedbackCompleteTx
 ) => {
-  const MILLIS_TO_DISMISS = 5000
+  const MILLIS_TO_DISMISS = 8000
   const [feedback, setFeedback] = useState({})
   const [visible, setVisible] = useState(false)
   const [unconfirmedTxs, setUnconfirmedTxs] = useState([])
@@ -51,6 +50,26 @@ const useProgressiveFeedback = (
     }
   }, [])
 
+  const getExternalLink = useCallback((actionType, hash) => {
+    switch (actionType) {
+      case TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN:
+        return {
+          url: `${Config.BLOCK_EXPLORER_URL}transaction?id=${hash}`,
+          title: 'View on Block Explorer'
+        }
+      case TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS:
+        return {
+          url: `${Config.BLOCK_EXPLORER_URL}block?blknum=${hash}`,
+          title: 'View on Block Explorer'
+        }
+      default:
+        return {
+          url: `${Config.ETHERSCAN_URL}tx/${hash}`,
+          title: 'View on Etherscan'
+        }
+    }
+  }, [])
+
   const formatFeedbackTx = useCallback(
     transaction => {
       if (!transaction) return {}
@@ -69,11 +88,12 @@ const useProgressiveFeedback = (
           actionType: actionType,
           hash: hash,
           pending: false,
-          subtitle: getSubtitle(actionType)
+          subtitle: getSubtitle(actionType),
+          link: getExternalLink(actionType, hash)
         }
       }
     },
-    [getSubtitle, getTransactionFeedbackTitle]
+    [getExternalLink, getSubtitle, getTransactionFeedbackTitle]
   )
 
   const handleOnClose = useCallback(() => {
@@ -83,16 +103,6 @@ const useProgressiveFeedback = (
       setVisible(false)
     }
   }, [completeFeedbackTx, dispatchInvalidateFeedbackCompleteTx, primaryWallet])
-
-  const getLearnMoreLink = useCallback(() => {
-    if (
-      feedback.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
-    ) {
-      return `${Config.BLOCK_EXPLORER_URL}transaction/${feedback.hash}`
-    } else {
-      return `${Config.ETHERSCAN_URL}tx/${feedback.hash}`
-    }
-  }, [feedback.actionType, feedback.hash])
 
   const startAutoDismiss = useCallback(() => {
     setTimeout(handleOnClose, MILLIS_TO_DISMISS)
@@ -113,8 +123,7 @@ const useProgressiveFeedback = (
     visible,
     setUnconfirmedTxs,
     setCompleteFeedbackTx,
-    handleOnClose,
-    getLearnMoreLink
+    handleOnClose
   ]
 }
 

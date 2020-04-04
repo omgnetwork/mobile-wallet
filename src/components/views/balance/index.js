@@ -55,10 +55,8 @@ const Balance = ({
     visible,
     setUnconfirmedTxs,
     setCompleteFeedbackTx,
-    handleOnClose,
-    getLearnMoreLink
+    handleOnClose
   ] = useProgressiveFeedback(
-    theme,
     primaryWallet,
     dispatchInvalidateFeedbackCompleteTx
   )
@@ -149,11 +147,6 @@ const Balance = ({
     dispatchSetCurrentPage(null, 'childchain-balance')
   }, [dispatchSetCurrentPage])
 
-  const handleLearnMoreClick = useCallback(() => {
-    const externalURL = getLearnMoreLink()
-    Linking.openURL(externalURL)
-  }, [getLearnMoreLink])
-
   useEffect(() => {
     setUnconfirmedTxs(unconfirmedTxs)
     setCompleteFeedbackTx(feedbackCompleteTx)
@@ -224,7 +217,6 @@ const Balance = ({
         show={visible}
         feedback={feedback}
         onPressClose={handleOnClose}
-        onPressLink={handleLearnMoreClick}
       />
     </SafeAreaView>
   )

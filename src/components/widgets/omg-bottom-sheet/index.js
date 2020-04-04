@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useEffect } from 'react'
-import { View, StyleSheet, Animated } from 'react-native'
+import { View, StyleSheet, Animated, Linking } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGFontIcon, OMGText, OMGEmpty } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -10,14 +10,12 @@ const OMGBottomSheet = ({
   feedback,
   style,
   renderIndicator,
-  onPressLink,
   onPressClose,
   show
 }) => {
   const offBottom = new Animated.Value(320.0)
   const slide = useRef(offBottom)
-  const { hash, title, subtitle, pending } = feedback
-  const textLink = !pending && 'Learn more'
+  const { hash, title, subtitle, pending, link } = feedback
 
   useEffect(() => {
     if (show) {
@@ -47,13 +45,19 @@ const OMGBottomSheet = ({
     }
   }
 
+  const onTapExternalLink = useCallback(url => {
+    Linking.openURL(url)
+  }, [])
+
   const renderLink = useCallback(() => {
     return (
-      <TouchableOpacity onPress={onPressLink}>
-        <OMGText style={styles.textLink(theme)}>{textLink}</OMGText>
+      <TouchableOpacity
+        onPress={() => onTapExternalLink(link?.url)}
+        style={styles.smallMarginTop}>
+        <OMGText style={styles.textLink(theme)}>{link?.title}</OMGText>
       </TouchableOpacity>
     )
-  }, [onPressLink, textLink, theme])
+  }, [link, onTapExternalLink, theme])
 
   return (
     <Animated.View style={{ ...styles.container(theme, slide), ...style }}>
@@ -64,13 +68,13 @@ const OMGBottomSheet = ({
         </OMGText>
         {subtitle && (
           <OMGText
-            style={styles.textSubtitle(theme)}
+            style={[styles.textSubtitle(theme), styles.smallMarginTop]}
             ellipsizeMode='tail'
             numberOfLines={subtitle === hash ? 1 : null}>
             {subtitle}
           </OMGText>
         )}
-        {/* {textLink && renderLink()} */}
+        {link && renderLink()}
       </View>
       <TouchableOpacity
         onPress={onPressClose}
@@ -131,6 +135,9 @@ const styles = StyleSheet.create({
     fontSize: 8,
     color: theme.colors.blue
   }),
+  smallMarginTop: {
+    marginTop: 4
+  },
   closeIcon: {
     opacity: 0.4
   },
