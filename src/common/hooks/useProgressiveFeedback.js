@@ -2,23 +2,13 @@ import { useState, useCallback, useEffect } from 'react'
 import Config from 'react-native-config'
 import { TransactionActionTypes } from 'common/constants'
 
-const emptyFeedback = {
-  title: null,
-  type: null,
-  hash: null,
-  pending: null,
-  subTitle: null,
-  iconName: null,
-  iconColor: null
-}
-
 const useProgressiveFeedback = (
   theme,
   primaryWallet,
   dispatchInvalidateFeedbackCompleteTx
 ) => {
   const MILLIS_TO_DISMISS = 5000
-  const [feedback, setFeedback] = useState(emptyFeedback)
+  const [feedback, setFeedback] = useState({})
   const [visible, setVisible] = useState(false)
   const [unconfirmedTxs, setUnconfirmedTxs] = useState([])
   const [completeFeedbackTx, setCompleteFeedbackTx] = useState(null)
@@ -34,49 +24,44 @@ const useProgressiveFeedback = (
   }, [completeFeedbackTx, unconfirmedTxs])
 
   const getTransactionFeedbackTitle = useCallback((pending, actionType) => {
-    if (pending) {
-      switch (actionType) {
-        case TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT:
-          return 'Pending Deposit...'
-        case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
-          return 'Pending Start Exit...'
-        case TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT:
-          return 'Pending Process Exit...'
-        case TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS:
-          return 'Merging UTXOs...'
-        default:
-          return 'Pending Transaction...'
-      }
-    } else {
-      switch (actionType) {
-        case TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT:
-          return 'Successfully Deposited!'
-        case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
-          return 'Successfully Started Exit!'
-        case TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT:
-          return 'Successfully Processed Exit!'
-        case TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS:
-          return 'Successfully Merged UTXOs!'
-        default:
-          return 'Successfully Transferred!'
-      }
+    switch (actionType) {
+      case TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT:
+        return pending ? 'Pending Deposit...' : 'Successfully Deposited!'
+      case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
+        return pending
+          ? 'Submitting Exit Request...'
+          : 'Submitted Exit request!'
+      case TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT:
+        return pending
+          ? 'Pending Process Exit...'
+          : 'Successfully Processed Exit!'
+      case TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS:
+        return pending ? 'Uniting Tokens...' : 'All set!'
+      default:
+        return pending ? 'Pending Transaction...' : 'Successfully Transferred!'
+    }
+  }, [])
+
+  const getSubtitle = useCallback(actionType => {
+    switch (actionType) {
+      case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
+        return 'We’re merging UTXOs. Hang tight! You can not transfer during this time.'
+      case TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS:
+        return 'Merged UTXOs. You can now transfer and do any activities as usual.'
     }
   }, [])
 
   const formatFeedbackTx = useCallback(
     transaction => {
-      if (!transaction) return emptyFeedback
+      if (!transaction) return {}
       const { actionType, hash } = transaction.result
-
       if (transaction.pending) {
         return {
           title: getTransactionFeedbackTitle(true, actionType),
           actionType: actionType,
           hash: hash,
           pending: true,
-          subtitle: hash,
-          iconName: 'pending',
-          iconColor: theme.colors.yellow
+          subtitle: getSubtitle(actionType)
         }
       } else {
         return {
@@ -84,13 +69,11 @@ const useProgressiveFeedback = (
           actionType: actionType,
           hash: hash,
           pending: false,
-          subtitle: hash,
-          iconName: 'success',
-          iconColor: theme.colors.green
+          subtitle: getSubtitle(actionType)
         }
       }
     },
-    [getTransactionFeedbackTitle, theme.colors.green, theme.colors.yellow]
+    [getSubtitle, getTransactionFeedbackTitle]
   )
 
   const handleOnClose = useCallback(() => {

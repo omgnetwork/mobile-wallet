@@ -1,24 +1,23 @@
 import React, { useCallback, useRef, useEffect } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { OMGFontIcon, OMGText } from 'components/widgets'
+import { OMGFontIcon, OMGText, OMGEmpty } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Slide } from 'common/anims'
 
 const OMGBottomSheet = ({
   theme,
-  iconName,
-  iconColor,
-  textTitle,
-  textSubtitle,
-  textLink,
+  feedback,
   style,
+  renderIndicator,
   onPressLink,
   onPressClose,
   show
 }) => {
   const offBottom = new Animated.Value(320.0)
   const slide = useRef(offBottom)
+  const { hash, title, subtitle, pending } = feedback
+  const textLink = !pending && 'Learn more'
 
   useEffect(() => {
     if (show) {
@@ -27,6 +26,26 @@ const OMGBottomSheet = ({
       Slide.Down(slide.current, offBottom)
     }
   }, [offBottom, show])
+
+  const Indicator = () => {
+    if (renderIndicator) {
+      return renderIndicator()
+    } else if (pending) {
+      return (
+        <OMGEmpty
+          loading={true}
+          loadingColor={theme.colors.primary}
+          style={styles.loading}
+        />
+      )
+    } else {
+      return (
+        <View style={styles.iconContainer(theme.colors.green4)}>
+          <OMGFontIcon name={'success'} color={theme.colors.green4} size={24} />
+        </View>
+      )
+    }
+  }
 
   const renderLink = useCallback(() => {
     return (
@@ -38,23 +57,17 @@ const OMGBottomSheet = ({
 
   return (
     <Animated.View style={{ ...styles.container(theme, slide), ...style }}>
-      <View style={styles.iconContainer(iconColor)}>
-        <OMGFontIcon
-          name={iconName || 'pending'}
-          color={theme.colors.gray5}
-          size={24}
-        />
-      </View>
+      <Indicator />
       <View style={styles.content}>
         <OMGText style={styles.textTitle(theme)} weight='regular'>
-          {textTitle}
+          {title}
         </OMGText>
-        {textSubtitle && (
+        {subtitle && (
           <OMGText
             style={styles.textSubtitle(theme)}
             ellipsizeMode='tail'
-            numberOfLines={1}>
-            {textSubtitle}
+            numberOfLines={subtitle === hash ? 1 : null}>
+            {subtitle}
           </OMGText>
         )}
         {/* {textLink && renderLink()} */}
@@ -77,18 +90,20 @@ const styles = StyleSheet.create({
   container: (theme, slide) => ({
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
     paddingVertical: 20,
-    paddingHorizontal: 16,
+    paddingHorizontal: 28,
     transform: [{ translateY: slide.current }],
     position: 'absolute',
     bottom: 0,
     backgroundColor: theme.colors.gray5
   }),
   iconContainer: color => ({
-    width: 24,
-    height: 24,
-    backgroundColor: color,
-    borderRadius: 12,
+    width: 30,
+    height: 30,
+    borderWidth: 3,
+    borderColor: color,
+    borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center'
   }),
@@ -97,16 +112,20 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'flex-start',
-    marginLeft: 16
+    marginLeft: 28
+  },
+  loading: {
+    flex: 0
   },
   textTitle: theme => ({
     color: theme.colors.white
   }),
   textSubtitle: theme => ({
+    flex: 1,
     marginTop: 2,
     fontSize: 8,
     marginRight: 16,
-    color: theme.colors.gray2
+    color: theme.colors.white
   }),
   textLink: theme => ({
     fontSize: 8,
