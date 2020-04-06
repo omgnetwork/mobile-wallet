@@ -10,7 +10,7 @@ import { TransactionActionTypes, TransactionTypes } from 'common/constants'
 import Config from 'react-native-config'
 import { getMockStore } from '../../../helpers'
 import { plasmaActions } from 'common/actions'
-import { ContractAddress } from 'common/constants'
+import { ContractAddress, Gas } from 'common/constants'
 
 jest.mock('common/analytics/crashAnalytics.js')
 jest.mock('common/services/plasmaService.js')
@@ -228,33 +228,36 @@ describe('Test Plasma Actions', () => {
       price: 'any',
       contractAddress: ERC20_VAULT_CONTRACT_ADDRESS
     }
-
+    const gasPrice = Gas.EXIT_GAS_PRICE
     mockPlasmaService(exit, mockExitTxReceipt)
 
     const store = mockStore()
-    return store.dispatch(plasmaActions.exit(wallet, token)).then(() => {
-      const actions = store.getActions()
-      expect(actions).toStrictEqual([
-        { type: 'CHILDCHAIN/EXIT/INITIATED' },
-        {
-          data: {
-            ...mockExitTxReceipt,
-            actionType: 'CHILDCHAIN_EXIT',
-            contractAddress: token.contractAddress,
-            createdAt: actions[1].data.createdAt,
-            from: wallet.address,
-            tokenPrice: 'any',
-            smallestValue: '1000000000000000',
-            symbol: token.tokenSymbol,
-            timestamp: actions[1].data.timestamp,
-            tokenDecimal: token.tokenDecimal,
-            type: TransactionTypes.TYPE_EXIT,
-            value: token.balance
+    return store
+      .dispatch(plasmaActions.exit(wallet, token, [], gasPrice))
+      .then(() => {
+        const actions = store.getActions()
+        expect(actions).toStrictEqual([
+          { type: 'CHILDCHAIN/EXIT/INITIATED' },
+          {
+            data: {
+              ...mockExitTxReceipt,
+              actionType: 'CHILDCHAIN_EXIT',
+              contractAddress: token.contractAddress,
+              createdAt: actions[1].data.createdAt,
+              from: wallet.address,
+              tokenPrice: 'any',
+              gasPrice,
+              smallestValue: '1000000000000000',
+              symbol: token.tokenSymbol,
+              timestamp: actions[1].data.timestamp,
+              tokenDecimal: token.tokenDecimal,
+              type: TransactionTypes.TYPE_EXIT,
+              value: token.balance
+            },
+            type: 'CHILDCHAIN/EXIT/SUCCESS'
           },
-          type: 'CHILDCHAIN/EXIT/SUCCESS'
-        },
-        { type: 'LOADING/CHILDCHAIN_EXIT/IDLE' }
-      ])
-    })
+          { type: 'LOADING/CHILDCHAIN_EXIT/IDLE' }
+        ])
+      })
   })
 })
