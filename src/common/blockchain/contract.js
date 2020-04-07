@@ -24,12 +24,3 @@ export const getExitEvents = async (event, options) => {
     fromBlock: fromBlock || 0
   })
 }
-
-export const isPaymentExitGameContract = async (web3, address) => {
-  const code = await web3.eth.getCode(address)
-  const hash = web3.eth.abi.encodeFunctionSignature(
-    'startStandardExitBondSize()'
-  )
-  // Remove 0x prefix
-  return code.indexOf(hash.slice(2)) > -1
-}
