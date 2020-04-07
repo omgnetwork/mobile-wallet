@@ -62,18 +62,14 @@ export const submit = signedTx => {
   return PlasmaClient.ChildChain.submitTransaction(signedTx)
 }
 
-const getData = (web3, contract, method, ...args) => {
-  if (web3.version.api && web3.version.api.startsWith('0.2')) {
-    return contract[method].getData(...args)
-  } else {
-    return contract.methods[method](...args).encodeABI()
-  }
+const getData = (contract, method, ...args) => {
+  return contract.methods[method](...args).encodeABI()
 }
 
 export const getExitDetails = async (web3, tx, { from, gas, gasPrice }) => {
   const { utxo_pos, txbytes, proof } = tx
   const { contract, address, bonds } = await Contract.getPaymentExitGame()
-  const data = getData(web3, contract, 'startStandardExit', [
+  const data = getData(contract, 'startStandardExit', [
     utxo_pos.toString(),
     txbytes,
     proof
