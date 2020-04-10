@@ -1,15 +1,9 @@
 package network.omisego.plasmawallet.security;
 
-/*
- * OmiseGO
- *
- * Created by Phuchit Sirimongkolsathien on 2020-04-08.
- * Copyright © 2019 OmiseGO. All rights reserved.
- */
-
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.util.Base64;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.spec.IvParameterSpec;
@@ -21,7 +15,7 @@ import java.security.spec.AlgorithmParameterSpec;
 public class SecureEncrypt {
 
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
-    private static final String CIPHER_TRANSFORMATION = "RSA/ECB/PKCS1Padding";
+    private static final String CIPHER_TRANSFORMATION = "AES/CBC/PKCS7Padding";
     private static final String IV_SEPARATOR = "#";
     private KeyStore keyStore;
     private String keyAlias;
@@ -29,7 +23,7 @@ public class SecureEncrypt {
 
     private Cipher cipher;
 
-    public void SecureEncrypt(String keyAlias) throws SecureEncryptException {
+    public SecureEncrypt(String keyAlias) throws SecureEncryptException {
         this.keyAlias = keyAlias;
         try {
             this.keyStore = KeyStore.getInstance(ANDROID_KEY_STORE);
@@ -53,14 +47,22 @@ public class SecureEncrypt {
             KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEY_STORE);
             int purposes = KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT;
             KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(keyAlias, purposes)
-                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-                    .setRandomizedEncryptionRequired(true)
+                    .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
                     .build();
             keyGenerator.init(spec);
             keyGenerator.generateKey();
         } catch (Throwable cause) {
             throw new SecureEncryptException("Cannot generate key for the SecureEncrypt", cause);
+        }
+    }
+
+    public void deleteKeystore(String alias) throws SecureEncryptException {
+        try {
+            this.keyStore.deleteEntry(alias);
+            this.keyStore.store(null);
+        } catch (Throwable cause) {
+            throw new SecureEncryptException("Cannot delete keystore " + alias, cause);
         }
     }
 
