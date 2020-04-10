@@ -1,3 +1,6 @@
 import { NativeModules } from 'react-native'
+import * as SecureEncryption from './secureEncryption'
 
-export const TaskScheduler = NativeModules.TaskScheduler
+const TaskScheduler = NativeModules.TaskScheduler
+
+export { TaskScheduler, SecureEncryption }
