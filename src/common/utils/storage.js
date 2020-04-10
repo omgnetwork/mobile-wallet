@@ -3,7 +3,7 @@ import { SecureEncryption } from 'common/native'
 import SecureStorage from 'react-native-sensitive-info'
 import Storage from '@react-native-community/async-storage'
 
-const SECURE_STORAGE_NAME = 'OMGWallet2'
+const SECURE_STORAGE_NAME = 'network.omisego.plasmawallet.sp'
 
 export const storage = {
   sharedPreferencesName: SECURE_STORAGE_NAME,
