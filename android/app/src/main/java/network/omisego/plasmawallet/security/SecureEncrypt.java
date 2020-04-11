@@ -15,7 +15,9 @@ import java.security.spec.AlgorithmParameterSpec;
 public class SecureEncrypt {
 
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
-    private static final String CIPHER_TRANSFORMATION = "AES/CBC/PKCS7Padding";
+    private static final String ALGORITHM = KeyProperties.KEY_ALGORITHM_AES;
+    private static final String BLOCK_MODE = KeyProperties.BLOCK_MODE_CBC;
+    private static final String ENCRYPTION_PADDING = KeyProperties.ENCRYPTION_PADDING_PKCS7;
     private static final String IV_SEPARATOR = "#";
     private KeyStore keyStore;
     private String keyAlias;
@@ -32,7 +34,7 @@ public class SecureEncrypt {
                 generateKey();
             }
             this.secretKey = keyStore.getKey(keyAlias, null);
-            this.cipher = Cipher.getInstance(CIPHER_TRANSFORMATION);
+            this.cipher = Cipher.getInstance(ALGORITHM + "/" + BLOCK_MODE + "/" + ENCRYPTION_PADDING);
         } catch (Throwable cause) {
             throw new SecureEncryptException("Cannot initialize the SecureEncrypt", cause);
         }
@@ -44,25 +46,17 @@ public class SecureEncrypt {
 
     private void generateKey() throws SecureEncryptException {
         try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEY_STORE);
             int purposes = KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT;
             KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(keyAlias, purposes)
-                    .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+                    .setBlockModes(BLOCK_MODE)
+                    .setEncryptionPaddings(ENCRYPTION_PADDING)
                     .build();
+
+            KeyGenerator keyGenerator = KeyGenerator.getInstance(ALGORITHM, ANDROID_KEY_STORE);
             keyGenerator.init(spec);
             keyGenerator.generateKey();
         } catch (Throwable cause) {
             throw new SecureEncryptException("Cannot generate key for the SecureEncrypt", cause);
-        }
-    }
-
-    public void deleteKeystore(String alias) throws SecureEncryptException {
-        try {
-            this.keyStore.deleteEntry(alias);
-            this.keyStore.store(null);
-        } catch (Throwable cause) {
-            throw new SecureEncryptException("Cannot delete keystore " + alias, cause);
         }
     }
 
