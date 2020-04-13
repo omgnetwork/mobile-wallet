@@ -83,9 +83,10 @@ project.ext.react = [
 ]
 
 // Load Keystore credentials
-def keystorePropertiesFile= rootProject.file("keystore.properties")
+def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 
 apply from: "../../node_modules/react-native/react.gradle"
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
@@ -139,8 +140,8 @@ android {
         applicationId "network.omisego.plasmawallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 22
-        versionName "0.4.11"
+        versionCode 24
+        versionName "0.4.13"
         multiDexEnabled true
         missingDimensionStrategy "react-native-camera", "general"
     }
@@ -160,7 +161,7 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file('release.keystore')
+            storeFile file('upload-key.keystore')
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
             storePassword keystoreProperties['storePassword']
