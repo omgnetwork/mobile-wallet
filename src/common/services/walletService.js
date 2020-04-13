@@ -46,11 +46,6 @@ export const importByMnemonic = (wallets, mnemonic, provider, name) => {
         privateKey: wallet.privateKey
       })
 
-      await walletStorage.setMnemonic({
-        address,
-        mnemonic
-      })
-
       const newWallet = { address, name, balance }
 
       resolve({ wallet: newWallet, blockchainWallet: connectedProviderWallet })
