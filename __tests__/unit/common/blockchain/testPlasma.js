@@ -400,6 +400,55 @@ describe('Test Plasma Boundary', () => {
     })
   })
 
+  it('getRequiredMergeUtxos should returns utxos with length > 1', () => {
+    const utxos = [
+      {
+        amount: '10000000000000000',
+        currency: '0x0000000000000000000000000000000000000000',
+        utxo_pos: 1,
+        owner: TEST_ADDRESS
+      },
+      {
+        amount: '1000000000000000000',
+        currency: '0xa1c9d0c6ed627fb2197fd16cd3afde37cc5e8da5',
+        utxo_pos: 2,
+        owner: TEST_ADDRESS
+      },
+      {
+        amount: '5000000000000000000',
+        currency: '0xa1c9d0c6ed627fb2197fd16cd3afde37cc5e8da5',
+        utxo_pos: 3,
+        owner: TEST_ADDRESS
+      },
+      {
+        amount: '2000000000000000000',
+        currency: '0xa1c9d0c6ed627fb2197fd16cd3afde37cc5e8da5',
+        utxo_pos: 4,
+        owner: TEST_ADDRESS
+      },
+      {
+        amount: '3000000000000000000',
+        currency: '0xa1c9d0c6ed627fb2197fd16cd3afde37cc5e8da5',
+        utxo_pos: 5,
+        owner: TEST_ADDRESS
+      },
+      {
+        amount: '7000000000000000000',
+        currency: '0xa1c9d0c6ed627fb2197fd16cd3afde37cc5e8da5',
+        utxo_pos: 6,
+        owner: TEST_ADDRESS
+      }
+    ]
+    mockGetUtxosResponse(utxos)
+    return Plasma.getRequiredMergeUtxos(TEST_ADDRESS, null, 4).then(
+      arrayOfUtxos => {
+        expect(arrayOfUtxos).toEqual([
+          [utxos[5], utxos[4], utxos[3], utxos[2], utxos[1]]
+        ])
+      }
+    )
+  })
+
   it('deposit with eth should invoke the deposit function with expected parameters', () => {
     const from = TEST_ADDRESS
     const privateKey = TEST_PRIVATE_KEY

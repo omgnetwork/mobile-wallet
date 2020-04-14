@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, InteractionManager } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { ethereumActions } from 'common/actions'

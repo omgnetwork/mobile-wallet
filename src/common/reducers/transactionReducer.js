@@ -1,4 +1,4 @@
-import { ExitStatus } from 'common/constants'
+import { ExitStatus, TransactionActionTypes } from 'common/constants'
 
 export const transactionReducer = (
   state = {
@@ -21,13 +21,47 @@ export const transactionReducer = (
         unconfirmedTxs: [...state.unconfirmedTxs, action.data],
         feedbackCompleteTx: null
       }
+    case 'TRANSACTION/UPDATE_MERGE_UTXOS_BLKNUM/OK': {
+      const hasMergeTransaction = state.unconfirmedTxs.find(
+        tx =>
+          tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
+      )
+      if (hasMergeTransaction) {
+        return {
+          ...state,
+          unconfirmedTxs: state.unconfirmedTxs.map(tx => {
+            return tx.actionType ===
+              TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
+              ? action.data
+              : tx
+          }),
+          feedbackCompleteTx: null
+        }
+      } else {
+        return {
+          ...state,
+          unconfirmedTxs: [...state.unconfirmedTxs, action.data],
+          feedbackCompleteTx: null
+        }
+      }
+    }
+
+    case 'CHILDCHAIN/MERGE_UTXOS/FAILED':
+    case 'CHILDCHAIN/MERGE_UTXOS/SUCCESS':
+      return {
+        ...state,
+        unconfirmedTxs: state.unconfirmedTxs.filter(
+          tx =>
+            tx.actionType !== TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
+        ),
+        feedbackCompleteTx: action.data
+      }
     case 'TRANSACTION/INVALIDATE_PENDING_TX/OK':
       return {
         ...state,
-        feedbackCompleteTx: action.data.resolvedUnconfirmedTx,
+        feedbackCompleteTx: action.data.confirmedTx,
         unconfirmedTxs: state.unconfirmedTxs.filter(
-          unconfirmedTx =>
-            unconfirmedTx.hash !== action.data.resolvedUnconfirmedTx.hash
+          unconfirmedTx => unconfirmedTx.hash !== action.data.confirmedTx.hash
         )
       }
     case 'WALLET/DELETE_ALL/OK':

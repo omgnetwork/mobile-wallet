@@ -49,12 +49,14 @@ const OMGBottomSheet = ({
         <OMGText style={styles.textTitle(theme)} weight='regular'>
           {textTitle}
         </OMGText>
-        <OMGText
-          style={styles.textSubtitle(theme)}
-          ellipsizeMode='tail'
-          numberOfLines={1}>
-          {textSubtitle}
-        </OMGText>
+        {textSubtitle && (
+          <OMGText
+            style={styles.textSubtitle(theme)}
+            ellipsizeMode='tail'
+            numberOfLines={1}>
+            {textSubtitle}
+          </OMGText>
+        )}
         {/* {textLink && renderLink()} */}
       </View>
       <TouchableOpacity
@@ -93,6 +95,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'flex-start',
     marginLeft: 16
   },

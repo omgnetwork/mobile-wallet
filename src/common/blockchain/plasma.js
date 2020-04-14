@@ -1,5 +1,5 @@
 import { Plasma, PlasmaUtils, web3 } from 'common/clients'
-import { ContractABI, Transaction } from 'common/utils'
+import { ContractABI, Transaction, Wait } from 'common/utils'
 import axios from 'axios'
 import { Gas, ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
@@ -24,12 +24,130 @@ export const getUtxos = (address, options) => {
   const filteringCurrency = utxo => utxo.currency === currency
   const filteringFromUtxoPos = utxo => utxo.utxo_pos >= (fromUtxoPos || 0)
   const sortingUtxoPos = (first, second) => second.utxo_pos - first.utxo_pos
-
   return Plasma.ChildChain.getUtxos(address)
     .then(utxos => utxos.map(mappingAmount))
     .then(utxos => (currency ? utxos.filter(filteringCurrency) : utxos))
     .then(utxos => utxos.filter(filteringFromUtxoPos))
     .then(utxos => utxos.sort(sortingUtxoPos))
+}
+
+export const getRequiredMergeUtxos = async (
+  address,
+  unsubmittedBlknum,
+  maximumUtxosPerCurrency = 4
+) => {
+  if (unsubmittedBlknum) {
+    await Wait.waitChildChainBlknum(address, unsubmittedBlknum)
+  }
+
+  return getUtxos(address)
+    .then(utxos => {
+      return utxos.reduce((acc, utxo) => {
+        const { currency } = utxo
+        if (!acc[currency]) {
+          acc[currency] = []
+        }
+        acc[currency].push(utxo)
+        return acc
+      }, {})
+    })
+    .then(map =>
+      Object.keys(map)
+        .filter(key => map[key].length > maximumUtxosPerCurrency)
+        .map(key => map[key])
+    )
+}
+
+export const mergeListOfUtxos = async (
+  address,
+  privateKey,
+  maximumUtxosPerCurrency = 4,
+  listOfUtxos,
+  storeBlknum = () => {}
+) => {
+  const pendingMergeUtxos = listOfUtxos.map(utxos =>
+    mergeUtxosUntilThreshold(
+      address,
+      privateKey,
+      maximumUtxosPerCurrency,
+      utxos,
+      storeBlknum
+    )
+  )
+  return Promise.all(pendingMergeUtxos)
+}
+
+export const mergeUtxos = async (address, privateKey, utxos) => {
+  const _metadata = 'Merge UTXOs'
+  const { currency } = utxos[0]
+  const totalAmount = utxos.reduce((sum, utxo) => {
+    return sum.add(new BN(utxo.amount))
+  }, new BN(0))
+  const payments = createPayment(address, currency, totalAmount)
+  const fee = { ...createFee(), amount: 0 }
+  const txBody = PlasmaUtils.transaction.createTransactionBody({
+    fromAddress: address,
+    fromUtxos: utxos,
+    payments,
+    fee,
+    metadata: Transaction.encodeMetadata(_metadata)
+  })
+  const typedData = getTypedData(txBody)
+  const privateKeys = new Array(txBody.inputs.length).fill(privateKey)
+  const signatures = signTx(typedData, privateKeys)
+  const signedTxn = buildSignedTx(typedData, signatures)
+  return submitTx(signedTxn)
+}
+
+export const mergeUtxosUntilThreshold = async (
+  address,
+  privateKey,
+  maximumUtxosPerCurrency,
+  utxos,
+  storeBlknum
+) => {
+  if (utxos.length <= maximumUtxosPerCurrency) {
+    const blknum = utxos[0].blknum
+    return {
+      blknum,
+      utxos
+    }
+  }
+
+  let listOfUtxosGroup = []
+  let utxosGroup = []
+  for (let i = 0; i < utxos.length; i++) {
+    utxosGroup.push(utxos[i])
+    if (
+      utxosGroup.length === 4 ||
+      (i === utxos.length - 1 && utxosGroup.length > 1)
+    ) {
+      listOfUtxosGroup.push(utxosGroup)
+      utxosGroup = []
+    }
+  }
+
+  const pendingTxs = listOfUtxosGroup.map(groupOfUtxos =>
+    mergeUtxos(address, privateKey, groupOfUtxos)
+  )
+
+  const receipts = await Promise.all(pendingTxs)
+  const { blknum } = receipts.sort((a, b) => b.blknum - a.blknum)[0]
+
+  // Store blknum to the local storage.
+  storeBlknum(blknum, utxos)
+
+  await Wait.waitChildChainBlknum(address, blknum)
+  let newUtxos = await getUtxos(address, {
+    currency: utxos[0].currency
+  })
+  return await mergeUtxosUntilThreshold(
+    address,
+    privateKey,
+    maximumUtxosPerCurrency,
+    newUtxos,
+    storeBlknum
+  )
 }
 
 export const createPayment = (address, tokenContractAddress, amount) => {
@@ -42,7 +160,7 @@ export const createPayment = (address, tokenContractAddress, amount) => {
   ]
 }
 
-export const createFee = (currency = PlasmaUtils.transaction.ETH_CURRENCY) => ({
+export const createFee = (currency = ContractAddress.ETH_ADDRESS) => ({
   currency: currency
 })
 

@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { StyleSheet, Linking, View, StatusBar } from 'react-native'
 import { SafeAreaView, withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { useProgressiveFeedback } from 'common/hooks'
+import { Plasma } from 'common/blockchain'
+import { useInterval, useProgressiveFeedback } from 'common/hooks'
 import { Dimensions } from 'common/utils'
 import { usePositionMeasurement } from 'common/hooks'
 import RootchainBalance from './RootchainBalance'
@@ -18,7 +19,11 @@ import {
   OMGButton
 } from 'components/widgets'
 
-import { transactionActions, onboardingActions } from 'common/actions'
+import {
+  transactionActions,
+  onboardingActions,
+  plasmaActions
+} from 'common/actions'
 
 const pageWidth = Dimensions.windowWidth - 56
 const middlePageOffset = pageWidth - 16
@@ -28,15 +33,19 @@ const viewPagerSnapOffsets = [
   Math.round(pageWidth * 2 - 32)
 ]
 
+const MAXIMUM_UTXOS_PER_CURRENCY = 4
+
 const Balance = ({
   theme,
   primaryWallet,
+  blockchainWallet,
   navigation,
   wallets,
   unconfirmedTxs,
   isFocused,
   loading,
   feedbackCompleteTx,
+  dispatchMergeUTXOs,
   dispatchInvalidateFeedbackCompleteTx,
   dispatchSetCurrentPage,
   dispatchAddAnchoredComponent,
@@ -49,7 +58,11 @@ const Balance = ({
     setCompleteFeedbackTx,
     handleOnClose,
     getLearnMoreLink
-  ] = useProgressiveFeedback(theme, dispatchInvalidateFeedbackCompleteTx)
+  ] = useProgressiveFeedback(
+    theme,
+    primaryWallet,
+    dispatchInvalidateFeedbackCompleteTx
+  )
 
   const [
     plasmaBlockchainLabelRef,
@@ -78,7 +91,6 @@ const Balance = ({
   )
   const [measured, setMeasured] = useState(false)
   const scroller = useRef({})
-
   useEffect(() => {
     if (isFocused) {
       StatusBar.setBarStyle('light-content')
@@ -123,15 +135,12 @@ const Balance = ({
   const handleOnPageChanged = useCallback(
     page => {
       switch (page) {
-        case 1: {
+        case 1:
           return dispatchSetCurrentPage(currentPage, 'childchain-balance')
-        }
-        case 2: {
+        case 2:
           return dispatchSetCurrentPage(currentPage, 'rootchain-balance')
-        }
-        case 3: {
+        case 3:
           return dispatchSetCurrentPage(currentPage, 'address-qr')
-        }
       }
     },
     [currentPage, dispatchSetCurrentPage]
@@ -151,9 +160,9 @@ const Balance = ({
     setCompleteFeedbackTx(feedbackCompleteTx)
   }, [
     feedbackCompleteTx,
-    unconfirmedTxs,
     setCompleteFeedbackTx,
-    setUnconfirmedTxs
+    setUnconfirmedTxs,
+    unconfirmedTxs
   ])
 
   const drawerNavigation = navigation.dangerouslyGetParent()
@@ -274,17 +283,22 @@ const mapStateToProps = (state, ownProps) => ({
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
   ),
+  blockchainWallet: state.setting.blockchainWallet,
   provider: state.setting.provider,
   primaryWalletAddress: state.setting.primaryWalletAddress,
   currentPage: state.onboarding.currentPage
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchInvalidateFeedbackCompleteTx: () =>
-    transactionActions.invalidateFeedbackCompleteTx(dispatch),
+  dispatchInvalidateFeedbackCompleteTx: wallet =>
+    transactionActions.invalidateFeedbackCompleteTx(dispatch, wallet),
   dispatchSetCurrentPage: (currentPage, page) => {
     onboardingActions.setCurrentPage(dispatch, currentPage, page)
   },
+  dispatchMergeUTXOs: (address, privateKey, threshold, listOfUtxos) =>
+    dispatch(
+      plasmaActions.mergeUTXOs(address, privateKey, threshold, listOfUtxos)
+    ),
   dispatchAddAnchoredComponent: (anchoredComponentName, position) =>
     onboardingActions.addAnchoredComponent(
       dispatch,

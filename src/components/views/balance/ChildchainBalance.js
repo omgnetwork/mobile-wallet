@@ -23,6 +23,7 @@ const ChildchainBalance = ({
   dispatchLoadAssets,
   dispatchSetShouldRefreshChildchain,
   dispatchGetRecommendedGas,
+  dispatchMergeUTXOsIfNeeded,
   unconfirmedTxs,
   globalLoading,
   wallet,

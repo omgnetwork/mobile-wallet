@@ -5,7 +5,7 @@ export const errorReducer = (state = null, action) => {
     case 'FAILED':
       return {
         action: actionName,
-        message: action.data.message
+        message: action.err.message
       }
     case 'SUCCESS':
       return null

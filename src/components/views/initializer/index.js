@@ -1,8 +1,15 @@
 import { settingActions } from 'common/actions'
 import { store } from 'common/stores'
 import { HeadlessProcessExit } from 'components/headless'
-import React, { useRef, useCallback, useState, useEffect } from 'react'
-import { AppRegistry, StyleSheet, View, Animated, Platform } from 'react-native'
+import React, { useRef, useCallback, useEffect, useState } from 'react'
+import {
+  AppRegistry,
+  Image,
+  StyleSheet,
+  View,
+  Animated,
+  Platform
+} from 'react-native'
 import { SecureEncryption } from 'common/native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'

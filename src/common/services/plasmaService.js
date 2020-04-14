@@ -2,8 +2,7 @@ import { Formatter, Parser, Polling, Datetime, Mapper } from 'common/utils'
 import { Plasma, Token } from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
-import { web3 } from 'common/clients'
-import { Wait, ContractABI } from 'common/utils'
+import { Wait } from 'common/utils'
 
 export const fetchAssets = async (provider, address) => {
   try {
@@ -75,6 +74,22 @@ export const getTx = hash => {
       reject(err)
     }
   })
+}
+
+export const mergeUTXOs = (
+  address,
+  privateKey,
+  maximumUtxosPerCurrency,
+  listOfUtxos,
+  storeBlknum
+) => {
+  return Plasma.mergeListOfUtxos(
+    address,
+    privateKey,
+    maximumUtxosPerCurrency,
+    listOfUtxos,
+    storeBlknum
+  )
 }
 
 export const getFees = async tokens => {

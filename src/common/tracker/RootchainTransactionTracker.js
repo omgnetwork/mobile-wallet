@@ -2,7 +2,7 @@ import { useEffect, useRef, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { TransactionActionTypes } from 'common/constants'
 import { useRootchainTracker } from 'common/hooks'
-import { Transaction, Datetime } from 'common/utils'
+import { Transaction } from 'common/utils'
 import { walletActions, transactionActions } from 'common/actions'
 import { notificationService } from 'common/services'
 
@@ -101,8 +101,8 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchAddStartedExitTx: tx =>
     transactionActions.addStartedExitTx(dispatch, tx),
-  dispatchInvalidateUnconfirmedTx: resolvedUnconfirmedTx =>
-    transactionActions.invalidateUnconfirmedTx(dispatch, resolvedUnconfirmedTx),
+  dispatchInvalidateUnconfirmedTx: confirmedTx =>
+    transactionActions.invalidateUnconfirmedTx(dispatch, confirmedTx),
   dispatchRefreshRootchain: address =>
     walletActions.refreshRootchain(dispatch, address, true),
   dispatchRefreshAll: address =>

@@ -1,3 +1,5 @@
+const DEFAULT_INTERVAL = 3000
+
 function delayRequest(sendRequest, interval, resolve) {
   setTimeout(async () => {
     const result = await sendRequest()
@@ -6,7 +8,7 @@ function delayRequest(sendRequest, interval, resolve) {
     } else {
       delayRequest(sendRequest, interval, resolve)
     }
-  }, interval || 5000)
+  }, interval || DEFAULT_INTERVAL)
 }
 
 export const pollUntilSuccess = (sendRequest, interval) => {

@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 export default {
   CHILDCHAIN_DEPOSIT_CONFIRMATION_BLOCKS: 12,
   CHILDCHAIN_EXIT_CONFIRMATION_BLOCKS: 12,
@@ -19,11 +21,10 @@ export default {
   EXIT_PERIOD: 300000,
 
   // For Testing
-  TEST_ADDRESS: '0xba5D7f4C1860e99C0AB9917b141006B81fCC7b13',
-  TEST_PRIVATE_KEY:
-    '0x57a8e244a3235d1322dd64f7423912a5a1bd1a93eca59c411c478c5d442ba154',
-  TEST_MNEMONIC:
-    'quarter vote usage diagram antique inner lock actress fine dentist crisp uncover',
+  TEST_FUND_ADDRESS: process.env.MW_TEST_FUND_ADDRESS,
+  TEST_FUND_PRIVATE_KEY: process.env.MW_TEST_FUND_PRIVATE_KEY,
+  TEST_ADDRESS: process.env.MW_TEST_ADDRESS,
+  TEST_PRIVATE_KEY: process.env.MW_TEST_PRIVATE_KEY,
   TEST_ERC20_TOKEN_CONTRACT_ADDRESS:
     '0x11b7592274b344a6be0ace7e5d5df4348473e2fa'
 }

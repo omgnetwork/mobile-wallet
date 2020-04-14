@@ -15,8 +15,7 @@ const OnboardingTourGuide = ({
   currentPopup,
   viewedPopups,
   anchoredComponents,
-  rootchainAssets,
-  childchainAssets,
+  wallet,
   hasWallet,
   dispatchInvalidateFeedbackCompleteTx,
   dispatchEnableOnboarding,
@@ -24,6 +23,7 @@ const OnboardingTourGuide = ({
 }) => {
   const [tourVisible, setTourVisible] = useState(true)
   const [tourContent, setTourContent] = useState(null)
+  const { rootchainAssets, childchainAssets } = wallet
 
   const handleEnableOnboardingAction = useCallback(
     enabled => {
@@ -53,7 +53,7 @@ const OnboardingTourGuide = ({
       )
 
       if (content && content.key === 'EXIT_POPUP') {
-        dispatchInvalidateFeedbackCompleteTx()
+        dispatchInvalidateFeedbackCompleteTx(wallet)
       }
 
       setTourContent(content)
@@ -65,7 +65,8 @@ const OnboardingTourGuide = ({
     enabledOnboarding,
     hasWallet,
     rootchainAssets,
-    viewedPopups
+    viewedPopups,
+    wallet
   ])
 
   useEffect(() => {
@@ -136,15 +137,10 @@ const OnboardingTourGuide = ({
 
 const mapStateToProps = (state, ownProps) => ({
   hasWallet: state.wallets.length > 0,
-  rootchainAssets: state.setting.primaryWalletAddress
+  wallet: state.setting.primaryWalletAddress
     ? state.wallets.find(
         wallet => wallet.address === state.setting.primaryWalletAddress
-      ).rootchainAssets
-    : [],
-  childchainAssets: state.setting.primaryWalletAddress
-    ? state.wallets.find(
-        wallet => wallet.address === state.setting.primaryWalletAddress
-      ).childchainAssets
+      )
     : [],
   enabledOnboarding: state.onboarding.enabled,
   currentPage: state.onboarding.currentPage,
@@ -160,8 +156,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchAddViewedPopup: (viewedPopups, popup) => {
     onboardingActions.addViewedPopup(dispatch, viewedPopups, popup)
   },
-  dispatchInvalidateFeedbackCompleteTx: () =>
-    transactionActions.invalidateFeedbackCompleteTx(dispatch)
+  dispatchInvalidateFeedbackCompleteTx: wallet =>
+    transactionActions.invalidateFeedbackCompleteTx(dispatch, wallet)
 })
 
 export default connect(
