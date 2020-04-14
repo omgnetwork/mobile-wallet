@@ -111,12 +111,6 @@ const OMGDrawerContent = ({
           />
           <View style={styles.divider(theme)} />
           <ManageWalletMenu
-            title='Backup Wallet'
-            theme={theme}
-            onPress={() => closeDrawerAndNavigate('BackupWallet')}
-          />
-          <View style={styles.divider(theme)} />
-          <ManageWalletMenu
             title='Delete Wallet'
             theme={theme}
             onPress={() => closeDrawerAndNavigate('DeleteWallet')}

@@ -3,7 +3,6 @@ import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { View, StyleSheet } from 'react-native'
 import { Ethereum } from 'common/blockchain'
-import { walletStorage } from 'common/storages'
 import BackupImage from './assets/backup.svg'
 import BackupIcon1 from './assets/backup-ic1.svg'
 import BackupIcon2 from './assets/backup-ic2.svg'
@@ -41,10 +40,10 @@ const BackupWarning = ({ theme, navigation }) => {
 
   const navigateToBackupTranscribe = useCallback(async () => {
     navigation.navigate('BackupTranscribe', {
-      mnemonic: await walletStorage.getMnemonic(wallet.address),
+      mnemonic: mnemonic,
       wallet: wallet
     })
-  }, [navigation, wallet])
+  }, [mnemonic, navigation, wallet])
 
   const closeModal = useCallback(() => {
     setShowBackupModal(false)
