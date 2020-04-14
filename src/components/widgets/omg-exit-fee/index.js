@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { withTheme } from 'react-native-paper'
-import { BlockchainDataFormatter, Token } from 'common/blockchain'
+import { BlockchainFormatter, Token } from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
 import { View, StyleSheet, TouchableOpacity, Linking } from 'react-native'
@@ -17,16 +17,16 @@ const OMGExitFee = ({
   const [ethPrice, setEthPrice] = useState()
 
   const formatBond = useCallback(() => {
-    return BlockchainDataFormatter.formatEthFromWei(exitBondValue)
+    return BlockchainFormatter.formatEthFromWei(exitBondValue)
   }, [exitBondValue])
 
   const formatGasFee = useCallback(() => {
-    return BlockchainDataFormatter.formatGasFee(gasUsed, gasPrice)
+    return BlockchainFormatter.formatGasFee(gasUsed, gasPrice)
   }, [gasUsed, gasPrice])
 
   const formatTotalExitFee = useCallback(() => {
     if (gasUsed && exitBondValue) {
-      return BlockchainDataFormatter.formatGasFee(
+      return BlockchainFormatter.formatGasFee(
         gasUsed,
         gasPrice,
         exitBondValue
@@ -57,7 +57,7 @@ const OMGExitFee = ({
     itemStyle,
     textColor = theme.colors.gray
   }) => {
-    const feeUsd = BlockchainDataFormatter.formatTokenPrice(value, ethPrice)
+    const feeUsd = BlockchainFormatter.formatTokenPrice(value, ethPrice)
 
     return (
       <View style={[styles.itemContainer, itemStyle]}>

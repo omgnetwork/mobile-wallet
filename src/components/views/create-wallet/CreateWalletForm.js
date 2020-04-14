@@ -4,7 +4,8 @@ import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
 import { Header } from 'react-navigation-stack'
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
-import { Validator, Dimensions } from 'common/utils'
+import { Dimensions } from 'common/utils'
+import { Validator } from 'common/blockchain'
 import { Alert } from 'common/constants'
 import {
   OMGButton,

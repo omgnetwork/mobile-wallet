@@ -3,7 +3,7 @@ import { Platform } from 'react-native'
 import { connect } from 'react-redux'
 import Config from 'react-native-config'
 import { useExitTracker } from 'common/hooks'
-import { Transaction } from 'common/utils'
+import { Transaction } from 'common/blockchain'
 import { transactionActions } from 'common/actions'
 import { notificationService } from 'common/services'
 import { TaskScheduler } from 'common/native'
@@ -22,13 +22,13 @@ const ProcessExitTransactionTracker = ({
   ] = useExitTracker(blockchainWallet)
 
   const getConfirmedStartedExitTxs = useCallback(() => {
-    return startedExitTxs.filter(Transaction.isConfirmedStartedExitTx)
+    return startedExitTxs.filter(Transaction.isConfirmedStartedExit)
   }, [startedExitTxs])
 
   useEffect(() => {
     if (exitNotification) {
       exitNotification.confirmedTxs.forEach(tx => {
-        if (Transaction.isReadyToProcessExitTx(tx)) {
+        if (Transaction.isReadyToProcessExit(tx)) {
           dispatchUpdateStartedExitTxStatus(tx)
         }
       })

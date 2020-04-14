@@ -4,11 +4,11 @@ import { OMGText } from 'components/widgets'
 import { Datetime } from 'common/utils'
 import { withTheme } from 'react-native-paper'
 import { DateFormat } from 'common/constants'
-import { BlockchainDataFormatter } from 'common/blockchain'
+import { BlockchainFormatter } from 'common/blockchain'
 
 const OMGUtxoDetail = ({ theme, utxo, style }) => {
   const { hash, createdAt, tokenSymbol, value } = utxo
-  const balance = BlockchainDataFormatter.formatTokenBalance(value)
+  const balance = BlockchainFormatter.formatTokenBalance(value)
   return (
     <View style={[styles.container(theme), style]}>
       <View style={styles.topContainer}>

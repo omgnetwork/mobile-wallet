@@ -1,7 +1,8 @@
 import { createAsyncAction } from './actionCreators'
 import { plasmaService } from 'common/services'
+import { Parser } from 'common/blockchain'
 import { TransactionActionTypes, TransactionTypes, Gas } from 'common/constants'
-import { Datetime, Parser } from 'common/utils'
+import { Datetime } from 'common/utils'
 
 export const fetchAssets = (provider, address) => {
   const asyncAction = async () => {

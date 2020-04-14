@@ -1,8 +1,7 @@
-import { useEffect, useCallback, useState } from 'react'
-import { TransactionActionTypes } from 'common/constants'
 import Config from 'react-native-config'
-import { NotificationMessages } from 'common/constants'
-import { Plasma } from 'common/blockchain'
+import { useEffect, useCallback, useState } from 'react'
+import { NotificationMessages, TransactionActionTypes } from 'common/constants'
+import { Wait } from 'common/blockchain'
 
 const getConfirmationsThreshold = tx => {
   if (tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT) {
@@ -75,7 +74,7 @@ const useRootchainTracker = wallet => {
 
   const track = useCallback(async () => {
     const latestPendingTx = pendingRootchainTxs.slice(-1).pop()
-    const receipt = await Plasma.waitForRootchainTransaction({
+    const receipt = await Wait.waitForRootchainTransaction({
       hash: latestPendingTx.hash,
       intervalMs: 3000,
       confirmationThreshold: getConfirmationsThreshold(latestPendingTx),

@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { Parser, ContractABI, Formatter } from 'common/utils'
+import { ContractABI, BlockchainFormatter, Parser } from 'common/blockchain'
 import { ContractAddress } from 'common/constants/'
 import { priceService } from 'common/services'
 import Config from 'react-native-config'
@@ -23,7 +23,7 @@ export const fetchTokens = (provider, contractAddresses, accountAddress) => {
           tokenSymbol,
           tokenDecimal,
           price,
-          balance: Formatter.formatUnits(balance, tokenDecimal),
+          balance: BlockchainFormatter.formatUnits(balance, tokenDecimal),
           contractAddress
         }
         return tokenMap
@@ -96,5 +96,5 @@ const fetchBalance = (contract, accountAddress) => {
 }
 
 const fetchEthBalance = (provider, address) => {
-  return provider.getBalance(address)
+  return provider.getBalance(address).then(balance => balance.toString(10))
 }

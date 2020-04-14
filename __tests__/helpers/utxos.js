@@ -1,26 +1,24 @@
-import { Plasma } from 'common/blockchain'
-import { PlasmaUtils } from 'common/clients'
-import { Transaction, Wait } from 'common/utils'
+import { Plasma, Transaction, Wait } from 'common/blockchain'
 
 export const split = (address, privateKey, utxo, amount) => {
   const _metadata = 'Split UTXOs'
   const fromUtxo = { ...utxo, amount: utxo.amount.toString() }
   const { currency } = fromUtxo
-  const payment = Plasma.createPayment(address, currency, amount)[0]
+  const payment = Transaction.createPayment(address, currency, amount)
   const payments = new Array(3).fill(payment)
-  const fee = { ...Plasma.createFee(), amount: 1 }
-  const txBody = PlasmaUtils.transaction.createTransactionBody({
-    fromAddress: address,
-    fromUtxos: [fromUtxo],
+  const fee = Transaction.createFee(currency, 1)
+  const txBody = Transaction.createBody(
+    address,
+    [fromUtxo],
     payments,
     fee,
-    metadata: Transaction.encodeMetadata(_metadata)
-  })
-  const typedData = Plasma.getTypedData(txBody)
+    _metadata
+  )
+  const typedData = Transaction.getTypedData(txBody)
   const privateKeys = new Array(txBody.inputs.length).fill(privateKey)
-  const signatures = Plasma.signTx(typedData, privateKeys)
-  const signedTxn = Plasma.buildSignedTx(typedData, signatures)
-  return Plasma.submitTx(signedTxn)
+  const signatures = Transaction.sign(typedData, privateKeys)
+  const signedTxn = Transaction.buildSigned(typedData, signatures)
+  return Transaction.submit(signedTxn)
 }
 
 // Recursively split the utxos for the given currency until the given round is zero

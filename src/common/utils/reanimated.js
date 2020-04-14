@@ -4,7 +4,7 @@ const { round, interpolate, Extrapolate, color } = Animated
 
 const colorRegex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i
 
-const hexToRgb = (hex: string) => {
+const hexToRgb = hex => {
   const result = colorRegex.exec(hex)
   return result
     ? {
@@ -17,11 +17,7 @@ const hexToRgb = (hex: string) => {
 
 const white = { r: 255, g: 255, b: 255 }
 
-export const interpolateColors = (
-  animationValue: Animated.Adaptable<number>,
-  inputRange: number[],
-  hexColors: string[]
-) => {
+export const interpolateColors = (animationValue, inputRange, hexColors) => {
   const colors = hexColors.map(hexColor => hexToRgb(hexColor) || white)
   const r = round(
     interpolate(animationValue, {

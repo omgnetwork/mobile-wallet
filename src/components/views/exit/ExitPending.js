@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { View, StyleSheet, Linking, ScrollView } from 'react-native'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { BlockchainDataFormatter } from 'common/blockchain'
+import { BlockchainFormatter } from 'common/blockchain'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
 import { TransferHelper } from 'components/views/transfer'
@@ -29,7 +29,7 @@ const ExitPending = ({ theme, navigation, wallet }) => {
     name: 'Plasma Contract',
     address: Config.PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
   }
-  const tokenPrice = BlockchainDataFormatter.formatTokenPrice(
+  const tokenPrice = BlockchainFormatter.formatTokenPrice(
     token.balance,
     token.price
   )
@@ -38,7 +38,7 @@ const ExitPending = ({ theme, navigation, wallet }) => {
   const gasFee = useCallback(() => {
     return (
       estimatedGasFee ||
-      BlockchainDataFormatter.formatGasFee(
+      BlockchainFormatter.formatGasFee(
         unconfirmedTx.gasUsed,
         unconfirmedTx.gasPrice
       )
@@ -48,7 +48,7 @@ const ExitPending = ({ theme, navigation, wallet }) => {
   const gasFeeUsd = useCallback(() => {
     return (
       estimatedGasFeeUsd ||
-      BlockchainDataFormatter.formatGasFeeUsd(
+      BlockchainFormatter.formatGasFeeUsd(
         unconfirmedTx.gasUsed,
         unconfirmedTx.gasPrice,
         token.price
@@ -121,7 +121,7 @@ const ExitPending = ({ theme, navigation, wallet }) => {
                   <OMGText style={styles.sentTitle(theme)}>Exit Amount</OMGText>
                   <View style={styles.sentDetail}>
                     <OMGText style={styles.sentDetailFirstline(theme)}>
-                      {BlockchainDataFormatter.formatTokenBalance(
+                      {BlockchainFormatter.formatTokenBalance(
                         token.balance
                       )}{' '}
                       {token.tokenSymbol}

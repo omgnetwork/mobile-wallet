@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableHighlight } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
-import { BlockchainDataFormatter } from 'common/blockchain'
+import { BlockchainFormatter } from 'common/blockchain'
 import { plasmaActions } from 'common/actions'
 import { ActionAlert, ContractAddress } from 'common/constants'
 import { TransferHelper } from 'components/views/transfer'
@@ -29,8 +29,8 @@ const ExitConfirm = ({
   const gasUsed = navigation.getParam('gasUsed')
   const gasPrice = navigation.getParam('gasPrice')
   const exitBond = navigation.getParam('exitBond')
-  const tokenBalance = BlockchainDataFormatter.formatTokenBalance(token.balance)
-  const tokenPrice = BlockchainDataFormatter.formatTokenPrice(
+  const tokenBalance = BlockchainFormatter.formatTokenBalance(token.balance)
+  const tokenPrice = BlockchainFormatter.formatTokenPrice(
     token.balance,
     token.price
   )
@@ -71,17 +71,14 @@ const ExitConfirm = ({
 
   useEffect(() => {
     function calculateEstimatedFee() {
-      const gasFee = BlockchainDataFormatter.formatGasFee(
+      const gasFee = BlockchainFormatter.formatGasFee(
         gasUsed,
         gasPrice,
         exitBond
       )
       console.log(gasFee)
       const usdPerEth = ethToken && ethToken.price
-      const gasFeeUsd = BlockchainDataFormatter.formatTokenPrice(
-        gasFee,
-        usdPerEth
-      )
+      const gasFeeUsd = BlockchainFormatter.formatTokenPrice(gasFee, usdPerEth)
       setEstimatedFee(gasFee)
       setEstimatedFeeUsd(gasFeeUsd)
     }

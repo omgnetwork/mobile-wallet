@@ -2,7 +2,7 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { OMGText, OMGFontIcon } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
-import { BlockchainDataFormatter } from 'common/blockchain'
+import { BlockchainFormatter } from 'common/blockchain'
 
 const OMGExitComplete = ({ theme, style, exitableAt }) => {
   return (
@@ -11,7 +11,7 @@ const OMGExitComplete = ({ theme, style, exitableAt }) => {
       <OMGText style={styles.text(theme)}>
         Exit will be approximately completed on
         <OMGText weight='mono-semi-bold'>
-          {BlockchainDataFormatter.formatProcessExitAt(exitableAt)}
+          {BlockchainFormatter.formatProcessExitAt(exitableAt)}
         </OMGText>
         You can track the exit status in the
         <OMGText weight='mono-semi-bold'> History </OMGText>
