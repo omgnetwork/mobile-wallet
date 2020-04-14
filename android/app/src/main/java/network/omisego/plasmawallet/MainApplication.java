@@ -7,10 +7,10 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
+import io.intercom.android.sdk.Intercom;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
 import network.omisego.plasmawallet.schedule.TaskSchedulerPackage;
-import com.robinpowered.react.Intercom.IntercomPackage;
-import io.intercom.android.sdk.Intercom;
+import network.omisego.plasmawallet.security.SecureEncryptPackage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -28,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
       List<ReactPackage> packages = new PackageList(this).getPackages();
       packages.add(new RNFirebaseAnalyticsPackage());
       packages.add(new TaskSchedulerPackage());
+      packages.add(new SecureEncryptPackage());
       return packages;
     }
 

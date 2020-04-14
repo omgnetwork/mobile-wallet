@@ -31,6 +31,7 @@ build/
 local.properties
 *.iml
 *.apk
+*.aab
 output.json
 
 # node.js
@@ -74,7 +75,7 @@ google-services.json
 
 # Credentials
 keystore.properties
-release.keystore
+*.keystore
 GoogleService-Info.plist
 android/app/src/main/assets/containers
 ios/container

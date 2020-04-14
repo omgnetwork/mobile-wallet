@@ -1,8 +1,9 @@
 import { settingActions } from 'common/actions'
 import { store } from 'common/stores'
 import { HeadlessProcessExit } from 'components/headless'
-import React, { useRef, useCallback, useEffect } from 'react'
+import React, { useRef, useCallback, useState, useEffect } from 'react'
 import { AppRegistry, StyleSheet, View, Animated, Platform } from 'react-native'
+import { SecureEncryption } from 'common/native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
@@ -22,13 +23,26 @@ const Initializer = ({
   wallets
 }) => {
   const move = useRef(new Animated.Value(0))
+  const [ready, setReady] = useState(false)
   const loadingAnim = Animated.loop(
     Animated.sequence([Move.To(move.current, 123), Move.To(move.current, 0)])
   )
   const loadingDuration = 1000 + Math.random() * 1000
 
   useEffect(() => {
-    if (wallets.length === 0) {
+    async function initSecureEncryption() {
+      if (Platform.OS === 'android') {
+        await SecureEncryption.init()
+      }
+      setReady(true)
+    }
+    initSecureEncryption()
+  }, [])
+
+  useEffect(() => {
+    if (!ready) {
+      return
+    } else if (wallets.length === 0) {
       navigation.navigate('Welcome')
     } else if (wallet && provider && blockchainWallet) {
       navigation.navigate('MainContent')
@@ -49,6 +63,7 @@ const Initializer = ({
     loadingDuration,
     navigation,
     provider,
+    ready,
     registerHeadlessService,
     wallet,
     wallets
