@@ -16,6 +16,10 @@ export const getPlasmaContractAddress = () => {
   return Plasma.RootChain.plasmaContractAddress
 }
 
+export const getPlasmaAbi = () => {
+  return Plasma.RootChain.plasmaContract.options.jsonInterface
+}
+
 export const getExitEvents = async (event, options) => {
   const { filter, fromBlock } = options
   const { contract } = await getPaymentExitGame()
