@@ -12,9 +12,9 @@ const testWalletAddress = '0x4522fb44C2aB359e76eCc75C22C9409690F12241'
 const [ETH, DAI, OMG, KCK, HYP] = TEST_TOKENS
 
 describe('Test Token Util', () => {
-  it('fetchTokenDetail should return {name, symbol, decimals, price, balance, contractAddress}', () => {
+  it('Token.get should return {name, symbol, decimals, price, balance, contractAddress}', () => {
     const testProvider = ethers.getDefaultProvider(ETHERSCAN_NETWORK)
-    const pendingDetails = Token.fetchTokenDetail(
+    const pendingDetails = Token.get(
       testProvider,
       TEST_ERC20_TOKEN_CONTRACT_ADDRESS,
       testWalletAddress
@@ -32,9 +32,9 @@ describe('Test Token Util', () => {
     )
   }, 30000)
 
-  it('fetchTokens should return [contractAddress: {tokenName, tokenSymbol, tokenDecimal, price, balance}]', () => {
+  it('Token.all should return [contractAddress: {tokenName, tokenSymbol, tokenDecimal, price, balance}]', () => {
     const testProvider = ethers.getDefaultProvider('homestead')
-    return Token.fetchTokens(
+    return Token.all(
       testProvider,
       [ETH, DAI, OMG, KCK, HYP],
       testWalletAddress

@@ -1,6 +1,5 @@
 import { plasmaService } from 'common/services'
-import { Plasma, Wait } from 'common/blockchain'
-import { Utxos } from '../helpers'
+import { Plasma, Wait, Utxos } from 'common/blockchain'
 import BN from 'bn.js'
 import { ContractAddress } from 'common/constants'
 import Config from '../config'
@@ -26,7 +25,7 @@ describe('Test Merge UTXOs', () => {
       tokenDecimal: 18
     }
 
-    const utxos = await Plasma.getUtxos(testWallet.address, {
+    const utxos = await Utxos.get(testWallet.address, {
       currency: fundedToken.contractAddress
     })
 
@@ -63,7 +62,7 @@ describe('Test Merge UTXOs', () => {
       )
     }
 
-    const listOfUtxos = await Plasma.getRequiredMergeUtxos(
+    const listOfUtxos = await Utxos.getRequiredMerge(
       testWallet.address,
       null,
       MAXIMUM_UTXOS_PER_CURRENCY
@@ -79,7 +78,7 @@ describe('Test Merge UTXOs', () => {
     )
 
     // Assert if the number of utxos is less than or equal to MAXIMUM_UTXOS_PER_CURRENCY
-    const mergedUtxos = await Plasma.getUtxos(testWallet.address, {
+    const mergedUtxos = await Utxos.get(testWallet.address, {
       currency: fundedToken.contractAddress
     })
 

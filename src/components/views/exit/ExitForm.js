@@ -1,54 +1,44 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { ethereumActions } from 'common/actions'
 import { useLoading } from 'common/hooks'
+import { plasmaActions } from 'common/actions'
+import { GoogleAnalytics } from 'common/analytics'
 import {
   OMGText,
-  OMGTokenInput,
-  OMGAmountInput,
   OMGExitWarning,
   OMGButton,
-  OMGExitFee,
-  OMGFeeInput
+  OMGEditItem,
+  OMGExitFee
 } from 'components/widgets'
-import { TransferHelper } from 'components/views/transfer'
-import { Plasma, GasEstimator, Validator } from 'common/blockchain'
-import { OMGBlockchainLabel } from 'components/widgets'
+import {
+  Plasma,
+  GasEstimator,
+  Utxos,
+  BlockchainFormatter
+} from 'common/blockchain'
 import { ScrollView } from 'react-native-gesture-handler'
-import { paramsForTransferFormToTransferSelectFee } from 'components/views/transfer/transferNavigation'
 
 const ExitForm = ({
-  wallet,
   theme,
   navigation,
-  isFocused,
   blockchainWallet,
-  loading,
-  gasOptions,
-  dispatchGetRecommendedGas
+  dispatchExit,
+  unconfirmedTx,
+  loading
 }) => {
-  const amount = navigation.getParam('amount')
-  const selectedToken = navigation.getParam(
-    'selectedToken',
-    wallet.childchainAssets[0]
+  const utxos = navigation.getParam('utxos')
+  const token = navigation.getParam('token')
+  const fee = navigation.getParam('fee')
+  const exitAmount = BlockchainFormatter.formatUnits(
+    Utxos.sum(utxos).toString(10),
+    token.tokenDecimal
   )
-  const selectedEthFee = navigation.getParam('selectedEthFee')
-  const amountRef = useRef(amount)
-  const amountFocusRef = useRef(null)
   const [exitBond, setExitBond] = useState(null)
-  const [exitToken, setExitToken] = useState(null)
   const [gasUsed, setGasUsed] = useState(null)
-  const [gasPrice, setGasPrice] = useState(selectedEthFee)
-  const [showErrorAmount, setShowErrorAmount] = useState(false)
-  const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
-  const [loadingGas] = useLoading(
-    loading,
-    'ROOTCHAIN_GET_RECOMMENDED_GAS',
-    !gasPrice
-  )
+  const [submitting] = useLoading(loading, 'CHILDCHAIN_EXIT')
 
   useEffect(() => {
     async function getStandardExitBond() {
@@ -57,130 +47,68 @@ const ExitForm = ({
     }
 
     async function getEstimateExitFee() {
-      const fee = await GasEstimator.estimateExit(blockchainWallet, exitToken)
-      setGasUsed(fee)
+      const estimatedFee = await GasEstimator.estimateExit(
+        blockchainWallet,
+        utxos
+      )
+      console.log(estimatedFee)
+      setGasUsed(estimatedFee)
     }
 
-    async function getRecommendedGas() {
-      dispatchGetRecommendedGas()
-    }
-
-    if (isFocused) {
-      getStandardExitBond()
-      if (exitToken) {
-        getEstimateExitFee()
-      }
-      if (!gasPrice) {
-        getRecommendedGas()
-      }
-    }
-  }, [
-    blockchainWallet,
-    dispatchGetRecommendedGas,
-    gasPrice,
-    exitToken,
-    isFocused
-  ])
+    getStandardExitBond()
+    getEstimateExitFee()
+  }, [blockchainWallet, utxos])
 
   useEffect(() => {
-    if (gasOptions) {
-      setGasPrice(selectedEthFee || gasOptions[0])
+    if (loading.success && loading.action === 'CHILDCHAIN_EXIT') {
+      GoogleAnalytics.sendEvent('transfer_exited', { hash: unconfirmedTx.hash })
+      navigation.navigate('Balance')
     }
-  }, [gasOptions, gasPrice, selectedEthFee])
+  })
 
-  useEffect(() => {
-    setExitToken({ ...selectedToken, balance: 1 })
-  }, [selectedToken])
+  const navigateEditAmount = useCallback(() => {
+    navigation.navigate('ExitSelectBalance')
+  }, [navigation])
 
-  const navigationToTransferSelectFee = useCallback(() => {
-    const params = paramsForTransferFormToTransferSelectFee({
-      selectedToken,
-      selectedEthFee: gasPrice,
-      gasOptions,
-      amount: amountRef.current,
-      fromScreen: 'ExitForm'
-    })
-    navigation.navigate('TransferSelectFee', params)
-  }, [gasPrice, gasOptions, navigation, selectedToken])
+  const navigateEditFee = useCallback(() => {
+    navigation.navigate('ExitSelectFee')
+  }, [navigation])
 
-  const navigateNext = useCallback(() => {
-    if (!Validator.isValidAmount(amountRef.current)) {
-      setErrorAmountMessage('Invalid amount')
-      setShowErrorAmount(true)
-    } else if (
-      !Validator.isEnoughToken(amountRef.current, selectedToken.balance)
-    ) {
-      setErrorAmountMessage('Not enough balance')
-      setShowErrorAmount(true)
-    } else {
-      setShowErrorAmount(false)
-      navigation.navigate('ExitConfirm', {
-        token: { ...selectedToken, balance: amountRef.current },
-        gasUsed: gasUsed,
-        gasPrice: gasPrice?.amount,
-        exitBond
-      })
-    }
-  }, [exitBond, gasPrice, gasUsed, navigation, selectedToken])
+  const submit = useCallback(() => {
+    dispatchExit(
+      blockchainWallet,
+      { ...token, balance: exitAmount },
+      utxos,
+      fee.amount
+    )
+  }, [blockchainWallet, dispatchExit, exitAmount, fee.amount, token, utxos])
 
   return (
     <ScrollView style={styles.container(theme)}>
-      <OMGBlockchainLabel
-        actionText='Exit to'
-        transferType={TransferHelper.TYPE_EXIT}
-      />
       <View style={styles.contentContainer(theme)}>
-        <OMGText style={[styles.title(theme), styles.marginHigh]}>
-          Token
+        <OMGText style={[styles.title(theme), styles.marginMedium]}>
+          Review Exit Detail
         </OMGText>
-        <OMGTokenInput
-          token={selectedToken}
-          style={styles.marginSmall}
-          onPress={() =>
-            navigation.navigate('TransferSelectBalance', {
-              transferType: TransferHelper.TYPE_EXIT,
-              currentToken: selectedToken,
-              amount: amountRef.current,
-              assets: wallet.childchainAssets,
-              exit: true
-            })
-          }
+        <OMGEditItem
+          title='Amount'
+          value={exitAmount}
+          onPress={navigateEditAmount}
+          symbol={token.tokenSymbol}
+          price={token.price}
+          style={[styles.marginMedium, styles.paddingMedium]}
         />
-        <OMGText style={[styles.title(theme), styles.marginHigh]}>
-          Amount
-        </OMGText>
-        <OMGAmountInput
-          token={selectedToken}
-          inputRef={amountRef}
-          focusRef={amountFocusRef}
-          showError={showErrorAmount}
-          errorMessage={errorAmountMessage}
-          defaultValue={amount}
-          style={styles.marginSmall}
-        />
-        <OMGText style={[styles.title(theme), styles.marginHigh]}>
-          Transaction Fee
-        </OMGText>
-        <OMGFeeInput
-          fee={gasPrice}
-          loading={loadingGas}
-          style={styles.marginMedium}
-          onPress={navigationToTransferSelectFee}
-        />
-        <OMGText style={[styles.title(theme), styles.marginHigh]}>
-          Exit Fee
-        </OMGText>
         <OMGExitFee
-          loading={loadingGas}
           gasUsed={gasUsed}
-          gasPrice={gasPrice?.amount}
+          onPressEdit={navigateEditFee}
+          gasPrice={fee.amount}
           exitBondValue={exitBond}
-          style={styles.marginSmall}
+          style={[styles.marginSmall]}
         />
         <OMGExitWarning style={styles.marginMedium} />
-
         <View style={[styles.buttonContainer, styles.marginHigh]}>
-          <OMGButton onPress={navigateNext}>Next</OMGButton>
+          <OMGButton onPress={submit} loading={submitting}>
+            Confirm Exit
+          </OMGButton>
         </View>
       </View>
     </ScrollView>
@@ -200,7 +128,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.black5
   }),
   title: theme => ({
-    fontSize: 12,
+    fontSize: 16,
     color: theme.colors.white,
     textTransform: 'uppercase'
   }),
@@ -213,6 +141,9 @@ const styles = StyleSheet.create({
   marginSmall: {
     marginTop: 10
   },
+  paddingMedium: {
+    padding: 12
+  },
   buttonContainer: {
     flex: 1,
     justifyContent: 'flex-end'
@@ -220,16 +151,14 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  wallet: state.wallets.find(
-    wallet => wallet.address === state.setting.primaryWalletAddress
-  ),
   loading: state.loading,
-  gasOptions: state.gasOptions,
-  blockchainWallet: state.setting.blockchainWallet
+  blockchainWallet: state.setting.blockchainWallet,
+  unconfirmedTx: state.transaction.unconfirmedTxs.slice(-1).pop()
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchGetRecommendedGas: () => dispatch(ethereumActions.getRecommendedGas())
+  dispatchExit: (blockchainWallet, token, utxos, gasPrice) =>
+    dispatch(plasmaActions.exit(blockchainWallet, token, utxos, gasPrice))
 })
 
 export default connect(

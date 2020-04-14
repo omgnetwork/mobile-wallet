@@ -26,16 +26,13 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
     maxExitsToProcess
   } = navigation.getParam('transaction')
   const tokenValue = BlockchainFormatter.formatTokenBalance(value)
-  const tokenPriceUsd = BlockchainFormatter.formatTokenPrice(
-    value,
-    tokenPrice
-  )
+  const tokenPriceUsd = BlockchainFormatter.formatTokenPrice(value, tokenPrice)
   const gasFee = BlockchainFormatter.formatGasFee(gasUsed, gasPrice)
   const [gasFeeUsd, setGasFeeUsd] = useState(0)
 
   useEffect(() => {
     async function calculateGasFeeUsd() {
-      const price = await Token.fetchPrice(
+      const price = await Token.getPrice(
         contractAddress,
         Config.ETHERSCAN_NETWORK
       )

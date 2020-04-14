@@ -72,7 +72,14 @@ export const transactionReducer = (
         startedExitTxs: [],
         feedbackCompleteTx: null
       }
-    case 'TRANSACTION/ADD_STARTED_EXIT_TX/OK':
+    case 'TRANSACTION/ADD_STARTED_EXIT_TX/OK': {
+      const existed = state.startedExitTxs.find(
+        tx => tx.hash === action.data.exitTx.hash
+      )
+      if (existed) {
+        return state
+      }
+
       return {
         ...state,
         startedExitTxs: [
@@ -80,6 +87,7 @@ export const transactionReducer = (
           ...state.startedExitTxs
         ]
       }
+    }
     case 'TRANSACTION/UPDATE_STARTED_EXIT_TX/OK':
       return {
         ...state,

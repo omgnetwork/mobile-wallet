@@ -6,6 +6,50 @@ import BN from 'bn.js'
 
 let plasmaInputDecoder
 
+export const get = address => {
+  return PlasmaClient.ChildChain.getTransaction(address)
+}
+
+export const all = (address, options) => {
+  const { blknum, limit } = options || { blknum: '0', limit: 10 }
+  return PlasmaClient.ChildChain.getTransactions({
+    address: address,
+    limit: limit || 10,
+    page: 1
+  })
+}
+
+export const allExits = async address => {
+  const exitStartedOptions = {
+    filter: {
+      owner: address
+    }
+  }
+
+  const allExitTxs = await Contract.getExitEvents(
+    'ExitStarted',
+    exitStartedOptions
+  )
+  const pendingFinalizedArr = allExitTxs.map(exitTx => {
+    const exitId = exitTx.returnValues.exitId.toString()
+    const exitFinalizedOptions = {
+      filter: {
+        exitId
+      }
+    }
+    return Contract.getExitEvents('ExitFinalized', exitFinalizedOptions)
+  })
+
+  const finalizedArr = await Promise.all(pendingFinalizedArr)
+  const filteredUnfinalized = (_, index) => finalizedArr[index].length === 0
+  const filteredFinalized = (_, index) => finalizedArr[index].length > 0
+
+  return {
+    unprocessed: allExitTxs.filter(filteredUnfinalized),
+    processed: allExitTxs.filter(filteredFinalized)
+  }
+}
+
 export const encodeMetadata = metadata => {
   return OmgUtil.transaction.encodeMetadata(metadata)
 }
@@ -63,7 +107,7 @@ const getData = (contract, method, ...args) => {
   return contract.methods[method](...args).encodeABI()
 }
 
-export const getExitDetails = async (web3, tx, { from, gas, gasPrice }) => {
+export const getExitDetails = async (tx, { from, gas, gasPrice }) => {
   const { utxo_pos, txbytes, proof } = tx
   const { contract, address, bonds } = await Contract.getPaymentExitGame()
   const data = getData(contract, 'startStandardExit', [

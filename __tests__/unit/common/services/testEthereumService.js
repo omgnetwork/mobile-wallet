@@ -9,7 +9,7 @@ jest.mock('common/blockchain/token.js')
 const { TEST_TOKENS, TEST_WALLET_ADDRESS_FOR_TOKENS } = Config
 
 const { getTransactionHistory } = providerService
-const { fetchTokens } = Token
+const { all } = Token
 
 const mockProviderService = (method, resp) => {
   method.mockReturnValueOnce(Promise.resolve(resp))
@@ -64,7 +64,7 @@ describe('Test Ethereum Services', () => {
       { contractAddress: OMG }
     ])
 
-    mockBlockchainToken(fetchTokens, {
+    mockBlockchainToken(all, {
       '0x0000000000000000000000000000000000000000': ETH_DETAIL,
       '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359': DAI_DETAIL,
       '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07': OMG_DETAIL,

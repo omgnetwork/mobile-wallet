@@ -1,6 +1,6 @@
 import { useCallback, useState, useEffect, useRef } from 'react'
 import { Vibration } from 'react-native'
-import { Plasma } from 'common/blockchain'
+import { Utxos } from 'common/blockchain'
 import { useInterval } from 'common/hooks'
 import { TransactionActionTypes } from 'common/constants'
 
@@ -30,10 +30,7 @@ const useMergeInterval = (
   const checkAndMerge = useCallback(async () => {
     const { address, privateKey } = blockchainWallet
     const unsubmittedBlknum = unconfirmedTx?.blknum
-    const listOfUtxos = await Plasma.getRequiredMergeUtxos(
-      address,
-      unsubmittedBlknum
-    )
+    const listOfUtxos = await Utxos.getRequiredMerge(address, unsubmittedBlknum)
 
     if (unsubmittedBlknum || listOfUtxos.length > 0) {
       dispatchMergeUtxos(

@@ -12,9 +12,10 @@ import DeleteWallet from './delete-wallet'
 import Deposit from './deposit'
 import Disclaimer from './disclaimer'
 import Exit from './exit'
+import ExitSelectBalance from './exit/ExitSelectBalance'
+import ExitSelectUtxo from './exit/ExitSelectUtxo'
+import ExitSelectFee from './exit/ExitSelectFee'
 import ExitForm from './exit/ExitForm'
-import ExitConfirm from './exit/ExitConfirm'
-import ExitPending from './exit/ExitPending'
 import ImportWallet from './import-wallet'
 import ImportWalletForm from './import-wallet/ImportForm'
 import ImportWalletSuccess from './import-wallet/ImportSuccess'
@@ -63,9 +64,10 @@ export {
   Deposit,
   Disclaimer,
   Exit,
+  ExitSelectBalance,
+  ExitSelectUtxo,
+  ExitSelectFee,
   ExitForm,
-  ExitConfirm,
-  ExitPending,
   ImportWallet,
   ImportWalletForm,
   ImportWalletSuccess,

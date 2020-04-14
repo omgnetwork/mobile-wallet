@@ -11,53 +11,14 @@ import {
   Transaction,
   OmgUtil,
   Parser,
-  Wait
+  Wait,
+  Utxos
 } from 'common/blockchain'
 
 export const getBalances = address => {
   return Plasma.ChildChain.getBalance(address).then(balances => {
     return balances.map(Mapper.mapChildchainAmount)
   })
-}
-
-export const getUtxos = (address, options) => {
-  const { currency, fromUtxoPos, sort } = options || {}
-
-  const filteringCurrency = utxo => utxo.currency === currency
-  const filteringFromUtxoPos = utxo => utxo.utxo_pos >= (fromUtxoPos || 0)
-  const sortingUtxoPos = (first, second) => second.utxo_pos - first.utxo_pos
-  return Plasma.ChildChain.getUtxos(address)
-    .then(utxos => utxos.map(Mapper.mapChildchainAmount))
-    .then(utxos => (currency ? utxos.filter(filteringCurrency) : utxos))
-    .then(utxos => utxos.filter(filteringFromUtxoPos))
-    .then(utxos => utxos.sort(sort || sortingUtxoPos))
-}
-
-export const getRequiredMergeUtxos = async (
-  address,
-  unsubmittedBlknum,
-  maximumUtxosPerCurrency = 4
-) => {
-  if (unsubmittedBlknum) {
-    await Wait.waitChildChainBlknum(address, unsubmittedBlknum)
-  }
-
-  return getUtxos(address)
-    .then(utxos => {
-      return utxos.reduce((acc, utxo) => {
-        const { currency } = utxo
-        if (!acc[currency]) {
-          acc[currency] = []
-        }
-        acc[currency].push(utxo)
-        return acc
-      }, {})
-    })
-    .then(map =>
-      Object.keys(map)
-        .filter(key => map[key].length > maximumUtxosPerCurrency)
-        .map(key => map[key])
-    )
 }
 
 export const transfer = async (
@@ -74,7 +35,7 @@ export const transfer = async (
   )
   const childchainFee = Transaction.createFee(fee.contractAddress, fee.amount)
   const { address } = fromBlockchainWallet
-  const utxos = await getUtxos(address, {
+  const utxos = await Utxos.get(address, {
     currency: token.contractAddress,
     sort: (a, b) => new BN(b.amount).sub(new BN(a.amount))
   })
@@ -93,98 +54,6 @@ export const transfer = async (
   const signatures = Transaction.sign(typedData, privateKeys)
   const signedTxn = Transaction.buildSigned(typedData, signatures)
   return Transaction.submit(signedTxn)
-}
-
-export const mergeListOfUtxos = async (
-  address,
-  privateKey,
-  maximumUtxosPerCurrency = 4,
-  listOfUtxos,
-  storeBlknum = () => {}
-) => {
-  const pendingMergeUtxos = listOfUtxos.map(utxos =>
-    mergeUtxosUntilThreshold(
-      address,
-      privateKey,
-      maximumUtxosPerCurrency,
-      utxos,
-      storeBlknum
-    )
-  )
-  return Promise.all(pendingMergeUtxos)
-}
-
-export const mergeUtxos = async (address, privateKey, utxos) => {
-  const _metadata = 'Merge UTXOs'
-  const { currency } = utxos[0]
-  const totalAmount = utxos.reduce((sum, utxo) => {
-    return sum.add(new BN(utxo.amount))
-  }, new BN(0))
-  const payment = Transaction.createPayment(address, currency, totalAmount)
-  const fee = Transaction.createFee(currency, 0)
-  const txBody = Transaction.createBody(
-    address,
-    utxos,
-    [payment],
-    fee,
-    Transaction.encodeMetadata(_metadata)
-  )
-  const typedData = Transaction.getTypedData(txBody)
-  const privateKeys = new Array(txBody.inputs.length).fill(privateKey)
-  const signatures = Transaction.sign(typedData, privateKeys)
-  const signedTxn = Transaction.buildSigned(typedData, signatures)
-  return Transaction.submit(signedTxn)
-}
-
-export const mergeUtxosUntilThreshold = async (
-  address,
-  privateKey,
-  maximumUtxosPerCurrency,
-  utxos,
-  storeBlknum
-) => {
-  if (utxos.length <= maximumUtxosPerCurrency) {
-    const blknum = utxos[0].blknum
-    return {
-      blknum,
-      utxos
-    }
-  }
-
-  let listOfUtxosGroup = []
-  let utxosGroup = []
-  for (let i = 0; i < utxos.length; i++) {
-    utxosGroup.push(utxos[i])
-    if (
-      utxosGroup.length === 4 ||
-      (i === utxos.length - 1 && utxosGroup.length > 1)
-    ) {
-      listOfUtxosGroup.push(utxosGroup)
-      utxosGroup = []
-    }
-  }
-
-  const pendingTxs = listOfUtxosGroup.map(groupOfUtxos =>
-    mergeUtxos(address, privateKey, groupOfUtxos)
-  )
-
-  const receipts = await Promise.all(pendingTxs)
-  const { blknum } = receipts.sort((a, b) => b.blknum - a.blknum)[0]
-
-  // Store blknum to the local storage.
-  storeBlknum(blknum, utxos)
-
-  await Wait.waitChildChainBlknum(address, blknum)
-  let newUtxos = await getUtxos(address, {
-    currency: utxos[0].currency
-  })
-  return await mergeUtxosUntilThreshold(
-    address,
-    privateKey,
-    maximumUtxosPerCurrency,
-    newUtxos,
-    storeBlknum
-  )
 }
 
 export const deposit = async (
@@ -286,6 +155,25 @@ export const deposit = async (
   }
 }
 
+export const mergeListOfUtxos = async (
+  address,
+  privateKey,
+  maximumUtxosPerCurrency = 4,
+  listOfUtxos,
+  storeBlknum = () => {}
+) => {
+  const pendingMergeUtxos = listOfUtxos.map(utxos =>
+    Utxos.mergeUntilThreshold(
+      address,
+      privateKey,
+      maximumUtxosPerCurrency,
+      utxos,
+      storeBlknum
+    )
+  )
+  return Promise.all(pendingMergeUtxos)
+}
+
 const approveErc20 = async (approveOptions, ownerPrivateKey) => {
   const signedApproveTx = await web3.eth.accounts.signTransaction(
     approveOptions,
@@ -321,41 +209,6 @@ export const standardExit = (exitData, blockchainWallet, options) => {
   })
 }
 
-export const getExitTxs = async address => {
-  const exitStartedOptions = {
-    filter: {
-      owner: address
-    }
-  }
-
-  const allExitTxs = await Contract.getExitEvents(
-    'ExitStarted',
-    exitStartedOptions
-  )
-  const pendingFinalizedArr = allExitTxs.map(exitTx => {
-    const exitId = exitTx.returnValues.exitId.toString()
-    const exitFinalizedOptions = {
-      filter: {
-        exitId
-      }
-    }
-    return Contract.getExitEvents('ExitFinalized', exitFinalizedOptions)
-  })
-
-  const finalizedArr = await Promise.all(pendingFinalizedArr)
-  const filteredUnfinalized = (_, index) => finalizedArr[index].length === 0
-  const filteredFinalized = (_, index) => finalizedArr[index].length > 0
-
-  return {
-    unprocessed: allExitTxs.filter(filteredUnfinalized),
-    processed: allExitTxs.filter(filteredFinalized)
-  }
-}
-
-export const getPaymentExitGame = () => {
-  return Plasma.RootChain.getPaymentExitGame()
-}
-
 let standardExitBond
 export const getStandardExitBond = async () => {
   if (!standardExitBond) {
@@ -374,20 +227,12 @@ export const getErrorReason = async hash => {
   }
 }
 
-export const isDepositUtxo = utxo => {
-  return utxo.blknum % 1000 !== 0
-}
-
 export const getStandardExitId = (utxoToExit, exitData) => {
   return Plasma.RootChain.getStandardExitId({
     txBytes: exitData.txbytes,
     utxoPos: exitData.utxo_pos,
-    isDeposit: isDepositUtxo(utxoToExit)
+    isDeposit: utxoToExit.blknum % 1000 !== 0
   })
-}
-
-export const hasToken = tokenContractAddress => {
-  return Plasma.RootChain.hasToken(tokenContractAddress)
 }
 
 export const getExitTime = (exitRequestBlockNumber, submissionBlockNumber) => {
@@ -395,18 +240,6 @@ export const getExitTime = (exitRequestBlockNumber, submissionBlockNumber) => {
     exitRequestBlockNumber,
     submissionBlockNumber
   })
-}
-
-export const addToken = async (tokenContractAddress, options) => {
-  try {
-    const receipt = await Plasma.RootChain.addToken({
-      token: tokenContractAddress,
-      txOptions: options
-    })
-    return Promise.resolve(receipt)
-  } catch (err) {
-    return Promise.reject(err)
-  }
 }
 
 export const processExits = (contractAddress, maxExitsToProcess, txOptions) => {
@@ -418,17 +251,9 @@ export const processExits = (contractAddress, maxExitsToProcess, txOptions) => {
   })
 }
 
-// Transaction management
-export const createAcceptableUtxoParams = ({
-  amount,
-  blknum,
-  currency,
-  oindex,
-  owner,
-  txindex,
-  utxo_pos
-}) => {
-  return {
+export const getExitData = utxo => {
+  const { amount, blknum, currency, oindex, owner, txindex, utxo_pos } = utxo
+  const params = {
     amount,
     blknum,
     currency,
@@ -437,10 +262,7 @@ export const createAcceptableUtxoParams = ({
     txindex,
     utxo_pos
   }
-}
-
-export const getExitData = utxo => {
-  return Plasma.ChildChain.getExitData(utxo)
+  return Plasma.ChildChain.getExitData(params)
 }
 
 export const getExitQueue = async tokenContractAddress => {
@@ -452,19 +274,6 @@ export const getExitQueue = async tokenContractAddress => {
       tokenContractAddress
     }))
   }
-}
-
-export const getTxs = (address, options) => {
-  const { blknum, limit } = options || { blknum: '0', limit: 10 }
-  return Plasma.ChildChain.getTransactions({
-    address: address,
-    limit: limit || 10,
-    page: 1
-  })
-}
-
-export const getTx = hash => {
-  return Plasma.ChildChain.getTransaction(hash)
 }
 
 export const getFees = (currencies = []) => {

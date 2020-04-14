@@ -1,6 +1,6 @@
 import { Polling } from 'common/utils'
 import { web3 } from 'common/clients'
-import { OmgUtil, Plasma } from 'common/blockchain'
+import { OmgUtil, Plasma, Utxos } from 'common/blockchain'
 
 export const waitFor = ms => {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -8,7 +8,7 @@ export const waitFor = ms => {
 
 export const waitChildChainBlknum = (address, blknum, interval) => {
   return Polling.pollUntilSuccess(async () => {
-    const utxos = await Plasma.getUtxos(address)
+    const utxos = await Utxos.get(address)
     const target = utxos.find(utxo => utxo.blknum === blknum)
     if (target) {
       return {
@@ -30,7 +30,7 @@ export const waitForChildChainUtxoAmount = (
 ) => {
   let utxoPos = fromUtxoPos
   return Polling.pollUntilSuccess(async () => {
-    const utxos = await Plasma.getUtxos(blockchainWallet.address, {
+    const utxos = await Utxos.get(blockchainWallet.address, {
       fromUtxoPos: utxoPos + 1,
       currency: token.contractAddress
     })

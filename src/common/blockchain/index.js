@@ -10,6 +10,7 @@ import * as Transaction from './transaction'
 import * as Parser from './parser'
 import * as Wait from './wait'
 import * as Validator from './validator'
+import * as Utxos from './utxos'
 import * as BlockchainFormatter from './blockchainFormatter'
 
 export {
@@ -25,5 +26,6 @@ export {
   Transaction,
   Token,
   Validator,
-  Wait
+  Wait,
+  Utxos
 }

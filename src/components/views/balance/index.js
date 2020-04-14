@@ -3,8 +3,7 @@ import { connect } from 'react-redux'
 import { StyleSheet, Linking, View, StatusBar } from 'react-native'
 import { SafeAreaView, withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { Plasma } from 'common/blockchain'
-import { useInterval, useProgressiveFeedback } from 'common/hooks'
+import { useProgressiveFeedback } from 'common/hooks'
 import { Dimensions } from 'common/utils'
 import { usePositionMeasurement } from 'common/hooks'
 import RootchainBalance from './RootchainBalance'
@@ -56,10 +55,8 @@ const Balance = ({
     visible,
     setUnconfirmedTxs,
     setCompleteFeedbackTx,
-    handleOnClose,
-    getLearnMoreLink
+    handleOnClose
   ] = useProgressiveFeedback(
-    theme,
     primaryWallet,
     dispatchInvalidateFeedbackCompleteTx
   )
@@ -150,11 +147,6 @@ const Balance = ({
     dispatchSetCurrentPage(null, 'childchain-balance')
   }, [dispatchSetCurrentPage])
 
-  const handleLearnMoreClick = useCallback(() => {
-    const externalURL = getLearnMoreLink()
-    Linking.openURL(externalURL)
-  }, [getLearnMoreLink])
-
   useEffect(() => {
     setUnconfirmedTxs(unconfirmedTxs)
     setCompleteFeedbackTx(feedbackCompleteTx)
@@ -223,13 +215,8 @@ const Balance = ({
       <OMGBottomSheet
         style={styles.bottomSheet}
         show={visible}
-        iconName={feedback.iconName}
-        iconColor={feedback.iconColor}
-        textTitle={feedback.title}
-        textSubtitle={feedback.subtitle}
+        feedback={feedback}
         onPressClose={handleOnClose}
-        onPressLink={handleLearnMoreClick}
-        textLink={!feedback.pending && 'Learn more'}
       />
     </SafeAreaView>
   )

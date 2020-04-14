@@ -103,8 +103,7 @@ export const AppNavigator = createStackNavigator(
       params: {
         navigator: ExitNavigator
       }
-    },
-    ExitPending: Views.ExitPending
+    }
   },
   {
     initialRouteName: 'Main',

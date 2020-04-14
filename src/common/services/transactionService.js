@@ -1,5 +1,5 @@
 import { ethereumService, plasmaService } from 'common/services'
-import { Token, Plasma } from 'common/blockchain'
+import { Token, Plasma, Transaction } from 'common/blockchain'
 import { BigNumber } from 'common/utils'
 import { Mapper } from 'common/utils'
 
@@ -60,11 +60,7 @@ export const getTxs = (address, provider, options) => {
 
       const contractAddresses = Array.from(new Set(currencies))
 
-      const tokenMap = await Token.fetchTokens(
-        provider,
-        contractAddresses,
-        address
-      )
+      const tokenMap = await Token.all(provider, contractAddresses, address)
 
       const tokens = Object.keys(tokenMap).map(
         contractAddress => tokenMap[contractAddress]
@@ -94,7 +90,7 @@ export const getTxs = (address, provider, options) => {
 }
 
 export const getExitTxs = async address => {
-  const { unprocessed, processed } = await Plasma.getExitTxs(address)
+  const { unprocessed, processed } = await Transaction.allExits(address)
   return {
     unprocessed: unprocessed.map(u => u.transactionHash),
     processed: processed.map(p => p.transactionHash)

@@ -4,12 +4,20 @@ import { withTheme } from 'react-native-paper'
 import OMGText from '../omg-text'
 import * as EmptyImages from './assets'
 
-const OMGEmpty = ({ text, loading, style, textStyle, imageName, theme }) => {
+const OMGEmpty = ({
+  text,
+  loading,
+  loadingColor,
+  style,
+  textStyle,
+  imageName,
+  theme
+}) => {
   const EmptyImage = EmptyImages[imageName]
   return (
     <View style={{ ...styles.container, ...style }}>
       {loading ? (
-        <ActivityIndicator />
+        <ActivityIndicator color={loadingColor} />
       ) : (
         <View style={{ ...styles.container, ...style }}>
           {imageName && EmptyImage && <EmptyImage />}

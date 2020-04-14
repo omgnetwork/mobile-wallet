@@ -14,7 +14,7 @@ export const fetchAssets = async (provider, address, lastBlockNumber) => {
       new Set(txHistory.map(tx => tx.contractAddress))
     )
 
-    const tokens = await Token.fetchTokens(
+    const tokens = await Token.all(
       provider,
       [ContractAddress.ETH_ADDRESS, ...tokenContractAddresses],
       address

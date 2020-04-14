@@ -13,6 +13,7 @@ import OMGButton from './omg-button'
 import OMGDotViewPager from './omg-dot-view-pager'
 import OMGDismissKeyboard from './omg-dismiss-keyboard'
 import OMGDrawerContent from './omg-drawer-content'
+import OMGEditItem from './omg-edit-item'
 import OMGEmpty from './omg-empty'
 import OMGExitComplete from './omg-exit-complete'
 import OMGExitFee from './omg-exit-fee'
@@ -59,6 +60,7 @@ import OMGTransactionFilter from './omg-transaction-filter'
 import OMGTransactionList from './omg-transaction-list'
 import OMGTokenID from './omg-token-id'
 import OMGUtxoDetail from './omg-utxo-detail'
+import OMGUtxoSelect from './omg-utxo-select'
 
 export {
   OMGAddressInput,
@@ -75,6 +77,7 @@ export {
   OMGDotViewPager,
   OMGDismissKeyboard,
   OMGDrawerContent,
+  OMGEditItem,
   OMGEmpty,
   OMGExitComplete,
   OMGExitFee,
@@ -119,5 +122,6 @@ export {
   OMGTransactionFilter,
   OMGTransactionList,
   OMGTokenID,
-  OMGUtxoDetail
+  OMGUtxoDetail,
+  OMGUtxoSelect
 }

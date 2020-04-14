@@ -127,7 +127,7 @@ export const mergeUTXOs = (
   })
 }
 
-export const exit = (blockchainWallet, token) => {
+export const exit = (blockchainWallet, token, utxos, gasPrice) => {
   const asyncAction = async () => {
     const {
       hash,
@@ -136,9 +136,8 @@ export const exit = (blockchainWallet, token) => {
       flatFee,
       exitableAt,
       to,
-      gasPrice,
       gasUsed
-    } = await plasmaService.exit(blockchainWallet, token)
+    } = await plasmaService.exit(blockchainWallet, token, utxos, gasPrice)
 
     return {
       hash,

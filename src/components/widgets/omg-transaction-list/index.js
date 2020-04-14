@@ -122,12 +122,12 @@ const OMGTransactionList = ({
       ) : (
         <FlatList
           ListHeaderComponent={renderHeader && renderHeader()}
+          ListEmptyComponent={<OMGEmpty {...getEmptyStatePayload()} />}
           data={transactions}
-          keyExtractor={(tx, index) => tx.hash}
+          keyExtractor={tx => tx.hash}
           contentContainerStyle={
             transactions?.length ? styles.content : styles.emptyContent(theme)
           }
-          ListEmptyComponent={<OMGEmpty {...getEmptyStatePayload()} />}
           renderItem={({ item }) => getItemTransactionComponent(item)}
         />
       )}

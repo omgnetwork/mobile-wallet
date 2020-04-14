@@ -151,8 +151,7 @@ const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
-  ),
-  gasOptions: state.gasOptions
+  )
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

@@ -1,6 +1,6 @@
 {
   "name": "PlasmaWallet",
-  "version": "0.4.11",
+  "version": "0.4.12",
   "private": true,
   "scripts": {
     "start": "react-native start",
@@ -24,7 +24,7 @@
     "build-ios": "npm run ios-archive && npm run ios-export && mkdir -p artifacts && cp ios/build/Apps/PlasmaWallet.ipa artifacts/",
     "ios-archive": "xcodebuild archive -archivePath ios/PlasmaWallet/PlasmaWallet.xcarchive -workspace ios/PlasmaWallet.xcworkspace -scheme PlasmaWallet",
     "ios-export": "xcodebuild -exportArchive -archivePath ios/PlasmaWallet/PlasmaWallet.xcarchive -exportOptionsPlist ios/PlasmaWallet/ExportOptions.plist -exportPath ios/build",
-    "postinstall": "omgjs-nodeify"
+    "postinstall": "omgjs-nodeify && npx jetify"
   },
   "rnpm": {
     "assets": [
