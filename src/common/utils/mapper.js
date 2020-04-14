@@ -188,6 +188,7 @@ const mapRootchainTransactionType = (tx, address, standardExitBondSize) => {
   if (tx.isError === '1') {
     return TransactionTypes.TYPE_FAILED
   }
+
   switch (methodName) {
     case 'depositFrom':
     case 'deposit':
@@ -197,7 +198,7 @@ const mapRootchainTransactionType = (tx, address, standardExitBondSize) => {
     case 'addToken':
       return TransactionTypes.TYPE_PLASMA_ADD_TOKEN
     default:
-      if (Transaction.isPlasmaContractCall(tx, standardExitBondSize)) {
+      if (Transaction.shouldExcludeFromTxHistory(tx, standardExitBondSize)) {
         return TransactionTypes.TYPE_UNIDENTIFIED
       } else if (Transaction.isProcessedExit(tx)) {
         return TransactionTypes.TYPE_PROCESS_EXIT

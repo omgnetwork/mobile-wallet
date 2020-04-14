@@ -94,20 +94,14 @@ export const isReceive = (walletAddress, toAddress) => {
   return walletAddress.toLowerCase() === toAddress.toLowerCase()
 }
 
-export const isPlasmaContractCall = (tx, standardExitBondSize) => {
+export const shouldExcludeFromTxHistory = (tx, standardExitBondSize) => {
   const { to, value, gasUsed } = tx
-  const {
-    PLASMA_FRAMEWORK_CONTRACT_ADDRESS,
-    PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
-  } = ContractAddress
-  const isCurrentPlasmaContract = [
-    PLASMA_FRAMEWORK_CONTRACT_ADDRESS,
-    PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
-  ].includes(to)
-  const isOldPaymentExitGameContract =
+  const { PLASMA_FRAMEWORK_CONTRACT_ADDRESS } = ContractAddress
+  const isPlasmaContract = PLASMA_FRAMEWORK_CONTRACT_ADDRESS === to
+  const isPaymentExitGameContract =
     value === standardExitBondSize && gasUsed > Gas.MINIMUM_GAS_USED
 
-  return isCurrentPlasmaContract || isOldPaymentExitGameContract
+  return isPlasmaContract || isPaymentExitGameContract
 }
 
 export const isProcessedExit = tx => {
