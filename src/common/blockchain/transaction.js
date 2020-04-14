@@ -31,15 +31,12 @@ export const createFee = (
 })
 
 export const createBody = (address, utxos, payments, fee, metadata) => {
-  const encodedMetadata =
-    (metadata && encodeMetadata(metadata)) || OmgUtil.transaction.NULL_METADATA
-
   return OmgUtil.transaction.createTransactionBody({
     fromAddress: address,
     fromUtxos: utxos,
     payments,
     fee,
-    metadata: encodedMetadata
+    metadata
   })
 }
 
