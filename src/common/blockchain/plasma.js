@@ -367,7 +367,7 @@ export const getStandardExitBond = async () => {
 
 export const getErrorReason = async hash => {
   try {
-    return await OmgUtil.ethErrorReason({ web3, hash }).catch()
+    return await OmgUtil.ethErrorReason({ web3, hash })
   } catch (e) {
     console.log(e)
     return 'Cannot retrieve error reason'
