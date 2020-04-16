@@ -10,7 +10,6 @@ import { View, StyleSheet, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
-import { Dimensions } from 'common/utils'
 import { paramsForTransferScannerToTransferSelectBalance } from './transferNavigation'
 import {
   OMGText,
@@ -22,9 +21,7 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Animator } from 'common/anims'
 import * as BlockchainIcons from './assets'
-
-const SCREEN_WIDTH = Dimensions.windowWidth + 1
-const CAMERA_WIDTH = Math.round(SCREEN_WIDTH * 0.68)
+import { CONTAINER_WIDTH } from 'components/widgets/omg-qr-scanner'
 
 const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   const { rootchain } = getParamsForTransferScannerFromTransferForm(navigation)
@@ -128,7 +125,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   }, [hasChildchainAssets, hasRootchainAssets, isRootchain, unconfirmedTx])
 
   const unconfirmedTxComponent = (
-    <Animated.View style={styles.unableView(theme)}>
+    <Animated.View style={styles.scannerView(theme)}>
       <OMGFontIcon
         style={styles.unableIcon(theme)}
         name='pending'
@@ -142,7 +139,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   )
 
   const emptyComponent = (
-    <Animated.View style={styles.emptyView(theme)}>
+    <Animated.View style={styles.scannerView(theme)}>
       <OMGEmpty {...getEmptyStatePayload()} />
     </Animated.View>
   )
@@ -290,18 +287,10 @@ const styles = StyleSheet.create({
   notAuthorizedView: {
     textAlign: 'center'
   },
-  unableView: theme => ({
-    width: CAMERA_WIDTH,
-    height: CAMERA_WIDTH,
-    flexDirection: 'column',
+  scannerView: theme => ({
     backgroundColor: theme.colors.black3,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }),
-  emptyView: theme => ({
-    height: 240,
+    flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.black3,
     alignItems: 'center',
     justifyContent: 'center'
   }),

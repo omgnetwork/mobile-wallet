@@ -7,10 +7,8 @@ import Svg, { Rect, Path } from 'react-native-svg'
 import { Dimensions } from 'common/utils'
 import { OMGText } from 'components/widgets'
 
-const SCREEN_WIDTH = Dimensions.windowWidth + 1
-const CONTAINER_WIDTH = Math.round(SCREEN_WIDTH * 0.68)
-export const ROOTCHAIN_OVERLAY_COLOR = 'rgba(125, 85, 246, 0.50)'
-export const CHILDCHAIN_OVERLAY_COLOR = 'rgba(33, 118, 255, 0.50)'
+const SCREEN_WIDTH = Dimensions.windowWidth
+export const CONTAINER_WIDTH = Math.round(SCREEN_WIDTH * 0.68)
 
 const OMGQRScanner = props => {
   const {
@@ -38,7 +36,6 @@ const OMGQRScanner = props => {
         borderColor={borderColor}
         borderStrokeWidth={borderStrokeWidth}
       />
-      {/* <OMGText style={styles.qrMarkerText(theme)}>Scan QR to send</OMGText> */}
     </View>
   )
 
@@ -88,21 +85,21 @@ const OMGQRScanner = props => {
       reactivate={reactivate}
       onRead={handleOnRead}
       pendingAuthorizationView={
-        <View style={{ backgroundColor: theme.colors.black3 }}>
+        <View>
           <OMGText style={styles.loadingText(theme)}>Loading...</OMGText>
         </View>
       }
       customMarker={
-        <View style={styles.contentContainer}>
-          <View style={styles.topContainer(theme)}>
+        <View style={styles.contentContainer(theme)}>
+          <View style={styles.topContainer}>
             <View style={styles.renderContainer}>{renderTop}</View>
           </View>
           <View style={styles.scannerContainer}>
-            <View style={styles.sideOverlay(theme)} />
-            {renderContent()}
-            <View style={styles.sideOverlay(theme)} />
+            <View style={styles.sideOverlay} />
+            <View style={styles.renderScannerContainer}>{renderContent()}</View>
+            <View style={styles.sideOverlay} />
           </View>
-          <View style={styles.bottomContainer(theme)}>
+          <View style={styles.bottomContainer}>
             <View style={styles.renderContainer}>{renderBottom}</View>
           </View>
         </View>
@@ -153,31 +150,33 @@ const styles = StyleSheet.create({
     flex: 1,
     width: SCREEN_WIDTH,
     alignItems: 'center',
+    backgroundColor: theme.colors.black3,
     justifyContent: 'space-around'
   }),
-  topContainer: theme => ({
+  topContainer: {
     width: SCREEN_WIDTH,
     flex: 0.6,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: theme.colors.black3
-  }),
-  bottomContainer: theme => ({
+    alignItems: 'center'
+  },
+  bottomContainer: {
     width: SCREEN_WIDTH,
     alignItems: 'center',
-    flex: 1,
-    backgroundColor: theme.colors.black3
-  }),
+    flex: 1
+  },
   renderContainer: {
     width: CONTAINER_WIDTH
+  },
+  renderScannerContainer: {
+    width: CONTAINER_WIDTH,
+    height: CONTAINER_WIDTH
   },
   scannerContainer: {
     flexDirection: 'row'
   },
-  sideOverlay: theme => ({
-    flex: 1,
-    backgroundColor: theme.colors.black3
-  }),
+  sideOverlay: {
+    flex: 1
+  },
   loadingText: theme => ({
     textAlign: 'center',
     color: theme.colors.white
