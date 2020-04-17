@@ -1,71 +1,44 @@
 import React from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { View, StyleSheet } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import BackupMnemonicImage from './assets/backup-mnemonic.svg'
 import { OMGButton, OMGText, OMGTextChip } from 'components/widgets'
+import { createWalletBackupMnemonicStyles } from './styles'
 
 const CreateWalletBackupMnemonic = ({ theme, navigation }) => {
   const mnemonic = navigation.getParam('mnemonic')
   const name = navigation.getParam('name')
   const phrases = mnemonic.split(' ')
 
-  const mnemonicPhrases = phrases.map(text => {
-    return <OMGTextChip text={text} style={styles.chip} key={text} />
-  })
-
   const navigateNext = () => {
     navigation.navigate('CreateWalletMnemonicConfirm', { mnemonic, name })
   }
 
+  const styles = createWalletBackupMnemonicStyles(theme)
+
+  const mnemonicPhrases = phrases.map(text => {
+    return <OMGTextChip text={text} style={styles.chip} key={text} />
+  })
+
   return (
-    <SafeAreaView style={styles.container(theme)}>
-      <BackupMnemonicImage width={80} height={80} style={styles.image} />
-      <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
-        Backup Mnemonic Phrase
-      </OMGText>
-      <OMGText style={styles.description(theme)}>
-        Please transcribe the Mnemonic phrase properly and back up it securely
-      </OMGText>
-      <View style={styles.mnemonicContainer}>{mnemonicPhrases}</View>
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <BackupMnemonicImage width={80} height={80} style={styles.image} />
+        <OMGText weight='mono-semi-bold' style={styles.title}>
+          Backup Mnemonic Phrase
+        </OMGText>
+        <OMGText style={styles.description}>
+          Please transcribe the Mnemonic phrase properly and back up it securely
+        </OMGText>
+        <View style={styles.mnemonicContainer}>{mnemonicPhrases}</View>
+      </ScrollView>
+
       <View style={styles.buttonContainer}>
         <OMGButton onPress={navigateNext}>Next</OMGButton>
       </View>
     </SafeAreaView>
   )
 }
-
-const styles = StyleSheet.create({
-  container: theme => ({
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingBottom: 16,
-    backgroundColor: theme.colors.black3
-  }),
-  image: {
-    marginTop: 32
-  },
-  title: theme => ({
-    color: theme.colors.white,
-    marginTop: 30,
-    fontSize: 18
-  }),
-  description: theme => ({
-    color: theme.colors.white,
-    marginTop: 16
-  }),
-  mnemonicContainer: {
-    flex: 1,
-    marginTop: 24,
-    flexDirection: 'row',
-    flexWrap: 'wrap'
-  },
-  buttonContainer: {
-    marginBottom: 8
-  },
-  chip: {
-    marginRight: 8
-  }
-})
 
 export default withNavigation(withTheme(CreateWalletBackupMnemonic))
