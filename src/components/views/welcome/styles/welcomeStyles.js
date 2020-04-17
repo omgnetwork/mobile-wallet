@@ -2,18 +2,8 @@ import { StyleSheet } from 'react-native'
 import { Styles } from 'common/utils'
 
 const responsiveStyles = {
-  small: {
-    logo: {
-      width: 78,
-      height: 26.4
-    }
-  },
-  medium: {
-    logo: {
-      width: 104,
-      height: 35.2
-    }
-  }
+  small: {},
+  medium: {}
 }
 
 const defaultStyle = theme =>
