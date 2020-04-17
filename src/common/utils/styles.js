@@ -2,6 +2,7 @@ import { Dimensions } from 'react-native'
 
 export const combine = (defaultStyle, { small, medium }) => {
   const ratio = getScreenRatio()
+  console.log(ratio)
   if (ratio > 3) {
     return defaultStyle
   } else if (ratio > 2) {
