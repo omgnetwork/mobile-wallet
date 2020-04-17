@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, ScrollView } from 'react-native'
 import { Ethereum } from 'common/blockchain'
 import BackupImage from './assets/backup.svg'
 import BackupIcon1 from './assets/backup-ic1.svg'
@@ -79,34 +79,37 @@ const BackupWarning = ({ theme, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container(theme)}>
-      <BackupImage width={110} height={110} style={styles.image} />
-      <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
-        Backup Mnemonic
-      </OMGText>
-      <OMGText style={styles.description(theme)}>
-        Please write down the Mnemonic. If your phone is lost, stolen, damaged,
-        the Mnemonic will be a ble to recover your assets.
-      </OMGText>
-      <View style={styles.suggestionContainer}>
-        <SuggestionItem
-          style={styles.suggestionItem}
-          theme={theme}
-          renderImage={() => <BackupIcon1 width={24} height={24} />}
-          text='Write it down on paper, preferably multiple copies'
-        />
-        <SuggestionItem
-          style={styles.suggestionItem}
-          theme={theme}
-          renderImage={() => <BackupIcon2 width={24} height={24} />}
-          text='If record digitally, keep it in offline storage, isolated from the internet.'
-        />
-        <SuggestionItem
-          theme={theme}
-          style={styles.suggestionItem}
-          renderImage={() => <BackupIcon3 width={24} height={24} />}
-          text='Do not share or store the Mnemonic in a network environment, such as email, albums, social apps and others.'
-        />
-      </View>
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <BackupImage width={110} height={110} />
+        <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
+          Backup Mnemonic
+        </OMGText>
+        <OMGText style={styles.description(theme)}>
+          Please write down the Mnemonic. If your phone is lost, stolen,
+          damaged, the Mnemonic will be a ble to recover your assets.
+        </OMGText>
+        <View style={styles.suggestionContainer}>
+          <SuggestionItem
+            style={styles.suggestionItem}
+            theme={theme}
+            renderImage={() => <BackupIcon1 width={24} height={24} />}
+            text='Write it down on paper, preferably multiple copies'
+          />
+          <SuggestionItem
+            style={styles.suggestionItem}
+            theme={theme}
+            renderImage={() => <BackupIcon2 width={24} height={24} />}
+            text='If record digitally, keep it in offline storage, isolated from the internet.'
+          />
+          <SuggestionItem
+            theme={theme}
+            style={styles.suggestionItem}
+            renderImage={() => <BackupIcon3 width={24} height={24} />}
+            text='Do not share or store the Mnemonic in a network environment, such as email, albums, social apps and others.'
+          />
+        </View>
+      </ScrollView>
+
       <View style={styles.buttonContainer}>
         <OMGButton onPress={openModal}>Next</OMGButton>
       </View>
@@ -126,25 +129,23 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     backgroundColor: theme.colors.black3
   }),
-  image: {
-    marginTop: 32,
-    marginLeft: 34
+  scrollViewContainer: {
+    paddingTop: 32,
+    paddingBottom: 16,
+    paddingHorizontal: 16
   },
   title: theme => ({
     color: theme.colors.white,
-    marginTop: 40,
-    marginLeft: 34,
+    marginTop: 16,
     fontSize: 18
   }),
   description: theme => ({
     color: theme.colors.white,
-    marginHorizontal: 34,
     marginTop: 16
   }),
   suggestionContainer: {
     flex: 1,
-    flexDirection: 'column',
-    paddingHorizontal: 34
+    flexDirection: 'column'
   },
   suggestionItem: {
     marginTop: 30
