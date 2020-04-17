@@ -21,7 +21,6 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Animator } from 'common/anims'
 import * as BlockchainIcons from './assets'
-import { CONTAINER_WIDTH } from 'components/widgets/omg-qr-scanner'
 
 const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   const { rootchain } = getParamsForTransferScannerFromTransferForm(navigation)
