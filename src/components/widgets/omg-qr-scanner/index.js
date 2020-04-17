@@ -91,15 +91,15 @@ const OMGQRScanner = props => {
       }
       customMarker={
         <View style={styles.contentContainer(theme)}>
-          <View style={styles.topContainer}>
+          <View style={styles.topContainer(theme)}>
             <View style={styles.renderContainer}>{renderTop}</View>
           </View>
           <View style={styles.scannerContainer}>
-            <View style={styles.sideOverlay} />
+            <View style={styles.sideOverlay(theme)} />
             <View style={styles.renderScannerContainer}>{renderContent()}</View>
-            <View style={styles.sideOverlay} />
+            <View style={styles.sideOverlay(theme)} />
           </View>
-          <View style={styles.bottomContainer}>
+          <View style={styles.bottomContainer(theme)}>
             <View style={styles.renderContainer}>{renderBottom}</View>
           </View>
         </View>
@@ -150,20 +150,21 @@ const styles = StyleSheet.create({
     flex: 1,
     width: SCREEN_WIDTH,
     alignItems: 'center',
-    backgroundColor: theme.colors.black3,
     justifyContent: 'space-around'
   }),
-  topContainer: {
+  topContainer: theme => ({
     width: SCREEN_WIDTH,
     flex: 0.6,
     justifyContent: 'center',
-    alignItems: 'center'
-  },
-  bottomContainer: {
+    alignItems: 'center',
+    backgroundColor: theme.colors.black3
+  }),
+  bottomContainer: theme => ({
     width: SCREEN_WIDTH,
     alignItems: 'center',
-    flex: 1
-  },
+    flex: 1,
+    backgroundColor: theme.colors.black3
+  }),
   renderContainer: {
     width: CONTAINER_WIDTH
   },
@@ -174,9 +175,10 @@ const styles = StyleSheet.create({
   scannerContainer: {
     flexDirection: 'row'
   },
-  sideOverlay: {
-    flex: 1
-  },
+  sideOverlay: theme => ({
+    flex: 1,
+    backgroundColor: theme.colors.black3
+  }),
   loadingText: theme => ({
     textAlign: 'center',
     color: theme.colors.white
