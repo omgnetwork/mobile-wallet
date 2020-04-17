@@ -1,3 +1,4 @@
 import createWalletBackupMnemonicStyles from './createWalletBackupMnemonicStyles'
+import createWalletMnemonicConfirmStyles from './createWalletMnemonicConfirmStyles'
 
-export { createWalletBackupMnemonicStyles }
+export { createWalletBackupMnemonicStyles, createWalletMnemonicConfirmStyles }
