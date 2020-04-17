@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import { Ethereum } from 'common/blockchain'
 import BackupImage from './assets/backup.svg'
 import BackupIcon1 from './assets/backup-ic1.svg'
@@ -12,26 +12,14 @@ import { OMGButton, OMGText } from 'components/widgets'
 import { backupWarningStyles } from './styles'
 
 const SuggestionItem = ({ renderImage, text, style, theme }) => {
+  const styles = backupWarningStyles(theme)
   return (
-    <View style={{ ...itemStyles.container, ...style }}>
+    <View style={{ ...styles.itemContainer, ...style }}>
       {renderImage()}
-      <OMGText style={itemStyles.text(theme)}>{text}</OMGText>
+      <OMGText style={styles.text}>{text}</OMGText>
     </View>
   )
 }
-
-const itemStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  text: theme => ({
-    flex: 1,
-    marginLeft: 16,
-    color: theme.colors.white,
-    fontSize: 12
-  })
-})
 
 const BackupWarning = ({ theme, navigation }) => {
   const name = navigation.getParam('name')

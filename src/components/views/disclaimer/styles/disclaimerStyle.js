@@ -11,7 +11,11 @@ const responsiveStyles = {
       marginTop: 0
     },
     headerContainer: {
+      paddingHorizontal: 20,
       paddingVertical: 16
+    },
+    contentContainer: {
+      paddingHorizontal: 20
     },
     contentText1: {
       fontSize: 12

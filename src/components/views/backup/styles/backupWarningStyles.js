@@ -8,6 +8,9 @@ const responsiveStyles = {
     },
     description: {
       fontSize: 12
+    },
+    text: {
+      fontSize: 12
     }
   },
   medium: {}
@@ -15,6 +18,16 @@ const responsiveStyles = {
 
 const defaultStyle = theme =>
   StyleSheet.create({
+    itemContainer: {
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    text: {
+      flex: 1,
+      marginLeft: 16,
+      color: theme.colors.white,
+      fontSize: 16
+    },
     container: {
       flex: 1,
       paddingHorizontal: 16,
@@ -33,7 +46,8 @@ const defaultStyle = theme =>
     },
     description: {
       color: theme.colors.white,
-      marginTop: 16
+      marginTop: 16,
+      fontSize: 16
     },
     suggestionContainer: {
       flex: 1,
