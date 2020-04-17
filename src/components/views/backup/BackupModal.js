@@ -1,34 +1,36 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View } from 'react-native'
 import Modal from 'react-native-modal'
 import { OMGText, OMGButton } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import BackupCamera from './assets/backup-camera.svg'
+import { backupModalStyles } from './styles'
 
 const BackupModal = ({ visible, theme, onPressOk, onPressCancel }) => {
+  const styles = backupModalStyles(theme)
   return (
-    <View style={styles.container(theme)}>
+    <View style={styles.container}>
       <Modal isVisible={visible} style={styles.modal} useNativeDriver={true}>
-        <View style={styles.contentContainer(theme)}>
+        <View style={styles.contentContainer}>
           <BackupCamera width={84} height={60} style={styles.image} />
-          <OMGText style={styles.textTitle(theme)} weight='semi-bold'>
+          <OMGText style={styles.textTitle} weight='semi-bold'>
             Do not take screenshot
           </OMGText>
-          <OMGText style={styles.textContent(theme)} weight='regular'>
+          <OMGText style={styles.textContent} weight='regular'>
             Please do not share or store the screenshot, which may be collected
             by third-party, resulting in loss of assets
           </OMGText>
           <View style={styles.buttonContainer}>
             <OMGButton
-              style={styles.leftButton(theme)}
+              style={styles.leftButton}
               onPress={onPressCancel}
               textWeight='regular'
-              textStyle={styles.leftButtonText(theme)}>
+              textStyle={styles.leftButtonText}>
               Cancel
             </OMGButton>
             <OMGButton
-              style={styles.rightButton(theme)}
-              textStyle={styles.rightButtonText(theme)}
+              style={styles.rightButton}
+              textStyle={styles.rightButtonText}
               onPress={onPressOk}
               textWeight='book'>
               Understood
@@ -39,60 +41,5 @@ const BackupModal = ({ visible, theme, onPressOk, onPressCancel }) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: theme => ({
-    alignItems: 'center',
-    flexDirection: 'column'
-  }),
-  modal: {
-    justifyContent: 'flex-end',
-    marginBottom: 48
-  },
-  contentContainer: theme => ({
-    alignItems: 'center',
-    flexDirection: 'column',
-    backgroundColor: theme.colors.white,
-    borderRadius: theme.roundness,
-    padding: 16,
-    paddingHorizontal: 30
-  }),
-  image: {
-    marginTop: 30
-  },
-  textTitle: theme => ({
-    marginTop: 46,
-    fontSize: 24,
-    color: theme.colors.black5
-  }),
-  textContent: theme => ({
-    color: theme.colors.gray5,
-    textAlign: 'center',
-    marginTop: 10,
-    fontSize: 16,
-    marginHorizontal: 30
-  }),
-  buttonContainer: {
-    marginTop: 40,
-    flexDirection: 'row'
-  },
-  leftButton: theme => ({
-    flex: 1,
-    backgroundColor: theme.colors.white,
-    borderColor: theme.colors.black5,
-    borderWidth: 1
-  }),
-  leftButtonText: theme => ({
-    color: theme.colors.black4
-  }),
-  rightButton: theme => ({
-    backgroundColor: theme.colors.primary,
-    flex: 1,
-    marginLeft: 16
-  }),
-  rightButtonText: theme => ({
-    color: theme.colors.white
-  })
-})
 
 export default withTheme(BackupModal)

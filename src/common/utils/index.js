@@ -11,6 +11,7 @@ import * as Token from '../blockchain/token'
 import * as Mapper from './mapper'
 import * as Dimensions from './dimensions'
 import * as Reanimated from './reanimated'
+import * as Styles from './styles'
 
 export {
   Alerter,
@@ -24,6 +25,7 @@ export {
   Polling,
   Price,
   Storage,
+  Styles,
   Token,
   Reanimated
 }
