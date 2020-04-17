@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
     padding: 30,
     elevation: 2,
     position: 'absolute',
-    width: Dimensions.windowWidth,
     bottom: 0,
     shadowOpacity: 0.3,
     shadowRadius: 3,
