@@ -9,6 +9,7 @@ import BackupIcon2 from './assets/backup-ic2.svg'
 import BackupIcon3 from './assets/backup-ic3.svg'
 import BackupModal from './BackupModal'
 import { OMGButton, OMGText } from 'components/widgets'
+import { backupWarningStyles } from './styles'
 
 const SuggestionItem = ({ renderImage, text, style, theme }) => {
   return (
@@ -77,14 +78,16 @@ const BackupWarning = ({ theme, navigation }) => {
     }
   }, [mnemonic, name, navigation])
 
+  const styles = backupWarningStyles(theme)
+
   return (
-    <SafeAreaView style={styles.container(theme)}>
+    <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <BackupImage width={110} height={110} />
-        <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
+        <OMGText weight='mono-semi-bold' style={styles.title}>
           Backup Mnemonic
         </OMGText>
-        <OMGText style={styles.description(theme)}>
+        <OMGText style={styles.description}>
           Please write down the Mnemonic. If your phone is lost, stolen,
           damaged, the Mnemonic will be a ble to recover your assets.
         </OMGText>
@@ -121,38 +124,5 @@ const BackupWarning = ({ theme, navigation }) => {
     </SafeAreaView>
   )
 }
-
-const styles = StyleSheet.create({
-  container: theme => ({
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingBottom: 16,
-    backgroundColor: theme.colors.black3
-  }),
-  scrollViewContainer: {
-    paddingTop: 32,
-    paddingBottom: 16,
-    paddingHorizontal: 16
-  },
-  title: theme => ({
-    color: theme.colors.white,
-    marginTop: 16,
-    fontSize: 18
-  }),
-  description: theme => ({
-    color: theme.colors.white,
-    marginTop: 16
-  }),
-  suggestionContainer: {
-    flex: 1,
-    flexDirection: 'column'
-  },
-  suggestionItem: {
-    marginTop: 30
-  },
-  buttonContainer: {
-    // justifyContent: 'flex-end'
-  }
-})
 
 export default withNavigation(withTheme(BackupWarning))
