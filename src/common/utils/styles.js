@@ -1,14 +1,13 @@
 import { Dimensions } from 'react-native'
 
-export const combine = (defaultStyle, { xhdpi, xxhdpi, xxxhdpi }) => {
+export const combine = (defaultStyle, { small, medium }) => {
   const ratio = Dimensions.get('window').width / 160
-  console.log('screen ratio', ratio)
   if (ratio > 3) {
-    return merge(defaultStyle, xxxhdpi)
+    return defaultStyle
   } else if (ratio > 2) {
-    return merge(defaultStyle, xxhdpi)
+    return merge(defaultStyle, medium)
   } else {
-    return merge(defaultStyle, xhdpi)
+    return merge(defaultStyle, small)
   }
 }
 

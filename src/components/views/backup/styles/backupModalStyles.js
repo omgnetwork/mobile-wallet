@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import { Styles } from 'common/utils'
 
 const responsiveStyles = {
-  xhdpi: {
+  small: {
     modal: {
       marginBottom: 16
     },
@@ -32,7 +32,7 @@ const responsiveStyles = {
       marginTop: 24
     }
   },
-  xxhdpi: {
+  medium: {
     modal: {
       marginBottom: 16
     },
@@ -55,33 +55,6 @@ const responsiveStyles = {
     buttonContainer: {
       marginTop: 40
     }
-  },
-  xxxhdpi: {
-    modal: {
-      marginBottom: 16
-    },
-    contentContainer: {
-      padding: 16,
-      paddingHorizontal: 20
-    },
-    textTitle: {
-      marginTop: 24,
-      fontSize: 20
-    },
-    image: {
-      marginTop: 30
-    },
-    textContent: {
-      marginTop: 10,
-      fontSize: 14,
-      marginHorizontal: 30
-    },
-    leftButtonText: {
-      fontSize: 12
-    },
-    rightButtonText: {
-      fontSize: 12
-    }
   }
 }
 
@@ -92,20 +65,31 @@ const defaultStyle = theme =>
       flexDirection: 'column'
     },
     modal: {
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-end',
+      marginBottom: 16
+    },
+    image: {
+      marginTop: 30
     },
     contentContainer: {
       alignItems: 'center',
       flexDirection: 'column',
       backgroundColor: theme.colors.white,
-      borderRadius: theme.roundness
+      borderRadius: theme.roundness,
+      padding: 16,
+      paddingHorizontal: 20
     },
     textTitle: {
-      color: theme.colors.black5
+      color: theme.colors.black5,
+      marginTop: 24,
+      fontSize: 20
     },
     textContent: {
       color: theme.colors.gray5,
-      textAlign: 'left'
+      textAlign: 'left',
+      marginTop: 10,
+      fontSize: 14,
+      marginHorizontal: 30
     },
     buttonContainer: {
       marginTop: 40,

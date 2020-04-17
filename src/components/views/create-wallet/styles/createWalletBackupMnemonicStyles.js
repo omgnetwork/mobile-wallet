@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import { Styles } from 'common/utils'
 
 const responsiveStyles = {
-  xhdpi: {
+  small: {
     image: {
       marginTop: 16
     },
@@ -18,7 +18,7 @@ const responsiveStyles = {
       marginTop: 8
     }
   },
-  xxhdpi: {
+  medium: {
     mnemonicContainer: {
       marginTop: 16
     },
@@ -31,8 +31,7 @@ const responsiveStyles = {
     image: {
       marginTop: 16
     }
-  },
-  xxxhdpi: {}
+  }
 }
 
 const defaultStyle = theme =>

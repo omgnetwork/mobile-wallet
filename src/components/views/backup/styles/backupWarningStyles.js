@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import { Styles } from 'common/utils'
 
 const responsiveStyles = {
-  xhdpi: {
+  small: {
     title: {
       fontSize: 16
     },
@@ -10,8 +10,7 @@ const responsiveStyles = {
       fontSize: 12
     }
   },
-  xxhdpi: {},
-  xxxhdpi: {}
+  medium: {}
 }
 
 const defaultStyle = theme =>
