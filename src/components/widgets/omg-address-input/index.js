@@ -105,7 +105,8 @@ const styles = StyleSheet.create({
   }),
   errorText: theme => ({
     color: theme.colors.red,
-    marginTop: 8
+    marginTop: 8,
+    fontSize: Styles.getResponsiveSize(14, { small: 10, medium: 12 })
   }),
   rightContainer: theme => ({
     flexDirection: 'row',
