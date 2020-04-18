@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGEmpty, OMGText } from 'components/widgets'
 import { IconEth, IconGo } from './assets'
+import { Styles } from 'common/utils'
 
 const OMGAssetHeader = ({
   theme,
@@ -63,13 +64,13 @@ const styles = StyleSheet.create({
   balanceAmount: theme => ({
     flex: 1,
     textAlign: 'left',
-    fontSize: 32,
+    fontSize: Styles.getResponsiveSize(32, { small: 18, medium: 24 }),
     letterSpacing: -3,
     color: theme.colors.white
   }),
   balanceCurrency: theme => ({
     color: theme.colors.white3,
-    fontSize: 32
+    fontSize: Styles.getResponsiveSize(32, { small: 18, medium: 24 })
   }),
   footer: {
     flexDirection: 'row',
@@ -78,13 +79,13 @@ const styles = StyleSheet.create({
   },
   textChain: theme => ({
     flex: 1,
-    fontSize: 12,
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
     marginLeft: 20,
     letterSpacing: -0.7,
     color: theme.colors.gray2
   }),
   textNetwork: theme => ({
-    fontSize: 12,
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
     marginLeft: 6,
     textTransform: 'capitalize',
     color: theme.colors.gray2

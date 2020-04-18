@@ -14,7 +14,7 @@ const CreateWallet = ({ theme, navigation }) => {
         backgroundColor={theme.colors.black5}
       />
       <View style={styles.contentContainer(theme)}>
-        <OMGHeader title='Create Wallet' onPress={navigation.goBack} />
+        <OMGHeader title='Create Wallet' onPress={() => navigation.goBack()} />
         <CreateWalletNavigator navigation={navigation} />
       </View>
     </SafeAreaView>

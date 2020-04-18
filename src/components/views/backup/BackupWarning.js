@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { withNavigation, SafeAreaView } from 'react-navigation'
-import { withTheme } from 'react-native-paper'
-import { View, ScrollView } from 'react-native'
 import { Ethereum } from 'common/blockchain'
-import BackupImage from './assets/backup.svg'
+import { OMGButton, OMGText } from 'components/widgets'
+import React, { useCallback, useEffect, useState } from 'react'
+import { ScrollView, View, StyleSheet } from 'react-native'
+import { withTheme } from 'react-native-paper'
+import { SafeAreaView, withNavigation } from 'react-navigation'
 import BackupIcon1 from './assets/backup-ic1.svg'
 import BackupIcon2 from './assets/backup-ic2.svg'
 import BackupIcon3 from './assets/backup-ic3.svg'
+import BackupImage from './assets/backup.svg'
 import BackupModal from './BackupModal'
-import { OMGButton, OMGText } from 'components/widgets'
-import { backupWarningStyles } from './styles'
+import { Styles } from 'common/utils'
 
 const SuggestionItem = ({ renderImage, text, style, theme }) => {
-  const styles = backupWarningStyles(theme)
+  const styles = createStyles(theme)
   return (
     <View style={{ ...styles.itemContainer, ...style }}>
       {renderImage()}
@@ -66,7 +66,7 @@ const BackupWarning = ({ theme, navigation }) => {
     }
   }, [mnemonic, name, navigation])
 
-  const styles = backupWarningStyles(theme)
+  const styles = createStyles(theme)
 
   return (
     <SafeAreaView style={styles.container}>
@@ -100,10 +100,7 @@ const BackupWarning = ({ theme, navigation }) => {
           />
         </View>
       </ScrollView>
-
-      <View style={styles.buttonContainer}>
-        <OMGButton onPress={openModal}>Next</OMGButton>
-      </View>
+      <OMGButton onPress={openModal}>Next</OMGButton>
       <BackupModal
         visible={showBackupModal}
         onPressCancel={closeModal}
@@ -112,5 +109,47 @@ const BackupWarning = ({ theme, navigation }) => {
     </SafeAreaView>
   )
 }
+
+const createStyles = theme =>
+  StyleSheet.create({
+    itemContainer: {
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    text: {
+      flex: 1,
+      marginLeft: 16,
+      color: theme.colors.white,
+      fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 })
+    },
+    container: {
+      flex: 1,
+      paddingHorizontal: 16,
+      paddingBottom: 16,
+      backgroundColor: theme.colors.black3
+    },
+    scrollViewContainer: {
+      paddingTop: 32,
+      paddingBottom: 16,
+      paddingHorizontal: 16
+    },
+    title: {
+      color: theme.colors.white,
+      marginTop: 16,
+      fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 })
+    },
+    description: {
+      color: theme.colors.white,
+      marginTop: 16,
+      fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 })
+    },
+    suggestionContainer: {
+      flex: 1,
+      flexDirection: 'column'
+    },
+    suggestionItem: {
+      marginTop: Styles.getResponsiveSize(30, { small: 16, medium: 20 })
+    }
+  })
 
 export default withNavigation(withTheme(BackupWarning))

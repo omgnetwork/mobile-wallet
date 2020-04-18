@@ -1,11 +1,11 @@
 import React from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { Image, View } from 'react-native'
+import { Image, View, StyleSheet } from 'react-native'
 import CardMenu from './CardMenu'
 import { OMGDotViewPager, OMGStatusBar } from 'components/widgets'
 import Page from './Page'
-import { welcomeStyles } from './styles'
+
 const PageItems = [
   {
     title: 'Welcome to\nthe Plasma Wallet',
@@ -45,10 +45,8 @@ const Welcome = ({ navigation, theme }) => {
     })
   }
 
-  const styles = welcomeStyles(theme)
-
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
         backgroundColor={theme.colors.black}
@@ -77,5 +75,29 @@ const Welcome = ({ navigation, theme }) => {
     </SafeAreaView>
   )
 }
+
+const styles = StyleSheet.create({
+  container: theme => ({
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: theme.colors.black,
+    justifyContent: 'space-around'
+  }),
+  logo: {
+    width: 130,
+    height: 44,
+    marginTop: 16,
+    marginLeft: 30
+  },
+  cardMenu: {
+    flex: 3
+  },
+  scroll: {
+    flex: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingBottom: 20
+  }
+})
 
 export default withNavigation(withTheme(Welcome))

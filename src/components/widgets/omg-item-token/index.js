@@ -4,6 +4,7 @@ import { Animator } from 'common/anims'
 import { OMGText, OMGTokenIcon } from 'components/widgets'
 import { BlockchainFormatter } from 'common/blockchain'
 import { withTheme } from 'react-native-paper'
+import { Styles } from 'common/utils'
 
 const OMGItemToken = ({ token, style, onPress, theme }) => {
   const [animating, setAnimating] = useState(false)
@@ -11,10 +12,7 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
   const shadowOpacity = useRef(new Animated.Value(0))
   const balanceOpacity = useRef(new Animated.Value(1.0))
   const balance = BlockchainFormatter.formatTokenBalance(token.balance, 6)
-  const price = BlockchainFormatter.formatTokenPrice(
-    token.balance,
-    token.price
-  )
+  const price = BlockchainFormatter.formatTokenPrice(token.balance, token.price)
   const [currentBalance, setCurrentBalance] = useState(balance)
   const [currentPrice, setCurrentPrice] = useState(price)
 
@@ -56,7 +54,10 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
       }}
       elevation={5}
       onPress={onPress}>
-      <OMGTokenIcon token={token} size={32} />
+      <OMGTokenIcon
+        token={token}
+        size={Styles.getResponsiveSize(32, { small: 16, medium: 24 })}
+      />
       <View style={styles.sectionName}>
         <OMGText style={styles.symbol(theme)}>{token.tokenSymbol}</OMGText>
       </View>
@@ -97,13 +98,13 @@ const styles = StyleSheet.create({
     opacity: balanceOpacity.current
   }),
   symbol: theme => ({
-    fontSize: 14,
+    fontSize: Styles.getResponsiveSize(14, { medium: 12, small: 12 }),
     color: theme.colors.white
   }),
   balance: theme => ({
     textAlign: 'right',
     maxWidth: 100,
-    fontSize: 14,
+    fontSize: Styles.getResponsiveSize(14, { medium: 12, small: 12 }),
     color: theme.colors.white
   }),
   fiatValue: theme => ({

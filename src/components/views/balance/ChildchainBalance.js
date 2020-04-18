@@ -8,7 +8,7 @@ import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
 import { TransferHelper } from 'components/views/transfer'
 import { ethereumActions } from 'common/actions'
-import { Formatter, Datetime, Alerter } from 'common/utils'
+import { Formatter, Datetime, Alerter, Styles } from 'common/utils'
 import {
   OMGItemToken,
   OMGAssetHeader,
@@ -149,7 +149,7 @@ const ChildchainBalance = ({
 const styles = StyleSheet.create({
   list: {
     flex: 1,
-    paddingTop: 40
+    paddingTop: Styles.getResponsiveSize(32, { small: 16, medium: 24 })
   }
 })
 

@@ -1,9 +1,19 @@
 import { Dimensions } from 'react-native'
 
+export const getResponsiveSize = (defaultSize, { small, medium }) => {
+  const ratio = getScreenRatio()
+  if (getAspectRatio() > 2 || ratio > 3) {
+    return defaultSize
+  } else if (ratio > 2) {
+    return medium
+  } else {
+    return small
+  }
+}
+
 export const combine = (defaultStyle, { small, medium }) => {
   const ratio = getScreenRatio()
-  console.log(ratio)
-  if (ratio > 3) {
+  if (getAspectRatio() > 2 || ratio >= 3) {
     return defaultStyle
   } else if (ratio > 2) {
     return merge(defaultStyle, medium)
@@ -14,6 +24,10 @@ export const combine = (defaultStyle, { small, medium }) => {
 
 export const getScreenRatio = () => {
   return Dimensions.get('window').width / 160
+}
+
+export const getAspectRatio = () => {
+  return Dimensions.get('window').height / Dimensions.get('window').width
 }
 
 const merge = (target, source) => {

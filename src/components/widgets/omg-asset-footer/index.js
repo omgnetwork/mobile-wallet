@@ -2,6 +2,7 @@ import React from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGText } from 'components/widgets'
+import { Styles } from 'common/utils'
 
 const OMGAssetFooter = ({
   theme,
@@ -46,10 +47,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 13
+    paddingVertical: Styles.getResponsiveSize(13, { small: 10, medium: 12 })
   },
   subfooterText: (theme, enabled) => ({
-    fontSize: 14,
+    fontSize: Styles.getResponsiveSize(14, { small: 10, medium: 12 }),
     color: theme.colors.white,
     opacity: enabled ? 1.0 : 0.4,
     marginRight: 4

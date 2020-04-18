@@ -14,7 +14,7 @@ const ImportWallet = ({ theme, navigation }) => {
         backgroundColor={theme.colors.black5}
       />
       <View style={styles.contentContainer(theme)}>
-        <OMGHeader title='Import Wallet' onPress={navigation.goBack} />
+        <OMGHeader title='Import Wallet' onPress={() => navigation.goBack()} />
         <ImportWalletNavigator navigation={navigation} />
       </View>
     </SafeAreaView>

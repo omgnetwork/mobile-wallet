@@ -6,23 +6,33 @@ import OMGFontIcon from '../omg-font-icon'
 import OMGBox from '../omg-box'
 import OMGText from '../omg-text'
 import { Alert } from 'common/constants'
-import { Alerter } from 'common/utils'
+import { Alerter, Styles } from 'common/utils'
 
 const OMGQRCode = ({ payload, displayText, size, theme, style }) => {
   const handleCopyClick = useCallback(() => {
     Clipboard.setString(displayText)
     Alerter.show(Alert.SUCCESS_COPIED_ADDRESS)
   }, [displayText])
+
+  const defaultSize = Styles.getResponsiveSize(200, { small: 130, medium: 160 })
   return (
     <View style={{ ...styles.container, ...style }}>
       <View style={styles.qrFrame(theme)}>
-        <QRCode value={payload} size={size || 200} style={styles.qrcode} />
+        <QRCode
+          value={payload}
+          size={size || defaultSize}
+          style={styles.qrcode}
+        />
       </View>
       {displayText && (
         <View style={styles.displayTextContainer}>
           <OMGText style={styles.text(theme)}>{displayText}</OMGText>
           <OMGBox style={styles.icon(theme)} onPress={handleCopyClick}>
-            <OMGFontIcon name='copy' size={24} color={theme.colors.white} />
+            <OMGFontIcon
+              name='copy'
+              size={Styles.getResponsiveSize(24, { small: 16, medium: 18 })}
+              color={theme.colors.white}
+            />
           </OMGBox>
         </View>
       )}
@@ -50,7 +60,7 @@ const styles = StyleSheet.create({
   text: theme => ({
     flex: 1,
     marginRight: 16,
-    fontSize: 12,
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
     color: theme.colors.white
   })
 })

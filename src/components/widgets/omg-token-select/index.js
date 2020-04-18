@@ -1,4 +1,5 @@
 import React from 'react'
+import { Styles } from 'common/utils'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { OMGText, OMGFontIcon, OMGTokenIcon } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
@@ -9,7 +10,10 @@ const OMGTokenSelect = ({ token, style, onPress, selected, theme }) => {
     <TouchableOpacity
       style={{ ...styles.container(theme), ...style }}
       onPress={onPress}>
-      <OMGTokenIcon token={token} size={32} />
+      <OMGTokenIcon
+        token={token}
+        size={Styles.getResponsiveSize(32, { small: 16, medium: 24 })}
+      />
       <View style={styles.sectionName}>
         <OMGText style={styles.symbol(theme)} weight='mono-regular'>
           {token.tokenSymbol}
@@ -63,20 +67,20 @@ const styles = StyleSheet.create({
     marginLeft: 20
   },
   symbol: theme => ({
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     letterSpacing: -0.64,
     color: theme.colors.white
   }),
   balance: theme => ({
     textAlign: 'right',
     maxWidth: 100,
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     color: theme.colors.white
   }),
   fiatValue: theme => ({
     textAlign: 'right',
     color: theme.colors.gray6,
-    fontSize: 12
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 12 })
   })
 })
 
