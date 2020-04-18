@@ -3,6 +3,7 @@ import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { OMGFontIcon, OMGText } from '../../widgets'
+import { Styles } from 'common/utils'
 
 const CardMenu = ({ theme, color, header, description, onPress, style }) => {
   return (
@@ -34,7 +35,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 30
   },
-
   text: theme => ({
     color: theme.colors.white
   }),
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     opacity: 0.6
   },
   header: {
-    fontSize: 18
+    fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 })
   }
 })
 
