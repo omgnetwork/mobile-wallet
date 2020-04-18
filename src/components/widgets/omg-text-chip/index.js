@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     width: '30%',
     backgroundColor: theme.colors.black5,
-    paddingVertical: 16,
+    paddingVertical: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     paddingHorizontal: 8,
     marginTop: 8,
     borderWidth: 1,

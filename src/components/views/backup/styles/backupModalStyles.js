@@ -19,7 +19,7 @@ const responsiveStyles = {
     },
     textContent: {
       marginTop: 10,
-      fontSize: 14,
+      fontSize: 12,
       marginHorizontal: 30
     },
     leftButtonText: {
@@ -82,13 +82,13 @@ const defaultStyle = theme =>
     textTitle: {
       color: theme.colors.black5,
       marginTop: 24,
-      fontSize: 20
+      fontSize: 24
     },
     textContent: {
       color: theme.colors.gray5,
       textAlign: 'left',
       marginTop: 10,
-      fontSize: 14,
+      fontSize: 16,
       marginHorizontal: 30
     },
     buttonContainer: {

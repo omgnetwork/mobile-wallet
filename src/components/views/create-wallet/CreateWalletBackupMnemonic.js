@@ -5,6 +5,7 @@ import { View, ScrollView } from 'react-native'
 import BackupMnemonicImage from './assets/backup-mnemonic.svg'
 import { OMGButton, OMGText, OMGTextChip } from 'components/widgets'
 import { createWalletBackupMnemonicStyles } from './styles'
+import { Styles } from 'common/utils'
 
 const CreateWalletBackupMnemonic = ({ theme, navigation }) => {
   const mnemonic = navigation.getParam('mnemonic')
@@ -21,14 +22,20 @@ const CreateWalletBackupMnemonic = ({ theme, navigation }) => {
     return <OMGTextChip text={text} style={styles.chip} key={text} />
   })
 
+  const imageSize = Styles.getResponsiveSize(80, { small: 48, medium: 64 })
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
-        <BackupMnemonicImage width={80} height={80} style={styles.image} />
-        <OMGText weight='mono-semi-bold' style={styles.title}>
+        <BackupMnemonicImage
+          width={imageSize}
+          height={imageSize}
+          style={styles.image}
+        />
+        <OMGText weight='semi-bold' style={styles.title}>
           Backup Mnemonic Phrase
         </OMGText>
-        <OMGText style={styles.description}>
+        <OMGText style={styles.description} weight='regular'>
           Please transcribe the Mnemonic phrase properly and back up it securely
         </OMGText>
         <View style={styles.mnemonicContainer}>{mnemonicPhrases}</View>

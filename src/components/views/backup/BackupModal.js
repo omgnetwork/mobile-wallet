@@ -5,14 +5,23 @@ import { OMGText, OMGButton } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import BackupCamera from './assets/backup-camera.svg'
 import { backupModalStyles } from './styles'
+import { Styles } from 'common/utils'
 
 const BackupModal = ({ visible, theme, onPressOk, onPressCancel }) => {
   const styles = backupModalStyles(theme)
+
+  const imageWidth = Styles.getResponsiveSize(84, { small: 73, medium: 78 })
+  const imageHeight = Styles.getResponsiveSize(60, { small: 45, medium: 52 })
+
   return (
     <View style={styles.container}>
       <Modal isVisible={visible} style={styles.modal} useNativeDriver={true}>
         <View style={styles.contentContainer}>
-          <BackupCamera width={84} height={60} style={styles.image} />
+          <BackupCamera
+            width={imageWidth}
+            height={imageHeight}
+            style={styles.image}
+          />
           <OMGText style={styles.textTitle} weight='semi-bold'>
             Do not take screenshot
           </OMGText>

@@ -16,7 +16,9 @@ const SuggestionItem = ({ renderImage, text, style, theme }) => {
   return (
     <View style={{ ...styles.itemContainer, ...style }}>
       {renderImage()}
-      <OMGText style={styles.text}>{text}</OMGText>
+      <OMGText style={styles.text} weight='regular'>
+        {text}
+      </OMGText>
     </View>
   )
 }
@@ -67,15 +69,16 @@ const BackupWarning = ({ theme, navigation }) => {
   }, [mnemonic, name, navigation])
 
   const styles = createStyles(theme)
+  const imageSize = Styles.getResponsiveSize(110, { small: 80, medium: 94 })
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-        <BackupImage width={110} height={110} />
-        <OMGText weight='mono-semi-bold' style={styles.title}>
+        <BackupImage width={imageSize} height={imageSize} />
+        <OMGText weight='semi-bold' style={styles.title}>
           Backup Mnemonic
         </OMGText>
-        <OMGText style={styles.description}>
+        <OMGText style={styles.description} weight='regular'>
           Please write down the Mnemonic. If your phone is lost, stolen,
           damaged, the Mnemonic will be a ble to recover your assets.
         </OMGText>
@@ -119,7 +122,7 @@ const createStyles = theme =>
     text: {
       flex: 1,
       marginLeft: 16,
-      color: theme.colors.white,
+      color: theme.colors.gray,
       fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 })
     },
     container: {
@@ -129,17 +132,17 @@ const createStyles = theme =>
       backgroundColor: theme.colors.black3
     },
     scrollViewContainer: {
-      paddingTop: 32,
+      paddingTop: Styles.getResponsiveSize(32, { small: 24, medium: 28 }),
       paddingBottom: 16,
       paddingHorizontal: 16
     },
     title: {
       color: theme.colors.white,
       marginTop: 16,
-      fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 })
+      fontSize: Styles.getResponsiveSize(24, { small: 14, medium: 16 })
     },
     description: {
-      color: theme.colors.white,
+      color: theme.colors.gray,
       marginTop: 16,
       fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 })
     },

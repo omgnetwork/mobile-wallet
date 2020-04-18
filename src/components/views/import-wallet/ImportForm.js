@@ -12,6 +12,7 @@ import { useLoading } from 'common/hooks'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { Validator } from 'common/blockchain'
+import { Styles } from 'common/utils'
 
 const ImportForm = ({
   dispatchImportWalletByMnemonic,
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
   }),
   textBoxTitle: theme => ({
     marginTop: 16,
-    fontSize: 14,
+    fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 12 }),
     color: theme.colors.white
   }),
   mgButtom: {

@@ -51,11 +51,12 @@ const defaultStyle = theme =>
     title: {
       color: theme.colors.white,
       marginTop: 30,
-      fontSize: 18
+      fontSize: 24
     },
     description: {
-      color: theme.colors.white,
-      marginTop: 16
+      color: theme.colors.gray,
+      marginTop: 16,
+      fontSize: 16
     },
     mnemonicContainer: {
       flex: 1,
