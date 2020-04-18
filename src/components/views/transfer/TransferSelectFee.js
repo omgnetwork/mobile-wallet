@@ -9,12 +9,14 @@ import {
   OMGEmpty,
   OMGFeeSelect,
   OMGFontIcon,
-  OMGText
+  OMGText,
+  OMGHeader
 } from 'components/widgets'
 import {
   getParamsForTransferSelectFeeFromTransferForm,
   paramsForTransferSelectEthFeeToTransferForm
 } from './transferNavigation'
+import { Styles } from 'common/utils'
 
 const TransferSelectFee = ({
   theme,
@@ -28,15 +30,17 @@ const TransferSelectFee = ({
     selectedEthFee,
     fromScreen
   } = getParamsForTransferSelectFeeFromTransferForm(navigation)
-  const [ethFee, setEthFee] = useState(selectedEthFee || fees[0])
 
-  const apply = useCallback(() => {
-    const params = paramsForTransferSelectEthFeeToTransferForm({
-      selectedEthFee: ethFee,
-      amount: selectedToken.balance
-    })
-    navigation.navigate(fromScreen, params)
-  }, [ethFee, selectedToken.balance, navigation, fromScreen])
+  const apply = useCallback(
+    gasItem => {
+      const params = paramsForTransferSelectEthFeeToTransferForm({
+        selectedEthFee: gasItem,
+        amount: selectedToken.balance
+      })
+      navigation.navigate(fromScreen, params)
+    },
+    [selectedToken.balance, navigation, fromScreen]
+  )
 
   const navigateBack = useCallback(() => {
     const params = paramsForTransferSelectEthFeeToTransferForm({
@@ -52,15 +56,8 @@ const TransferSelectFee = ({
 
   return (
     <SafeAreaView style={styles.container(theme)}>
-      <View style={styles.header}>
-        <OMGFontIcon
-          name='chevron-left'
-          size={18}
-          color={theme.colors.white}
-          style={styles.headerIcon}
-          onPress={navigateBack}
-        />
-        <OMGText style={styles.headerTitle(theme)}>Transaction Fee</OMGText>
+      <View>
+        <OMGHeader title='Transaction Fee' onPress={navigateBack} />
       </View>
       <View style={styles.gasRecommendContainer(theme)}>
         <OMGText style={styles.gasRecommendText(theme)}>
@@ -84,15 +81,11 @@ const TransferSelectFee = ({
               style={{ marginTop: 8 }}
               fee={item}
               onPress={() => {
-                setEthFee(item)
+                apply(item)
               }}
-              selected={item.speed === ethFee.speed}
             />
           )}
         />
-        <View style={styles.buttonContainer}>
-          <OMGButton onPress={apply}>Apply</OMGButton>
-        </View>
       </View>
     </SafeAreaView>
   )
@@ -104,29 +97,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: theme.colors.black5
   }),
-  header: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginLeft: 16,
-    marginTop: 8
-  },
-  headerIcon: {
-    padding: 8,
-    marginLeft: -8
-  },
-  headerTitle: theme => ({
-    fontSize: 18,
-    color: theme.colors.white,
-    marginLeft: 8,
-    textTransform: 'uppercase'
-  }),
-  buttonContainer: {
-    justifyContent: 'flex-end',
-    marginVertical: 16,
-    paddingHorizontal: 16
-  },
   gasRecommendContainer: theme => ({
-    marginTop: 16,
     padding: 12,
     flexDirection: 'column',
     backgroundColor: theme.colors.gray3,
@@ -135,13 +106,12 @@ const styles = StyleSheet.create({
   }),
   gasRecommendText: theme => ({
     color: theme.colors.white,
-    fontSize: 12,
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 12 }),
     textAlign: 'center',
-    letterSpacing: -0.48,
-    lineHeight: 18
+    letterSpacing: -0.48
   }),
   listContainer: theme => ({
-    padding: 16,
+    padding: Styles.getResponsiveSize(16, { small: 8, medium: 12 }),
     flex: 1,
     backgroundColor: theme.colors.black3
   })
