@@ -21,6 +21,7 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Animator } from 'common/anims'
 import * as BlockchainIcons from './assets'
+import { Styles } from 'common/utils'
 
 const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   const { rootchain } = getParamsForTransferScannerFromTransferForm(navigation)
@@ -38,6 +39,16 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   const overlayColorAnim = useRef(new Animated.Value(rootchain ? 0 : 1))
   const OMGIcon = BlockchainIcons.IconGo
   const ETHIcon = BlockchainIcons.IconEth
+  const ethIconWidth = Styles.getResponsiveSize(18, { small: 14, medium: 16 })
+  const ethIconHeight = Styles.getResponsiveSize(29, {
+    small: 22,
+    medium: 26
+  })
+  const omgIconWidth = Styles.getResponsiveSize(87, { small: 65, medium: 70 })
+  const omgIconHeight = Styles.getResponsiveSize(30, {
+    small: 22.5,
+    medium: 24
+  })
   const transitionOverlay = isRootChain => {
     if (isRootChain) {
       Animator.spring(overlayColorAnim, 1, 2000, false).start()
@@ -148,12 +159,16 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
       <Fragment>
         <View style={styles.titleContainer(theme)}>
           {isRootchain ? (
-            <ETHIcon fill={theme.colors.white} width={18} height={29.27} />
+            <ETHIcon
+              fill={theme.colors.white}
+              width={ethIconWidth}
+              height={ethIconHeight}
+            />
           ) : (
             <OMGIcon
               fill={theme.colors.white}
-              width={86.94}
-              height={30}
+              width={omgIconWidth}
+              height={omgIconHeight}
               scale={1.1}
             />
           )}
@@ -213,12 +228,16 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
             {isRootchain ? (
               <OMGIcon
                 fill={theme.colors.white}
-                width={69.56}
-                height={24}
+                width={omgIconWidth}
+                height={omgIconHeight}
                 scale={1.1}
               />
             ) : (
-              <ETHIcon fill={theme.colors.white} width={18} height={29.27} />
+              <ETHIcon
+                fill={theme.colors.white}
+                width={ethIconWidth}
+                height={ethIconHeight}
+              />
             )}
             <OMGText
               weight='semi-bold'
@@ -254,12 +273,12 @@ const styles = StyleSheet.create({
   title: theme => ({
     color: theme.colors.white,
     marginLeft: 'auto',
-    fontSize: 14
+    fontSize: Styles.getResponsiveSize(14, { small: 10, medium: 12 })
   }),
   buttonText: theme => ({
     color: theme.colors.white,
     textTransform: 'none',
-    fontSize: 14
+    fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 12 })
   }),
   button: (theme, isRootchain) => ({
     backgroundColor: isRootchain ? theme.colors.green2 : theme.colors.primary,
@@ -270,14 +289,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.white,
     flexDirection: 'row',
-    paddingVertical: 16,
+    paddingVertical: Styles.getResponsiveSize(16, { small: 8, medium: 12 }),
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 32
+    marginTop: Styles.getResponsiveSize(32, { small: 24, medium: 24 })
   }),
   textChangeNetwork: theme => ({
     color: theme.colors.white,
-    marginLeft: 16
+    marginLeft: 16,
+    fontSize: Styles.getResponsiveSize(14, { small: 10, medium: 12 })
   }),
   cameraContainer: {
     alignSelf: 'center',
@@ -296,7 +316,7 @@ const styles = StyleSheet.create({
   textEthereum: theme => ({
     color: theme.colors.white,
     marginLeft: 16,
-    fontSize: 18
+    fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 })
   }),
   unableText: theme => ({
     color: theme.colors.gray8,

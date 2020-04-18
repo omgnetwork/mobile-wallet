@@ -4,11 +4,15 @@ import QRCodeScanner from 'react-native-qrcode-scanner'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import Svg, { Rect, Path } from 'react-native-svg'
-import { Dimensions } from 'common/utils'
+import { Dimensions, Styles } from 'common/utils'
 import { OMGText } from 'components/widgets'
 
 const SCREEN_WIDTH = Dimensions.windowWidth
-export const CONTAINER_WIDTH = Math.round(SCREEN_WIDTH * 0.68)
+const CAMERA_TO_WIDTH_RATIO = Styles.getResponsiveSize(0.68, {
+  small: 0.6,
+  medium: 0.64
+})
+export const CONTAINER_WIDTH = Math.round(SCREEN_WIDTH * CAMERA_TO_WIDTH_RATIO)
 
 const OMGQRScanner = props => {
   const {

@@ -17,7 +17,7 @@ import {
   OMGIdenticon
 } from 'components/widgets'
 import { Alert } from 'common/constants'
-import { Alerter } from 'common/utils'
+import { Alerter, Styles } from 'common/utils'
 
 const TransferReceive = ({
   theme,
@@ -50,11 +50,14 @@ const TransferReceive = ({
           <OMGIdenticon
             style={styles.identicon(theme)}
             hash={primaryWalletAddress}
-            size={40}
+            size={Styles.getResponsiveSize(40, { small: 24, medium: 32 })}
           />
           <OMGText style={styles.title(theme)}>{primaryWallet.name}</OMGText>
           <View style={styles.qrContainer(theme)}>
-            <OMGQRCode size={192} payload={primaryWalletAddress} />
+            <OMGQRCode
+              size={Styles.getResponsiveSize(192, { small: 160, medium: 180 })}
+              payload={primaryWalletAddress}
+            />
           </View>
           <View style={styles.walletAddress}>
             <OMGText style={styles.text(theme)}>{primaryWalletAddress}</OMGText>
@@ -87,7 +90,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }),
   contentContainer: theme => ({
-    width: 200,
+    width: Styles.getResponsiveSize(200, { small: 168, medium: 188 }),
     flexDirection: 'column',
     flex: 1,
     alignItems: 'center',
@@ -97,14 +100,14 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   identicon: theme => ({
-    width: 40,
-    height: 40,
+    width: Styles.getResponsiveSize(40, { small: 24, medium: 32 }),
+    height: Styles.getResponsiveSize(40, { small: 24, medium: 32 }),
     borderRadius: theme.roundness,
     borderWidth: 0.5,
     borderColor: theme.colors.gray
   }),
   qrContainer: theme => ({
-    marginTop: 24,
+    marginTop: Styles.getResponsiveSize(24, { small: 8, medium: 16 }),
     alignItems: 'center',
     justifyContent: 'center',
     borderBottomLeftRadius: theme.roundness,
@@ -112,8 +115,8 @@ const styles = StyleSheet.create({
   }),
   title: theme => ({
     textTransform: 'uppercase',
-    fontSize: 16,
-    marginTop: 20,
+    fontSize: Styles.getResponsiveSize(16, { small: 14, medium: 14 }),
+    marginTop: Styles.getResponsiveSize(20, { small: 12, medium: 16 }),
     color: theme.colors.white
   }),
   walletAddress: {
@@ -123,22 +126,23 @@ const styles = StyleSheet.create({
   },
   text: theme => ({
     flex: 1,
-    fontSize: 12,
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
     letterSpacing: -0.48,
     color: theme.colors.white
   }),
   icon: { marginLeft: 18 },
   buttonContainer: theme => ({
-    width: 200,
+    width: Styles.getResponsiveSize(200, { small: 168, medium: 188 }),
     borderWidth: 1,
     borderColor: theme.colors.white,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 40,
-    padding: 14
+    marginTop: Styles.getResponsiveSize(40, { small: 24, medium: 32 }),
+    padding: 12
   }),
   buttonText: theme => ({
-    color: theme.colors.white
+    color: theme.colors.white,
+    fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 12 })
   })
 })
 
