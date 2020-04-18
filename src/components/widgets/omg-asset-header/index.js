@@ -31,8 +31,16 @@ const OMGAssetHeader = ({
       <View style={styles.footer}>
         <BlockchainIcon
           fill={theme.colors.gray2}
-          width={rootchain ? 14 : 57.963}
-          height={rootchain ? 23 : 18}
+          width={
+            rootchain
+              ? Styles.getResponsiveSize(14, { small: 10, medium: 12 })
+              : Styles.getResponsiveSize(58, { small: 40, medium: 46 })
+          }
+          height={
+            rootchain
+              ? Styles.getResponsiveSize(23, { small: 16, medium: 20 })
+              : Styles.getResponsiveSize(18, { small: 13, medium: 14 })
+          }
         />
         <OMGText style={styles.textChain(theme)}>
           {rootchain ? 'Ethereum Rootchain' : 'Plasma Childchain'}
@@ -53,7 +61,8 @@ const styles = StyleSheet.create({
   }),
   balance: {
     flexDirection: 'row',
-    padding: 20
+    paddingHorizontal: Styles.getResponsiveSize(20, { small: 12, medium: 16 }),
+    paddingVertical: Styles.getResponsiveSize(20, { small: 12, medium: 16 })
   },
   loading: {
     flex: 1,
@@ -74,7 +83,7 @@ const styles = StyleSheet.create({
   }),
   footer: {
     flexDirection: 'row',
-    marginHorizontal: 20,
+    paddingHorizontal: Styles.getResponsiveSize(20, { small: 12, medium: 16 }),
     alignItems: 'center'
   },
   textChain: theme => ({

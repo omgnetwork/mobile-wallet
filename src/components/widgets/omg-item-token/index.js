@@ -49,14 +49,14 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
   return (
     <Animated.View
       style={{
-        ...styles.container(theme, animating, shadowAnim, shadowOpacity),
+        ...styles.container(theme, shadowAnim, shadowOpacity),
         ...style
       }}
       elevation={5}
       onPress={onPress}>
       <OMGTokenIcon
         token={token}
-        size={Styles.getResponsiveSize(32, { small: 16, medium: 24 })}
+        size={Styles.getResponsiveSize(32, { small: 20, medium: 24 })}
       />
       <View style={styles.sectionName}>
         <OMGText style={styles.symbol(theme)}>{token.tokenSymbol}</OMGText>
@@ -75,13 +75,12 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
 }
 
 const styles = StyleSheet.create({
-  container: (theme, animating, shadowAnim, shadowOpacity) => ({
+  container: (theme, shadowAnim, shadowOpacity) => ({
     flexDirection: 'row',
     backgroundColor: theme.colors.black3,
     shadowColor: '#000000',
     elevation: shadowAnim.current,
-    paddingHorizontal: animating ? 12 : 20,
-    marginHorizontal: animating ? 8 : 0,
+    paddingHorizontal: Styles.getResponsiveSize(20, { small: 12, medium: 16 }),
     shadowRadius: shadowAnim.current,
     shadowOpacity: shadowOpacity.current,
     alignItems: 'center',
@@ -91,20 +90,20 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    marginLeft: 16
+    marginLeft: Styles.getResponsiveSize(16, { small: 10, medium: 12 })
   },
   sectionAmount: balanceOpacity => ({
     flexDirection: 'column',
     opacity: balanceOpacity.current
   }),
   symbol: theme => ({
-    fontSize: Styles.getResponsiveSize(14, { medium: 12, small: 12 }),
+    fontSize: Styles.getResponsiveSize(14, { medium: 12, small: 10 }),
     color: theme.colors.white
   }),
   balance: theme => ({
     textAlign: 'right',
     maxWidth: 100,
-    fontSize: Styles.getResponsiveSize(14, { medium: 12, small: 12 }),
+    fontSize: Styles.getResponsiveSize(14, { medium: 12, small: 10 }),
     color: theme.colors.white
   }),
   fiatValue: theme => ({

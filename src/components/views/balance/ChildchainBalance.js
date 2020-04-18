@@ -149,7 +149,7 @@ const ChildchainBalance = ({
 const styles = StyleSheet.create({
   list: {
     flex: 1,
-    paddingTop: Styles.getResponsiveSize(32, { small: 16, medium: 24 })
+    paddingTop: Styles.getResponsiveSize(32, { small: 20, medium: 24 })
   }
 })
 
