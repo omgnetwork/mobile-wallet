@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'left',
     fontSize: Styles.getResponsiveSize(32, { small: 18, medium: 24 }),
-    letterSpacing: -3,
+    letterSpacing: Styles.getResponsiveSize(-3, { small: -1, medium: -2 }),
     color: theme.colors.white
   }),
   balanceCurrency: theme => ({

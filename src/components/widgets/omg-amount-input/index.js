@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGTokenIcon, OMGText, OMGTextInput } from 'components/widgets'
+import { Styles } from 'common/utils'
 
 const OMGAmountInput = ({
   theme,
@@ -17,7 +18,7 @@ const OMGAmountInput = ({
   return (
     <Fragment>
       <View style={{ ...styles.container(theme), ...style }}>
-        <OMGTokenIcon style={styles.logo} token={token} size={18} />
+        <OMGTokenIcon style={styles.logo} token={token} size={8} />
         <OMGTextInput
           style={styles.text(theme)}
           placeholder='00.00'
@@ -47,24 +48,24 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingVertical: Styles.getResponsiveSize(12, { small: 6, medium: 8 })
   }),
   logo: {
-    width: 26,
-    height: 26,
+    width: Styles.getResponsiveSize(26, { small: 20, medium: 20 }),
+    height: Styles.getResponsiveSize(26, { small: 20, medium: 20 }),
     marginRight: 16,
     marginLeft: 12
   },
   text: theme => ({
     color: theme.colors.white,
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     letterSpacing: -0.64,
     flex: 1,
     textAlign: 'right',
     marginRight: 12
   }),
   rightContainer: {
-    height: 50,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     marginTop: 8
   }),
   symbol: theme => ({
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     letterSpacing: -0.64,
     color: theme.colors.gray6
   })

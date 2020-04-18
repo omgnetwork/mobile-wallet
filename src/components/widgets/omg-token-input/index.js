@@ -3,6 +3,7 @@ import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGTokenIcon, OMGFontIcon, OMGText } from 'components/widgets'
 import { BlockchainFormatter } from 'common/blockchain'
+import { Styles } from 'common/utils'
 
 const OMGTokenInput = ({ theme, token, style, onPress }) => {
   return (
@@ -35,23 +36,23 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
-    padding: 12,
+    padding: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
     alignItems: 'center'
   }),
   logo: {
-    width: 26,
-    height: 26,
+    width: Styles.getResponsiveSize(26, { small: 18, medium: 20 }),
+    height: Styles.getResponsiveSize(26, { small: 18, medium: 20 }),
     marginRight: 16
   },
   amount: theme => ({
     color: theme.colors.gray6,
     marginRight: 10,
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     letterSpacing: -0.64
   }),
   text: theme => ({
     color: theme.colors.white,
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     textTransform: 'uppercase',
     letterSpacing: -0.64,
     flex: 1

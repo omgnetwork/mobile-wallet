@@ -29,6 +29,7 @@ import {
   paramsForTransferFormToTransferSelectFee,
   paramsForTransferFormToTransferSelectPlasmaFee
 } from './transferNavigation'
+import { Styles } from 'common/utils'
 
 // const testAddress = '0x358303D2Dcc6924F634E37b805b62b820bB1E1B5'
 
@@ -199,13 +200,13 @@ const TransferForm = ({
   const renderAddressElement = useCallback(() => {
     return transferType === TransferHelper.TYPE_DEPOSIT ? (
       <OMGWalletAddress
-        style={styles.addressInput}
+        style={styles.mediumMarginTop}
         name='Plasma Contract'
         address={address}
       />
     ) : (
       <OMGAddressInput
-        style={styles.addressInput}
+        style={styles.mediumMarginTop}
         inputRef={addressRef}
         showError={showErrorAddress}
         returnKeyType='next'
@@ -232,13 +233,13 @@ const TransferForm = ({
             <OMGText style={styles.title(theme)}>From</OMGText>
             <OMGTokenInput
               token={selectedToken}
-              style={styles.tokenInput}
+              style={styles.mediumMarginTop}
               onPress={navigateToSelectBalance}
             />
             <OMGWalletAddress
               name={wallet.name}
               address={wallet.address}
-              style={styles.walletAddress}
+              style={styles.mediumMarginTop}
             />
           </OMGBox>
           <OMGBox style={styles.toContainer(theme)}>
@@ -254,7 +255,7 @@ const TransferForm = ({
               errorMessage={errorAmountMessage}
               focusRef={amountFocusRef}
               defaultValue={amount}
-              style={styles.amountInput}
+              style={styles.mediumMarginTop}
             />
           </OMGBox>
           <OMGBox style={styles.feeContainer(theme, transferType)}>
@@ -262,7 +263,7 @@ const TransferForm = ({
             {transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN ? (
               <OMGFeeTokenInput
                 onPress={navigateToSelectPlasmaFee}
-                style={styles.feeInput}
+                style={styles.mediumMarginTop}
                 feeToken={selectedPlasmaFee || fees[0]}
                 loading={loadingFeeToken}
               />
@@ -270,7 +271,7 @@ const TransferForm = ({
               <OMGFeeInput
                 fee={ethFee}
                 loading={loadingGas}
-                style={styles.feeInput}
+                style={styles.mediumMarginTop}
                 onPress={navigationToTransferSelectFee}
               />
             )}
@@ -314,20 +315,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: theme.colors.black3
   }),
-  tokenInput: {
-    marginTop: 16
-  },
-  walletAddress: {
-    marginTop: 16
-  },
-  addressInput: {
-    marginTop: 16
-  },
-  amountInput: {
-    marginTop: 16
-  },
-  feeInput: {
-    marginTop: 16
+  mediumMarginTop: {
+    marginTop: Styles.getResponsiveSize(16, { small: 8, medium: 12 })
   },
   buttonContainer: {
     marginTop: 16,
@@ -336,7 +325,7 @@ const styles = StyleSheet.create({
   },
   title: theme => ({
     color: theme.colors.white,
-    fontSize: 12,
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
     textTransform: 'uppercase'
   })
 })

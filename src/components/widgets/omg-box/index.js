@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
+import { Styles } from 'common/utils'
 
 const OMGBox = ({ children, theme, onPress, style, elevation }) => {
   const { colors } = theme
@@ -22,7 +23,8 @@ const OMGBox = ({ children, theme, onPress, style, elevation }) => {
 const styles = StyleSheet.create({
   container: backgroundColor => ({
     backgroundColor: backgroundColor,
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingVertical: Styles.getResponsiveSize(16, { small: 12, medium: 12 }),
     borderRadius: 4
   })
 })
