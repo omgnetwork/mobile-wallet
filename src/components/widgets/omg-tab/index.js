@@ -1,7 +1,7 @@
 import React from 'react'
 import Animated from 'react-native-reanimated'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
-import { Reanimated } from 'common/utils'
+import { Reanimated, Styles } from 'common/utils'
 import { withTheme } from 'react-native-paper'
 
 const Tab = ({ focusAnim, title, onPress, theme }) => {
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   tab: (title, focusAnim, theme) => ({
-    paddingVertical: 16,
+    paddingVertical: Styles.getResponsiveSize(16, { small: 12, medium: 12 }),
     justifyContent: 'center',
     backgroundColor: Reanimated.interpolateColors(
       focusAnim,
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
   tabText: (focusAnim, theme) => ({
     textAlign: 'center',
     textTransform: 'uppercase',
+    fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 12 }),
     color: Reanimated.interpolateColors(
       focusAnim,
       [0, 1],

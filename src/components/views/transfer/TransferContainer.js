@@ -10,6 +10,7 @@ import {
   OMGStatusBar,
   OMGEmpty
 } from 'components/widgets'
+import { Styles } from 'common/utils'
 const TransferContainer = ({ navigation, theme, primaryWallet }) => {
   const TransferNavigator = navigation.getParam('navigator')
 
@@ -41,7 +42,7 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
           style={styles.iconBox(theme)}>
           <OMGFontIcon
             name='x-mark'
-            size={18}
+            size={Styles.getResponsiveSize(18, { small: 14, medium: 16 })}
             color={theme.colors.white}
             style={styles.icon}
           />
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
   title: theme => ({
     flex: 1,
     marginHorizontal: 16,
-    fontSize: 18,
+    fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
     textTransform: 'uppercase',
     color: theme.colors.white
   }),
