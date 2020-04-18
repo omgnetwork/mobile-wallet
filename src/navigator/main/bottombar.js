@@ -2,7 +2,7 @@ import React from 'react'
 import { NavigationActions } from 'react-navigation'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import * as Views from 'components/views'
-import { Dimensions } from 'common/utils'
+import { Dimensions, Styles } from 'common/utils'
 import { OMGBottomTab } from 'components/widgets'
 
 export default (TransferNavigator, TransactionHistoryNavigator) =>
@@ -23,7 +23,7 @@ export default (TransferNavigator, TransactionHistoryNavigator) =>
             <OMGBottomTab
               type='tabBarIcon'
               iconName='token'
-              iconSize={28}
+              iconSize={Styles.getResponsiveSize(28, { small: 24, medium: 24 })}
               focused={focused}
               tintColor={tintColor}
             />
@@ -46,7 +46,11 @@ export default (TransferNavigator, TransactionHistoryNavigator) =>
           ),
           tabBarVisible: false,
           tabBarIcon: () => (
-            <OMGBottomTab type='tabBarBigIcon' iconName='qr' iconSize={24} />
+            <OMGBottomTab
+              type='tabBarBigIcon'
+              iconName='qr'
+              iconSize={Styles.getResponsiveSize(24, { small: 20, medium: 22 })}
+            />
           ),
           tabBarOnPress: ({ navigation }) => {
             navigation.navigate({
@@ -74,7 +78,7 @@ export default (TransferNavigator, TransactionHistoryNavigator) =>
             <OMGBottomTab
               type='tabBarIcon'
               iconName='time'
-              iconSize={28}
+              iconSize={Styles.getResponsiveSize(28, { small: 24, medium: 24 })}
               focused={focused}
               tintColor={tintColor}
             />
