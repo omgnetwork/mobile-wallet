@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     borderRadius: theme.roundness,
     borderWidth: 1,
     paddingHorizontal: 12,
-    paddingVertical: Styles.getResponsiveSize(12, { small: 8, medium: 10 }),
+    paddingVertical: Styles.getResponsiveSize(12, { small: 8, medium: 12 }),
     alignItems: 'center'
   }),
   logo: {

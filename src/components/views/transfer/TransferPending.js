@@ -7,7 +7,7 @@ import { BlockchainFormatter } from 'common/blockchain'
 import * as TransferHelper from './transferHelper'
 import Config from 'react-native-config'
 import { AndroidBackHandler } from 'react-navigation-backhandler'
-import { BigNumber } from 'common/utils'
+import { BigNumber, Styles } from 'common/utils'
 import {
   OMGButton,
   OMGText,
@@ -17,7 +17,7 @@ import {
   OMGBlockchainLabel
 } from 'components/widgets'
 import { TransactionActionTypes } from 'common/constants'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
 import { GoogleAnalytics } from 'common/analytics'
 import * as BlockchainLabel from './blockchainLabel'
 import { getParamsForTransferPendingFromTransferConfirm } from './transferNavigation'
@@ -85,99 +85,105 @@ const TransferPending = ({ theme, navigation }) => {
         />
         <View style={styles.headerContainer(theme)}>
           <View style={styles.icon(theme)}>
-            <OMGFontIcon name='pending' size={24} color={theme.colors.black5} />
+            <OMGFontIcon
+              name='pending'
+              size={Styles.getResponsiveSize(24, { small: 16, medium: 20 })}
+              color={theme.colors.black5}
+            />
           </View>
           <OMGText style={styles.title(theme)} weight='regular'>
             Pending Transaction
           </OMGText>
         </View>
-        <OMGBlockchainLabel
-          style={styles.blockchainLabel}
-          actionText={BlockchainLabel.getBlockchainTextActionLabel(
-            'TransferPending',
-            transferType
-          )}
-          transferType={transferType}
-        />
-        <View style={styles.contentContainer(theme)}>
-          <View style={styles.addressContainer}>
-            <OMGText style={[styles.subtitle(theme), styles.marginSubtitle]}>
-              From
-            </OMGText>
-            <OMGWalletAddress
-              name={fromWallet.name}
-              address={fromWallet.address}
-              style={styles.walletAddress}
-            />
-            <OMGText style={[styles.subtitle(theme), styles.marginSubtitle]}>
-              To
-            </OMGText>
-            <OMGWalletAddress
-              address={toWallet.address}
-              name={toWallet.name}
-              style={styles.walletAddress}
-            />
-          </View>
-          <View style={styles.sentContainer}>
-            <OMGText style={[styles.subtitle(theme), styles.marginSubtitle]}>
-              Sent
-            </OMGText>
-            <View style={styles.sentContentContainer(theme)}>
-              <View style={styles.sentSection1}>
-                <OMGText style={styles.sentTitle(theme)}>Amount</OMGText>
-                <View style={styles.sentDetail}>
-                  <OMGText style={styles.sentDetailFirstline(theme)}>
-                    {BlockchainFormatter.formatTokenBalance(token.balance)}{' '}
-                    {token.tokenSymbol}
-                  </OMGText>
-                  <OMGText style={styles.sentDetailSecondline(theme)}>
-                    {tokenPrice} USD
-                  </OMGText>
+        <ScrollView>
+          <OMGBlockchainLabel
+            actionText={BlockchainLabel.getBlockchainTextActionLabel(
+              'TransferPending',
+              transferType
+            )}
+            transferType={transferType}
+          />
+          <View style={styles.contentContainer(theme)}>
+            <View style={styles.addressContainer}>
+              <OMGText style={[styles.subtitle(theme), styles.marginSubtitle]}>
+                From
+              </OMGText>
+              <OMGWalletAddress
+                name={fromWallet.name}
+                address={fromWallet.address}
+                style={styles.walletAddress}
+              />
+              <OMGText style={[styles.subtitle(theme), styles.marginSubtitle]}>
+                To
+              </OMGText>
+              <OMGWalletAddress
+                address={toWallet.address}
+                name={toWallet.name}
+                style={styles.walletAddress}
+              />
+            </View>
+            <View style={styles.sentContainer}>
+              <OMGText style={[styles.subtitle(theme), styles.marginSubtitle]}>
+                Sent
+              </OMGText>
+              <View style={styles.sentContentContainer(theme)}>
+                <View style={styles.sentSection1}>
+                  <OMGText style={styles.sentTitle(theme)}>Amount</OMGText>
+                  <View style={styles.sentDetail}>
+                    <OMGText style={styles.sentDetailFirstline(theme)}>
+                      {BlockchainFormatter.formatTokenBalance(token.balance)}{' '}
+                      {token.tokenSymbol}
+                    </OMGText>
+                    <OMGText style={styles.sentDetailSecondline(theme)}>
+                      {tokenPrice} USD
+                    </OMGText>
+                  </View>
                 </View>
-              </View>
-              <View style={styles.sentSection2}>
-                <OMGText style={styles.sentTitle(theme)}>
-                  {gasDetailAvailable ? '' : 'Estimated '}Fee
-                </OMGText>
-                <View style={styles.sentDetail}>
-                  <OMGText style={styles.sentDetailFirstline(theme)}>
-                    {gasFee()} {gasTokenSymbol}
+                <View style={styles.sentSection2}>
+                  <OMGText style={styles.sentTitle(theme)}>
+                    {gasDetailAvailable ? '' : 'Estimated '}Fee
                   </OMGText>
-                  <OMGText style={styles.sentDetailSecondline(theme)}>
-                    {gasFeeUsd()} USD
-                  </OMGText>
+                  <View style={styles.sentDetail}>
+                    <OMGText style={styles.sentDetailFirstline(theme)}>
+                      {gasFee()} {gasTokenSymbol}
+                    </OMGText>
+                    <OMGText style={styles.sentDetailSecondline(theme)}>
+                      {gasFeeUsd()} USD
+                    </OMGText>
+                  </View>
                 </View>
               </View>
             </View>
           </View>
-        </View>
-        <View style={styles.bottomContainer(theme)}>
-          <View style={styles.totalContainer(theme)}>
-            <OMGText style={styles.totalText(theme)}>Total</OMGText>
-            <OMGText style={styles.totalText(theme)}>
-              {BlockchainFormatter.formatTotalPrice(sendAmount, gasFeeUsd())}{' '}
-              USD
-            </OMGText>
-          </View>
-          <OMGButton
-            style={styles.button}
-            onPress={() => {
-              navigation.navigate('Balance')
-            }}>
-            Done
-          </OMGButton>
-          {actionType !== TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN && (
-            <TouchableOpacity
-              style={styles.trackEtherscanButton}
-              onPress={() => {
-                Linking.openURL(`${Config.ETHERSCAN_URL}tx/${hash}`)
-              }}>
-              <OMGText style={styles.trackEtherscanText(theme)}>
-                Track on Etherscan
+          <View style={styles.bottomContainer(theme)}>
+            <View style={styles.totalContainer(theme)}>
+              <OMGText style={styles.totalText(theme)}>Total</OMGText>
+              <OMGText style={styles.totalText(theme)}>
+                {BlockchainFormatter.formatTotalPrice(sendAmount, gasFeeUsd())}{' '}
+                USD
               </OMGText>
-            </TouchableOpacity>
-          )}
-        </View>
+            </View>
+            <OMGButton
+              style={styles.button}
+              onPress={() => {
+                navigation.navigate('Balance')
+              }}>
+              Done
+            </OMGButton>
+            {actionType !==
+              TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN && (
+              <TouchableOpacity
+                style={styles.trackEtherscanButton}
+                onPress={() => {
+                  Linking.openURL(`${Config.ETHERSCAN_URL}tx/${hash}`)
+                }}>
+                <OMGText style={styles.trackEtherscanText(theme)}>
+                  Track on Etherscan
+                </OMGText>
+              </TouchableOpacity>
+            )}
+          </View>
+        </ScrollView>
       </SafeAreaView>
     </AndroidBackHandler>
   )
@@ -199,9 +205,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: theme.colors.black5
   }),
-  blockchainLabel: {},
   addressContainer: {
-    paddingLeft: 16
+    paddingHorizontal: 16
   },
   bottomContainer: theme => ({
     backgroundColor: theme.colors.black3,
@@ -210,37 +215,41 @@ const styles = StyleSheet.create({
   }),
   totalContainer: theme => ({
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginTop: Styles.getResponsiveSize(16, { small: 8, medium: 12 })
   }),
   title: theme => ({
-    fontSize: 18,
+    fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
     color: theme.colors.white,
     marginLeft: 16,
     textTransform: 'uppercase'
   }),
   icon: theme => ({
-    width: 36,
-    height: 36,
+    width: Styles.getResponsiveSize(36, { small: 24, medium: 28 }),
+    height: Styles.getResponsiveSize(36, { small: 24, medium: 28 }),
     borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: theme.colors.yellow
   }),
   subtitle: theme => ({
-    fontSize: 12,
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
     color: theme.colors.white,
     textTransform: 'uppercase'
   }),
   marginSubtitle: {
-    marginTop: 30
+    marginTop: Styles.getResponsiveSize(30, { small: 16, medium: 24 })
   },
   walletAddress: {
     marginTop: 12,
     flexDirection: 'row'
   },
   totalText: theme => ({
-    fontSize: 16,
-    letterSpacing: -0.64,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+    letterSpacing: Styles.getResponsiveSize(-0.64, {
+      small: -0.32,
+      medium: -0.48
+    }),
     color: theme.colors.blue,
     textTransform: 'uppercase'
   }),
@@ -251,12 +260,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: theme.colors.gray5,
     borderRadius: theme.roundness,
-    padding: 16,
+    padding: Styles.getResponsiveSize(16, { small: 12, medium: 12 }),
     marginTop: 8
   }),
   sentTitle: theme => ({
     color: theme.colors.white,
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     letterSpacing: -0.64
   }),
   sentDetail: {
@@ -270,11 +279,11 @@ const styles = StyleSheet.create({
   sentSection2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 16
+    marginTop: Styles.getResponsiveSize(16, { small: 8, medium: 12 })
   },
   sentDetailFirstline: theme => ({
     color: theme.colors.white,
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     letterSpacing: -0.64
   }),
   sentDetailSecondline: theme => ({

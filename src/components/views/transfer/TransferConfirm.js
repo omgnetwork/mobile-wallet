@@ -5,7 +5,7 @@ import { withNavigation, SafeAreaView } from 'react-navigation'
 import { BlockchainFormatter } from 'common/blockchain'
 import { withTheme } from 'react-native-paper'
 import * as TransferHelper from './transferHelper'
-import { BigNumber } from 'common/utils'
+import { BigNumber, Styles } from 'common/utils'
 import {
   paramsForTransferConfirmToTransferPending,
   paramsForTransferConfirmToTransferForm,
@@ -269,7 +269,7 @@ const TransferConfirm = ({
             <View style={styles.subHeaderContainer(theme)}>
               <OMGFontIcon
                 name='chevron-left'
-                size={14}
+                size={Styles.getResponsiveSize(14, { small: 10, medium: 12 })}
                 color={theme.colors.white}
               />
               <OMGText style={styles.edit(theme)}>EDIT</OMGText>
@@ -352,8 +352,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   subHeaderContainer: theme => ({
-    paddingBottom: 30,
-    paddingTop: 14,
+    paddingBottom: Styles.getResponsiveSize(30, { small: 16, medium: 24 }),
+    paddingTop: Styles.getResponsiveSize(14, { small: 0, medium: 8 }),
     paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
@@ -363,13 +363,16 @@ const styles = StyleSheet.create({
   totalAmountText: theme => ({
     marginRight: 16,
     color: theme.colors.white,
-    fontSize: 32,
-    letterSpacing: -3,
+    fontSize: Styles.getResponsiveSize(32, { small: 24, medium: 28 }),
+    letterSpacing: Styles.getResponsiveSize(-3, {
+      small: -2,
+      medium: -2.4
+    }),
     flex: 1
   }),
   totalSymbolText: theme => ({
     color: theme.colors.white,
-    fontSize: 16
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 })
   }),
   toSendContainer: {
     flexDirection: 'row',
@@ -380,17 +383,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'flex-end'
   },
-  toSendTitle: theme => ({
-    color: theme.colors.white,
-    fontSize: 16,
-    letterSpacing: -0.64
-  }),
   totalUsdText: theme => ({
     color: theme.colors.gray,
     fontSize: 12
   }),
   addressContainer: {
-    paddingLeft: 16
+    paddingHorizontal: 16
   },
   transactionFeeContainer: fee => ({
     display: fee ? 'flex' : 'none',
@@ -399,7 +397,8 @@ const styles = StyleSheet.create({
   }),
   totalContainer: (theme, tokenSymbol) => ({
     display: tokenSymbol === 'ETH' ? 'flex' : 'none',
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingVertical: Styles.getResponsiveSize(16, { small: 8, medium: 12 }),
     flexDirection: 'column',
     backgroundColor: theme.colors.gray4
   }),
@@ -416,7 +415,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginTop: 10,
     backgroundColor: theme.colors.gray5,
-    paddingVertical: 16,
+    paddingVertical: Styles.getResponsiveSize(16, { small: 12, medium: 12 }),
     paddingHorizontal: 12
   }),
   buttonContainer: {
@@ -430,7 +429,8 @@ const styles = StyleSheet.create({
   },
   edit: theme => ({
     marginLeft: 8,
-    color: theme.colors.white
+    color: theme.colors.white,
+    fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 12 })
   }),
   subtitle: theme => ({
     textTransform: 'uppercase',
@@ -438,23 +438,34 @@ const styles = StyleSheet.create({
     color: theme.colors.white
   }),
   marginSubtitle: {
-    marginTop: 30
+    marginTop: Styles.getResponsiveSize(30, { small: 16, medium: 24 })
   },
   marginToSendItem: {
-    marginTop: 16
+    marginTop: Styles.getResponsiveSize(16, { small: 8, medium: 12 })
   },
   walletAddress: {
     marginTop: 12,
     flexDirection: 'row'
   },
+  toSendTitle: theme => ({
+    color: theme.colors.white,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+    letterSpacing: Styles.getResponsiveSize(-0.64, {
+      small: -0.32,
+      medium: -0.48
+    })
+  }),
   toSendAmount: theme => ({
     color: theme.colors.white,
-    fontSize: 16,
-    letterSpacing: -0.64
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+    letterSpacing: Styles.getResponsiveSize(-0.64, {
+      small: -0.32,
+      medium: -0.48
+    })
   }),
   toSendWorth: theme => ({
     color: theme.colors.gray6,
-    fontSize: 12,
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 12 }),
     letterSpacing: -0.48
   })
 })
