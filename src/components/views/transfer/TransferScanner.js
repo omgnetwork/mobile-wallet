@@ -18,7 +18,7 @@ import { Dimensions, Styles } from 'common/utils'
 
 const SCREEN_WIDTH = Dimensions.windowWidth
 const CAMERA_TO_WIDTH_RATIO = Styles.getResponsiveSize(0.68, {
-  small: 0.56,
+  small: 0.64,
   medium: 0.68
 })
 const CONTAINER_WIDTH = Math.round(SCREEN_WIDTH * CAMERA_TO_WIDTH_RATIO)
