@@ -13,7 +13,7 @@ import {
   OMGTransactionList
 } from 'components/widgets'
 import { usePositionMeasurement } from 'common/hooks'
-import { Mapper } from 'common/utils'
+import { Mapper, Styles } from 'common/utils'
 
 const TransactionHistory = ({
   theme,
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     marginLeft: 16,
     marginBottom: 8,
-    marginTop: 30
+    marginTop: Styles.getResponsiveSize(30, { small: 16, medium: 24 })
   })
 })
 
