@@ -8,12 +8,14 @@ import {
   OMGEmpty,
   OMGTokenFee,
   OMGFontIcon,
-  OMGText
+  OMGText,
+  OMGHeader
 } from 'components/widgets'
 import {
   getParamsForTransferSelectPlasmaFeeFromTransferForm,
   paramsForTransferSelectPlasmaFeeToTransferForm
 } from './transferNavigation'
+import { Styles } from 'common/utils'
 
 const TransferSelectPlasmaFee = ({ theme, loading, navigation, fees }) => {
   const {
@@ -33,16 +35,7 @@ const TransferSelectPlasmaFee = ({ theme, loading, navigation, fees }) => {
   return (
     <SafeAreaView style={styles.container(theme)}>
       <View style={styles.header}>
-        <OMGFontIcon
-          name='chevron-left'
-          size={18}
-          color={theme.colors.white}
-          style={styles.headerIcon}
-          onPress={() => navigation.navigate('TransferForm', {})}
-        />
-        <OMGText style={styles.headerTitle(theme)} weight='regular'>
-          SELECT TOKEN TO PAY FEE
-        </OMGText>
+        <OMGHeader title='Select Token To Pay Fee' />
       </View>
       <View style={styles.listContainer(theme)}>
         <FlatList
@@ -58,7 +51,6 @@ const TransferSelectPlasmaFee = ({ theme, loading, navigation, fees }) => {
           renderItem={({ item }) => (
             <OMGTokenFee
               key={item.contractAddress}
-              style={{ marginTop: 8 }}
               token={item}
               onPress={() => {
                 setPlasmaFee(item)
@@ -91,29 +83,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: theme.colors.black5
   }),
-  header: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginLeft: 16,
-    marginTop: 8
-  },
-  headerIcon: {
-    padding: 8,
-    marginLeft: -8
-  },
-  headerTitle: theme => ({
-    fontSize: 18,
-    color: theme.colors.white,
-    marginLeft: 8,
-    paddingVertical: 16,
-    textTransform: 'uppercase'
-  }),
   buttonContainer: {
     justifyContent: 'flex-end',
-    marginVertical: 16
+    marginVertical: Styles.getResponsiveSize(16, { small: 8, medium: 12 })
   },
   listContainer: theme => ({
-    padding: 16,
+    paddingVertical: Styles.getResponsiveSize(16, { small: 8, medium: 12 }),
+    paddingHorizontal: 16,
     flex: 1,
     backgroundColor: theme.colors.black5
   })

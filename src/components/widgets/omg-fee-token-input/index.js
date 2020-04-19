@@ -74,28 +74,35 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
-    padding: 12,
+    paddingHorizontal: 12,
+    paddingVertical: Styles.getResponsiveSize(12, { small: 8, medium: 10 }),
     alignItems: 'center'
   }),
   logo: {
     width: 26,
     height: 26,
-    marginRight: 16
+    marginRight: Styles.getResponsiveSize(16, { small: 12, medium: 12 })
   },
   amount: theme => ({
     color: theme.colors.white,
-    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
-    letterSpacing: -0.64
+    fontSize: Styles.getResponsiveSize(16, { small: 11, medium: 14 }),
+    letterSpacing: Styles.getResponsiveSize(-0.64, {
+      small: -0.32,
+      medium: -0.48
+    })
   }),
   symbol: theme => ({
     color: theme.colors.white,
-    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 12 }),
     textTransform: 'uppercase',
-    letterSpacing: -0.64,
+    letterSpacing: Styles.getResponsiveSize(-0.64, {
+      small: -0.32,
+      medium: -0.48
+    }),
     flex: 1
   }),
   usd: theme => ({
-    fontSize: 12,
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
     marginTop: 2,
     letterSpacing: -0.48,
     color: theme.colors.gray6
