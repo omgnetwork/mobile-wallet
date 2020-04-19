@@ -20,6 +20,7 @@ import {
   BlockchainFormatter
 } from 'common/blockchain'
 import { ScrollView } from 'react-native-gesture-handler'
+import { Styles } from 'common/utils'
 
 const ExitForm = ({
   theme,
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.black5
   }),
   title: theme => ({
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     color: theme.colors.white,
     textTransform: 'uppercase'
   }),

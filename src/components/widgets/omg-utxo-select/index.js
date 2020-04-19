@@ -3,6 +3,7 @@ import { BlockchainFormatter } from 'common/blockchain'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { OMGText, OMGFontIcon, OMGTokenIcon } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
+import { Styles } from 'common/utils'
 
 const OMGUtxoSelect = ({ theme, token, utxo, style, onAdded, onRemoved }) => {
   const [selected, setSelected] = useState(false)
@@ -24,7 +25,10 @@ const OMGUtxoSelect = ({ theme, token, utxo, style, onAdded, onRemoved }) => {
     <TouchableOpacity
       style={{ ...styles.container(theme), ...style }}
       onPress={onPress}>
-      <OMGTokenIcon token={token} size={32} />
+      <OMGTokenIcon
+        token={token}
+        size={Styles.getResponsiveSize(32, { small: 24, medium: 28 })}
+      />
       <View style={styles.sectionName}>
         <OMGText style={styles.bigText(theme)} weight='mono-regular'>
           {token.tokenSymbol}
@@ -73,12 +77,15 @@ const styles = StyleSheet.create({
   },
   smallText: theme => ({
     color: theme.colors.gray6,
-    fontSize: 12
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 12 })
   }),
   bigText: theme => ({
     color: theme.colors.white,
-    fontSize: 16,
-    letterSpacing: -0.64
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+    letterSpacing: Styles.getResponsiveSize(-0.64, {
+      small: -0.32,
+      medium: -0.48
+    })
   }),
   rightText: {
     textAlign: 'right'

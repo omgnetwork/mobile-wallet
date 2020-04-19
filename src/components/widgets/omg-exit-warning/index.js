@@ -2,6 +2,7 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { OMGText, OMGFontIcon } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
+import { Styles } from 'common/utils'
 
 const OMGExitWarning = ({ theme, style }) => {
   return (
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'row',
-    padding: 18,
+    padding: 16,
     backgroundColor: theme.colors.primary,
     alignItems: 'center'
   }),
@@ -27,8 +28,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     letterSpacing: -0.48,
     color: theme.colors.white,
-    marginLeft: 18,
-    marginRight: 18
+    marginLeft: Styles.getResponsiveSize(18, { small: 8, medium: 12 }),
+    marginRight: Styles.getResponsiveSize(18, { small: 8, medium: 12 })
   })
 })
 

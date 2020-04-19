@@ -9,7 +9,7 @@
     "test": "jest",
     "lint": "eslint .",
     "fix": "eslint . --fix",
-    "ios": "react-native run-ios --simulator='iPhone 7'",
+    "ios": "react-native run-ios --simulator='iPhone 11 Pro'",
     "android": "react-native run-android",
     "ios-mainnet": "ENVFILE=.env.mainnet react-native run-ios --simulator='iPhone 7'",
     "android-mainnet": "ENVFILE=.env.mainnet react-native run-android",

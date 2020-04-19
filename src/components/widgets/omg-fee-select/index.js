@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
     paddingVertical: 16,
     borderRadius: theme.roundness
   }),

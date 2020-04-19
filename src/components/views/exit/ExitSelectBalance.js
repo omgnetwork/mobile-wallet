@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { OMGEmpty, OMGTokenSelect, OMGText } from 'components/widgets'
+import { Styles } from 'common/utils'
 
 const ExitSelectBalance = ({ theme, primaryWallet, navigation, loading }) => {
   const assets = primaryWallet.childchainAssets
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16
   }),
   title: theme => ({
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     textTransform: 'uppercase',
     color: theme.colors.gray2
   }),

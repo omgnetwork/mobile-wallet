@@ -3,6 +3,7 @@ import { withTheme } from 'react-native-paper'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { BlockchainFormatter } from 'common/blockchain'
 import { OMGText, OMGFontIcon, OMGEmpty } from 'components/widgets'
+import { Styles } from 'common/utils'
 
 const OMGEditItem = ({
   title,
@@ -85,11 +86,11 @@ const styles = StyleSheet.create({
     color: theme.colors.gray6
   }),
   textSmall: {
-    fontSize: 12,
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 12 }),
     letterSpacing: -0.48
   },
   textBig: {
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     letterSpacing: -0.64
   },
   alignRight: {

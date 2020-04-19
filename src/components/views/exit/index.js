@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react'
-import { View, StyleSheet, StatusBar } from 'react-native'
+import { StyleSheet, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
 import {
-  OMGFontIcon,
-  OMGText,
+  OMGHeader,
   OMGStatusBar,
   OMGEmpty,
   OMGBlockchainLabel
@@ -34,18 +33,7 @@ const Exit = ({ navigation, theme, primaryWallet }) => {
         barStyle={'light-content'}
         backgroundColor={theme.colors.black5}
       />
-      <View style={styles.titleContainer}>
-        <OMGFontIcon
-          name='chevron-left'
-          size={18}
-          color={theme.colors.white}
-          style={styles.headerIcon}
-          onPress={() => {
-            navigation.navigate('Balance')
-          }}
-        />
-        <OMGText style={styles.title(theme)}>Exit</OMGText>
-      </View>
+      <OMGHeader title='Exit' onPress={() => navigation.navigate('Balance')} />
       <OMGBlockchainLabel
         actionText='Exit to'
         transferType={TransferHelper.TYPE_EXIT}
@@ -65,23 +53,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     backgroundColor: theme.colors.black5
-  }),
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 8,
-    paddingVertical: 16
-  },
-  title: theme => ({
-    flex: 1,
-    marginHorizontal: 8,
-    fontSize: 18,
-    textTransform: 'uppercase',
-    color: theme.colors.white
-  }),
-  headerIcon: {
-    padding: 8
-  }
+  })
 })
 
 const mapStateToProps = (state, ownProps) => ({

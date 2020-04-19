@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.48
   }),
   listContainer: theme => ({
-    padding: Styles.getResponsiveSize(16, { small: 8, medium: 12 }),
+    padding: Styles.getResponsiveSize(24, { small: 12, medium: 16 }),
     flex: 1,
     backgroundColor: theme.colors.black3
   })
