@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
   qrcode: {},
   text: theme => ({
     flex: 1,
-    marginRight: 16,
     fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
     color: theme.colors.white
   })

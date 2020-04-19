@@ -7,8 +7,6 @@ import {
   OMGButton,
   OMGEmpty,
   OMGTokenSelect,
-  OMGFontIcon,
-  OMGText,
   OMGHeader
 } from 'components/widgets'
 import { TransferHelper } from 'components/views/transfer'

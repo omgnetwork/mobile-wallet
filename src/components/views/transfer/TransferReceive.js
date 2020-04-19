@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.48,
     color: theme.colors.white
   }),
-  icon: { marginLeft: 18 },
+  icon: { marginLeft: 12 },
   buttonContainer: theme => ({
     width: Styles.getResponsiveSize(200, { small: 168, medium: 188 }),
     borderWidth: 1,
