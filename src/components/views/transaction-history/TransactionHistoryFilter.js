@@ -7,7 +7,8 @@ import {
   OMGText,
   OMGFontIcon,
   OMGStatusBar,
-  OMGTransactionFilter
+  OMGTransactionFilter,
+  OMGHeader
 } from 'components/widgets'
 
 const TransactionHistoryFilter = ({
@@ -27,18 +28,7 @@ const TransactionHistoryFilter = ({
         barStyle={'light-content'}
         backgroundColor={theme.colors.black5}
       />
-      <View style={styles.header}>
-        <OMGFontIcon
-          name='chevron-left'
-          size={18}
-          color={theme.colors.white}
-          style={styles.headerIcon}
-          onPress={() => navigation.goBack()}
-        />
-        <OMGText style={styles.headerTitle(theme)} weight='regular'>
-          {title}
-        </OMGText>
-      </View>
+      <OMGHeader title={title} onPress={() => navigation.goBack()} />
       <OMGTransactionFilter
         transactions={transactions}
         startedExitTxs={startedExitTxs}

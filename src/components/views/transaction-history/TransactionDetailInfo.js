@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { OMGText } from 'components/widgets'
-import { Formatter } from 'common/utils'
+import { Formatter, Styles } from 'common/utils'
 import { BlockchainFormatter, Plasma } from 'common/blockchain'
 import { connect } from 'react-redux'
 import { priceService } from 'common/services'
@@ -210,13 +210,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   infoItemValue: theme => ({
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     letterSpacing: -0.64,
     marginTop: 4,
     color: theme.colors.white
   }),
   infoItemValueLighter: theme => ({
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     marginLeft: 'auto',
     letterSpacing: -0.64,
     marginTop: 4,
