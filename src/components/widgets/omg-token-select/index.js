@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: theme.colors.black5,
     alignItems: 'center',
-    paddingVertical: 16
+    paddingVertical: Styles.getResponsiveSize(16, { small: 8, medium: 12 })
   }),
   sectionName: {
     flex: 1,

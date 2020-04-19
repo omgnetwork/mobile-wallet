@@ -35,7 +35,10 @@ const TransferSelectPlasmaFee = ({ theme, loading, navigation, fees }) => {
   return (
     <SafeAreaView style={styles.container(theme)}>
       <View style={styles.header}>
-        <OMGHeader title='Select Token To Pay Fee' />
+        <OMGHeader
+          title='Select Token To Pay Fee'
+          onPress={() => navigation.navigate('TransferForm', {})}
+        />
       </View>
       <View style={styles.listContainer(theme)}>
         <FlatList
