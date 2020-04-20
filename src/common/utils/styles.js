@@ -3,9 +3,9 @@ import { Dimensions } from 'react-native'
 export const getResponsiveSize = (defaultSize, { small, medium }) => {
   const widthRatio = getWidthRatio()
   const aspectRatio = getAspectRatio()
-  if (aspectRatio > 2 || widthRatio > 3) {
+  if (aspectRatio > 2 || widthRatio > 2.75) {
     return defaultSize
-  } else if (widthRatio > 2) {
+  } else if (widthRatio > 2.25) {
     return medium
   } else {
     return small
@@ -15,9 +15,9 @@ export const getResponsiveSize = (defaultSize, { small, medium }) => {
 export const combine = (defaultStyle, { small, medium }) => {
   const widthRatio = getWidthRatio()
   const aspectRatio = getAspectRatio()
-  if (aspectRatio > 2 || widthRatio >= 3) {
+  if (aspectRatio > 2 || widthRatio >= 2.75) {
     return defaultStyle
-  } else if (widthRatio > 2) {
+  } else if (widthRatio > 2.25) {
     return merge(defaultStyle, medium)
   } else {
     return merge(defaultStyle, small)
