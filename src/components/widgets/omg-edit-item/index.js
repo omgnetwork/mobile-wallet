@@ -39,7 +39,7 @@ const OMGEditItem = ({
       </View>
       <View style={[styles.column, styles.alignRight]}>
         {loading ? (
-          <OMGEmpty loading={loading} />
+          <OMGEmpty loading={loading} style={styles.alignRight} />
         ) : (
           <>
             <OMGText style={[styles.textWhite(theme), styles.textBig]}>

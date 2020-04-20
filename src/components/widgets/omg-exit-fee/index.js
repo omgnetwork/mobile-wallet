@@ -102,9 +102,16 @@ const Item = ({
           style={[styles.textWhite(theme), styles.textSmall, styles.stretch]}>
           {title}
         </OMGText>
-        <OMGText style={[styles.textWhite(theme), styles.textSmall]}>
-          {value} ETH
-        </OMGText>
+        {!loading && value > 0 ? (
+          <OMGText style={[styles.textWhite(theme), styles.textSmall]}>
+            {value} ETH
+          </OMGText>
+        ) : (
+          <OMGEmpty
+            loading={loading}
+            style={[styles.alignRight, styles.marginSmall]}
+          />
+        )}
       </View>
       <View style={[styles.itemSubContainer, styles.alignRight]}>
         {!!subtitle && (
@@ -113,7 +120,7 @@ const Item = ({
             style={[
               styles.textGray(theme),
               styles.textSmall,
-              styles.textMargin,
+              styles.marginSmall,
               styles.stretch
             ]}>
             {subtitle}
@@ -124,13 +131,16 @@ const Item = ({
             style={[
               styles.textWhite(theme),
               styles.textSmall,
-              styles.textMargin,
+              styles.marginSmall,
               styles.alignTop
             ]}>
             {feeUsd} USD
           </OMGText>
         ) : (
-          <OMGEmpty loading={loading} />
+          <OMGEmpty
+            loading={loading}
+            style={[styles.alignRight, styles.marginSmall]}
+          />
         )}
       </View>
     </View>
@@ -176,15 +186,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     letterSpacing: -0.48
   },
-  textMargin: {
-    marginTop: 2,
-    marginRight: 8
-  },
   itemMargin: {
     marginTop: 16
   },
   hyperlinkButton: {
     marginTop: 10
+  },
+  marginSmall: {
+    marginTop: 2
   },
   hyperlinkText: theme => ({
     color: theme.colors.blue,

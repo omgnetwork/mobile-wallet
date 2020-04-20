@@ -18,7 +18,11 @@ const OMGAmountInput = ({
   return (
     <Fragment>
       <View style={{ ...styles.container(theme), ...style }}>
-        <OMGTokenIcon style={styles.logo} token={token} size={18} />
+        <OMGTokenIcon
+          style={styles.logo}
+          token={token}
+          size={Styles.getResponsiveSize(18, { small: 14, medium: 16 })}
+        />
         <OMGTextInput
           style={styles.text(theme)}
           placeholder='00.00'
