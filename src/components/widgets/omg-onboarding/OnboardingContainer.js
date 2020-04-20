@@ -116,6 +116,7 @@ const OMGOnboardingContainer = ({
 
 const styles = StyleSheet.create({
   container: theme => ({
+    width: '100%',
     padding: 30,
     elevation: 2,
     position: 'absolute',
