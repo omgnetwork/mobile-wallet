@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, ScrollView } from 'react-native'
 import { withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useLoading } from 'common/hooks'
@@ -19,7 +19,6 @@ import {
   Utxos,
   BlockchainFormatter
 } from 'common/blockchain'
-import { ScrollView } from 'react-native-gesture-handler'
 import { Styles } from 'common/utils'
 
 const ExitForm = ({
@@ -52,7 +51,6 @@ const ExitForm = ({
         blockchainWallet,
         utxos
       )
-      console.log(estimatedFee)
       setGasUsed(estimatedFee)
     }
 
@@ -67,27 +65,28 @@ const ExitForm = ({
     }
   })
 
-  const navigateEditAmount = useCallback(() => {
+  const navigateEditAmount = () => {
     navigation.navigate('ExitSelectBalance')
-  }, [navigation])
-
-  const navigateEditFee = useCallback(() => {
+  }
+  const navigateEditFee = () => {
     navigation.navigate('ExitSelectFee')
-  }, [navigation])
+  }
 
-  const submit = useCallback(() => {
+  const submit = () => {
     dispatchExit(
       blockchainWallet,
       { ...token, balance: exitAmount },
       utxos,
       fee.amount
     )
-  }, [blockchainWallet, dispatchExit, exitAmount, fee.amount, token, utxos])
+  }
 
   return (
-    <ScrollView style={styles.container(theme)}>
-      <View style={styles.contentContainer(theme)}>
-        <OMGText style={[styles.title(theme), styles.marginMedium]}>
+    <View style={styles.container(theme)}>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <OMGText
+          style={[styles.title(theme), styles.marginMedium]}
+          weight='regular'>
           Review Exit Detail
         </OMGText>
         <OMGEditItem
@@ -106,36 +105,31 @@ const ExitForm = ({
           style={[styles.marginSmall]}
         />
         <OMGExitWarning style={styles.marginMedium} />
-        <View style={[styles.buttonContainer, styles.marginHigh]}>
+        <View style={styles.buttonContainer}>
           <OMGButton onPress={submit} loading={submitting}>
             Confirm Exit
           </OMGButton>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
-    flexDirection: 'column',
     backgroundColor: theme.colors.black5
   }),
-  contentContainer: theme => ({
-    flex: 1,
+  contentContainer: {
+    flexGrow: 1,
     paddingHorizontal: 16,
-    paddingBottom: 16,
-    backgroundColor: theme.colors.black5
-  }),
+    paddingBottom: 16
+  },
   title: theme => ({
     fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     color: theme.colors.white,
     textTransform: 'uppercase'
   }),
-  marginHigh: {
-    marginTop: 30
-  },
   marginMedium: {
     marginTop: 16
   },
@@ -147,6 +141,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
+    paddingTop: 16,
     justifyContent: 'flex-end'
   }
 })

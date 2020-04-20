@@ -20,7 +20,7 @@ const OMGMenuIcon = ({
       ref={menuRef}
       onPress={onPress}>
       <View style={styles.imageContainer(theme)}>
-        <OMGFontIcon color={theme.colors.white} size={14} name={iconName} />
+        <OMGFontIcon color={theme.colors.white} size={18} name={iconName} />
       </View>
       <View style={styles.sectionName}>
         <OMGText style={styles.title(theme)}>{title}</OMGText>
@@ -40,8 +40,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: theme.colors.black3,
     alignItems: 'center',
-    padding: Styles.getResponsiveSize(20, { small: 12, medium: 16 }),
-    borderRadius: theme.roundness
+    padding: Styles.getResponsiveSize(20, { small: 12, medium: 16 })
   }),
   imageContainer: theme => ({
     width: Styles.getResponsiveSize(40, { small: 24, medium: 32 }),

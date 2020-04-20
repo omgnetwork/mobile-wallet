@@ -97,12 +97,19 @@ const Item = ({
 
   return (
     <View style={[styles.itemContainer, itemStyle]}>
-      <View style={[styles.itemSubContainer, styles.stretch]}>
-        <OMGText style={[styles.textWhite(theme), styles.textSmall]}>
+      <View style={[styles.itemSubContainer]}>
+        <OMGText
+          style={[styles.textWhite(theme), styles.textSmall, styles.stretch]}>
           {title}
         </OMGText>
+        <OMGText style={[styles.textWhite(theme), styles.textSmall]}>
+          {value} ETH
+        </OMGText>
+      </View>
+      <View style={[styles.itemSubContainer, styles.alignRight]}>
         {!!subtitle && (
           <OMGText
+            numberOfLines={2}
             style={[
               styles.textGray(theme),
               styles.textSmall,
@@ -112,22 +119,16 @@ const Item = ({
             {subtitle}
           </OMGText>
         )}
-      </View>
-      <View style={[styles.itemSubContainer, styles.alignRight]}>
         {!loading && value > 0 ? (
-          <>
-            <OMGText style={[styles.textWhite(theme), styles.textSmall]}>
-              {value} ETH
-            </OMGText>
-            <OMGText
-              style={[
-                styles.textWhite(theme),
-                styles.textSmall,
-                styles.textMargin
-              ]}>
-              {feeUsd} USD
-            </OMGText>
-          </>
+          <OMGText
+            style={[
+              styles.textWhite(theme),
+              styles.textSmall,
+              styles.textMargin,
+              styles.alignTop
+            ]}>
+            {feeUsd} USD
+          </OMGText>
         ) : (
           <OMGEmpty loading={loading} />
         )}
@@ -150,15 +151,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12
   }),
   itemContainer: {
-    flexDirection: 'row',
-    flex: 1
+    flexDirection: 'column'
   },
   itemSubContainer: {
-    flexDirection: 'column'
+    flexDirection: 'row'
   },
   alignRight: {
     marginLeft: 'auto',
     alignItems: 'flex-end'
+  },
+  alignTop: {
+    alignSelf: 'flex-start'
   },
   textWhite: theme => ({
     color: theme.colors.white
@@ -174,7 +177,8 @@ const styles = StyleSheet.create({
     letterSpacing: -0.48
   },
   textMargin: {
-    marginTop: 2
+    marginTop: 2,
+    marginRight: 8
   },
   itemMargin: {
     marginTop: 16

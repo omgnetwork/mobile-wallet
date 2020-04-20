@@ -63,7 +63,6 @@ const OMGEditItem = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    flex: 1,
     backgroundColor: theme.colors.gray7
   }),
   column: {

@@ -36,12 +36,13 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
-    padding: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
+    paddingHorizontal: 12,
+    paddingVertical: Styles.getResponsiveSize(16, { small: 8, medium: 12 }),
     alignItems: 'center'
   }),
   logo: {
-    width: Styles.getResponsiveSize(26, { small: 18, medium: 20 }),
-    height: Styles.getResponsiveSize(26, { small: 18, medium: 20 }),
+    width: Styles.getResponsiveSize(24, { small: 18, medium: 20 }),
+    height: Styles.getResponsiveSize(24, { small: 18, medium: 20 }),
     marginRight: 16
   },
   amount: theme => ({

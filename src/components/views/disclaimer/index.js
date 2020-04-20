@@ -65,7 +65,6 @@ const Disclaimer = ({ navigation, theme }) => {
 const createStyles = theme =>
   StyleSheet.create({
     container: {
-      flex: 1,
       backgroundColor: theme.colors.black5,
       flexDirection: 'column'
     },

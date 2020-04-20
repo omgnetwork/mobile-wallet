@@ -49,7 +49,7 @@ export default (TransferNavigator, TransactionHistoryNavigator) =>
             <OMGBottomTab
               type='tabBarBigIcon'
               iconName='qr'
-              iconSize={Styles.getResponsiveSize(24, { small: 20, medium: 22 })}
+              iconSize={Styles.getResponsiveSize(24, { small: 20, medium: 24 })}
             />
           ),
           tabBarOnPress: ({ navigation }) => {

@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
-    paddingVertical: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
+    paddingVertical: Styles.getResponsiveSize(16, { small: 8, medium: 12 }),
     paddingHorizontal: 12,
     alignItems: 'center'
   }),

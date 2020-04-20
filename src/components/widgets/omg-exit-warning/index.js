@@ -17,14 +17,12 @@ const OMGExitWarning = ({ theme, style }) => {
 
 const styles = StyleSheet.create({
   container: theme => ({
-    flex: 1,
     flexDirection: 'row',
     padding: 16,
     backgroundColor: theme.colors.primary,
     alignItems: 'center'
   }),
   text: theme => ({
-    flex: 1,
     fontSize: 12,
     letterSpacing: -0.48,
     color: theme.colors.white,

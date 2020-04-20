@@ -43,7 +43,7 @@ const OMGBottomTab = ({
       <View style={styles.iconBox} ref={transferRef}>
         <OMGFontIcon
           name={iconName}
-          size={Styles.getResponsiveSize(24, { small: 20, medium: 22 })}
+          size={Styles.getResponsiveSize(24, { small: 20, medium: 24 })}
           color='#92929D'
         />
       </View>

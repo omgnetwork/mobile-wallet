@@ -48,14 +48,14 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
+    paddingHorizontal: 12,
     alignItems: 'center',
-    paddingVertical: Styles.getResponsiveSize(12, { small: 6, medium: 8 })
+    paddingVertical: Styles.getResponsiveSize(10, { small: 6, medium: 8 })
   }),
   logo: {
-    width: Styles.getResponsiveSize(26, { small: 20, medium: 20 }),
-    height: Styles.getResponsiveSize(26, { small: 20, medium: 20 }),
-    marginRight: 16,
-    marginLeft: 12
+    width: Styles.getResponsiveSize(24, { small: 18, medium: 20 }),
+    height: Styles.getResponsiveSize(24, { small: 18, medium: 20 }),
+    marginRight: 16
   },
   text: theme => ({
     color: theme.colors.white,
@@ -68,8 +68,7 @@ const styles = StyleSheet.create({
   rightContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12
+    justifyContent: 'center'
   },
   errorText: theme => ({
     marginLeft: 'auto',
