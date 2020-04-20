@@ -1,6 +1,6 @@
 {
   "name": "PlasmaWallet",
-  "version": "0.4.14",
+  "version": "0.4.15",
   "private": true,
   "scripts": {
     "start": "react-native start",
@@ -9,7 +9,7 @@
     "test": "jest",
     "lint": "eslint .",
     "fix": "eslint . --fix",
-    "ios": "react-native run-ios --simulator='iPhone 11 Pro'",
+    "ios": "react-native run-ios --simulator='iPhone 11'",
     "android": "react-native run-android",
     "ios-mainnet": "ENVFILE=.env.mainnet react-native run-ios --simulator='iPhone 7'",
     "android-mainnet": "ENVFILE=.env.mainnet react-native run-android",

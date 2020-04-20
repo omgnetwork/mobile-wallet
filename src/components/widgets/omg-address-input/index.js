@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: 'center',
     paddingHorizontal: 12,
-    paddingVertical: Styles.getResponsiveSize(12, { small: 6, medium: 8 })
+    paddingVertical: Styles.getResponsiveSize(10, { small: 6, medium: 8 })
   }),
   logo: theme => ({
     width: Styles.getResponsiveSize(24, { small: 18, medium: 20 }),
