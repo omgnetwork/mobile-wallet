@@ -280,8 +280,7 @@ const styles = StyleSheet.create({
   }),
   button: (theme, isRootchain) => ({
     backgroundColor: isRootchain ? theme.colors.green2 : theme.colors.primary,
-    borderRadius: 0,
-    marginTop: 20
+    borderRadius: 0
   }),
   buttonChangeNetwork: theme => ({
     borderWidth: 1,
@@ -290,7 +289,7 @@ const styles = StyleSheet.create({
     paddingVertical: Styles.getResponsiveSize(16, { small: 8, medium: 12 }),
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: Styles.getResponsiveSize(32, { small: 24, medium: 24 })
+    marginTop: 16
   }),
   textChangeNetwork: theme => ({
     color: theme.colors.white,
@@ -337,7 +336,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }),
   cameraContainer: {
-    flex: 0.4
+    flex: Styles.getResponsiveSize(0.4, { small: 0.64, medium: 0.5 })
   },
   topContainer: {
     flex: 0.2,

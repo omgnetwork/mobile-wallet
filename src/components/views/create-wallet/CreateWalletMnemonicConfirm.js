@@ -3,7 +3,7 @@ import { withNavigation, SafeAreaView } from 'react-navigation'
 import { GoogleAnalytics } from 'common/analytics'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
-import { View, ScrollView } from 'react-native'
+import { View, ScrollView, StyleSheet } from 'react-native'
 import { walletActions, settingActions } from 'common/actions'
 import BackupMnemonicImage from './assets/backup-mnemonic.svg'
 import {
@@ -12,7 +12,7 @@ import {
   OMGTextChip,
   OMGMnemonicConfirmBox
 } from 'components/widgets'
-import { createWalletMnemonicConfirmStyles } from './styles'
+import { Styles } from 'common/utils'
 
 const shuffle = unshuffled => {
   return unshuffled
@@ -73,7 +73,7 @@ const CreateWalletMnemonicConfirm = ({
     }
   }, [dispatchSetPrimaryWallet, loading, navigation, wallet])
 
-  const styles = createWalletMnemonicConfirmStyles(theme)
+  const styles = createStyles(theme)
 
   const mnemonicPhrases = unorderedPhrases.map(text => {
     return (
@@ -116,6 +116,48 @@ const CreateWalletMnemonicConfirm = ({
     </SafeAreaView>
   )
 }
+
+const createStyles = theme =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.black3
+    },
+    contentContainer: {
+      paddingHorizontal: 16
+    },
+    image: {
+      marginTop: Styles.getResponsiveSize(32, { small: 16, medium: 16 })
+    },
+    title: {
+      color: theme.colors.white,
+      marginTop: Styles.getResponsiveSize(30, { small: 16, medium: 16 }),
+      fontSize: Styles.getResponsiveSize(18, { small: 16, medium: 16 })
+    },
+    description: {
+      color: theme.colors.white,
+      marginTop: 16,
+      fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 14 })
+    },
+    confirmBox: {
+      marginTop: 16
+    },
+    mnemonicContainer: {
+      flex: 1,
+      marginTop: 8,
+      flexDirection: 'row',
+      flexWrap: 'wrap'
+    },
+    buttonContainer: {
+      justifyContent: 'flex-end',
+      marginTop: 16,
+      marginBottom: 16
+    },
+    chip: {
+      marginRight: 8,
+      borderWidth: 1
+    }
+  })
 
 const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
