@@ -3,12 +3,13 @@ import { Dimensions } from 'react-native'
 export const getResponsiveSize = (defaultSize, { small, medium }) => {
   const widthRatio = getWidthRatio()
   const aspectRatio = getAspectRatio()
-  if (aspectRatio > 2 || widthRatio > 2.75) {
-    return defaultSize
-  } else if (widthRatio > 2.25) {
+
+  if (widthRatio <= 2.25) {
+    return small
+  } else if (widthRatio <= 2.75 && aspectRatio < 1.8) {
     return medium
   } else {
-    return small
+    return defaultSize
   }
 }
 
