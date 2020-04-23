@@ -1,5 +1,5 @@
 import { TransactionActionTypes, ContractAddress, Gas } from 'common/constants'
-import { OmgUtil, Contract } from 'common/blockchain'
+import { OmgUtil, Contract, ContractABI } from 'common/blockchain'
 import { Plasma as PlasmaClient } from 'common/clients'
 import InputDataDecoder from 'ethereum-input-data-decoder'
 import BN from 'bn.js'
@@ -128,7 +128,10 @@ export const getExitDetails = async (tx, { from, gas, gasPrice }) => {
 
 export const decodePlasmaInputMethod = input => {
   if (!plasmaInputDecoder) {
-    plasmaInputDecoder = new InputDataDecoder(Contract.getPlasmaAbi())
+    plasmaInputDecoder = new InputDataDecoder([
+      ...Contract.getPlasmaAbi(),
+      ...ContractABI.erc20Abi()
+    ])
   }
   return plasmaInputDecoder.decodeData(input).method
 }
