@@ -12,7 +12,6 @@ import { TransferHelper } from 'components/views/transfer'
 import {
   OMGStatusBar,
   OMGText,
-  OMGFontIcon,
   OMGEmpty,
   OMGBlockchainLabel,
   OMGExitComplete,
@@ -208,21 +207,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingHorizontal: 16,
     paddingBottom: 16
-  }),
-  header: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingHorizontal: 16
-  },
-  headerIcon: {
-    padding: 8,
-    marginLeft: -8
-  },
-  headerTitle: theme => ({
-    fontSize: 18,
-    color: theme.colors.white,
-    marginLeft: 8,
-    textTransform: 'uppercase'
   }),
   etherscanContainer: {
     marginTop: 30,
