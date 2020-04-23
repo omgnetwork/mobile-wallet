@@ -232,12 +232,11 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.work:work-runtime:2.3.0-alpha03'
     implementation 'io.intercom.android:intercom-sdk-base:5.+'
+    implementation jscFlavor
    if (enableHermes) {
        def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")
         releaseImplementation files(hermesPath + "hermes-release.aar")
-    } else {
-        implementation jscFlavor
     }
 }
 
