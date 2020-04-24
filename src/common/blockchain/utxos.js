@@ -122,13 +122,12 @@ export const mergeUntilThreshold = async (
   )
 }
 
-export const split = (address, privateKey, utxo, amount) => {
+export const split = (address, privateKey, utxo, amount, fee) => {
   const _metadata = 'Split UTXOs'
   const fromUtxo = { ...utxo, amount: utxo.amount.toString() }
   const { currency } = fromUtxo
   const payment = Transaction.createPayment(address, currency, amount)
   const payments = new Array(3).fill(payment)
-  const fee = Transaction.createFee(currency, 1)
   const txBody = Transaction.createBody(
     address,
     [fromUtxo],
@@ -154,7 +153,8 @@ export const splitUntilRoundZero = async (
   address,
   currency,
   privateKey,
-  rounds
+  rounds,
+  fee
 ) => {
   const utxos = await get(address, {
     currency
@@ -165,7 +165,7 @@ export const splitUntilRoundZero = async (
 
   const candidateUtxos = utxos.filter(utxo => utxo.amount >= amount)
   const splittedUtxos = candidateUtxos.map(utxo => {
-    return split(address, privateKey, utxo, amount / 10)
+    return split(address, privateKey, utxo, amount / 10, fee)
   })
   console.log('Round', rounds)
   const receipts = await Promise.all(splittedUtxos)

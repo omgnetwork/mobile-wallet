@@ -1,5 +1,5 @@
 import { plasmaService } from 'common/services'
-import { Plasma, Wait, Utxos } from 'common/blockchain'
+import { Wait, Utxos, Plasma } from 'common/blockchain'
 import BN from 'bn.js'
 import { ContractAddress } from 'common/constants'
 import Config from '../config'
@@ -32,7 +32,6 @@ describe('Test Merge UTXOs', () => {
     console.log('Number of UTXOs: ', utxos.length)
 
     const bigUtxo = utxos.sort((a, b) => b.amount.length - a.amount.length)[0]
-
     // Check if the test wallet have more than 0.1 ETH
     const shouldFund = new BN(bigUtxo.amount).lt(MINIMUM_ETH_REQUIRED)
 
@@ -51,11 +50,14 @@ describe('Test Merge UTXOs', () => {
         console.log('test wallet has been funded successfully.')
       }
 
+      const availableFees = await Plasma.getFees([ContractAddress.ETH_ADDRESS])
+      const { currency, amount } = availableFees[0]
       const newUtxos = await Utxos.splitUntilRoundZero(
         testWallet.address,
         fundedToken.contractAddress,
         testWallet.privateKey,
-        2
+        2,
+        { currency, amount }
       )
       console.log(
         `Split has done, now the wallet ${testWallet.address} has ${newUtxos.length} utxos.`
