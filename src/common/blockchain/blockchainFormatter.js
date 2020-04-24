@@ -34,9 +34,7 @@ export const formatGasFeeUsd = (
   const bigNumberGasFee = bigNumberGasPriceWei.mul(bigNumberGasUsed)
   const gasFeeString = formatUnits(bigNumberGasFee, 18)
   return Formatter.format(BigNumber.multiply(gasFeeString, usdEth), {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
+    maxDecimal: 2
   })
 }
 
@@ -53,9 +51,7 @@ export const formatProcessExitAt = datetime => {
 
 export const formatTokenBalance = (amount, maxDecimal = 18) => {
   return Formatter.format(amount, {
-    commify: true,
-    maxDecimal: maxDecimal,
-    ellipsize: false
+    maxDecimal: maxDecimal
   })
 }
 
@@ -66,35 +62,27 @@ export const formatTokenBalanceFromSmallestUnit = (
 ) => {
   const balance = formatUnits(amount.toString(), tokenDecimal)
   return Formatter.format(balance, {
-    commify: true,
-    maxDecimal: displayDecimals,
-    ellipsize: false
+    maxDecimal: displayDecimals
   })
 }
 
 export const formatTokenPrice = (amount, price = 1) => {
   const tokenPrice = BigNumber.multiply(amount, price)
   return Formatter.format(tokenPrice, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
+    maxDecimal: 2
   })
 }
 
 export const formatTotalPrice = (tokenPrice, feePrice) => {
   const totalPrice = BigNumber.plus(tokenPrice, feePrice)
   return Formatter.format(totalPrice, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
+    maxDecimal: 2
   })
 }
 
 export const formatTotalEthAmount = (token, feeAmount) => {
   const totalAmount = BigNumber.plus(token.balance, feeAmount)
   return Formatter.format(totalAmount, {
-    commify: true,
-    maxDecimal: 18,
-    ellipsize: false
+    maxDecimal: 18
   })
 }

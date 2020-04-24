@@ -131,9 +131,7 @@ const styles = StyleSheet.create({
 
 const formatTotalBalance = balance => {
   return Formatter.format(balance, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
+    maxDecimal: 2
   })
 }
 

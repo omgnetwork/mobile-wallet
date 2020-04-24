@@ -42,9 +42,7 @@ const formatFeePrice = (amount, price) => {
   const parsedAmount = parseFloat(amount)
   const tokenPrice = parsedAmount * price
   return Formatter.format(tokenPrice, {
-    commify: true,
-    maxDecimal: 2,
-    ellipsize: false
+    maxDecimal: 2
   })
 }
 
