@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGTokenIcon, OMGText, OMGTextInput } from 'components/widgets'
+import { Styles } from 'common/utils'
 
 const OMGAmountInput = ({
   theme,
@@ -17,7 +18,11 @@ const OMGAmountInput = ({
   return (
     <Fragment>
       <View style={{ ...styles.container(theme), ...style }}>
-        <OMGTokenIcon style={styles.logo} token={token} size={18} />
+        <OMGTokenIcon
+          style={styles.logo}
+          token={token}
+          size={Styles.getResponsiveSize(18, { small: 14, medium: 16 })}
+        />
         <OMGTextInput
           style={styles.text(theme)}
           placeholder='00.00'
@@ -47,36 +52,36 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
-    alignItems: 'center'
+    paddingHorizontal: 12,
+    alignItems: 'center',
+    paddingVertical: Styles.getResponsiveSize(10, { small: 6, medium: 8 })
   }),
   logo: {
-    width: 26,
-    height: 26,
-    marginRight: 16,
-    marginLeft: 12
+    width: Styles.getResponsiveSize(24, { small: 18, medium: 20 }),
+    height: Styles.getResponsiveSize(24, { small: 18, medium: 20 }),
+    marginRight: 16
   },
   text: theme => ({
     color: theme.colors.white,
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     letterSpacing: -0.64,
     flex: 1,
     textAlign: 'right',
     marginRight: 12
   }),
   rightContainer: {
-    height: 50,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12
+    justifyContent: 'center'
   },
   errorText: theme => ({
     marginLeft: 'auto',
     color: theme.colors.red,
-    marginTop: 8
+    marginTop: 8,
+    fontSize: Styles.getResponsiveSize(14, { small: 10, medium: 12 })
   }),
   symbol: theme => ({
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     letterSpacing: -0.64,
     color: theme.colors.gray6
   })

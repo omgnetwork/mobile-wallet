@@ -5,6 +5,7 @@ import OMGTextInput from '../omg-text-input'
 import OMGText from '../omg-text'
 import ScanQRIcon from './assets/scan-qr-icon.svg'
 import OMGIdenticon from '../omg-identicon'
+import { Styles } from 'common/utils'
 
 const OMGAddressInput = ({
   theme,
@@ -33,7 +34,7 @@ const OMGAddressInput = ({
       <View style={{ ...styles.container(theme), ...style }}>
         <OMGIdenticon
           style={styles.logo(theme)}
-          size={24}
+          size={Styles.getResponsiveSize(24, { small: 18, medium: 20 })}
           hash={inputRef.current}
         />
         <OMGTextInput
@@ -54,10 +55,12 @@ const OMGAddressInput = ({
               Paste
             </OMGText>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={onPressScanQR}
-            style={styles.scanQRIcon(theme)}>
-            <ScanQRIcon fill={theme.colors.blue} />
+          <TouchableOpacity onPress={onPressScanQR}>
+            <ScanQRIcon
+              fill={theme.colors.blue}
+              width={Styles.getResponsiveSize(24, { small: 16, medium: 20 })}
+              height={Styles.getResponsiveSize(24, { small: 16, medium: 20 })}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -75,43 +78,41 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: Styles.getResponsiveSize(10, { small: 6, medium: 8 })
   }),
   logo: theme => ({
-    width: 24,
-    height: 24,
+    width: Styles.getResponsiveSize(24, { small: 18, medium: 20 }),
+    height: Styles.getResponsiveSize(24, { small: 18, medium: 20 }),
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: theme.colors.gray,
     marginRight: 16,
     borderWidth: 1,
-    borderRadius: theme.roundness,
-    marginVertical: 12,
-    marginLeft: 12
+    borderRadius: theme.roundness
   }),
   text: theme => ({
     color: theme.colors.white,
-    fontSize: 14,
+    fontSize: Styles.getResponsiveSize(14, { small: 10, medium: 12 }),
     flex: 1
   }),
   textPaste: theme => ({
     color: theme.colors.blue,
     letterSpacing: -0.48,
     marginRight: 20,
-    fontSize: 12
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 })
   }),
   errorText: theme => ({
     color: theme.colors.red,
-    marginTop: 8
+    marginTop: 8,
+    fontSize: Styles.getResponsiveSize(14, { small: 10, medium: 12 })
   }),
   rightContainer: theme => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 16
-  }),
-  scanQRIcon: theme => ({
-    marginRight: 12
   })
 })
 

@@ -97,39 +97,50 @@ const Item = ({
 
   return (
     <View style={[styles.itemContainer, itemStyle]}>
-      <View style={[styles.itemSubContainer, styles.stretch]}>
-        <OMGText style={[styles.textWhite(theme), styles.textSmall]}>
+      <View style={[styles.itemSubContainer]}>
+        <OMGText
+          style={[styles.textWhite(theme), styles.textSmall, styles.stretch]}>
           {title}
         </OMGText>
+        {!loading && value > 0 ? (
+          <OMGText style={[styles.textWhite(theme), styles.textSmall]}>
+            {value} ETH
+          </OMGText>
+        ) : (
+          <OMGEmpty
+            loading={loading}
+            style={[styles.alignRight, styles.marginSmall]}
+          />
+        )}
+      </View>
+      <View style={[styles.itemSubContainer, styles.alignRight]}>
         {!!subtitle && (
           <OMGText
+            numberOfLines={2}
             style={[
               styles.textGray(theme),
               styles.textSmall,
-              styles.textMargin,
+              styles.marginSmall,
               styles.stretch
             ]}>
             {subtitle}
           </OMGText>
         )}
-      </View>
-      <View style={[styles.itemSubContainer, styles.alignRight]}>
         {!loading && value > 0 ? (
-          <>
-            <OMGText style={[styles.textWhite(theme), styles.textSmall]}>
-              {value} ETH
-            </OMGText>
-            <OMGText
-              style={[
-                styles.textWhite(theme),
-                styles.textSmall,
-                styles.textMargin
-              ]}>
-              {feeUsd} USD
-            </OMGText>
-          </>
+          <OMGText
+            style={[
+              styles.textWhite(theme),
+              styles.textSmall,
+              styles.marginSmall,
+              styles.alignTop
+            ]}>
+            {feeUsd} USD
+          </OMGText>
         ) : (
-          <OMGEmpty loading={loading} />
+          <OMGEmpty
+            loading={loading}
+            style={[styles.alignRight, styles.marginSmall]}
+          />
         )}
       </View>
     </View>
@@ -150,15 +161,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12
   }),
   itemContainer: {
-    flexDirection: 'row',
-    flex: 1
+    flexDirection: 'column'
   },
   itemSubContainer: {
-    flexDirection: 'column'
+    flexDirection: 'row'
   },
   alignRight: {
     marginLeft: 'auto',
     alignItems: 'flex-end'
+  },
+  alignTop: {
+    alignSelf: 'flex-start'
   },
   textWhite: theme => ({
     color: theme.colors.white
@@ -173,14 +186,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     letterSpacing: -0.48
   },
-  textMargin: {
-    marginTop: 2
-  },
   itemMargin: {
     marginTop: 16
   },
   hyperlinkButton: {
     marginTop: 10
+  },
+  marginSmall: {
+    marginTop: 2
   },
   hyperlinkText: theme => ({
     color: theme.colors.blue,

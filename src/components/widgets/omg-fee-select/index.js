@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import OMGText from '../omg-text'
 import OMGFontIcon from '../omg-font-icon'
 import { withTheme } from 'react-native-paper'
-import { Formatter } from 'common/utils'
+import { Formatter, Styles } from 'common/utils'
 
 const OMGFeeSelect = ({ style, onPress, fee, theme }) => {
   return (
@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
     paddingVertical: 16,
     borderRadius: theme.roundness
   }),
@@ -66,7 +65,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   feeSpeed: theme => ({
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     color: theme.colors.white,
     letterSpacing: -0.64
   }),
@@ -78,7 +77,7 @@ const styles = StyleSheet.create({
   }),
   feeAmount: theme => ({
     textAlign: 'right',
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     color: theme.colors.white,
     letterSpacing: -0.48
   }),

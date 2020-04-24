@@ -195,7 +195,7 @@ const mapRootchainTransactionType = (tx, address, standardExitBondSize) => {
       return TransactionTypes.TYPE_DEPOSIT
     case 'approve':
       return TransactionTypes.TYPE_APPROVE_ERC20
-    case 'addToken':
+    case 'addExitQueue':
       return TransactionTypes.TYPE_PLASMA_ADD_TOKEN
     default:
       if (Transaction.shouldExcludeFromTxHistory(tx, standardExitBondSize)) {

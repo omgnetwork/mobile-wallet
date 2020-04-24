@@ -5,6 +5,7 @@ import { ethereumActions } from 'common/actions'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { OMGEmpty, OMGFeeSelect, OMGText } from 'components/widgets'
+import { Styles } from 'common/utils'
 
 const TransferSelectFee = ({
   theme,
@@ -50,9 +51,7 @@ const TransferSelectFee = ({
         ListEmptyComponent={
           <OMGEmpty text='Empty fees' loading={loadingFees} />
         }
-        contentContainerStyle={
-          gasOptions.length ? styles.listContainer : styles.emptyContainer
-        }
+        contentContainerStyle={gasOptions.length ? {} : styles.emptyContainer}
         renderItem={({ item }) => (
           <OMGFeeSelect
             key={item.speed}
@@ -73,23 +72,20 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingVertical: Styles.getResponsiveSize(16, { small: 8, medium: 12 }),
     backgroundColor: theme.colors.black5
   }),
   headerTitle: theme => ({
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     color: theme.colors.gray2,
     marginTop: 8,
-    marginLeft: 8,
     textTransform: 'uppercase'
   }),
   divider: theme => ({
     backgroundColor: theme.colors.black2,
     height: 1
   }),
-  listContainer: {
-    marginTop: 16
-  },
   emptyContainer: {
     flexGrow: 1,
     justifyContent: 'center'

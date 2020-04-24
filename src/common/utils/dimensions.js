@@ -1,4 +1,5 @@
 import { Dimensions, StatusBar, Platform } from 'react-native'
+import * as Styles from './styles'
 const X_WIDTH = 375
 const X_HEIGHT = 812
 
@@ -15,7 +16,10 @@ export const windowHeight =
     ? Math.round(Dimensions.get('window').height - StatusBar.currentHeight)
     : Math.round(Dimensions.get('window').height)
 
-export const bottomBarHeight = 88
+export const bottomBarHeight = Styles.getResponsiveSize(88, {
+  small: 72,
+  medium: 80
+})
 
 if (Platform.OS === 'ios' && !Platform.isPad && !Platform.isTVOS) {
   isIPhoneX =

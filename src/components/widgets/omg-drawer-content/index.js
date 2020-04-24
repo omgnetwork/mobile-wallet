@@ -9,6 +9,7 @@ import OMGDrawerWallet from './OMGDrawerWallet'
 import { settingActions, onboardingActions } from 'common/actions'
 import { ScrollView } from 'react-native-gesture-handler'
 import Intercom from 'react-native-intercom'
+import { Styles } from 'common/utils'
 
 const ManageWalletMenu = ({
   theme,
@@ -181,8 +182,11 @@ const menuStyles = StyleSheet.create({
   },
   titleLeft: theme => ({
     flex: 1,
-    fontSize: 16,
-    letterSpacing: -0.64,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+    letterSpacing: Styles.getResponsiveSize(-0.64, {
+      small: -0.32,
+      medium: -0.48
+    }),
     color: theme.colors.gray7
   }),
   iconRight: {}
@@ -192,7 +196,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingLeft: 16,
-    paddingTop: 32
+    paddingTop: Styles.getResponsiveSize(32, { small: 16, medium: 24 })
   },
   divider: theme => ({
     backgroundColor: theme.colors.white2,
@@ -204,12 +208,12 @@ const styles = StyleSheet.create({
   },
   settingContainer: {
     flex: 1,
-    marginTop: 16,
+    marginTop: Styles.getResponsiveSize(16, { small: 0, medium: 8 }),
     paddingRight: 16,
     flexDirection: 'column'
   },
   titleText: theme => ({
-    fontSize: 18,
+    fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
     textTransform: 'uppercase',
     color: theme.colors.black5,
     marginTop: 12
@@ -223,8 +227,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   environment: {
-    marginBottom: 24,
-    marginTop: 32
+    marginBottom: Styles.getResponsiveSize(24, { small: 16, medium: 20 }),
+    marginTop: Styles.getResponsiveSize(32, { small: 16, medium: 24 })
   },
   environmentTitleText: theme => ({
     color: theme.colors.gray4,
@@ -233,8 +237,11 @@ const styles = StyleSheet.create({
     paddingBottom: 8
   }),
   environmentItemText: theme => ({
-    fontSize: 16,
-    letterSpacing: -0.64,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+    letterSpacing: Styles.getResponsiveSize(-0.64, {
+      small: -0.32,
+      medium: -0.48
+    }),
     color: theme.colors.gray5
   }),
   environmentItemTextLighter: theme => ({

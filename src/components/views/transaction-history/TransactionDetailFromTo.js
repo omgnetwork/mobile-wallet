@@ -5,6 +5,7 @@ import { BlockchainFormatter, Transaction } from 'common/blockchain'
 import Config from 'react-native-config'
 import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
 import PlasmaContractIcon from './assets/ic-plasma-contract.svg'
+import { Styles } from 'common/utils'
 
 const TransactionDetailFromTo = ({ theme, tx, style }) => {
   const { network, from, to, value, tokenSymbol, tokenDecimal, type } = tx
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
   }),
   title: theme => ({
     color: theme.colors.white,
-    fontSize: 12,
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
     textTransform: 'uppercase',
     marginBottom: 16
   }),
@@ -111,13 +112,19 @@ const styles = StyleSheet.create({
     marginLeft: 6
   },
   detailItemAddressText: theme => ({
-    fontSize: 16,
-    letterSpacing: -0.64,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+    letterSpacing: Styles.getResponsiveSize(-0.64, {
+      small: -0.32,
+      medium: -0.48
+    }),
     color: theme.colors.white
   }),
   detailItemValueText: theme => ({
-    fontSize: 16,
-    letterSpacing: -0.64,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+    letterSpacing: Styles.getResponsiveSize(-0.64, {
+      small: -0.32,
+      medium: -0.48
+    }),
     color: theme.colors.gray6
   }),
   marginTopMedium: {

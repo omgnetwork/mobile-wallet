@@ -4,6 +4,7 @@ import { withTheme } from 'react-native-paper'
 import { OMGText } from 'components/widgets'
 import { TransferHelper } from 'components/views/transfer'
 import { IconEth, IconGo } from './assets'
+import { Styles } from 'common/utils'
 
 const OMGBlockchainLabel = ({ theme, actionText, transferType, style }) => {
   const isEthereumRootchain =
@@ -33,7 +34,7 @@ const OMGBlockchainLabel = ({ theme, actionText, transferType, style }) => {
 const styles = StyleSheet.create({
   container: (theme, isRootchain) => ({
     backgroundColor: isRootchain ? theme.colors.green2 : theme.colors.primary,
-    paddingVertical: 11,
+    paddingVertical: Styles.getResponsiveSize(11, { small: 8, medium: 10 }),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center'
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
   text: (theme, isEthereumRootchain) => ({
     marginLeft: 16,
     color: isEthereumRootchain ? theme.colors.black5 : theme.colors.white,
-    fontSize: 12
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 })
   })
 })
 

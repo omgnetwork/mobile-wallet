@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGEmpty, OMGText } from 'components/widgets'
 import { IconEth, IconGo } from './assets'
+import { Styles } from 'common/utils'
 
 const OMGAssetHeader = ({
   theme,
@@ -30,8 +31,16 @@ const OMGAssetHeader = ({
       <View style={styles.footer}>
         <BlockchainIcon
           fill={theme.colors.gray2}
-          width={rootchain ? 14 : 57.963}
-          height={rootchain ? 23 : 18}
+          width={
+            rootchain
+              ? Styles.getResponsiveSize(14, { small: 10, medium: 12 })
+              : Styles.getResponsiveSize(58, { small: 40, medium: 46 })
+          }
+          height={
+            rootchain
+              ? Styles.getResponsiveSize(23, { small: 16, medium: 20 })
+              : Styles.getResponsiveSize(18, { small: 13, medium: 14 })
+          }
         />
         <OMGText style={styles.textChain(theme)}>
           {rootchain ? 'Ethereum Rootchain' : 'Plasma Childchain'}
@@ -52,7 +61,8 @@ const styles = StyleSheet.create({
   }),
   balance: {
     flexDirection: 'row',
-    padding: 20
+    paddingHorizontal: Styles.getResponsiveSize(20, { small: 12, medium: 16 }),
+    paddingVertical: Styles.getResponsiveSize(20, { small: 12, medium: 16 })
   },
   loading: {
     flex: 1,
@@ -63,28 +73,28 @@ const styles = StyleSheet.create({
   balanceAmount: theme => ({
     flex: 1,
     textAlign: 'left',
-    fontSize: 32,
-    letterSpacing: -3,
+    fontSize: Styles.getResponsiveSize(32, { small: 18, medium: 24 }),
+    letterSpacing: Styles.getResponsiveSize(-3, { small: -1, medium: -2 }),
     color: theme.colors.white
   }),
   balanceCurrency: theme => ({
     color: theme.colors.white3,
-    fontSize: 32
+    fontSize: Styles.getResponsiveSize(32, { small: 18, medium: 24 })
   }),
   footer: {
     flexDirection: 'row',
-    marginHorizontal: 20,
+    paddingHorizontal: Styles.getResponsiveSize(20, { small: 12, medium: 16 }),
     alignItems: 'center'
   },
   textChain: theme => ({
     flex: 1,
-    fontSize: 12,
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
     marginLeft: 20,
     letterSpacing: -0.7,
     color: theme.colors.gray2
   }),
   textNetwork: theme => ({
-    fontSize: 12,
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
     marginLeft: 6,
     textTransform: 'capitalize',
     color: theme.colors.gray2

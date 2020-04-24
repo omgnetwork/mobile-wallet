@@ -2,6 +2,7 @@ import React from 'react'
 import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGFontIcon, OMGText, OMGEmpty } from 'components/widgets'
+import { Styles } from 'common/utils'
 
 const OMGFeeInput = ({ theme, fee, loading, style, onPress }) => {
   return (
@@ -36,16 +37,18 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.gray4,
     borderRadius: theme.roundness,
     borderWidth: 1,
-    padding: 12,
+    paddingVertical: Styles.getResponsiveSize(16, { small: 8, medium: 12 }),
+    paddingHorizontal: 12,
     alignItems: 'center'
   }),
   amount: theme => ({
     color: theme.colors.gray8,
-    marginRight: 10
+    marginRight: 10,
+    fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 12 })
   }),
   text: theme => ({
     color: theme.colors.white,
-    fontSize: 14,
+    fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 12 }),
     flex: 1
   }),
   rightContainer: {

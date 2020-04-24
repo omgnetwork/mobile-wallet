@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { OMGTextInput, OMGText } from 'components/widgets'
+import { Styles } from 'common/utils'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 
@@ -64,7 +65,8 @@ const styles = StyleSheet.create({
   }),
   text: (theme, disabled) => ({
     color: theme.colors.white,
-    backgroundColor: theme.colors.black3
+    backgroundColor: theme.colors.black3,
+    fontSize: Styles.getResponsiveSize(14, { small: 11, medium: 12 })
   })
 })
 

@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGText, OMGTransactionList } from 'components/widgets'
 import { TransactionTypes } from 'common/constants'
-import { Mapper } from 'common/utils'
+import { Mapper, Styles } from 'common/utils'
 
 const OMGTransactionFilter = ({
   types,
@@ -92,15 +92,15 @@ const selectTransactionsByType = (type, transactions, startedExitTxs) => {
 
 const styles = StyleSheet.create({
   optionContainer: {
-    marginTop: 16,
-    marginBottom: 16,
+    marginTop: Styles.getResponsiveSize(16, { small: 8, medium: 12 }),
+    marginBottom: Styles.getResponsiveSize(16, { small: 8, medium: 12 }),
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
   },
   option: (theme, active) => ({
     backgroundColor: active ? theme.colors.gray4 : theme.colors.black3,
-    paddingVertical: 8,
+    paddingVertical: Styles.getResponsiveSize(8, { small: 6, medium: 6 }),
     paddingHorizontal: 30,
     justifyContent: 'center',
     alignItems: 'center',

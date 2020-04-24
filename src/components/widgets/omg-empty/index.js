@@ -15,7 +15,7 @@ const OMGEmpty = ({
 }) => {
   const EmptyImage = EmptyImages[imageName]
   return (
-    <View style={{ ...styles.container, ...style }}>
+    <View style={[styles.container, style]}>
       {loading ? (
         <ActivityIndicator color={loadingColor} />
       ) : (

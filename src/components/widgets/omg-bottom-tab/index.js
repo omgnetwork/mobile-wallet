@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { onboardingActions } from 'common/actions'
 import { usePositionMeasurement } from 'common/hooks'
-import { Dimensions } from 'common/utils'
+import { Dimensions, Styles } from 'common/utils'
 
 const OMGBottomTab = ({
   type,
@@ -41,7 +41,11 @@ const OMGBottomTab = ({
   } else if (type === 'tabBarBigIcon') {
     return (
       <View style={styles.iconBox} ref={transferRef}>
-        <OMGFontIcon name={iconName} size={24} color='#92929D' />
+        <OMGFontIcon
+          name={iconName}
+          size={Styles.getResponsiveSize(24, { small: 20, medium: 24 })}
+          color='#92929D'
+        />
       </View>
     )
   } else if (type === 'tabBarIcon') {
@@ -68,10 +72,10 @@ const styles = StyleSheet.create({
     opacity: focused ? 1.0 : 0.7
   }),
   iconBox: {
-    width: 48,
-    height: 48,
-    padding: 12,
-    borderRadius: 24,
+    width: Styles.getResponsiveSize(48, { small: 36, medium: 40 }),
+    height: Styles.getResponsiveSize(48, { small: 36, medium: 40 }),
+    padding: Styles.getResponsiveSize(12, { small: 8, medium: 8 }),
+    borderRadius: Styles.getResponsiveSize(24, { small: 20, medium: 20 }),
     backgroundColor: '#36363E'
   }
 })

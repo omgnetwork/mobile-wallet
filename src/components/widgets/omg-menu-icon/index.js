@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import OMGText from '../omg-text'
 import OMGFontIcon from '../omg-font-icon'
+import { Styles } from 'common/utils'
 import { withTheme } from 'react-native-paper'
 
 const OMGMenuIcon = ({
@@ -25,7 +26,11 @@ const OMGMenuIcon = ({
         <OMGText style={styles.title(theme)}>{title}</OMGText>
         <OMGText style={styles.description(theme)}>{description}</OMGText>
       </View>
-      <OMGFontIcon name='chevron-right' size={24} color={theme.colors.white} />
+      <OMGFontIcon
+        name='chevron-right'
+        size={Styles.getResponsiveSize(24, { small: 16, medium: 20 })}
+        color={theme.colors.white}
+      />
     </TouchableOpacity>
   )
 }
@@ -35,13 +40,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: theme.colors.black3,
     alignItems: 'center',
-    padding: 20,
-    borderRadius: theme.roundness
+    padding: Styles.getResponsiveSize(20, { small: 12, medium: 16 })
   }),
   imageContainer: theme => ({
-    width: 40,
-    height: 40,
-    padding: 10,
+    width: Styles.getResponsiveSize(40, { small: 24, medium: 32 }),
+    height: Styles.getResponsiveSize(40, { small: 24, medium: 32 }),
+    padding: Styles.getResponsiveSize(10, { small: 4, medium: 6 }),
     borderRadius: 4,
     borderWidth: 1,
     borderColor: theme.colors.white
@@ -53,13 +57,13 @@ const styles = StyleSheet.create({
     marginLeft: 16
   },
   title: theme => ({
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     letterSpacing: -0.64,
     color: theme.colors.white
   }),
   description: theme => ({
     color: theme.colors.gray6,
-    fontSize: 12
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 })
   })
 })
 

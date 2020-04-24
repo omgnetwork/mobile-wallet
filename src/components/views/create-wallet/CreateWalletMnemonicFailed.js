@@ -17,12 +17,6 @@ const CreateWalletMnemonicFailed = ({ theme, navigation }) => {
       </OMGText>
       <View style={styles.buttonContainer}>
         <OMGButton onPress={() => navigation.goBack()}>Retry</OMGButton>
-        <OMGButton
-          onPress={() => navigation.navigate('ManageWallet')}
-          style={styles.btnCancel(theme)}
-          textStyle={styles.btnCancelTextStyle(theme)}>
-          Cancel
-        </OMGButton>
       </View>
     </SafeAreaView>
   )

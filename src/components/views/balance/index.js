@@ -4,7 +4,7 @@ import { StyleSheet, Linking, View, StatusBar } from 'react-native'
 import { SafeAreaView, withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
-import { Dimensions } from 'common/utils'
+import { Dimensions, Styles } from 'common/utils'
 import { usePositionMeasurement } from 'common/hooks'
 import RootchainBalance from './RootchainBalance'
 import ChildchainBalance from './ChildchainBalance'
@@ -171,7 +171,7 @@ const Balance = ({
           </OMGText>
           <OMGFontIcon
             style={styles.topIconRight}
-            size={24}
+            size={Styles.getResponsiveSize(24, { small: 18, medium: 20 })}
             name='hamburger'
             onPress={() => drawerNavigation.openDrawer()}
             color={theme.colors.white}
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12
   },
   topTitleLeft: theme => ({
-    fontSize: 18,
+    fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
     marginBottom: 16,
     textTransform: 'uppercase',
     color: theme.colors.white

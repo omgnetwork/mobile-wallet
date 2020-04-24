@@ -1,7 +1,8 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { TouchableOpacity, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGText } from 'components/widgets'
+import { Styles } from 'common/utils'
 
 const OMGTextChip = ({ theme, text, style, onPress }) => {
   return (
@@ -15,9 +16,9 @@ const OMGTextChip = ({ theme, text, style, onPress }) => {
 
 const styles = StyleSheet.create({
   container: theme => ({
-    width: 104,
+    width: '30%',
     backgroundColor: theme.colors.black5,
-    paddingVertical: 16,
+    paddingVertical: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     paddingHorizontal: 8,
     marginTop: 8,
     borderWidth: 1,
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
   }),
   text: theme => ({
     color: theme.colors.white,
-    fontSize: 18,
+    fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
     letterSpacing: -0.72,
     textTransform: 'capitalize'
   })

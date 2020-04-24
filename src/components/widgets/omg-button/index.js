@@ -1,13 +1,14 @@
 import React, { useRef, Fragment, useEffect } from 'react'
 import {
   TouchableOpacity,
-  StyleSheet,
   Animated,
-  ActivityIndicator
+  ActivityIndicator,
+  StyleSheet
 } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { Push, Fade } from 'common/anims'
 import OMGText from '../omg-text'
+import { Styles } from 'common/utils'
 
 const OMGButton = ({
   disabled,
@@ -19,9 +20,9 @@ const OMGButton = ({
   loading,
   theme
 }) => {
-  const opacity = disabled || loading ? styles.inactive : styles.active
-  const scale = useRef(new Animated.Value(1.0))
   const fade = useRef(new Animated.Value(1.0))
+  const scale = useRef(new Animated.Value(1.0))
+  const opacity = disabled || loading ? styles.inactive : styles.active
 
   const textLayout = loading ? (
     <Fragment>
@@ -63,7 +64,8 @@ const OMGButton = ({
       onPress={onPress}
       onPressIn={() => Push.In(scale.current)}
       onPressOut={() => Push.Out(scale.current)}>
-      <Animated.View style={styles.contentContainer(fade)}>
+      <Animated.View
+        style={[styles.contentContainer, { opacity: fade.current }]}>
         {textLayout}
       </Animated.View>
     </TouchableOpacity>
@@ -79,7 +81,7 @@ const styles = StyleSheet.create({
   text: theme => ({
     color: theme.colors.black2,
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     textTransform: 'uppercase'
   }),
   container: theme => ({
@@ -91,11 +93,10 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     flexDirection: 'row'
   }),
-  contentContainer: fade => ({
-    opacity: fade.current,
+  contentContainer: {
     flexDirection: 'row',
     alignItems: 'center'
-  }),
+  },
   inactive: {
     opacity: 0.5
   },

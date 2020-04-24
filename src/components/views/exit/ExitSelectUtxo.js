@@ -5,6 +5,7 @@ import { Plasma, BlockchainFormatter, Utxos } from 'common/blockchain'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { OMGEmpty, OMGText, OMGUtxoSelect, OMGButton } from 'components/widgets'
+import { Styles } from 'common/utils'
 
 const ExitSelectUtxo = ({ theme, primaryWallet, navigation }) => {
   const token = navigation.getParam('token')
@@ -95,12 +96,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16
   }),
   title: theme => ({
-    fontSize: 16,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     textTransform: 'uppercase',
     color: theme.colors.gray2
   }),
   description: theme => ({
-    fontSize: 12,
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 12 }),
     marginTop: 8,
     color: theme.colors.gray2,
     letterSpacing: -0.48

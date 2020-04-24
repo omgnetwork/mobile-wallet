@@ -55,12 +55,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
     fontSize: 16
   }),
-  mnemonicContainer: {
-    flex: 1,
-    marginTop: 30,
-    flexDirection: 'row',
-    flexWrap: 'wrap'
-  },
   buttonContainer: {
     flex: 1,
     justifyContent: 'flex-end'

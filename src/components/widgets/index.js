@@ -21,6 +21,7 @@ import OMGExitWarning from './omg-exit-warning'
 import OMGFeeInput from './omg-fee-input'
 import OMGFeeSelect from './omg-fee-select'
 import OMGFeeTokenInput from './omg-fee-token-input'
+import OMGHeader from './omg-header'
 import OMGMenu from './omg-menu'
 import OMGMenuIcon from './omg-menu-icon'
 import OMGMenuImage from './omg-menu-image'
@@ -86,6 +87,7 @@ export {
   OMGFeeSelect,
   OMGFeeTokenInput,
   OMGFontIcon,
+  OMGHeader,
   OMGIdenticon,
   OMGImage,
   OMGItemWallet,

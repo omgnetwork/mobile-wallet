@@ -12,10 +12,10 @@ import { TransferHelper } from 'components/views/transfer'
 import {
   OMGStatusBar,
   OMGText,
-  OMGFontIcon,
   OMGEmpty,
   OMGBlockchainLabel,
-  OMGExitComplete
+  OMGExitComplete,
+  OMGHeader
 } from 'components/widgets'
 import Config from 'react-native-config'
 import { Validator } from 'common/blockchain'
@@ -177,18 +177,7 @@ const TransactionDetail = ({ navigation, theme }) => {
         barStyle={'light-content'}
         backgroundColor={theme.colors.black5}
       />
-      <View style={styles.header}>
-        <OMGFontIcon
-          name='chevron-left'
-          size={18}
-          color={theme.colors.white}
-          style={styles.headerIcon}
-          onPress={() => navigation.goBack()}
-        />
-        <OMGText style={styles.headerTitle(theme)} weight='regular'>
-          {title}
-        </OMGText>
-      </View>
+      <OMGHeader title={title} onPress={() => navigation.goBack()} />
       {transaction ? renderTransactionDetail() : renderTransactionLoading()}
     </SafeAreaView>
   )
@@ -218,21 +207,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingHorizontal: 16,
     paddingBottom: 16
-  }),
-  header: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingHorizontal: 16
-  },
-  headerIcon: {
-    padding: 8,
-    marginLeft: -8
-  },
-  headerTitle: theme => ({
-    fontSize: 18,
-    color: theme.colors.white,
-    marginLeft: 8,
-    textTransform: 'uppercase'
   }),
   etherscanContainer: {
     marginTop: 30,

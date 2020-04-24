@@ -35,14 +35,16 @@ const OMGTokenIcon = ({ token, theme, style, size }) => {
     return <OMGEmpty loading={true} />
   }
 
+  const iconContainerSize = size + 8
+
   return isError ? (
     <OMGIdenticon
       hash={contractAddressChecksum}
-      size={style?.width || 40}
-      style={[styles.iconFallback(theme), style]}
+      size={style?.width || iconContainerSize}
+      style={[styles.iconFallback(theme, iconContainerSize), style]}
     />
   ) : (
-    <View style={[styles.icon(theme), style]}>
+    <View style={[styles.icon(theme, iconContainerSize), style]}>
       <Image
         style={styles.innerIcon(size)}
         source={{
@@ -58,15 +60,15 @@ const OMGTokenIcon = ({ token, theme, style, size }) => {
 }
 
 const styles = {
-  iconFallback: theme => ({
-    width: 40,
-    height: 40,
+  iconFallback: (theme, iconContainerSize) => ({
+    width: iconContainerSize,
+    height: iconContainerSize,
     borderRadius: theme.roundness,
     backgroundColor: theme.colors.white
   }),
-  icon: theme => ({
-    width: 40,
-    height: 40,
+  icon: (theme, iconContainerSize) => ({
+    width: iconContainerSize,
+    height: iconContainerSize,
     borderRadius: theme.roundness,
     backgroundColor: theme.colors.white,
     alignItems: 'center',

@@ -7,8 +7,7 @@ import {
   OMGButton,
   OMGEmpty,
   OMGTokenSelect,
-  OMGFontIcon,
-  OMGText
+  OMGHeader
 } from 'components/widgets'
 import { TransferHelper } from 'components/views/transfer'
 import {
@@ -46,20 +45,7 @@ const TransferSelectBalance = ({
 
   return (
     <SafeAreaView style={styles.container(theme)}>
-      <View style={styles.header}>
-        <OMGFontIcon
-          name='chevron-left'
-          size={18}
-          color={theme.colors.white}
-          style={styles.headerIcon}
-          onPress={() => {
-            navigation.goBack()
-          }}
-        />
-        <OMGText weight='regular' style={styles.headerTitle(theme)}>
-          Select Balance
-        </OMGText>
-      </View>
+      <OMGHeader title='Select Balance' onPress={() => navigation.goBack()} />
       <FlatList
         data={assets || []}
         keyExtractor={item => item.contractAddress}
@@ -75,7 +61,6 @@ const TransferSelectBalance = ({
         renderItem={({ item }) => (
           <OMGTokenSelect
             key={item.contractAddress}
-            style={{ marginTop: 8 }}
             token={item}
             onPress={() => {
               setToken(item)
@@ -110,25 +95,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: theme.colors.black5
   }),
-  header: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginLeft: 16,
-    marginTop: 8
-  },
-  headerIcon: {
-    padding: 8,
-    marginLeft: -8
-  },
-  headerTitle: theme => ({
-    fontSize: 18,
-    color: theme.colors.white,
-    marginLeft: 8,
-    alignSelf: 'center',
-    textTransform: 'uppercase'
-  }),
   listContainer: {
-    marginTop: 24,
     paddingHorizontal: 16
   },
   buttonContainer: {

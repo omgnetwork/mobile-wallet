@@ -4,19 +4,15 @@ import QRCodeScanner from 'react-native-qrcode-scanner'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import Svg, { Rect, Path } from 'react-native-svg'
-import { Dimensions } from 'common/utils'
 import { OMGText } from 'components/widgets'
-
-const SCREEN_WIDTH = Dimensions.windowWidth
-export const CONTAINER_WIDTH = Math.round(SCREEN_WIDTH * 0.68)
 
 const OMGQRScanner = props => {
   const {
     reactivate,
-    renderTop,
-    renderBottom,
+    size,
     borderColor,
     rootchain,
+    onReceiveQR,
     borderStrokeWidth,
     cameraRef,
     renderUnconfirmedTx,
@@ -31,10 +27,11 @@ const OMGQRScanner = props => {
   const shouldRenderEmptyView =
     (rootchain && !hasRootchainAssets) || (!rootchain && !hasChildchainAssets)
   const renderQRMarker = (
-    <View style={styles.qrMarkerContainer}>
+    <View style={styles.qrMarkerContainer(size)}>
       <QRMarker
         borderColor={borderColor}
         borderStrokeWidth={borderStrokeWidth}
+        size={size}
       />
     </View>
   )
@@ -76,12 +73,15 @@ const OMGQRScanner = props => {
 
   return (
     <QRCodeScanner
-      {...props}
       cameraProps={{
         useCamera2Api: false,
-        androidCameraPermissionOptions: null
+        androidCameraPermissionOptions: null,
+        ratio: '1:1'
       }}
       ref={cameraRef}
+      onReceiveQR={onReceiveQR}
+      cameraStyle={{ width: size, height: size }}
+      containerStyle={{ width: size, height: size }}
       reactivate={reactivate}
       onRead={handleOnRead}
       pendingAuthorizationView={
@@ -89,28 +89,20 @@ const OMGQRScanner = props => {
           <OMGText style={styles.loadingText(theme)}>Loading...</OMGText>
         </View>
       }
-      customMarker={
-        <View style={styles.contentContainer(theme)}>
-          <View style={styles.topContainer(theme)}>
-            <View style={styles.renderContainer}>{renderTop}</View>
-          </View>
-          <View style={styles.scannerContainer}>
-            <View style={styles.sideOverlay(theme)} />
-            <View style={styles.renderScannerContainer}>{renderContent()}</View>
-            <View style={styles.sideOverlay(theme)} />
-          </View>
-          <View style={styles.bottomContainer(theme)}>
-            <View style={styles.renderContainer}>{renderBottom}</View>
-          </View>
-        </View>
-      }
+      showMarker={true}
+      customMarker={renderContent()}
     />
   )
 }
 
-const QRMarker = ({ borderColor, borderStrokeWidth, borderStrokeLength }) => {
-  const width = CONTAINER_WIDTH
-  const height = width
+const QRMarker = ({
+  borderColor,
+  borderStrokeWidth,
+  borderStrokeLength,
+  size
+}) => {
+  const width = size
+  const height = size
   const strokeColor = borderColor || 'white'
   const strokeWidth = borderStrokeWidth || 8
   const strokeLength = borderStrokeLength || 54
@@ -146,46 +138,15 @@ const QRMarker = ({ borderColor, borderStrokeWidth, borderStrokeLength }) => {
 }
 
 const styles = StyleSheet.create({
-  contentContainer: theme => ({
-    flex: 1,
-    width: SCREEN_WIDTH,
-    alignItems: 'center',
-    justifyContent: 'space-around'
-  }),
-  topContainer: theme => ({
-    width: SCREEN_WIDTH,
-    flex: 0.6,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: theme.colors.black3
-  }),
-  bottomContainer: theme => ({
-    width: SCREEN_WIDTH,
-    alignItems: 'center',
-    flex: 1,
-    backgroundColor: theme.colors.black3
-  }),
-  renderContainer: {
-    width: CONTAINER_WIDTH
-  },
-  renderScannerContainer: {
-    width: CONTAINER_WIDTH,
-    height: CONTAINER_WIDTH
-  },
-  scannerContainer: {
-    flexDirection: 'row'
-  },
-  sideOverlay: theme => ({
-    flex: 1,
-    backgroundColor: theme.colors.black3
-  }),
   loadingText: theme => ({
     textAlign: 'center',
     color: theme.colors.white
   }),
-  qrMarkerContainer: {
+  qrMarkerContainer: size => ({
+    width: size,
+    height: size,
     alignItems: 'center'
-  }
+  })
 })
 
 const mapStateToProps = (state, ownProps) => ({

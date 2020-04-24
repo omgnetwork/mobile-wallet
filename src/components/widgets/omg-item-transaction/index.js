@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { Datetime } from 'common/utils'
+import { Datetime, Styles } from 'common/utils'
 import { TransactionTypes } from 'common/constants'
 import { BlockchainFormatter } from 'common/blockchain'
 import OMGText from '../omg-text'
@@ -26,7 +26,7 @@ const OMGItemTransaction = ({ theme, tx, style, key, onPress }) => {
       <View style={styles.logo(theme, isError)}>
         <OMGFontIcon
           name={iconName}
-          size={14}
+          size={Styles.getResponsiveSize(14, { small: 10, medium: 12 })}
           color={isError ? theme.colors.red : theme.colors.white}
         />
       </View>
@@ -76,8 +76,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   logo: (theme, error) => ({
-    width: 40,
-    height: 40,
+    width: Styles.getResponsiveSize(40, { small: 24, medium: 32 }),
+    height: Styles.getResponsiveSize(40, { small: 24, medium: 32 }),
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: error ? theme.colors.red : theme.colors.white,
@@ -96,8 +96,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   textHash: theme => ({
-    fontSize: 16,
-    letterSpacing: -0.64,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+    letterSpacing: Styles.getResponsiveSize(-0.64, {
+      small: -0.32,
+      medium: -0.48
+    }),
     color: theme.colors.white,
     alignItems: 'center',
     justifyContent: 'center'
@@ -107,8 +110,11 @@ const styles = StyleSheet.create({
     fontSize: 10
   }),
   textAmount: theme => ({
-    fontSize: 16,
-    letterSpacing: -0.64,
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+    letterSpacing: Styles.getResponsiveSize(-0.64, {
+      small: -0.32,
+      medium: -0.48
+    }),
     color: theme.colors.white
   }),
   textDate: theme => ({

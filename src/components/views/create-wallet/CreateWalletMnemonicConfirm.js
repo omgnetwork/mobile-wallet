@@ -3,7 +3,7 @@ import { withNavigation, SafeAreaView } from 'react-navigation'
 import { GoogleAnalytics } from 'common/analytics'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import { View, ScrollView, StyleSheet } from 'react-native'
 import { walletActions, settingActions } from 'common/actions'
 import BackupMnemonicImage from './assets/backup-mnemonic.svg'
 import {
@@ -12,6 +12,7 @@ import {
   OMGTextChip,
   OMGMnemonicConfirmBox
 } from 'components/widgets'
+import { Styles } from 'common/utils'
 
 const shuffle = unshuffled => {
   return unshuffled
@@ -50,17 +51,6 @@ const CreateWalletMnemonicConfirm = ({
     setOrderedPhrases([...orderedPhrases, phrase])
   }
 
-  const mnemonicPhrases = unorderedPhrases.map(text => {
-    return (
-      <OMGTextChip
-        text={text}
-        key={text}
-        style={styles.chip(theme)}
-        onPress={() => onAddOrderedPhrase(text)}
-      />
-    )
-  })
-
   const disabledBtn = unorderedPhrases.length > 0
 
   const confirm = () => {
@@ -83,16 +73,29 @@ const CreateWalletMnemonicConfirm = ({
     }
   }, [dispatchSetPrimaryWallet, loading, navigation, wallet])
 
+  const styles = createStyles(theme)
+
+  const mnemonicPhrases = unorderedPhrases.map(text => {
+    return (
+      <OMGTextChip
+        text={text}
+        key={text}
+        style={styles.chip}
+        onPress={() => onAddOrderedPhrase(text)}
+      />
+    )
+  })
+
   return (
-    <SafeAreaView style={styles.container(theme)}>
+    <SafeAreaView style={styles.container}>
       <ScrollView
         contentContainerStyle={styles.contentContainer}
         bounces={false}>
         <BackupMnemonicImage width={80} height={80} style={styles.image} />
-        <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
+        <OMGText weight='mono-semi-bold' style={styles.title}>
           Confirm
         </OMGText>
-        <OMGText style={styles.description(theme)}>
+        <OMGText style={styles.description}>
           Please select Mnemonic Phrase in correct order
         </OMGText>
         <OMGMnemonicConfirmBox
@@ -114,45 +117,47 @@ const CreateWalletMnemonicConfirm = ({
   )
 }
 
-const styles = StyleSheet.create({
-  container: theme => ({
-    flex: 1,
-    backgroundColor: theme.colors.black3
-  }),
-  contentContainer: {
-    paddingHorizontal: 16
-  },
-  image: {
-    marginTop: 32
-  },
-  title: theme => ({
-    color: theme.colors.white,
-    marginTop: 30,
-    fontSize: 18
-  }),
-  description: theme => ({
-    color: theme.colors.white,
-    marginTop: 16
-  }),
-  confirmBox: {
-    marginTop: 16
-  },
-  mnemonicContainer: {
-    flex: 1,
-    marginTop: 8,
-    flexDirection: 'row',
-    flexWrap: 'wrap'
-  },
-  buttonContainer: {
-    justifyContent: 'flex-end',
-    marginTop: 16,
-    marginBottom: 16
-  },
-  chip: theme => ({
-    marginRight: 8,
-    borderWidth: 1
+const createStyles = theme =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.black3
+    },
+    contentContainer: {
+      paddingHorizontal: 16
+    },
+    image: {
+      marginTop: Styles.getResponsiveSize(32, { small: 16, medium: 16 })
+    },
+    title: {
+      color: theme.colors.white,
+      marginTop: Styles.getResponsiveSize(30, { small: 16, medium: 16 }),
+      fontSize: Styles.getResponsiveSize(18, { small: 16, medium: 16 })
+    },
+    description: {
+      color: theme.colors.white,
+      marginTop: 16,
+      fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 14 })
+    },
+    confirmBox: {
+      marginTop: 16
+    },
+    mnemonicContainer: {
+      flex: 1,
+      marginTop: 8,
+      flexDirection: 'row',
+      flexWrap: 'wrap'
+    },
+    buttonContainer: {
+      justifyContent: 'flex-end',
+      marginTop: 16,
+      marginBottom: 16
+    },
+    chip: {
+      marginRight: 8,
+      borderWidth: 1
+    }
   })
-})
 
 const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,

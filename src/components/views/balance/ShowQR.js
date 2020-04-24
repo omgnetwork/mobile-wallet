@@ -4,6 +4,7 @@ import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { OMGQRCode, OMGText, OMGIdenticon } from 'components/widgets'
+import { Styles } from 'common/utils'
 
 const ShowQR = ({ theme, primaryWallet, primaryWalletAddress, navigation }) => {
   const handleShareClick = useCallback(() => {
@@ -14,31 +15,29 @@ const ShowQR = ({ theme, primaryWallet, primaryWalletAddress, navigation }) => {
   }, [primaryWalletAddress])
   return (
     <View style={styles.container(theme)}>
-      <View style={styles.contentContainer}>
-        <View style={styles.titleContainer}>
-          <OMGIdenticon
-            style={styles.identicon(theme)}
-            hash={primaryWalletAddress}
-            size={40}
-          />
-          <OMGText style={styles.title(theme)} weight='mono-semi-bold'>
-            {primaryWallet.name}
-          </OMGText>
-        </View>
-        <View style={styles.qrContainer(theme)}>
-          <OMGQRCode
-            payload={primaryWalletAddress}
-            displayText={primaryWalletAddress}
-          />
-        </View>
-        <TouchableOpacity
-          style={styles.buttonContainer(theme)}
-          onPress={handleShareClick}>
-          <OMGText style={styles.buttonText(theme)} weigth='semi-bold'>
-            Share to Receive
-          </OMGText>
-        </TouchableOpacity>
+      <View style={styles.titleContainer}>
+        <OMGIdenticon
+          style={styles.identicon(theme)}
+          hash={primaryWalletAddress}
+          size={Styles.getResponsiveSize(40, { small: 24, medium: 32 })}
+        />
+        <OMGText style={styles.title(theme)} weight='mono-semi-bold'>
+          {primaryWallet.name}
+        </OMGText>
       </View>
+      <View style={styles.qrContainer}>
+        <OMGQRCode
+          payload={primaryWalletAddress}
+          displayText={primaryWalletAddress}
+        />
+      </View>
+      <TouchableOpacity
+        style={styles.buttonContainer(theme)}
+        onPress={handleShareClick}>
+        <OMGText style={styles.buttonText(theme)} weigth='semi-bold'>
+          Share to Receive
+        </OMGText>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -48,6 +47,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     padding: 16,
+    justifyContent: 'center',
     backgroundColor: theme.colors.black3,
     borderRadius: theme.roundness
   }),
@@ -60,18 +60,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center'
   },
-  contentContainer: {
-    width: 200,
-    flex: 1,
-    justifyContent: 'center'
-  },
   qrContainer: theme => ({
     alignItems: 'center',
     padding: 4
   }),
   title: theme => ({
     textTransform: 'uppercase',
-    fontSize: 18,
+    fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
     marginTop: 16,
     color: theme.colors.white
   }),
@@ -80,10 +75,12 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.gray4,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 14
+    marginTop: 8,
+    padding: Styles.getResponsiveSize(14, { small: 10, medium: 12 })
   }),
   buttonText: theme => ({
-    color: theme.colors.white
+    color: theme.colors.white,
+    fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 12 })
   })
 })
 

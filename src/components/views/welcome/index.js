@@ -1,7 +1,7 @@
 import React from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { Image, StyleSheet, View } from 'react-native'
+import { Image, View, StyleSheet } from 'react-native'
 import CardMenu from './CardMenu'
 import { OMGDotViewPager, OMGStatusBar } from 'components/widgets'
 import Page from './Page'
@@ -44,6 +44,7 @@ const Welcome = ({ navigation, theme }) => {
       destination: 'WelcomeImportWallet'
     })
   }
+
   return (
     <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar

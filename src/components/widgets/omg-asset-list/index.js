@@ -4,6 +4,7 @@ import { withTheme } from 'react-native-paper'
 import { OMGText, OMGEmpty } from 'components/widgets'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import { Styles } from 'common/utils'
 
 const OMGAssetList = ({
   theme,
@@ -87,6 +88,7 @@ const OMGAssetList = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'column',
+    marginTop: -1,
     backgroundColor: theme.colors.black3,
     paddingBottom: 8
   }),
@@ -99,14 +101,14 @@ const styles = StyleSheet.create({
   },
   header: theme => ({
     flexDirection: 'row',
-    paddingHorizontal: 20,
+    paddingHorizontal: Styles.getResponsiveSize(20, { small: 12, medium: 16 }),
     alignItems: 'center',
     backgroundColor: theme.colors.black3
   }),
   updatedAt: theme => ({
     color: theme.colors.gray2,
     letterSpacing: -0.7,
-    fontSize: 10
+    fontSize: Styles.getResponsiveSize(10, { small: 8, medium: 9 })
   }),
   assetContainer: theme => ({
     flex: 1,
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     justifyContent: 'flex-start',
     color: theme.colors.white,
-    fontSize: 14
+    fontSize: Styles.getResponsiveSize(14, { small: 10, medium: 12 })
   }),
   redo: {
     marginLeft: 8
