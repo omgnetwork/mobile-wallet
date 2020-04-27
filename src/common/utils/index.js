@@ -6,6 +6,7 @@ import * as Alerter from './alerter'
 import * as Identicon from './identicon'
 import * as Notification from './notification'
 import * as Polling from './polling'
+import * as Locale from './locale'
 import * as BigNumber from './bignumber'
 import * as Token from '../blockchain/token'
 import * as Mapper from './mapper'
@@ -23,6 +24,7 @@ export {
   Notification,
   Identicon,
   Polling,
+  Locale,
   Price,
   Storage,
   Styles,

@@ -5,6 +5,7 @@ import { ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
 import { View, StyleSheet, TouchableOpacity, Linking } from 'react-native'
 import { OMGText, OMGEmpty, OMGEditItem } from 'components/widgets'
+import { Formatter } from 'common/utils'
 
 const OMGExitFee = ({
   theme,
@@ -26,7 +27,12 @@ const OMGExitFee = ({
 
   const formatTotalExitFee = useCallback(() => {
     if (gasUsed && exitBondValue) {
-      return BlockchainFormatter.formatGasFee(gasUsed, gasPrice, exitBondValue)
+      const gasFee = BlockchainFormatter.formatGasFee(
+        gasUsed,
+        gasPrice,
+        exitBondValue
+      )
+      return Formatter.format(gasFee, { maxDecimal: 18 })
     }
   }, [exitBondValue, gasUsed, gasPrice])
 
@@ -93,6 +99,7 @@ const Item = ({
   ethPrice,
   loading
 }) => {
+  const localizedValue = Formatter.format(value, { maxDecimal: 8 })
   const feeUsd = BlockchainFormatter.formatTokenPrice(value, ethPrice)
 
   return (
@@ -102,9 +109,9 @@ const Item = ({
           style={[styles.textWhite(theme), styles.textSmall, styles.stretch]}>
           {title}
         </OMGText>
-        {!loading && value > 0 ? (
+        {!loading ? (
           <OMGText style={[styles.textWhite(theme), styles.textSmall]}>
-            {value} ETH
+            {localizedValue} ETH
           </OMGText>
         ) : (
           <OMGEmpty
@@ -126,7 +133,7 @@ const Item = ({
             {subtitle}
           </OMGText>
         )}
-        {!loading && value > 0 ? (
+        {!loading ? (
           <OMGText
             style={[
               styles.textWhite(theme),

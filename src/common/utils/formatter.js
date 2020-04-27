@@ -1,11 +1,15 @@
-import { ethers } from 'ethers'
-import { Datetime } from 'common/utils'
+import { Datetime, Locale } from 'common/utils'
 
 export const format = (number, { maxDecimal }) => {
-  const preformattedNumber = Number(number.toString())
-  return preformattedNumber.toLocaleString(undefined, {
-    maximumFractionDigits: maxDecimal
-  })
+  const preformattedNumber = Number(number.toString().replace(',', '.'))
+  const locale = Locale.getLocale() || 'en_US'
+  const [_, region] = locale.split('_')
+  return preformattedNumber.toLocaleString(
+    [`${region.toLowerCase()}-${region}`],
+    {
+      maximumFractionDigits: maxDecimal
+    }
+  )
 }
 
 export const formatTimeStamp = (timestamp, formatToken) => {

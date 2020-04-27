@@ -12,7 +12,6 @@ export const isValidAddress = address => {
 
 export const isValidAmount = amount => {
   const number = Number(amount.replace(',', '.'))
-  console.log(number)
   if (number > 0 && number !== 'NaN') {
     return true
   } else {

@@ -25,7 +25,7 @@ const OMGAmountInput = ({
         />
         <OMGTextInput
           style={styles.text(theme)}
-          placeholder='00.00'
+          placeholder='0'
           callback={callback}
           inputRef={inputRef}
           focusRef={focusRef}

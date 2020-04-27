@@ -50,9 +50,10 @@ export const formatProcessExitAt = datetime => {
 }
 
 export const formatTokenBalance = (amount, maxDecimal = 18) => {
-  return Formatter.format(amount, {
+  const result = Formatter.format(amount, {
     maxDecimal: maxDecimal
   })
+  return result
 }
 
 export const formatTokenBalanceFromSmallestUnit = (
@@ -67,7 +68,8 @@ export const formatTokenBalanceFromSmallestUnit = (
 }
 
 export const formatTokenPrice = (amount, price = 1) => {
-  const tokenPrice = BigNumber.multiply(amount, price)
+  const number = amount.toString().replace(',', '.')
+  const tokenPrice = BigNumber.multiply(number, price)
   return Formatter.format(tokenPrice, {
     maxDecimal: 2
   })
