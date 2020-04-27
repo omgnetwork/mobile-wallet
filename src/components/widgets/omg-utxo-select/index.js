@@ -3,7 +3,7 @@ import { BlockchainFormatter } from 'common/blockchain'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { OMGText, OMGFontIcon, OMGTokenIcon } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
-import { Styles } from 'common/utils'
+import { Styles, Formatter } from 'common/utils'
 
 const OMGUtxoSelect = ({ theme, token, utxo, style, onAdded, onRemoved }) => {
   const [selected, setSelected] = useState(false)
@@ -16,10 +16,13 @@ const OMGUtxoSelect = ({ theme, token, utxo, style, onAdded, onRemoved }) => {
     selected ? onAdded(utxo) : onRemoved(utxo)
   }, [onAdded, onRemoved, selected, utxo])
 
-  const balance = BlockchainFormatter.formatUnits(
+  const formattedBalance = BlockchainFormatter.formatUnits(
     utxo.amount,
     token.tokenDecimal
   )
+  const balance = Formatter.format(formattedBalance, {
+    maxDecimal: token.tokenDecimal
+  })
 
   return (
     <TouchableOpacity

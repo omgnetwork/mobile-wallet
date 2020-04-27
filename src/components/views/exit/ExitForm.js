@@ -19,7 +19,7 @@ import {
   Utxos,
   BlockchainFormatter
 } from 'common/blockchain'
-import { Styles } from 'common/utils'
+import { Styles, Formatter } from 'common/utils'
 
 const ExitForm = ({
   theme,
@@ -32,10 +32,13 @@ const ExitForm = ({
   const utxos = navigation.getParam('utxos')
   const token = navigation.getParam('token')
   const fee = navigation.getParam('fee')
-  const exitAmount = BlockchainFormatter.formatUnits(
+  const formattedAmount = BlockchainFormatter.formatUnits(
     Utxos.sum(utxos).toString(10),
     token.tokenDecimal
   )
+  const exitAmount = Formatter.format(formattedAmount, {
+    maxDecimal: token.tokenDecimal
+  })
   const [exitBond, setExitBond] = useState(null)
   const [gasUsed, setGasUsed] = useState(null)
   const [submitting] = useLoading(loading, 'CHILDCHAIN_EXIT')

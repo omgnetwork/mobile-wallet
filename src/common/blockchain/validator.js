@@ -11,7 +11,7 @@ export const isValidAddress = address => {
 }
 
 export const isValidAmount = amount => {
-  const number = Number(amount)
+  const number = Number(amount.replace(',', '.'))
   if (number > 0 && number !== 'NaN') {
     return true
   } else {
@@ -28,7 +28,9 @@ export const isValidWalletName = name => {
 }
 
 export const isEnoughToken = (sendAmount, tokenAmount) => {
-  return Number(sendAmount) <= Number(tokenAmount)
+  const sendNumber = Number(sendAmount.replace(',', '.'))
+  const tokenNumber = Number(tokenAmount.replace(',', '.'))
+  return sendNumber <= tokenNumber
 }
 
 export const isValidTransaction = transaction => {

@@ -117,7 +117,7 @@ def enableProguardInReleaseBuilds = true
  * give correct results when using with locales other than en-US.  Note that
  * this variant is about 6MiB larger per architecture than default.
  */
-def jscFlavor = 'org.webkit:android-jsc:+'
+def jscFlavor = 'org.webkit:android-jsc-intl:+'
 
 /**
  * Whether to enable the Hermes VM.
@@ -232,12 +232,11 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.work:work-runtime:2.3.0-alpha03'
     implementation 'io.intercom.android:intercom-sdk-base:5.+'
+    implementation jscFlavor
    if (enableHermes) {
        def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")
         releaseImplementation files(hermesPath + "hermes-release.aar")
-    } else {
-        implementation jscFlavor
     }
 }
 

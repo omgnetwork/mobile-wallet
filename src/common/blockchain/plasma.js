@@ -1,7 +1,7 @@
 import { Plasma, web3 } from 'common/clients'
 import axios from 'axios'
 import { Gas, ContractAddress } from 'common/constants'
-import { Mapper } from 'common/utils'
+import { Mapper, BigNumber } from 'common/utils'
 import Config from 'react-native-config'
 import BN from 'bn.js'
 import {
@@ -212,8 +212,12 @@ export const standardExit = (exitData, blockchainWallet, options) => {
 let standardExitBond
 export const getStandardExitBond = async () => {
   if (!standardExitBond) {
-    const { bonds } = await Contract.getPaymentExitGame()
-    standardExitBond = bonds.standardExit.toString()
+    try {
+      const { bonds } = await Contract.getPaymentExitGame()
+      standardExitBond = bonds.standardExit.toString()
+    } catch (e) {
+      standardExitBond = '14000000000000000'
+    }
   }
   return standardExitBond
 }

@@ -65,7 +65,7 @@ describe('Test BlockchainFormatter', () => {
       maxDecimal
     )
 
-    expect(formattedTokenBalance).toBe('2,350.45')
+    expect(formattedTokenBalance).toBe('2,350.46')
   })
 
   it('formatTokenPrice should be equal to tokenAmount * pricePerToken with 2 decimal places', () => {
@@ -75,7 +75,7 @@ describe('Test BlockchainFormatter', () => {
       tokenAmount,
       pricePerToken
     )
-    expect(tokenPrice).toBe('3,665.22')
+    expect(tokenPrice).toBe('3,665.23')
   })
 
   it('formatTotalPrice should be equal to firstPrice + secondPrice with 2 decimal places', () => {
