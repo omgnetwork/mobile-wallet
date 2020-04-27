@@ -172,5 +172,11 @@ export const splitUntilRoundZero = async (
   const { blknum } = receipts.sort((a, b) => b.blknum - a.blknum)[0]
   console.log(`Splitted successfully. Waiting for block ${blknum}...`)
   await Wait.waitChildChainBlknum(address, blknum)
-  return await splitUntilRoundZero(address, currency, privateKey, rounds - 1)
+  return await splitUntilRoundZero(
+    address,
+    currency,
+    privateKey,
+    rounds - 1,
+    fee
+  )
 }
