@@ -25,7 +25,7 @@
 		8778A956297B32CA1A9B7F47 /* libPods-PlasmaWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0AD69EDCD02A10814EFA4D4 /* libPods-PlasmaWallet.a */; };
 		AF93B4D6639E460B9DACAB68 /* MessinaSans-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BAFF502928C4ECF85C816AB /* MessinaSans-SemiBold.otf */; };
 		BFC9C018DE894ECF94E174EB /* libPods-PlasmaWallet-PlasmaWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 038202B68F8B8683ED793D06 /* libPods-PlasmaWallet-PlasmaWalletTests.a */; };
-		C47923172460AFB8001B1F4E /* dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47923162460AFB8001B1F4E /* dummy.swift */; };
+		C479231924612F2A001B1F4E /* SupportReactNative0.62.2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C479231824612F2A001B1F4E /* SupportReactNative0.62.2.swift */; };
 		C49E761123660727003B0D52 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */; };
 		C4AD05DB230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		C4AD05DC230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
@@ -84,7 +84,7 @@
 		AB581858E39E99898C048AB4 /* Pods-PlasmaWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlasmaWallet.release.xcconfig"; path = "Target Support Files/Pods-PlasmaWallet/Pods-PlasmaWallet.release.xcconfig"; sourceTree = "<group>"; };
 		BACAA5B51E39422E85FE565D /* MessinaSans-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "MessinaSans-Regular.otf"; path = "../assets/fonts/MessinaSans-Regular.otf"; sourceTree = "<group>"; };
 		C47923152460AFB8001B1F4E /* PlasmaWallet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PlasmaWallet-Bridging-Header.h"; sourceTree = "<group>"; };
-		C47923162460AFB8001B1F4E /* dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dummy.swift; sourceTree = "<group>"; };
+		C479231824612F2A001B1F4E /* SupportReactNative0.62.2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportReactNative0.62.2.swift; sourceTree = "<group>"; };
 		C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "PlasmaWallet/wallet/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C4F845CE236D3C8D002C25C7 /* libreact-native-google-analytics-bridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-google-analytics-bridge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9C9DF76220A469193C08B50 /* Pods-PlasmaWallet-PlasmaWalletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlasmaWallet-PlasmaWalletTests.debug.xcconfig"; path = "Target Support Files/Pods-PlasmaWallet-PlasmaWalletTests/Pods-PlasmaWallet-PlasmaWalletTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -159,8 +159,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				2752A0B5F702467A8625AC5D /* RNBackgroundFetch+AppDelegate.m */,
-				C47923162460AFB8001B1F4E /* dummy.swift */,
 				C47923152460AFB8001B1F4E /* PlasmaWallet-Bridging-Header.h */,
+				C479231824612F2A001B1F4E /* SupportReactNative0.62.2.swift */,
 			);
 			name = PlasmaWallet;
 			sourceTree = "<group>";
@@ -599,8 +599,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				C479231924612F2A001B1F4E /* SupportReactNative0.62.2.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				C47923172460AFB8001B1F4E /* dummy.swift in Sources */,
 				D6DD8AB8C90447CCBFFCC6A7 /* RNBackgroundFetch+AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
