@@ -42,7 +42,7 @@ const OMGAssetList = ({
     <View style={{ ...styles.container(theme), ...style }}>
       <View style={styles.header(theme)}>
         <OMGText style={styles.title(theme)} weight='regular'>
-          ASSETS
+          TOKENS
         </OMGText>
         {updatedAt && (
           <>
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'column',
     marginTop: -1,
-    backgroundColor: theme.colors.black3,
+    backgroundColor: theme.colors.black5,
     paddingBottom: 8
   }),
   contentContainer: {},
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: Styles.getResponsiveSize(20, { small: 12, medium: 16 }),
     alignItems: 'center',
-    backgroundColor: theme.colors.black3
+    backgroundColor: theme.colors.black5
   }),
   updatedAt: theme => ({
     color: theme.colors.gray2,
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   assetContainer: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.black3,
+    backgroundColor: theme.colors.black5,
     paddingVertical: 8
   }),
   assetList: {},

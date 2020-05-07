@@ -77,7 +77,7 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
 const styles = StyleSheet.create({
   container: (theme, shadowAnim, shadowOpacity) => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.black3,
+    backgroundColor: theme.colors.black5,
     shadowColor: '#000000',
     elevation: shadowAnim.current,
     paddingHorizontal: Styles.getResponsiveSize(20, { small: 12, medium: 16 }),
