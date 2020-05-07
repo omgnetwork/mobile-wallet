@@ -6,11 +6,14 @@ import { IconEth, IconGo, Scan, ArrowDown, ArrowUp } from './assets'
 import { Styles } from 'common/utils'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const CircleButton = ({ children, theme, style, label }) => {
-  const styles = createCircleBtnStyles(theme)
+const CircleButton = ({ children, theme, style, label, onPress, disable }) => {
+  const styles = createCircleBtnStyles(theme, disable)
   return (
     <View style={style}>
-      <TouchableOpacity style={[styles.btnContainer]}>
+      <TouchableOpacity
+        style={[styles.btnContainer]}
+        onPress={onPress}
+        disabled={disable}>
         {children}
       </TouchableOpacity>
       <OMGText weight='book' style={styles.label}>
@@ -20,13 +23,14 @@ const CircleButton = ({ children, theme, style, label }) => {
   )
 }
 
-const createCircleBtnStyles = theme => ({
+const createCircleBtnStyles = (theme, disable) => ({
   btnContainer: {
     width: 50,
     height: 50,
     borderRadius: 25,
     alignItems: 'center',
     justifyContent: 'center',
+    opacity: disable ? 0.4 : 1.0,
     borderColor: theme.colors.white,
     borderWidth: 1
   },
@@ -34,6 +38,7 @@ const createCircleBtnStyles = theme => ({
     marginTop: 8,
     color: theme.colors.white,
     fontSize: 12,
+    opacity: disable ? 0.4 : 1.0,
     textAlign: 'center'
   }
 })
@@ -46,6 +51,10 @@ const OMGAssetHeader = ({
   network,
   onPressMenu,
   anchoredRef,
+  disableSend,
+  onPressSend,
+  onPressReceive,
+  onPressScan,
   style
 }) => {
   const BlockchainIcon = rootchain ? IconEth : IconGo
@@ -78,18 +87,24 @@ const OMGAssetHeader = ({
       </View>
       <View
         style={[styles.rowContainer, styles.rowMarginTop, styles.rowCenter]}>
-        <CircleButton theme={theme} label='Send'>
+        <CircleButton
+          theme={theme}
+          label='Send'
+          onPress={onPressSend}
+          disable={disableSend}>
           <ArrowUp />
         </CircleButton>
         <CircleButton
           theme={theme}
           style={styles.rowItemMarginLeft}
+          onPress={onPressReceive}
           label='Receive'>
           <ArrowDown />
         </CircleButton>
         <CircleButton
           theme={theme}
           style={styles.rowItemMarginLeft}
+          onPress={onPressScan}
           label='Scan'>
           <Scan />
         </CircleButton>

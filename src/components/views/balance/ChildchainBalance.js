@@ -23,7 +23,6 @@ const ChildchainBalance = ({
   dispatchLoadAssets,
   dispatchSetShouldRefreshChildchain,
   dispatchGetRecommendedGas,
-  dispatchMergeUTXOsIfNeeded,
   unconfirmedTxs,
   globalLoading,
   wallet,
@@ -118,6 +117,14 @@ const ChildchainBalance = ({
         currency={currency}
         rootchain={false}
         loading={loading}
+        disableSend={hasPendingTransaction}
+        onPressSend={() => {
+          console.log('Send')
+        }}
+        onPressReceive={() => {
+          console.log('Receive')
+        }}
+        onPressScan={() => console.log('Scan')}
         network={Config.OMISEGO_NETWORK}
         anchoredRef={blockchainLabelRef}
       />
@@ -134,14 +141,14 @@ const ChildchainBalance = ({
           <OMGItemToken key={item.contractAddress} token={item} />
         )}
       />
-      <OMGAssetFooter
+      {/* <OMGAssetFooter
         enableDeposit={shouldEnableDepositAction()}
         enableExit={shouldEnableExitAction()}
         footerRef={exitButtonRef}
         showExit={hasChildchainAssets}
         onPressDeposit={handleDepositClick}
         onPressExit={handleExitClick}
-      />
+      /> */}
     </Fragment>
   )
 }
