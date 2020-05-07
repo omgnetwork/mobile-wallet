@@ -13,10 +13,7 @@ import createWelcomeNavigator from './welcome'
 import WarpPortal from './warp-portal'
 import * as Views from 'components/views'
 
-const MainDrawerNavigator = createMainDrawerNavigator(
-  TransferNavigator,
-  TransactionHistoryNavigator
-)
+const MainDrawerNavigator = createMainDrawerNavigator()
 
 Views.Main.router = MainDrawerNavigator.router
 Views.Transfer.router = TransferNavigator.router
@@ -103,6 +100,9 @@ export const AppNavigator = createStackNavigator(
       params: {
         navigator: ExitNavigator
       }
+    },
+    TransactionHistory: {
+      screen: TransactionHistoryNavigator
     }
   },
   {

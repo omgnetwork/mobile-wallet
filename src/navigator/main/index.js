@@ -2,18 +2,13 @@ import React from 'react'
 import BottomTabNavigator from './bottombar'
 import { OMGDrawerContent } from 'components/widgets'
 import { createDrawerNavigator } from 'react-navigation-drawer'
+import * as Views from 'components/views'
 
-const createMainDrawerNavigator = (
-  TransferNavigator,
-  TransactionHistoryNavigator
-) =>
+const createMainDrawerNavigator = () =>
   createDrawerNavigator(
     {
       MainDrawer: {
-        screen: BottomTabNavigator(
-          TransferNavigator,
-          TransactionHistoryNavigator
-        )
+        screen: Views.Balance
       }
     },
     {
