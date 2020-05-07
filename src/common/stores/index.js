@@ -31,7 +31,7 @@ const initialState = {
   wallets: [],
   setting: {
     provider: null,
-    providerName: Config.ETHERSCAN_NETWORK
+    providerName: Config.ETHEREUM_NETWORK
   },
   onboarding: {
     enabled: null,

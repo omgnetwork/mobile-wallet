@@ -7,7 +7,7 @@ export default {
   ETHERSCAN_API_KEY: 'VCKWHFAA6M5AR8SFVXC43DEMEA8JN2H3WZ',
   ETHERSCAN_API_URL: 'https://api-ropsten.etherscan.io/api/',
   ETHERSCAN_URL: 'https://ropsten.etherscan.io/',
-  ETHERSCAN_NETWORK: 'ropsten',
+  ETHEREUM_NETWORK: 'ropsten',
   OMISEGO_NETWORK: 'lumpini',
   WEB3_HTTP_PROVIDER: 'https://dev-a69c763-mwproxy-ropsten-01.omg.network/api',
   PLASMA_FRAMEWORK_CONTRACT_ADDRESS:
