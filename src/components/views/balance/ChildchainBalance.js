@@ -9,22 +9,17 @@ import Config from 'react-native-config'
 import { TransferHelper } from 'components/views/transfer'
 import { ethereumActions } from 'common/actions'
 import { Formatter, Datetime, Alerter, Styles } from 'common/utils'
-import {
-  OMGItemToken,
-  OMGAssetHeader,
-  OMGAssetList,
-  OMGAssetFooter
-} from 'components/widgets'
+import { OMGItemToken, OMGAssetHeader, OMGAssetList } from 'components/widgets'
 import { Alert } from 'common/constants'
 
 const ChildchainBalance = ({
   blockchainLabelRef,
-  exitButtonRef,
   dispatchLoadAssets,
   dispatchSetShouldRefreshChildchain,
   dispatchGetRecommendedGas,
   unconfirmedTxs,
   globalLoading,
+  onPressMenu,
   wallet,
   provider,
   navigation
@@ -117,6 +112,7 @@ const ChildchainBalance = ({
         currency={currency}
         rootchain={false}
         loading={loading}
+        onPressMenu={onPressMenu}
         disableSend={hasPendingTransaction}
         onPressSend={() => {
           console.log('Send')

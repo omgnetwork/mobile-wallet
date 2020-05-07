@@ -80,7 +80,10 @@ const Balance = ({
             color={theme.colors.white}
           />
         </View> */}
-      <ChildchainBalance primaryWallet={primaryWallet} />
+      <ChildchainBalance
+        primaryWallet={primaryWallet}
+        onPressMenu={() => drawerNavigation.openDrawer()}
+      />
 
       {/* {!wallets || !primaryWallet ? (
           <View style={styles.emptyButton}>
