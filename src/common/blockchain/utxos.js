@@ -161,13 +161,13 @@ export const splitUntilRoundZero = async (
   })
 
   if (rounds === 0) return utxos
-  const amount = Math.pow(10, rounds)
+  const amount = Math.pow(10, rounds) * fee.amount
 
   const candidateUtxos = utxos.filter(utxo => utxo.amount >= amount)
   const splittedUtxos = candidateUtxos.map(utxo => {
-    return split(address, privateKey, utxo, amount / 10, fee)
+    return split(address, privateKey, utxo, fee.amount, fee)
   })
-  console.log('Round', rounds)
+  console.log('Rounds left: ', rounds)
   const receipts = await Promise.all(splittedUtxos)
   const { blknum } = receipts.sort((a, b) => b.blknum - a.blknum)[0]
   console.log(`Splitted successfully. Waiting for block ${blknum}...`)
