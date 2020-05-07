@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { OnboardingTourGuide } from 'components/views'
+// import { OnboardingTourGuide } from 'components/views'
 
 const MainContainer = ({ navigation }) => {
   const MainDrawerNavigator = navigation.getParam('navigator')
@@ -9,7 +9,7 @@ const MainContainer = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <MainDrawerNavigator navigation={navigation} />
-      <OnboardingTourGuide />
+      {/* <OnboardingTourGuide /> */}
     </View>
   )
 }
