@@ -1,21 +1,17 @@
 import React, { useEffect, useCallback, useState, useRef } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Linking, View, StatusBar } from 'react-native'
+import { StyleSheet, View, StatusBar } from 'react-native'
 import { SafeAreaView, withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
-import { Dimensions, Styles } from 'common/utils'
-import { usePositionMeasurement } from 'common/hooks'
-import RootchainBalance from './RootchainBalance'
+import { Styles } from 'common/utils'
 import ChildchainBalance from './ChildchainBalance'
-import ShowQR from './ShowQR'
 import {
-  OMGBottomSheet,
-  OMGViewPager,
   OMGText,
   OMGFontIcon,
   OMGStatusBar,
-  OMGButton
+  OMGButton,
+  OMGBottomSheet
 } from 'components/widgets'
 
 import {
@@ -24,31 +20,17 @@ import {
   plasmaActions
 } from 'common/actions'
 
-const pageWidth = Dimensions.windowWidth - 56
-const middlePageOffset = pageWidth - 16
-const viewPagerSnapOffsets = [
-  0,
-  Math.round(middlePageOffset),
-  Math.round(pageWidth * 2 - 32)
-]
-
 const MAXIMUM_UTXOS_PER_CURRENCY = 4
 
 const Balance = ({
   theme,
   primaryWallet,
-  blockchainWallet,
   navigation,
   wallets,
   unconfirmedTxs,
   isFocused,
-  loading,
   feedbackCompleteTx,
-  dispatchMergeUTXOs,
-  dispatchInvalidateFeedbackCompleteTx,
-  dispatchSetCurrentPage,
-  dispatchAddAnchoredComponent,
-  currentPage
+  dispatchInvalidateFeedbackCompleteTx
 }) => {
   const [
     feedback,
@@ -61,91 +43,12 @@ const Balance = ({
     dispatchInvalidateFeedbackCompleteTx
   )
 
-  const [
-    plasmaBlockchainLabelRef,
-    measurePlasmaBlockchainLabel
-  ] = usePositionMeasurement(
-    'PlasmaBlockchainLabel',
-    dispatchAddAnchoredComponent
-  )
-
-  const [
-    ethereumBlockchainLabelRef,
-    measureEthereumBlockchainLabel
-  ] = usePositionMeasurement(
-    'EthereumBlockchainLabel',
-    dispatchAddAnchoredComponent
-  )
-
-  const [depositButtonRef, measureDepositButton] = usePositionMeasurement(
-    'DepositButton',
-    dispatchAddAnchoredComponent
-  )
-
-  const [exitButtonRef, measureExitButton] = usePositionMeasurement(
-    'ExitButton',
-    dispatchAddAnchoredComponent
-  )
-  const [measured, setMeasured] = useState(false)
-  const scroller = useRef({})
   useEffect(() => {
     if (isFocused) {
       StatusBar.setBarStyle('light-content')
       StatusBar.setBackgroundColor(theme.colors.black5)
     }
   }, [isFocused, theme.colors.black5])
-
-  useEffect(() => {
-    scroller.current.scrollTo(navigation.getParam('page'))
-  }, [navigation])
-
-  useEffect(() => {
-    if (
-      !measured &&
-      loading.action === 'ROOTCHAIN_FETCH_ASSETS' &&
-      loading.show
-    ) {
-      measurePlasmaBlockchainLabel()
-      measureEthereumBlockchainLabel({
-        offset: -viewPagerSnapOffsets[1]
-      })
-      measureDepositButton({
-        offset: -viewPagerSnapOffsets[1] + 8,
-        widthOffset: -16
-      })
-      measureExitButton({
-        arrowDirection: 'right',
-        widthOffset: -16,
-        offset: 8
-      })
-      setMeasured(true)
-    }
-  }, [
-    loading,
-    measureDepositButton,
-    measureEthereumBlockchainLabel,
-    measureExitButton,
-    measurePlasmaBlockchainLabel,
-    measured
-  ])
-
-  const handleOnPageChanged = useCallback(
-    page => {
-      switch (page) {
-        case 1:
-          return dispatchSetCurrentPage(currentPage, 'childchain-balance')
-        case 2:
-          return dispatchSetCurrentPage(currentPage, 'rootchain-balance')
-        case 3:
-          return dispatchSetCurrentPage(currentPage, 'address-qr')
-      }
-    },
-    [currentPage, dispatchSetCurrentPage]
-  )
-
-  useEffect(() => {
-    dispatchSetCurrentPage(null, 'childchain-balance')
-  }, [dispatchSetCurrentPage])
 
   useEffect(() => {
     setUnconfirmedTxs(unconfirmedTxs)
@@ -162,10 +65,10 @@ const Balance = ({
     <SafeAreaView style={styles.safeAreaView(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
-        backgroundColor={theme.colors.black5}
+        backgroundColor={theme.colors.primary}
       />
-      <View style={styles.container(theme)}>
-        <View style={styles.topContainer}>
+      {/* <View style={styles.container(theme)}> */}
+      {/* <View style={styles.topContainer}>
           <OMGText style={styles.topTitleLeft(theme)}>
             {primaryWallet ? primaryWallet.name : 'Wallet not found'}
           </OMGText>
@@ -176,8 +79,10 @@ const Balance = ({
             onPress={() => drawerNavigation.openDrawer()}
             color={theme.colors.white}
           />
-        </View>
-        {!wallets || !primaryWallet ? (
+        </View> */}
+      <ChildchainBalance primaryWallet={primaryWallet} />
+
+      {/* {!wallets || !primaryWallet ? (
           <View style={styles.emptyButton}>
             <OMGButton
               onPress={() => {
@@ -187,31 +92,9 @@ const Balance = ({
             </OMGButton>
           </View>
         ) : (
-          <OMGViewPager
-            scrollRef={scroller}
-            pageWidth={pageWidth}
-            snapOffsets={viewPagerSnapOffsets}
-            onPageChanged={handleOnPageChanged}>
-            <View style={styles.firstPage}>
-              <ChildchainBalance
-                primaryWallet={primaryWallet}
-                blockchainLabelRef={plasmaBlockchainLabelRef}
-                exitButtonRef={exitButtonRef}
-              />
-            </View>
-            <View style={styles.secondPage}>
-              <RootchainBalance
-                primaryWallet={primaryWallet}
-                blockchainLabelRef={ethereumBlockchainLabelRef}
-                depositButtonRef={depositButtonRef}
-              />
-            </View>
-            <View style={styles.thirdPage}>
-              <ShowQR primaryWallet={primaryWallet} />
-            </View>
-          </OMGViewPager>
-        )}
-      </View>
+          <ChildchainBalance primaryWallet={primaryWallet} />
+        )} */}
+      {/* </View> */}
       <OMGBottomSheet
         style={styles.bottomSheet}
         show={visible}
@@ -225,12 +108,11 @@ const Balance = ({
 const styles = StyleSheet.create({
   safeAreaView: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.black5
+    backgroundColor: theme.colors.primary
   }),
   topContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 12
+    justifyContent: 'space-between'
   },
   topTitleLeft: theme => ({
     fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
@@ -242,19 +124,9 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     paddingVertical: 20,
+    paddingHorizontal: 16,
     backgroundColor: theme.colors.black5
   }),
-  firstPage: {
-    width: pageWidth,
-    marginRight: 8
-  },
-  secondPage: {
-    width: pageWidth - 16
-  },
-  thirdPage: {
-    width: pageWidth,
-    marginLeft: 8
-  },
   emptyButton: {
     flex: 1,
     justifyContent: 'center',
@@ -282,10 +154,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchSetCurrentPage: (currentPage, page) => {
     onboardingActions.setCurrentPage(dispatch, currentPage, page)
   },
-  dispatchMergeUTXOs: (address, privateKey, threshold, listOfUtxos) =>
-    dispatch(
-      plasmaActions.mergeUTXOs(address, privateKey, threshold, listOfUtxos)
-    ),
   dispatchAddAnchoredComponent: (anchoredComponentName, position) =>
     onboardingActions.addAnchoredComponent(
       dispatch,
