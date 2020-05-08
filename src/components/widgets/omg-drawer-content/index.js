@@ -157,7 +157,7 @@ const OMGDrawerContent = ({
                 Watcher URL
               </OMGText>
               <OMGText style={styles.environmentItemTextLighter(theme)}>
-                {Config.CHILDCHAIN_WATCHER_URL}
+                {Config.WATCHER_URL}
               </OMGText>
             </View>
             <View style={styles.envInfoCard(theme)}>

@@ -6,8 +6,8 @@ import createChildchain from './childchain'
 const web3HttpProvider = Config.WEB3_HTTP_PROVIDER
 const plasmaContractAddress = Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
 
-// Assume Config.CHILDCHAIN_WATCHER_URL is always has '/' at the end.
-const watcherUrl = Config.CHILDCHAIN_WATCHER_URL.slice(0, -1)
+// Assume Config.WATCHER_URL is always has '/' at the end.
+const watcherUrl = Config.WATCHER_URL.slice(0, -1)
 
 export const web3 = createWeb3(web3HttpProvider)
 
