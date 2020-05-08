@@ -41,12 +41,13 @@ const useProgressiveFeedback = (
     }
   }, [])
 
-  const getSubtitle = useCallback(actionType => {
+  const getSubtitle = useCallback((pending, actionType) => {
     switch (actionType) {
-      case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
-        return 'We’re merging UTXOs. Hang tight! You can not transfer during this time.'
       case TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS:
-        return 'Merged UTXOs. You can now transfer and do any activities as usual.'
+        if (pending)
+          return 'We’re merging UTXOs. Hang tight! You can not transfer during this time.'
+        else
+          return 'Merged UTXOs. You can now transfer and do any activities as usual.'
     }
   }, [])
 
@@ -80,7 +81,7 @@ const useProgressiveFeedback = (
           actionType: actionType,
           hash: hash,
           pending: true,
-          subtitle: getSubtitle(actionType)
+          subtitle: getSubtitle(true, actionType)
         }
       } else {
         return {
@@ -88,7 +89,7 @@ const useProgressiveFeedback = (
           actionType: actionType,
           hash: hash,
           pending: false,
-          subtitle: getSubtitle(actionType),
+          subtitle: getSubtitle(false, actionType),
           link: getExternalLink(actionType, hash)
         }
       }

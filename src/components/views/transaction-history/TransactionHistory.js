@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, StatusBar } from 'react-native'
+import { StyleSheet, StatusBar, SafeAreaView } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { withNavigationFocus, SafeAreaView } from 'react-navigation'
+import { withNavigationFocus } from 'react-navigation'
 import { onboardingActions, transactionActions } from 'common/actions'
 import { TransactionTypes } from 'common/constants'
 import {

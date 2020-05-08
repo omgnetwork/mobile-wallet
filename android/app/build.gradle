@@ -17,7 +17,9 @@ import com.android.build.OutputFile
  *   // the name of the generated asset file containing your JS bundle
  *   bundleAssetName: "index.android.bundle",
  *
- *   // the entry file for bundle generation
+ *   // the entry file for bundle generation If none specified and
+ *   // "index.android.js" exists, it will be used. Otherwise "index.js" is
+ *   // default. Can be overridden with ENTRY_FILE environment variable.
  *   entryFile: "index.android.js",
  *
  *   // https://facebook.github.io/react-native/docs/performance#enable-the-ram-format
@@ -78,7 +80,6 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    entryFile: "index.js",
     enableHermes: false,  // clean and rebuild if changing
 ]
 
@@ -232,6 +233,16 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.work:work-runtime:2.3.0-alpha03'
     implementation 'io.intercom.android:intercom-sdk-base:5.+'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    debugImplementation('com.facebook.flipper:flipper:0.35.0') {
+      exclude group:'com.facebook.fbjni'
+    }
+    debugImplementation('com.facebook.flipper:flipper-network-plugin:0.35.0') {
+      exclude group:'com.facebook.flipper'
+    }
+    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:0.35.0") {
+        exclude group:'com.facebook.flipper'
+    }
     implementation jscFlavor
    if (enableHermes) {
        def hermesPath = "../../node_modules/hermes-engine/android/";

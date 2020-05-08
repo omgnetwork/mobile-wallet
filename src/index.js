@@ -19,7 +19,12 @@ import { colors } from 'common/styles'
 import { PersistGate } from 'redux-persist/integration/react'
 import SplashScreen from 'react-native-splash-screen'
 
-YellowBox.ignoreWarnings(['Warning:', 'Setting', '`setBackgroundColor`'])
+YellowBox.ignoreWarnings([
+  'Warning:',
+  'Setting',
+  'setBackgroundColor',
+  'getNode'
+])
 
 const App = () => {
   useEffect(() => {
