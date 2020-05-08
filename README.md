@@ -39,7 +39,7 @@ MW_TEST_ADDRESS=<TEST_ADDRESS>
 MW_TEST_PRIVATE_KEY=<TEST_PRIVATE_KEY>
 ```
 
-5. From downloaded files,
+5. From downloaded files, (Optional for development, but need for deployment)
    - Copy `release.keystore`, then paste at `android/app/release.keystore`
    - Copy `keystore.properties`, then paste at `android/keystore.properties`
    - Copy `google-services.json`, then paste at `android/app/google-servies.json`
