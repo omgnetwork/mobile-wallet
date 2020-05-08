@@ -2,7 +2,7 @@
 
 A Plasma educational app that allows you to manage your fund on the Ethereum network and OmiseGO network.
 
-## Before Installation
+## Before Installation (Optional for development, but need for deployment)
 
 Download all files at [OmiseGO Drive](https://drive.google.com/drive/folders/1MMak_4mg5IZ-mv2zBOEok9FCYlMPqf2v?usp=sharing)
 
@@ -40,7 +40,7 @@ MW_TEST_PRIVATE_KEY=<TEST_PRIVATE_KEY>
 ```
 
 5. From downloaded files,
-   - Copy `release.jks`, then paste at `android/app/release.jks`
+   - Copy `release.keystore`, then paste at `android/app/release.keystore`
    - Copy `keystore.properties`, then paste at `android/keystore.properties`
    - Copy `google-services.json`, then paste at `android/app/google-servies.json`
    - Copy `GoogleService-Info.plist`, then paste at `ios/PlasmaWallet/wallet/GoogleService-Info.plist`
