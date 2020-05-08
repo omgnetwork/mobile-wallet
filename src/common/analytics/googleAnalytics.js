@@ -3,7 +3,7 @@ import Config from 'react-native-config'
 
 const envInfo = {
   ethereumNetwork: Config.ETHERSCAN_NETWORK,
-  watcherURL: Config.CHILDCHAIN_WATCHER_URL,
+  watcherURL: Config.WATCHER_URL,
   plasmaContractAddress: Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
 }
 

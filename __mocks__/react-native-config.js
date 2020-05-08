@@ -14,7 +14,7 @@ export default {
     '0x1499442e7ee8c7cf2ae33f5e096d1a5b9c013cff',
   ETH_VAULT_CONTRACT_ADDRESS: '0xe637769f388f309e1cca8dd679a95a7b64a5bd06',
   ERC20_VAULT_CONTRACT_ADDRESS: '0x3fa3ae3aa4348f98da81511a6a2ca5a228fa2c8a',
-  CHILDCHAIN_WATCHER_URL:
+  WATCHER_URL:
     'https://dev-a69c763-watcher-info-ropsten-01.omg.network/',
   BLOCK_EXPLORER_URL:
     'https://dev-a69c763-blockexplorer-ropsten-01.omg.network/',

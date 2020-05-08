@@ -2,7 +2,7 @@
 
 A Plasma educational app that allows you to manage your fund on the Ethereum network and OmiseGO network.
 
-## Before Installation
+## Before Installation (Optional for development, but need for deployment)
 
 Download all files at [OmiseGO Drive](https://drive.google.com/drive/folders/1MMak_4mg5IZ-mv2zBOEok9FCYlMPqf2v?usp=sharing)
 
@@ -28,7 +28,7 @@ PLASMA_FRAMEWORK_CONTRACT_ADDRESS=<PLASMA_CONTRACT_ADDRESS>
 PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS=<EXIT_GAME_CONTRACT_ADDRESS>
 ETH_VAULT_CONTRACT_ADDRESS=<ETH_VAULT_CONTRACT_ADDRESS>
 ERC20_VAULT_CONTRACT_ADDRESS=<ERC20_VAULT_CONTRACT_ADDRESS>
-CHILDCHAIN_WATCHER_URL=<CHILDCHAIN_WATCHER_URL>
+WATCHER_URL=<WATCHER_URL>
 BLOCK_EXPLORER_URL=<BLOCK_EXPLORER_URL>
 EXIT_PERIOD=<EXIT_PERIOD>
 
@@ -39,8 +39,8 @@ MW_TEST_ADDRESS=<TEST_ADDRESS>
 MW_TEST_PRIVATE_KEY=<TEST_PRIVATE_KEY>
 ```
 
-5. From downloaded files,
-   - Copy `release.jks`, then paste at `android/app/release.jks`
+5. From downloaded files, (Optional for development, but need for deployment)
+   - Copy `release.keystore`, then paste at `android/app/release.keystore`
    - Copy `keystore.properties`, then paste at `android/keystore.properties`
    - Copy `google-services.json`, then paste at `android/app/google-servies.json`
    - Copy `GoogleService-Info.plist`, then paste at `ios/PlasmaWallet/wallet/GoogleService-Info.plist`
