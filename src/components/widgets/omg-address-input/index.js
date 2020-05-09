@@ -1,5 +1,6 @@
 import React, { Fragment, useCallback, useState } from 'react'
-import { TouchableOpacity, View, StyleSheet, Clipboard } from 'react-native'
+import { TouchableOpacity, View, StyleSheet } from 'react-native'
+import Clipboard from '@react-native-community/clipboard'
 import { withTheme } from 'react-native-paper'
 import OMGTextInput from '../omg-text-input'
 import OMGText from '../omg-text'

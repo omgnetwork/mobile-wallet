@@ -34,6 +34,7 @@
   "dependencies": {
     "@omisego/react-native-omg-js": "^3.1.0-0.4.6",
     "@react-native-community/async-storage": "^1.6.1",
+    "@react-native-community/clipboard": "^1.2.2",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/push-notification-ios": "^1.0.2",
     "assert": "^1.5.0",
