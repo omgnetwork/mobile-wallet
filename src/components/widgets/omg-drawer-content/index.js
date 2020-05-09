@@ -11,41 +11,15 @@ import { ScrollView } from 'react-native-gesture-handler'
 import Intercom from 'react-native-intercom'
 import { hexToRgb } from 'common/styles/colors'
 import { Styles, Alerter } from 'common/utils'
+import DrawerMenuItem from './DrawerMenuItem'
+import DrawerEnvItem from './DrawerEnvItem'
 import { Alert } from 'common/constants'
-
-const ManageWalletMenu = ({
-  theme,
-  title,
-  style,
-  onPress,
-  showCaret = true
-}) => {
-  return (
-    <TouchableOpacity
-      style={{ ...menuStyles.container, ...style }}
-      onPress={onPress}>
-      <OMGText style={menuStyles.titleLeft(theme)} weight='book'>
-        {title}
-      </OMGText>
-      {showCaret && (
-        <OMGFontIcon
-          name='chevron-right'
-          size={8}
-          style={menuStyles.iconRight(theme)}
-        />
-      )}
-    </TouchableOpacity>
-  )
-}
 
 const OMGDrawerContent = ({
   navigation,
-  dispatchSetPrimaryWalletAddress,
   dispatchSetCurrentPage,
-  dispatchTakeAppTour,
   primaryWallet,
-  theme,
-  wallets
+  theme
 }) => {
   const handleCopyClick = useCallback(() => {
     Clipboard.setString(primaryWallet.address)
@@ -97,21 +71,18 @@ const OMGDrawerContent = ({
               />
             </TouchableOpacity>
           </View>
-          <ManageWalletMenu
+          <DrawerMenuItem
             title='Transactions'
-            theme={theme}
             onPress={() => closeDrawerAndNavigate('ImportWallet')}
           />
           <View style={styles.divider(theme)} />
-          <ManageWalletMenu
+          <DrawerMenuItem
             title='Deposits'
-            theme={theme}
             onPress={() => closeDrawerAndNavigate('ImportWallet')}
           />
           <View style={styles.divider(theme)} />
-          <ManageWalletMenu
+          <DrawerMenuItem
             title='Withdraws'
-            theme={theme}
             onPress={() => closeDrawerAndNavigate('ImportWallet')}
           />
         </View>
@@ -120,27 +91,23 @@ const OMGDrawerContent = ({
           <OMGText weight='book' style={styles.titleText(theme)}>
             App
           </OMGText>
-          <ManageWalletMenu
+          <DrawerMenuItem
             title='Import Wallet'
-            theme={theme}
             onPress={() => closeDrawerAndNavigate('ImportWallet')}
           />
           <View style={styles.divider(theme)} />
-          <ManageWalletMenu
+          <DrawerMenuItem
             title='Create Wallet'
-            theme={theme}
             onPress={() => closeDrawerAndNavigate('CreateWallet')}
           />
           <View style={styles.divider(theme)} />
-          <ManageWalletMenu
+          <DrawerMenuItem
             title='Delete Wallet'
-            theme={theme}
             onPress={() => closeDrawerAndNavigate('DeleteWallet')}
           />
           <View style={styles.divider(theme)} />
-          <ManageWalletMenu
+          <DrawerMenuItem
             title='Support/Feedback'
-            theme={theme}
             showCaret={false}
             onPress={openIntercom}
           />
@@ -150,58 +117,25 @@ const OMGDrawerContent = ({
             <OMGText style={styles.titleText(theme)} weight='book'>
               Environment Info
             </OMGText>
-            <View style={styles.envInfoCard(theme)}>
-              <OMGText style={styles.environmentItemText(theme)} weight='book'>
-                Ethereum Network
-              </OMGText>
-              <OMGText style={styles.environmentItemTextLighter(theme)}>
-                {Config.ETHEREUM_NETWORK}
-              </OMGText>
-            </View>
-            <View style={styles.envInfoCard(theme)}>
-              <OMGText style={styles.environmentItemText(theme)} weight='book'>
-                Plasma Contract
-              </OMGText>
-              <OMGText style={styles.environmentItemTextLighter(theme)}>
-                {Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS}
-              </OMGText>
-            </View>
-            <View style={styles.envInfoCard(theme)}>
-              <OMGText style={styles.environmentItemText(theme)} weight='book'>
-                Watcher URL
-              </OMGText>
-              <OMGText style={styles.environmentItemTextLighter(theme)}>
-                {Config.WATCHER_URL}
-              </OMGText>
-            </View>
-            <View style={styles.envInfoCard(theme)}>
-              <OMGText style={styles.environmentItemText(theme)} weight='book'>
-                Version
-              </OMGText>
-              <OMGText style={styles.environmentItemTextLighter(theme)}>
-                {Config.VERSION}
-              </OMGText>
-            </View>
+            <DrawerEnvItem
+              title='Ethereum Network'
+              value={Config.ETHEREUM_NETWORK}
+            />
+            <DrawerEnvItem
+              title='Plasma Contract'
+              value={Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS}
+            />
+            <DrawerEnvItem
+              title='Watcher URL'
+              value={Config.CHILDCHAIN_WATCHER_URL}
+            />
+            <DrawerEnvItem title='Version' value={Config.VERSION} />
           </View>
         </View>
       </ScrollView>
     </SafeAreaView>
   )
 }
-
-const menuStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingVertical: 16,
-    alignItems: 'center'
-  },
-  titleLeft: theme => ({
-    flex: 1,
-    fontSize: Styles.getResponsiveSize(16, { small: 14, medium: 16 }),
-    color: theme.colors.black5
-  }),
-  iconRight: theme => ({ color: theme.colors.gray3 })
-})
 
 const styles = StyleSheet.create({
   container: {
@@ -246,10 +180,6 @@ const styles = StyleSheet.create({
     color: theme.colors.gray2,
     marginTop: 30
   }),
-  envInfoCard: theme => ({
-    marginTop: 16,
-    justifyContent: 'center'
-  }),
   expander: {
     flex: 1
   },
@@ -261,21 +191,7 @@ const styles = StyleSheet.create({
   },
   environment: {
     marginBottom: Styles.getResponsiveSize(24, { small: 16, medium: 20 })
-  },
-  environmentItemText: theme => ({
-    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
-    letterSpacing: Styles.getResponsiveSize(-0.64, {
-      small: -0.32,
-      medium: -0.48
-    }),
-    color: theme.colors.gray5
-  }),
-  environmentItemTextLighter: theme => ({
-    color: theme.colors.gray4,
-    fontSize: 12,
-    marginTop: 4,
-    letterSpacing: -0.48
-  })
+  }
 })
 
 const mapStateToProps = (state, ownProps) => ({
