@@ -56,7 +56,7 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
       onPress={onPress}>
       <OMGTokenIcon
         token={token}
-        size={Styles.getResponsiveSize(32, { small: 20, medium: 24 })}
+        size={Styles.getResponsiveSize(40, { small: 24, medium: 32 })}
       />
       <View style={styles.sectionName}>
         <OMGText style={styles.symbol(theme)}>{token.tokenSymbol}</OMGText>
@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.black5,
     shadowColor: '#000000',
     elevation: shadowAnim.current,
-    paddingHorizontal: Styles.getResponsiveSize(20, { small: 12, medium: 16 }),
     shadowRadius: shadowAnim.current,
     shadowOpacity: shadowOpacity.current,
     alignItems: 'center',
@@ -97,19 +96,19 @@ const styles = StyleSheet.create({
     opacity: balanceOpacity.current
   }),
   symbol: theme => ({
-    fontSize: Styles.getResponsiveSize(14, { medium: 12, small: 10 }),
+    fontSize: Styles.getResponsiveSize(16, { medium: 14, small: 12 }),
     color: theme.colors.white
   }),
   balance: theme => ({
     textAlign: 'right',
     maxWidth: 100,
-    fontSize: Styles.getResponsiveSize(14, { medium: 12, small: 10 }),
+    fontSize: Styles.getResponsiveSize(16, { medium: 14, small: 12 }),
     color: theme.colors.white
   }),
   fiatValue: theme => ({
     textAlign: 'right',
     color: theme.colors.gray2,
-    fontSize: 8
+    fontSize: 10
   })
 })
 

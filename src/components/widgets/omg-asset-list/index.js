@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginTop: -1,
     backgroundColor: theme.colors.black5,
+    paddingHorizontal: Styles.getResponsiveSize(36, { small: 24, medium: 30 }),
     paddingBottom: 8
   }),
   contentContainer: {},
@@ -101,20 +102,19 @@ const styles = StyleSheet.create({
   },
   header: theme => ({
     flexDirection: 'row',
-    paddingHorizontal: Styles.getResponsiveSize(20, { small: 12, medium: 16 }),
     alignItems: 'center',
     backgroundColor: theme.colors.black5
   }),
   updatedAt: theme => ({
     color: theme.colors.gray2,
-    letterSpacing: -0.7,
-    fontSize: Styles.getResponsiveSize(10, { small: 8, medium: 9 })
+    letterSpacing: -0.4,
+    fontSize: 10
   }),
   assetContainer: theme => ({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: theme.colors.black5,
-    paddingVertical: 8
+    paddingVertical: 16
   }),
   assetList: {},
   title: theme => ({
