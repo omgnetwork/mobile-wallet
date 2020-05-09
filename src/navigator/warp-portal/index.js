@@ -47,10 +47,6 @@ const WarpPortalNavigator = createStackNavigator(
       screen: Views.TransferReceive,
       navigationOptions: () => ({ title: 'Receive' })
     },
-    Setting: {
-      screen: Views.Setting,
-      navigationOptions: () => ({ title: 'Setting' })
-    },
     TransferForm: {
       screen: Views.TransferForm,
       navigationOptions: () => ({ title: 'TransferForm' })
