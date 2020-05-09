@@ -5,7 +5,12 @@ import { SafeAreaView, withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
-import { OMGText, OMGFontIcon, OMGIdenticon } from 'components/widgets'
+import {
+  OMGText,
+  OMGFontIcon,
+  OMGIdenticon,
+  OMGButton
+} from 'components/widgets'
 import { settingActions, onboardingActions } from 'common/actions'
 import { ScrollView } from 'react-native-gesture-handler'
 import Intercom from 'react-native-intercom'
@@ -14,6 +19,7 @@ import { Styles, Alerter } from 'common/utils'
 import DrawerMenuItem from './DrawerMenuItem'
 import DrawerEnvItem from './DrawerEnvItem'
 import { Alert } from 'common/constants'
+import { IconShuffle } from './assets'
 
 const OMGDrawerContent = ({
   navigation,
@@ -85,6 +91,14 @@ const OMGDrawerContent = ({
             title='Withdraws'
             onPress={() => closeDrawerAndNavigate('ImportWallet')}
           />
+          <View style={styles.btnContainer}>
+            <TouchableOpacity style={styles.btn(theme)}>
+              <IconShuffle color={theme.colors.white} size={12} />
+              <OMGText style={styles.btnText(theme)} weight='book'>
+                Change wallet
+              </OMGText>
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.settingContainer} key={'setting-container'}>
@@ -175,6 +189,23 @@ const styles = StyleSheet.create({
     paddingRight: 40,
     flexDirection: 'column'
   },
+  btnContainer: {
+    alignItems: 'flex-start'
+  },
+  btn: theme => ({
+    marginTop: 10,
+    width: 'auto',
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    borderRadius: 16,
+    paddingVertical: 10,
+    backgroundColor: theme.colors.blue3
+  }),
+  btnText: theme => ({
+    fontSize: 12,
+    marginLeft: 12,
+    color: theme.colors.white
+  }),
   titleText: theme => ({
     fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 12 }),
     color: theme.colors.gray2,
