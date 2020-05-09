@@ -1,15 +1,17 @@
-import React, { Fragment, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import Clipboard from '@react-native-community/clipboard'
 import { SafeAreaView, withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import Config from 'react-native-config'
-import { OMGText, OMGFontIcon } from 'components/widgets'
-import OMGDrawerWallet from './OMGDrawerWallet'
+import { OMGText, OMGFontIcon, OMGIdenticon } from 'components/widgets'
 import { settingActions, onboardingActions } from 'common/actions'
 import { ScrollView } from 'react-native-gesture-handler'
 import Intercom from 'react-native-intercom'
-import { Styles } from 'common/utils'
+import { hexToRgb } from 'common/styles/colors'
+import { Styles, Alerter } from 'common/utils'
+import { Alert } from 'common/constants'
 
 const ManageWalletMenu = ({
   theme,
@@ -22,12 +24,14 @@ const ManageWalletMenu = ({
     <TouchableOpacity
       style={{ ...menuStyles.container, ...style }}
       onPress={onPress}>
-      <OMGText style={menuStyles.titleLeft(theme)}>{title}</OMGText>
+      <OMGText style={menuStyles.titleLeft(theme)} weight='book'>
+        {title}
+      </OMGText>
       {showCaret && (
         <OMGFontIcon
           name='chevron-right'
-          size={14}
-          style={menuStyles.iconRight}
+          size={8}
+          style={menuStyles.iconRight(theme)}
         />
       )}
     </TouchableOpacity>
@@ -43,24 +47,16 @@ const OMGDrawerContent = ({
   theme,
   wallets
 }) => {
-  const handleWalletPress = wallet => {
-    dispatchSetPrimaryWalletAddress(wallet.address)
-    navigation.navigate('Initializer')
-  }
+  const handleCopyClick = useCallback(() => {
+    Clipboard.setString(primaryWallet.address)
+    Alerter.show(Alert.SUCCESS_COPIED_ADDRESS)
+  }, [primaryWallet.address])
 
   const closeDrawerAndNavigate = destination => {
     dispatchSetCurrentPage(destination)
     navigation.navigate(destination)
     requestAnimationFrame(() => {
       navigation.closeDrawer()
-    })
-  }
-
-  const takeAppTour = () => {
-    navigation.closeDrawer()
-    dispatchTakeAppTour()
-    requestAnimationFrame(() => {
-      navigation.navigate('Balance', { page: 1 })
     })
   }
 
@@ -72,32 +68,57 @@ const OMGDrawerContent = ({
   return (
     <SafeAreaView
       style={styles.container}
-      forceInset={{ top: 'always', horizontal: 'never' }}>
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        {wallets.length > 0 && (
-          <View key='wallet-container'>
-            <OMGText weight='regular' style={styles.titleText(theme)}>
-              WALLETS
+      forceInset={{ top: 'never', horizontal: 'never' }}>
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        bounces={false}
+        showsVerticalScrollIndicator={false}>
+        <View style={styles.headerContainer(theme)}>
+          <OMGIdenticon
+            style={styles.logo}
+            hash={primaryWallet.address}
+            size={36}
+          />
+          <OMGText style={styles.textWalletName(theme)} weight='book'>
+            {primaryWallet.name}
+          </OMGText>
+          <View style={styles.row}>
+            <OMGText
+              style={styles.hashText(theme)}
+              ellipsizeMode='middle'
+              numberOfLines={1}>
+              {primaryWallet.address}
             </OMGText>
-
-            {wallets.map((wallet, index) => (
-              <Fragment key={index}>
-                <OMGDrawerWallet
-                  wallet={wallet}
-                  onWalletPress={handleWalletPress}
-                  primary={
-                    primaryWallet && primaryWallet.address === wallet.address
-                  }
-                />
-                <View style={styles.divider(theme)} />
-              </Fragment>
-            ))}
+            <TouchableOpacity onPress={handleCopyClick}>
+              <OMGFontIcon
+                name='copy'
+                size={Styles.getResponsiveSize(24, { small: 20, medium: 20 })}
+                color={theme.colors.gray2}
+              />
+            </TouchableOpacity>
           </View>
-        )}
+          <ManageWalletMenu
+            title='Transactions'
+            theme={theme}
+            onPress={() => closeDrawerAndNavigate('ImportWallet')}
+          />
+          <View style={styles.divider(theme)} />
+          <ManageWalletMenu
+            title='Deposits'
+            theme={theme}
+            onPress={() => closeDrawerAndNavigate('ImportWallet')}
+          />
+          <View style={styles.divider(theme)} />
+          <ManageWalletMenu
+            title='Withdraws'
+            theme={theme}
+            onPress={() => closeDrawerAndNavigate('ImportWallet')}
+          />
+        </View>
 
         <View style={styles.settingContainer} key={'setting-container'}>
-          <OMGText weight='regular' style={styles.titleText(theme)}>
-            Manage
+          <OMGText weight='book' style={styles.titleText(theme)}>
+            App
           </OMGText>
           <ManageWalletMenu
             title='Import Wallet'
@@ -118,13 +139,6 @@ const OMGDrawerContent = ({
           />
           <View style={styles.divider(theme)} />
           <ManageWalletMenu
-            title='Take App Tour'
-            theme={theme}
-            showCaret={false}
-            onPress={takeAppTour}
-          />
-          <View style={styles.divider(theme)} />
-          <ManageWalletMenu
             title='Support/Feedback'
             theme={theme}
             showCaret={false}
@@ -133,11 +147,11 @@ const OMGDrawerContent = ({
           <View style={styles.divider(theme)} />
           <View style={styles.expander} />
           <View style={styles.environment}>
-            <OMGText style={styles.environmentTitleText(theme)}>
+            <OMGText style={styles.titleText(theme)} weight='book'>
               Environment Info
             </OMGText>
             <View style={styles.envInfoCard(theme)}>
-              <OMGText style={styles.environmentItemText(theme)}>
+              <OMGText style={styles.environmentItemText(theme)} weight='book'>
                 Ethereum Network
               </OMGText>
               <OMGText style={styles.environmentItemTextLighter(theme)}>
@@ -145,7 +159,7 @@ const OMGDrawerContent = ({
               </OMGText>
             </View>
             <View style={styles.envInfoCard(theme)}>
-              <OMGText style={styles.environmentItemText(theme)}>
+              <OMGText style={styles.environmentItemText(theme)} weight='book'>
                 Plasma Contract
               </OMGText>
               <OMGText style={styles.environmentItemTextLighter(theme)}>
@@ -153,7 +167,7 @@ const OMGDrawerContent = ({
               </OMGText>
             </View>
             <View style={styles.envInfoCard(theme)}>
-              <OMGText style={styles.environmentItemText(theme)}>
+              <OMGText style={styles.environmentItemText(theme)} weight='book'>
                 Watcher URL
               </OMGText>
               <OMGText style={styles.environmentItemTextLighter(theme)}>
@@ -161,7 +175,7 @@ const OMGDrawerContent = ({
               </OMGText>
             </View>
             <View style={styles.envInfoCard(theme)}>
-              <OMGText style={styles.environmentItemText(theme)}>
+              <OMGText style={styles.environmentItemText(theme)} weight='book'>
                 Version
               </OMGText>
               <OMGText style={styles.environmentItemTextLighter(theme)}>
@@ -178,64 +192,76 @@ const OMGDrawerContent = ({
 const menuStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    paddingVertical: 16
+    paddingVertical: 16,
+    alignItems: 'center'
   },
   titleLeft: theme => ({
     flex: 1,
-    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
-    letterSpacing: Styles.getResponsiveSize(-0.64, {
-      small: -0.32,
-      medium: -0.48
-    }),
-    color: theme.colors.gray7
+    fontSize: Styles.getResponsiveSize(16, { small: 14, medium: 16 }),
+    color: theme.colors.black5
   }),
-  iconRight: {}
+  iconRight: theme => ({ color: theme.colors.gray3 })
 })
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingLeft: 16,
-    paddingTop: Styles.getResponsiveSize(32, { small: 16, medium: 24 })
+    flex: 1
   },
   divider: theme => ({
-    backgroundColor: theme.colors.white2,
+    backgroundColor: theme.colors.gray2,
     height: 1,
-    opacity: 0.3
+    opacity: 0.15
   }),
   scrollView: {
     flexGrow: 1
   },
+  textWalletName: theme => ({
+    color: theme.colors.black5,
+    fontSize: 32,
+    marginTop: 20
+  }),
+  hashText: theme => ({
+    width: 128,
+    marginRight: 8,
+    fontSize: 12,
+    color: theme.colors.black5
+  }),
+  headerContainer: theme => ({
+    paddingTop: Styles.getResponsiveSize(70, { small: 36, medium: 56 }),
+    backgroundColor: hexToRgb(theme.colors.blue2, 0.2),
+    flexDirection: 'column',
+    paddingLeft: 34,
+    paddingRight: 40,
+    paddingBottom: 30
+  }),
   settingContainer: {
     flex: 1,
     marginTop: Styles.getResponsiveSize(16, { small: 0, medium: 8 }),
-    paddingRight: 16,
+    paddingLeft: 34,
+    paddingRight: 40,
     flexDirection: 'column'
   },
   titleText: theme => ({
-    fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
-    textTransform: 'uppercase',
-    color: theme.colors.black5,
-    marginTop: 12
+    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 12 }),
+    color: theme.colors.gray2,
+    marginTop: 30
   }),
   envInfoCard: theme => ({
     marginTop: 16,
-    padding: 16,
-    backgroundColor: theme.colors.white2
+    justifyContent: 'center'
   }),
   expander: {
     flex: 1
   },
-  environment: {
-    marginBottom: Styles.getResponsiveSize(24, { small: 16, medium: 20 }),
-    marginTop: Styles.getResponsiveSize(32, { small: 16, medium: 24 })
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 20
   },
-  environmentTitleText: theme => ({
-    color: theme.colors.gray4,
-    fontSize: 12,
-    letterSpacing: -0.48,
-    paddingBottom: 8
-  }),
+  environment: {
+    marginBottom: Styles.getResponsiveSize(24, { small: 16, medium: 20 })
+  },
   environmentItemText: theme => ({
     fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     letterSpacing: Styles.getResponsiveSize(-0.64, {
