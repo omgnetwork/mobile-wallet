@@ -23,6 +23,7 @@ const Initializer = ({
   children,
   blockchainWallet,
   wallet,
+  primaryWalletNetwork,
   dispatchSetPrimaryWallet,
   dispatchSetBlockchainWallet,
   provider,
@@ -61,8 +62,7 @@ const Initializer = ({
         dispatchSetBlockchainWallet(wallet, provider)
       }, loadingDuration)
     } else if (shouldSetPrimaryWallet(wallet, wallets)) {
-      console.log('test')
-      dispatchSetPrimaryWallet(wallets[0], wallets)
+      dispatchSetPrimaryWallet(wallets[0], primaryWalletNetwork)
     }
   }, [
     blockchainWallet,
@@ -70,6 +70,7 @@ const Initializer = ({
     dispatchSetPrimaryWallet,
     loadingDuration,
     navigation,
+    primaryWalletNetwork,
     provider,
     ready,
     registerHeadlessService,
@@ -148,14 +149,15 @@ const mapStateToProps = (state, ownProps) => ({
   wallets: state.wallets,
   provider: state.setting.provider,
   blockchainWallet: state.setting.blockchainWallet,
+  primaryWalletNetwork: state.setting.primaryWalletNetwork,
   unconfirmedTxs: state.transaction.unconfirmedTxs
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchSetBlockchainWallet: (wallet, provider) =>
     dispatch(settingActions.setBlockchainWallet(wallet, provider)),
-  dispatchSetPrimaryWallet: wallet =>
-    settingActions.setPrimaryWallet(dispatch, wallet.address)
+  dispatchSetPrimaryWallet: (wallet, network) =>
+    settingActions.setPrimaryWallet(dispatch, wallet.address, network)
 })
 
 export default connect(

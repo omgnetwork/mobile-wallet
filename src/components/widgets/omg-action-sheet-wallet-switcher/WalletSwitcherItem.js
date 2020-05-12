@@ -6,12 +6,21 @@ import { hexToRgb } from 'common/styles/colors'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { BlockchainNetworkType } from 'common/constants'
 
-const WalletSwitcherItem = ({ theme, wallet, network, style, selected }) => {
+const WalletSwitcherItem = ({
+  theme,
+  wallet,
+  network,
+  style,
+  selected,
+  onPress
+}) => {
   const styles = createStyles(theme, false)
   const { address, name } = wallet
   return (
     <View style={[style]}>
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity
+        style={styles.container}
+        onPress={() => onPress(wallet, network)}>
         <View style={styles.identicon}>
           {network === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK && (
             <OMGIdenticon hash={address} size={34} />

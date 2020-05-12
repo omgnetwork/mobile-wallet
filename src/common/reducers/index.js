@@ -14,7 +14,7 @@ import Storage from '@react-native-community/async-storage'
 const persistSettingConfig = {
   key: 'setting',
   storage: Storage,
-  whitelist: ['primaryWalletAddress']
+  whitelist: ['primaryWalletAddress', 'primaryWalletNetwork']
 }
 
 const persistOnboardingConfig = {

@@ -303,6 +303,8 @@ PODS:
     - React
   - react-native-config (0.11.7):
     - React
+  - react-native-flipper (0.39.0):
+    - React
   - react-native-intercom (14.0.0):
     - Intercom (~> 6.0.0)
     - React
@@ -451,6 +453,7 @@ DEPENDENCIES:
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-config (from `../node_modules/react-native-config`)
+  - react-native-flipper (from `../node_modules/react-native-flipper`)
   - react-native-intercom (from `../node_modules/react-native-intercom`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -543,6 +546,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-camera"
   react-native-config:
     :path: "../node_modules/react-native-config"
+  react-native-flipper:
+    :path: "../node_modules/react-native-flipper"
   react-native-intercom:
     :path: "../node_modules/react-native-intercom"
   react-native-randombytes:
@@ -640,6 +645,7 @@ SPEC CHECKSUMS:
   react-native-background-timer: 0d34748e53a972507c66963490c775321a88f6f2
   react-native-camera: b7ad0c9648c3ea83f58a3ef4f815ab4acd88dc7e
   react-native-config: 55548054279d92e0e4566ea15a8b9b81028ec342
+  react-native-flipper: 5dc086b3fe71a6ebb8b4e42e4b9191cf07fe50ac
   react-native-intercom: 8682a2da729caec7905348269b10f05c94a2aa44
   react-native-randombytes: 991545e6eaaf700b4ee384c291ef3d572e0b2ca8
   react-native-safe-area-context: 8260e5157617df4b72865f44006797f895b2ada7
