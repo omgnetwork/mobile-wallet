@@ -23,6 +23,8 @@ YellowBox.ignoreWarnings([
   'Warning:',
   'Setting',
   'setBackgroundColor',
+  'useNativeDriver',
+  'Animated.event',
   'getNode'
 ])
 
