@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import Clipboard from '@react-native-community/clipboard'
 import { SafeAreaView, withNavigation } from 'react-navigation'

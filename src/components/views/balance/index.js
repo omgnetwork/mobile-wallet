@@ -1,32 +1,22 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, View, StatusBar } from 'react-native'
-import Modal from 'react-native-modal'
+import { StyleSheet, StatusBar } from 'react-native'
 import { SafeAreaView, withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
 import ChildchainBalance from './ChildchainBalance'
-import {
-  OMGStatusBar,
-  OMGActionSheetWalletSwitcher,
-  OMGText,
-  OMGBottomSheet
-} from 'components/widgets'
+import { OMGStatusBar, OMGBottomSheet } from 'components/widgets'
 
-import { transactionActions, onboardingActions } from 'common/actions'
-
-const MAXIMUM_UTXOS_PER_CURRENCY = 4
+import { transactionActions } from 'common/actions'
 
 const Balance = ({
   theme,
   primaryWallet,
   navigation,
-  wallets,
   unconfirmedTxs,
   isFocused,
   feedbackCompleteTx,
-  dispatchInvalidateFeedbackCompleteTx,
-  walletSwitcherVisible
+  dispatchInvalidateFeedbackCompleteTx
 }) => {
   const [
     feedback,
@@ -63,37 +53,10 @@ const Balance = ({
         barStyle={'light-content'}
         backgroundColor={theme.colors.primary}
       />
-      {/* <View style={styles.container(theme)}> */}
-      {/* <View style={styles.topContainer}>
-          <OMGText style={styles.topTitleLeft(theme)}>
-            {primaryWallet ? primaryWallet.name : 'Wallet not found'}
-          </OMGText>
-          <OMGFontIcon
-            style={styles.topIconRight}
-            size={Styles.getResponsiveSize(24, { small: 18, medium: 20 })}
-            name='hamburger'
-            onPress={() => drawerNavigation.openDrawer()}
-            color={theme.colors.white}
-          />
-        </View> */}
       <ChildchainBalance
         primaryWallet={primaryWallet}
         onPressMenu={() => drawerNavigation.openDrawer()}
       />
-
-      {/* {!wallets || !primaryWallet ? (
-          <View style={styles.emptyButton}>
-            <OMGButton
-              onPress={() => {
-                navigation.navigate('ManageWallet')
-              }}>
-              Manage wallet
-            </OMGButton>
-          </View>
-        ) : (
-          <ChildchainBalance primaryWallet={primaryWallet} />
-        )} */}
-      {/* </View> */}
       <OMGBottomSheet
         style={styles.bottomSheet}
         show={visible}
@@ -113,31 +76,16 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
-  wallets: state.wallets,
   unconfirmedTxs: state.transaction.unconfirmedTxs,
   feedbackCompleteTx: state.transaction.feedbackCompleteTx,
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
-  ),
-  blockchainWallet: state.setting.blockchainWallet,
-  provider: state.setting.provider,
-  primaryWalletAddress: state.setting.primaryWalletAddress,
-  currentPage: state.onboarding.currentPage,
-  walletSwitcherVisible: state.walletSwitcher.visible
+  )
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchInvalidateFeedbackCompleteTx: wallet =>
-    transactionActions.invalidateFeedbackCompleteTx(dispatch, wallet),
-  dispatchSetCurrentPage: (currentPage, page) => {
-    onboardingActions.setCurrentPage(dispatch, currentPage, page)
-  },
-  dispatchAddAnchoredComponent: (anchoredComponentName, position) =>
-    onboardingActions.addAnchoredComponent(
-      dispatch,
-      anchoredComponentName,
-      position
-    )
+    transactionActions.invalidateFeedbackCompleteTx(dispatch, wallet)
 })
 
 export default connect(
