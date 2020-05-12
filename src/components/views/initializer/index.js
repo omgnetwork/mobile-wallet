@@ -2,14 +2,7 @@ import { settingActions } from 'common/actions'
 import { store } from 'common/stores'
 import { HeadlessProcessExit } from 'components/headless'
 import React, { useRef, useCallback, useEffect, useState } from 'react'
-import {
-  AppRegistry,
-  Image,
-  StyleSheet,
-  View,
-  Animated,
-  Platform
-} from 'react-native'
+import { AppRegistry, StyleSheet, View, Animated, Platform } from 'react-native'
 import { SecureEncryption } from 'common/native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
@@ -114,7 +107,7 @@ const Initializer = ({
 }
 
 const shouldGetBlockchainWallet = (wallet, blockchainWallet, provider) => {
-  return wallet && provider && !blockchainWallet && wallet.shouldRefresh
+  return wallet && provider && !blockchainWallet
 }
 
 const shouldSetPrimaryWallet = (wallet, wallets) => {
