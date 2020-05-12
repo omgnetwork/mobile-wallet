@@ -37,10 +37,10 @@ export const syncProviderToStore = providerName => {
   })
 }
 
-export const setPrimaryAddress = (dispatch, address) => {
+export const setPrimaryWallet = (dispatch, address) => {
   const action = () => ({ primaryWalletAddress: address })
   return createAction(dispatch, {
     operation: action,
-    type: 'SETTING/SET_PRIMARY_ADDRESS'
+    type: 'SETTING/SET_PRIMARY_WALLET'
   })
 }

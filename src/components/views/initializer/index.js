@@ -61,6 +61,7 @@ const Initializer = ({
         dispatchSetBlockchainWallet(wallet, provider)
       }, loadingDuration)
     } else if (shouldSetPrimaryWallet(wallet, wallets)) {
+      console.log('test')
       dispatchSetPrimaryWallet(wallets[0], wallets)
     }
   }, [
@@ -154,7 +155,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchSetBlockchainWallet: (wallet, provider) =>
     dispatch(settingActions.setBlockchainWallet(wallet, provider)),
   dispatchSetPrimaryWallet: wallet =>
-    settingActions.setPrimaryAddress(dispatch, wallet.address)
+    settingActions.setPrimaryWallet(dispatch, wallet.address)
 })
 
 export default connect(

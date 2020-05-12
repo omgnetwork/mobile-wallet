@@ -1,3 +1,5 @@
+import OMGActionSheetContainer from './omg-action-sheet-container'
+import OMGActionSheetWalletSwitcher from './omg-action-sheet-wallet-switcher'
 import OMGAddressInput from './omg-address-input'
 import OMGAmountInput from './omg-amount-input'
 import OMGAlert from './omg-alert'
@@ -64,6 +66,8 @@ import OMGUtxoDetail from './omg-utxo-detail'
 import OMGUtxoSelect from './omg-utxo-select'
 
 export {
+  OMGActionSheetContainer,
+  OMGActionSheetWalletSwitcher,
   OMGAddressInput,
   OMGAmountInput,
   OMGAssetHeader,

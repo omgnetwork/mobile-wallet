@@ -1,17 +1,12 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import Clipboard from '@react-native-community/clipboard'
 import { SafeAreaView, withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
+import { walletSwitcherActions } from 'common/actions'
 import Config from 'react-native-config'
-import {
-  OMGText,
-  OMGFontIcon,
-  OMGIdenticon,
-  OMGButton
-} from 'components/widgets'
-import { settingActions, onboardingActions } from 'common/actions'
+import { OMGText, OMGFontIcon, OMGIdenticon } from 'components/widgets'
 import { ScrollView } from 'react-native-gesture-handler'
 import Intercom from 'react-native-intercom'
 import { hexToRgb } from 'common/styles/colors'
@@ -25,6 +20,8 @@ const OMGDrawerContent = ({
   navigation,
   dispatchSetCurrentPage,
   primaryWallet,
+  wallets,
+  dispatchToggleWalletSwitcher,
   theme
 }) => {
   const handleCopyClick = useCallback(() => {
@@ -44,6 +41,10 @@ const OMGDrawerContent = ({
     Intercom.registerUnidentifiedUser()
     Intercom.displayMessenger()
   }
+
+  const openWalletSwitcher = useCallback(() => {
+    dispatchToggleWalletSwitcher(true)
+  }, [dispatchToggleWalletSwitcher])
 
   return (
     <SafeAreaView
@@ -92,7 +93,9 @@ const OMGDrawerContent = ({
             onPress={() => closeDrawerAndNavigate('ImportWallet')}
           />
           <View style={styles.btnContainer}>
-            <TouchableOpacity style={styles.btn(theme)}>
+            <TouchableOpacity
+              style={styles.btn(theme)}
+              onPress={openWalletSwitcher}>
               <IconShuffle color={theme.colors.white} size={12} />
               <OMGText style={styles.btnText(theme)} weight='book'>
                 Change wallet
@@ -232,16 +235,10 @@ const mapStateToProps = (state, ownProps) => ({
   wallets: state.wallets,
   provider: state.setting.provider
 })
-
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchSetPrimaryWalletAddress: primaryAddress =>
-    settingActions.setPrimaryAddress(dispatch, primaryAddress),
-  dispatchSetCurrentPage: (currentPage, page) =>
-    onboardingActions.setCurrentPage(dispatch, currentPage, page),
-  dispatchTakeAppTour: () =>
-    onboardingActions.setEnableOnboarding(dispatch, true)
+  dispatchToggleWalletSwitcher: visible =>
+    walletSwitcherActions.toggle(dispatch, visible)
 })
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps

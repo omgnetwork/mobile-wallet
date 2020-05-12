@@ -170,7 +170,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchCreateWallet: (wallets, mnemonic, provider, name) =>
     dispatch(walletActions.create(wallets, mnemonic, provider, name)),
   dispatchSetPrimaryWallet: wallet =>
-    settingActions.setPrimaryAddress(dispatch, wallet.address)
+    settingActions.setPrimaryWallet(dispatch, wallet.address)
 })
 
 export default connect(

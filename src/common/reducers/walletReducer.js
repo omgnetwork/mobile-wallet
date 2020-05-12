@@ -1,4 +1,5 @@
 import Config from 'react-native-config'
+import { BlockchainNetworkType } from 'common/constants'
 
 export const walletsReducer = (state = [], action) => {
   switch (action.type) {
@@ -107,13 +108,16 @@ export const walletsReducer = (state = [], action) => {
           return wallet
         }
       })
-    case 'SETTING/SET_PRIMARY_ADDRESS/OK':
+    case 'SETTING/SET_PRIMARY_WALLET/OK':
       return state.map(wallet => {
+        const isEthNetwork =
+          action.data.primaryWalletNetwork ===
+          BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
         if (wallet.address === action.data.primaryWalletAddress) {
           return {
             ...wallet,
-            shouldRefresh: true,
-            shouldRefreshChildchain: true
+            shouldRefresh: isEthNetwork,
+            shouldRefreshChildchain: !isEthNetwork
           }
         } else {
           return wallet

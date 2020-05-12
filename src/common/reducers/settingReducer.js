@@ -1,3 +1,5 @@
+import { BlockchainNetworkType } from 'common/constants'
+
 export const settingReducer = (state = {}, action) => {
   switch (action.type) {
     case 'SETTING/SET_PROVIDER/SUCCESS':
@@ -7,10 +9,11 @@ export const settingReducer = (state = {}, action) => {
         providerName: action.data.providerName,
         provider: action.data.provider
       }
-    case 'SETTING/SET_PRIMARY_ADDRESS/OK':
+    case 'SETTING/SET_PRIMARY_WALLET/OK':
       return {
         ...state,
         primaryWalletAddress: action.data.primaryWalletAddress,
+        primaryWalletNetwork: action.data.primaryWalletNetwork,
         blockchainWallet: invalidateBlockchainWalletByAddress(
           state.blockchainWallet,
           action.data.primaryWalletAddress
@@ -27,6 +30,7 @@ export const settingReducer = (state = {}, action) => {
       return {
         ...state,
         primaryWalletAddress: null,
+        primaryWalletNetwork: BlockchainNetworkType.TYPE_ETHEREUM_NETWORK,
         blockchainWallet: null
       }
     default:

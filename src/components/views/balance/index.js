@@ -1,24 +1,19 @@
-import React, { useEffect, useCallback, useState, useRef } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, View, StatusBar } from 'react-native'
+import Modal from 'react-native-modal'
 import { SafeAreaView, withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
-import { Styles } from 'common/utils'
 import ChildchainBalance from './ChildchainBalance'
 import {
-  OMGText,
-  OMGFontIcon,
   OMGStatusBar,
-  OMGButton,
+  OMGActionSheetWalletSwitcher,
+  OMGText,
   OMGBottomSheet
 } from 'components/widgets'
 
-import {
-  transactionActions,
-  onboardingActions,
-  plasmaActions
-} from 'common/actions'
+import { transactionActions, onboardingActions } from 'common/actions'
 
 const MAXIMUM_UTXOS_PER_CURRENCY = 4
 
@@ -30,7 +25,8 @@ const Balance = ({
   unconfirmedTxs,
   isFocused,
   feedbackCompleteTx,
-  dispatchInvalidateFeedbackCompleteTx
+  dispatchInvalidateFeedbackCompleteTx,
+  walletSwitcherVisible
 }) => {
   const [
     feedback,
@@ -112,29 +108,7 @@ const styles = StyleSheet.create({
   safeAreaView: theme => ({
     flex: 1,
     backgroundColor: theme.colors.primary
-  }),
-  topContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  topTitleLeft: theme => ({
-    fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
-    marginBottom: 16,
-    textTransform: 'uppercase',
-    color: theme.colors.white
-  }),
-  topIconRight: {},
-  container: theme => ({
-    flex: 1,
-    paddingVertical: 20,
-    paddingHorizontal: 16,
-    backgroundColor: theme.colors.black5
-  }),
-  emptyButton: {
-    flex: 1,
-    justifyContent: 'center',
-    marginHorizontal: 16
-  }
+  })
 })
 
 const mapStateToProps = (state, ownProps) => ({
@@ -148,7 +122,8 @@ const mapStateToProps = (state, ownProps) => ({
   blockchainWallet: state.setting.blockchainWallet,
   provider: state.setting.provider,
   primaryWalletAddress: state.setting.primaryWalletAddress,
-  currentPage: state.onboarding.currentPage
+  currentPage: state.onboarding.currentPage,
+  walletSwitcherVisible: state.walletSwitcher.visible
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

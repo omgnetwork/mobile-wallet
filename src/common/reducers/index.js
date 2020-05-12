@@ -8,6 +8,7 @@ import { transactionReducer } from './transactionReducer'
 import { settingReducer } from './settingReducer'
 import { persistReducer } from 'redux-persist'
 import { onboardingReducer } from './onboardingReducer'
+import { walletSwitcherReducer } from './walletSwitcherReducer'
 import Storage from '@react-native-community/async-storage'
 
 const persistSettingConfig = {
@@ -28,6 +29,7 @@ export default combineReducers({
   transaction: transactionReducer,
   fees: feeReducer,
   gasOptions: gasReducer,
+  walletSwitcher: walletSwitcherReducer,
   onboarding: persistReducer(persistOnboardingConfig, onboardingReducer),
   setting: persistReducer(persistSettingConfig, settingReducer),
   error: errorReducer

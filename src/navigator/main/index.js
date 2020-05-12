@@ -1,5 +1,4 @@
 import React from 'react'
-import BottomTabNavigator from './bottombar'
 import { OMGDrawerContent } from 'components/widgets'
 import { createDrawerNavigator } from 'react-navigation-drawer'
 import * as Views from 'components/views'
@@ -7,7 +6,7 @@ import * as Views from 'components/views'
 const createMainDrawerNavigator = () =>
   createDrawerNavigator(
     {
-      MainDrawer: {
+      Balance: {
         screen: Views.Balance
       }
     },
