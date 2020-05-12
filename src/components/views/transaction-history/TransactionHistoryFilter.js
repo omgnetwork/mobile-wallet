@@ -1,11 +1,9 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import {
-  OMGText,
-  OMGFontIcon,
   OMGStatusBar,
   OMGTransactionFilter,
   OMGHeader
@@ -28,7 +26,10 @@ const TransactionHistoryFilter = ({
         barStyle={'light-content'}
         backgroundColor={theme.colors.black5}
       />
-      <OMGHeader title={title} onPress={() => navigation.goBack()} />
+      <OMGHeader
+        title={title}
+        onPress={() => navigation.navigate('MainContent')}
+      />
       <OMGTransactionFilter
         transactions={transactions}
         startedExitTxs={startedExitTxs}
@@ -44,21 +45,6 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     backgroundColor: theme.colors.black5
-  }),
-  header: {
-    marginHorizontal: 16,
-    alignItems: 'center',
-    flexDirection: 'row'
-  },
-  headerIcon: {
-    padding: 8,
-    marginLeft: -8
-  },
-  headerTitle: theme => ({
-    fontSize: 18,
-    color: theme.colors.white,
-    marginLeft: 8,
-    textTransform: 'uppercase'
   })
 })
 

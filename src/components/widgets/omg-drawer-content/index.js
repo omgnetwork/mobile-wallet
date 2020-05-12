@@ -13,14 +13,12 @@ import { hexToRgb } from 'common/styles/colors'
 import { Styles, Alerter } from 'common/utils'
 import DrawerMenuItem from './DrawerMenuItem'
 import DrawerEnvItem from './DrawerEnvItem'
-import { Alert } from 'common/constants'
+import { Alert, TransactionTypes } from 'common/constants'
 import { IconShuffle } from './assets'
 
 const OMGDrawerContent = ({
   navigation,
-  dispatchSetCurrentPage,
   primaryWallet,
-  wallets,
   dispatchToggleWalletSwitcher,
   theme
 }) => {
@@ -29,9 +27,8 @@ const OMGDrawerContent = ({
     Alerter.show(Alert.SUCCESS_COPIED_ADDRESS)
   }, [primaryWallet.address])
 
-  const closeDrawerAndNavigate = destination => {
-    dispatchSetCurrentPage(destination)
-    navigation.navigate(destination)
+  const closeDrawerAndNavigate = (destination, params = {}) => {
+    navigation.navigate(destination, params)
     requestAnimationFrame(() => {
       navigation.closeDrawer()
     })
@@ -80,17 +77,40 @@ const OMGDrawerContent = ({
           </View>
           <DrawerMenuItem
             title='Transactions'
-            onPress={() => closeDrawerAndNavigate('ImportWallet')}
+            onPress={() =>
+              closeDrawerAndNavigate('TransactionHistoryFilter', {
+                title: 'Transactions',
+                types: [
+                  TransactionTypes.TYPE_ALL,
+                  TransactionTypes.TYPE_RECEIVED,
+                  TransactionTypes.TYPE_SENT,
+                  TransactionTypes.TYPE_FAILED
+                ]
+              })
+            }
           />
           <View style={styles.divider(theme)} />
           <DrawerMenuItem
             title='Deposits'
-            onPress={() => closeDrawerAndNavigate('ImportWallet')}
+            onPress={() =>
+              closeDrawerAndNavigate('TransactionHistoryFilter', {
+                title: 'Deposit',
+                types: [TransactionTypes.TYPE_DEPOSIT]
+              })
+            }
           />
           <View style={styles.divider(theme)} />
           <DrawerMenuItem
             title='Withdraws'
-            onPress={() => closeDrawerAndNavigate('ImportWallet')}
+            onPress={() =>
+              closeDrawerAndNavigate('TransactionHistoryFilter', {
+                title: 'Exit',
+                types: [
+                  TransactionTypes.TYPE_EXIT,
+                  TransactionTypes.TYPE_PROCESS_EXIT
+                ]
+              })
+            }
           />
           <View style={styles.btnContainer}>
             <TouchableOpacity
