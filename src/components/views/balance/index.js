@@ -5,13 +5,15 @@ import { SafeAreaView, withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
 import ChildchainBalance from './ChildchainBalance'
-import { OMGStatusBar, OMGBottomSheet } from 'components/widgets'
+import { OMGBottomSheet } from 'components/widgets'
 
 import { transactionActions } from 'common/actions'
+import { BlockchainNetworkType } from 'common/constants'
 
 const Balance = ({
   theme,
   primaryWallet,
+  primaryWalletNetwork,
   navigation,
   unconfirmedTxs,
   isFocused,
@@ -48,11 +50,7 @@ const Balance = ({
 
   const drawerNavigation = navigation.dangerouslyGetParent()
   return (
-    <SafeAreaView style={styles.safeAreaView(theme)}>
-      <OMGStatusBar
-        barStyle={'light-content'}
-        backgroundColor={theme.colors.primary}
-      />
+    <SafeAreaView style={styles.safeAreaView(theme, primaryWalletNetwork)}>
       <ChildchainBalance
         primaryWallet={primaryWallet}
         onPressMenu={() => drawerNavigation.openDrawer()}
@@ -68,9 +66,12 @@ const Balance = ({
 }
 
 const styles = StyleSheet.create({
-  safeAreaView: theme => ({
+  safeAreaView: (theme, primaryWalletNetwork) => ({
     flex: 1,
-    backgroundColor: theme.colors.primary
+    backgroundColor:
+      primaryWalletNetwork === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
+        ? theme.colors.gray9
+        : theme.colors.primary
   })
 })
 
@@ -78,6 +79,7 @@ const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
   unconfirmedTxs: state.transaction.unconfirmedTxs,
   feedbackCompleteTx: state.transaction.feedbackCompleteTx,
+  primaryWalletNetwork: state.setting.primaryWalletNetwork,
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
   )

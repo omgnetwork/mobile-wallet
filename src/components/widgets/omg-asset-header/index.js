@@ -5,6 +5,7 @@ import { OMGEmpty, OMGText, OMGFontIcon } from 'components/widgets'
 import { IconEth, IconGo, Scan, ArrowDown, ArrowUp } from './assets'
 import { Styles } from 'common/utils'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { BlockchainNetworkType } from 'common/constants'
 
 const CircleButton = ({ children, theme, style, label, onPress, disable }) => {
   const styles = createCircleBtnStyles(theme, disable)
@@ -47,7 +48,7 @@ const OMGAssetHeader = ({
   theme,
   loading,
   amount,
-  rootchain,
+  type,
   network,
   onPressMenu,
   anchoredRef,
@@ -57,17 +58,25 @@ const OMGAssetHeader = ({
   onPressScan,
   style
 }) => {
-  const BlockchainIcon = rootchain ? IconEth : IconGo
-  const styles = createStyles(theme)
+  const isRootchain = BlockchainNetworkType.TYPE_ETHEREUM_NETWORK === type
+  const BlockchainIcon = isRootchain ? IconEth : IconGo
+  const styles = createStyles(theme, isRootchain)
 
   return (
     <View style={{ ...styles.container, ...style }} ref={anchoredRef}>
       <View style={styles.rowContainer}>
-        <BlockchainIcon
-          fill={theme.colors.white}
-          width={rootchain ? 14 : 58}
-          height={rootchain ? 23 : 18}
-        />
+        <View style={styles.iconNetwork}>
+          <BlockchainIcon
+            fill={theme.colors.white}
+            width={isRootchain ? 14 : 58}
+            height={isRootchain ? 23 : 18}
+          />
+          {isRootchain && (
+            <OMGText style={styles.iconTextNetwork} weight='book'>
+              Ethereum{'\n'}Network
+            </OMGText>
+          )}
+        </View>
         <OMGText style={styles.textNetwork}>{network}</OMGText>
         <OMGFontIcon
           size={Styles.getResponsiveSize(24, { small: 18, medium: 20 })}
@@ -113,13 +122,23 @@ const OMGAssetHeader = ({
   )
 }
 
-const createStyles = theme =>
+const createStyles = (theme, isRootchain) =>
   StyleSheet.create({
     container: {
-      backgroundColor: theme.colors.primary,
+      backgroundColor: isRootchain ? theme.colors.gray9 : theme.colors.primary,
       paddingTop: Styles.getResponsiveSize(64, { small: 24, medium: 32 }),
       paddingBottom: Styles.getResponsiveSize(36, { small: 24, medium: 30 }),
       paddingHorizontal: 16
+    },
+    iconNetwork: {
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    iconTextNetwork: {
+      marginLeft: 8,
+      fontSize: 10,
+      letterSpacing: 0.7,
+      color: theme.colors.white
     },
     rowContainer: {
       flexDirection: 'row',

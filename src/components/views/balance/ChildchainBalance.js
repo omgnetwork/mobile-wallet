@@ -9,27 +9,43 @@ import Config from 'react-native-config'
 import { TransferHelper } from 'components/views/transfer'
 import { ethereumActions } from 'common/actions'
 import { Formatter, Datetime, Alerter, Styles } from 'common/utils'
-import { OMGItemToken, OMGAssetHeader, OMGAssetList } from 'components/widgets'
-import { Alert } from 'common/constants'
+import {
+  OMGItemToken,
+  OMGAssetHeader,
+  OMGAssetList,
+  OMGStatusBar
+} from 'components/widgets'
+import { Alert, BlockchainNetworkType } from 'common/constants'
 
 const ChildchainBalance = ({
   blockchainLabelRef,
-  dispatchLoadAssets,
+  dispatchLoadOmiseGOAssets,
+  dispatchLoadEthereumAssets,
   dispatchSetShouldRefreshChildchain,
   dispatchGetRecommendedGas,
+  dispatchRefreshRootchain,
   unconfirmedTxs,
   globalLoading,
+  primaryWalletNetwork,
   onPressMenu,
   wallet,
   provider,
-  navigation
+  navigation,
+  theme
 }) => {
   const currency = 'USD'
+  const isEthereumNetwork =
+    primaryWalletNetwork === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
   const [totalBalance, setTotalBalance] = useState(0.0)
   const [loading, setLoading] = useLoading(
     globalLoading,
-    'CHILDCHAIN_FETCH_ASSETS'
+    primaryWalletNetwork === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
+      ? 'ROOTCHAIN_FETCH_ASSETS'
+      : 'CHILDCHAIN_FETCH_ASSETS'
   )
+  const assets = isEthereumNetwork
+    ? wallet.rootchainAssets
+    : wallet.childchainAssets
   const hasPendingTransaction = unconfirmedTxs.length > 0
   const hasRootchainAssets =
     wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
@@ -74,27 +90,56 @@ const ChildchainBalance = ({
   }, [hasPendingTransaction, navigation, shouldEnableExitAction])
 
   useEffect(() => {
-    if (wallet.shouldRefreshChildchain) {
+    if (isEthereumNetwork && wallet.shouldRefresh) {
       setLoading(true)
-      dispatchLoadAssets(provider, wallet)
+      dispatchLoadEthereumAssets(
+        provider,
+        wallet.address,
+        wallet.updatedBlock || '0'
+      )
+      dispatchRefreshRootchain(wallet.address, false)
+    } else if (wallet.shouldRefreshChildchain) {
+      setLoading(true)
+      dispatchLoadOmiseGOAssets(provider, wallet)
       dispatchGetRecommendedGas()
       dispatchSetShouldRefreshChildchain(wallet.address, false)
     }
   }, [
     dispatchGetRecommendedGas,
-    dispatchLoadAssets,
+    dispatchLoadEthereumAssets,
+    dispatchLoadOmiseGOAssets,
+    dispatchRefreshRootchain,
     dispatchSetShouldRefreshChildchain,
+    isEthereumNetwork,
     provider,
     setLoading,
     wallet
   ])
 
   const handleReload = useCallback(() => {
-    dispatchSetShouldRefreshChildchain(wallet.address, true)
-  }, [dispatchSetShouldRefreshChildchain, wallet.address])
+    if (isEthereumNetwork) {
+      dispatchRefreshRootchain(wallet.address, true)
+    } else {
+      dispatchSetShouldRefreshChildchain(wallet.address, true)
+    }
+  }, [
+    dispatchRefreshRootchain,
+    dispatchSetShouldRefreshChildchain,
+    isEthereumNetwork,
+    wallet.address
+  ])
 
   useEffect(() => {
-    if (wallet.childchainAssets) {
+    if (isEthereumNetwork && wallet.rootchainAssets) {
+      setLoading(false)
+      const totalPrices = wallet.rootchainAssets.reduce((acc, asset) => {
+        const parsedAmount = parseFloat(asset.balance)
+        const tokenPrice = parsedAmount * asset.price
+        return tokenPrice + acc
+      }, 0)
+
+      setTotalBalance(totalPrices)
+    } else if (wallet.childchainAssets) {
       const totalPrices = wallet.childchainAssets.reduce((acc, asset) => {
         const parsedAmount = parseFloat(asset.balance)
         const tokenPrice = parsedAmount * asset.price
@@ -103,14 +148,19 @@ const ChildchainBalance = ({
 
       setTotalBalance(totalPrices)
     }
-  }, [wallet.childchainAssets])
+  }, [
+    isEthereumNetwork,
+    setLoading,
+    wallet.childchainAssets,
+    wallet.rootchainAssets
+  ])
 
   return (
     <Fragment>
       <OMGAssetHeader
         amount={formatTotalBalance(totalBalance)}
         currency={currency}
-        rootchain={false}
+        type={primaryWalletNetwork}
         loading={loading}
         onPressMenu={onPressMenu}
         disableSend={hasPendingTransaction}
@@ -125,10 +175,10 @@ const ChildchainBalance = ({
         anchoredRef={blockchainLabelRef}
       />
       <OMGAssetList
-        data={wallet.childchainAssets || []}
+        data={assets || []}
         hasRootchainAssets={hasRootchainAssets}
         keyExtractor={item => item.contractAddress}
-        type='childchain'
+        type={primaryWalletNetwork}
         updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
         loading={loading}
         handleReload={handleReload}
@@ -137,14 +187,6 @@ const ChildchainBalance = ({
           <OMGItemToken key={item.contractAddress} token={item} />
         )}
       />
-      {/* <OMGAssetFooter
-        enableDeposit={shouldEnableDepositAction()}
-        enableExit={shouldEnableExitAction()}
-        footerRef={exitButtonRef}
-        showExit={hasChildchainAssets}
-        onPressDeposit={handleDepositClick}
-        onPressExit={handleExitClick}
-      /> */}
     </Fragment>
   )
 }
@@ -166,17 +208,23 @@ const mapStateToProps = (state, ownProps) => ({
   provider: state.setting.provider,
   unconfirmedTxs: state.transaction.unconfirmedTxs,
   globalLoading: state.loading,
+  primaryWalletNetwork: state.setting.primaryWalletNetwork,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   )
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  dispatchLoadAssets: (provider, wallet) =>
+  dispatchLoadOmiseGOAssets: (provider, wallet) =>
     dispatch(plasmaActions.fetchAssets(provider, wallet.address)),
+  dispatchLoadEthereumAssets: (provider, address, lastBlockNumber) =>
+    dispatch(ethereumActions.fetchAssets(provider, address, lastBlockNumber)),
   dispatchSetShouldRefreshChildchain: (address, shouldRefreshChildchain) =>
     walletActions.refreshChildchain(dispatch, address, shouldRefreshChildchain),
-  dispatchGetRecommendedGas: () => dispatch(ethereumActions.getRecommendedGas())
+  dispatchGetRecommendedGas: () =>
+    dispatch(ethereumActions.getRecommendedGas()),
+  dispatchRefreshRootchain: (address, shouldRefresh) =>
+    walletActions.refreshRootchain(dispatch, address, shouldRefresh)
 })
 
 export default connect(

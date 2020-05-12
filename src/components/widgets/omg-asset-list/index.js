@@ -5,6 +5,7 @@ import { OMGText, OMGEmpty } from 'components/widgets'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { Styles } from 'common/utils'
+import { BlockchainNetworkType } from 'common/constants'
 
 const OMGAssetList = ({
   theme,
@@ -20,12 +21,15 @@ const OMGAssetList = ({
   handleReload
 }) => {
   const getEmptyStatePayload = useCallback(() => {
-    if (type === 'rootchain') {
+    if (type === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK) {
       return {
         imageName: 'EmptyRootchainWallet',
         text: 'Wallet is empty.\nShare wallet to receive fund.'
       }
-    } else if (type === 'childchain' && hasRootchainAssets) {
+    } else if (
+      type === BlockchainNetworkType.TYPE_OMISEGO_NETWORK &&
+      hasRootchainAssets
+    ) {
       return {
         imageName: 'EmptyOnlyChildchainWallet',
         text: 'Wallet is empty.\nStart using Plasma by deposit.'
