@@ -27,7 +27,7 @@ const WalletSwitcherItem = ({
           )}
         </View>
         <View style={styles.detailContainer}>
-          <OMGText style={styles.textWalletName} weight='normal'>
+          <OMGText style={styles.textWalletName} weight='book'>
             {name}
           </OMGText>
           <View style={styles.detailSecondLine}>
