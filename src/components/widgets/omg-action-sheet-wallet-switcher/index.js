@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { View, StyleSheet, Dimensions } from 'react-native'
 import { OMGActionSheetContainer } from 'components/widgets'
 import { BlockchainNetworkType } from 'common/constants'
@@ -13,22 +13,22 @@ const OMGActionSheetWalletSwitcher = ({
 }) => {
   const styles = createStyles(theme)
   const WalletSwitcherItems = wallets.map((wallet, index) => (
-    <>
+    <Fragment key={index}>
       <WalletSwitcherItem
-        key={index}
+        key={'eth' + index}
         wallet={wallet}
         network={BlockchainNetworkType.TYPE_ETHEREUM_NETWORK}
         selected={primaryWalletAddress === wallet.address}
         style={styles.marginItem}
       />
       <WalletSwitcherItem
-        key={index}
+        key={'omg' + index}
         wallet={wallet}
         network={BlockchainNetworkType.TYPE_OMISEGO_NETWORK}
         selected={primaryWalletAddress === wallet.address}
         style={styles.marginItem}
       />
-    </>
+    </Fragment>
   ))
   return (
     <OMGActionSheetContainer isVisible={isVisible}>
