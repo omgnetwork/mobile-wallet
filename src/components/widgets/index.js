@@ -8,7 +8,6 @@ import OMGAssetList from './omg-asset-list'
 import OMGAssetFooter from './omg-asset-footer'
 import OMGBackground from './omg-background'
 import OMGBottomSheet from './omg-bottom-sheet'
-import OMGBottomTab from './omg-bottom-tab'
 import OMGBox from './omg-box'
 import OMGBlockchainLabel from './omg-blockchain-label'
 import OMGButton from './omg-button'
@@ -55,7 +54,6 @@ import OMGTokenFee from './omg-token-fee'
 import OMGTokenIcon from './omg-token-icon'
 import OMGTokenInput from './omg-token-input'
 import OMGTokenSelect from './omg-token-select'
-import OMGViewPager from './omg-view-pager'
 import OMGItemExitTransaction from './omg-item-exit-transaction'
 import OMGItemTransaction from './omg-item-transaction'
 import OMGWalletAddress from './omg-wallet-address'
@@ -76,7 +74,6 @@ export {
   OMGBackground,
   OMGBlockchainLabel,
   OMGBottomSheet,
-  OMGBottomTab,
   OMGBox,
   OMGButton,
   OMGDotViewPager,
@@ -123,7 +120,6 @@ export {
   OMGTokenIcon,
   OMGTokenInput,
   OMGTokenSelect,
-  OMGViewPager,
   OMGWalletAddress,
   OMGTransactionFilter,
   OMGTransactionList,

@@ -6,7 +6,6 @@ import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
 import Balance from './Balance'
 import { OMGBottomSheet } from 'components/widgets'
-
 import { transactionActions } from 'common/actions'
 import { BlockchainNetworkType } from 'common/constants'
 
