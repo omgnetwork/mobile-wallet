@@ -6,8 +6,8 @@ import * as Views from 'components/views'
 const createMainDrawerNavigator = () =>
   createDrawerNavigator(
     {
-      Balance: {
-        screen: Views.Balance
+      Home: {
+        screen: Views.Home
       }
     },
     {

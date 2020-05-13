@@ -69,7 +69,7 @@ const CreateWalletMnemonicConfirm = ({
     if (loading.success && loading.action === 'WALLET_CREATE' && wallet) {
       GoogleAnalytics.sendEvent('created_wallet', {})
       dispatchSetPrimaryWallet(wallet)
-      navigation.navigate('Balance')
+      navigation.navigate('Home')
     }
   }, [dispatchSetPrimaryWallet, loading, navigation, wallet])
 

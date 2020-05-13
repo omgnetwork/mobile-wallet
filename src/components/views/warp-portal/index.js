@@ -40,7 +40,7 @@ const WarpPortal = ({ navigation }) => {
         <Button
           mode='outlined'
           style={styles.button}
-          onPress={() => navigation.navigate('Balance')}>
+          onPress={() => navigation.navigate('Home')}>
           Balance
         </Button>
         <Button

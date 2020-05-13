@@ -166,7 +166,7 @@ const TransferPending = ({ theme, navigation }) => {
             <OMGButton
               style={styles.button}
               onPress={() => {
-                navigation.navigate('Balance')
+                navigation.navigate('Home')
               }}>
               Done
             </OMGButton>

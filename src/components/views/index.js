@@ -2,7 +2,7 @@ import Backup from './backup'
 import BackupList from './backup/BackupList'
 import BackupWarning from './backup/BackupWarning'
 import BackupTranscribe from './backup/BackupTranscribe'
-import Balance from './balance'
+import Home from './home'
 import CreateWallet from './create-wallet'
 import CreateWalletForm from './create-wallet/CreateWalletForm'
 import CreateWalletBackupMnemonic from './create-wallet/CreateWalletBackupMnemonic'
@@ -53,7 +53,7 @@ export {
   BackupList,
   BackupWarning,
   BackupTranscribe,
-  Balance,
+  Home,
   CreateWallet,
   CreateWalletForm,
   CreateWalletBackupMnemonic,

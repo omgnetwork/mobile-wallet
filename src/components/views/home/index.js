@@ -4,13 +4,13 @@ import { StyleSheet, StatusBar } from 'react-native'
 import { SafeAreaView, withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
-import ChildchainBalance from './ChildchainBalance'
+import Balance from './Balance'
 import { OMGBottomSheet } from 'components/widgets'
 
 import { transactionActions } from 'common/actions'
 import { BlockchainNetworkType } from 'common/constants'
 
-const Balance = ({
+const Home = ({
   theme,
   primaryWallet,
   primaryWalletNetwork,
@@ -51,7 +51,7 @@ const Balance = ({
   const drawerNavigation = navigation.dangerouslyGetParent()
   return (
     <SafeAreaView style={styles.safeAreaView(theme, primaryWalletNetwork)}>
-      <ChildchainBalance
+      <Balance
         primaryWallet={primaryWallet}
         onPressMenu={() => drawerNavigation.openDrawer()}
       />
@@ -93,4 +93,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNavigationFocus(withTheme(Balance)))
+)(withNavigationFocus(withTheme(Home)))

@@ -105,7 +105,7 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
         <OMGButton
           style={styles.button}
           onPress={() => {
-            navigation.navigate('Balance')
+            navigation.navigate('Home')
           }}>
           Done
         </OMGButton>

@@ -9,15 +9,10 @@ import Config from 'react-native-config'
 import { TransferHelper } from 'components/views/transfer'
 import { ethereumActions } from 'common/actions'
 import { Formatter, Datetime, Alerter, Styles } from 'common/utils'
-import {
-  OMGItemToken,
-  OMGAssetHeader,
-  OMGAssetList,
-  OMGStatusBar
-} from 'components/widgets'
+import { OMGItemToken, OMGAssetHeader, OMGAssetList } from 'components/widgets'
 import { Alert, BlockchainNetworkType } from 'common/constants'
 
-const ChildchainBalance = ({
+const Balance = ({
   blockchainLabelRef,
   dispatchLoadOmiseGOAssets,
   dispatchLoadEthereumAssets,
@@ -230,4 +225,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNavigation(withTheme(ChildchainBalance)))
+)(withNavigation(withTheme(Balance)))
