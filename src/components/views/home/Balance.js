@@ -1,5 +1,4 @@
 import React, { useState, Fragment, useEffect, useCallback } from 'react'
-import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
 import { useLoading } from 'common/hooks'
@@ -23,10 +22,11 @@ const Balance = ({
   primaryWalletNetwork,
   onPressMenu,
   onPressSidebarMenu,
+  onPressSend,
+  onPressReceive,
+  onPressScan,
   wallet,
-  provider,
-  navigation,
-  theme
+  provider
 }) => {
   const currency = 'USD'
   const isEthereumNetwork =
@@ -120,13 +120,9 @@ const Balance = ({
         onPressMenu={onPressMenu}
         onPressSidebarMenu={onPressSidebarMenu}
         disableSend={hasPendingTransaction}
-        onPressSend={() => {
-          console.log('Send')
-        }}
-        onPressReceive={() => {
-          console.log('Receive')
-        }}
-        onPressScan={() => console.log('Scan')}
+        onPressSend={onPressSend}
+        onPressReceive={onPressReceive}
+        onPressScan={onPressScan}
         network={Config.OMISEGO_NETWORK}
         anchoredRef={blockchainLabelRef}
       />
@@ -186,4 +182,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNavigation(withTheme(Balance)))
+)(withTheme(Balance))

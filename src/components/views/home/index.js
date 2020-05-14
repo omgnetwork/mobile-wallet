@@ -89,6 +89,18 @@ const Home = ({
     }
   }, [hasPendingTransaction, navigation, shouldEnableWithdrawAction])
 
+  const handleOnPressSend = useCallback(() => {
+    navigation.navigate('Transfer')
+  }, [navigation])
+
+  const handleOnPressReceive = useCallback(() => {
+    console.log('Receive')
+  }, [])
+
+  const handleOnPressScan = useCallback(() => {
+    navigation.navigate('Transfer')
+  }, [navigation])
+
   const drawerNavigation = navigation.dangerouslyGetParent()
   return (
     <SafeAreaView style={styles.safeAreaView(theme, primaryWalletNetwork)}>
@@ -96,6 +108,9 @@ const Home = ({
         primaryWallet={primaryWallet}
         onPressMenu={onPressMenu}
         onPressSidebarMenu={() => drawerNavigation.openDrawer()}
+        onPressSend={handleOnPressSend}
+        onPressReceive={handleOnPressReceive}
+        onPressScan={handleOnPressScan}
       />
       <OMGBottomSheet
         style={styles.bottomSheet}
