@@ -62,12 +62,7 @@ const Home = ({
     primaryWallet.rootchainAssets &&
     primaryWallet.rootchainAssets.length > 0
 
-  const shouldEnableDepositAction = useCallback(() => {
-    if (!hasPendingTransaction && hasRootchainAssets) {
-      return true
-    }
-    return false
-  }, [hasPendingTransaction, hasRootchainAssets])
+  const shouldEnableDepositAction = !hasPendingTransaction && hasRootchainAssets
 
   const handleDepositClick = useCallback(() => {
     if (hasPendingTransaction) {
@@ -82,17 +77,12 @@ const Home = ({
     }
   }, [hasPendingTransaction, hasRootchainAssets, navigation])
 
-  const shouldEnableWithdrawAction = useCallback(() => {
-    if (!hasPendingTransaction) {
-      return true
-    }
-    return false
-  }, [hasPendingTransaction])
+  const shouldEnableWithdrawAction = !hasPendingTransaction
 
   const handleWithdrawClick = useCallback(() => {
-    if (!shouldEnableWithdrawAction() && !hasPendingTransaction) {
+    if (!shouldEnableWithdrawAction && !hasPendingTransaction) {
       Alerter.show(Alert.CANNOT_EXIT_NOT_ENOUGH_ASSETS)
-    } else if (!shouldEnableWithdrawAction()) {
+    } else if (!shouldEnableWithdrawAction) {
       Alerter.show(Alert.CANNOT_EXIT_PENDING_TRANSACTION)
     } else {
       navigation.navigate('TransferExit')

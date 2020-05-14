@@ -7,11 +7,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 const CircleButton = ({ children, theme, style, label, onPress, disable }) => {
   const styles = createStyles(theme)
   return (
-    <View style={style}>
+    <View style={[styles.container(disable), style]}>
       <TouchableOpacity
         style={[styles.btnContainer]}
         onPress={onPress}
-        activeOpacity={disable ? 0.3 : 1.0}
         disabled={disable}>
         {children}
       </TouchableOpacity>
@@ -24,6 +23,9 @@ const CircleButton = ({ children, theme, style, label, onPress, disable }) => {
 
 const createStyles = theme =>
   StyleSheet.create({
+    container: disable => ({
+      opacity: disable ? 0.3 : 1.0
+    }),
     btnContainer: {
       width: 50,
       height: 50,

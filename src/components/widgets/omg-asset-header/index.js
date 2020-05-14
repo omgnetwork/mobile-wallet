@@ -30,7 +30,7 @@ const OMGAssetHeader = ({
   return (
     <View style={{ ...styles.container, ...style }} ref={anchoredRef}>
       <View style={styles.rowContainer}>
-        <View style={styles.iconNetwork(disableSend)}>
+        <View style={styles.iconNetwork}>
           <BlockchainIcon
             fill={theme.colors.white}
             width={isRootchain ? 14 : 58}

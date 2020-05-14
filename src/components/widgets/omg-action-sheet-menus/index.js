@@ -19,50 +19,49 @@ const OMGActionSheetMenus = ({
   onPressWithdraw
 }) => {
   const styles = createStyles(theme)
-
   return (
     <OMGActionSheetContainer isVisible={isVisible} setVisible={setVisible}>
       <View style={styles.container}>
         <TouchableOpacity
-          style={styles.row}
-          activeOpacity={enableDeposit ? 1.0 : 0.3}
           onPress={() => {
             onPressDeposit()
             if (enableDeposit) setVisible(false)
           }}>
-          <View style={styles.iconContainer}>
-            <DepositIcon />
+          <View style={[styles.row, styles.contentContainer(enableDeposit)]}>
+            <View style={styles.iconContainer}>
+              <DepositIcon />
+            </View>
+            <OMGText style={styles.textMenu} weight='book'>
+              Deposit
+            </OMGText>
+            <OMGFontIcon
+              name='chevron-right'
+              size={14}
+              style={styles.caretRight}
+              color={theme.colors.gray2}
+            />
           </View>
-          <OMGText style={styles.textMenu} weight='book'>
-            Deposit
-          </OMGText>
-          <OMGFontIcon
-            name='chevron-right'
-            size={14}
-            style={styles.caretRight}
-            color={theme.colors.gray2}
-          />
         </TouchableOpacity>
         <View style={styles.divider} />
         <TouchableOpacity
-          style={styles.row}
-          activeOpacity={enableDeposit ? 1.0 : 0.3}
           onPress={() => {
             onPressWithdraw()
             if (enableWithdraw) setVisible(false)
           }}>
-          <View style={styles.iconContainer}>
-            <WithdrawIcon />
+          <View style={[styles.row, styles.contentContainer(enableDeposit)]}>
+            <View style={styles.iconContainer}>
+              <WithdrawIcon />
+            </View>
+            <OMGText style={styles.textMenu} weight='book'>
+              Withdraw
+            </OMGText>
+            <OMGFontIcon
+              name='chevron-right'
+              size={14}
+              style={styles.caretRight}
+              color={theme.colors.gray2}
+            />
           </View>
-          <OMGText style={styles.textMenu} weight='book'>
-            Withdraw
-          </OMGText>
-          <OMGFontIcon
-            name='chevron-right'
-            size={14}
-            style={styles.caretRight}
-            color={theme.colors.gray2}
-          />
         </TouchableOpacity>
       </View>
     </OMGActionSheetContainer>
@@ -79,6 +78,9 @@ const createStyles = theme =>
     marginItem: {
       marginTop: 16
     },
+    contentContainer: enable => ({
+      opacity: enable ? 1.0 : 0.3
+    }),
     iconContainer: {
       width: 24,
       height: 24,
