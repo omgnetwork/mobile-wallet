@@ -1,48 +1,12 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { OMGEmpty, OMGText, OMGFontIcon } from 'components/widgets'
+import { OMGText, OMGFontIcon } from 'components/widgets'
+import CircleButton from './CircleButton'
 import { IconEth, IconGo, Scan, ArrowDown, ArrowUp } from './assets'
 import { Styles } from 'common/utils'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { BlockchainNetworkType } from 'common/constants'
-
-const CircleButton = ({ children, theme, style, label, onPress, disable }) => {
-  const styles = createCircleBtnStyles(theme, disable)
-  return (
-    <View style={style}>
-      <TouchableOpacity
-        style={[styles.btnContainer]}
-        onPress={onPress}
-        disabled={disable}>
-        {children}
-      </TouchableOpacity>
-      <OMGText weight='book' style={styles.label}>
-        {label}
-      </OMGText>
-    </View>
-  )
-}
-
-const createCircleBtnStyles = (theme, disable) => ({
-  btnContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    alignItems: 'center',
-    justifyContent: 'center',
-    opacity: disable ? 0.4 : 1.0,
-    borderColor: theme.colors.white,
-    borderWidth: 1
-  },
-  label: {
-    marginTop: 8,
-    color: theme.colors.white,
-    fontSize: 12,
-    opacity: disable ? 0.4 : 1.0,
-    textAlign: 'center'
-  }
-})
 
 const OMGAssetHeader = ({
   theme,
@@ -66,7 +30,7 @@ const OMGAssetHeader = ({
   return (
     <View style={{ ...styles.container, ...style }} ref={anchoredRef}>
       <View style={styles.rowContainer}>
-        <View style={styles.iconNetwork}>
+        <View style={styles.iconNetwork(disableSend)}>
           <BlockchainIcon
             fill={theme.colors.white}
             width={isRootchain ? 14 : 58}
@@ -105,16 +69,15 @@ const OMGAssetHeader = ({
           <ArrowUp />
         </CircleButton>
         <CircleButton
-          theme={theme}
           style={styles.rowItemMarginLeft}
           onPress={onPressReceive}
           label='Receive'>
           <ArrowDown />
         </CircleButton>
         <CircleButton
-          theme={theme}
           style={styles.rowItemMarginLeft}
           onPress={onPressScan}
+          disable={disableSend}
           label='Scan'>
           <Scan />
         </CircleButton>
@@ -131,10 +94,11 @@ const createStyles = (theme, isRootchain) =>
       paddingBottom: Styles.getResponsiveSize(36, { small: 24, medium: 30 }),
       paddingHorizontal: 16
     },
-    iconNetwork: {
+    iconNetwork: disableSend => ({
       flexDirection: 'row',
-      alignItems: 'center'
-    },
+      alignItems: 'center',
+      opacity: disableSend ? 0.3 : 1.0
+    }),
     iconTextNetwork: {
       marginLeft: 8,
       fontSize: 10,

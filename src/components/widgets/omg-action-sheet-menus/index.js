@@ -13,6 +13,8 @@ const OMGActionSheetMenus = ({
   theme,
   isVisible,
   setVisible,
+  enableDeposit,
+  enableWithdraw,
   onPressDeposit,
   onPressWithdraw
 }) => {
@@ -21,7 +23,13 @@ const OMGActionSheetMenus = ({
   return (
     <OMGActionSheetContainer isVisible={isVisible} setVisible={setVisible}>
       <View style={styles.container}>
-        <TouchableOpacity style={styles.row} onPress={onPressDeposit}>
+        <TouchableOpacity
+          style={styles.row}
+          activeOpacity={enableDeposit ? 1.0 : 0.3}
+          onPress={() => {
+            onPressDeposit()
+            if (enableDeposit) setVisible(false)
+          }}>
           <View style={styles.iconContainer}>
             <DepositIcon />
           </View>
@@ -36,7 +44,13 @@ const OMGActionSheetMenus = ({
           />
         </TouchableOpacity>
         <View style={styles.divider} />
-        <TouchableOpacity style={styles.row} onPress={onPressWithdraw}>
+        <TouchableOpacity
+          style={styles.row}
+          activeOpacity={enableDeposit ? 1.0 : 0.3}
+          onPress={() => {
+            onPressWithdraw()
+            if (enableWithdraw) setVisible(false)
+          }}>
           <View style={styles.iconContainer}>
             <WithdrawIcon />
           </View>

@@ -4,10 +4,13 @@ import { StyleSheet, StatusBar } from 'react-native'
 import { SafeAreaView, withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
+import { Alerter } from 'common/utils'
 import Balance from './Balance'
+import Config from 'react-native-config'
 import { OMGBottomSheet, OMGActionSheetMenus } from 'components/widgets'
 import { transactionActions } from 'common/actions'
-import { BlockchainNetworkType } from 'common/constants'
+import { TransferHelper } from '../transfer'
+import { BlockchainNetworkType, Alert } from 'common/constants'
 
 const Home = ({
   theme,
@@ -53,6 +56,49 @@ const Home = ({
     unconfirmedTxs
   ])
 
+  const hasPendingTransaction = unconfirmedTxs.length > 0
+  const hasRootchainAssets =
+    primaryWallet &&
+    primaryWallet.rootchainAssets &&
+    primaryWallet.rootchainAssets.length > 0
+
+  const shouldEnableDepositAction = useCallback(() => {
+    if (!hasPendingTransaction && hasRootchainAssets) {
+      return true
+    }
+    return false
+  }, [hasPendingTransaction, hasRootchainAssets])
+
+  const handleDepositClick = useCallback(() => {
+    if (hasPendingTransaction) {
+      Alerter.show(Alert.CANNOT_DEPOSIT_PENDING_TRANSACTION)
+    } else if (!hasRootchainAssets) {
+      Alerter.show(Alert.FAILED_DEPOSIT_EMPTY_WALLET)
+    } else {
+      navigation.navigate('TransferSelectBalance', {
+        transferType: TransferHelper.TYPE_DEPOSIT,
+        address: Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
+      })
+    }
+  }, [hasPendingTransaction, hasRootchainAssets, navigation])
+
+  const shouldEnableWithdrawAction = useCallback(() => {
+    if (!hasPendingTransaction) {
+      return true
+    }
+    return false
+  }, [hasPendingTransaction])
+
+  const handleWithdrawClick = useCallback(() => {
+    if (!shouldEnableWithdrawAction() && !hasPendingTransaction) {
+      Alerter.show(Alert.CANNOT_EXIT_NOT_ENOUGH_ASSETS)
+    } else if (!shouldEnableWithdrawAction()) {
+      Alerter.show(Alert.CANNOT_EXIT_PENDING_TRANSACTION)
+    } else {
+      navigation.navigate('TransferExit')
+    }
+  }, [hasPendingTransaction, navigation, shouldEnableWithdrawAction])
+
   const drawerNavigation = navigation.dangerouslyGetParent()
   return (
     <SafeAreaView style={styles.safeAreaView(theme, primaryWalletNetwork)}>
@@ -70,6 +116,10 @@ const Home = ({
       <OMGActionSheetMenus
         isVisible={menuVisible}
         setVisible={setMenuVisible}
+        enableDeposit={shouldEnableDepositAction}
+        enableWithdraw={shouldEnableWithdrawAction}
+        onPressDeposit={handleDepositClick}
+        onPressWithdraw={handleWithdrawClick}
       />
     </SafeAreaView>
   )

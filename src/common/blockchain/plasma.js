@@ -282,7 +282,7 @@ export const getExitQueue = async tokenContractAddress => {
 
 export const getFees = (currencies = []) => {
   return axios
-    .post(`${Config.WATCHER_URL}fees.all`, {
+    .post(`${Config.CHILDCHAIN_WATCHER_URL}fees.all`, {
       params: {
         currencies,
         tx_types: []
