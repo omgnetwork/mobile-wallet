@@ -164,7 +164,7 @@ const OMGDrawerContent = ({
             />
             <DrawerEnvItem
               title='Watcher URL'
-              value={Config.CHILDCHAIN_WATCHER_URL}
+              value={Config.WATCHER_URL}
             />
             <DrawerEnvItem title='Version' value={Config.VERSION} />
           </View>

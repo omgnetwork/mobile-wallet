@@ -1,6 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Dimensions } from 'react-native'
-import { OMGText } from 'components/widgets'
+import { View, StyleSheet } from 'react-native'
 import Modal from 'react-native-modal'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
@@ -10,6 +9,7 @@ const OMGActionSheetContainer = ({
   theme,
   children,
   isVisible = false,
+  setVisible,
   dispatchToggleWalletSwitcher
 }) => {
   const styles = createStyles(theme)
@@ -18,8 +18,12 @@ const OMGActionSheetContainer = ({
       coverScreen={false}
       style={styles.modal}
       useNativeDriver={false}
-      onBackdropPress={() => dispatchToggleWalletSwitcher(false)}
-      onSwipeComplete={() => dispatchToggleWalletSwitcher(false)}
+      onBackdropPress={() =>
+        dispatchToggleWalletSwitcher?.(false) || setVisible?.(false)
+      }
+      onSwipeComplete={() =>
+        dispatchToggleWalletSwitcher?.(false) || setVisible?.(false)
+      }
       hideModalContentWhileAnimating={false}
       swipeDirection={['down']}
       isVisible={isVisible}>
@@ -39,8 +43,8 @@ const createStyles = theme =>
       justifyContent: 'flex-end'
     },
     popupModalContainer: {
-      borderTopRightRadius: 20,
-      borderTopLeftRadius: 20,
+      borderTopRightRadius: 40,
+      borderTopLeftRadius: 40,
       paddingVertical: 12,
       paddingHorizontal: 24,
       flexDirection: 'column',

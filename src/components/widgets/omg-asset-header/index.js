@@ -50,9 +50,10 @@ const OMGAssetHeader = ({
   amount,
   type,
   network,
-  onPressMenu,
+  onPressSidebarMenu,
   anchoredRef,
   disableSend,
+  onPressMenu,
   onPressSend,
   onPressReceive,
   onPressScan,
@@ -81,7 +82,7 @@ const OMGAssetHeader = ({
         <OMGFontIcon
           size={Styles.getResponsiveSize(24, { small: 18, medium: 20 })}
           name='hamburger'
-          onPress={onPressMenu}
+          onPress={onPressSidebarMenu}
           color={theme.colors.white}
         />
       </View>
@@ -89,7 +90,7 @@ const OMGAssetHeader = ({
         <OMGText style={styles.balanceAmount} weight='bold'>
           <OMGText>$</OMGText> {amount}
         </OMGText>
-        <TouchableOpacity style={styles.ovalButton}>
+        <TouchableOpacity style={styles.ovalButton} onPress={onPressMenu}>
           <OMGText style={styles.ovalButtonText}>+</OMGText>
           <OMGText style={styles.ovalButtonText2}>-</OMGText>
         </TouchableOpacity>

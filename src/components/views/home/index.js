@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, StatusBar } from 'react-native'
 import { SafeAreaView, withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
 import Balance from './Balance'
-import { OMGBottomSheet } from 'components/widgets'
+import { OMGBottomSheet, OMGActionSheetMenus } from 'components/widgets'
 import { transactionActions } from 'common/actions'
 import { BlockchainNetworkType } from 'common/constants'
 
@@ -30,6 +30,12 @@ const Home = ({
     dispatchInvalidateFeedbackCompleteTx
   )
 
+  const [menuVisible, setMenuVisible] = useState(false)
+
+  const onPressMenu = useCallback(() => {
+    setMenuVisible(true)
+  }, [])
+
   useEffect(() => {
     if (isFocused) {
       StatusBar.setBarStyle('light-content')
@@ -52,13 +58,18 @@ const Home = ({
     <SafeAreaView style={styles.safeAreaView(theme, primaryWalletNetwork)}>
       <Balance
         primaryWallet={primaryWallet}
-        onPressMenu={() => drawerNavigation.openDrawer()}
+        onPressMenu={onPressMenu}
+        onPressSidebarMenu={() => drawerNavigation.openDrawer()}
       />
       <OMGBottomSheet
         style={styles.bottomSheet}
         show={visible}
         feedback={feedback}
         onPressClose={handleOnClose}
+      />
+      <OMGActionSheetMenus
+        isVisible={menuVisible}
+        setVisible={setMenuVisible}
       />
     </SafeAreaView>
   )
