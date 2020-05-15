@@ -101,13 +101,17 @@ const Home = ({
     navigation.navigate('Transfer')
   }, [navigation])
 
+  const handleOnPressSidebarMenu = useCallback(() => {
+    drawerNavigation.openDrawer()
+  }, [drawerNavigation])
+
   const drawerNavigation = navigation.dangerouslyGetParent()
   return (
     <SafeAreaView style={styles.safeAreaView(theme, primaryWalletNetwork)}>
       <Balance
         primaryWallet={primaryWallet}
         onPressMenu={onPressMenu}
-        onPressSidebarMenu={() => drawerNavigation.openDrawer()}
+        onPressSidebarMenu={handleOnPressSidebarMenu}
         onPressSend={handleOnPressSend}
         onPressReceive={handleOnPressReceive}
         onPressScan={handleOnPressScan}
