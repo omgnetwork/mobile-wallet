@@ -23,24 +23,16 @@ const OMGAssetList = ({
   const getEmptyStatePayload = useCallback(() => {
     if (type === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK) {
       return {
-        imageName: 'EmptyRootchainWallet',
-        text: 'Wallet is empty.\nShare wallet to receive fund.'
-      }
-    } else if (
-      type === BlockchainNetworkType.TYPE_OMISEGO_NETWORK &&
-      hasRootchainAssets
-    ) {
-      return {
-        imageName: 'EmptyOnlyChildchainWallet',
-        text: 'Wallet is empty.\nStart using Plasma by deposit.'
+        imageName: 'EmptyWallet',
+        text: 'You have no token\non Ethereum Network yet.'
       }
     } else {
       return {
-        imageName: 'EmptyChildchainWallet',
-        text: 'Wallet is empty.\nShare wallet to receive fund.'
+        imageName: 'EmptyWallet',
+        text: 'You have no token\non OMG Network yet.'
       }
     }
-  }, [hasRootchainAssets, type])
+  }, [type])
 
   return (
     <View style={{ ...styles.container(theme), ...style }}>
