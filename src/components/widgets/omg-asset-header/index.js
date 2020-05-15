@@ -94,11 +94,10 @@ const createStyles = (theme, isRootchain) =>
       paddingBottom: Styles.getResponsiveSize(36, { small: 24, medium: 30 }),
       paddingHorizontal: 16
     },
-    iconNetwork: disableSend => ({
+    iconNetwork: {
       flexDirection: 'row',
-      alignItems: 'center',
-      opacity: disableSend ? 0.3 : 1.0
-    }),
+      alignItems: 'center'
+    },
     iconTextNetwork: {
       marginLeft: 8,
       fontSize: 10,
