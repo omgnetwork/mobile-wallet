@@ -2,7 +2,6 @@ import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import rootReducer from '../reducers'
 import Config from 'react-native-config'
-import { composeWithDevTools } from 'redux-devtools-extension'
 import createDebugger from 'redux-flipper'
 import { persistStore, persistReducer, createTransform } from 'redux-persist'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
@@ -52,24 +51,18 @@ const initialState = {
   }
 }
 
-// let store
-// if (__DEV__) {
-//   let reduxDebugger = createDebugger()
-//   store = createStore(
-//     persistedReducer,
-//     initialState,
-//     applyMiddleware(reduxDebugger, thunk)
-//   )
-// } else {
-//   store = createStore(persistedReducer, initialState, applyMiddleware(thunk))
-// }
+let store
+if (__DEV__) {
+  let reduxDebugger = createDebugger()
+  store = createStore(
+    persistedReducer,
+    initialState,
+    applyMiddleware(thunk, reduxDebugger)
+  )
+} else {
+  store = createStore(persistedReducer, initialState, applyMiddleware(thunk))
+}
 
-export const store = createStore(
-  persistedReducer,
-  initialState,
-  composeWithDevTools(applyMiddleware(thunk))
-)
+const persistor = persistStore(store)
 
-export const persistor = persistStore(store)
-
-// export { store, persistor }
+export { store, persistor }
