@@ -35,8 +35,6 @@ EXIT_PERIOD=<EXIT_PERIOD>
 # For running test
 MW_TEST_FUND_ADDRESS=<TEST_FUND_ADDRESS>
 MW_TEST_FUND_PRIVATE_KEY=<TEST_FUND_PRIVATE_KEY>
-MW_TEST_ADDRESS=<TEST_ADDRESS>
-MW_TEST_PRIVATE_KEY=<TEST_PRIVATE_KEY>
 ```
 
 5. From downloaded files, (Optional for development, but need for deployment)
