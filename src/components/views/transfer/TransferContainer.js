@@ -33,28 +33,25 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
         barStyle={'light-content'}
         backgroundColor={theme.colors.black5}
       />
-      <View style={styles.titleContainer}>
-        <OMGText style={styles.title(theme)}>Transfer</OMGText>
-        <OMGBox
-          onPress={() => {
-            navigation.navigate('Home')
-          }}
-          style={styles.iconBox(theme)}>
-          <OMGFontIcon
-            name='x-mark'
-            size={Styles.getResponsiveSize(18, { small: 14, medium: 16 })}
-            color={theme.colors.white}
-            style={styles.icon}
-          />
-        </OMGBox>
-      </View>
-      {primaryWallet ? (
-        <TransferNavigator navigation={navigation} />
-      ) : (
-        <OMGEmpty
-          text={'The wallet is not found. Try import a wallet first.'}
+      <View style={styles.header}>
+        <OMGFontIcon
+          name='chevron-left'
+          size={18}
+          color={theme.colors.white}
+          style={styles.headerIcon}
+          onPress={() => navigation.navigate('Home')}
         />
-      )}
+        <OMGText style={styles.title(theme)}>Transfer</OMGText>
+      </View>
+      <View style={styles.contentContainer}>
+        {primaryWallet ? (
+          <TransferNavigator navigation={navigation} />
+        ) : (
+          <OMGEmpty
+            text={'The wallet is not found. Try import a wallet first.'}
+          />
+        )}
+      </View>
     </SafeAreaView>
   )
 }
@@ -64,9 +61,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.black5
   }),
-  titleContainer: {
+  contentContainer: {
+    flex: 1,
+    paddingHorizontal: 26
+  },
+  header: {
+    alignItems: 'center',
     flexDirection: 'row',
-    alignItems: 'center'
+    paddingHorizontal: 16,
+    paddingVertical: 40
   },
   title: theme => ({
     flex: 1,
@@ -75,10 +78,9 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: theme.colors.white
   }),
-  iconBox: theme => ({
-    padding: 16,
-    backgroundColor: theme.colors.black5
-  })
+  headerIcon: {
+    padding: 8
+  }
 })
 
 const mapStateToProps = (state, ownProps) => ({
