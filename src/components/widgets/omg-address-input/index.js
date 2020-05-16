@@ -30,8 +30,8 @@ const OMGAddressInput = ({
   }, [])
 
   return (
-    <View style={styles.container}>
-      <View style={{ ...styles.contentContainer, ...style }}>
+    <View style={[styles.container, style]}>
+      <View style={styles.contentContainer}>
         <OMGTextInput
           style={styles.text(theme)}
           defaultValue={inputRef.current}
@@ -68,7 +68,6 @@ const OMGAddressInput = ({
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 12,
     flexDirection: 'column'
   },
   contentContainer: {

@@ -1,21 +1,32 @@
 import React, { useRef } from 'react'
 import { withTheme } from 'react-native-paper'
 import { View, StyleSheet } from 'react-native'
-import { OMGAddressInput } from 'components/widgets'
+import { OMGAddressInput, OMGText } from 'components/widgets'
 
-const TransferSelectAddress = ({}) => {
+const TransferSelectAddress = ({ theme }) => {
   const addressRef = useRef()
+  const styles = createStyles(theme)
 
   return (
     <View>
-      <OMGAddressInput inputRef={addressRef} />
+      <OMGText style={styles.title} weight='book'>
+        SEND TO
+      </OMGText>
+      <OMGAddressInput inputRef={addressRef} style={styles.addressInput} />
     </View>
   )
 }
 
 const createStyles = theme =>
   StyleSheet.create({
-    container: {}
+    container: {},
+    title: {
+      color: theme.colors.gray2,
+      lineHeight: 17
+    },
+    addressInput: {
+      marginTop: 26
+    }
   })
 
 export default withTheme(TransferSelectAddress)
