@@ -46,7 +46,6 @@ import OMGPasswordTextInput from './omg-password-text-input'
 import OMGProcessExitText from './omg-process-exit-text'
 import OMGRadioButton from './omg-radio-button'
 import OMGStatusBar from './omg-status-bar'
-import OMGTab from './omg-tab'
 import OMGText from './omg-text'
 import OMGTextChip from './omg-text-chip'
 import OMGTextInput from './omg-text-input'
@@ -113,7 +112,6 @@ export {
   OMGRadioButton,
   OMGAlert,
   OMGStatusBar,
-  OMGTab,
   OMGText,
   OMGTextChip,
   OMGTextInput,

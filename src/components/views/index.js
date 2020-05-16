@@ -35,6 +35,7 @@ import {
   TransferPending,
   TransferReceive,
   TransferScanner,
+  TransferSelectAddress,
   TransferSelectBalance,
   TransferSelectPlasmaFee,
   TransferSelectFee
@@ -85,6 +86,7 @@ export {
   TransferPending,
   TransferReceive,
   TransferScanner,
+  TransferSelectAddress,
   TransferSelectBalance,
   TransferSelectFee,
   TransferSelectPlasmaFee,
