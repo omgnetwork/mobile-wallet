@@ -13,7 +13,6 @@ const OMGTextInput = ({
   defaultValue,
   placeholderTextColor,
   maxLength,
-  onChange,
   onChangeText,
   value,
   inputRef,
@@ -68,7 +67,7 @@ const OMGTextInput = ({
       keyboardType={keyboardType}
       selectionColor={selectionColor || theme.colors.white}
       style={{
-        ...styles.textInput(underlineColor),
+        ...styles.textInput(underlineColor, hideUnderline),
         ...style,
         minHeight: Math.max(
           20,
@@ -80,13 +79,13 @@ const OMGTextInput = ({
 }
 
 const styles = StyleSheet.create({
-  textInput: underlineColor => ({
+  textInput: (underlineColor, hideUnderline) => ({
     fontFamily: 'MessinaSansMono-Book',
     paddingVertical: Platform.OS === 'ios' ? 8 : 0,
     marginLeft: Platform.OS === 'ios' ? 0 : -4,
-    borderBottomWidth: 1,
+    borderBottomWidth: hideUnderline ? 0 : 1,
     borderColor: underlineColor,
-    paddingBottom: 16,
+    paddingBottom: hideUnderline ? 8 : 16,
     letterSpacing: -0.64,
     fontSize: 16,
     lineHeight: 19

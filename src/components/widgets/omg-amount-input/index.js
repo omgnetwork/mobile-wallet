@@ -1,8 +1,9 @@
-import React, { Fragment } from 'react'
+import React, { useState, useCallback } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGTokenIcon, OMGText, OMGTextInput } from 'components/widgets'
 import { Styles } from 'common/utils'
+import { hexToRgb } from 'common/styles/colors'
 
 const OMGAmountInput = ({
   theme,
@@ -15,9 +16,21 @@ const OMGAmountInput = ({
   callback,
   showError
 }) => {
+  const inactiveUnderlineColor = hexToRgb(theme.colors.blue, 0.7)
+  const activeUnderlineColor = theme.colors.blue
+  const [underlineColor, setUnderlineColor] = useState(inactiveUnderlineColor)
+
+  const onBlur = useCallback(() => {
+    setUnderlineColor(inactiveUnderlineColor)
+  }, [inactiveUnderlineColor])
+
+  const onFocus = useCallback(() => {
+    setUnderlineColor(activeUnderlineColor)
+  }, [activeUnderlineColor])
+
   return (
-    <Fragment>
-      <View style={{ ...styles.container(theme), ...style }}>
+    <>
+      <View style={{ ...styles.container(underlineColor), ...style }}>
         <OMGTokenIcon
           style={styles.logo}
           token={token}
@@ -29,6 +42,8 @@ const OMGAmountInput = ({
           callback={callback}
           inputRef={inputRef}
           focusRef={focusRef}
+          onBlur={onBlur}
+          onFocus={onFocus}
           hideUnderline={true}
           defaultValue={defaultValue}
           keyboardType='decimal-pad'
@@ -38,21 +53,24 @@ const OMGAmountInput = ({
           <OMGText style={styles.symbol(theme)}>{token.tokenSymbol}</OMGText>
         </View>
       </View>
+      <View style={styles.balanceContainer}>
+        <OMGText style={styles.balanceText(theme)}>Available</OMGText>
+        <OMGText style={styles.balanceText(theme)}>
+          {token.balance} {token.tokenSymbol}
+        </OMGText>
+      </View>
       {showError && (
         <OMGText style={styles.errorText(theme)}>{errorMessage}</OMGText>
       )}
-    </Fragment>
+    </>
   )
 }
 
 const styles = StyleSheet.create({
-  container: theme => ({
+  container: underlineColor => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.black3,
-    borderColor: theme.colors.gray4,
-    borderRadius: theme.roundness,
-    borderWidth: 1,
-    paddingHorizontal: 12,
+    borderBottomWidth: 1,
+    borderColor: underlineColor,
     alignItems: 'center',
     paddingVertical: Styles.getResponsiveSize(10, { small: 6, medium: 8 })
   }),
@@ -74,6 +92,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
+  balanceContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 14
+  },
+  balanceText: theme => ({
+    color: theme.colors.gray6,
+    fontSize: 12,
+    lineHeight: 14
+  }),
   errorText: theme => ({
     marginLeft: 'auto',
     color: theme.colors.red,

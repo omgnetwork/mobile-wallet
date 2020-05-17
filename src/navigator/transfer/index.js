@@ -5,6 +5,7 @@ export default createStackNavigator(
   {
     TransferSelectAddress: Views.TransferSelectAddress,
     TransferSelectToken: Views.TransferSelectToken,
+    TransferSelectAmount: Views.TransferSelectAmount,
     TransferForm: Views.TransferForm,
     TransferConfirm: {
       screen: Views.TransferConfirm,

@@ -17,9 +17,14 @@ const TransferSelectToken = ({
       ? primaryWallet.rootchainAssets
       : primaryWallet.childchainAssets
 
-  const onSelectToken = useCallback(token => {
-    console.log('TransferFillAmount')
-  }, [])
+  const onSelectToken = useCallback(
+    token => {
+      navigation.navigate('TransferSelectAmount', {
+        token
+      })
+    },
+    [navigation]
+  )
 
   return (
     <OMGListItemTokenSelect
