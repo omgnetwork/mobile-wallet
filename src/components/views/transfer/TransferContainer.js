@@ -42,15 +42,13 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
         />
         <OMGText style={styles.title(theme)}>Transfer</OMGText>
       </View>
-      <View style={styles.contentContainer(theme)}>
-        {primaryWallet ? (
-          <TransferNavigator navigation={navigation} />
-        ) : (
-          <OMGEmpty
-            text={'The wallet is not found. Try import a wallet first.'}
-          />
-        )}
-      </View>
+      {primaryWallet ? (
+        <TransferNavigator navigation={navigation} />
+      ) : (
+        <OMGEmpty
+          text={'The wallet is not found. Try import a wallet first.'}
+        />
+      )}
     </SafeAreaView>
   )
 }
@@ -58,11 +56,6 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
 const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
-    backgroundColor: theme.colors.black5
-  }),
-  contentContainer: theme => ({
-    flex: 1,
-    paddingHorizontal: 26,
     backgroundColor: theme.colors.black5
   }),
   header: {

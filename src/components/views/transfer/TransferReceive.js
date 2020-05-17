@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderBottomLeftRadius: theme.roundness,
-    borderBottommRightRadius: theme.roundness
+    borderBottomRightRadius: theme.roundness
   }),
   title: theme => ({
     textTransform: 'uppercase',

@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { connect } from 'react-redux'
+import { StyleSheet } from 'react-native'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { OMGListItemTokenSelect } from 'components/widgets'
@@ -25,9 +26,16 @@ const TransferSelectToken = ({
       assets={assets}
       onSelectToken={onSelectToken}
       loading={loading}
+      style={styles.container}
     />
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 26
+  }
+})
 
 const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,

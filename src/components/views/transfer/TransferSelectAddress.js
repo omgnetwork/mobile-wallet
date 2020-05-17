@@ -57,6 +57,7 @@ const createStyles = theme =>
     container: {
       flex: 1,
       flexDirection: 'column',
+      paddingHorizontal: 26,
       paddingBottom: 48,
       backgroundColor: theme.colors.black5
     },
