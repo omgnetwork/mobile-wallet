@@ -3,13 +3,13 @@ import * as Views from 'components/views'
 
 export default createStackNavigator(
   {
-    ExitSelectBalance: Views.ExitSelectBalance,
+    ExitSelectToken: Views.ExitSelectToken,
     ExitSelectUtxo: Views.ExitSelectUtxo,
     ExitSelectFee: Views.ExitSelectFee,
     ExitForm: Views.ExitForm
   },
   {
-    initialRouteName: 'ExitSelectBalance',
+    initialRouteName: 'ExitSelectToken',
     headerMode: 'none'
   }
 )

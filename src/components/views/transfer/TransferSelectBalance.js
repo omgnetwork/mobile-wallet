@@ -6,7 +6,7 @@ import { withTheme } from 'react-native-paper'
 import {
   OMGButton,
   OMGEmpty,
-  OMGTokenSelect,
+  OMGItemTokenSelect,
   OMGHeader
 } from 'components/widgets'
 import { TransferHelper } from 'components/views/transfer'
@@ -59,7 +59,7 @@ const TransferSelectBalance = ({
             : { flexGrow: 1, justifyContent: 'center' }
         }
         renderItem={({ item }) => (
-          <OMGTokenSelect
+          <OMGItemTokenSelect
             key={item.contractAddress}
             token={item}
             onPress={() => {

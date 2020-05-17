@@ -4,6 +4,7 @@ import { View, StyleSheet, Platform, KeyboardAvoidingView } from 'react-native'
 import { Validator } from 'common/blockchain'
 import { Header } from 'react-navigation-stack'
 import { Dimensions } from 'common/utils'
+import { withNavigation } from 'react-navigation'
 import {
   OMGAddressInput,
   OMGText,
@@ -11,7 +12,7 @@ import {
   OMGDismissKeyboard
 } from 'components/widgets'
 
-const TransferSelectAddress = ({ theme }) => {
+const TransferSelectAddress = ({ theme, navigation }) => {
   const addressRef = useRef()
   const styles = createStyles(theme)
   const [disabled, setDisabled] = useState(true)
@@ -20,6 +21,10 @@ const TransferSelectAddress = ({ theme }) => {
     const valid = Validator.isValidAddress(address)
     setDisabled(!valid)
   }, [])
+
+  const onSubmit = useCallback(() => {
+    navigation.navigate('TransferSelectToken')
+  }, [navigation])
 
   const keyboardAvoidingBehavior = Platform.OS === 'ios' ? 'padding' : null
   const statusBarHeight = Dimensions.getStatusBarHeight()
@@ -38,7 +43,9 @@ const TransferSelectAddress = ({ theme }) => {
           onChangeAddress={onChangeAddress}
         />
         <View style={styles.buttonContainer}>
-          <OMGButton disabled={disabled}>Next</OMGButton>
+          <OMGButton disabled={disabled} onPress={onSubmit}>
+            Next
+          </OMGButton>
         </View>
       </KeyboardAvoidingView>
     </OMGDismissKeyboard>
@@ -68,4 +75,4 @@ const createStyles = theme =>
     }
   })
 
-export default withTheme(TransferSelectAddress)
+export default withNavigation(withTheme(TransferSelectAddress))

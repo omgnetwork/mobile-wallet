@@ -17,7 +17,7 @@ import {
   OMGAddressInput,
   OMGAmountInput,
   OMGFeeInput,
-  OMGTokenSelect
+  OMGItemTokenSelect
 } from 'components/widgets'
 import OMGItemToken from 'components/widgets/omg-item-token'
 import Config from 'react-native-config'
@@ -80,8 +80,8 @@ const Preview = ({ navigation, theme }) => {
           />
           <OMGAmountInput token={mockToken} style={{ marginTop: 16 }} />
           <OMGFeeInput fee={mockFee} style={{ marginTop: 16 }} />
-          <OMGTokenSelect token={mockToken} style={{ marginTop: 16 }} />
-          <OMGTokenSelect
+          <OMGItemTokenSelect token={mockToken} style={{ marginTop: 16 }} />
+          <OMGItemTokenSelect
             token={mockToken}
             selected={true}
             style={{ marginTop: 16 }}

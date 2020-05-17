@@ -4,10 +4,10 @@ import * as Views from 'components/views'
 export default createSwitchNavigator(
   {
     TransferSelectAddress: {
-      screen: Views.TransferSelectAddress,
-      params: {
-        rootchain: true
-      }
+      screen: Views.TransferSelectAddress
+    },
+    TransferSelectToken: {
+      screen: Views.TransferSelectToken
     },
     TransferForm: {
       screen: Views.TransferForm

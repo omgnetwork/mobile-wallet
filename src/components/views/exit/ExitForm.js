@@ -69,7 +69,7 @@ const ExitForm = ({
   })
 
   const navigateEditAmount = () => {
-    navigation.navigate('ExitSelectBalance')
+    navigation.navigate('ExitSelectToken')
   }
   const navigateEditFee = () => {
     navigation.navigate('ExitSelectFee')
