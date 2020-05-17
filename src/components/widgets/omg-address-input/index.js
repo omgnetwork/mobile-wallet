@@ -13,6 +13,7 @@ const OMGAddressInput = ({
   onPressScanQR,
   showError,
   returnKeyType,
+  onChangeAddress,
   onSubmitEditing,
   inputRef,
   focusRef
@@ -23,11 +24,16 @@ const OMGAddressInput = ({
     const clipboardContent = await Clipboard.getString()
     inputRef.current = clipboardContent.trim()
     setInputText(inputRef.current)
-  }, [inputRef])
+    onChangeAddress(inputRef.current)
+  }, [inputRef, onChangeAddress])
 
-  const onChangeText = useCallback(text => {
-    setInputText(text)
-  }, [])
+  const onChangeText = useCallback(
+    text => {
+      setInputText(text)
+      onChangeAddress(text)
+    },
+    [onChangeAddress]
+  )
 
   return (
     <View style={[styles.container, style]}>

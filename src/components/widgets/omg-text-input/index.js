@@ -55,6 +55,7 @@ const OMGTextInput = ({
         onFocus?.()
       }}
       importantForAutofill='no'
+      autoCorrect={false}
       maxLength={maxLength}
       onSubmitEditing={onSubmitEditing}
       returnKeyType={returnKeyType || 'done'}
