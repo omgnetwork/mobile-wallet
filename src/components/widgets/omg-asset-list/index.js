@@ -1,9 +1,7 @@
-import React, { useCallback } from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, { useCallback, useEffect } from 'react'
+import { StyleSheet, View, FlatList } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGText, OMGEmpty } from 'components/widgets'
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { Styles } from 'common/utils'
 import { BlockchainNetworkType } from 'common/constants'
 
@@ -12,13 +10,11 @@ const OMGAssetList = ({
   type,
   style,
   data,
-  hasRootchainAssets,
+  onRefresh = () => null,
   renderItem,
-  refreshControl,
   updatedAt,
   keyExtractor,
-  loading,
-  handleReload
+  loading
 }) => {
   const getEmptyStatePayload = useCallback(() => {
     if (type === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK) {
@@ -42,16 +38,9 @@ const OMGAssetList = ({
           TOKENS
         </OMGText>
         {updatedAt && (
-          <>
-            <OMGText style={styles.updatedAt(theme)}>
-              Updated at: {updatedAt}
-            </OMGText>
-            <TouchableOpacity
-              onPress={handleReload || false}
-              style={styles.btnRefresh}>
-              <FontAwesome5 name='redo' size={12} color={theme.colors.gray8} />
-            </TouchableOpacity>
-          </>
+          <OMGText style={styles.updatedAt(theme)}>
+            Updated at: {updatedAt}
+          </OMGText>
         )}
       </View>
       <View style={styles.assetContainer(theme)}>
@@ -61,7 +50,8 @@ const OMGAssetList = ({
           <FlatList
             style={styles.assetList}
             data={data}
-            refreshControl={refreshControl}
+            onRefresh={onRefresh}
+            refreshing={loading}
             keyExtractor={keyExtractor}
             ListEmptyComponent={
               <OMGEmpty {...getEmptyStatePayload()} style={styles.emptyState} />
@@ -117,14 +107,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     color: theme.colors.white,
     fontSize: Styles.getResponsiveSize(14, { small: 10, medium: 12 })
-  }),
-  btnRefresh: {
-    marginLeft: 8,
-    padding: 10,
-    backgroundColor: 'rgba(171,178,194, 0.2)',
-    borderRadius: 16,
-    alignItems: 'center'
-  }
+  })
 })
 
 export default withTheme(OMGAssetList)

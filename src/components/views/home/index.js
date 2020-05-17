@@ -107,7 +107,9 @@ const Home = ({
 
   const drawerNavigation = navigation.dangerouslyGetParent()
   return (
-    <SafeAreaView style={styles.safeAreaView(theme, primaryWalletNetwork)}>
+    <SafeAreaView
+      style={styles.safeAreaView(theme, primaryWalletNetwork)}
+      forceInset={{ bottom: 'never' }}>
       <Balance
         primaryWallet={primaryWallet}
         onPressMenu={onPressMenu}
