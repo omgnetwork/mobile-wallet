@@ -1,17 +1,11 @@
-import { createSwitchNavigator } from 'react-navigation'
 import * as Views from 'components/views'
+import { createStackNavigator } from 'react-navigation-stack'
 
-export default createSwitchNavigator(
+export default createStackNavigator(
   {
-    TransferSelectAddress: {
-      screen: Views.TransferSelectAddress
-    },
-    TransferSelectToken: {
-      screen: Views.TransferSelectToken
-    },
-    TransferForm: {
-      screen: Views.TransferForm
-    },
+    TransferSelectAddress: Views.TransferSelectAddress,
+    TransferSelectToken: Views.TransferSelectToken,
+    TransferForm: Views.TransferForm,
     TransferConfirm: {
       screen: Views.TransferConfirm,
       navigationOptions: () => ({ gesturesEnabled: false })

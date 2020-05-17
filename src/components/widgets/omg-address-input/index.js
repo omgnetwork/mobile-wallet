@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { TouchableOpacity, View, StyleSheet } from 'react-native'
+import { TouchableOpacity, View, StyleSheet, Keyboard } from 'react-native'
 import Clipboard from '@react-native-community/clipboard'
 import { withTheme } from 'react-native-paper'
 import OMGTextInput from '../omg-text-input'
@@ -25,6 +25,7 @@ const OMGAddressInput = ({
     inputRef.current = clipboardContent.trim()
     setInputText(inputRef.current)
     onChangeAddress(inputRef.current)
+    Keyboard.dismiss()
   }, [inputRef, onChangeAddress])
 
   const onChangeText = useCallback(

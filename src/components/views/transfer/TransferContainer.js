@@ -5,7 +5,6 @@ import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
 import {
   OMGFontIcon,
-  OMGBox,
   OMGText,
   OMGStatusBar,
   OMGEmpty
@@ -43,7 +42,7 @@ const TransferContainer = ({ navigation, theme, primaryWallet }) => {
         />
         <OMGText style={styles.title(theme)}>Transfer</OMGText>
       </View>
-      <View style={styles.contentContainer}>
+      <View style={styles.contentContainer(theme)}>
         {primaryWallet ? (
           <TransferNavigator navigation={navigation} />
         ) : (
@@ -61,10 +60,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.black5
   }),
-  contentContainer: {
+  contentContainer: theme => ({
     flex: 1,
-    paddingHorizontal: 26
-  },
+    paddingHorizontal: 26,
+    backgroundColor: theme.colors.black5
+  }),
   header: {
     alignItems: 'center',
     flexDirection: 'row',
