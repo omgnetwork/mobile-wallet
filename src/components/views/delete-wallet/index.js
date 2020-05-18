@@ -18,7 +18,7 @@ const DeleteWalletList = ({
   theme,
   primaryWalletAddress,
   dispatchDeleteWallet,
-  dispatchSetPrimaryAddress
+  dispatchSetPrimaryWallet
 }) => {
   const handleWalletPressed = wallet => {
     Alert.alert(
@@ -38,7 +38,7 @@ const DeleteWalletList = ({
               if (!newPrimaryWalletAddress) {
                 navigation.navigate('Welcome')
               }
-              dispatchSetPrimaryAddress(newPrimaryWalletAddress)
+              dispatchSetPrimaryWallet(newPrimaryWalletAddress)
             }
             dispatchDeleteWallet(wallets, wallet)
           }
@@ -147,8 +147,8 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchDeleteWallet: (wallets, wallet) =>
     walletActions.deleteWallet(dispatch, wallets, wallet.address),
-  dispatchSetPrimaryAddress: primaryWalletAddress =>
-    settingActions.setPrimaryAddress(dispatch, primaryWalletAddress)
+  dispatchSetPrimaryWallet: primaryWalletAddress =>
+    settingActions.setPrimaryWallet(dispatch, primaryWalletAddress)
 })
 
 export default connect(

@@ -2,14 +2,7 @@ import { settingActions } from 'common/actions'
 import { store } from 'common/stores'
 import { HeadlessProcessExit } from 'components/headless'
 import React, { useRef, useCallback, useEffect, useState } from 'react'
-import {
-  AppRegistry,
-  Image,
-  StyleSheet,
-  View,
-  Animated,
-  Platform
-} from 'react-native'
+import { AppRegistry, StyleSheet, View, Animated, Platform } from 'react-native'
 import { SecureEncryption } from 'common/native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
@@ -23,6 +16,7 @@ const Initializer = ({
   children,
   blockchainWallet,
   wallet,
+  primaryWalletNetwork,
   dispatchSetPrimaryWallet,
   dispatchSetBlockchainWallet,
   provider,
@@ -61,7 +55,7 @@ const Initializer = ({
         dispatchSetBlockchainWallet(wallet, provider)
       }, loadingDuration)
     } else if (shouldSetPrimaryWallet(wallet, wallets)) {
-      dispatchSetPrimaryWallet(wallets[0], wallets)
+      dispatchSetPrimaryWallet(wallets[0], primaryWalletNetwork)
     }
   }, [
     blockchainWallet,
@@ -69,6 +63,7 @@ const Initializer = ({
     dispatchSetPrimaryWallet,
     loadingDuration,
     navigation,
+    primaryWalletNetwork,
     provider,
     ready,
     registerHeadlessService,
@@ -112,7 +107,7 @@ const Initializer = ({
 }
 
 const shouldGetBlockchainWallet = (wallet, blockchainWallet, provider) => {
-  return wallet && provider && !blockchainWallet && wallet.shouldRefresh
+  return wallet && provider && !blockchainWallet
 }
 
 const shouldSetPrimaryWallet = (wallet, wallets) => {
@@ -147,14 +142,15 @@ const mapStateToProps = (state, ownProps) => ({
   wallets: state.wallets,
   provider: state.setting.provider,
   blockchainWallet: state.setting.blockchainWallet,
+  primaryWalletNetwork: state.setting.primaryWalletNetwork,
   unconfirmedTxs: state.transaction.unconfirmedTxs
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchSetBlockchainWallet: (wallet, provider) =>
     dispatch(settingActions.setBlockchainWallet(wallet, provider)),
-  dispatchSetPrimaryWallet: wallet =>
-    settingActions.setPrimaryAddress(dispatch, wallet.address)
+  dispatchSetPrimaryWallet: (wallet, network) =>
+    settingActions.setPrimaryWallet(dispatch, wallet.address, network)
 })
 
 export default connect(

@@ -112,7 +112,7 @@ const Preview = ({ navigation, theme }) => {
           amount='2,090.00'
           currency='USD'
           blockchain='Ethereum'
-          network={Config.ETHERSCAN_NETWORK}
+          network={Config.ETHEREUM_NETWORK}
           style={{ marginTop: 16 }}
         />
         <OMGAssetList theme={theme} />

@@ -5,7 +5,7 @@ export const createAsyncAction = ({
   type: actionType,
   isBackgroundTask: isBackgroundTask
 }) => {
-  return async dispatch => {
+  return dispatch => {
     const actionStartStatus = isBackgroundTask ? 'LISTENING' : 'INITIATED'
     dispatch({ type: `${actionType}/${actionStartStatus}` })
     return requestAnimationFrame(async () => {

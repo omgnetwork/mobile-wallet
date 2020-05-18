@@ -83,7 +83,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchDeleteAllWallets: () => walletActions.clear(dispatch),
   dispatchPrimaryWalletAddress: address =>
-    settingActions.setPrimaryAddress(dispatch, address)
+    settingActions.setPrimaryWallet(dispatch, address)
 })
 
 export default connect(

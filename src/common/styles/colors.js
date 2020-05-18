@@ -2,6 +2,7 @@ export default {
   primary: '#4967FF',
   blue: '#778DFC',
   blue2: '#ADBAFE',
+  blue3: '#788DFC',
   black: '#000000',
   black2: '#1F1F22',
   black3: '#2A292E',
@@ -19,6 +20,7 @@ export default {
   gray6: '#92929D',
   gray7: '#29292E',
   gray8: '#ABB2C2',
+  gray9: '#585868',
   white: '#FFFFFF',
   white2: '#F2F2F7',
   white3: '#d0d6e2',
@@ -26,4 +28,16 @@ export default {
   yellow2: '#F0BA31',
   red: '#F05E6F',
   red2: '#FF6868'
+}
+
+export function hexToRgb(hex, opacity = 1.0) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+  return result
+    ? `rgba(
+        ${parseInt(result[1], 16)},
+        ${parseInt(result[2], 16)},
+        ${parseInt(result[3], 16)},
+        ${opacity}
+      )`
+    : null
 }

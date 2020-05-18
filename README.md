@@ -21,7 +21,7 @@ EXIT_PERIOD=<ENV_EXIT_PERIOD>
 ETHERSCAN_API_KEY=<ETHERSCAN_API_KEY>
 ETHERSCAN_API_URL=https://api-rinkeby.etherscan.io/api/
 ETHERSCAN_URL=https://rinkeby.etherscan.io/
-ETHERSCAN_NETWORK=rinkeby
+ETHEREUM_NETWORK=rinkeby
 OMISEGO_NETWORK=lumpini
 WEB3_HTTP_PROVIDER=<MW_PROXY_SERVER_URL>
 PLASMA_FRAMEWORK_CONTRACT_ADDRESS=<PLASMA_CONTRACT_ADDRESS>
@@ -35,8 +35,6 @@ EXIT_PERIOD=<EXIT_PERIOD>
 # For running test
 MW_TEST_FUND_ADDRESS=<TEST_FUND_ADDRESS>
 MW_TEST_FUND_PRIVATE_KEY=<TEST_FUND_PRIVATE_KEY>
-MW_TEST_ADDRESS=<TEST_ADDRESS>
-MW_TEST_PRIVATE_KEY=<TEST_PRIVATE_KEY>
 ```
 
 5. Download the `GoogleService-Info.plist` from [OmiseGO Drive](https://drive.google.com/drive/folders/1MMak_4mg5IZ-mv2zBOEok9FCYlMPqf2v?usp=sharing), (Required for both ios development and deployment)

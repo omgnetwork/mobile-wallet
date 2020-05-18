@@ -1,5 +1,6 @@
 import { createAsyncAction, createAction } from './actionCreators'
 import { providerService, walletService } from '../services'
+import { BlockchainNetworkType } from 'common/constants'
 
 export const setProvider = providerName => {
   const asyncAction = async () => {
@@ -37,10 +38,17 @@ export const syncProviderToStore = providerName => {
   })
 }
 
-export const setPrimaryAddress = (dispatch, address) => {
-  const action = () => ({ primaryWalletAddress: address })
+export const setPrimaryWallet = (
+  dispatch,
+  address,
+  network = BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
+) => {
+  const action = () => ({
+    primaryWalletAddress: address,
+    primaryWalletNetwork: network
+  })
   return createAction(dispatch, {
     operation: action,
-    type: 'SETTING/SET_PRIMARY_ADDRESS'
+    type: 'SETTING/SET_PRIMARY_WALLET'
   })
 }

@@ -34,7 +34,7 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
     async function calculateGasFeeUsd() {
       const price = await Token.getPrice(
         contractAddress,
-        Config.ETHERSCAN_NETWORK
+        Config.ETHEREUM_NETWORK
       )
       const gasUsd = BlockchainFormatter.formatGasFeeUsd(
         gasUsed,
@@ -105,7 +105,7 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
         <OMGButton
           style={styles.button}
           onPress={() => {
-            navigation.navigate('Balance')
+            navigation.navigate('Home')
           }}>
           Done
         </OMGButton>

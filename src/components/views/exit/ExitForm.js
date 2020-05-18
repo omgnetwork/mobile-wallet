@@ -64,7 +64,7 @@ const ExitForm = ({
   useEffect(() => {
     if (loading.success && loading.action === 'CHILDCHAIN_EXIT') {
       GoogleAnalytics.sendEvent('transfer_exited', { hash: unconfirmedTx.hash })
-      navigation.navigate('Balance')
+      navigation.navigate('Home')
     }
   })
 

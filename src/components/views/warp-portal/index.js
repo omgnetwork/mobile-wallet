@@ -16,12 +16,6 @@ const WarpPortal = ({ navigation }) => {
         <Button
           mode='outlined'
           style={styles.button}
-          onPress={() => navigation.navigate('Setting')}>
-          Setting
-        </Button>
-        <Button
-          mode='outlined'
-          style={styles.button}
           onPress={() => navigation.navigate('TransferForm')}>
           TransferForm
         </Button>
@@ -46,7 +40,7 @@ const WarpPortal = ({ navigation }) => {
         <Button
           mode='outlined'
           style={styles.button}
-          onPress={() => navigation.navigate('Balance')}>
+          onPress={() => navigation.navigate('Home')}>
           Balance
         </Button>
         <Button
