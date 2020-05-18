@@ -82,3 +82,5 @@ To develop a new view component using the `warpNavigator`:
 ### **Known Issues**
 
 - An error about auto-linking (e.g. `React Native CLI uses autolinking for native dependencies, but the following modules are linked manually`) when you `npm run ios` or `npm run android` does not cause known build issues. However, unlinking `react-native-background-fetch` as a result does. If you do this by mistake, run `react-native-link react-native-background-fetch` to link it again.
+
+- If you run into the rare case where you are stuck on the splash screen and the app doesn't want to load, try deleting the `GoogleService-Info.plist`, try the build and force an error, and then re-add the plist file.

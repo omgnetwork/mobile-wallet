@@ -79,6 +79,3 @@ keystore.properties
 GoogleService-Info.plist
 android/app/src/main/assets/containers
 ios/container
-
-# force npm use
-yarn.lock
