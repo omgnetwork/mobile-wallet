@@ -1,2 +1,2 @@
-export const TYPE_ETHEREUM_NETWORK = 'ethereum'
-export const TYPE_OMISEGO_NETWORK = 'omisego'
+export const TYPE_ETHEREUM_NETWORK = 'Ethereum Network'
+export const TYPE_OMISEGO_NETWORK = 'OMG Network'

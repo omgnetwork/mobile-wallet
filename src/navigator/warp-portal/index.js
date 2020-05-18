@@ -17,9 +17,9 @@ Views.Transfer.router = TransferRootChainNavigator.router
 // Used when want quick access to different screens.
 const WarpPortalNavigator = createStackNavigator(
   {
-    Balance: {
-      screen: Views.Balance,
-      navigationOptions: () => ({ title: 'Balance' })
+    Home: {
+      screen: Views.Home,
+      navigationOptions: () => ({ title: 'Home' })
     },
     TransferSelectBalance: {
       screen: Views.TransferSelectBalance,
@@ -46,10 +46,6 @@ const WarpPortalNavigator = createStackNavigator(
     TransferReceive: {
       screen: Views.TransferReceive,
       navigationOptions: () => ({ title: 'Receive' })
-    },
-    Setting: {
-      screen: Views.Setting,
-      navigationOptions: () => ({ title: 'Setting' })
     },
     TransferForm: {
       screen: Views.TransferForm,

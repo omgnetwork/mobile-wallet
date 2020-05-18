@@ -19,12 +19,12 @@ jest.spyOn(global, 'requestAnimationFrame').mockImplementation(cb => cb())
 const {
   TEST_PRIVATE_KEY,
   TEST_ADDRESS,
-  ETHERSCAN_NETWORK,
+  ETHEREUM_NETWORK,
   ERC20_VAULT_CONTRACT_ADDRESS
 } = Config
 
 const mockStore = getMockStore()
-const provider = ethers.getDefaultProvider(ETHERSCAN_NETWORK)
+const provider = ethers.getDefaultProvider(ETHEREUM_NETWORK)
 
 const mockDepositTxReceipt = {
   hash: 'any',

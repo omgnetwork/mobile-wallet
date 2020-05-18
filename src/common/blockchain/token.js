@@ -56,7 +56,7 @@ export const get = (provider, contractAddress, accountAddress) => {
       Promise.resolve('Ether'),
       Promise.resolve('ETH'),
       Promise.resolve(18),
-      getPrice(contractAddress, Config.ETHERSCAN_NETWORK),
+      getPrice(contractAddress, Config.ETHEREUM_NETWORK),
       getEthBalance(provider, accountAddress),
       Promise.resolve(contractAddress)
     ]
@@ -75,7 +75,7 @@ export const get = (provider, contractAddress, accountAddress) => {
       getName(contract, bytes32Contract),
       getSymbol(contract, bytes32Contract),
       getDecimals(contract),
-      getPrice(contractAddress, Config.ETHERSCAN_NETWORK),
+      getPrice(contractAddress, Config.ETHEREUM_NETWORK),
       getBalance(contract, accountAddress),
       Promise.resolve(contractAddress)
     ]

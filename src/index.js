@@ -23,12 +23,14 @@ YellowBox.ignoreWarnings([
   'Warning:',
   'Setting',
   'setBackgroundColor',
+  'useNativeDriver',
+  'Animated.event',
   'getNode'
 ])
 
 const App = () => {
   useEffect(() => {
-    store.dispatch(settingActions.syncProviderToStore(Config.ETHERSCAN_NETWORK))
+    store.dispatch(settingActions.syncProviderToStore(Config.ETHEREUM_NETWORK))
     notificationService.init()
     SplashScreen.hide()
   }, [])

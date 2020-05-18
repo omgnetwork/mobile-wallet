@@ -65,7 +65,7 @@ export const transactionReducer = (
         )
       }
     case 'WALLET/DELETE_ALL/OK':
-    case 'SETTING/SET_PRIMARY_ADDRESS/OK':
+    case 'SETTING/SET_PRIMARY_WALLET/OK':
       return {
         transactions: [],
         unconfirmedTxs: [],

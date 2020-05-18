@@ -69,7 +69,7 @@ const CreateWalletMnemonicConfirm = ({
     if (loading.success && loading.action === 'WALLET_CREATE' && wallet) {
       GoogleAnalytics.sendEvent('created_wallet', {})
       dispatchSetPrimaryWallet(wallet)
-      navigation.navigate('Balance')
+      navigation.navigate('Home')
     }
   }, [dispatchSetPrimaryWallet, loading, navigation, wallet])
 
@@ -170,7 +170,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchCreateWallet: (wallets, mnemonic, provider, name) =>
     dispatch(walletActions.create(wallets, mnemonic, provider, name)),
   dispatchSetPrimaryWallet: wallet =>
-    settingActions.setPrimaryAddress(dispatch, wallet.address)
+    settingActions.setPrimaryWallet(dispatch, wallet.address)
 })
 
 export default connect(

@@ -33,7 +33,7 @@ const Deposit = ({ navigation, theme }) => {
         </OMGText>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Balance')
+            navigation.navigate('Home')
           }}>
           <OMGFontIcon
             name='x-mark'

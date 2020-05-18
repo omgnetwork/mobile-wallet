@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
-import { View, StyleSheet, Clipboard } from 'react-native'
+import { View, StyleSheet } from 'react-native'
+import Clipboard from '@react-native-community/clipboard'
 import { withTheme } from 'react-native-paper'
 import QRCode from 'react-native-qrcode-svg'
 import OMGFontIcon from '../omg-font-icon'

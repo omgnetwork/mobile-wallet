@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchSetPrimaryWallet: wallet =>
-    settingActions.setPrimaryAddress(dispatch, wallet.address)
+    settingActions.setPrimaryWallet(dispatch, wallet.address)
 })
 
 export default connect(

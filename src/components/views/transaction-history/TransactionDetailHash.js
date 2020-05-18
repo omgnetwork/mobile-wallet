@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
-import { View, StyleSheet, Clipboard, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import Clipboard from '@react-native-community/clipboard'
 import { OMGFontIcon, OMGText } from 'components/widgets'
 import { Alerter, Styles } from 'common/utils'
 import { Alert } from 'common/constants'
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
   hashText: theme => ({
     flex: 1,
     marginRight: 24,
-    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+    fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 12 }),
     letterSpacing: -0.64,
     color: theme.colors.white
   })

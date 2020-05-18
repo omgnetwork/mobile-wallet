@@ -14,7 +14,7 @@ const BackupTranscribe = ({ navigation, theme }) => {
   const wallet = navigation.getParam('wallet')
   const phrases = mnemonic.split(' ')
   const navigateToHome = () => {
-    navigation.navigate('Balance')
+    navigation.navigate('Home')
   }
 
   const mnemonicPhrases = phrases.map(text => {

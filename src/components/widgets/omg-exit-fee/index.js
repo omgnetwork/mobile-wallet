@@ -40,7 +40,7 @@ const OMGExitFee = ({
     async function fetchEthPrice() {
       const price = await Token.getPrice(
         ContractAddress.ETH_ADDRESS,
-        Config.ETHERSCAN_NETWORK
+        Config.ETHEREUM_NETWORK
       )
       setEthPrice(price)
     }

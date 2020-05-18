@@ -1,4 +1,5 @@
 import Config from 'react-native-config'
+import { BlockchainNetworkType } from 'common/constants'
 
 export const walletsReducer = (state = [], action) => {
   switch (action.type) {
@@ -37,7 +38,7 @@ export const walletsReducer = (state = [], action) => {
             shouldRefresh: false,
             updatedAt: action.data.updatedAt,
             updatedBlock: action.data.updatedBlock,
-            ethereumNetwork: Config.ETHERSCAN_NETWORK
+            ethereumNetwork: Config.ETHEREUM_NETWORK
           }
         } else {
           return wallet
@@ -107,13 +108,16 @@ export const walletsReducer = (state = [], action) => {
           return wallet
         }
       })
-    case 'SETTING/SET_PRIMARY_ADDRESS/OK':
+    case 'SETTING/SET_PRIMARY_WALLET/OK':
       return state.map(wallet => {
+        const isEthNetwork =
+          action.data.primaryWalletNetwork ===
+          BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
         if (wallet.address === action.data.primaryWalletAddress) {
           return {
             ...wallet,
-            shouldRefresh: true,
-            shouldRefreshChildchain: true
+            shouldRefresh: isEthNetwork,
+            shouldRefreshChildchain: !isEthNetwork
           }
         } else {
           return wallet
@@ -150,5 +154,5 @@ const fromSamePlasmaContract = wallet => {
 }
 
 const fromSameEthereumNetwork = wallet => {
-  return wallet.ethereumNetwork === Config.ETHERSCAN_NETWORK
+  return wallet.ethereumNetwork === Config.ETHEREUM_NETWORK
 }

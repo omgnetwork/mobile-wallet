@@ -303,6 +303,8 @@ PODS:
     - React
   - react-native-config (0.11.7):
     - React
+  - react-native-flipper (0.39.0):
+    - React
   - react-native-intercom (14.0.0):
     - Intercom (~> 6.0.0)
     - React
@@ -379,6 +381,8 @@ PODS:
     - React
   - RNCAsyncStorage (1.6.3):
     - React
+  - RNCClipboard (1.2.2):
+    - React
   - RNCMaskedView (0.1.10):
     - React
   - RNCPushNotificationIOS (1.0.3):
@@ -449,6 +453,7 @@ DEPENDENCIES:
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-config (from `../node_modules/react-native-config`)
+  - react-native-flipper (from `../node_modules/react-native-flipper`)
   - react-native-intercom (from `../node_modules/react-native-intercom`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -468,6 +473,7 @@ DEPENDENCIES:
   - ReactNativePermissions (from `../node_modules/react-native-permissions`)
   - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNFirebase (from `../node_modules/react-native-firebase/ios`)
@@ -540,6 +546,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-camera"
   react-native-config:
     :path: "../node_modules/react-native-config"
+  react-native-flipper:
+    :path: "../node_modules/react-native-flipper"
   react-native-intercom:
     :path: "../node_modules/react-native-intercom"
   react-native-randombytes:
@@ -576,6 +584,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-background-fetch"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
+  RNCClipboard:
+    :path: "../node_modules/@react-native-community/clipboard"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
   RNCPushNotificationIOS:
@@ -635,6 +645,7 @@ SPEC CHECKSUMS:
   react-native-background-timer: 0d34748e53a972507c66963490c775321a88f6f2
   react-native-camera: b7ad0c9648c3ea83f58a3ef4f815ab4acd88dc7e
   react-native-config: 55548054279d92e0e4566ea15a8b9b81028ec342
+  react-native-flipper: 5dc086b3fe71a6ebb8b4e42e4b9191cf07fe50ac
   react-native-intercom: 8682a2da729caec7905348269b10f05c94a2aa44
   react-native-randombytes: 991545e6eaaf700b4ee384c291ef3d572e0b2ca8
   react-native-safe-area-context: 8260e5157617df4b72865f44006797f895b2ada7
@@ -653,6 +664,7 @@ SPEC CHECKSUMS:
   ReactNativePermissions: e7db6c38a2f3fb8f26dbfdcaeb5c5e9364657a6d
   RNBackgroundFetch: 08bdaaa13a5aa71cdce42068def5602ed1e982c2
   RNCAsyncStorage: 6b57de0f6cb0dcfd17521af1681fa39001d3efff
+  RNCClipboard: a254f6e568bc713b7ef49646e216661369882030
   RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
   RNCPushNotificationIOS: 5403d137a49c55f0dc2273be8473873e934359cd
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6

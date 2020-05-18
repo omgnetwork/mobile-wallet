@@ -1,110 +1,153 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { OMGEmpty, OMGText } from 'components/widgets'
-import { IconEth, IconGo } from './assets'
+import { OMGText, OMGFontIcon } from 'components/widgets'
+import CircleButton from './CircleButton'
+import { IconEth, IconGo, Scan, ArrowDown, ArrowUp } from './assets'
 import { Styles } from 'common/utils'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { BlockchainNetworkType } from 'common/constants'
 
 const OMGAssetHeader = ({
   theme,
   loading,
   amount,
-  currency,
-  rootchain,
+  type,
   network,
+  onPressSidebarMenu,
   anchoredRef,
+  disableSend,
+  onPressMenu,
+  onPressSend,
+  onPressReceive,
+  onPressScan,
   style
 }) => {
-  const BlockchainIcon = rootchain ? IconEth : IconGo
+  const isRootchain = BlockchainNetworkType.TYPE_ETHEREUM_NETWORK === type
+  const BlockchainIcon = isRootchain ? IconEth : IconGo
+  const styles = createStyles(theme, isRootchain)
+
   return (
-    <View style={{ ...styles.container(theme), ...style }} ref={anchoredRef}>
-      <View style={styles.balance}>
-        {loading ? (
-          <OMGEmpty style={styles.loading} loading={loading} />
-        ) : (
-          <OMGText style={styles.balanceAmount(theme)}>{amount}</OMGText>
-        )}
-        <OMGText style={styles.balanceCurrency(theme)} weight='light'>
-          {currency}
-        </OMGText>
-      </View>
-      <View style={styles.footer}>
-        <BlockchainIcon
-          fill={theme.colors.gray2}
-          width={
-            rootchain
-              ? Styles.getResponsiveSize(14, { small: 10, medium: 12 })
-              : Styles.getResponsiveSize(58, { small: 40, medium: 46 })
-          }
-          height={
-            rootchain
-              ? Styles.getResponsiveSize(23, { small: 16, medium: 20 })
-              : Styles.getResponsiveSize(18, { small: 13, medium: 14 })
-          }
+    <View style={{ ...styles.container, ...style }} ref={anchoredRef}>
+      <View style={styles.rowContainer}>
+        <View style={styles.iconNetwork}>
+          <BlockchainIcon
+            fill={theme.colors.white}
+            width={isRootchain ? 14 : 58}
+            height={isRootchain ? 23 : 18}
+          />
+          {isRootchain && (
+            <OMGText style={styles.iconTextNetwork} weight='book'>
+              Ethereum{'\n'}Network
+            </OMGText>
+          )}
+        </View>
+        <OMGText style={styles.textNetwork}>{network}</OMGText>
+        <OMGFontIcon
+          size={Styles.getResponsiveSize(24, { small: 18, medium: 20 })}
+          name='hamburger'
+          onPress={onPressSidebarMenu}
+          color={theme.colors.white}
         />
-        <OMGText style={styles.textChain(theme)}>
-          {rootchain ? 'Ethereum Rootchain' : 'Plasma Childchain'}
+      </View>
+      <View style={[styles.rowContainer, styles.rowMarginTop]}>
+        <OMGText style={styles.balanceAmount} weight='bold'>
+          <OMGText>$</OMGText> {amount}
         </OMGText>
-        <View style={styles.greenDot(theme)} />
-        <OMGText style={styles.textNetwork(theme)}>{network}</OMGText>
+        <TouchableOpacity style={styles.ovalButton} onPress={onPressMenu}>
+          <OMGText style={styles.ovalButtonText}>+</OMGText>
+          <OMGText style={styles.ovalButtonText2}>-</OMGText>
+        </TouchableOpacity>
+      </View>
+      <View
+        style={[styles.rowContainer, styles.rowMarginTop, styles.rowCenter]}>
+        <CircleButton
+          theme={theme}
+          label='Send'
+          onPress={onPressSend}
+          disable={disableSend}>
+          <ArrowUp />
+        </CircleButton>
+        <CircleButton
+          style={styles.rowItemMarginLeft}
+          onPress={onPressReceive}
+          label='Receive'>
+          <ArrowDown />
+        </CircleButton>
+        <CircleButton
+          style={styles.rowItemMarginLeft}
+          onPress={onPressScan}
+          disable={disableSend}
+          label='Scan'>
+          <Scan />
+        </CircleButton>
       </View>
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-  container: theme => ({
-    flexDirection: 'column',
-    backgroundColor: theme.colors.black3,
-    borderTopLeftRadius: theme.roundness,
-    borderTopRightRadius: theme.roundness
-  }),
-  balance: {
-    flexDirection: 'row',
-    paddingHorizontal: Styles.getResponsiveSize(20, { small: 12, medium: 16 }),
-    paddingVertical: Styles.getResponsiveSize(20, { small: 12, medium: 16 })
-  },
-  loading: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingVertical: 0,
-    alignItems: 'flex-start'
-  },
-  balanceAmount: theme => ({
-    flex: 1,
-    textAlign: 'left',
-    fontSize: Styles.getResponsiveSize(32, { small: 18, medium: 24 }),
-    letterSpacing: Styles.getResponsiveSize(-3, { small: -1, medium: -2 }),
-    color: theme.colors.white
-  }),
-  balanceCurrency: theme => ({
-    color: theme.colors.white3,
-    fontSize: Styles.getResponsiveSize(32, { small: 18, medium: 24 })
-  }),
-  footer: {
-    flexDirection: 'row',
-    paddingHorizontal: Styles.getResponsiveSize(20, { small: 12, medium: 16 }),
-    alignItems: 'center'
-  },
-  textChain: theme => ({
-    flex: 1,
-    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
-    marginLeft: 20,
-    letterSpacing: -0.7,
-    color: theme.colors.gray2
-  }),
-  textNetwork: theme => ({
-    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
-    marginLeft: 6,
-    textTransform: 'capitalize',
-    color: theme.colors.gray2
-  }),
-  greenDot: theme => ({
-    width: 6,
-    height: 6,
-    backgroundColor: theme.colors.green,
-    borderRadius: 3
+const createStyles = (theme, isRootchain) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: isRootchain ? theme.colors.gray9 : theme.colors.primary,
+      paddingTop: Styles.getResponsiveSize(64, { small: 24, medium: 32 }),
+      paddingBottom: Styles.getResponsiveSize(36, { small: 24, medium: 30 }),
+      paddingHorizontal: 16
+    },
+    iconNetwork: {
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    iconTextNetwork: {
+      marginLeft: 8,
+      fontSize: 10,
+      letterSpacing: 0.7,
+      color: theme.colors.white
+    },
+    rowContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    },
+    textNetwork: {
+      flex: 1,
+      textAlign: 'center',
+      marginLeft: -36,
+      fontSize: 12,
+      color: theme.colors.white
+    },
+    balanceAmount: {
+      color: theme.colors.white,
+      letterSpacing: -0.48,
+      lineHeight: 48,
+      fontSize: Styles.getResponsiveSize(40, { small: 32, medium: 40 })
+    },
+    ovalButtonText: {
+      color: theme.colors.white,
+      fontSize: 20
+    },
+    ovalButtonText2: {
+      color: theme.colors.white,
+      fontSize: 20,
+      marginTop: -12
+    },
+    rowMarginTop: {
+      marginTop: Styles.getResponsiveSize(40, { small: 24, medium: 32 })
+    },
+    rowCenter: {
+      justifyContent: 'center'
+    },
+    rowItemMarginLeft: {
+      marginLeft: 30
+    },
+    ovalButton: {
+      backgroundColor: theme.colors.black5,
+      borderRadius: 16,
+      paddingHorizontal: 8,
+      paddingVertical: 3,
+      justifyContent: 'center',
+      flexDirection: 'column'
+    }
   })
-})
 
 export default withTheme(OMGAssetHeader)

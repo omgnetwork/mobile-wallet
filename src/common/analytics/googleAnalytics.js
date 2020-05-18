@@ -2,7 +2,7 @@ import firebase from 'react-native-firebase'
 import Config from 'react-native-config'
 
 const envInfo = {
-  ethereumNetwork: Config.ETHERSCAN_NETWORK,
+  ethereumNetwork: Config.ETHEREUM_NETWORK,
   watcherURL: Config.WATCHER_URL,
   plasmaContractAddress: Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
 }

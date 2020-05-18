@@ -5,6 +5,7 @@ import { OMGText, OMGEmpty } from 'components/widgets'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { Styles } from 'common/utils'
+import { BlockchainNetworkType } from 'common/constants'
 
 const OMGAssetList = ({
   theme,
@@ -20,29 +21,24 @@ const OMGAssetList = ({
   handleReload
 }) => {
   const getEmptyStatePayload = useCallback(() => {
-    if (type === 'rootchain') {
+    if (type === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK) {
       return {
-        imageName: 'EmptyRootchainWallet',
-        text: 'Wallet is empty.\nShare wallet to receive fund.'
-      }
-    } else if (type === 'childchain' && hasRootchainAssets) {
-      return {
-        imageName: 'EmptyOnlyChildchainWallet',
-        text: 'Wallet is empty.\nStart using Plasma by deposit.'
+        imageName: 'EmptyWallet',
+        text: 'You have no token\non Ethereum Network yet.'
       }
     } else {
       return {
-        imageName: 'EmptyChildchainWallet',
-        text: 'Wallet is empty.\nShare wallet to receive fund.'
+        imageName: 'EmptyWallet',
+        text: 'You have no token\non OMG Network yet.'
       }
     }
-  }, [hasRootchainAssets, type])
+  }, [type])
 
   return (
     <View style={{ ...styles.container(theme), ...style }}>
       <View style={styles.header(theme)}>
         <OMGText style={styles.title(theme)} weight='regular'>
-          ASSETS
+          TOKENS
         </OMGText>
         {updatedAt && (
           <>
@@ -89,7 +85,8 @@ const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'column',
     marginTop: -1,
-    backgroundColor: theme.colors.black3,
+    backgroundColor: theme.colors.black5,
+    paddingHorizontal: Styles.getResponsiveSize(36, { small: 24, medium: 30 }),
     paddingBottom: 8
   }),
   contentContainer: {},
@@ -101,20 +98,19 @@ const styles = StyleSheet.create({
   },
   header: theme => ({
     flexDirection: 'row',
-    paddingHorizontal: Styles.getResponsiveSize(20, { small: 12, medium: 16 }),
     alignItems: 'center',
-    backgroundColor: theme.colors.black3
+    backgroundColor: theme.colors.black5
   }),
   updatedAt: theme => ({
     color: theme.colors.gray2,
-    letterSpacing: -0.7,
-    fontSize: Styles.getResponsiveSize(10, { small: 8, medium: 9 })
+    letterSpacing: -0.4,
+    fontSize: 10
   }),
   assetContainer: theme => ({
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.black3,
-    paddingVertical: 8
+    backgroundColor: theme.colors.black5,
+    paddingVertical: 16
   }),
   assetList: {},
   title: theme => ({

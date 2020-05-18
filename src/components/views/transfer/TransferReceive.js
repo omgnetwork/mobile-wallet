@@ -2,11 +2,11 @@ import React, { useCallback, useEffect } from 'react'
 import {
   View,
   StyleSheet,
-  Clipboard,
   Share,
   TouchableOpacity,
   Keyboard
 } from 'react-native'
+import Clipboard from '@react-native-community/clipboard'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
 import { withNavigationFocus } from 'react-navigation'
