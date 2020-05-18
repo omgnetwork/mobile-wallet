@@ -12,6 +12,7 @@ const OMGAmountInput = ({
   inputRef,
   defaultValue,
   style,
+  onChangeAmount,
   errorMessage,
   callback,
   showError
@@ -42,6 +43,7 @@ const OMGAmountInput = ({
           callback={callback}
           inputRef={inputRef}
           focusRef={focusRef}
+          onChangeText={onChangeAmount}
           onBlur={onBlur}
           onFocus={onFocus}
           hideUnderline={true}
