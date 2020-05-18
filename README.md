@@ -39,11 +39,13 @@ MW_TEST_ADDRESS=<TEST_ADDRESS>
 MW_TEST_PRIVATE_KEY=<TEST_PRIVATE_KEY>
 ```
 
-5. From downloaded files, (Optional for development, but need for deployment)
+5. Download the `GoogleService-Info.plist` from [OmiseGO Drive](https://drive.google.com/drive/folders/1MMak_4mg5IZ-mv2zBOEok9FCYlMPqf2v?usp=sharing), (Required for both ios development and deployment)
+   - Copy `GoogleService-Info.plist`, then paste at `ios/PlasmaWallet/wallet/GoogleService-Info.plist`
+
+6. From downloaded files, (Optional for development, but need for deployment)
    - Copy `release.keystore`, then paste at `android/app/release.keystore`
    - Copy `keystore.properties`, then paste at `android/keystore.properties`
    - Copy `google-services.json`, then paste at `android/app/google-servies.json`
-   - Copy `GoogleService-Info.plist`, then paste at `ios/PlasmaWallet/wallet/GoogleService-Info.plist`
    - Copy `GTM-5VHN7FC.json`, then paste at `ios/container/GTM-5VHN7FC.json`.
    - Copy `GTM-PGZXFH4.json`, then paste at `android/app/src/main/assets/containers/GTM-PGZXFH4.json`.
 
