@@ -53,7 +53,7 @@ def flipper_post_install(installer)
       end
       config.build_settings['OTHER_CFLAGS'] = cflags
     end
-    app_project.savecd
+    app_project.save
   end
   installer.pods_project.save
 end

@@ -2,6 +2,9 @@
   "name": "PlasmaWallet",
   "version": "0.4.16",
   "private": true,
+  "engines": {
+    "node": "10.13.0"
+  },
   "scripts": {
     "start": "react-native start",
     "clean": "react-native clean-project-auto",
