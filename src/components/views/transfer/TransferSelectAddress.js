@@ -23,7 +23,7 @@ const TransferSelectAddress = ({ theme, navigation }) => {
   }, [])
 
   const onSubmit = useCallback(() => {
-    navigation.navigate('TransferSelectToken')
+    navigation.navigate('TransferSelectToken', { address: addressRef.current })
   }, [navigation])
 
   const keyboardAvoidingBehavior = Platform.OS === 'ios' ? 'padding' : null

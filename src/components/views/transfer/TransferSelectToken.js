@@ -19,8 +19,9 @@ const TransferSelectToken = ({
 
   const onSelectToken = useCallback(
     token => {
-      navigation.navigate('TransferChooseGasFee', {
-        token
+      navigation.navigate('TransferSelectAmount', {
+        token,
+        address: navigation.getParam('address')
       })
     },
     [navigation]

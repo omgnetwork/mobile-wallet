@@ -1,5 +1,6 @@
 import React, { useRef, useCallback, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
+import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { Validator } from 'common/blockchain'
@@ -9,8 +10,9 @@ import {
   OMGButton,
   OMGDismissKeyboard
 } from 'components/widgets'
+import { BlockchainNetworkType } from 'common/constants'
 
-const TransferSelectAmount = ({ navigation, theme }) => {
+const TransferSelectAmount = ({ navigation, theme, primaryWalletNetwork }) => {
   const styles = createStyles(theme)
   const ref = useRef(0)
   const token = navigation.getParam('token')
@@ -25,8 +27,17 @@ const TransferSelectAmount = ({ navigation, theme }) => {
   )
 
   const onSubmit = useCallback(() => {
-    navigation.navigate('TransferSelectToken')
-  }, [navigation])
+    const destination =
+      primaryWalletNetwork === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
+        ? 'TransferChooseGasFee'
+        : 'TransferChoosePlasmaFee'
+
+    navigation.navigate(destination, {
+      address: navigation.getParam('address'),
+      amount: ref.current,
+      token
+    })
+  }, [navigation, primaryWalletNetwork, token])
 
   return (
     <OMGDismissKeyboard style={styles.container}>
@@ -69,4 +80,11 @@ const createStyles = theme =>
     }
   })
 
-export default withNavigation(withTheme(TransferSelectAmount))
+const mapStateToProps = (state, ownProps) => ({
+  primaryWalletNetwork: state.setting.primaryWalletNetwork
+})
+
+export default connect(
+  mapStateToProps,
+  null
+)(withNavigation(withTheme(TransferSelectAmount)))
