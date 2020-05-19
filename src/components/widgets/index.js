@@ -46,6 +46,7 @@ import OMGPasswordTextInput from './omg-password-text-input'
 import OMGProcessExitText from './omg-process-exit-text'
 import OMGRadioButton from './omg-radio-button'
 import OMGListItemTokenSelect from './omg-list-item-token-select'
+import OMGListPlasmaFee from './omg-list-plasma-fee'
 import OMGStatusBar from './omg-status-bar'
 import OMGText from './omg-text'
 import OMGTextChip from './omg-text-chip'
@@ -98,6 +99,7 @@ export {
   OMGItemExitTransaction,
   OMGItemTransaction,
   OMGListItemTokenSelect,
+  OMGListPlasmaFee,
   OMGKeyboardShift,
   OMGMenu,
   OMGMenuIcon,
