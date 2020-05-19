@@ -1,6 +1,6 @@
 import { ethereumService } from '../services'
 import { createAsyncAction } from './actionCreators'
-import { TransactionActionTypes } from 'common/constants'
+import { TransactionActionTypes, ContractAddress } from 'common/constants'
 import { Datetime } from 'common/utils'
 
 export const sendErc20Token = (token, fee, blockchainWallet, toAddress) => {
@@ -62,6 +62,44 @@ export const sendEthToken = (token, fee, blockchainWallet, toAddress) => {
 
   return createAsyncAction({
     type: 'ROOTCHAIN/SEND_ETH_TOKEN',
+    operation: asyncAction
+  })
+}
+
+export const transfer = (blockchainWallet, toAddress, token, fee) => {
+  const asyncAction = async () => {
+    let response
+
+    if (token.contractAddress === ContractAddress.ETH_ADDRESS) {
+      const options = {
+        token,
+        fee,
+        toAddress
+      }
+      response = await ethereumService.sendEthToken(blockchainWallet, options)
+    } else {
+      const options = { token, fee, toAddress }
+      response = await ethereumService.sendErc20Token(blockchainWallet, options)
+    }
+
+    const { hash, from, nonce, gasPrice } = response
+
+    return {
+      hash: hash,
+      from: from,
+      to: toAddress,
+      nonce: nonce,
+      value: token.balance,
+      actionType: TransactionActionTypes.TYPE_ROOTCHAIN_SEND_TOKEN,
+      symbol: token.tokenSymbol,
+      gasUsed: null,
+      gasPrice: gasPrice.toString(),
+      createdAt: Datetime.now()
+    }
+  }
+
+  return createAsyncAction({
+    type: 'ROOTCHAIN/SEND_TOKEN',
     operation: asyncAction
   })
 }

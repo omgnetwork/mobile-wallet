@@ -3,6 +3,7 @@ import TransferConfirm from './TransferConfirm'
 import TransferForm from './TransferForm'
 import TransferPending from './TransferPending'
 import TransferReceive from './TransferReceive'
+import TransferReview from './TransferReview'
 import TransferScanner from './TransferScanner'
 import TransferChooseGasFee from './TransferChooseGasFee'
 import TransferChoosePlasmaFee from './TransferChoosePlasmaFee'
@@ -23,6 +24,7 @@ export {
   TransferForm,
   TransferPending,
   TransferReceive,
+  TransferReview,
   TransferScanner,
   TransferChooseGasFee,
   TransferChoosePlasmaFee,

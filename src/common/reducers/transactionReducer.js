@@ -12,6 +12,7 @@ export const transactionReducer = (
   switch (action.type) {
     case 'ROOTCHAIN/SEND_ETH_TOKEN/SUCCESS':
     case 'ROOTCHAIN/SEND_ERC20_TOKEN/SUCCESS':
+    case 'ROOTCHAIN/SEND_TOKEN/SUCCESS':
     case 'CHILDCHAIN/SEND_TOKEN/SUCCESS':
     case 'CHILDCHAIN/DEPOSIT/SUCCESS':
     case 'CHILDCHAIN/EXIT/SUCCESS':

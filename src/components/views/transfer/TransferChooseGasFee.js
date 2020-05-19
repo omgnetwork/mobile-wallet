@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
@@ -10,11 +10,24 @@ const TransferChooseGasFee = ({
   theme,
   fees,
   dispatchGetRecommendedGas,
-  loading
+  loading,
+  navigation
 }) => {
   useEffect(() => {
     dispatchGetRecommendedGas()
   }, [dispatchGetRecommendedGas])
+
+  const onSelectGas = useCallback(
+    fee => {
+      navigation.navigate('TransferReview', {
+        token: navigation.getParam('token'),
+        address: navigation.getParam('address'),
+        amount: navigation.getParam('amount'),
+        fee
+      })
+    },
+    [navigation]
+  )
 
   const styles = createStyles(theme)
 
@@ -23,7 +36,12 @@ const TransferChooseGasFee = ({
       <OMGText style={styles.title} weight='book'>
         SELECT GAS RATE
       </OMGText>
-      <OMGListGasFee fees={fees} style={styles.list} loading={loading.show} />
+      <OMGListGasFee
+        fees={fees}
+        style={styles.list}
+        loading={loading.show}
+        onPress={onSelectGas}
+      />
     </View>
   )
 }

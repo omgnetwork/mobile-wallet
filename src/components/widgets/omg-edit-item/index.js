@@ -33,7 +33,7 @@ const OMGEditItem = ({
           <OMGFontIcon name='edit' size={10} color={theme.colors.blue2} />
         </TouchableOpacity>
       </View>
-      <View style={[styles.column, styles.alignRight]}>
+      <View style={[styles.column, styles.alignRight, styles.textSingleLine]}>
         {loading ? (
           <OMGEmpty loading={loading} style={styles.alignRight} />
         ) : (
@@ -42,6 +42,8 @@ const OMGEditItem = ({
               {rightFirstLine}
             </OMGText>
             <OMGText
+              numberOfLines={1}
+              ellipsizeMode='tail'
               style={[
                 styles.textGray(theme),
                 styles.textSmall,
@@ -94,6 +96,9 @@ const styles = StyleSheet.create({
   },
   textMargin: {
     marginTop: 6
+  },
+  textSingleLine: {
+    flex: 1
   },
   smallMarginRight: {
     marginRight: 4
