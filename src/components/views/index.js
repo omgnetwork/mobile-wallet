@@ -22,6 +22,7 @@ import ImportWalletSuccess from './import-wallet/ImportSuccess'
 import Initializer from './initializer'
 import Main from './main'
 import Preview from './preview'
+import Receive from './receive'
 import {
   TransactionHistory,
   TransactionHistoryFilter,
@@ -77,6 +78,7 @@ export {
   ProcessExit,
   ProcessExitForm,
   ProcessExitPending,
+  Receive,
   Transfer,
   TransferConfirm,
   TransferForm,
