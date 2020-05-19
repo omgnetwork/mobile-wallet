@@ -1,28 +1,22 @@
 import React from 'react'
 import { StyleSheet, FlatList } from 'react-native'
-import { OMGEmpty, OMGTokenFee } from 'components/widgets'
-import { withTheme } from 'react-native-paper'
+import { OMGEmpty, OMGFeeSelect } from 'components/widgets'
 
-const OMGListPlasmaFee = ({
-  theme,
-  fees = [],
-  loading,
-  onSelectFee,
-  style
-}) => {
+const OMGListGasFee = ({ fees = [], loading, onPress, style }) => {
   return (
     <FlatList
       data={fees}
-      keyExtractor={item => item.contractAddress}
+      keyExtractor={item => item.speed}
       keyboardShouldPersistTaps='always'
       ListEmptyComponent={<OMGEmpty text='Empty fees' loading={loading} />}
       contentContainerStyle={[fees.length ? {} : styles.container, style]}
       renderItem={({ item }) => (
-        <OMGTokenFee
-          key={item.contractAddress}
-          token={item}
+        <OMGFeeSelect
+          key={item.speed}
+          style={styles.item}
+          fee={item}
           onPress={() => {
-            onSelectFee(item)
+            onPress(item)
           }}
         />
       )}
@@ -31,7 +25,10 @@ const OMGListPlasmaFee = ({
 }
 
 const styles = StyleSheet.create({
-  container: { flexGrow: 1, justifyContent: 'center' }
+  container: { flexGrow: 1, justifyContent: 'center' },
+  item: {
+    marginTop: 8
+  }
 })
 
-export default withTheme(OMGListPlasmaFee)
+export default OMGListGasFee

@@ -4,6 +4,8 @@ import TransferForm from './TransferForm'
 import TransferPending from './TransferPending'
 import TransferReceive from './TransferReceive'
 import TransferScanner from './TransferScanner'
+import TransferChooseGasFee from './TransferChooseGasFee'
+import TransferChoosePlasmaFee from './TransferChoosePlasmaFee'
 import TransferSelectAddress from './TransferSelectAddress'
 import TransferSelectAmount from './TransferSelectAmount'
 import TransferSelectBalance from './TransferSelectBalance'
@@ -22,6 +24,8 @@ export {
   TransferPending,
   TransferReceive,
   TransferScanner,
+  TransferChooseGasFee,
+  TransferChoosePlasmaFee,
   TransferSelectAddress,
   TransferSelectAmount,
   TransferSelectBalance,
