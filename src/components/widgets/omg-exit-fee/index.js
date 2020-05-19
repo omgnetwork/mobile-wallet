@@ -51,15 +51,19 @@ const OMGExitFee = ({
     Linking.openURL('https://docs.omg.network/exitbonds')
   }, [])
 
+  const feeUsd =
+    ethPrice &&
+    BlockchainFormatter.formatTokenPrice(formatTotalExitFee(), ethPrice)
+
   return (
     <View style={[styles.background(theme), style]}>
       <View style={[styles.container(theme)]}>
         <OMGEditItem
           title='Total'
+          rightFirstLine={`${formatTotalExitFee() || 0} ETH`}
+          rightSecondLine={`${feeUsd} USD`}
           loading={!gasUsed || !exitBondValue}
-          value={formatTotalExitFee() || 0}
           onPress={onPressEdit}
-          price={ethPrice}
         />
       </View>
       <Divider theme={theme} />

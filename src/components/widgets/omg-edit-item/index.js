@@ -1,22 +1,18 @@
 import React from 'react'
 import { withTheme } from 'react-native-paper'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import { BlockchainFormatter } from 'common/blockchain'
 import { OMGText, OMGFontIcon, OMGEmpty } from 'components/widgets'
 import { Styles } from 'common/utils'
 
 const OMGEditItem = ({
   title,
   theme,
-  value,
-  symbol = 'ETH',
-  price,
+  rightFirstLine,
+  rightSecondLine,
   style,
   loading,
   onPress
 }) => {
-  const feeUsd = BlockchainFormatter.formatTokenPrice(value, price)
-
   return (
     <View style={[styles.container(theme), style]}>
       <View style={[styles.column, styles.stretch]}>
@@ -43,7 +39,7 @@ const OMGEditItem = ({
         ) : (
           <>
             <OMGText style={[styles.textWhite(theme), styles.textBig]}>
-              {value} {symbol}
+              {rightFirstLine}
             </OMGText>
             <OMGText
               style={[
@@ -51,7 +47,7 @@ const OMGEditItem = ({
                 styles.textSmall,
                 styles.textMargin
               ]}>
-              {feeUsd} USD
+              {rightSecondLine}
             </OMGText>
           </>
         )}
