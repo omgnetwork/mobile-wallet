@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet, Share } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
+import ShareIcon from './assets/share-icon.svg'
 import { OMGQRCode, OMGText, OMGIdenticon } from 'components/widgets'
 import { Styles } from 'common/utils'
 
@@ -13,6 +14,10 @@ const ShowQR = ({ theme, primaryWallet, primaryWalletAddress, navigation }) => {
       message: primaryWalletAddress
     })
   }, [primaryWalletAddress])
+
+  const imageWidth = Styles.getResponsiveSize(24, { small: 16, medium: 18 })
+  const imageHeight = Styles.getResponsiveSize(24, { small: 16, medium: 18 })
+
   return (
     <View style={styles.container(theme)}>
       <View style={styles.titleContainer}>
@@ -27,6 +32,7 @@ const ShowQR = ({ theme, primaryWallet, primaryWalletAddress, navigation }) => {
       </View>
       <View style={styles.qrContainer}>
         <OMGQRCode
+          size={Styles.getResponsiveSize(160, { small: 100, medium: 120 })}
           payload={primaryWalletAddress}
           displayText={primaryWalletAddress}
         />
@@ -34,8 +40,13 @@ const ShowQR = ({ theme, primaryWallet, primaryWalletAddress, navigation }) => {
       <TouchableOpacity
         style={styles.buttonContainer(theme)}
         onPress={handleShareClick}>
+        <ShareIcon
+          width={imageWidth}
+          height={imageHeight}
+          style={styles.image}
+        />
         <OMGText style={styles.buttonText(theme)} weigth='semi-bold'>
-          Share to Receive
+          SHARE QR
         </OMGText>
       </TouchableOpacity>
     </View>
@@ -48,7 +59,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     justifyContent: 'center',
-    backgroundColor: theme.colors.black3,
+    backgroundColor: theme.colors.black,
     borderRadius: theme.roundness
   }),
   identicon: theme => ({
@@ -72,12 +83,21 @@ const styles = StyleSheet.create({
   }),
   buttonContainer: theme => ({
     borderWidth: 1,
-    borderColor: theme.colors.gray4,
+    backgroundColor: theme.colors.gray4,
+    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
     marginTop: 8,
-    padding: Styles.getResponsiveSize(14, { small: 10, medium: 12 })
+    paddingTop: Styles.getResponsiveSize(14, { small: 10, medium: 12 }),
+    paddingBottom: Styles.getResponsiveSize(14, { small: 10, medium: 12 }),
+    paddingLeft: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
+    paddingRight: Styles.getResponsiveSize(18, { small: 14, medium: 16 })
   }),
+  image: {
+    color: 'white',
+    marginRight: 10
+  },
   buttonText: theme => ({
     color: theme.colors.white,
     fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 12 })

@@ -15,7 +15,7 @@ const OMGQRCode = ({ payload, displayText, size, theme, style }) => {
     Alerter.show(Alert.SUCCESS_COPIED_ADDRESS)
   }, [displayText])
 
-  const defaultSize = Styles.getResponsiveSize(200, { small: 130, medium: 160 })
+  const defaultSize = Styles.getResponsiveSize(160, { small: 100, medium: 120 })
   return (
     <View style={{ ...styles.container, ...style }}>
       <View style={styles.qrFrame(theme)}>
@@ -49,8 +49,11 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   qrFrame: theme => ({
-    padding: 4,
-    backgroundColor: theme.colors.white
+    padding: 30,
+    borderRadius: 30,
+    backgroundColor: theme.colors.white,
+    marginTop: 10,
+    marginBottom: 10
   }),
   icon: theme => ({
     justifyContent: 'flex-end',

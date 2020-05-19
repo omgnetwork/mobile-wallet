@@ -55,7 +55,7 @@ const TransferReceive = ({
           <OMGText style={styles.title(theme)}>{primaryWallet.name}</OMGText>
           <View style={styles.qrContainer(theme)}>
             <OMGQRCode
-              size={Styles.getResponsiveSize(192, { small: 160, medium: 180 })}
+              size={Styles.getResponsiveSize(160, { small: 100, medium: 120 })}
               payload={primaryWalletAddress}
             />
           </View>
