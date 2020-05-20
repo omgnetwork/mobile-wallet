@@ -73,6 +73,9 @@ export const AppNavigator = createStackNavigator(
         navigator: TransferNavigator
       }
     },
+    Receive: {
+      screen: Views.Receive
+    },
     DeleteWallet: {
       screen: Views.DeleteWallet
     },

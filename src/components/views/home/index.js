@@ -94,8 +94,8 @@ const Home = ({
   }, [navigation])
 
   const handleOnPressReceive = useCallback(() => {
-    console.log('Receive')
-  }, [])
+    navigation.navigate('Receive')
+  }, [navigation])
 
   const handleOnPressScan = useCallback(() => {
     navigation.navigate('Transfer')
