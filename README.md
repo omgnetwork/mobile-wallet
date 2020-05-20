@@ -37,11 +37,13 @@ MW_TEST_FUND_ADDRESS=<TEST_FUND_ADDRESS>
 MW_TEST_FUND_PRIVATE_KEY=<TEST_FUND_PRIVATE_KEY>
 ```
 
-5. From downloaded files, (Optional for development, but need for deployment)
+5. Download the `GoogleService-Info.plist` from [OmiseGO Drive](https://drive.google.com/drive/folders/1MMak_4mg5IZ-mv2zBOEok9FCYlMPqf2v?usp=sharing), (Required for both ios development and deployment)
+   - Copy `GoogleService-Info.plist`, then paste at `ios/PlasmaWallet/wallet/GoogleService-Info.plist`
+
+6. From downloaded files, (Optional for development, but need for deployment)
    - Copy `release.keystore`, then paste at `android/app/release.keystore`
    - Copy `keystore.properties`, then paste at `android/keystore.properties`
    - Copy `google-services.json`, then paste at `android/app/google-servies.json`
-   - Copy `GoogleService-Info.plist`, then paste at `ios/PlasmaWallet/wallet/GoogleService-Info.plist`
    - Copy `GTM-5VHN7FC.json`, then paste at `ios/container/GTM-5VHN7FC.json`.
    - Copy `GTM-PGZXFH4.json`, then paste at `android/app/src/main/assets/containers/GTM-PGZXFH4.json`.
 
@@ -80,3 +82,5 @@ To develop a new view component using the `warpNavigator`:
 ### **Known Issues**
 
 - An error about auto-linking (e.g. `React Native CLI uses autolinking for native dependencies, but the following modules are linked manually`) when you `npm run ios` or `npm run android` does not cause known build issues. However, unlinking `react-native-background-fetch` as a result does. If you do this by mistake, run `react-native-link react-native-background-fetch` to link it again.
+
+- If you run into the rare case where you are stuck on the splash screen and the app doesn't want to load, try deleting the `GoogleService-Info.plist`, try the build and force an error, and then re-add the plist file.
