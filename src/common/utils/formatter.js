@@ -1,14 +1,25 @@
 import { Datetime, Locale } from 'common/utils'
 
+const fallbackRegion = 'US'
+
 export const format = (number, { maxDecimal }) => {
   const preformattedNumber = Number(number.toString().replace(',', '.'))
   const [_, region] = Locale.getLocale().split('_')
-  return preformattedNumber.toLocaleString(
-    [`${region.toLowerCase()}-${region}`],
-    {
-      maximumFractionDigits: maxDecimal
-    }
-  )
+  try {
+    return preformattedNumber.toLocaleString(
+      [`${region.toLowerCase()}-${region}`],
+      {
+        maximumFractionDigits: maxDecimal
+      }
+    )
+  } catch (_error) {
+    return preformattedNumber.toLocaleString(
+      [`${region.toLowerCase()}-${fallbackRegion}`],
+      {
+        maximumFractionDigits: maxDecimal
+      }
+    )
+  }
 }
 
 export const formatTimeStamp = (timestamp, formatToken) => {
