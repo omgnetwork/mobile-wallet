@@ -28,7 +28,7 @@ YellowBox.ignoreWarnings([
 
 const App = () => {
   useEffect(() => {
-    store.dispatch(settingActions.syncProviderToStore(Config.ETHERSCAN_NETWORK))
+    store.dispatch(settingActions.syncProviderToStore(Config.ETHEREUM_NETWORK))
     notificationService.init()
     SplashScreen.hide()
   }, [])

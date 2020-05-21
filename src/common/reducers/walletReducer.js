@@ -37,7 +37,7 @@ export const walletsReducer = (state = [], action) => {
             shouldRefresh: false,
             updatedAt: action.data.updatedAt,
             updatedBlock: action.data.updatedBlock,
-            ethereumNetwork: Config.ETHERSCAN_NETWORK
+            ethereumNetwork: Config.ETHEREUM_NETWORK
           }
         } else {
           return wallet
@@ -150,5 +150,5 @@ const fromSamePlasmaContract = wallet => {
 }
 
 const fromSameEthereumNetwork = wallet => {
-  return wallet.ethereumNetwork === Config.ETHERSCAN_NETWORK
+  return wallet.ethereumNetwork === Config.ETHEREUM_NETWORK
 }
