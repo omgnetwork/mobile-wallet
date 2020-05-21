@@ -2,8 +2,7 @@ import { Datetime, Locale } from 'common/utils'
 
 export const format = (number, { maxDecimal }) => {
   const preformattedNumber = Number(number.toString().replace(',', '.'))
-  const locale = Locale.getLocale() || 'en_US'
-  const [_, region] = locale.split('_')
+  const [_, region] = Locale.getLocale().split('_')
   return preformattedNumber.toLocaleString(
     [`${region.toLowerCase()}-${region}`],
     {
