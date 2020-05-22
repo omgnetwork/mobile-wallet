@@ -139,10 +139,10 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          name: Run proxy-server tests
+          name: Audit proxy server dependencies 
           command: |
             cd proxy-server
-            npm run test
+            npm run dependency-audit
 
   proxy-server-publish:
     docker:
