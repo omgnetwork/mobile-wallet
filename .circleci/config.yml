@@ -4,10 +4,12 @@ workflows:
   version: 2
   mobile-wallet-build-tests:
     jobs:
-      - mobile-wallet-dependency-audit
       - mobile-wallet-build
       - mobile-wallet-tests:
           requires:
+            - mobile-wallet-build
+      - mobile-wallet-dependency-audit:
+          requires: 
             - mobile-wallet-build
 
   proxy-server-build-test-deploy:
