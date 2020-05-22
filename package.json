@@ -9,7 +9,7 @@
     "test": "jest",
     "lint": "eslint .",
     "fix": "eslint . --fix",
-    "audit-check": "audit-ci --moderate",
+    "dependency-audit": "audit-ci --moderate",
     "ios": "react-native run-ios --simulator='iPhone 11'",
     "android": "react-native run-android",
     "ios-mainnet": "ENVFILE=.env.mainnet react-native run-ios --simulator='iPhone 7'",
