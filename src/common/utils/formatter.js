@@ -14,7 +14,7 @@ export const format = (number, { maxDecimal }) => {
     )
   } catch (_error) {
     return preformattedNumber.toLocaleString(
-      [`${region.toLowerCase()}-${fallbackRegion}`],
+      [`${fallbackRegion.toLowerCase()}-${fallbackRegion}`],
       {
         maximumFractionDigits: maxDecimal
       }
