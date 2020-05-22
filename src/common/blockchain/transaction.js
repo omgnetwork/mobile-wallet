@@ -1,10 +1,10 @@
 import { TransactionActionTypes, ContractAddress, Gas } from 'common/constants'
 import { OmgUtil, Contract, ContractABI } from 'common/blockchain'
 import { Plasma as PlasmaClient } from 'common/clients'
-import InputDataDecoder from 'ethereum-input-data-decoder'
+import ABIDecoder from 'abi-decoder'
 import BN from 'bn.js'
 
-let plasmaInputDecoder
+const ABI = [...Contract.getPlasmaAbi(), ...ContractABI.erc20Abi()]
 
 export const get = address => {
   return PlasmaClient.ChildChain.getTransaction(address)
@@ -127,13 +127,9 @@ export const getExitDetails = async (tx, { from, gas, gasPrice }) => {
 }
 
 export const decodePlasmaInputMethod = input => {
-  if (!plasmaInputDecoder) {
-    plasmaInputDecoder = new InputDataDecoder([
-      ...Contract.getPlasmaAbi(),
-      ...ContractABI.erc20Abi()
-    ])
-  }
-  return plasmaInputDecoder.decodeData(input).method
+  ABIDecoder.addABI(ABI)
+  console.log(ABIDecoder.decodeMethod(input))
+  return ABIDecoder.decodeMethod(input)
 }
 
 export const isReceive = (walletAddress, toAddress) => {
