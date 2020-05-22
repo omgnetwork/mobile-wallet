@@ -70,6 +70,15 @@ jobs:
       - store_artifacts:
           path: test-results
 
+  mobile-wallet-dependency-audit:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout 
+      - run:
+          name: Run dependency check with audit-ci
+          command: npm run audit-ci
+
   # Proxy server build jobs
   proxy-server-build:
     docker:
