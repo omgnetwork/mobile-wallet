@@ -77,7 +77,8 @@ jobs:
     docker:
       - image: circleci/node:10
     steps:
-      - checkout 
+      - attach_workspace:
+          at: .
       - run:
           name: Run dependency check with audit-ci
           command: npm run audit-check
