@@ -130,7 +130,7 @@ jobs:
           name: Run proxy-server tests
           command: |
             cd proxy-server
-            npm run dependency-audit
+            npm run test
 
   proxy-server-dependency-audit: 
     docker:
