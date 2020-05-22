@@ -98,12 +98,6 @@ const styles = StyleSheet.create({
     }),
     flex: 1
   }),
-  usd: theme => ({
-    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
-    marginTop: 2,
-    letterSpacing: -0.48,
-    color: theme.colors.gray6
-  }),
   rightContainer: {
     flexDirection: 'row',
     alignItems: 'center'

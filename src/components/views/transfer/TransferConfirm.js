@@ -374,10 +374,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'flex-end'
   },
-  totalUsdText: theme => ({
-    color: theme.colors.gray,
-    fontSize: 12
-  }),
   addressContainer: {
     paddingHorizontal: 16
   },
@@ -453,11 +449,6 @@ const styles = StyleSheet.create({
       small: -0.32,
       medium: -0.48
     })
-  }),
-  toSendWorth: theme => ({
-    color: theme.colors.gray6,
-    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 12 }),
-    letterSpacing: -0.48
   })
 })
 

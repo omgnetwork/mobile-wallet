@@ -71,9 +71,6 @@ const styles = StyleSheet.create({
   textBlue: theme => ({
     color: theme.colors.blue2
   }),
-  textGray: theme => ({
-    color: theme.colors.gray6
-  }),
   textSmall: {
     fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 12 }),
     letterSpacing: -0.48

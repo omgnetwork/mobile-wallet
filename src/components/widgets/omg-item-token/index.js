@@ -104,11 +104,6 @@ const styles = StyleSheet.create({
     maxWidth: 100,
     fontSize: Styles.getResponsiveSize(14, { medium: 12, small: 10 }),
     color: theme.colors.white
-  }),
-  fiatValue: theme => ({
-    textAlign: 'right',
-    color: theme.colors.gray2,
-    fontSize: 8
   })
 })
 
