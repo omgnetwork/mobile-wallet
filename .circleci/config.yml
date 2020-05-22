@@ -4,6 +4,7 @@ workflows:
   version: 2
   mobile-wallet-build-tests:
     jobs:
+      - mobile-wallet-dependency-audit
       - mobile-wallet-build
       - mobile-wallet-tests:
           requires:
