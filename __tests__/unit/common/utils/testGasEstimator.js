@@ -7,12 +7,12 @@ const {
   TEST_PRIVATE_KEY,
   TEST_ADDRESS,
   TEST_ERC20_TOKEN_CONTRACT_ADDRESS,
-  ETHERSCAN_NETWORK
+  ETHEREUM_NETWORK
 } = Config
 
 describe('Test Gas Estimator', () => {
   it('test estimate gas when sending erc20 token', () => {
-    const provider = ethers.getDefaultProvider(ETHERSCAN_NETWORK)
+    const provider = ethers.getDefaultProvider(ETHEREUM_NETWORK)
     const wallet = new ethers.Wallet(TEST_PRIVATE_KEY, provider)
     const to = TEST_ADDRESS
     const fee = { amount: Gas.LOW_TRANSFER_GAS_PRICE }

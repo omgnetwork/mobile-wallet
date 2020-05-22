@@ -7,15 +7,14 @@ export default {
   ETHERSCAN_API_KEY: 'VCKWHFAA6M5AR8SFVXC43DEMEA8JN2H3WZ',
   ETHERSCAN_API_URL: 'https://api-ropsten.etherscan.io/api/',
   ETHERSCAN_URL: 'https://ropsten.etherscan.io/',
-  ETHERSCAN_NETWORK: 'ropsten',
+  ETHEREUM_NETWORK: 'ropsten',
   OMISEGO_NETWORK: 'lumpini',
   WEB3_HTTP_PROVIDER: 'https://dev-a69c763-mwproxy-ropsten-01.omg.network/api',
   PLASMA_FRAMEWORK_CONTRACT_ADDRESS:
     '0x1499442e7ee8c7cf2ae33f5e096d1a5b9c013cff',
   ETH_VAULT_CONTRACT_ADDRESS: '0xe637769f388f309e1cca8dd679a95a7b64a5bd06',
   ERC20_VAULT_CONTRACT_ADDRESS: '0x3fa3ae3aa4348f98da81511a6a2ca5a228fa2c8a',
-  WATCHER_URL:
-    'https://dev-a69c763-watcher-info-ropsten-01.omg.network/',
+  WATCHER_URL: 'https://dev-a69c763-watcher-info-ropsten-01.omg.network/',
   BLOCK_EXPLORER_URL:
     'https://dev-a69c763-blockexplorer-ropsten-01.omg.network/',
   EXIT_PERIOD: 300000,

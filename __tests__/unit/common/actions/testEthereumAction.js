@@ -11,7 +11,7 @@ import Config from 'react-native-config'
 jest.mock('common/services/ethereumService')
 jest.spyOn(global, 'requestAnimationFrame').mockImplementation(cb => cb())
 
-const { ETHERSCAN_NETWORK, TEST_PRIVATE_KEY, TEST_ADDRESS } = Config
+const { ETHEREUM_NETWORK, TEST_PRIVATE_KEY, TEST_ADDRESS } = Config
 const mockTxOptions = {
   hash: 'any',
   from: 'any',
@@ -85,7 +85,7 @@ describe('Test Ethereum Actions', () => {
   })
 
   it('fetchAssets should dispatch expected actions to the store', () => {
-    const provider = ethers.getDefaultProvider(ETHERSCAN_NETWORK)
+    const provider = ethers.getDefaultProvider(ETHEREUM_NETWORK)
     const action = ethereumActions.fetchAssets(provider, TEST_ADDRESS, 0)
     const store = mockStore({ unconfirmedTxs: [] })
     const assets = {
