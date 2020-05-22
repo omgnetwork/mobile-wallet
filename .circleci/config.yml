@@ -21,9 +21,9 @@ workflows:
       - proxy-server-test:
           requires:
             - proxy-server-build
-      - proxy-server-dependency-audit:
-        requires:
-          - proxy-server-build
+      - proxy-server-dependency-audit: 
+          requires: 
+            - proxy-server-build
       - proxy-server-publish:
           requires:
             - proxy-server-test
@@ -130,19 +130,19 @@ jobs:
           name: Run proxy-server tests
           command: |
             cd proxy-server
-            npm run test
+            npm run dependency-audit
 
-  proxy-server-dependency-audit:
+  proxy-server-dependency-audit: 
     docker:
       - image: circleci/node:10
     steps:
       - attach_workspace:
           at: .
       - run:
-          name: Audit proxy-server dependencies
+          name: Run proxy-server tests
           command: |
             cd proxy-server
-            npm run dependency-audit
+            npm run test
 
   proxy-server-publish:
     docker:
