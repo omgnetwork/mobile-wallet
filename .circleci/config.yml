@@ -78,7 +78,7 @@ jobs:
       - checkout 
       - run:
           name: Run dependency check with audit-ci
-          command: npm run audit-ci
+          command: npm run audit-check
 
   # Proxy server build jobs
   proxy-server-build:
