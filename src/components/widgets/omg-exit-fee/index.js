@@ -133,22 +133,7 @@ const Item = ({
             {subtitle}
           </OMGText>
         )}
-        {!loading ? (
-          <OMGText
-            style={[
-              styles.textWhite(theme),
-              styles.textSmall,
-              styles.marginSmall,
-              styles.alignTop
-            ]}>
-            {feeUsd} USD
-          </OMGText>
-        ) : (
-          <OMGEmpty
-            loading={loading}
-            style={[styles.alignRight, styles.marginSmall]}
-          />
-        )}
+        <View style={styles.dummyView} />
       </View>
     </View>
   )
@@ -177,8 +162,8 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     alignItems: 'flex-end'
   },
-  alignTop: {
-    alignSelf: 'flex-start'
+  dummyView: {
+    width: 50
   },
   textWhite: theme => ({
     color: theme.colors.white

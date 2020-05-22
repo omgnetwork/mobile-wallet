@@ -42,9 +42,6 @@ const OMGFeeTokenInput = ({ theme, feeToken, style, onPress, loading }) => {
               <OMGText style={styles.amount(theme)}>
                 {displayAmount} {tokenSymbol}
               </OMGText>
-              <OMGText style={styles.usd(theme)}>
-                {BlockchainFormatter.formatTokenPrice(displayAmount, price)} USD
-              </OMGText>
             </View>
 
             <OMGFontIcon

@@ -68,7 +68,6 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
           numberOfLines={1}>
           {currentBalance}
         </OMGText>
-        <OMGText style={styles.fiatValue(theme)}>{currentPrice} USD</OMGText>
       </Animated.View>
     </Animated.View>
   )

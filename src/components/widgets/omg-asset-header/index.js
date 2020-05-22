@@ -18,16 +18,6 @@ const OMGAssetHeader = ({
   const BlockchainIcon = rootchain ? IconEth : IconGo
   return (
     <View style={{ ...styles.container(theme), ...style }} ref={anchoredRef}>
-      <View style={styles.balance}>
-        {loading ? (
-          <OMGEmpty style={styles.loading} loading={loading} />
-        ) : (
-          <OMGText style={styles.balanceAmount(theme)}>{amount}</OMGText>
-        )}
-        <OMGText style={styles.balanceCurrency(theme)} weight='light'>
-          {currency}
-        </OMGText>
-      </View>
       <View style={styles.footer}>
         <BlockchainIcon
           fill={theme.colors.gray2}
@@ -59,29 +49,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: theme.roundness,
     borderTopRightRadius: theme.roundness
   }),
-  balance: {
-    flexDirection: 'row',
-    paddingHorizontal: Styles.getResponsiveSize(20, { small: 12, medium: 16 }),
-    paddingVertical: Styles.getResponsiveSize(20, { small: 12, medium: 16 })
-  },
-  loading: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingVertical: 0,
-    alignItems: 'flex-start'
-  },
-  balanceAmount: theme => ({
-    flex: 1,
-    textAlign: 'left',
-    fontSize: Styles.getResponsiveSize(32, { small: 18, medium: 24 }),
-    letterSpacing: Styles.getResponsiveSize(-3, { small: -1, medium: -2 }),
-    color: theme.colors.white
-  }),
-  balanceCurrency: theme => ({
-    color: theme.colors.white3,
-    fontSize: Styles.getResponsiveSize(32, { small: 18, medium: 24 })
-  }),
   footer: {
+    marginTop: 20,
     flexDirection: 'row',
     paddingHorizontal: Styles.getResponsiveSize(20, { small: 12, medium: 16 }),
     alignItems: 'center'

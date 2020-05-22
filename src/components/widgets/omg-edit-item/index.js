@@ -41,19 +41,9 @@ const OMGEditItem = ({
         {loading ? (
           <OMGEmpty loading={loading} style={styles.alignRight} />
         ) : (
-          <>
-            <OMGText style={[styles.textWhite(theme), styles.textBig]}>
-              {value} {symbol}
-            </OMGText>
-            <OMGText
-              style={[
-                styles.textGray(theme),
-                styles.textSmall,
-                styles.textMargin
-              ]}>
-              {feeUsd} USD
-            </OMGText>
-          </>
+          <OMGText style={[styles.textWhite(theme), styles.textBig]}>
+            {value} {symbol}
+          </OMGText>
         )}
       </View>
     </View>

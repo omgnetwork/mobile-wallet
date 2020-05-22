@@ -45,11 +45,6 @@ const OMGUtxoSelect = ({ theme, token, utxo, style, onAdded, onRemoved }) => {
           numberOfLines={1}>
           {BlockchainFormatter.formatTokenBalance(balance)}
         </OMGText>
-        <OMGText
-          style={[styles.smallText(theme), styles.rightText]}
-          weight='mono-regular'>
-          {BlockchainFormatter.formatTokenPrice(balance, token.price)} USD
-        </OMGText>
       </View>
       <View style={styles.checkContainer(theme, selected)}>
         <OMGFontIcon

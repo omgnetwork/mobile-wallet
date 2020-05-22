@@ -95,7 +95,7 @@ const TransferPending = ({ theme, navigation }) => {
             Pending Transaction
           </OMGText>
         </View>
-        <ScrollView>
+        <ScrollView contentContainerStyle={styles.scrollView}>
           <OMGBlockchainLabel
             actionText={BlockchainLabel.getBlockchainTextActionLabel(
               'TransferPending',
@@ -134,9 +134,6 @@ const TransferPending = ({ theme, navigation }) => {
                       {BlockchainFormatter.formatTokenBalance(token.balance)}{' '}
                       {token.tokenSymbol}
                     </OMGText>
-                    <OMGText style={styles.sentDetailSecondline(theme)}>
-                      {tokenPrice} USD
-                    </OMGText>
                   </View>
                 </View>
                 <View style={styles.sentSection2}>
@@ -146,9 +143,6 @@ const TransferPending = ({ theme, navigation }) => {
                   <View style={styles.sentDetail}>
                     <OMGText style={styles.sentDetailFirstline(theme)}>
                       {gasFee()} {gasTokenSymbol}
-                    </OMGText>
-                    <OMGText style={styles.sentDetailSecondline(theme)}>
-                      {gasFeeUsd()} USD
                     </OMGText>
                   </View>
                 </View>
@@ -243,6 +237,9 @@ const styles = StyleSheet.create({
   walletAddress: {
     marginTop: 12,
     flexDirection: 'row'
+  },
+  scrollView: {
+    flex: 1
   },
   totalText: theme => ({
     fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
