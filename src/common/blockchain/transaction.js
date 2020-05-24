@@ -1,10 +1,9 @@
 import { TransactionActionTypes, ContractAddress, Gas } from 'common/constants'
-import { OmgUtil, Contract, ContractABI } from 'common/blockchain'
+import { OmgUtil, Contract, ABIDecoder } from 'common/blockchain'
 import { Plasma as PlasmaClient } from 'common/clients'
-import ABIDecoder from 'abi-decoder'
 import BN from 'bn.js'
 
-const ABI = [...Contract.getPlasmaAbi(), ...ContractABI.erc20Abi()]
+const abiDecoder = ABIDecoder.get()
 
 export const get = address => {
   return PlasmaClient.ChildChain.getTransaction(address)
@@ -126,10 +125,8 @@ export const getExitDetails = async (tx, { from, gas, gasPrice }) => {
   }
 }
 
-export const decodePlasmaInputMethod = input => {
-  ABIDecoder.addABI(ABI)
-  console.log(ABIDecoder.decodeMethod(input))
-  return ABIDecoder.decodeMethod(input)
+export const decodeTxInputMethod = input => {
+  return abiDecoder.decodeMethod(input)
 }
 
 export const isReceive = (walletAddress, toAddress) => {
