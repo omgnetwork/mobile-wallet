@@ -65,7 +65,7 @@ const TransactionHistory = ({
     }
 
     if (wallet && wallet.address && !fetching && !fetched) {
-      dispatchFilteredStartedExits(wallet.address)
+      // dispatchFilteredStartedExits(wallet.address)
       dispatchFetchTxHistory(wallet.address, provider, options)
       setFetching(true)
     }
@@ -75,7 +75,6 @@ const TransactionHistory = ({
     wallet,
     provider,
     fetched,
-    dispatchFilteredStartedExits,
     startedExitTxs
   ])
 
@@ -101,10 +100,10 @@ const TransactionHistory = ({
 
   useEffect(() => {
     if (transactions.length) {
-      const normalizedStartedExitTxs = startedExitTxs.map(
-        Mapper.mapStartedExitTx
-      )
-      const recentTxs = [...transactions, ...normalizedStartedExitTxs]
+      // const normalizedStartedExitTxs = startedExitTxs.map(
+      //   Mapper.mapStartedExitTx
+      // )
+      const recentTxs = [...transactions]
         .sort((a, b) => b.timestamp - a.timestamp)
         .filter(tx =>
           [

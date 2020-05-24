@@ -4,6 +4,7 @@ import { OMGText } from 'components/widgets'
 import { Formatter, Styles } from 'common/utils'
 import { BlockchainFormatter, Plasma } from 'common/blockchain'
 import { connect } from 'react-redux'
+import { DateFormat } from 'common/constants'
 import { priceService } from 'common/services'
 
 const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
@@ -12,13 +13,9 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
   const tokens = primaryWallet.childchainAssets
   const textExactDatetime = Formatter.formatTimeStamp(
     tx.timestamp,
-    'MMMM-DD-YYYY, HH:mm:ss A Z'
+    DateFormat.STARTED_EXIT_DATE
   )
-  const feeAmount = BlockchainFormatter.formatGasFee(
-    tx.gasUsed,
-    tx.gasPrice,
-    tx.flatFee
-  )
+  const feeAmount = BlockchainFormatter.formatGasFee(tx.gasUsed, tx.gasPrice)
   const textFromNowDatetime = Formatter.formatTimeStampFromNow(tx.timestamp)
   const isFailed = tx.type === 'failed'
 

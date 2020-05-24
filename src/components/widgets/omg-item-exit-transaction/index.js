@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { TransactionTypes, ExitStatus } from 'common/constants'
@@ -10,6 +10,18 @@ const OMGItemExitTransaction = ({ theme, tx, style, key, onPress }) => {
   const isError = tx.type === TransactionTypes.TYPE_FAILED
   const iconName = getIconName(tx.type)
 
+  const [exitableAt, setExitableAt] = useState('fetching..')
+
+  useEffect(() => {
+    async function fetchExitableAt() {
+      const exitAt = await tx.exitableAt
+      const formattedExitAt = BlockchainFormatter.formatProcessExitAt(exitAt)
+      setExitableAt(formattedExitAt)
+    }
+
+    fetchExitableAt()
+  }, [exitableAt, tx.exitableAt])
+
   const renderValue = useCallback(() => {
     return `${BlockchainFormatter.formatTokenBalance(tx.value, 8)} ${
       tx.tokenSymbol
@@ -17,7 +29,7 @@ const OMGItemExitTransaction = ({ theme, tx, style, key, onPress }) => {
   }, [tx])
 
   const renderTransactionStatusIfNeeded = useCallback(() => {
-    const { type, status, exitableAt } = tx
+    const { type, status } = tx
     switch (type) {
       case TransactionTypes.TYPE_EXIT:
         if (status === ExitStatus.EXIT_STARTED) {
@@ -25,9 +37,7 @@ const OMGItemExitTransaction = ({ theme, tx, style, key, onPress }) => {
             <View style={styles.exitStatusContainer}>
               <View style={styles.statusIndicator(theme)} />
               <OMGText style={styles.statusText(theme)}>
-                {`Pending : Eligible to process on${BlockchainFormatter.formatProcessExitAt(
-                  exitableAt
-                )}`}
+                {`Pending : Eligible to process on ${exitableAt}`}
               </OMGText>
             </View>
           )
@@ -36,7 +46,7 @@ const OMGItemExitTransaction = ({ theme, tx, style, key, onPress }) => {
       case TransactionTypes.TYPE_FAILED:
         return <OMGText style={styles.subText(theme)}>Failed</OMGText>
     }
-  }, [theme, tx])
+  }, [exitableAt, theme, tx])
 
   const renderAmountOrProcessExit = useCallback(() => {
     const { type, status } = tx
@@ -163,7 +173,7 @@ const styles = StyleSheet.create({
   textAmount: theme => ({
     fontSize: 16,
     letterSpacing: -0.64,
-    marginLeft: 'auto',
+    marginLeft: 16,
     color: theme.colors.white
   })
 })

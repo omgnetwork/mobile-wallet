@@ -55,7 +55,7 @@ const OMGExitFee = ({
     <View style={[styles.background(theme), style]}>
       <View style={[styles.container(theme)]}>
         <OMGEditItem
-          title='Fee'
+          title='Total'
           loading={!gasUsed || !exitBondValue}
           value={formatTotalExitFee() || 0}
           onPress={onPressEdit}

@@ -44,21 +44,6 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     backgroundColor: theme.colors.black5
-  }),
-  header: {
-    marginHorizontal: 16,
-    alignItems: 'center',
-    flexDirection: 'row'
-  },
-  headerIcon: {
-    padding: 8,
-    marginLeft: -8
-  },
-  headerTitle: theme => ({
-    fontSize: 18,
-    color: theme.colors.white,
-    marginLeft: 8,
-    textTransform: 'uppercase'
   })
 })
 

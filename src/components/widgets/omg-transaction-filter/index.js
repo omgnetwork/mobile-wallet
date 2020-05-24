@@ -8,7 +8,6 @@ import { Mapper, Styles } from 'common/utils'
 const OMGTransactionFilter = ({
   types,
   transactions,
-  startedExitTxs,
   theme,
   loading,
   address,
@@ -18,13 +17,9 @@ const OMGTransactionFilter = ({
   const [activeType, setActiveType] = useState(types[0])
 
   useEffect(() => {
-    const selectedTxs = selectTransactionsByType(
-      activeType,
-      transactions,
-      startedExitTxs
-    )
+    const selectedTxs = selectTransactionsByType(activeType, transactions)
     setFilterTxs(selectedTxs)
-  }, [activeType, startedExitTxs, transactions])
+  }, [activeType, transactions])
 
   const renderTypeOptions = useCallback(() => {
     return types.map(type => {
@@ -64,7 +59,7 @@ const OMGTransactionFilter = ({
   )
 }
 
-const selectTransactionsByType = (type, transactions, startedExitTxs) => {
+const selectTransactionsByType = (type, transactions) => {
   switch (type) {
     case TransactionTypes.TYPE_ALL:
       return transactions.filter(tx =>
@@ -72,15 +67,6 @@ const selectTransactionsByType = (type, transactions, startedExitTxs) => {
           TransactionTypes.TYPE_FAILED,
           TransactionTypes.TYPE_RECEIVED,
           TransactionTypes.TYPE_SENT
-        ].includes(tx.type)
-      )
-    case TransactionTypes.TYPE_EXIT:
-      return startedExitTxs.map(Mapper.mapStartedExitTx)
-    case TransactionTypes.TYPE_PROCESS_EXIT:
-      return transactions.filter(tx =>
-        [
-          TransactionTypes.TYPE_EXIT,
-          TransactionTypes.TYPE_PROCESS_EXIT
         ].includes(tx.type)
       )
     default:
@@ -99,9 +85,9 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   option: (theme, active) => ({
+    width: 128,
     backgroundColor: active ? theme.colors.gray4 : theme.colors.black3,
-    paddingVertical: Styles.getResponsiveSize(8, { small: 6, medium: 6 }),
-    paddingHorizontal: 30,
+    paddingVertical: Styles.getResponsiveSize(12, { small: 8, medium: 10 }),
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 8

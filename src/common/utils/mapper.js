@@ -1,9 +1,16 @@
 import {
   ContractAddress,
   TransactionTypes,
-  BlockchainNetworkType
+  BlockchainNetworkType,
+  Utxo
 } from 'common/constants'
-import { Token, Transaction } from 'common/blockchain'
+import {
+  Token,
+  Transaction,
+  OmgUtil,
+  BlockchainFormatter,
+  Plasma
+} from 'common/blockchain'
 import { BigNumber } from 'common/utils'
 import BN from 'bn.js'
 
@@ -115,8 +122,53 @@ const isInputGreaterThanOutput = (input, outputs) => {
 
 export const mapAssetCurrency = asset => asset.currency
 
+<<<<<<< HEAD
 export const mapRootchainEthTx = (tx, address, standardExitBondSize) => {
   const method = Transaction.decodeTxInputMethod(tx.input)
+=======
+export const mapRootchainEthTx = (
+  tx,
+  address,
+  tokens,
+  standardExitBondSize
+) => {
+  const txValue = typeof tx.value === 'string' ? tx.value : tx.value.toFixed()
+  const method = Transaction.decodeTxInputMethod(tx.input)
+  let tokenName = 'Ether'
+  let tokenSymbol = 'ETH'
+  let tokenDecimal = 18
+  let amount = txValue
+  const standardExitExtraParams = {}
+  const isStandardExit = method?.name === 'startStandardExit'
+  if (isStandardExit) {
+    const utxoPos = method.params[0].value[0]
+    const txBytes = method.params[0].value[1]
+    const outputIndex = utxoPos % 10000
+    const blknum = Math.floor(utxoPos / Utxo.BLOCK_OFFSET)
+    const result = OmgUtil.transaction.decodeTxBytes(txBytes)
+    const utxo = result.outputs[outputIndex]
+    const token = Token.find(utxo.currency, tokens)
+    tokenName = token.tokenName
+    tokenSymbol = token.tokenSymbol
+    tokenDecimal = token.tokenDecimal
+    amount = BlockchainFormatter.formatTokenBalanceFromSmallestUnit(
+      utxo.amount,
+      tokenDecimal
+    )
+    standardExitExtraParams.smallestValue = utxo.amount
+    standardExitExtraParams.flatFee = txValue
+    standardExitExtraParams.exitId = Plasma.getStandardExitId(
+      txBytes,
+      utxoPos,
+      blknum
+    )
+    const pendingExitTime = Plasma.getExitTime(tx.blockNumber, blknum)
+    standardExitExtraParams.exitableAt = pendingExitTime.then(
+      ({ scheduledFinalizationTime }) => scheduledFinalizationTime
+    )
+  }
+
+>>>>>>> 59d9a85... Retrieves exit infos from tx's input
   return {
     hash: tx.hash,
     network: BlockchainNetworkType.TYPE_ETHEREUM_NETWORK,
@@ -134,11 +186,12 @@ export const mapRootchainEthTx = (tx, address, standardExitBondSize) => {
     gasPrice: tx.gasPrice || 0,
     gasCurrency: ContractAddress.ETH_ADDRESS,
     contractAddress: ContractAddress.ETH_ADDRESS,
-    tokenName: 'Ether',
-    tokenSymbol: 'ETH',
-    tokenDecimal: '18',
-    value: typeof tx.value === 'string' ? tx.value : tx.value.toFixed(),
-    timestamp: tx.timeStamp
+    tokenName,
+    tokenSymbol,
+    tokenDecimal,
+    value: amount,
+    timestamp: tx.timeStamp,
+    ...standardExitExtraParams
   }
 }
 

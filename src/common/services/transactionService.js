@@ -91,6 +91,7 @@ export const getTxs = (address, provider, options) => {
 
 export const getExitTxs = async address => {
   const { unprocessed, processed } = await Transaction.allExits(address)
+  // console.log('unprocessed', unprocessed)
   return {
     unprocessed: unprocessed.map(u => u.transactionHash),
     processed: processed.map(p => p.transactionHash)
@@ -135,7 +136,7 @@ const mergeTxs = async (txs, address, tokens, standardExitBondSize) => {
     // Failed transaction will already be included in the rootchainTxs
     if (isError === '1') return
 
-    // Internal transactions can be contain an erc20 transaction which has multiple transfers.
+    // Internal transactions sometimes contain an erc20 transaction which has multiple transfers.
     // Since it has already been calculated in the erc20Map, so we skip here.
     if (erc20Map[hash]) {
       erc20Map[hash] = {
@@ -175,7 +176,7 @@ const mergeTxs = async (txs, address, tokens, standardExitBondSize) => {
         address
       )
     } else {
-      return Mapper.mapRootchainEthTx(tx, address, standardExitBondSize)
+      return Mapper.mapRootchainEthTx(tx, address, tokens, standardExitBondSize)
     }
   })
 

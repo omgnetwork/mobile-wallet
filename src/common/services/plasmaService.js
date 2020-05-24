@@ -195,7 +195,11 @@ export const exit = (blockchainWallet, token, utxos, gasPrice) => {
         blockNumber: startedExitBlkNum,
         gasUsed
       } = await Plasma.standardExit(exitData, blockchainWallet, { gasPrice })
-      const exitId = await Plasma.getStandardExitId(utxoToExit, exitData)
+      const exitId = await Plasma.getStandardExitId(
+        exitData.txbytes,
+        exitData.utxo_pos,
+        utxoToExit.blknum
+      )
       const standardExitBond = await Plasma.getStandardExitBond()
 
       console.log('standard exit hash', hash)

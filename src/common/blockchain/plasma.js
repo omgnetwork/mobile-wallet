@@ -231,11 +231,11 @@ export const getErrorReason = async hash => {
   }
 }
 
-export const getStandardExitId = (utxoToExit, exitData) => {
+export const getStandardExitId = (txbytes, utxoPos, blknum) => {
   return Plasma.RootChain.getStandardExitId({
-    txBytes: exitData.txbytes,
-    utxoPos: exitData.utxo_pos,
-    isDeposit: utxoToExit.blknum % 1000 !== 0
+    txBytes: txbytes,
+    utxoPos: utxoPos,
+    isDeposit: blknum % 1000 !== 0
   })
 }
 

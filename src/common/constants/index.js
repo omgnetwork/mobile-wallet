@@ -9,6 +9,7 @@ import * as TransactionActionTypes from './transactionActionTypes'
 import * as TransactionTypes from './transactionTypes'
 import * as Gas from './gas'
 import * as NotificationMessages from './notificationMessages'
+import * as Utxo from './utxo'
 
 export {
   Alert,
@@ -21,5 +22,6 @@ export {
   OnboardingContent,
   NotificationMessages,
   TransactionTypes,
-  TransactionActionTypes
+  TransactionActionTypes,
+  Utxo
 }
