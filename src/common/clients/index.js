@@ -5,14 +5,11 @@ import createChildchain from './childchain'
 
 const web3HttpProvider = Config.WEB3_HTTP_PROVIDER
 const plasmaContractAddress = Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
+const watcherURL = Config.WATCHER_URL
 
-<<<<<<< HEAD
-=======
-// Assume Config.WATCHER_URL is always has '/' at the end.
->>>>>>> 68f3f20... Fix transfer error (#203)
 export const web3 = createWeb3(web3HttpProvider)
 
 export const Plasma = {
   RootChain: createRootchain(web3, plasmaContractAddress),
-  ChildChain: createChildchain(Config.WATCHER_URL)
+  ChildChain: createChildchain(watcherURL, plasmaContractAddress)
 }
