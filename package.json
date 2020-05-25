@@ -33,7 +33,6 @@
     ]
   },
   "dependencies": {
-    "@omisego/omg-js": "^4.0.0-0.4.7",
     "@omisego/react-native-omg-js": "^4.0.0-0.4.7",
     "@react-native-community/async-storage": "^1.6.1",
     "@react-native-community/masked-view": "^0.1.10",
