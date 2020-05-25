@@ -25,9 +25,6 @@ const OMGTokenFee = ({ token, theme, selected, onPress }) => {
         <OMGText style={styles.textWhite16(theme)}>
           {displayAmount} {token.tokenSymbol}
         </OMGText>
-        <OMGText style={styles.textWhite12(theme)}>
-          {BlockchainFormatter.formatTokenPrice(displayAmount, token.price)} USD
-        </OMGText>
         <OMGText style={[styles.textGray12(theme), styles.marginTop12]}>
           Balance{' '}
           {BlockchainFormatter.formatTokenBalance(
@@ -70,11 +67,6 @@ const styles = StyleSheet.create({
   textWhite16: theme => ({
     fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     letterSpacing: -0.64,
-    color: theme.colors.white
-  }),
-  textWhite12: theme => ({
-    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
-    letterSpacing: -0.48,
     color: theme.colors.white
   }),
   textGray12: theme => ({

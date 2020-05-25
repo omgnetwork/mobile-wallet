@@ -77,9 +77,6 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
               <OMGText style={styles.sentDetailFirstline(theme)}>
                 {tokenValue} {symbol}
               </OMGText>
-              <OMGText style={styles.sentDetailSecondline(theme)}>
-                {tokenPriceUsd} USD
-              </OMGText>
             </View>
           </View>
           <View style={[styles.sentDetailRow, styles.marginSmall]}>
@@ -95,9 +92,6 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
             <View style={styles.sentDetail}>
               <OMGText style={styles.sentDetailFirstline(theme)}>
                 {gasFee} ETH
-              </OMGText>
-              <OMGText style={styles.sentDetailSecondline(theme)}>
-                {gasFeeUsd} USD
               </OMGText>
             </View>
           </View>

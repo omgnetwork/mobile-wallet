@@ -42,9 +42,6 @@ const OMGFeeTokenInput = ({ theme, feeToken, style, onPress, loading }) => {
               <OMGText style={styles.amount(theme)}>
                 {displayAmount} {tokenSymbol}
               </OMGText>
-              <OMGText style={styles.usd(theme)}>
-                {BlockchainFormatter.formatTokenPrice(displayAmount, price)} USD
-              </OMGText>
             </View>
 
             <OMGFontIcon
@@ -100,12 +97,6 @@ const styles = StyleSheet.create({
       medium: -0.48
     }),
     flex: 1
-  }),
-  usd: theme => ({
-    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
-    marginTop: 2,
-    letterSpacing: -0.48,
-    color: theme.colors.gray6
   }),
   rightContainer: {
     flexDirection: 'row',

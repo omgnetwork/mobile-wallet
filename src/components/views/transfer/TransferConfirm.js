@@ -216,9 +216,6 @@ const TransferConfirm = ({
                 numberOfLines={1}>
                 {estimatedFee} {estimatedFeeSymbol}
               </OMGText>
-              <OMGText style={styles.toSendWorth(theme)}>
-                {estimatedFeeUsd} USD
-              </OMGText>
             </>
           ) : (
             <OMGEmpty loading={true} />
@@ -226,7 +223,7 @@ const TransferConfirm = ({
         </View>
       </View>
     )
-  }, [estimatedFee, estimatedFeeSymbol, estimatedFeeUsd, theme])
+  }, [estimatedFee, estimatedFeeSymbol, theme])
 
   const renderMaxTotal = useCallback(() => {
     return estimatedFee ? (
@@ -240,15 +237,12 @@ const TransferConfirm = ({
         </OMGText>
         <View style={styles.totalContentRightContainer}>
           <OMGText style={styles.totalSymbolText(theme)}>ETH</OMGText>
-          <OMGText style={styles.totalUsdText(theme)}>
-            {estimatedTotalPrice} USD
-          </OMGText>
         </View>
       </View>
     ) : (
       <OMGEmpty loading={true} />
     )
-  }, [estimatedFee, estimatedTotalAmount, estimatedTotalPrice, theme])
+  }, [estimatedFee, estimatedTotalAmount, theme])
 
   const sendToken = () => {
     dispatchSendToken(
@@ -316,9 +310,6 @@ const TransferConfirm = ({
                     numberOfLines={1}>
                     {tokenBalance} {token.tokenSymbol}
                   </OMGText>
-                  <OMGText style={styles.toSendWorth(theme)}>
-                    {tokenPrice} USD
-                  </OMGText>
                 </View>
               </View>
               {renderEstimatedFeeElement()}
@@ -383,10 +374,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'flex-end'
   },
-  totalUsdText: theme => ({
-    color: theme.colors.gray,
-    fontSize: 12
-  }),
   addressContainer: {
     paddingHorizontal: 16
   },
@@ -462,11 +449,6 @@ const styles = StyleSheet.create({
       small: -0.32,
       medium: -0.48
     })
-  }),
-  toSendWorth: theme => ({
-    color: theme.colors.gray6,
-    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 12 }),
-    letterSpacing: -0.48
   })
 })
 
