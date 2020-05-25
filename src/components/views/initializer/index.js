@@ -2,20 +2,14 @@ import { settingActions } from 'common/actions'
 import { store } from 'common/stores'
 import { HeadlessProcessExit } from 'components/headless'
 import React, { useRef, useCallback, useEffect, useState } from 'react'
-import {
-  AppRegistry,
-  Image,
-  StyleSheet,
-  View,
-  Animated,
-  Platform
-} from 'react-native'
+import { AppRegistry, StyleSheet, View, Animated, Platform } from 'react-native'
 import { SecureEncryption } from 'common/native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
 import { OMGStatusBar } from 'components/widgets'
 import { Move } from 'common/anims'
+import { ABIDecoder, Contract, ContractABI } from 'common/blockchain'
 import OmiseGOLogo from './assets/omisego.svg'
 
 const Initializer = ({
@@ -37,13 +31,24 @@ const Initializer = ({
   const loadingDuration = 1000 + Math.random() * 1000
 
   useEffect(() => {
-    async function initSecureEncryption() {
+    async function init() {
       if (Platform.OS === 'android') {
         await SecureEncryption.init()
       }
+      if (ABIDecoder.get().getABIs().length === 0) {
+        const erc20Abi = ContractABI.erc20Abi()
+        const plasmaContractAbi = Contract.getPlasmaContractABI()
+        const plasmaAbis = await Promise.all([
+          Contract.getPaymentExitGameABI(),
+          Contract.getERC20VaultABI(),
+          Contract.getEthVaultABI()
+        ])
+        ABIDecoder.init([erc20Abi, plasmaContractAbi, ...plasmaAbis])
+      }
       setReady(true)
     }
-    initSecureEncryption()
+
+    init()
   }, [])
 
   useEffect(() => {

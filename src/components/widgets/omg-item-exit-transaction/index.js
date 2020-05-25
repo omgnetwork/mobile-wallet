@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     letterSpacing: -0.64,
+    marginRight: 16,
     color: theme.colors.white
   }),
   processExitContainer: theme => ({

@@ -45,11 +45,6 @@ const OMGUtxoSelect = ({ theme, token, utxo, style, onAdded, onRemoved }) => {
           numberOfLines={1}>
           {BlockchainFormatter.formatTokenBalance(balance)}
         </OMGText>
-        <OMGText
-          style={[styles.smallText(theme), styles.rightText]}
-          weight='mono-regular'>
-          {BlockchainFormatter.formatTokenPrice(balance, token.price)} USD
-        </OMGText>
       </View>
       <View style={styles.checkContainer(theme, selected)}>
         <OMGFontIcon
@@ -78,10 +73,6 @@ const styles = StyleSheet.create({
   sectionAmount: {
     flexDirection: 'column'
   },
-  smallText: theme => ({
-    color: theme.colors.gray6,
-    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 12 })
-  }),
   bigText: theme => ({
     color: theme.colors.white,
     fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),

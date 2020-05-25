@@ -36,7 +36,6 @@ export const transfer = async (
   const childchainFee = Transaction.createFee(fee.contractAddress, fee.amount)
   const { address } = fromBlockchainWallet
   const utxos = await Utxos.get(address, {
-    currency: token.contractAddress,
     sort: (a, b) => new BN(b.amount).sub(new BN(a.amount))
   })
   const txBody = Transaction.createBody(

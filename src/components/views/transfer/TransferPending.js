@@ -95,7 +95,7 @@ const TransferPending = ({ theme, navigation }) => {
             Pending Transaction
           </OMGText>
         </View>
-        <ScrollView>
+        <ScrollView contentContainerStyle={styles.scrollView}>
           <OMGBlockchainLabel
             actionText={BlockchainLabel.getBlockchainTextActionLabel(
               'TransferPending',
@@ -134,9 +134,6 @@ const TransferPending = ({ theme, navigation }) => {
                       {BlockchainFormatter.formatTokenBalance(token.balance)}{' '}
                       {token.tokenSymbol}
                     </OMGText>
-                    <OMGText style={styles.sentDetailSecondline(theme)}>
-                      {tokenPrice} USD
-                    </OMGText>
                   </View>
                 </View>
                 <View style={styles.sentSection2}>
@@ -147,22 +144,12 @@ const TransferPending = ({ theme, navigation }) => {
                     <OMGText style={styles.sentDetailFirstline(theme)}>
                       {gasFee()} {gasTokenSymbol}
                     </OMGText>
-                    <OMGText style={styles.sentDetailSecondline(theme)}>
-                      {gasFeeUsd()} USD
-                    </OMGText>
                   </View>
                 </View>
               </View>
             </View>
           </View>
           <View style={styles.bottomContainer(theme)}>
-            <View style={styles.totalContainer(theme)}>
-              <OMGText style={styles.totalText(theme)}>Total</OMGText>
-              <OMGText style={styles.totalText(theme)}>
-                {BlockchainFormatter.formatTotalPrice(sendAmount, gasFeeUsd())}{' '}
-                USD
-              </OMGText>
-            </View>
             <OMGButton
               style={styles.button}
               onPress={() => {
@@ -213,11 +200,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 16
   }),
-  totalContainer: theme => ({
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: Styles.getResponsiveSize(16, { small: 8, medium: 12 })
-  }),
   title: theme => ({
     fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
     color: theme.colors.white,
@@ -244,15 +226,9 @@ const styles = StyleSheet.create({
     marginTop: 12,
     flexDirection: 'row'
   },
-  totalText: theme => ({
-    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
-    letterSpacing: Styles.getResponsiveSize(-0.64, {
-      small: -0.32,
-      medium: -0.48
-    }),
-    color: theme.colors.blue,
-    textTransform: 'uppercase'
-  }),
+  scrollView: {
+    flex: 1
+  },
   sentContainer: {
     marginHorizontal: 16
   },
@@ -285,11 +261,6 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     letterSpacing: -0.64
-  }),
-  sentDetailSecondline: theme => ({
-    color: theme.colors.gray6,
-    fontSize: 12,
-    letterSpacing: -0.48
   }),
   trackEtherscanButton: {
     padding: 8,
