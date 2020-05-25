@@ -23,9 +23,6 @@ const OMGFeeSelect = ({ style, onPress, fee, theme }) => {
           numberOfLines={1}>
           {fee.displayAmount} {fee.symbol}
         </OMGText>
-        <OMGText style={styles.feePrice(theme)}>
-          ${formatFeePrice(fee.displayAmount, fee.price)}/transfer
-        </OMGText>
       </View>
       <View style={styles.sectionSelect}>
         <OMGFontIcon
