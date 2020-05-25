@@ -78,9 +78,6 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
           <OMGText style={styles.infoItemValue(theme)}>
             {feeAmount} {getFeeTokenSymbol()}
           </OMGText>
-          <OMGText style={styles.infoItemValueLighter(theme)}>
-            {feePrice} USD
-          </OMGText>
         </View>
       </View>
     )
@@ -214,13 +211,6 @@ const styles = StyleSheet.create({
     letterSpacing: -0.64,
     marginTop: 4,
     color: theme.colors.white
-  }),
-  infoItemValueLighter: theme => ({
-    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
-    marginLeft: 'auto',
-    letterSpacing: -0.64,
-    marginTop: 4,
-    color: theme.colors.gray6
   }),
   divider: theme => ({
     backgroundColor: theme.colors.gray5,
