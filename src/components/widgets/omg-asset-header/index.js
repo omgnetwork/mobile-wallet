@@ -49,37 +49,34 @@ const OMGAssetHeader = ({
           color={theme.colors.white}
         />
       </View>
-      <View style={[styles.rowContainer, styles.rowMarginTop]}>
-        <OMGText style={styles.balanceAmount} weight='bold'>
-          <OMGText>$</OMGText> {amount}
-        </OMGText>
+      <View
+        style={[styles.rowContainer, styles.rowMarginTop, styles.rowCenter]}>
+        <View style={styles.buttonsGroup}>
+          <CircleButton
+            theme={theme}
+            label='Send'
+            onPress={onPressSend}
+            disable={disableSend}>
+            <ArrowUp />
+          </CircleButton>
+          <CircleButton
+            style={styles.rowItemMarginLeft}
+            onPress={onPressReceive}
+            label='Receive'>
+            <ArrowDown />
+          </CircleButton>
+          <CircleButton
+            style={styles.rowItemMarginLeft}
+            onPress={onPressScan}
+            disable={disableSend}
+            label='Scan'>
+            <Scan />
+          </CircleButton>
+        </View>
         <TouchableOpacity style={styles.ovalButton} onPress={onPressMenu}>
           <OMGText style={styles.ovalButtonText}>+</OMGText>
           <OMGText style={styles.ovalButtonText2}>-</OMGText>
         </TouchableOpacity>
-      </View>
-      <View
-        style={[styles.rowContainer, styles.rowMarginTop, styles.rowCenter]}>
-        <CircleButton
-          theme={theme}
-          label='Send'
-          onPress={onPressSend}
-          disable={disableSend}>
-          <ArrowUp />
-        </CircleButton>
-        <CircleButton
-          style={styles.rowItemMarginLeft}
-          onPress={onPressReceive}
-          label='Receive'>
-          <ArrowDown />
-        </CircleButton>
-        <CircleButton
-          style={styles.rowItemMarginLeft}
-          onPress={onPressScan}
-          disable={disableSend}
-          label='Scan'>
-          <Scan />
-        </CircleButton>
       </View>
     </View>
   )
@@ -105,7 +102,6 @@ const createStyles = (theme, isRootchain) =>
     },
     rowContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
       alignItems: 'center'
     },
     textNetwork: {
@@ -121,6 +117,11 @@ const createStyles = (theme, isRootchain) =>
       lineHeight: 48,
       fontSize: Styles.getResponsiveSize(40, { small: 32, medium: 40 })
     },
+    buttonsGroup: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'center'
+    },
     ovalButtonText: {
       color: theme.colors.white,
       fontSize: 20
@@ -134,7 +135,8 @@ const createStyles = (theme, isRootchain) =>
       marginTop: Styles.getResponsiveSize(40, { small: 24, medium: 32 })
     },
     rowCenter: {
-      justifyContent: 'center'
+      justifyContent: 'center',
+      marginLeft: 30
     },
     rowItemMarginLeft: {
       marginLeft: 30
@@ -144,8 +146,8 @@ const createStyles = (theme, isRootchain) =>
       borderRadius: 16,
       paddingHorizontal: 8,
       paddingVertical: 3,
-      justifyContent: 'center',
-      flexDirection: 'column'
+      marginBottom: 12,
+      marginLeft: 'auto'
     }
   })
 

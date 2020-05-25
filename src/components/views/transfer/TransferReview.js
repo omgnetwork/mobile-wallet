@@ -138,7 +138,6 @@ const TransferReview = ({
       <OMGEditItem
         title='Amount'
         rightFirstLine={`${amount} ${token.tokenSymbol}`}
-        rightThirdLine={`${amountUsd} USD`}
         onPress={onPressEditAmount}
         style={[styles.marginMedium, styles.paddingMedium]}
       />
@@ -146,7 +145,6 @@ const TransferReview = ({
         title='Estimated Fee'
         loading={!estimatedFee}
         rightFirstLine={`${estimatedFee} ${estimatedFeeSymbol}`}
-        rightThirdLine={`${estimatedFeeUsd} USD`}
         onPress={onPressEditFee}
         style={[styles.marginMedium, styles.paddingMedium]}
       />

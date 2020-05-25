@@ -31,9 +31,6 @@ const OMGItemTokenSelect = ({ token, style, onPress, selected, theme }) => {
           numberOfLines={1}>
           {BlockchainFormatter.formatTokenBalance(token.balance, 6)}
         </OMGText>
-        <OMGText style={styles.fiatValue(theme)} weight='mono-regular'>
-          {BlockchainFormatter.formatTokenPrice(token.balance, token.price)} USD
-        </OMGText>
       </View>
       <View style={styles.sectionSelect}>
         {selected ? (
@@ -80,11 +77,6 @@ const styles = StyleSheet.create({
     maxWidth: 100,
     fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     color: theme.colors.white
-  }),
-  fiatValue: theme => ({
-    textAlign: 'right',
-    color: theme.colors.gray6,
-    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 12 })
   })
 })
 

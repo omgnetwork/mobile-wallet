@@ -136,7 +136,6 @@ const ExitReview = ({
   const hasError = insufficientBalanceError || gasEstimationError
   const btnLoading = minimumAmount === 0 || isLoading || loadingExit
 
-  const exitFee = BlockchainFormatter.formatTokenPrice(exitAmount, token.price)
   return (
     <View style={styles.container(theme)}>
       <ScrollView contentContainerStyle={styles.scrollView}>
@@ -147,7 +146,6 @@ const ExitReview = ({
           <OMGEditItem
             title='Amount'
             rightFirstLine={`${exitAmount} ${token.tokenSymbol}`}
-            rightThirdLine={`${exitFee} USD`}
             onPress={navigateEditAmount}
             style={[styles.marginMedium, styles.paddingMedium]}
           />
