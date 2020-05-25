@@ -1,17 +1,10 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import { ethereumActions } from 'common/actions'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import {
-  OMGButton,
-  OMGEmpty,
-  OMGFeeSelect,
-  OMGFontIcon,
-  OMGText,
-  OMGHeader
-} from 'components/widgets'
+import { OMGEmpty, OMGFeeSelect, OMGText, OMGHeader } from 'components/widgets'
 import {
   getParamsForTransferSelectFeeFromTransferForm,
   paramsForTransferSelectEthFeeToTransferForm
