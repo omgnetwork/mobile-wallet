@@ -9,7 +9,7 @@ import { withNavigation, SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
 import { OMGStatusBar } from 'components/widgets'
 import { Move } from 'common/anims'
-import { ABIDecoder, Contract } from 'common/blockchain'
+import { ABIDecoder, Contract, ContractABI } from 'common/blockchain'
 import OmiseGOLogo from './assets/omisego.svg'
 
 const Initializer = ({
@@ -36,16 +36,14 @@ const Initializer = ({
         await SecureEncryption.init()
       }
       if (ABIDecoder.get().getABIs().length === 0) {
+        const erc20Abi = ContractABI.erc20Abi()
         const plasmaContractAbi = Contract.getPlasmaContractABI()
-        const paymentExitGameAbi = await Contract.getPaymentExitGameABI()
-        const erc20VaultAbi = await Contract.getERC20VaultABI()
-        const ethVaultAbi = await Contract.getEthVaultABI()
-        ABIDecoder.init([
-          plasmaContractAbi,
-          paymentExitGameAbi,
-          erc20VaultAbi,
-          ethVaultAbi
+        const plasmaAbis = await Promise.all([
+          Contract.getPaymentExitGameABI(),
+          Contract.getERC20VaultABI(),
+          Contract.getEthVaultABI()
         ])
+        ABIDecoder.init([erc20Abi, plasmaContractAbi, ...plasmaAbis])
       }
       setReady(true)
     }

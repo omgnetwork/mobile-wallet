@@ -193,8 +193,6 @@ const mapRootchainTransactionType = (
       return TransactionTypes.TYPE_APPROVE_ERC20
     case 'addExitQueue':
       return TransactionTypes.TYPE_PLASMA_ADD_TOKEN
-    case 'startStandardExit':
-      return TransactionTypes.TYPE_EXIT
     default:
       if (Transaction.shouldExcludeFromTxHistory(tx, standardExitBondSize)) {
         return TransactionTypes.TYPE_UNIDENTIFIED
