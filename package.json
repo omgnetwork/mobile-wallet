@@ -9,6 +9,7 @@
     "test": "jest",
     "lint": "eslint .",
     "fix": "eslint . --fix",
+    "dependency-audit": "audit-ci --moderate",
     "ios": "react-native run-ios --simulator='iPhone 11'",
     "android": "react-native run-android",
     "ios-mainnet": "ENVFILE=.env.mainnet react-native run-ios --simulator='iPhone 7'",
@@ -32,7 +33,6 @@
     ]
   },
   "dependencies": {
-    "@omisego/omg-js": "^4.0.0-0.4.7",
     "@omisego/react-native-omg-js": "^4.0.0-0.4.7",
     "@react-native-community/async-storage": "^1.6.1",
     "@react-native-community/masked-view": "^0.1.10",
@@ -101,6 +101,7 @@
     "@babel/runtime": "^7.6.2",
     "@react-native-community/cli-platform-ios": "^3.0.0",
     "@react-native-community/eslint-config": "^0.0.5",
+    "audit-ci": "^3.0.0",
     "babel-jest": "^24.9.0",
     "babel-plugin-module-resolver": "^3.2.0",
     "dotenv": "^8.2.0",
