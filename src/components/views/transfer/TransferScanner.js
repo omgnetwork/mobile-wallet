@@ -47,14 +47,11 @@ const TransferScanner = ({
   }, [isRootchain, wallet.childchainAssets, wallet.rootchainAssets])
 
   const navigateNext = useCallback(() => {
-    navigation.navigate(
-      'TransferSelectBalance',
-      paramsForTransferScannerToTransferSelectBalance({
-        address,
-        isRootchain,
-        assets: getAssets()
-      })
-    )
+    navigation.navigate('TransferScannerConfirm', {
+      address,
+      isRootchain,
+      assets: getAssets()
+    })
   }, [navigation, address, isRootchain, getAssets])
 
   useEffect(() => {
