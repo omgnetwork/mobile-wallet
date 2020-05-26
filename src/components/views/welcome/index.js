@@ -1,6 +1,7 @@
 import React from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
+import { Styles } from 'common/utils'
 import { View, StyleSheet, ImageBackground } from 'react-native'
 import { OMGText, OMGStatusBar, OMGButton } from 'components/widgets'
 
@@ -16,15 +17,21 @@ const Welcome = ({ navigation, theme }) => {
     })
   }
 
+  const imagePath = Styles.getResponsiveSize(
+    require('./assets/welcome3x.png'),
+    {
+      small: require('./assets/welcome.png'),
+      medium: require('./assets/welcome2x.png')
+    }
+  )
+
   return (
     <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
         backgroundColor={theme.colors.black}
       />
-      <ImageBackground
-        source={require('./assets/img-onboarding-1.png')}
-        style={styles.contentContainer}>
+      <ImageBackground source={imagePath} style={styles.contentContainer}>
         <View>
           <OMGText style={styles.textTitle(theme)} weight='semi-bold'>
             Experience{'\n'}the OMG Network
@@ -65,6 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-end',
+
     paddingHorizontal: 30,
     paddingBottom: 24,
     resizeMode: 'cover'
