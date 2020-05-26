@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import { getParamsForTransferScannerFromTransferForm } from './transferNavigation'
 import { View, StyleSheet, Animated, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
@@ -23,15 +22,17 @@ const CAMERA_TO_WIDTH_RATIO = Styles.getResponsiveSize(0.68, {
 })
 const CONTAINER_WIDTH = Math.round(SCREEN_WIDTH * CAMERA_TO_WIDTH_RATIO)
 
-const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
-  const { rootchain } = getParamsForTransferScannerFromTransferForm(navigation)
+const TransferScanner = ({
+  theme,
+  navigation,
+  wallet,
+  unconfirmedTx,
+  isRootchain
+}) => {
   const [rendering, setRendering] = useState(true)
   const camera = useRef(null)
   const [address, setAddress] = useState(null)
-  const [shouldDisabledSendButton, setShouldDisabledSendButton] = useState(
-    false
-  )
-  const [isRootchain, setIsRootchain] = useState(rootchain)
+  const [shouldDisableSending, setShouldDisableSending] = useState(false)
   const hasRootchainAssets =
     wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
   const hasChildchainAssets =
@@ -57,10 +58,10 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   }, [navigation, address, isRootchain, getAssets])
 
   useEffect(() => {
-    if (address) {
+    if (address && !shouldDisableSending) {
       navigateNext()
     }
-  }, [address, navigateNext])
+  }, [address, shouldDisableSending, navigateNext])
 
   useEffect(() => {
     function didFocus() {
@@ -68,13 +69,9 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
         setRendering(true)
       })
     }
-
     const didFocusSubscription = navigation.addListener('didFocus', didFocus)
-
-    return () => {
-      didFocusSubscription.remove()
-    }
-  }, [navigation, theme.colors.white])
+    return () => didFocusSubscription.remove()
+  }, [navigation])
 
   const getEmptyStatePayload = useCallback(() => {
     if (isRootchain && !hasRootchainAssets) {
@@ -93,13 +90,13 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
 
   useEffect(() => {
     if (unconfirmedTx) {
-      setShouldDisabledSendButton(true)
+      setShouldDisableSending(true)
     } else if (isRootchain && !hasRootchainAssets) {
-      setShouldDisabledSendButton(true)
+      setShouldDisableSending(true)
     } else if (!isRootchain && !hasChildchainAssets) {
-      setShouldDisabledSendButton(true)
+      setShouldDisableSending(true)
     } else {
-      setShouldDisabledSendButton(false)
+      setShouldDisableSending(false)
     }
   }, [hasChildchainAssets, hasRootchainAssets, isRootchain, unconfirmedTx])
 
@@ -187,7 +184,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     alignContent: 'center',
-    backgroundColor: theme.colors.black3
+    backgroundColor: theme.colors.black
   }),
   closeButton: theme => ({
     width: 50,
@@ -211,13 +208,15 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   }),
   buttonContainer: theme => ({
-    borderWidth: 1,
+    position: 'absolute',
+    bottom: 50,
+    left: 0,
+    right: 0,
     backgroundColor: theme.colors.gray4,
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    marginTop: 8,
     paddingTop: Styles.getResponsiveSize(14, { small: 10, medium: 12 }),
     paddingBottom: Styles.getResponsiveSize(14, { small: 10, medium: 12 }),
     paddingLeft: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
@@ -268,6 +267,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => ({
   unconfirmedTx: state.transaction.unconfirmedTxs.length > 0,
+  isRootchain: state.setting.primaryWalletNetwork === 'Ethereum Network',
   wallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
   )
