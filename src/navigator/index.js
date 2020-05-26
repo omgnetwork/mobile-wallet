@@ -73,6 +73,9 @@ export const AppNavigator = createStackNavigator(
         navigator: TransferNavigator
       }
     },
+    TransferScanner: {
+      screen: Views.TransferScanner
+    },
     Receive: {
       screen: Views.Receive
     },

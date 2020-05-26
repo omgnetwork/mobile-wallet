@@ -98,7 +98,7 @@ const Home = ({
   }, [navigation])
 
   const handleOnPressScan = useCallback(() => {
-    navigation.navigate('Transfer')
+    navigation.navigate('TransferScanner')
   }, [navigation])
 
   const handleOnPressSidebarMenu = useCallback(() => {

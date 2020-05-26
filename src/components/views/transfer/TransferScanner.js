@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { getParamsForTransferScannerFromTransferForm } from './transferNavigation'
-import { View, StyleSheet, Animated } from 'react-native'
+import { View, StyleSheet, Animated, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
@@ -9,11 +9,11 @@ import {
   OMGText,
   OMGFontIcon,
   OMGQRScanner,
-  OMGButton,
   OMGEmpty
 } from 'components/widgets'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import * as BlockchainIcons from './assets'
+import CloseIcon from './assets/close-icon.svg'
+import QRIcon from './assets/qr-icon.svg'
+
 import { Dimensions, Styles } from 'common/utils'
 
 const SCREEN_WIDTH = Dimensions.windowWidth
@@ -36,18 +36,10 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
     wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
   const hasChildchainAssets =
     wallet && wallet.childchainAssets && wallet.childchainAssets.length > 0
-  const OMGIcon = BlockchainIcons.IconGo
-  const ETHIcon = BlockchainIcons.IconEth
-  const ethIconWidth = Styles.getResponsiveSize(18, { small: 14, medium: 16 })
-  const ethIconHeight = Styles.getResponsiveSize(29, {
-    small: 22,
-    medium: 26
-  })
-  const omgIconWidth = Styles.getResponsiveSize(87, { small: 65, medium: 70 })
-  const omgIconHeight = Styles.getResponsiveSize(30, {
-    small: 22.5,
-    medium: 24
-  })
+
+  const handleCloseClick = useCallback(() => {
+    navigation.goBack()
+  }, [navigation])
 
   const getAssets = useCallback(() => {
     return isRootchain ? wallet.rootchainAssets : wallet.childchainAssets
@@ -77,25 +69,10 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
       })
     }
 
-    function didBlur() {
-      setRendering(false)
-    }
-
     const didFocusSubscription = navigation.addListener('didFocus', didFocus)
-
-    // Two levels above
-    const transferNavigator = navigation
-      .dangerouslyGetParent()
-      .dangerouslyGetParent()
-
-    const didParentBlurSubscription = transferNavigator.addListener(
-      'didBlur',
-      didBlur
-    )
 
     return () => {
       didFocusSubscription.remove()
-      didParentBlurSubscription.remove()
     }
   }, [navigation, theme.colors.white])
 
@@ -126,6 +103,10 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
     }
   }, [hasChildchainAssets, hasRootchainAssets, isRootchain, unconfirmedTx])
 
+  const handleReceiveClick = useCallback(() => {
+    navigation.navigate('Receive')
+  }, [navigation])
+
   const unconfirmedTxComponent = (
     <Animated.View style={styles.scannerView(theme)}>
       <OMGFontIcon
@@ -146,52 +127,15 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
     </Animated.View>
   )
 
-  const TopMarker = ({ text }) => {
-    return (
-      <>
-        <View style={styles.titleContainer(theme)}>
-          {isRootchain ? (
-            <ETHIcon
-              fill={theme.colors.white}
-              width={ethIconWidth}
-              height={ethIconHeight}
-            />
-          ) : (
-            <OMGIcon
-              fill={theme.colors.white}
-              width={omgIconWidth}
-              height={omgIconHeight}
-              scale={1.1}
-            />
-          )}
-          {isRootchain && (
-            <OMGText style={styles.textEthereum(theme)} weight='bold'>
-              Ethereum
-            </OMGText>
-          )}
-          <OMGText style={styles.title(theme)} weight='mono-light'>
-            {text}
-          </OMGText>
-        </View>
-      </>
-    )
-  }
-
   return (
     <View style={styles.container(theme)}>
+      <TouchableOpacity
+        style={styles.closeButton(theme)}
+        onPress={handleCloseClick}>
+        <CloseIcon />
+      </TouchableOpacity>
       {rendering && (
         <View style={styles.contentContainer(theme)}>
-          <View style={styles.topContainer}>
-            <View style={styles.renderContainer}>
-              <TopMarker
-                text={
-                  isRootchain
-                    ? 'Sending on \nEthereum\nRootchain'
-                    : 'Sending on \nPlasma Childchain'
-                }
-              />
-            </View>
-          </View>
           <View style={styles.cameraContainer}>
             <OMGQRScanner
               showMarker={true}
@@ -211,44 +155,26 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
               }
             />
           </View>
-          <View style={styles.bottomContainer}>
-            <View style={styles.renderContainer}>
-              <OMGButton
-                style={styles.button(theme, isRootchain)}
-                disabled={shouldDisabledSendButton}
-                textStyle={styles.buttonText(theme)}
-                onPress={navigateNext}>
-                Or, Send Manually
-              </OMGButton>
-              <TouchableOpacity
-                style={styles.buttonChangeNetwork(theme)}
-                onPress={() => {
-                  setIsRootchain(!isRootchain)
-                }}>
-                {isRootchain ? (
-                  <OMGIcon
-                    fill={theme.colors.white}
-                    width={omgIconWidth}
-                    height={omgIconHeight}
-                    scale={1.1}
-                  />
-                ) : (
-                  <ETHIcon
-                    fill={theme.colors.white}
-                    width={ethIconWidth}
-                    height={ethIconHeight}
-                  />
-                )}
-                <OMGText
-                  weight='semi-bold'
-                  style={styles.textChangeNetwork(
-                    theme
-                  )}>{`Switch to send on \n${
-                  isRootchain ? 'Plasma Childchain' : 'Ethereum Rootchain'
-                }`}</OMGText>
-              </TouchableOpacity>
-            </View>
+          <View style={styles.description}>
+            <OMGText style={styles.descriptionText(theme)} weight='semi-bold'>
+              Scan QR Code
+            </OMGText>
+            <OMGText style={styles.descriptionSubText(theme)} weight='regular'>
+              Align QR here to send money
+            </OMGText>
           </View>
+          <TouchableOpacity
+            style={styles.buttonContainer(theme)}
+            onPress={handleReceiveClick}>
+            <QRIcon
+              fill={theme.colors.white}
+              width={Styles.getResponsiveSize(24, { small: 16, medium: 20 })}
+              height={Styles.getResponsiveSize(24, { small: 16, medium: 20 })}
+            />
+            <OMGText style={styles.buttonText(theme)} weight='regular'>
+              SHOW MY QR
+            </OMGText>
+          </TouchableOpacity>
         </View>
       )}
     </View>
@@ -263,38 +189,44 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     backgroundColor: theme.colors.black3
   }),
-  titleContainer: theme => ({
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center'
+  closeButton: theme => ({
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    position: 'absolute',
+    left: 30,
+    top: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.gray3
   }),
-  title: theme => ({
+  descriptionText: theme => ({
     color: theme.colors.white,
-    marginLeft: 'auto',
-    fontSize: Styles.getResponsiveSize(14, { small: 10, medium: 12 })
+    fontSize: 16,
+    marginBottom: 10,
+    textAlign: 'center'
+  }),
+  descriptionSubText: theme => ({
+    color: theme.colors.gray2,
+    textAlign: 'center'
+  }),
+  buttonContainer: theme => ({
+    borderWidth: 1,
+    backgroundColor: theme.colors.gray4,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: 8,
+    paddingTop: Styles.getResponsiveSize(14, { small: 10, medium: 12 }),
+    paddingBottom: Styles.getResponsiveSize(14, { small: 10, medium: 12 }),
+    paddingLeft: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
+    paddingRight: Styles.getResponsiveSize(18, { small: 14, medium: 16 })
   }),
   buttonText: theme => ({
     color: theme.colors.white,
-    textTransform: 'none',
+    marginLeft: 10,
     fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 12 })
-  }),
-  button: (theme, isRootchain) => ({
-    backgroundColor: isRootchain ? theme.colors.green2 : theme.colors.primary,
-    borderRadius: 0
-  }),
-  buttonChangeNetwork: theme => ({
-    borderWidth: 1,
-    borderColor: theme.colors.white,
-    flexDirection: 'row',
-    paddingVertical: Styles.getResponsiveSize(16, { small: 8, medium: 12 }),
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 16
-  }),
-  textChangeNetwork: theme => ({
-    color: theme.colors.white,
-    marginLeft: 16,
-    fontSize: Styles.getResponsiveSize(14, { small: 10, medium: 12 })
   }),
   notAuthorizedView: {
     textAlign: 'center'
@@ -306,11 +238,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
-  }),
-  textEthereum: theme => ({
-    color: theme.colors.white,
-    marginLeft: 16,
-    fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 })
   }),
   unableText: theme => ({
     color: theme.colors.gray8,
@@ -330,24 +257,12 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderColor: theme.colors.gray
   }),
-
   contentContainer: theme => ({
     flex: 1,
     justifyContent: 'center'
   }),
   cameraContainer: {
     flex: Styles.getResponsiveSize(0.4, { small: 0.64, medium: 0.5 })
-  },
-  topContainer: {
-    flex: 0.2,
-    justifyContent: 'center'
-  },
-  bottomContainer: {
-    flex: 0.4,
-    justifyContent: 'center'
-  },
-  renderContainer: {
-    width: CONTAINER_WIDTH
   }
 })
 
