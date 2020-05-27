@@ -139,7 +139,6 @@ const ChildchainBalance = ({
         enableDeposit={shouldEnableDepositAction()}
         enableExit={shouldEnableExitAction()}
         footerRef={exitButtonRef}
-        showExit={hasChildchainAssets}
         onPressDeposit={handleDepositClick}
         onPressExit={handleExitClick}
       />

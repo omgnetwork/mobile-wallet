@@ -77,7 +77,6 @@ const OnboardingTourGuide = ({
   ])
 
   useEffect(() => {
-    console.log(tourContent)
     if (tourContent) {
       setTourVisible(true)
     } else {

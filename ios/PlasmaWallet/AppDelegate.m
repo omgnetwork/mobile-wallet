@@ -43,7 +43,7 @@ static void InitializeFlipper(UIApplication *application) {
                                                    moduleName:@"PlasmaWallet"
                                             initialProperties:nil];
 
-  rootView.backgroundColor = [[UIColor alloc] colorWithRed: 0.06 green: 0.06 blue: 0.06 alpha: 1.00];
+  rootView.backgroundColor = [[UIColor alloc] initWithRed:0.06f green:0.06f blue:0.06f alpha:1];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];

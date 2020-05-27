@@ -21,7 +21,6 @@ const TransactionHistory = ({
   wallet,
   provider,
   loading,
-  anchoredComponents,
   isFocused,
   dispatchFetchTxHistory,
   dispatchAddAnchoredComponent,
@@ -41,8 +40,7 @@ const TransactionHistory = ({
     measureTransactionHistoryMenu
   ] = usePositionMeasurement(
     'TransactionHistoryMenu',
-    dispatchAddAnchoredComponent,
-    anchoredComponents
+    dispatchAddAnchoredComponent
   )
 
   useEffect(() => {
@@ -87,17 +85,12 @@ const TransactionHistory = ({
   }, [measureTransactionHistoryMenu, measured])
 
   useEffect(() => {
-    if (wallet && isFocused) {
+    if (isFocused) {
       StatusBar.setBarStyle('light-content')
       StatusBar.setBackgroundColor(theme.colors.black5)
-    }
-  }, [isFocused, theme.colors.black5, wallet])
-
-  useEffect(() => {
-    if (isFocused) {
       dispatchSetCurrentPage(currentPage, 'transaction-history')
     }
-  }, [currentPage, dispatchSetCurrentPage, isFocused])
+  }, [currentPage, dispatchSetCurrentPage, isFocused, theme.colors.black5])
 
   useEffect(() => {
     if (transactions.length) {
@@ -219,13 +212,10 @@ const mapStateToProps = (state, ownProps) => ({
   loading: state.loading,
   transactions: state.transaction.transactions,
   startedExitTxs: state.transaction.startedExitTxs,
-  anchoredComponents: state.onboarding.anchoredComponents,
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
-  currentPage: state.onboarding.currentPage,
-  transactionHistoryMenuPosition:
-    state.onboarding.anchoredComponents.TransactionHistoryMenu
+  currentPage: state.onboarding.currentPage
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
