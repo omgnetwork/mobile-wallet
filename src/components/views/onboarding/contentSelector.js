@@ -1,18 +1,8 @@
 import { OnboardingContent } from 'common/constants'
 
-export const select = (
-  currentPage,
-  viewedPopups,
-  enabledOnboarding,
-  options
-) => {
+export const select = options => {
   const contentKey = Object.keys(OnboardingContent).find(key =>
-    OnboardingContent[key].shouldDisplay(
-      enabledOnboarding,
-      currentPage,
-      viewedPopups,
-      options
-    )
+    OnboardingContent[key].shouldDisplay(options)
   )
 
   return OnboardingContent[contentKey]

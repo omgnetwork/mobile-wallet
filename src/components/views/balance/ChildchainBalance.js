@@ -20,10 +20,10 @@ import { Alert } from 'common/constants'
 const ChildchainBalance = ({
   blockchainLabelRef,
   exitButtonRef,
+  assetsLabelRef,
   dispatchLoadAssets,
   dispatchSetShouldRefreshChildchain,
   dispatchGetRecommendedGas,
-  dispatchMergeUTXOsIfNeeded,
   unconfirmedTxs,
   globalLoading,
   wallet,
@@ -123,6 +123,7 @@ const ChildchainBalance = ({
       />
       <OMGAssetList
         data={wallet.childchainAssets || []}
+        anchoredRef={assetsLabelRef}
         hasRootchainAssets={hasRootchainAssets}
         keyExtractor={item => item.contractAddress}
         type='childchain'

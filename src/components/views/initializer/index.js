@@ -117,7 +117,7 @@ const Initializer = ({
 }
 
 const shouldGetBlockchainWallet = (wallet, blockchainWallet, provider) => {
-  return wallet && provider && !blockchainWallet && wallet.shouldRefresh
+  return wallet && provider && !blockchainWallet
 }
 
 const shouldSetPrimaryWallet = (wallet, wallets) => {

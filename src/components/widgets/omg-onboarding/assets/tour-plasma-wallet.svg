@@ -1,38 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="212px" height="126px" viewBox="0 0 212 126" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Wallet</title>
-    <desc>Created with Sketch.</desc>
-    <g id="Onboard_ONOV-2019" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="New-wallet_2" transform="translate(-81.000000, -586.000000)">
-            <g id="OB2" transform="translate(0.000000, 507.000000)">
-                <g id="Wallet" transform="translate(81.000000, 80.000000)">
-                    <g transform="translate(0.000000, 32.000000)">
-                        <path d="M9,0 L106,0 L106,0 L106,92 L9,92 C4.581722,92 1,88.418278 1,84 L1,8 C1,3.581722 4.581722,8.11624501e-16 9,0 Z" id="solid" fill="#FFFFFF"></path>
-                        <rect id="border" stroke="#FFFFFF" x="1" y="0" width="210" height="92" rx="8"></rect>
-                        <path d="M45.6484706,47.0165737 C50.0541212,47.0165737 53.6256067,50.5880591 53.6256067,54.9937098 C53.6256067,59.3993604 50.0541212,62.9708459 45.6484706,62.9708459 C41.24282,62.9708459 37.6713345,59.3993604 37.6713345,54.9937098 C37.6713345,50.5880591 41.24282,47.0165737 45.6484706,47.0165737 Z M45.6484706,49.4352587 C42.5770611,49.4352587 40.0871917,51.925128 40.0871917,54.9965375 C40.0871917,58.067947 42.5770611,60.5578164 45.6484706,60.5578164 C48.7177282,60.5526274 51.2045605,58.0657951 51.2097495,54.9965375 C51.2097495,51.925128 48.7198801,49.4352587 45.6484706,49.4352587 Z M53.6237215,30.0000015 L53.6237215,32.4130324 L51.3615064,32.4130324 C54.0111591,35.1340478 54.376238,39.3453657 52.2343635,42.4817583 C50.0924891,45.6181509 46.0370754,46.8106693 42.5383846,45.3329184 C39.0396939,43.8551675 37.067051,40.1165634 37.8220461,36.3943911 C38.5770412,32.6722187 41.8505002,29.9977194 45.6484706,30.0000015 L45.6484706,30.0000015 L53.6237215,30.0000015 Z M62.6848357,30.0000029 C67.0904863,30.0000029 70.6619718,33.5714884 70.6619718,37.977139 C70.6619718,42.3827896 67.0904863,45.9542751 62.6848357,45.9542751 C58.2791851,45.9542751 54.7076996,42.3827896 54.7076996,37.977139 C54.7076996,33.5714884 58.2791851,30.0000029 62.6848357,30.0000029 Z M62.6848357,32.4186879 C59.6134262,32.4186879 57.1235569,34.9085573 57.1235569,37.9799668 C57.1235569,41.0513763 59.6134262,43.5412457 62.6848357,43.5412457 C65.7540933,43.5360567 68.2409256,41.0492244 68.2461146,37.9799668 C68.2461146,34.9085573 65.7562452,32.4186879 62.6848357,32.4186879 Z M45.6484706,32.4158602 C42.5770611,32.4158602 40.0871917,34.9057295 40.0871917,37.977139 C40.0871917,41.0485485 42.5770611,43.5384179 45.6484706,43.5384179 C48.7198801,43.5384179 51.2097495,41.0485485 51.2097495,37.977139 L51.2097495,37.977139 C51.2073842,34.9067794 48.7188325,32.4194924 45.6484706,32.4158602 Z" id="Combined-Shape" fill="#1A56F0" fill-rule="nonzero"></path>
-                        <g id="ETH" transform="translate(148.661972, 29.000000)" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3">
-                            <polygon id="Path-4" points="0 17.2426471 10.5 1.24344979e-14 21 17.2426471 10.5 33.9705882"></polygon>
-                            <polyline id="Path-5" points="20.1923077 16.9615385 10.5 22.7746793 0.807692308 16.9615385"></polyline>
-                            <polyline id="Path-6" points="10.5 8.84625706e-13 10.5 21.1592947 10.5 30.7873303"></polyline>
-                        </g>
-                        <line x1="0" y1="13.5" x2="106" y2="13.5" id="Path" stroke="#2176FF"></line>
-                        <line x1="106" y1="13.5" x2="211" y2="13.5" id="Path-Copy" stroke="#FFFFFF"></line>
-                    </g>
-                    <g id="You're-here" transform="translate(19.661972, 0.000000)">
-                        <rect id="Rectangle" stroke="#0F3AAA" fill="#0F3AAA" x="0" y="0" width="72" height="21" rx="10.5"></rect>
-                        <text id="You’re-here" font-family="MessinaSans-Book" font-size="10" font-weight="bold" fill="#FFFFFF">
-                            <tspan x="10.035" y="14">You’re here</tspan>
-                        </text>
-                        <path id="Line-6" d="M37,21 L37.0007074,28.0275426 C39.2503421,28.2765864 41,30.1839659 41,32.5 C41,34.9852814 38.9852814,37 36.5,37 C34.0147186,37 32,34.9852814 32,32.5 C32,30.1836212 33.7501788,28.2760186 36.000297,28.0274316 L36,21 L37,21 Z" fill="#0F3AAA" fill-rule="nonzero"></path>
-                    </g>
-                    <text id="Plasma-pocket" font-family="MessinaSans-Book" font-size="10" font-weight="300" fill="#1A56F0">
-                        <tspan x="18.9719718" y="112">Plasma pocket</tspan>
-                    </text>
-                    <text id="Ethereum-pocket" font-family="MessinaSans-Book" font-size="10" font-weight="300" fill="#FFFFFF">
-                        <tspan x="121.661972" y="112">Ethereum pocket</tspan>
-                    </text>
-                </g>
-            </g>
-        </g>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="289.907" height="141" viewBox="0 0 289.907 141">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Path_3" data-name="Path 3" d="M9.887-24.775a.257.257,0,0,1,.088.088L19.439-8.9a.257.257,0,0,1,0,.267L9.973,6.676a.257.257,0,0,1-.437,0L.072-8.636a.257.257,0,0,1,0-.267L9.535-24.686A.257.257,0,0,1,9.887-24.775ZM3.835-6.01,8.848,2.1V-2.957Zm11.839,0L10.66-2.957V2.1ZM8.848-20,2.3-9.09,8.848-5.1Zm1.812,0V-5.1L17.2-9.09Z" transform="translate(-0.034 24.811)" fill="#fff"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <path id="Path_2" data-name="Path 2" d="M-95,317.064H386.249V-725H-95Z" transform="translate(95 725)" fill="#fff"/>
+    </clipPath>
+  </defs>
+  <g id="Wallet" transform="translate(-78 -602.5)">
+    <g id="OMG" transform="translate(78 637.477)">
+      <g id="Rectangle_52" data-name="Rectangle 52" fill="#fff" stroke="#fff" stroke-width="1">
+        <path d="M4,0H146.193a0,0,0,0,1,0,0V105.365a0,0,0,0,1,0,0H4a4,4,0,0,1-4-4V4A4,4,0,0,1,4,0Z" stroke="none"/>
+        <path d="M4,.5H145.193a.5.5,0,0,1,.5.5V104.365a.5.5,0,0,1-.5.5H4a3.5,3.5,0,0,1-3.5-3.5V4A3.5,3.5,0,0,1,4,.5Z" fill="none"/>
+      </g>
+      <line id="Line_8" data-name="Line 8" x2="144.876" transform="translate(0 15.805)" fill="none" stroke="#4967ff" stroke-width="1"/>
+      <path id="Logo" d="M39.994,18.477a5.46,5.46,0,0,1,1.351-3.723,5.141,5.141,0,0,1,7.3,0A5.455,5.455,0,0,1,50,18.477a5.007,5.007,0,1,1-10,0Zm1.881,0c0,2.063,1.254,3.449,3.121,3.449s3.121-1.387,3.121-3.449S46.863,15.015,45,15.015,41.875,16.405,41.875,18.477Zm11.263,4.975H51.3V13.475h4.1c2.284,0,3.307,1.46,3.307,2.908a2.83,2.83,0,0,1-1.981,2.764l2.706,4.3-2.123,0-2.493-3.977H53.139v3.977h0Zm0-5.673h2.208a1.359,1.359,0,0,0,1.511-1.354c0-.284-.1-1.211-1.368-1.211H53.139Zm13.173,5.672-3.107-4.432L62.166,20.1v3.35H60.313V13.475h1.853v4.347l3.9-4.347h2.48l-3.976,4.118,4.132,5.858Zm-31.028,0L33.09,16.168l-2.2,7.283H29.058l-2.723-9.976H28.3l1.753,7.111,2.151-7.111H34.03L36.183,20.6l1.752-7.125h1.9l-2.722,9.976Zm-14.452,0V15.214H17.6V13.475h8.351v1.739H22.671v8.237Zm-10.8,0V13.475h6.7v1.739H11.881v2.322h4.46v1.739h-4.46v2.437H17v1.739Zm-3.273,0-4.432-7.04v7.04H.5V13.475H2.636L6.912,20.33V13.475H8.736v9.976ZM22.842,5.315c0-2.736,1.554-5.3,4.888-5.3,2.351,0,4.089,1.268,4.347,3.549h-1.9a2.262,2.262,0,0,0-2.508-1.81c-2.025,0-2.979,1.581-2.979,3.505,0,2.052,1.083,3.478,3.021,3.478A2.348,2.348,0,0,0,30.3,6.6H27.43V4.874h4.647v5.344H30.352V9.077a3.208,3.208,0,0,1-2.922,1.4C24.638,10.474,22.842,8.251,22.842,5.315ZM0,5.244A5.45,5.45,0,0,1,1.352,1.522,4.805,4.805,0,0,1,5,0a4.805,4.805,0,0,1,3.65,1.522A5.45,5.45,0,0,1,10,5.244a4.9,4.9,0,0,1-5,5.23A4.9,4.9,0,0,1,0,5.244Zm1.881,0C1.881,7.308,3.135,8.693,5,8.693S8.123,7.308,8.123,5.244,6.869,1.782,5,1.782,1.881,3.173,1.881,5.244ZM19.8,10.218V3.192l-2.565,7.026H15.568L13,3.192v7.026h-1.7V.242h2.352l2.764,7.624L19.187.242h2.352v9.976Z" transform="translate(38.195 35.561)" fill="#4967ff"/>
+      <text id="Plasma_pocket" data-name="Plasma pocket" transform="translate(69.122 91.706)" fill="#778dfc" font-size="15" font-family="MessinaSansMono-Regular, Messina Sans Mono" letter-spacing="-0.1em"><tspan x="-52.425" y="0">Plasma pocket</tspan></text>
     </g>
+    <g id="ETH" transform="translate(78 636.743)">
+      <g id="Rectangle_51" data-name="Rectangle 51" transform="translate(0 0.659)" fill="none" stroke="#fff" stroke-width="1">
+        <rect width="289.907" height="105.439" rx="4" stroke="none"/>
+        <rect x="0.5" y="0.5" width="288.907" height="104.439" rx="3.5" fill="none"/>
+      </g>
+      <line id="Line_7" data-name="Line 7" y2="106.757" transform="translate(145.612)" fill="none" stroke="#4967ff" stroke-width="1"/>
+      <line id="Line_9" data-name="Line 9" x2="144.876" transform="translate(145.03 16.463)" fill="none" stroke="#fff" stroke-width="1"/>
+      <g id="ETH_icon" data-name="ETH icon" transform="translate(208.214 32.3)">
+        <g id="Group_7" data-name="Group 7" transform="translate(0)" clip-path="url(#clip-path)">
+          <g id="Group_6" data-name="Group 6" transform="translate(-121.96 -898.573)" clip-path="url(#clip-path-2)">
+            <path id="Path_1" data-name="Path 1" d="M-4.966-29.811H27.309V14.632H-4.966Z" transform="translate(120.509 921.968)" fill="#fff"/>
+          </g>
+        </g>
+      </g>
+      <text id="Ethereum_pocket" data-name="Ethereum pocket" transform="translate(214.25 92.44)" fill="#acbafe" font-size="15" font-family="MessinaSansMono-Regular, Messina Sans Mono" letter-spacing="-0.1em"><tspan x="-60.375" y="0">Ethereum pocket</tspan></text>
+    </g>
+    <g id="You_re_here" data-name="You&apos;re here" transform="translate(100 602.5)">
+      <rect id="Rectangle_53" data-name="Rectangle 53" width="100" height="24" rx="12" fill="#314bce"/>
+      <text id="You_are_here" data-name="You are here" transform="translate(52 16)" fill="#fff" font-size="13" font-family="MessinaSans-Regular, Messina Sans"><tspan x="-37.518" y="0">You are here</tspan></text>
+      <line id="Line_10" data-name="Line 10" y2="9.219" transform="translate(52.414 23.048)" fill="none" stroke="#314bce" stroke-width="1"/>
+      <ellipse id="Ellipse_5" data-name="Ellipse 5" cx="3.5" cy="3" rx="3.5" ry="3" transform="translate(49 32)" fill="#314bce"/>
+    </g>
+  </g>
 </svg>

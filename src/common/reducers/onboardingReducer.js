@@ -19,8 +19,15 @@ export const onboardingReducer = (state = {}, action) => {
         enabled: action.data.enabled,
         currentPage: action.data.enabled ? 'childchain-balance' : null,
         currentPopup: null,
+        nextPopup: 'CHILDCHAIN_POPUP',
         viewedPopups: []
       }
+    case 'ONBOARDING/SET_NEXT_POPUP/OK': {
+      return {
+        ...state,
+        nextPopup: action.data.nextPopup
+      }
+    }
     case 'ONBOARDING/SET_CURRENT_PAGE/OK':
       return {
         ...state,

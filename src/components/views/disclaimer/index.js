@@ -53,7 +53,7 @@ const Disclaimer = ({ navigation, theme }) => {
             textStyle={styles.confirmButtonText}
             textweight='regular'
             onPress={handleAcceptPressed}>
-            I UNDERSTAND AND ACCEPT
+            ACCEPT
           </OMGButton>
           <OMGButton
             style={styles.declineButton}
@@ -73,6 +73,7 @@ const createStyles = theme =>
     container: {
       flex: 1,
       backgroundColor: theme.colors.black5,
+      paddingBottom: 16,
       flexDirection: 'column',
       paddingHorizontal: Styles.getResponsiveSize(30, { small: 16, medium: 24 })
     },

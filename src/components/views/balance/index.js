@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState, useRef } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Linking, View, StatusBar } from 'react-native'
+import { StyleSheet, View, StatusBar } from 'react-native'
 import { SafeAreaView, withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
@@ -32,19 +32,15 @@ const viewPagerSnapOffsets = [
   Math.round(pageWidth * 2 - 32)
 ]
 
-const MAXIMUM_UTXOS_PER_CURRENCY = 4
-
 const Balance = ({
   theme,
   primaryWallet,
-  blockchainWallet,
   navigation,
   wallets,
   unconfirmedTxs,
   isFocused,
   loading,
   feedbackCompleteTx,
-  dispatchMergeUTXOs,
   dispatchInvalidateFeedbackCompleteTx,
   dispatchSetCurrentPage,
   dispatchAddAnchoredComponent,
@@ -77,6 +73,16 @@ const Balance = ({
     dispatchAddAnchoredComponent
   )
 
+  const [assetsLabelRef, measureAssetsLabelRef] = usePositionMeasurement(
+    'AssetsLabel',
+    dispatchAddAnchoredComponent
+  )
+
+  const [qrCodeRef, measureQrCodeRef] = usePositionMeasurement(
+    'QRCode',
+    dispatchAddAnchoredComponent
+  )
+
   const [depositButtonRef, measureDepositButton] = usePositionMeasurement(
     'DepositButton',
     dispatchAddAnchoredComponent
@@ -105,27 +111,35 @@ const Balance = ({
       loading.action === 'ROOTCHAIN_FETCH_ASSETS' &&
       loading.show
     ) {
-      measurePlasmaBlockchainLabel()
+      measurePlasmaBlockchainLabel({ arrowDirection: 'left' })
+      measureAssetsLabelRef({ arrowDirection: 'left', arrowOffset: -12 })
       measureEthereumBlockchainLabel({
+        arrowDirection: 'left',
         offset: -viewPagerSnapOffsets[1]
+      })
+      measureQrCodeRef({
+        extraWidth: 128,
+        offset: -viewPagerSnapOffsets[2]
       })
       measureDepositButton({
         offset: -viewPagerSnapOffsets[1] + 8,
-        widthOffset: -16
+        extraWidth: -16
       })
       measureExitButton({
         arrowDirection: 'right',
-        widthOffset: -16,
+        extraWidth: -16,
         offset: 8
       })
       setMeasured(true)
     }
   }, [
     loading,
+    measureAssetsLabelRef,
     measureDepositButton,
     measureEthereumBlockchainLabel,
     measureExitButton,
     measurePlasmaBlockchainLabel,
+    measureQrCodeRef,
     measured
   ])
 
@@ -195,6 +209,7 @@ const Balance = ({
             <View style={styles.firstPage}>
               <ChildchainBalance
                 primaryWallet={primaryWallet}
+                assetsLabelRef={assetsLabelRef}
                 blockchainLabelRef={plasmaBlockchainLabelRef}
                 exitButtonRef={exitButtonRef}
               />
@@ -207,7 +222,7 @@ const Balance = ({
               />
             </View>
             <View style={styles.thirdPage}>
-              <ShowQR primaryWallet={primaryWallet} />
+              <ShowQR primaryWallet={primaryWallet} anchoredRef={qrCodeRef} />
             </View>
           </OMGViewPager>
         )}

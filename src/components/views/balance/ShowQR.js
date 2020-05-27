@@ -6,7 +6,13 @@ import { connect } from 'react-redux'
 import { OMGQRCode, OMGText, OMGIdenticon } from 'components/widgets'
 import { Styles } from 'common/utils'
 
-const ShowQR = ({ theme, primaryWallet, primaryWalletAddress, navigation }) => {
+const ShowQR = ({
+  theme,
+  primaryWallet,
+  primaryWalletAddress,
+  navigation,
+  anchoredRef
+}) => {
   const handleShareClick = useCallback(() => {
     Share.share({
       title: 'Share Wallet Address',
@@ -31,13 +37,15 @@ const ShowQR = ({ theme, primaryWallet, primaryWalletAddress, navigation }) => {
           displayText={primaryWalletAddress}
         />
       </View>
-      <TouchableOpacity
-        style={styles.buttonContainer(theme)}
-        onPress={handleShareClick}>
-        <OMGText style={styles.buttonText(theme)} weigth='semi-bold'>
-          Share to Receive
-        </OMGText>
-      </TouchableOpacity>
+      <View ref={anchoredRef}>
+        <TouchableOpacity
+          style={styles.buttonContainer(theme)}
+          onPress={handleShareClick}>
+          <OMGText style={styles.buttonText(theme)} weigth='semi-bold'>
+            Share to Receive
+          </OMGText>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }

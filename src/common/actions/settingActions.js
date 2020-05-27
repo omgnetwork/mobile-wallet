@@ -14,9 +14,15 @@ export const setProvider = providerName => {
 
 export const setBlockchainWallet = (wallet, provider) => {
   const asyncAction = async () => {
-    const blockchainWallet = await walletService.get(wallet.address, provider)
-    return {
-      blockchainWallet
+    if (wallet) {
+      const blockchainWallet = await walletService.get(wallet.address, provider)
+      return {
+        blockchainWallet
+      }
+    } else {
+      return {
+        blockchainWallet: null
+      }
     }
   }
 
