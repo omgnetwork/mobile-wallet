@@ -30,7 +30,7 @@ const OMGTransactionList = ({
         imageName: 'EmptyTxDeposit',
         text: 'Empty Deposit History.\nTry deposit.'
       }
-    } else if ([TransactionTypes.TYPE_EXIT]) {
+    } else if (type === TransactionTypes.TYPE_EXIT) {
       return {
         imageName: 'EmptyTxExit',
         text: 'Empty Withdrawal History.'
