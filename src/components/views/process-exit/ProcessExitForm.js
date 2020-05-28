@@ -87,7 +87,7 @@ const ProcessExitForm = ({
           style={styles.marginSmall}
         />
         <OMGText style={[styles.title(theme), styles.marginMedium]}>
-          MAX EXIT TO PROCESS
+          EXITS TO PROCESS
         </OMGText>
         <OMGProcessExitText exitQueue={maxExits} style={styles.marginSmall} />
 

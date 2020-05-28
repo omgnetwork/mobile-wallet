@@ -80,9 +80,7 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
             </View>
           </View>
           <View style={[styles.sentDetailRow, styles.marginSmall]}>
-            <OMGText style={styles.sentTitle(theme)}>
-              Max Process To Exit
-            </OMGText>
+            <OMGText style={styles.sentTitle(theme)}>Exits To Process</OMGText>
             <OMGText style={styles.sentDetailFirstline(theme)}>
               {maxExitsToProcess}
             </OMGText>
