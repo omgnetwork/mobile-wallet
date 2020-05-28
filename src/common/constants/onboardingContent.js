@@ -85,9 +85,7 @@ export const ROOTCHAIN_POPUP_EMPTY = {
 export const TRY_DEPOSIT_OMG_POPUP = {
   title: 'Your plasma funds',
   key: 'TRY_DEPOSIT_OMG_POPUP',
-  paragraphs: [
-    'To transact on OMG Network, transfer funds from the Ethereum to OMG network.'
-  ],
+  paragraphs: ['To transact, deposit funds from Ethereum to the OMG network.'],
   buttonText: 'Next',
   isPopup: true,
   imageBottomName: 'TourMoveFund',
@@ -171,7 +169,7 @@ export const TRANSFER_POPUP = {
   title: 'Transfer funds on the OMG Network!',
   key: 'TRANSFER_POPUP',
   paragraphs: [
-    'Transactions made with OMG Network cost less than transactions on Ethereum.'
+    'Transactions made with the OMG Network cost less than transactions on Ethereum.'
   ],
   buttonText: 'Got It',
   isPopup: true,

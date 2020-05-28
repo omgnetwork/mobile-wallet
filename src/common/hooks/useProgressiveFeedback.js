@@ -25,19 +25,17 @@ const useProgressiveFeedback = (
   const getTransactionFeedbackTitle = useCallback((pending, actionType) => {
     switch (actionType) {
       case TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT:
-        return pending ? 'Pending Deposit...' : 'Deposited Successful!'
+        return pending ? 'Pending Deposit...' : 'Deposit Successful!'
       case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
         return pending
           ? 'Submitting Exit Request...'
           : 'Submitted Exit request!'
       case TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT:
-        return pending
-          ? 'Pending Process Exit...'
-          : 'Processed Exit Successful!'
+        return pending ? 'Pending Process Exit...' : 'Exit Process Successful!'
       case TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS:
         return pending ? 'Uniting Tokens...' : 'All set!'
       default:
-        return pending ? 'Pending Transaction...' : 'Transferred Successful!'
+        return pending ? 'Pending Transaction...' : 'Transfer Successful!'
     }
   }, [])
 

@@ -15,7 +15,7 @@ const ShowQR = ({
 }) => {
   const handleShareClick = useCallback(() => {
     Share.share({
-      title: 'Share your wallet address',
+      title: 'Share Your Wallet Address',
       message: primaryWalletAddress
     })
   }, [primaryWalletAddress])
