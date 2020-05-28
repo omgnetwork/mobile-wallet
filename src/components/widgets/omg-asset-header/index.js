@@ -24,7 +24,7 @@ const OMGAssetHeader = ({ theme, rootchain, network, anchoredRef, style }) => {
           }
         />
         <OMGText style={styles.textChain(theme)}>
-          {rootchain ? 'Ethereum' : 'OMG Network'}
+          {rootchain ? 'Ethereum' : ''}
         </OMGText>
         <View style={styles.greenDot(theme)} />
         <OMGText style={styles.textNetwork(theme)}>{network}</OMGText>
