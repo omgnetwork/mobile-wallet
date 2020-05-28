@@ -194,8 +194,8 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
               <TopMarker
                 text={
                   isRootchain
-                    ? 'Sending on \nEthereum\nRootchain'
-                    : 'Sending on \nPlasma Childchain'
+                    ? 'Sending on \nEthereum'
+                    : 'Sending on \nOMG Network'
                 }
               />
             </View>
@@ -253,7 +253,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
                   style={styles.textChangeNetwork(
                     theme
                   )}>{`Switch to send with \n${
-                  isRootchain ? 'Plasma Childchain' : 'Ethereum Rootchain'
+                  isRootchain ? 'OMG Network' : 'Ethereum'
                 }`}</OMGText>
               </TouchableOpacity>
             </View>

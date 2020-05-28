@@ -29,7 +29,7 @@ const OMGAssetList = ({
     } else if (type === 'childchain' && hasRootchainAssets) {
       return {
         imageName: 'EmptyOnlyChildchainWallet',
-        text: 'Wallet is empty.\nStart using Plasma by deposit.'
+        text: 'Wallet is empty.\nStart using OMG Network by deposit.'
       }
     } else {
       return {

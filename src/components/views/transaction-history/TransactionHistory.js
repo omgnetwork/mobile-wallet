@@ -159,7 +159,7 @@ const TransactionHistory = ({
         iconName='download'
         title='Deposit'
         onPress={handleClickDeposit}
-        description='To Plasma Chain'
+        description='To OMG Network'
       />
       <OMGMenuIcon
         style={styles.menuItem}
@@ -167,7 +167,7 @@ const TransactionHistory = ({
         title='Exit'
         onPress={handleClickExit}
         menuRef={transactionHistoryRef}
-        description='From Plasma Chain'
+        description='From OMG Network'
       />
       <OMGText style={styles.subheader(theme)}>Recent</OMGText>
       <OMGTransactionList

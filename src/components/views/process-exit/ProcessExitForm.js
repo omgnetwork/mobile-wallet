@@ -70,7 +70,7 @@ const ProcessExitForm = ({
   return (
     <View style={styles.container(theme)}>
       <OMGBlockchainLabel
-        actionText={'Sending with'}
+        actionText={'Sending on'}
         transferType={'Ethereum Rootchain'}
       />
       <OMGKeyboardShift
