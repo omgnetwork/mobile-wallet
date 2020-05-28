@@ -88,7 +88,7 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
             </OMGText>
           </View>
           <View style={[styles.sentDetailRow, styles.marginSmall]}>
-            <OMGText style={styles.sentTitle(theme)}>Withdraw Fee</OMGText>
+            <OMGText style={styles.sentTitle(theme)}>Withdrawal Fee</OMGText>
             <View style={styles.sentDetail}>
               <OMGText style={styles.sentDetailFirstline(theme)}>
                 {gasFee} ETH

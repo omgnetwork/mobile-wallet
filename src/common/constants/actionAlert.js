@@ -11,8 +11,7 @@ export const transferChildchain = {
 
 export const deposit = {
   actions: ['CHILDCHAIN_DEPOSIT'],
-  msgSuccess:
-    'The transaction is depositing. Track the progress at the Etherscan.'
+  msgSuccess: 'The deposit is pending. Track the progress at the Etherscan.'
 }
 
 export const exit = {

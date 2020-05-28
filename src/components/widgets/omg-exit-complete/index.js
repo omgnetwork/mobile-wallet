@@ -13,7 +13,7 @@ const OMGExitComplete = ({ theme, style, exitableAt }) => {
         <OMGText weight='mono-semi-bold'>
           {BlockchainFormatter.formatProcessExitAt(exitableAt)}
         </OMGText>
-        You can track the withdraw status in the
+        You can track the withdrawal status in the
         <OMGText weight='mono-semi-bold'> History </OMGText>
         menu.
       </OMGText>

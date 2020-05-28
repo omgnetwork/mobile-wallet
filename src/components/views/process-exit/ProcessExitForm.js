@@ -101,7 +101,7 @@ const ProcessExitForm = ({
             loading={btnLoading}
             disabled={disabled}
             onPress={handleOnSubmit}>
-            Process Withdraw
+            Process Withdrawal
           </OMGButton>
         </View>
       </OMGKeyboardShift>

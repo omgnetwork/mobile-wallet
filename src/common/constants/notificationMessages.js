@@ -8,7 +8,7 @@ export const NOTIFY_TRANSACTION_SENT_ETH_NETWORK = (
   tokenValue,
   tokenSymbol
 ) => ({
-  title: `${walletName} sent on the Ethereum network`,
+  title: `${walletName} sent on the Ethereum`,
   message: `${tokenValue} ${tokenSymbol}`
 })
 
@@ -17,7 +17,7 @@ export const NOTIFY_TRANSACTION_SENT_OMG_NETWORK = (
   tokenValue,
   tokenSymbol
 ) => ({
-  title: `${walletName} sent on the OmiseGO network`,
+  title: `${walletName} sent on the OmiseGO Network`,
   message: `${tokenValue} ${tokenSymbol}`
 })
 
@@ -52,6 +52,6 @@ export const NOTIFY_TRANSACTION_READY_TO_PROCESS_EXITED = (
   tokenValue,
   tokenSymbol
 ) => ({
-  title: `Ready to withdraw from the OmiseGO network`,
+  title: `Ready to withdraw from the OmiseGO Network`,
   message: `${tokenValue} ${tokenSymbol}`
 })
