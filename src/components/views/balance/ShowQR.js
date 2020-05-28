@@ -15,7 +15,7 @@ const ShowQR = ({
 }) => {
   const handleShareClick = useCallback(() => {
     Share.share({
-      title: 'Share Wallet Address',
+      title: 'Share your wallet address',
       message: primaryWalletAddress
     })
   }, [primaryWalletAddress])
@@ -42,7 +42,7 @@ const ShowQR = ({
           style={styles.buttonContainer(theme)}
           onPress={handleShareClick}>
           <OMGText style={styles.buttonText(theme)} weigth='semi-bold'>
-            Share to Receive
+            Share QR Code
           </OMGText>
         </TouchableOpacity>
       </View>
