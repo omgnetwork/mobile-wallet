@@ -9,7 +9,7 @@ const OMGExitComplete = ({ theme, style, exitableAt }) => {
     <View style={{ ...styles.container(theme), ...style }}>
       <OMGFontIcon name='time' size={30} style={styles.icon(theme)} />
       <OMGText style={styles.text(theme)}>
-        Exit will be approximately completed on
+        Your Exit will be completed by
         <OMGText weight='mono-semi-bold'>
           {BlockchainFormatter.formatProcessExitAt(exitableAt)}
         </OMGText>

@@ -73,7 +73,7 @@ const OMGExitFee = ({
         />
         <Item
           title='Exit Bond'
-          subtitle='You’ll get this back after successfully exited'
+          subtitle='You’ll receive your funds after successfully exiting the OMG Network'
           loading={!exitBondValue}
           theme={theme}
           ethPrice={ethPrice}
