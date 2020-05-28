@@ -28,8 +28,8 @@ const useProgressiveFeedback = (
         return pending ? 'Pending Deposit...' : 'Deposit Successful!'
       case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
         return pending
-          ? 'Submitting Withdrawal Request...'
-          : 'Submitted Withdrawal Request!'
+          ? 'Submitting a Withdrawal Request...'
+          : 'Submitted a Withdrawal Request!'
       case TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT:
         return pending ? 'Pending Withdrawal...' : 'Withdrawal Successful!'
       case TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS:
