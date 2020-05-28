@@ -189,10 +189,10 @@ export const TRANSFER_POPUP = {
 }
 
 export const EXIT_POPUP = {
-  title: 'Withdraw funds whenever you want.',
+  title: 'Withdraw funds from the OMG Network.',
   key: 'EXIT_POPUP',
   paragraphs: [
-    'Move your funds from the OMG Network to Ethereum. All withdraw fees are paid in ETH.'
+    'Move your funds from the OMG Network to Ethereum. All withdrawal fees are paid in ETH.'
   ],
   buttonText: 'GOT IT',
   isPopup: true,
@@ -214,7 +214,7 @@ export const TRANSACTION_HISTORY_MENU_POPUP = {
   title: 'Keep track of your activities',
   key: 'TRANSACTION_HISTORY_MENU_POPUP',
   paragraphs: [
-    `"History" lets you view past transactions on all your wallets. You can also view every deposit and withdraw you've made on the child chain.`
+    `"History" shows the transaction history of your wallets. You can also view every deposit and withdrawal you've made on the OMG Network.`
   ],
   buttonText: 'GOT IT',
   isPopup: true,

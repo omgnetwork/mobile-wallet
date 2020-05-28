@@ -35,7 +35,7 @@ export const NOTIFY_TRANSACTION_START_STANDARD_EXITED = (
   tokenValue,
   tokenSymbol
 ) => ({
-  title: `${walletName} has started a withdrawl`,
+  title: `${walletName} has started a withdrawal`,
   message: `${tokenValue} ${tokenSymbol}`
 })
 

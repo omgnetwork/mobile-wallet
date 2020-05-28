@@ -24,7 +24,8 @@ const OMGAssetList = ({
     if (type === 'rootchain') {
       return {
         imageName: 'EmptyRootchainWallet',
-        text: 'Your wallet is empty.\nShare wallet to receive fund.'
+        text:
+          'Your wallet is empty.\nDeposit funds to start using the OMG Network.'
       }
     } else if (type === 'childchain' && hasRootchainAssets) {
       return {
@@ -35,7 +36,8 @@ const OMGAssetList = ({
     } else {
       return {
         imageName: 'EmptyChildchainWallet',
-        text: 'Your wallet is empty.\nShare wallet to receive fund.'
+        text:
+          'Your wallet is empty.\nDeposit funds to start using the OMG Network.'
       }
     }
   }, [hasRootchainAssets, type])
