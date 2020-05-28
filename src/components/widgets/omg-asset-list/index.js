@@ -24,17 +24,20 @@ const OMGAssetList = ({
     if (type === 'rootchain') {
       return {
         imageName: 'EmptyRootchainWallet',
-        text: 'Wallet is empty.\nShare wallet to receive fund.'
+        text:
+          'Your wallet is empty.\nDeposit funds to start using the OMG Network.'
       }
     } else if (type === 'childchain' && hasRootchainAssets) {
       return {
         imageName: 'EmptyOnlyChildchainWallet',
-        text: 'Wallet is empty.\nStart using Plasma by deposit.'
+        text:
+          'Your wallet is empty.\nDeposit funds to start using the OMG Network.'
       }
     } else {
       return {
         imageName: 'EmptyChildchainWallet',
-        text: 'Wallet is empty.\nShare wallet to receive fund.'
+        text:
+          'Your wallet is empty.\nDeposit funds to start using the OMG Network.'
       }
     }
   }, [hasRootchainAssets, type])
@@ -50,13 +53,10 @@ const OMGAssetList = ({
             <OMGText style={styles.updatedAt(theme)}>
               Updated at: {updatedAt}
             </OMGText>
-            <TouchableOpacity onPress={handleReload || false}>
-              <FontAwesome5
-                name='redo'
-                size={12}
-                style={styles.redo}
-                color={theme.colors.gray8}
-              />
+            <TouchableOpacity
+              onPress={handleReload || false}
+              style={styles.btnRefresh}>
+              <FontAwesome5 name='redo' size={12} color={theme.colors.gray8} />
             </TouchableOpacity>
           </>
         )}
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: theme.colors.black3,
+    marginTop: 8,
     paddingVertical: 8
   }),
   assetList: {},
@@ -125,8 +126,12 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     fontSize: Styles.getResponsiveSize(14, { small: 10, medium: 12 })
   }),
-  redo: {
-    marginLeft: 8
+  btnRefresh: {
+    marginLeft: 8,
+    padding: 10,
+    backgroundColor: 'rgba(171,178,194, 0.2)',
+    borderRadius: 16,
+    alignItems: 'center'
   }
 })
 

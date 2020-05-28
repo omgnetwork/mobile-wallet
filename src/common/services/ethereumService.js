@@ -84,7 +84,7 @@ export const getRecommendedGas = () => {
   return Ethereum.getGasFromGasStation().then(
     ({ fast, average, safeLow, fastWait, avgWait, safeLowWait }) => [
       {
-        speed: 'Fast',
+        speed: 'Express',
         estimateTime: `${fastWait * 60} seconds`,
         amount: Parser.parseUnits(fast.toString(), 8).toString(10),
         displayAmount: fast / 10,
@@ -92,7 +92,7 @@ export const getRecommendedGas = () => {
         price: '1'
       },
       {
-        speed: 'Average',
+        speed: 'Standard',
         estimateTime: `${avgWait * 60} seconds`,
         amount: Parser.parseUnits(average.toString(), 8).toString(10),
         displayAmount: average / 10,
@@ -100,7 +100,7 @@ export const getRecommendedGas = () => {
         price: '1'
       },
       {
-        speed: 'Safe low',
+        speed: 'Low-Priority',
         estimateTime: `${safeLowWait * 60} seconds`,
         amount: Parser.parseUnits(safeLow.toString(), 8).toString(10),
         displayAmount: safeLow / 10,

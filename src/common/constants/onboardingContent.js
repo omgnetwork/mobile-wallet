@@ -85,9 +85,7 @@ export const ROOTCHAIN_POPUP_EMPTY = {
 export const TRY_DEPOSIT_OMG_POPUP = {
   title: 'Your plasma funds',
   key: 'TRY_DEPOSIT_OMG_POPUP',
-  paragraphs: [
-    'To transact on plasma, transfer funds from your Ethereum wallet to your Plasma Wallet.'
-  ],
+  paragraphs: ['To transact, deposit funds from Ethereum to the OMG network.'],
   buttonText: 'Next',
   isPopup: true,
   imageBottomName: 'TourMoveFund',
@@ -171,7 +169,7 @@ export const TRANSFER_POPUP = {
   title: 'Transfer funds on the OMG Network!',
   key: 'TRANSFER_POPUP',
   paragraphs: [
-    'Transactions made with plasma cost less than transactions on Ethereum.'
+    'Transactions made with the OMG Network cost less than transactions on Ethereum.'
   ],
   buttonText: 'Got It',
   isPopup: true,
@@ -191,10 +189,10 @@ export const TRANSFER_POPUP = {
 }
 
 export const EXIT_POPUP = {
-  title: 'Exit funds whenever you want.',
+  title: 'Withdraw funds from the OMG Network.',
   key: 'EXIT_POPUP',
   paragraphs: [
-    'Move your funds from the Plasma Wallet to your Ethereum Wallet. All exit fees are paid in ETH.'
+    'Move your funds from the OMG Network to Ethereum. All withdrawal fees are paid in ETH.'
   ],
   buttonText: 'GOT IT',
   isPopup: true,
@@ -216,7 +214,7 @@ export const TRANSACTION_HISTORY_MENU_POPUP = {
   title: 'Keep track of your activities',
   key: 'TRANSACTION_HISTORY_MENU_POPUP',
   paragraphs: [
-    `"History" lets you view past transactions on all your wallets. You can also view every deposit and exit you've made on the child chain.`
+    `"History" shows the transaction history of your wallets. You can also view every deposit and withdrawal you've made on the OMG Network.`
   ],
   buttonText: 'GOT IT',
   isPopup: true,

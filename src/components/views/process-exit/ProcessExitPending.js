@@ -57,7 +57,7 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
           From
         </OMGText>
         <OMGWalletAddress
-          name='Plasma Contract'
+          name='OMG Network'
           address={to}
           style={styles.marginSmall}
         />
@@ -68,7 +68,7 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
           style={styles.marginSmall}
         />
         <OMGText style={[styles.title(theme), styles.marginMedium]}>
-          TO EXIT
+          TO WITHDRAW
         </OMGText>
         <View style={[styles.blackContainer(theme), styles.marginMedium]}>
           <View style={styles.sentDetailRow}>
@@ -81,14 +81,14 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
           </View>
           <View style={[styles.sentDetailRow, styles.marginSmall]}>
             <OMGText style={styles.sentTitle(theme)}>
-              Max Process To Exit
+              Withdrawals To Process
             </OMGText>
             <OMGText style={styles.sentDetailFirstline(theme)}>
               {maxExitsToProcess}
             </OMGText>
           </View>
           <View style={[styles.sentDetailRow, styles.marginSmall]}>
-            <OMGText style={styles.sentTitle(theme)}>Exit Fee</OMGText>
+            <OMGText style={styles.sentTitle(theme)}>Withdrawal Fee</OMGText>
             <View style={styles.sentDetail}>
               <OMGText style={styles.sentDetailFirstline(theme)}>
                 {gasFee} ETH

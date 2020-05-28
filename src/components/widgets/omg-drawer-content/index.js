@@ -146,7 +146,7 @@ const OMGDrawerContent = ({
             </View>
             <View style={styles.envInfoCard(theme)}>
               <OMGText style={styles.environmentItemText(theme)}>
-                Plasma Contract
+                OMG Network Contract
               </OMGText>
               <OMGText style={styles.environmentItemTextLighter(theme)}>
                 {Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS}
