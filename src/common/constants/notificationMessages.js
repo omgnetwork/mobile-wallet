@@ -35,7 +35,7 @@ export const NOTIFY_TRANSACTION_START_STANDARD_EXITED = (
   tokenValue,
   tokenSymbol
 ) => ({
-  title: `${walletName} has started a standard exit`,
+  title: `${walletName} has started a withdrawl`,
   message: `${tokenValue} ${tokenSymbol}`
 })
 
@@ -44,7 +44,7 @@ export const NOTIFY_TRANSACTION_PROCESSED_EXIT = (
   tokenValue,
   tokenSymbol
 ) => ({
-  title: `${walletName} has processed an exit`,
+  title: `${walletName} has processed a withdrawal`,
   message: `${tokenValue} ${tokenSymbol}`
 })
 
@@ -52,6 +52,6 @@ export const NOTIFY_TRANSACTION_READY_TO_PROCESS_EXITED = (
   tokenValue,
   tokenSymbol
 ) => ({
-  title: `Ready to exit from the OmiseGO network`,
+  title: `Ready to withdraw from the OmiseGO network`,
   message: `${tokenValue} ${tokenSymbol}`
 })

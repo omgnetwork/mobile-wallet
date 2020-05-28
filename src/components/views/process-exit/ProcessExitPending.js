@@ -80,13 +80,15 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
             </View>
           </View>
           <View style={[styles.sentDetailRow, styles.marginSmall]}>
-            <OMGText style={styles.sentTitle(theme)}>Exits To Process</OMGText>
+            <OMGText style={styles.sentTitle(theme)}>
+              Withdraws To Process
+            </OMGText>
             <OMGText style={styles.sentDetailFirstline(theme)}>
               {maxExitsToProcess}
             </OMGText>
           </View>
           <View style={[styles.sentDetailRow, styles.marginSmall]}>
-            <OMGText style={styles.sentTitle(theme)}>Exit Fee</OMGText>
+            <OMGText style={styles.sentTitle(theme)}>Withdraw Fee</OMGText>
             <View style={styles.sentDetail}>
               <OMGText style={styles.sentDetailFirstline(theme)}>
                 {gasFee} ETH

@@ -90,7 +90,7 @@ const ExitForm = ({
         <OMGText
           style={[styles.title(theme), styles.marginMedium]}
           weight='regular'>
-          Review Exit Detail
+          Review Withdraw Detail
         </OMGText>
         <OMGEditItem
           title='Amount'

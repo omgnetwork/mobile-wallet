@@ -23,7 +23,7 @@ const OMGUtxoDetail = ({ theme, utxo, style }) => {
         </OMGText>
       </View>
       <OMGText style={styles.textSubmitOn(theme)}>
-        {`Submited Exit on ${Datetime.format(
+        {`Submited Withdraw on ${Datetime.format(
           createdAt,
           DateFormat.STARTED_EXIT_DATE
         )}`}

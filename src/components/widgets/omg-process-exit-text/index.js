@@ -18,7 +18,7 @@ const OMGProcessExitText = ({ theme, style, exitQueue, error }) => {
       <View style={styles.bottomContainer(theme)}>
         {exitQueue ? (
           <OMGText style={styles.textWhite(theme)}>
-            Current Exit Queue : {exitQueue}
+            Current Withdraw Queue : {exitQueue}
           </OMGText>
         ) : (
           <OMGEmpty loading={true} style={styles.loading} />

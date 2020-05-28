@@ -9,11 +9,11 @@ const OMGExitComplete = ({ theme, style, exitableAt }) => {
     <View style={{ ...styles.container(theme), ...style }}>
       <OMGFontIcon name='time' size={30} style={styles.icon(theme)} />
       <OMGText style={styles.text(theme)}>
-        Your Exit will be completed by
+        Your Withdraw will be completed by
         <OMGText weight='mono-semi-bold'>
           {BlockchainFormatter.formatProcessExitAt(exitableAt)}
         </OMGText>
-        You can track the exit status in the
+        You can track the withdraw status in the
         <OMGText weight='mono-semi-bold'> History </OMGText>
         menu.
       </OMGText>

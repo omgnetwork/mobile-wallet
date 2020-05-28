@@ -9,7 +9,7 @@ export const getBlockchainTextActionLabel = tx => {
     case TransactionTypes.TYPE_DEPOSIT:
       return 'Deposited with'
     case TransactionTypes.TYPE_EXIT:
-      return 'Requested exit from'
+      return 'Requested withdraw from'
     default:
       return 'Transfered with'
   }

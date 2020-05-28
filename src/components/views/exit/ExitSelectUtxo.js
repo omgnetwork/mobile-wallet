@@ -54,7 +54,7 @@ const ExitSelectUtxo = ({ theme, primaryWallet, navigation }) => {
         Select UTXOs
       </OMGText>
       <OMGText style={styles.description(theme)}>
-        You can select up to 4 UTXOs to Exit at once
+        You can select up to 4 UTXOs to withdraw at once
       </OMGText>
       <FlatList
         data={utxos}
