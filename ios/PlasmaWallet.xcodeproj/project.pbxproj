@@ -29,6 +29,7 @@
 		C4AD05DB230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		C4AD05DC230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		C4AD05DD230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		C4DB1EC5247FABC80007B6BB /* libPods-PlasmaWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4DB1EC4247FABC80007B6BB /* libPods-PlasmaWallet.a */; };
 		D2A2277A48E64BA1A6CA92BA /* MessinaSans-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0359736497A843F3972493C8 /* MessinaSans-Light.otf */; };
 		D6DD8AB8C90447CCBFFCC6A7 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2752A0B5F702467A8625AC5D /* RNBackgroundFetch+AppDelegate.m */; };
 		D764F9A350CA45E88C984E40 /* MessinaSansMono-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 720399F0D2A44BE8B2D7918E /* MessinaSansMono-SemiBold.otf */; };
@@ -85,6 +86,7 @@
 		C47923152460AFB8001B1F4E /* PlasmaWallet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PlasmaWallet-Bridging-Header.h"; sourceTree = "<group>"; };
 		C479231824612F2A001B1F4E /* SupportReactNative0.62.2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportReactNative0.62.2.swift; sourceTree = "<group>"; };
 		C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "PlasmaWallet/wallet/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C4DB1EC4247FABC80007B6BB /* libPods-PlasmaWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-PlasmaWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4F845CE236D3C8D002C25C7 /* libreact-native-google-analytics-bridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-google-analytics-bridge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9C9DF76220A469193C08B50 /* Pods-PlasmaWallet-PlasmaWalletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlasmaWallet-PlasmaWalletTests.debug.xcconfig"; path = "Target Support Files/Pods-PlasmaWallet-PlasmaWalletTests/Pods-PlasmaWallet-PlasmaWalletTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D8FEECC5438C4F8C8835E93C /* MessinaSansMono-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "MessinaSansMono-Light.otf"; path = "../assets/fonts/MessinaSansMono-Light.otf"; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4DB1EC5247FABC80007B6BB /* libPods-PlasmaWallet.a in Frameworks */,
 				1F856FFAE0AF45D49F1346DA /* TSBackgroundFetch.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -166,6 +169,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C4DB1EC4247FABC80007B6BB /* libPods-PlasmaWallet.a */,
 				C4F845CE236D3C8D002C25C7 /* libreact-native-google-analytics-bridge.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
@@ -719,7 +723,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 51;
+				CURRENT_PROJECT_VERSION = 52;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = KWTQ7XD7P6;
 				ENABLE_BITCODE = NO;
@@ -758,7 +762,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 51;
+				CURRENT_PROJECT_VERSION = 52;
 				DEVELOPMENT_TEAM = KWTQ7XD7P6;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
