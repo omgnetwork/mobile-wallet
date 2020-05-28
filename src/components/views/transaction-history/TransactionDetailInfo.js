@@ -12,7 +12,7 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
   const tokens = primaryWallet.childchainAssets
   const textExactDatetime = Formatter.formatTimeStamp(
     tx.timestamp,
-    'MMMM-DD-YYYY, HH:mm:ss A Z'
+    'MMMM-DD-YYYY, HH:mm:ss A'
   )
   const feeAmount = BlockchainFormatter.formatGasFee(
     tx.gasUsed,
