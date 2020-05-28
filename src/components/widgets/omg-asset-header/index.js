@@ -20,7 +20,7 @@ const OMGAssetHeader = ({ theme, rootchain, network, anchoredRef, style }) => {
           height={
             rootchain
               ? Styles.getResponsiveSize(23, { small: 16, medium: 20 })
-              : Styles.getResponsiveSize(18, { small: 13, medium: 14 })
+              : Styles.getResponsiveSize(20, { small: 13, medium: 14 })
           }
         />
         <OMGText style={styles.textChain(theme)}>
