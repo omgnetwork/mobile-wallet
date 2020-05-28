@@ -43,18 +43,24 @@ export const ETHEREUM_WALLET_BOTTOM_SHEET = {
   }
 }
 
-export const ADDRESS_QR_BOTTOM_SHEET = {
-  title: 'Share this wallet identifier to receive fund from friend',
-  key: 'ADDRESS_QR_BOTTOM_SHEET',
-  paragraphs: [
-    'You can either share QR or copy the number, which we call it ‘Wallet Address’'
-  ],
-  buttonTextDismiss: 'OK, GOT IT',
-  shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) => {
+export const TRY_DEPOSIT_OMG_POPUP = {
+  title: 'Your plasma funds',
+  key: 'TRY_DEPOSIT_OMG_POPUP',
+  paragraphs: ['To transact, deposit funds from Ethereum to the OMG network.'],
+  buttonText: 'Next',
+  isPopup: true,
+  imageBottomName: 'TourMoveFund',
+  arrowDirection: 'up',
+  onPress: (navigation, setNextPopup) => {
+    navigation.navigate('Balance', { page: 2 })
+    setNextPopup('ROOTCHAIN_POPUP')
+  },
+  anchoredTo: 'AssetsLabel',
+  shouldDisplay: ({ enabledOnboarding, currentPage, nextPopup }) => {
     return (
       enabledOnboarding &&
       currentPage === 'address-qr' &&
-      !viewedPopups.includes('ADDRESS_QR_BOTTOM_SHEET')
+      nextPopup === 'TRY_DEPOSIT_OMG_POPUP'
     )
   }
 }
@@ -132,7 +138,7 @@ export const TRANSFER_POPUP = {
   title: 'Transfer',
   key: 'TRANSFER_POPUP',
   paragraphs: [
-    'Now that you have fund on Plasma, Let’s try send some fund to friend. Transacting on our network will cost you only 4 cent, with faster speed and highly secure.'
+    'Transactions made with the OMG Network cost less than transactions on Ethereum.'
   ],
   buttonText: 'OKAY',
   isPopup: true,
@@ -156,10 +162,10 @@ export const TRANSFER_POPUP = {
 }
 
 export const EXIT_POPUP = {
-  title: 'Exit',
+  title: 'Withdraw funds from the OMG Network.',
   key: 'EXIT_POPUP',
   paragraphs: [
-    'You can move funds back to the Root Chain whenever you want to. All exit fees on the blockchain are paid in ETH.'
+    'Move your funds from the OMG Network to Ethereum. All withdrawal fees are paid in ETH.'
   ],
   buttonText: 'GOT IT',
   isPopup: true,
@@ -186,7 +192,7 @@ export const TRANSACTION_HISTORY_MENU_POPUP = {
   title: 'Keep track of your activities',
   key: 'TRANSACTION_HISTORY_MENU_POPUP',
   paragraphs: [
-    `"History" lets you view past transactions on all your wallets. You can also view every deposit and exit you've made on the child chain.`
+    `"History" shows the transaction history of your wallets. You can also view every deposit and withdrawal you've made on the OMG Network.`
   ],
   buttonText: 'GOT IT',
   isPopup: true,

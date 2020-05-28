@@ -186,8 +186,8 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
               <TopMarker
                 text={
                   isRootchain
-                    ? 'Sending on \nEthereum\nRootchain'
-                    : 'Sending on \nPlasma Childchain'
+                    ? 'Sending on \nEthereum'
+                    : 'Sending on \nOMG Network'
                 }
               />
             </View>
@@ -218,7 +218,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
                 disabled={shouldDisabledSendButton}
                 textStyle={styles.buttonText(theme)}
                 onPress={navigateNext}>
-                Or, Send Manually
+                Send Manually
               </OMGButton>
               <TouchableOpacity
                 style={styles.buttonChangeNetwork(theme)}
@@ -243,8 +243,8 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
                   weight='semi-bold'
                   style={styles.textChangeNetwork(
                     theme
-                  )}>{`Switch to send on \n${
-                  isRootchain ? 'Plasma Childchain' : 'Ethereum Rootchain'
+                  )}>{`Switch to send with \n${
+                  isRootchain ? 'OMG Network' : 'Ethereum'
                 }`}</OMGText>
               </TouchableOpacity>
             </View>

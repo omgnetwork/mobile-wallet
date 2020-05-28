@@ -33,12 +33,12 @@ const OMGTransactionList = ({
     } else if (type === TransactionTypes.TYPE_EXIT) {
       return {
         imageName: 'EmptyTxExit',
-        text: 'Empty Exits History.'
+        text: 'Empty Withdrawal History.'
       }
     } else if (type === TransactionTypes.TYPE_PROCESS_EXIT) {
       return {
         imageName: 'EmptyTxExit',
-        text: 'Empty Process Exits History.'
+        text: 'Empty Withdrawal History.'
       }
     } else if (type === TransactionTypes.TYPE_FAILED) {
       return {
@@ -80,15 +80,14 @@ const OMGTransactionList = ({
     switch (tx.type) {
       case TransactionTypes.TYPE_DEPOSIT:
         return 'Deposit Details'
-      case TransactionTypes.TYPE_EXIT:
-        return 'Exit Details'
       case TransactionTypes.TYPE_PROCESS_EXIT:
-        return 'Process Exit Details'
+      case TransactionTypes.TYPE_EXIT:
+        return 'Withdrawal Details'
       case TransactionTypes.TYPE_SENT:
       case TransactionTypes.TYPE_RECEIVED:
         return 'Transaction Details'
       case TransactionTypes.TYPE_FAILED:
-        return 'Failed Details'
+        return 'Failure Details'
     }
   }
 

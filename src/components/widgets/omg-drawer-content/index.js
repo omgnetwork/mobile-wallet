@@ -159,7 +159,7 @@ const OMGDrawerContent = ({
               value={Config.ETHEREUM_NETWORK}
             />
             <DrawerEnvItem
-              title='Plasma Contract'
+              title='OMG Network Contract'
               value={Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS}
             />
             <DrawerEnvItem title='Watcher URL' value={Config.WATCHER_URL} />

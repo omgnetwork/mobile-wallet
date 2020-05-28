@@ -33,9 +33,9 @@ const Exit = ({ navigation, theme, primaryWallet }) => {
         barStyle={'light-content'}
         backgroundColor={theme.colors.black5}
       />
-      <OMGHeader title='Exit' onPress={() => navigation.navigate('Home')} />
+      <OMGHeader title='Withdraw' onPress={() => navigation.navigate('Home')} />
       <OMGBlockchainLabel
-        actionText='Exit to'
+        actionText='Withdraw to'
         transferType={TransferHelper.TYPE_EXIT}
       />
       {primaryWallet ? (

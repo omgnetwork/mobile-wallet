@@ -25,7 +25,7 @@ export const CANNOT_EXIT_PENDING_TRANSACTION = {
 
 export const CANNOT_EXIT_NOT_ENOUGH_ASSETS = {
   type: 'warning',
-  message: "There're no assets to exit."
+  message: "There're no assets to withdraw."
 }
 
 export const FAILED_DEPOSIT_EMPTY_WALLET = {

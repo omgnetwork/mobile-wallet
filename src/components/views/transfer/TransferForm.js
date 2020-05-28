@@ -201,7 +201,7 @@ const TransferForm = ({
     return transferType === TransferHelper.TYPE_DEPOSIT ? (
       <OMGWalletAddress
         style={styles.mediumMarginTop}
-        name='Plasma Contract'
+        name='OMG Network'
         address={address}
       />
     ) : (

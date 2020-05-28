@@ -12,7 +12,7 @@ import { Styles } from 'common/utils'
 function Receive({ theme, primaryWallet, primaryWalletAddress, navigation }) {
   const handleShareClick = useCallback(() => {
     Share.share({
-      title: 'Share Wallet Address',
+      title: 'Share Your Wallet Address',
       message: primaryWalletAddress
     })
   }, [primaryWalletAddress])
@@ -57,7 +57,7 @@ function Receive({ theme, primaryWallet, primaryWalletAddress, navigation }) {
           style={styles.image}
         />
         <OMGText style={styles.buttonText(theme)} weigth='semi-bold'>
-          SHARE QR
+          Share QR Code
         </OMGText>
       </TouchableOpacity>
     </View>

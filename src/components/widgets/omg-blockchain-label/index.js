@@ -12,9 +12,7 @@ const OMGBlockchainLabel = ({ theme, actionText, transferType, style }) => {
       TransferHelper.TYPE_TRANSFER_CHILDCHAIN,
       TransferHelper.TYPE_DEPOSIT
     ].indexOf(transferType) === -1
-  const blockchainName = isEthereumRootchain
-    ? 'Ethereum Rootchain'
-    : 'Plasma Childchain'
+  const blockchainName = isEthereumRootchain ? 'Ethereum' : 'OMG Network'
   const BlockchainIcon = isEthereumRootchain ? IconEth : IconGo
 
   return (
