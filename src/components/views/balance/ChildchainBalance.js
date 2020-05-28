@@ -42,19 +42,8 @@ const ChildchainBalance = ({
   const hasChildchainAssets =
     wallet && wallet.childchainAssets && wallet.childchainAssets.length > 0
 
-  const shouldEnableDepositAction = useCallback(() => {
-    if (!hasPendingTransaction && hasRootchainAssets) {
-      return true
-    }
-    return false
-  }, [hasPendingTransaction, hasRootchainAssets])
-
-  const shouldEnableExitAction = useCallback(() => {
-    if (!hasPendingTransaction) {
-      return true
-    }
-    return false
-  }, [hasPendingTransaction])
+  const shouldEnableDepositAction = !hasPendingTransaction && hasRootchainAssets
+  const shouldEnableExitAction = !hasPendingTransaction && hasChildchainAssets
 
   const handleDepositClick = useCallback(() => {
     if (hasPendingTransaction) {
@@ -70,9 +59,9 @@ const ChildchainBalance = ({
   }, [hasPendingTransaction, hasRootchainAssets, navigation])
 
   const handleExitClick = useCallback(() => {
-    if (!shouldEnableExitAction() && !hasPendingTransaction) {
+    if (!shouldEnableExitAction && !hasPendingTransaction) {
       Alerter.show(Alert.CANNOT_EXIT_NOT_ENOUGH_ASSETS)
-    } else if (!shouldEnableExitAction()) {
+    } else if (!shouldEnableExitAction) {
       Alerter.show(Alert.CANNOT_EXIT_PENDING_TRANSACTION)
     } else {
       navigation.navigate('TransferExit')
@@ -136,8 +125,8 @@ const ChildchainBalance = ({
         )}
       />
       <OMGAssetFooter
-        enableDeposit={shouldEnableDepositAction()}
-        enableExit={shouldEnableExitAction()}
+        enableDeposit={shouldEnableDepositAction}
+        enableExit={shouldEnableExitAction}
         footerRef={exitButtonRef}
         onPressDeposit={handleDepositClick}
         onPressExit={handleExitClick}
