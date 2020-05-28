@@ -1,100 +1,147 @@
 export const WELCOME_BOTTOM_SHEET = {
-  title: 'Welcome',
+  title: 'Welcome!',
   key: 'WELCOME_BOTTOM_SHEET',
-  paragraphs: [
-    'Now you can start try interact with Plasma network powered by OmiseGO. We’d like to help you get started, Let we take you a tour ;)'
-  ],
+  paragraphs: ['Let’s start with a quick tour.'],
   buttonTextConfirm: 'TAKE A TOUR',
-  buttonTextDismiss: 'NO, THANKS',
+  buttonTextDismiss: 'SKIP',
   isModal: true,
-  shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) =>
+  shouldDisplay: ({ enabledOnboarding, currentPage }) =>
     enabledOnboarding === null && currentPage === 'childchain-balance'
 }
 
-export const PLASMA_WALLET_BOTTOM_SHEET = {
-  title: 'Your wallet have 2 pockets !',
-  key: 'PLASMA_WALLET_BOTTOM_SHEET',
-  imageCenterName: 'TourPlasmaWallet',
-  imageBottomName: 'TourSwipe',
-  textBottomBig: 'NOW, SWIPE LEFT',
-  textBottomSmall: 'to Ethereum pocket',
-  shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) => {
+export const CHILDCHAIN_POPUP = {
+  title: 'This is your Plasma Wallet',
+  key: 'CHILDCHAIN_POPUP',
+  paragraphs: ['It’s connected to the OMG Network.'],
+  buttonText: 'Next',
+  isPopup: true,
+  arrowDirection: 'up',
+  imageBottomName: 'TourPlasmaWallet',
+  onPress: (navigation, setNextPopup) => {
+    setNextPopup('TRY_DEPOSIT_OMG_POPUP')
+  },
+  anchoredTo: 'PlasmaBlockchainLabel',
+  shouldDisplay: ({ enabledOnboarding, currentPage, nextPopup }) => {
     return (
       enabledOnboarding &&
       currentPage === 'childchain-balance' &&
-      !viewedPopups.includes('PLASMA_WALLET_BOTTOM_SHEET')
-    )
-  }
-}
-
-export const ETHEREUM_WALLET_BOTTOM_SHEET = {
-  title: "Let's try get some fund !",
-  key: 'ETHEREUM_WALLET_BOTTOM_SHEET',
-  imageCenterName: 'TourEthereumWallet',
-  imageBottomName: 'TourSwipe',
-  textBottomBig: 'SWIPE LEFT AGAIN',
-  textBottomSmall: 'to try topup wallet',
-  shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) => {
-    return (
-      enabledOnboarding &&
-      currentPage === 'rootchain-balance' &&
-      !viewedPopups.includes('ETHEREUM_WALLET_BOTTOM_SHEET')
-    )
-  }
-}
-
-export const ADDRESS_QR_BOTTOM_SHEET = {
-  title: 'Share this wallet identifier to receive fund from friend',
-  key: 'ADDRESS_QR_BOTTOM_SHEET',
-  paragraphs: [
-    'You can either share QR or copy the number, which we call it ‘Wallet Address’'
-  ],
-  buttonTextDismiss: 'OK, GOT IT',
-  shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) => {
-    return (
-      enabledOnboarding &&
-      currentPage === 'address-qr' &&
-      !viewedPopups.includes('ADDRESS_QR_BOTTOM_SHEET')
+      nextPopup === 'CHILDCHAIN_POPUP'
     )
   }
 }
 
 export const ROOTCHAIN_POPUP = {
-  title: 'The root chain is our main Ethereum blockchain.',
+  title: 'This is your Ethereum Wallet',
   key: 'ROOTCHAIN_POPUP',
-  paragraphs: [
-    'In this section you can see the value of all your stored coins on the blockchain for this wallet.'
-  ],
-  buttonText: 'GOT IT',
+  paragraphs: ['It’s connected to the Ethereum Network.'],
+  buttonText: 'Next',
   isPopup: true,
   arrowDirection: 'up',
   anchoredTo: 'EthereumBlockchainLabel',
-  shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) => {
+  onPress: (navigation, setNextPopup) => {
+    setNextPopup('DEPOSIT_POPUP')
+  },
+  shouldDisplay: ({
+    enabledOnboarding,
+    currentPage,
+    nextPopup,
+    rootchainAssets
+  }) => {
     return (
       enabledOnboarding &&
       currentPage === 'rootchain-balance' &&
-      viewedPopups.includes('ADDRESS_QR_BOTTOM_SHEET') &&
-      !viewedPopups.includes('ROOTCHAIN_POPUP')
+      nextPopup === 'ROOTCHAIN_POPUP' &&
+      rootchainAssets.length > 0
     )
   }
 }
 
-export const CHILDCHAIN_POPUP = {
-  title: 'The Child Chain is Plasma – The OmiseGO Network.',
-  key: 'CHILDCHAIN_POPUP',
-  paragraphs: [
-    'In this section you can see the funds deposited for transactions on the OmiseGO Network.'
-  ],
-  buttonText: 'GOT IT',
+export const ROOTCHAIN_POPUP_EMPTY = {
+  title: 'This is your Ethereum Wallet',
+  paragraphs: ['It’s connected to the Ethereum Network.'],
+  key: 'ROOTCHAIN_POPUP_EMPTY',
+  buttonText: 'Next',
   isPopup: true,
   arrowDirection: 'up',
-  anchoredTo: 'PlasmaBlockchainLabel',
-  shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) => {
+  onPress: (navigation, setNextPopup) => {
+    setNextPopup('TRY_DEPOSIT_ETH_POPUP')
+  },
+  anchoredTo: 'EthereumBlockchainLabel',
+  shouldDisplay: ({
+    enabledOnboarding,
+    currentPage,
+    nextPopup,
+    rootchainAssets
+  }) => {
+    return (
+      enabledOnboarding &&
+      currentPage === 'rootchain-balance' &&
+      nextPopup === 'ROOTCHAIN_POPUP' &&
+      rootchainAssets.length === 0
+    )
+  }
+}
+
+export const TRY_DEPOSIT_OMG_POPUP = {
+  title: 'Your plasma funds',
+  key: 'TRY_DEPOSIT_OMG_POPUP',
+  paragraphs: [
+    'To transact on plasma, transfer funds from your Ethereum wallet to your Plasma Wallet.'
+  ],
+  buttonText: 'Next',
+  isPopup: true,
+  imageBottomName: 'TourMoveFund',
+  arrowDirection: 'up',
+  onPress: (navigation, setNextPopup) => {
+    navigation.navigate('Balance', { page: 2 })
+    setNextPopup('ROOTCHAIN_POPUP')
+  },
+  anchoredTo: 'AssetsLabel',
+  shouldDisplay: ({ enabledOnboarding, currentPage, nextPopup }) => {
     return (
       enabledOnboarding &&
       currentPage === 'childchain-balance' &&
-      viewedPopups.includes('ADDRESS_QR_BOTTOM_SHEET') &&
-      !viewedPopups.includes('CHILDCHAIN_POPUP')
+      nextPopup === 'TRY_DEPOSIT_OMG_POPUP'
+    )
+  }
+}
+
+export const TRY_DEPOSIT_ETH_POPUP = {
+  title: 'Your ethereum funds',
+  key: 'TRY_DEPOSIT_ETH_POPUP',
+  paragraphs: [
+    'Hmm, your Ethereum Wallet is empty. Deposit funds to get started!'
+  ],
+  buttonText: 'Next',
+  isPopup: true,
+  arrowDirection: 'up',
+  onPress: (navigation, setNextPopup) => {
+    setNextPopup('SHARE_QR')
+    navigation.navigate('Balance', { page: 3 })
+  },
+  anchoredTo: 'AssetsLabel',
+  shouldDisplay: ({ enabledOnboarding, currentPage, nextPopup }) => {
+    return (
+      enabledOnboarding &&
+      currentPage === 'rootchain-balance' &&
+      nextPopup === 'TRY_DEPOSIT_ETH_POPUP'
+    )
+  }
+}
+
+export const SHARE_QR = {
+  title: 'Your wallet address',
+  key: 'SHARE_QR',
+  paragraphs: ['Share your wallet address or QR code to receive funds'],
+  buttonText: 'Got It',
+  isPopup: true,
+  arrowDirection: 'down',
+  anchoredTo: 'QRCode',
+  shouldDisplay: ({ enabledOnboarding, currentPage, nextPopup }) => {
+    return (
+      enabledOnboarding &&
+      currentPage === 'address-qr' &&
+      nextPopup === 'SHARE_QR'
     )
   }
 }
@@ -102,82 +149,65 @@ export const CHILDCHAIN_POPUP = {
 export const DEPOSIT_POPUP = {
   title: 'Deposit',
   key: 'DEPOSIT_POPUP',
-  paragraphs: [
-    "You'll need funds on the child chain to transact on the OmiseGO Network.",
-    'Transacting on our network is faster, more affordable, and highly secure.',
-    'Transfer funds from the Root Chain to the Child Chain. All transaction fees on the blockchain are paid in ETH.'
-  ],
+  paragraphs: ['You can deposit fund to OMG network right here.'],
   buttonText: 'GOT IT',
   isPopup: true,
   arrowDirection: 'down',
+  imageBottomName: 'TourMoveFund',
   anchoredTo: 'DepositButton',
-  shouldDisplay: (
-    enabledOnboarding,
-    currentPage,
-    viewedPopups,
-    { rootchainAssets }
-  ) => {
+  onPress: (navigation, setNextPopup) => {
+    setNextPopup('TRANSFER_POPUP')
+  },
+  shouldDisplay: ({ enabledOnboarding, currentPage, nextPopup }) => {
     return (
       enabledOnboarding &&
       currentPage === 'rootchain-balance' &&
-      viewedPopups.includes('ROOTCHAIN_POPUP') &&
-      !viewedPopups.includes('DEPOSIT_POPUP') &&
-      rootchainAssets &&
-      rootchainAssets.length > 0
+      nextPopup === 'DEPOSIT_POPUP'
     )
   }
 }
 
 export const TRANSFER_POPUP = {
-  title: 'Transfer',
+  title: 'Transfer funds on the OMG Network!',
   key: 'TRANSFER_POPUP',
   paragraphs: [
-    'Now that you have fund on Plasma, Let’s try send some fund to friend. Transacting on our network will cost you only 4 cent, with faster speed and highly secure.'
+    'Transactions made with plasma cost less than transactions on Ethereum.'
   ],
-  buttonText: 'OKAY',
+  buttonText: 'Got It',
   isPopup: true,
   arrowDirection: 'down',
   anchoredTo: 'TransferButton',
-  shouldDisplay: (
-    enabledOnboarding,
-    currentPage,
-    viewedPopups,
-    { childchainAssets }
-  ) => {
+  onPress: (navigation, setNextPopup) => {
+    navigation.navigate('Balance', { page: 1 })
+    setNextPopup('EXIT_POPUP')
+  },
+  shouldDisplay: ({ enabledOnboarding, currentPage, nextPopup }) => {
     return (
       enabledOnboarding &&
-      currentPage === 'childchain-balance' &&
-      viewedPopups.includes('CHILDCHAIN_POPUP') &&
-      !viewedPopups.includes('TRANSFER_POPUP') &&
-      childchainAssets &&
-      childchainAssets.length > 0
+      currentPage === 'rootchain-balance' &&
+      nextPopup === 'TRANSFER_POPUP'
     )
   }
 }
 
 export const EXIT_POPUP = {
-  title: 'Exit',
+  title: 'Exit funds whenever you want.',
   key: 'EXIT_POPUP',
   paragraphs: [
-    'You can move funds back to the Root Chain whenever you want to. All exit fees on the blockchain are paid in ETH.'
+    'Move your funds from the Plasma Wallet to your Ethereum Wallet. All exit fees are paid in ETH.'
   ],
   buttonText: 'GOT IT',
   isPopup: true,
   arrowDirection: 'down',
   anchoredTo: 'ExitButton',
-  imageBottomName: 'TourExit',
-  shouldDisplay: (
-    enabledOnboarding,
-    currentPage,
-    viewedPopups,
-    { childchainAssets }
-  ) => {
+  onPress: (navigation, setNextPopup) => {
+    setNextPopup(null)
+  },
+  shouldDisplay: ({ enabledOnboarding, currentPage, nextPopup }) => {
     return (
+      enabledOnboarding &&
       currentPage === 'childchain-balance' &&
-      viewedPopups.includes('TRANSFER_POPUP') &&
-      !viewedPopups.includes('EXIT_POPUP') &&
-      childchainAssets &&
-      childchainAssets.length > 0
+      nextPopup === 'EXIT_POPUP'
     )
   }
 }
@@ -192,11 +222,11 @@ export const TRANSACTION_HISTORY_MENU_POPUP = {
   isPopup: true,
   arrowDirection: 'up',
   anchoredTo: 'TransactionHistoryMenu',
-  shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) => {
-    return (
-      enabledOnboarding &&
-      currentPage === 'transaction-history' &&
-      !viewedPopups.includes('TRANSACTION_HISTORY_MENU_POPUP')
-    )
+  onPress: (navigation, setNextPopup) => {
+    setNextPopup(null)
+    navigation.navigate('Balance', { page: 2 })
+  },
+  shouldDisplay: ({ enabledOnboarding, nextPopup }) => {
+    return enabledOnboarding && nextPopup === 'TRANSACTION_HISTORY_MENU_POPUP'
   }
 }

@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react'
-import { View, ScrollView, StyleSheet } from 'react-native'
+import { View, ScrollView, StyleSheet, Image } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { OMGText, OMGButton, OMGStatusBar } from 'components/widgets'
-import { OnboardingDisclaimer } from './assets'
 import { Styles } from 'common/utils'
 
 const Disclaimer = ({ navigation, theme }) => {
@@ -17,6 +16,13 @@ const Disclaimer = ({ navigation, theme }) => {
   }, [navigation])
 
   const styles = createStyles(theme)
+  const imagePath = Styles.getResponsiveSize(
+    require('./assets/disclaimer3x.png'),
+    {
+      small: require('./assets/disclaimer.png'),
+      medium: require('./assets/disclaimer2x.png')
+    }
+  )
 
   return (
     <SafeAreaView style={styles.container}>
@@ -28,24 +34,18 @@ const Disclaimer = ({ navigation, theme }) => {
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}>
         <View style={styles.headerContainer}>
-          <OnboardingDisclaimer
-            width={Styles.getResponsiveSize(140, { small: 99, medium: 120 })}
-            height={Styles.getResponsiveSize(116, { small: 83, medium: 99 })}
-            style={styles.image}
-          />
+          <Image source={imagePath} />
           <OMGText style={styles.headerText} weight='regular'>
-            Nice choice! But before you start, let’s make sure we’re on the same
-            page :)
+            Before you begin, let’s make sure we’re on the same page.
           </OMGText>
         </View>
         <OMGText style={styles.contentText1}>
-          This wallet is your first official gateway to OmiseGO Network.
+          This wallet connects you to the OMG Network.
         </OMGText>
         <OMGText style={styles.contentText2}>
-          The application has been set up for purely educational purposes, to
-          provide insight on how plasma layer two solutions work. Transactions
-          on this wallet will be using ETH in real time and may incur
-          transaction charges. Practice prudence with each transaction.
+          Get first-hand experience of how plasma Layer-2 solutions work. You
+          can deposit and transfer any ERC-20 compliant token. Transactions will
+          incur charges and fees and are collected in ETH, DAI, OMG, and USDT.
         </OMGText>
         <View style={styles.buttonContainer}>
           <OMGButton
@@ -53,7 +53,7 @@ const Disclaimer = ({ navigation, theme }) => {
             textStyle={styles.confirmButtonText}
             textweight='regular'
             onPress={handleAcceptPressed}>
-            I UNDERSTAND AND ACCEPT
+            ACCEPT
           </OMGButton>
           <OMGButton
             style={styles.declineButton}
@@ -73,6 +73,7 @@ const createStyles = theme =>
     container: {
       flex: 1,
       backgroundColor: theme.colors.black5,
+      paddingBottom: 16,
       flexDirection: 'column',
       paddingHorizontal: Styles.getResponsiveSize(30, { small: 16, medium: 24 })
     },

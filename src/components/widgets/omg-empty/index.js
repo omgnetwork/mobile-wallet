@@ -21,7 +21,9 @@ const OMGEmpty = ({
       ) : (
         <View style={{ ...styles.container, ...style }}>
           {imageName && EmptyImage && <EmptyImage />}
-          <OMGText style={[styles.emptyText(theme), textStyle]}>{text}</OMGText>
+          <OMGText weight='book' style={[styles.emptyText(theme), textStyle]}>
+            {text}
+          </OMGText>
         </View>
       )}
     </View>
@@ -38,6 +40,7 @@ const styles = StyleSheet.create({
   emptyText: theme => ({
     color: theme.colors.gray8,
     textAlign: 'center',
+    fontSize: 16,
     marginTop: 14
   })
 })

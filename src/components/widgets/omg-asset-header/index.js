@@ -1,20 +1,11 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import { OMGEmpty, OMGText } from 'components/widgets'
+import { OMGText } from 'components/widgets'
 import { IconEth, IconGo } from './assets'
 import { Styles } from 'common/utils'
 
-const OMGAssetHeader = ({
-  theme,
-  loading,
-  amount,
-  currency,
-  rootchain,
-  network,
-  anchoredRef,
-  style
-}) => {
+const OMGAssetHeader = ({ theme, rootchain, network, anchoredRef, style }) => {
   const BlockchainIcon = rootchain ? IconEth : IconGo
   return (
     <View style={{ ...styles.container(theme), ...style }} ref={anchoredRef}>

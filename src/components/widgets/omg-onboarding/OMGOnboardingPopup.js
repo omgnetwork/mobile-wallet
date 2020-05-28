@@ -34,9 +34,8 @@ const OMGOnboardingPopup = ({
           {content.title}
         </OMGText>
         <View style={styles.textContainer}>{TextContent}</View>
+        {ImageBottom && <ImageBottom style={styles.image} />}
         <View style={styles.buttonContainer}>
-          {ImageBottom && <ImageBottom width={148} />}
-          <View style={styles.expand} />
           <OMGButton
             style={styles.button(theme)}
             onPress={onPressedDismiss}
@@ -59,6 +58,7 @@ const styles = StyleSheet.create({
   }),
   title: theme => ({
     alignSelf: 'flex-start',
+    fontSize: 16,
     color: theme.colors.white
   }),
   textContainer: {
@@ -68,17 +68,18 @@ const styles = StyleSheet.create({
     color: theme.colors.white2,
     marginTop: 20
   }),
-  expand: {
-    flex: 1
+  image: {
+    marginTop: 16,
+    alignSelf: 'center'
   },
   buttonContainer: {
     flexDirection: 'row',
+    justifyContent: 'flex-end',
     marginTop: 20
   },
   button: theme => ({
     width: 80,
     alignSelf: 'flex-end',
-    borderRadius: theme.roundness,
     borderWidth: 1,
     borderColor: theme.colors.white,
     backgroundColor: theme.colors.primary

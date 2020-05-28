@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { onboardingActions, transactionActions } from 'common/actions'
 import * as ContentSelector from './contentSelector'
 import { GoogleAnalytics } from 'common/analytics'
+import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import {
   OMGOnboardingSheet,
@@ -13,13 +14,16 @@ const OnboardingTourGuide = ({
   enabledOnboarding,
   currentPage,
   currentPopup,
+  nextPopup,
   viewedPopups,
   anchoredComponents,
   wallet,
   hasWallet,
+  navigation,
   dispatchInvalidateFeedbackCompleteTx,
   dispatchEnableOnboarding,
-  dispatchAddViewedPopup
+  dispatchAddViewedPopup,
+  dispatchNextPopup
 }) => {
   const [tourVisible, setTourVisible] = useState(true)
   const [tourContent, setTourContent] = useState(null)
@@ -45,12 +49,14 @@ const OnboardingTourGuide = ({
 
   useEffect(() => {
     if (hasWallet) {
-      const content = ContentSelector.select(
+      const content = ContentSelector.select({
         currentPage,
         viewedPopups,
         enabledOnboarding,
-        { childchainAssets, rootchainAssets }
-      )
+        nextPopup,
+        childchainAssets,
+        rootchainAssets
+      })
 
       if (content && content.key === 'EXIT_POPUP') {
         dispatchInvalidateFeedbackCompleteTx(wallet)
@@ -64,6 +70,7 @@ const OnboardingTourGuide = ({
     dispatchInvalidateFeedbackCompleteTx,
     enabledOnboarding,
     hasWallet,
+    nextPopup,
     rootchainAssets,
     viewedPopups,
     wallet
@@ -106,7 +113,10 @@ const OnboardingTourGuide = ({
           content={tourContent}
           visible={tourVisible}
           position={position}
-          onPressedDismiss={handleDismissButtonAction}
+          onPressedDismiss={() => {
+            handleDismissButtonAction()
+            tourContent.onPress?.(navigation, dispatchNextPopup)
+          }}
         />
       )
     } else if (shouldRenderButtons) {
@@ -145,6 +155,7 @@ const mapStateToProps = (state, ownProps) => ({
   enabledOnboarding: state.onboarding.enabled,
   currentPage: state.onboarding.currentPage,
   currentPopup: state.onboarding.currentPopup,
+  nextPopup: state.onboarding.nextPopup,
   viewedPopups: state.onboarding.viewedPopups,
   anchoredComponents: state.onboarding.anchoredComponents
 })
@@ -156,6 +167,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatchAddViewedPopup: (viewedPopups, popup) => {
     onboardingActions.addViewedPopup(dispatch, viewedPopups, popup)
   },
+  dispatchNextPopup: nextPopup => {
+    onboardingActions.setNextPopup(dispatch, nextPopup)
+  },
   dispatchInvalidateFeedbackCompleteTx: wallet =>
     transactionActions.invalidateFeedbackCompleteTx(dispatch, wallet)
 })
@@ -163,4 +177,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(OnboardingTourGuide)
+)(withNavigation(OnboardingTourGuide))

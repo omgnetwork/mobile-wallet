@@ -18,6 +18,14 @@ export const setCurrentPage = (dispatch, currentPage, page) => {
   }
 }
 
+export const setNextPopup = (dispatch, nextPopup) => {
+  const action = () => ({ nextPopup })
+  return createAction(dispatch, {
+    operation: action,
+    type: 'ONBOARDING/SET_NEXT_POPUP'
+  })
+}
+
 export const addViewedPopup = (dispatch, viewedPopups, popup) => {
   if (!popup || viewedPopups.indexOf(popup) > -1) return
   const action = () => ({ popup })

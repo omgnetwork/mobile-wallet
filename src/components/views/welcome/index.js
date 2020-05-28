@@ -1,37 +1,9 @@
 import React from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { Image, View, StyleSheet } from 'react-native'
-import CardMenu from './CardMenu'
-import { OMGDotViewPager, OMGStatusBar } from 'components/widgets'
-import Page from './Page'
-
-const PageItems = [
-  {
-    title: 'Welcome to\nthe Plasma Wallet',
-    content: 'Official gateway to the OmiseGo network.',
-    image: 'Welcome1'
-  },
-  {
-    title: 'Plasma makes blockchain faster, affordable, and more secure',
-    image: 'Welcome2'
-  },
-  {
-    title: "Learn to transact on OmiseGO's Plasma Scaling Solution",
-    content:
-      'Set up and manage wallets, review your activity, move ETH, and more',
-    image: 'Welcome3'
-  }
-].map((item, index) => {
-  return (
-    <Page
-      textTitle={item.title}
-      textContent={item.content}
-      image={item.image}
-      key={index}
-    />
-  )
-})
+import { Styles } from 'common/utils'
+import { View, StyleSheet, ImageBackground } from 'react-native'
+import { OMGText, OMGStatusBar, OMGButton } from 'components/widgets'
 
 const Welcome = ({ navigation, theme }) => {
   const navigateCreateWallet = () => {
@@ -45,33 +17,46 @@ const Welcome = ({ navigation, theme }) => {
     })
   }
 
+  const imagePath = Styles.getResponsiveSize(
+    require('./assets/welcome3x.png'),
+    {
+      small: require('./assets/welcome.png'),
+      medium: require('./assets/welcome2x.png')
+    }
+  )
+
   return (
     <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
         backgroundColor={theme.colors.black}
       />
-      <Image
-        style={styles.logo}
-        source={require('../../../../assets/omisego-logo.png')}
-      />
-      <View style={styles.scroll}>
-        <OMGDotViewPager>{PageItems}</OMGDotViewPager>
-      </View>
-      <CardMenu
-        style={styles.cardMenu}
-        color={theme.colors.primary}
-        header='Sync Your Wallet'
-        description='Use own Ethereum Address with this wallet'
-        onPress={navigateImportWallet}
-      />
-      <CardMenu
-        style={styles.cardMenu}
-        color={theme.colors.black}
-        header='Create New Wallet'
-        description='Create wallet for the new Ethereum Address'
-        onPress={navigateCreateWallet}
-      />
+      <ImageBackground source={imagePath} style={styles.contentContainer}>
+        <View>
+          <OMGText style={styles.textTitle(theme)} weight='semi-bold'>
+            Experience{'\n'}the OMG Network
+          </OMGText>
+          <OMGText style={styles.textDescription(theme)} weight='book'>
+            Specially developed for the OMG Network, our open-source Plasma
+            Wallet is an educational tool that lets you make real Plasma
+            transactions.
+          </OMGText>
+          <OMGButton
+            onPress={navigateImportWallet}
+            style={styles.btnImport(theme)}
+            textWeight='book'
+            textStyle={styles.textBtn(theme)}>
+            Use Existing Wallet
+          </OMGButton>
+          <OMGButton
+            onPress={navigateCreateWallet}
+            style={styles.btnCreate(theme)}
+            textWeight='book'
+            textStyle={styles.textBtn(theme)}>
+            Create New Wallet
+          </OMGButton>
+        </View>
+      </ImageBackground>
     </SafeAreaView>
   )
 }
@@ -83,21 +68,41 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.black,
     justifyContent: 'space-around'
   }),
-  logo: {
-    width: 130,
-    height: 44,
+  contentContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+
+    paddingHorizontal: 30,
+    paddingBottom: 24,
+    resizeMode: 'cover'
+  },
+  textTitle: theme => ({
+    color: theme.colors.white,
+    fontSize: 32
+  }),
+  textDescription: theme => ({
+    color: theme.colors.gray2,
+    fontSize: 16,
+    marginVertical: 24
+  }),
+  btnImport: theme => ({
+    paddingVertical: 16,
+    borderWidth: 1,
+    borderColor: theme.colors.primary,
+    backgroundColor: theme.colors.primary
+  }),
+  btnCreate: theme => ({
     marginTop: 16,
-    marginLeft: 30
-  },
-  cardMenu: {
-    flex: 3
-  },
-  scroll: {
-    flex: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    paddingBottom: 20
-  }
+    paddingVertical: 16,
+    borderWidth: 1,
+    borderColor: theme.colors.white,
+    backgroundColor: theme.colors.black5
+  }),
+  textBtn: theme => ({
+    color: theme.colors.white,
+    fontSize: 16
+  })
 })
 
 export default withNavigation(withTheme(Welcome))

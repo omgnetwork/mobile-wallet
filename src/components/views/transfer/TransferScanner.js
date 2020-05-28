@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { getParamsForTransferScannerFromTransferForm } from './transferNavigation'
-import { View, StyleSheet, Animated } from 'react-native'
+import { View, StyleSheet, Animated, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
@@ -18,8 +18,8 @@ import { Dimensions, Styles } from 'common/utils'
 
 const SCREEN_WIDTH = Dimensions.windowWidth
 const CAMERA_TO_WIDTH_RATIO = Styles.getResponsiveSize(0.68, {
-  small: 0.64,
-  medium: 0.68
+  small: 0.56,
+  medium: 0.64
 })
 const CONTAINER_WIDTH = Math.round(SCREEN_WIDTH * CAMERA_TO_WIDTH_RATIO)
 
@@ -81,6 +81,12 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
       setRendering(false)
     }
 
+    async function getRatios() {
+      if (Platform.OS === 'android') {
+        console.log(await camera.current?.getSupportedRatiosAsync())
+      }
+    }
+
     const didFocusSubscription = navigation.addListener('didFocus', didFocus)
 
     // Two levels above
@@ -92,6 +98,8 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
       'didBlur',
       didBlur
     )
+
+    getRatios()
 
     return () => {
       didFocusSubscription.remove()
@@ -198,6 +206,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
               onReceiveQR={e => setAddress(e.data)}
               size={CONTAINER_WIDTH}
               cameraRef={camera}
+              ref={camera}
               borderColor={
                 isRootchain ? theme.colors.green : theme.colors.primary
               }
@@ -243,7 +252,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
                   weight='semi-bold'
                   style={styles.textChangeNetwork(
                     theme
-                  )}>{`Switch to send on \n${
+                  )}>{`Switch to send with \n${
                   isRootchain ? 'Plasma Childchain' : 'Ethereum Rootchain'
                 }`}</OMGText>
               </TouchableOpacity>

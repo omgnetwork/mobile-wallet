@@ -12,7 +12,7 @@ const OMGAssetFooter = ({
   enableDeposit,
   enableExit,
   footerRef,
-  showExit
+  showExit = true
 }) => {
   return (
     <View style={{ ...styles.container(theme), ...style }} ref={footerRef}>

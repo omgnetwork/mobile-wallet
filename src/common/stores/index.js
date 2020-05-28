@@ -38,6 +38,7 @@ const initialState = {
     currentPage: null,
     viewedPopups: [],
     currentPopup: null,
+    nextPopup: null,
     anchoredComponents: {}
   },
   transaction: {

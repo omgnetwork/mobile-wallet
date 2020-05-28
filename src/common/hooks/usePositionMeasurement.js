@@ -10,9 +10,10 @@ const usePositionMeasurement = (
     (options = {}) => {
       const {
         arrowDirection,
-        offset,
-        topOffset,
-        widthOffset,
+        offset = 0,
+        topOffset = 0,
+        extraWidth = 0,
+        arrowOffset = 0,
         forceLeft,
         forceWidth
       } = options
@@ -22,11 +23,13 @@ const usePositionMeasurement = (
             anchoredComponentRef.current.measure(
               (fx, fy, width, height, px, py) => {
                 dispatchAddAnchoredComponent(anchoredComponentName, {
-                  top: Math.round(py) + (topOffset || 0),
+                  top: Math.round(py) + topOffset,
                   bottom: Math.round(py + height),
-                  left: forceLeft || Math.round(px) + (offset || 0),
-                  width: forceWidth || Math.round(width) + (widthOffset || 0),
-                  arrowOffset: getArrowOffset(arrowDirection, Math.round(width))
+                  left: (forceLeft || Math.round(px) + offset) - extraWidth / 2,
+                  width: forceWidth || Math.round(width) + extraWidth,
+                  arrowOffset:
+                    getArrowOffset(arrowDirection, Math.round(width)) +
+                    arrowOffset
                 })
               }
             )

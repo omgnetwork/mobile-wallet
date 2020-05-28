@@ -14,6 +14,7 @@ const OMGAssetList = ({
   hasRootchainAssets,
   renderItem,
   refreshControl,
+  anchoredRef,
   updatedAt,
   keyExtractor,
   loading,
@@ -40,7 +41,7 @@ const OMGAssetList = ({
 
   return (
     <View style={{ ...styles.container(theme), ...style }}>
-      <View style={styles.header(theme)}>
+      <View style={styles.header(theme)} ref={anchoredRef}>
         <OMGText style={styles.title(theme)} weight='regular'>
           ASSETS
         </OMGText>
