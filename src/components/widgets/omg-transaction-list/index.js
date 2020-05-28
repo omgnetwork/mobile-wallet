@@ -33,12 +33,12 @@ const OMGTransactionList = ({
     } else if (type === TransactionTypes.TYPE_EXIT) {
       return {
         imageName: 'EmptyTxExit',
-        text: 'Empty Exits History.'
+        text: 'Empty Withdraws History.'
       }
     } else if (type === TransactionTypes.TYPE_PROCESS_EXIT) {
       return {
         imageName: 'EmptyTxExit',
-        text: 'Empty Process Exits History.'
+        text: 'Empty Process Withdraws History.'
       }
     } else if (type === TransactionTypes.TYPE_FAILED) {
       return {

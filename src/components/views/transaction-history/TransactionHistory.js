@@ -134,7 +134,7 @@ const TransactionHistory = ({
 
   const handleClickExit = useCallback(() => {
     navigation.navigate('TransactionHistoryFilter', {
-      title: 'Exit',
+      title: 'Withdraw',
       types: [TransactionTypes.TYPE_EXIT, TransactionTypes.TYPE_PROCESS_EXIT]
     })
   }, [navigation])
@@ -164,7 +164,7 @@ const TransactionHistory = ({
       <OMGMenuIcon
         style={styles.menuItem}
         iconName='upload'
-        title='Exit'
+        title='Withdraw'
         onPress={handleClickExit}
         menuRef={transactionHistoryRef}
         description='From OMG Network'

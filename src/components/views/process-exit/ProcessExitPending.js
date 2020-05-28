@@ -68,7 +68,7 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
           style={styles.marginSmall}
         />
         <OMGText style={[styles.title(theme), styles.marginMedium]}>
-          TO EXIT
+          TO WITHDRAW
         </OMGText>
         <View style={[styles.blackContainer(theme), styles.marginMedium]}>
           <View style={styles.sentDetailRow}>
