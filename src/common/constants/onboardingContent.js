@@ -86,7 +86,7 @@ export const TRY_DEPOSIT_OMG_POPUP = {
   title: 'Your plasma funds',
   key: 'TRY_DEPOSIT_OMG_POPUP',
   paragraphs: [
-    'To transact on plasma, transfer funds from your Ethereum wallet to your Plasma Wallet.'
+    'To transact on OMG Network, transfer funds from the Ethereum to OMG network.'
   ],
   buttonText: 'Next',
   isPopup: true,
@@ -171,7 +171,7 @@ export const TRANSFER_POPUP = {
   title: 'Transfer funds on the OMG Network!',
   key: 'TRANSFER_POPUP',
   paragraphs: [
-    'Transactions made with plasma cost less than transactions on Ethereum.'
+    'Transactions made with OMG Network cost less than transactions on Ethereum.'
   ],
   buttonText: 'Got It',
   isPopup: true,
@@ -194,7 +194,7 @@ export const EXIT_POPUP = {
   title: 'Exit funds whenever you want.',
   key: 'EXIT_POPUP',
   paragraphs: [
-    'Move your funds from the Plasma Wallet to your Ethereum Wallet. All exit fees are paid in ETH.'
+    'Move your funds from the OMG Network to Ethereum. All exit fees are paid in ETH.'
   ],
   buttonText: 'GOT IT',
   isPopup: true,
