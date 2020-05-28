@@ -49,7 +49,7 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
   return (
     <>
       <OMGBlockchainLabel
-        actionText={'Sending on'}
+        actionText={'Sending with'}
         transferType={'Ethereum Rootchain'}
       />
       <View style={styles.container(theme)}>

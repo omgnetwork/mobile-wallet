@@ -227,7 +227,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
                 disabled={shouldDisabledSendButton}
                 textStyle={styles.buttonText(theme)}
                 onPress={navigateNext}>
-                Or, Send Manually
+                Send Manually
               </OMGButton>
               <TouchableOpacity
                 style={styles.buttonChangeNetwork(theme)}

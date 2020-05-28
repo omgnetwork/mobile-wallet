@@ -3,14 +3,14 @@ import { TransactionTypes } from 'common/constants'
 export const getBlockchainTextActionLabel = tx => {
   switch (tx.type) {
     case TransactionTypes.TYPE_RECEIVED:
-      return 'Received on'
+      return 'Received with'
     case TransactionTypes.TYPE_SENT:
-      return 'Sent on'
+      return 'Sent with'
     case TransactionTypes.TYPE_DEPOSIT:
-      return 'Deposited to'
+      return 'Deposited with'
     case TransactionTypes.TYPE_EXIT:
       return 'Requested exit from'
     default:
-      return 'Transfered on'
+      return 'Transfered with'
   }
 }
