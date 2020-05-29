@@ -9,8 +9,11 @@ import CloseIcon from './assets/close-icon.svg'
 import { paramsForTransferScannerToTransferSelectBalance } from './transferNavigation'
 import { Styles } from 'common/utils'
 
-function TransferScannerConfirm({ route, theme, navigation }) {
-  const { address, isRootchain, assets } = route.params
+function TransferScannerConfirm({ theme, navigation }) {
+  const address = navigation.getParam('address')
+  const isRootchain = navigation.getParam('isRootchain')
+  const assets = navigation.getParam('assets')
+
   const navigateNext = useCallback(() => {
     navigation.navigate(
       'TransferSelectBalance',

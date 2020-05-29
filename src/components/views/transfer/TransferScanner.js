@@ -3,7 +3,6 @@ import { View, StyleSheet, Animated, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
-import { paramsForTransferScannerToTransferSelectBalance } from './transferNavigation'
 import {
   OMGText,
   OMGFontIcon,
@@ -207,8 +206,7 @@ const styles = StyleSheet.create({
   buttonContainer: theme => ({
     position: 'absolute',
     bottom: 50,
-    left: 0,
-    right: 0,
+    alignSelf: 'center',
     backgroundColor: theme.colors.gray4,
     borderRadius: 30,
     justifyContent: 'center',
