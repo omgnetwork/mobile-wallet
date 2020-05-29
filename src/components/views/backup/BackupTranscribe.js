@@ -25,7 +25,7 @@ const BackupTranscribe = ({ navigation, theme }) => {
     <SafeAreaView style={styles.container(theme)}>
       <OMGItemWallet wallet={wallet} style={styles.walletItem} />
       <OMGText style={styles.description(theme)} weight='regular'>
-        Please transcribe the Mnemonic phrase properly and back up it securely
+        Please transcribe your Mnemonic phrase properly and back it up securely.
       </OMGText>
       <View style={styles.mnemonicContainer}>{mnemonicPhrases}</View>
       <View style={styles.buttonContainer}>

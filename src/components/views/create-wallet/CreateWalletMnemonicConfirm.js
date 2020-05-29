@@ -93,10 +93,10 @@ const CreateWalletMnemonicConfirm = ({
         bounces={false}>
         <BackupMnemonicImage width={80} height={80} style={styles.image} />
         <OMGText weight='mono-semi-bold' style={styles.title}>
-          Confirm
+          Confirm Mnemonic Phrase
         </OMGText>
         <OMGText style={styles.description}>
-          Please select Mnemonic Phrase in correct order
+          Please select the words below in the correct order.
         </OMGText>
         <OMGMnemonicConfirmBox
           style={styles.confirmBox}
