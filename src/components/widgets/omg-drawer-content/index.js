@@ -162,10 +162,7 @@ const OMGDrawerContent = ({
               title='Plasma Contract'
               value={Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS}
             />
-            <DrawerEnvItem
-              title='Watcher URL'
-              value={Config.WATCHER_URL}
-            />
+            <DrawerEnvItem title='Watcher URL' value={Config.WATCHER_URL} />
             <DrawerEnvItem title='Version' value={Config.VERSION} />
           </View>
         </View>
