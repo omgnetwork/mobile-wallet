@@ -8,6 +8,9 @@ workflows:
       - mobile-wallet-tests:
           requires:
             - mobile-wallet-build
+      - mobile-wallet-dependency-audit:
+          requires: 
+            - mobile-wallet-build
 
   proxy-server-build-test-deploy:
     jobs:
@@ -17,6 +20,9 @@ workflows:
             - proxy-server-build
       - proxy-server-test:
           requires:
+            - proxy-server-build
+      - proxy-server-dependency-audit: 
+          requires: 
             - proxy-server-build
       - proxy-server-publish:
           requires:
@@ -70,6 +76,16 @@ jobs:
       - store_artifacts:
           path: test-results
 
+  mobile-wallet-dependency-audit:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Audit mobile wallet dependencies
+          command: npm run dependency-audit
+
   # Proxy server build jobs
   proxy-server-build:
     docker:
@@ -115,6 +131,18 @@ jobs:
           command: |
             cd proxy-server
             npm run test
+
+  proxy-server-dependency-audit: 
+    docker:
+      - image: circleci/node:10
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Audit proxy server dependencies 
+          command: |
+            cd proxy-server
+            npm run dependency-audit
 
   proxy-server-publish:
     docker:
