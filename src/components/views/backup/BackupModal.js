@@ -25,8 +25,8 @@ const BackupModal = ({ visible, theme, onPressOk, onPressCancel }) => {
             Do not take screenshot
           </OMGText>
           <OMGText style={styles.textContent} weight='regular'>
-            Please do not share or store the screenshot, which may be collected
-            by third-party, resulting in loss of assets
+            Please do not share or store a screenshot, which may be collected by
+            third-parties and risk a loss of your assets.
           </OMGText>
           <View style={styles.buttonContainer}>
             <OMGButton

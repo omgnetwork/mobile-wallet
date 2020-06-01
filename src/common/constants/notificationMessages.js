@@ -8,7 +8,7 @@ export const NOTIFY_TRANSACTION_SENT_ETH_NETWORK = (
   tokenValue,
   tokenSymbol
 ) => ({
-  title: `${walletName} sent on the Ethereum`,
+  title: `${walletName} sent on Ethereum`,
   message: `${tokenValue} ${tokenSymbol}`
 })
 

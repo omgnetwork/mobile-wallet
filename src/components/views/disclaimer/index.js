@@ -43,9 +43,10 @@ const Disclaimer = ({ navigation, theme }) => {
           This wallet connects you to the OMG Network.
         </OMGText>
         <OMGText style={styles.contentText2}>
-          Get first-hand experience of how plasma Layer-2 solutions work. You
-          can deposit and transfer any ERC-20 compliant token. Transactions will
-          incur charges and fees and are collected in ETH, DAI, OMG, and USDT.
+          Get first-hand experience of how the Plasma Layer-2 solution works.
+          You can deposit and transfer any ERC-20 compliant token. Transactions
+          will incur charges and fees that are collected in ETH, DAI, OMG, and
+          USDT.
         </OMGText>
         <View style={styles.buttonContainer}>
           <OMGButton
