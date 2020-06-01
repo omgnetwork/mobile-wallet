@@ -42,10 +42,10 @@ const Disclaimer = ({ navigation, theme }) => {
           This wallet is your first official gateway to OmiseGO Network.
         </OMGText>
         <OMGText style={styles.contentText2}>
-          The application has been set up for purely educational purposes, to
-          provide insight on how plasma layer two solutions work. Transactions
-          on this wallet will be using ETH in real time and may incur
-          transaction charges. Practice prudence with each transaction.
+          Get first-hand experience of how the Plasma Layer-2 solution works.
+          You can deposit and transfer any ERC-20 compliant token. Transactions
+          will incur charges and fees that are collected in ETH, DAI, OMG, and
+          USDT.
         </OMGText>
         <View style={styles.buttonContainer}>
           <OMGButton

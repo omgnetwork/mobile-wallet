@@ -23,12 +23,12 @@ const OMGTransactionList = ({
     if (type === TransactionTypes.TYPE_RECENT) {
       return {
         imageName: 'EmptyTxRecent',
-        text: 'Empty activity history, try\nReceive | Deposit | Transfer'
+        text: 'No recent activity'
       }
     } else if (type === TransactionTypes.TYPE_DEPOSIT) {
       return {
         imageName: 'EmptyTxDeposit',
-        text: 'Empty Deposit History.\nTry deposit.'
+        text: 'Empty Deposit History.\nDeposit funds to get started!'
       }
     } else if (type === TransactionTypes.TYPE_EXIT) {
       return {
@@ -48,7 +48,7 @@ const OMGTransactionList = ({
     } else {
       return {
         imageName: 'EmptyTxAll',
-        text: 'Empty Transaction History\nTry transfer.'
+        text: 'Empty Transaction History\nTry out the OMG Network!'
       }
     }
   }, [type])

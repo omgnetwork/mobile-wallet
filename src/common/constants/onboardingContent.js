@@ -44,9 +44,9 @@ export const ETHEREUM_WALLET_BOTTOM_SHEET = {
 }
 
 export const TRY_DEPOSIT_OMG_POPUP = {
-  title: 'Your plasma funds',
+  title: 'Your funds on the OMG Network',
   key: 'TRY_DEPOSIT_OMG_POPUP',
-  paragraphs: ['To transact, deposit funds from Ethereum to the OMG network.'],
+  paragraphs: ['To transact on the OMG Network, deposit funds from Ethereum.'],
   buttonText: 'Next',
   isPopup: true,
   imageBottomName: 'TourMoveFund',
@@ -108,11 +108,7 @@ export const CHILDCHAIN_POPUP = {
 export const DEPOSIT_POPUP = {
   title: 'Deposit',
   key: 'DEPOSIT_POPUP',
-  paragraphs: [
-    "You'll need funds on the child chain to transact on the OmiseGO Network.",
-    'Transacting on our network is faster, more affordable, and highly secure.',
-    'Transfer funds from the Root Chain to the Child Chain. All transaction fees on the blockchain are paid in ETH.'
-  ],
+  paragraphs: ['You can deposit funds to OMG network right here.'],
   buttonText: 'GOT IT',
   isPopup: true,
   arrowDirection: 'down',
@@ -138,7 +134,7 @@ export const TRANSFER_POPUP = {
   title: 'Transfer',
   key: 'TRANSFER_POPUP',
   paragraphs: [
-    'Transactions made with the OMG Network cost less than transactions on Ethereum.'
+    'Transactions made on the OMG Network cost less than transactions on Ethereum.'
   ],
   buttonText: 'OKAY',
   isPopup: true,

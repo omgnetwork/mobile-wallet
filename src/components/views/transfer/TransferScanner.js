@@ -103,12 +103,12 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
     if (isRootchain && !hasRootchainAssets) {
       return {
         imageName: 'EmptyRootchainWallet',
-        text: 'Wallet is empty.\nShare wallet to receive fund.'
+        text: 'Your Wallet is empty.\nDeposit funds to get started.'
       }
     } else if (!isRootchain && !hasChildchainAssets) {
       return {
         imageName: 'EmptyChildchainWallet',
-        text: 'Wallet is empty.\nShare wallet to receive fund.'
+        text: 'Your Wallet is empty.\nDeposit funds to get started.'
       }
     }
     return {}
@@ -243,7 +243,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
                   weight='semi-bold'
                   style={styles.textChangeNetwork(
                     theme
-                  )}>{`Switch to send with \n${
+                  )}>{`Switch to send on \n${
                   isRootchain ? 'OMG Network' : 'Ethereum'
                 }`}</OMGText>
               </TouchableOpacity>
