@@ -16,8 +16,7 @@ export const deposit = {
 
 export const exit = {
   actions: ['CHILDCHAIN_EXIT'],
-  msgSuccess:
-    'The transaction withdrawal has started. Track the progress on the Etherscan.'
+  msgSuccess: 'The withdrawal has started. Track the progress on Etherscan'
 }
 
 export const importWallet = {

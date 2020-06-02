@@ -44,8 +44,7 @@ const Disclaimer = ({ navigation, theme }) => {
         <OMGText style={styles.contentText2}>
           Get first-hand experience of how the Plasma Layer-2 solution works.
           You can deposit and transfer any ERC-20 compliant token. Transactions
-          will incur charges and fees that are collected in ETH, DAI, OMG, and
-          USDT.
+          will incur charges and fees that are collected in OMG.
         </OMGText>
         <View style={styles.buttonContainer}>
           <OMGButton
