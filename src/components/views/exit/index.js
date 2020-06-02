@@ -33,16 +33,16 @@ const Exit = ({ navigation, theme, primaryWallet }) => {
         barStyle={'light-content'}
         backgroundColor={theme.colors.black5}
       />
-      <OMGHeader title='Exit' onPress={() => navigation.navigate('Home')} />
+      <OMGHeader title='Withdraw' onPress={() => navigation.navigate('Home')} />
       <OMGBlockchainLabel
-        actionText='Exit to'
+        actionText='Withdrawing to the'
         transferType={TransferHelper.TYPE_EXIT}
       />
       {primaryWallet ? (
         <ExitNavigator navigation={navigation} />
       ) : (
         <OMGEmpty
-          text={'The wallet is not found. Try import a wallet first.'}
+          text={'The wallet is not found. Try importing a wallet first.'}
         />
       )}
     </SafeAreaView>
