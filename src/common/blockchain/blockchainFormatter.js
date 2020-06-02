@@ -59,7 +59,7 @@ export const formatTokenBalance = (amount, maxDecimal = 18) => {
 export const formatTokenBalanceFromSmallestUnit = (
   amount,
   tokenDecimal = 18,
-  displayDecimals = 5
+  displayDecimals = 6
 ) => {
   const balance = formatUnits(amount.toString(), tokenDecimal)
   return Formatter.format(balance, {

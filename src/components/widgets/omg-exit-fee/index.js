@@ -55,7 +55,7 @@ const OMGExitFee = ({
     <View style={[styles.background(theme), style]}>
       <View style={[styles.container(theme)]}>
         <OMGEditItem
-          title='Fee'
+          title='Total'
           loading={!gasUsed || !exitBondValue}
           value={formatTotalExitFee() || 0}
           onPress={onPressEdit}
@@ -73,7 +73,7 @@ const OMGExitFee = ({
         />
         <Item
           title='Exit Bond'
-          subtitle='You’ll get this back after successfully exited'
+          subtitle='You’ll receive your funds after successful withdrawal from the OMG Network.'
           loading={!exitBondValue}
           theme={theme}
           ethPrice={ethPrice}

@@ -79,27 +79,27 @@ const BackupWarning = ({ theme, navigation }) => {
           Backup Mnemonic
         </OMGText>
         <OMGText style={styles.description} weight='regular'>
-          Please write down the Mnemonic. If your phone is lost, stolen,
-          damaged, the Mnemonic will be a ble to recover your assets.
+          Please write down your Mnemonic. If your phone is lost, stolen or
+          damaged, this Mnemonic will be able to recover your assets.
         </OMGText>
         <View style={styles.suggestionContainer}>
           <SuggestionItem
             style={styles.suggestionItem}
             theme={theme}
             renderImage={() => <BackupIcon1 width={24} height={24} />}
-            text='Write it down on paper, preferably multiple copies'
+            text='Write it down on paper, preferably multiple copies.'
           />
           <SuggestionItem
             style={styles.suggestionItem}
             theme={theme}
             renderImage={() => <BackupIcon2 width={24} height={24} />}
-            text='If record digitally, keep it in offline storage, isolated from the internet.'
+            text='If recording digitally, keep it in offline storage, isolated from the internet.'
           />
           <SuggestionItem
             theme={theme}
             style={styles.suggestionItem}
             renderImage={() => <BackupIcon3 width={24} height={24} />}
-            text='Do not share or store the Mnemonic in a network environment, such as email, albums, social apps and others.'
+            text='Do not share or store your Mnemonic in a network environment, such as email, albums, social apps and others.'
           />
         </View>
       </ScrollView>

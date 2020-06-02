@@ -35,7 +35,8 @@ const CreateWalletBackupMnemonic = ({ theme, navigation }) => {
           Backup Mnemonic Phrase
         </OMGText>
         <OMGText style={styles.description} weight='regular'>
-          Please transcribe the Mnemonic phrase properly and back up it securely
+          Please transcribe your Mnemonic phrase properly and back it up
+          securely.
         </OMGText>
         <View style={styles.mnemonicContainer}>{mnemonicPhrases}</View>
       </ScrollView>
