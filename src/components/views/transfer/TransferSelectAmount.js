@@ -1,8 +1,8 @@
-import React, { useRef, useCallback, useState } from 'react'
+import React, { useRef, useCallback, useState, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
-import { withNavigation } from 'react-navigation'
+import { withNavigationFocus } from 'react-navigation'
 import { Validator } from 'common/blockchain'
 import {
   OMGText,
@@ -12,11 +12,23 @@ import {
 } from 'components/widgets'
 import { BlockchainNetworkType } from 'common/constants'
 
-const TransferSelectAmount = ({ navigation, theme, primaryWalletNetwork }) => {
+const TransferSelectAmount = ({
+  navigation,
+  theme,
+  primaryWalletNetwork,
+  isFocused
+}) => {
   const styles = createStyles(theme)
   const ref = useRef(0)
+  const focusRef = useRef(null)
   const token = navigation.getParam('token')
   const [disabled, setDisabled] = useState(true)
+
+  useEffect(() => {
+    if (isFocused) {
+      focusRef.current?.focus()
+    }
+  }, [isFocused])
 
   const onChangeAmount = useCallback(
     amount => {
@@ -48,6 +60,7 @@ const TransferSelectAmount = ({ navigation, theme, primaryWalletNetwork }) => {
         token={token}
         onChangeAmount={onChangeAmount}
         inputRef={ref}
+        focusRef={focusRef}
         style={styles.amountInput}
       />
       <View style={styles.buttonContainer}>
@@ -87,4 +100,4 @@ const mapStateToProps = (state, ownProps) => ({
 export default connect(
   mapStateToProps,
   null
-)(withNavigation(withTheme(TransferSelectAmount)))
+)(withNavigationFocus(withTheme(TransferSelectAmount)))
