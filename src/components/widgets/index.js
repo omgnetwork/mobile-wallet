@@ -19,6 +19,7 @@ import OMGEditItem from './omg-edit-item'
 import OMGEmpty from './omg-empty'
 import OMGExitComplete from './omg-exit-complete'
 import OMGExitFee from './omg-exit-fee'
+import OMGExitPeriodWarning from './omg-exit-period-warning'
 import OMGExitWarning from './omg-exit-warning'
 import OMGFeeInput from './omg-fee-input'
 import OMGFeeSelect from './omg-fee-select'
@@ -85,6 +86,7 @@ export {
   OMGEmpty,
   OMGExitComplete,
   OMGExitFee,
+  OMGExitPeriodWarning,
   OMGExitWarning,
   OMGFeeInput,
   OMGFeeSelect,
