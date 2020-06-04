@@ -280,16 +280,7 @@ export const getExitQueue = async tokenContractAddress => {
 }
 
 export const getFees = (currencies = []) => {
-  return axios
-    .post(`${Config.WATCHER_URL}fees.all`, {
-      params: {
-        currencies,
-        tx_types: []
-      }
-    })
-    .then(response => {
-      return response.data.data['1'].filter(
-        fee => currencies.indexOf(fee.currency) > -1
-      )
-    })
+  return Plasma.ChildChain.getFees().then(response => {
+    return response['1'].filter(fee => currencies.indexOf(fee.currency) > -1)
+  })
 }

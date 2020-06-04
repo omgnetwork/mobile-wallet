@@ -128,7 +128,7 @@ export const transfer = async (
       fromBlockchainWallet,
       toAddress,
       token,
-      { ...fee, amount: fee.amount.toString() },
+      fee,
       metadata
     )
 
