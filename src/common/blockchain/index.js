@@ -1,4 +1,5 @@
 import { OmgUtil } from '@omisego/react-native-omg-js'
+import * as ABIDecoder from './abiDecoder'
 import * as Ethereum from './ethereum'
 import * as Plasma from './plasma'
 import * as Contract from './contract'
@@ -14,6 +15,7 @@ import * as Utxos from './utxos'
 import * as BlockchainFormatter from './blockchainFormatter'
 
 export {
+  ABIDecoder,
   Ethereum,
   Plasma,
   Contract,

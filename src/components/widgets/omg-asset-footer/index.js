@@ -26,7 +26,7 @@ const OMGAssetFooter = ({
           <View style={styles.divider(theme)} />
           <TouchableOpacity style={styles.subfooter} onPress={onPressExit}>
             <OMGText style={styles.subfooterText(theme, enableExit)}>
-              EXIT
+              WITHDRAW
             </OMGText>
           </TouchableOpacity>
         </>

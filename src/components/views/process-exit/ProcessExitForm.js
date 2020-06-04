@@ -87,7 +87,7 @@ const ProcessExitForm = ({
           style={styles.marginSmall}
         />
         <OMGText style={[styles.title(theme), styles.marginMedium]}>
-          MAX EXIT TO PROCESS
+          WITHDRAWALS TO PROCESS
         </OMGText>
         <OMGProcessExitText exitQueue={maxExits} style={styles.marginSmall} />
 
@@ -101,7 +101,7 @@ const ProcessExitForm = ({
             loading={btnLoading}
             disabled={disabled}
             onPress={handleOnSubmit}>
-            Process Exit
+            Process Withdrawal
           </OMGButton>
         </View>
       </OMGKeyboardShift>

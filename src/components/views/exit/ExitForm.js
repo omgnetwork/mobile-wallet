@@ -90,7 +90,7 @@ const ExitForm = ({
         <OMGText
           style={[styles.title(theme), styles.marginMedium]}
           weight='regular'>
-          Review Exit Detail
+          Review Withdrawal Details
         </OMGText>
         <OMGEditItem
           title='Amount'
@@ -110,7 +110,7 @@ const ExitForm = ({
         <OMGExitWarning style={styles.marginMedium} />
         <View style={styles.buttonContainer}>
           <OMGButton onPress={submit} loading={submitting}>
-            Confirm Exit
+            Confirm Withdrawal
           </OMGButton>
         </View>
       </ScrollView>

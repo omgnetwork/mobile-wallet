@@ -67,20 +67,6 @@ export const mapChildchainTxDetail = (oldTx, newTx) => {
   }
 }
 
-export const mapRootchainTx = (
-  tx,
-  address,
-  erc20TxMap,
-  standardExitBondSize
-) => {
-  const erc20Tx = erc20TxMap[tx.hash]
-  if (erc20Tx) {
-    return mapRootchainErc20Tx(erc20Tx, address)
-  } else {
-    return mapRootchainEthTx(tx, address, standardExitBondSize)
-  }
-}
-
 export const mapInputTransfer = tx => {
   return tx.inputs.length === 1
     ? tx.inputs[0]
@@ -130,10 +116,16 @@ const isInputGreaterThanOutput = (input, outputs) => {
 export const mapAssetCurrency = asset => asset.currency
 
 export const mapRootchainEthTx = (tx, address, standardExitBondSize) => {
+  const method = Transaction.decodeTxInputMethod(tx.input)
   return {
     hash: tx.hash,
     network: BlockchainNetworkType.TYPE_ETHEREUM_NETWORK,
-    type: mapRootchainTransactionType(tx, address, standardExitBondSize),
+    type: mapRootchainTransactionType(
+      method,
+      tx,
+      address,
+      standardExitBondSize
+    ),
     confirmations: tx.confirmations,
     from: tx.from,
     to: tx.to,
@@ -183,13 +175,17 @@ export const mapStartedExitTx = tx => {
   }
 }
 
-const mapRootchainTransactionType = (tx, address, standardExitBondSize) => {
-  const methodName = Transaction.decodePlasmaInputMethod(tx.input)
+const mapRootchainTransactionType = (
+  method,
+  tx,
+  address,
+  standardExitBondSize
+) => {
   if (tx.isError === '1') {
     return TransactionTypes.TYPE_FAILED
   }
 
-  switch (methodName) {
+  switch (method?.name) {
     case 'depositFrom':
     case 'deposit':
       return TransactionTypes.TYPE_DEPOSIT

@@ -41,9 +41,7 @@ const Exit = ({ navigation, theme, primaryWallet }) => {
       {primaryWallet ? (
         <ExitNavigator navigation={navigation} />
       ) : (
-        <OMGEmpty
-          text={'The wallet is not found. Try importing a wallet first.'}
-        />
+        <OMGEmpty text={'Wallet not found. Try importing a wallet first.'} />
       )}
     </SafeAreaView>
   )
