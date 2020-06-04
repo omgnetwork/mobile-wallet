@@ -9,6 +9,7 @@ import { OMGListPlasmaFee, OMGText } from 'components/widgets'
 const TransferChoosePlasmaFee = ({
   theme,
   fees,
+  supportedFees,
   assets,
   dispatchGetFees,
   navigation
@@ -38,6 +39,7 @@ const TransferChoosePlasmaFee = ({
       </OMGText>
       <OMGListPlasmaFee
         fees={fees}
+        supportedFees={supportedFees}
         style={styles.list}
         onPress={onSelectPlasmaFee}
       />
@@ -64,6 +66,7 @@ const createStyles = theme =>
 
 const mapStateToProps = (state, ownProps) => ({
   fees: state.fees.data,
+  supportedFees: state.fees.supportedFees,
   assets: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   )?.childchainAssets

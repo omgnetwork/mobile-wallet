@@ -288,8 +288,6 @@ export const getFees = (currencies = []) => {
       }
     })
     .then(response => {
-      return response.data.data['1'].filter(
-        fee => currencies.indexOf(fee.currency) > -1
-      )
+      return response.data.data['1']
     })
 }

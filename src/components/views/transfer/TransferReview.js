@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
+import { useEstimatedFee } from 'common/hooks'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
-import { BlockchainFormatter } from 'common/blockchain'
+import { BigNumber } from 'common/utils'
 import { OMGEditItem, OMGText, OMGButton } from 'components/widgets'
-import { BlockchainNetworkType } from 'common/constants'
+import { BlockchainNetworkType, ContractAddress } from 'common/constants'
 import { plasmaActions, ethereumActions } from 'common/actions'
 
 const TransferReview = ({
@@ -13,6 +14,7 @@ const TransferReview = ({
   navigation,
   blockchainWallet,
   primaryWalletNetwork,
+  ethToken,
   ethereumTransfer,
   plasmaTransfer,
   loading
@@ -23,25 +25,24 @@ const TransferReview = ({
   const token = navigation.getParam('token')
   const amount = navigation.getParam('amount')
   const toAddress = navigation.getParam('address')
-  const fee = navigation.getParam('fee')
+  const feeRate = navigation.getParam('fee')
+  const amountUsd = BigNumber.multiply(amount, token.price)
+  const transferToken = { ...token, balance: amount }
 
-  const amountUsd = BlockchainFormatter.formatTokenPrice(amount, token.price)
-
-  const feeAmount = isEthereum
-    ? fee.displayAmount
-    : BlockchainFormatter.formatTokenBalanceFromSmallestUnit(
-        fee.amount,
-        fee.tokenDecimal,
-        fee.tokenDecimal
-      )
-  const displayFeeAmount = isEthereum
-    ? `${feeAmount} ETH`
-    : `${feeAmount} ${fee.tokenSymbol}`
-
-  const displayFeeUsd = `${BlockchainFormatter.formatTokenPrice(
-    feeAmount,
-    fee.price
-  )} USD`
+  const [
+    estimatedFee,
+    estimatedFeeSymbol,
+    estimatedFeeUsd,
+    estimatedTotal,
+    estimatedTotalUsd
+  ] = useEstimatedFee({
+    feeRate,
+    transferToken,
+    ethToken,
+    isEthereum,
+    blockchainWallet,
+    toAddress
+  })
 
   const onPressEditAddress = useCallback(() => {
     navigation.navigate('TransferSelectAddress')
@@ -56,19 +57,17 @@ const TransferReview = ({
   }, [isEthereum, navigation])
 
   const onSubmit = useCallback(() => {
-    const sentToken = { ...token, balance: amount }
     isEthereum
-      ? ethereumTransfer(blockchainWallet, toAddress, sentToken, fee)
-      : plasmaTransfer(blockchainWallet, toAddress, sentToken, fee)
+      ? ethereumTransfer(blockchainWallet, toAddress, transferToken, feeRate)
+      : plasmaTransfer(blockchainWallet, toAddress, transferToken, feeRate)
   }, [
-    amount,
     blockchainWallet,
     ethereumTransfer,
-    fee,
+    feeRate,
     isEthereum,
     plasmaTransfer,
     toAddress,
-    token
+    transferToken
   ])
 
   useEffect(() => {
@@ -95,9 +94,10 @@ const TransferReview = ({
         style={[styles.marginMedium, styles.paddingMedium]}
       />
       <OMGEditItem
-        title='Fee'
-        rightFirstLine={displayFeeAmount}
-        rightSecondLine={displayFeeUsd}
+        title='Estimated Fee'
+        loading={!estimatedFee}
+        rightFirstLine={`${estimatedFee} ${estimatedFeeSymbol}`}
+        rightSecondLine={`${estimatedFeeUsd} USD`}
         onPress={onPressEditFee}
         style={[styles.marginMedium, styles.paddingMedium]}
       />
@@ -141,11 +141,20 @@ const createStyles = theme =>
     }
   })
 
-const mapStateToProps = (state, ownProps) => ({
-  loading: state.loading,
-  blockchainWallet: state.setting.blockchainWallet,
-  primaryWalletNetwork: state.setting.primaryWalletNetwork
-})
+const mapStateToProps = (state, ownProps) => {
+  const primaryWallet = state.wallets.find(
+    wallet => wallet.address === state.setting.primaryWalletAddress
+  )
+
+  return {
+    loading: state.loading,
+    blockchainWallet: state.setting.blockchainWallet,
+    primaryWalletNetwork: state.setting.primaryWalletNetwork,
+    ethToken: primaryWallet.rootchainAssets.find(
+      token => token.contractAddress === ContractAddress.ETH_ADDRESS
+    )
+  }
+}
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   plasmaTransfer: (blockchainWallet, toAddress, token, fee) =>

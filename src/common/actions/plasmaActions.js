@@ -172,9 +172,12 @@ export const exit = (blockchainWallet, token, utxos, gasPrice) => {
 
 export const getFees = tokens => {
   const asyncAction = async () => {
-    const { fees, updatedAt } = await plasmaService.getFees(tokens)
+    const { fees, updatedAt, supportedFees } = await plasmaService.getFees(
+      tokens
+    )
     return {
       data: fees,
+      supportedFees,
       updatedAt
     }
   }
