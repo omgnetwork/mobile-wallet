@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   unconfirmedTx: state.transaction.unconfirmedTxs.length > 0,
   wallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress

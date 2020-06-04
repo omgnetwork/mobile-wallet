@@ -42,7 +42,7 @@ const mockFee = {
   symbol: 'Gwei'
 }
 
-const Preview = ({ navigation, theme }) => {
+const Preview = ({ _navigation, theme }) => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {

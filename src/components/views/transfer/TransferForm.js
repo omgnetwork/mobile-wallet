@@ -37,7 +37,7 @@ const TransferForm = ({
   wallet,
   theme,
   navigation,
-  isFocused,
+  _isFocused,
   dispatchGetFees,
   dispatchGetRecommendedGas,
   gasOptions,
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: theme.colors.black3
   }),
-  feeContainer: (theme, transferType) => ({
+  feeContainer: theme => ({
     flexDirection: 'column',
     backgroundColor: theme.colors.black3
   }),
@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
@@ -339,7 +339,7 @@ const mapStateToProps = (state, ownProps) => ({
   gasOptions: state.gasOptions
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchGetFees: tokens => dispatch(plasmaActions.getFees(tokens)),
   dispatchGetRecommendedGas: () => dispatch(ethereumActions.getRecommendedGas())
 })

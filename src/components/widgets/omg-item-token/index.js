@@ -7,7 +7,7 @@ import { withTheme } from 'react-native-paper'
 import { Styles } from 'common/utils'
 
 const OMGItemToken = ({ token, style, onPress, theme }) => {
-  const [animating, setAnimating] = useState(false)
+  const [_animating, setAnimating] = useState(false)
   const shadowAnim = useRef(new Animated.Value(0))
   const shadowOpacity = useRef(new Animated.Value(0))
   const balanceOpacity = useRef(new Animated.Value(1.0))

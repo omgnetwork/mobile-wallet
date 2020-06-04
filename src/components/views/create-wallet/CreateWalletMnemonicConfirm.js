@@ -159,14 +159,14 @@ const createStyles = theme =>
     }
   })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   loading: state.loading,
   wallets: state.wallets,
   wallet: state.wallets.length && state.wallets.slice(-1).pop(),
   provider: state.setting.provider
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchCreateWallet: (wallets, mnemonic, provider, name) =>
     dispatch(walletActions.create(wallets, mnemonic, provider, name)),
   dispatchSetPrimaryWallet: wallet =>

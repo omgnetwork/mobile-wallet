@@ -1,7 +1,7 @@
 import { Plasma, web3 } from 'common/clients'
 import axios from 'axios'
 import { Gas, ContractAddress } from 'common/constants'
-import { Mapper, BigNumber } from 'common/utils'
+import { Mapper } from 'common/utils'
 import Config from 'react-native-config'
 import BN from 'bn.js'
 import {

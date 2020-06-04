@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   loading: state.loading,
   unconfirmedTxs: state.transaction.unconfirmedTxs,
   feedbackCompleteTx: state.transaction.feedbackCompleteTx,
@@ -154,7 +154,7 @@ const mapStateToProps = (state, ownProps) => ({
   )
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchInvalidateFeedbackCompleteTx: wallet =>
     transactionActions.invalidateFeedbackCompleteTx(dispatch, wallet)
 })

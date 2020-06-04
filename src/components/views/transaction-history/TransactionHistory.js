@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   provider: state.setting.provider,
   loading: state.loading,
   transactions: state.transaction.transactions,
@@ -228,7 +228,7 @@ const mapStateToProps = (state, ownProps) => ({
     state.onboarding.anchoredComponents.TransactionHistoryMenu
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchFetchTxHistory: (address, provider, options) =>
     dispatch(
       transactionActions.fetchTransactionHistory(address, provider, options)
