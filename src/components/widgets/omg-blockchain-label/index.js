@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   text: (theme, isEthereumRootchain) => ({
     marginLeft: 16,
     color: isEthereumRootchain ? theme.colors.black5 : theme.colors.white,
-    fontSize: Styles.getResponsiveSize(14, { small: 10, medium: 10 })
+    fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 12 })
   })
 })
 
