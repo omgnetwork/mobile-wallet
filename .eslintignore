@@ -1,1 +1,8 @@
+android/
+assets/
+docs/
+ios/
+node_modules/
 proxy-server/
+public/
+test_results/
