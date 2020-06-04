@@ -13,7 +13,7 @@ const OMGExitWarning = ({ theme, style }) => {
         color={theme.colors.white}
       />
       <OMGText style={styles.text(theme)}>
-        You are sending your funds back to the Ethereum Network
+        You are sending your funds back to the Ethereum
       </OMGText>
     </View>
   )
