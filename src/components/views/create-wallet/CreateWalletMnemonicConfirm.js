@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
-import { EventReporter } from 'cocommon/reporter
+import { EventReporter } from 'cocommon/reporter'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
 import { View, ScrollView, StyleSheet } from 'react-native'
