@@ -10,7 +10,6 @@ import { TaskScheduler } from 'common/native'
 
 const ProcessExitTransactionTracker = ({
   wallet,
-  _blockchainWallet,
   startedExitTxs,
   dispatchUpdateStartedExitTxStatus
 }) => {
