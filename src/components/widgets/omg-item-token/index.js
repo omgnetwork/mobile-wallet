@@ -1,50 +1,16 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useRef } from 'react'
 import { StyleSheet, View, Animated } from 'react-native'
-import { Animator } from 'common/anims'
 import { OMGText, OMGTokenIcon } from 'components/widgets'
 import { BlockchainFormatter } from 'common/blockchain'
 import { withTheme } from 'react-native-paper'
 import { Styles } from 'common/utils'
 
 const OMGItemToken = ({ token, style, onPress, theme }) => {
-  const [_animating, setAnimating] = useState(false)
   const shadowAnim = useRef(new Animated.Value(0))
   const shadowOpacity = useRef(new Animated.Value(0))
   const balanceOpacity = useRef(new Animated.Value(1.0))
   const balance = BlockchainFormatter.formatTokenBalance(token.balance, 6)
   const price = BlockchainFormatter.formatTokenPrice(token.balance, token.price)
-  const [currentBalance, setCurrentBalance] = useState(balance)
-  const [currentPrice, setCurrentPrice] = useState(price)
-
-  useEffect(() => {
-    if (currentBalance !== balance) {
-      setAnimating(true)
-      Animated.sequence([
-        Animated.parallel([
-          Animator.spring(shadowAnim, 4, 1500, true),
-          Animator.spring(shadowOpacity, 0.2, 1500, true)
-        ]),
-        Animator.spring(balanceOpacity, 0.3, 500, true)
-      ]).start(({ finished }) => {
-        if (finished) {
-          setCurrentBalance(balance)
-          setCurrentPrice(price)
-        }
-      })
-    } else {
-      Animated.sequence([
-        Animator.spring(balanceOpacity, 1.0, 500, true),
-        Animated.parallel([
-          Animator.spring(shadowAnim, 0, 1500, true),
-          Animator.spring(shadowOpacity, 0, 1500, true)
-        ])
-      ]).start(({ finished }) => {
-        if (finished) {
-          setAnimating(false)
-        }
-      })
-    }
-  }, [balance, currentBalance, price])
 
   return (
     <Animated.View
@@ -66,9 +32,9 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
           style={styles.balance(theme)}
           ellipsizeMode='tail'
           numberOfLines={1}>
-          {currentBalance}
+          {balance}
         </OMGText>
-        <OMGText style={styles.fiatValue(theme)}>{currentPrice} USD</OMGText>
+        <OMGText style={styles.fiatValue(theme)}>{price} USD</OMGText>
       </Animated.View>
     </Animated.View>
   )
