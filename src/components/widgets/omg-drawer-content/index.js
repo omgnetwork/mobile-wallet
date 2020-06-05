@@ -138,7 +138,7 @@ const OMGDrawerContent = ({
             </OMGText>
             <View style={styles.envInfoCard(theme)}>
               <OMGText style={styles.environmentItemText(theme)}>
-                Ethereum Network
+                Ethereum
               </OMGText>
               <OMGText style={styles.environmentItemTextLighter(theme)}>
                 {Config.ETHEREUM_NETWORK}

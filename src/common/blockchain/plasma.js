@@ -1,7 +1,7 @@
 import { Plasma, web3 } from 'common/clients'
 import axios from 'axios'
 import { Gas, ContractAddress } from 'common/constants'
-import { Mapper, BigNumber } from 'common/utils'
+import { Mapper } from 'common/utils'
 import Config from 'react-native-config'
 import BN from 'bn.js'
 import {
@@ -39,7 +39,7 @@ export const transfer = async (
     sort: (a, b) => new BN(b.amount).sub(new BN(a.amount))
   })
   const txBody = Transaction.createBody(
-    fromBlockchainWallet.address,
+    address,
     utxos,
     [payment],
     childchainFee,
@@ -280,16 +280,7 @@ export const getExitQueue = async tokenContractAddress => {
 }
 
 export const getFees = (currencies = []) => {
-  return axios
-    .post(`${Config.WATCHER_URL}fees.all`, {
-      params: {
-        currencies,
-        tx_types: []
-      }
-    })
-    .then(response => {
-      return response.data.data['1'].filter(
-        fee => currencies.indexOf(fee.currency) > -1
-      )
-    })
+  return Plasma.ChildChain.getFees().then(response => {
+    return response['1'].filter(fee => currencies.indexOf(fee.currency) > -1)
+  })
 }
