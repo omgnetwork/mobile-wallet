@@ -18,7 +18,7 @@ import {
 } from 'components/widgets'
 import { TransactionActionTypes } from 'common/constants'
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
-import { EventReporter } from 'cocommon/reporter
+import { EventReporter } from 'common/reporter'
 import * as BlockchainLabel from './blockchainLabel'
 import { getParamsForTransferPendingFromTransferConfirm } from './transferNavigation'
 

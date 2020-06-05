@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { settingActions } from 'common/actions'
 import { withNavigation } from 'react-navigation'
-import { EventReporter } from 'cocommon/reporter
+import { EventReporter } from 'common/reporter'
 import { OMGItemWallet, OMGText, OMGButton } from 'components/widgets'
 
 const ImportSuccess = ({ theme, navigation, dispatchSetPrimaryWallet }) => {

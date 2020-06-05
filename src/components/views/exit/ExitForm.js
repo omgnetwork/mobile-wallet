@@ -5,7 +5,7 @@ import { withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useLoading } from 'common/hooks'
 import { plasmaActions } from 'common/actions'
-import { EventReporter } from 'cocommon/reporter
+import { EventReporter } from 'common/reporter'
 import {
   OMGText,
   OMGExitWarning,

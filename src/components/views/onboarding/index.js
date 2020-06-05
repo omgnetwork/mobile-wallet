@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { onboardingActions, transactionActions } from 'common/actions'
 import * as ContentSelector from './contentSelector'
-import { EventReporter } from 'cocommon/reporter
+import { EventReporter } from 'common/reporter'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import {
