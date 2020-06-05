@@ -76,17 +76,6 @@ const TransferForm = ({
   )
   const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
 
-  // Feel not quite useful since the user will be likely to select the token to send first.
-  // Immediately set focus to amount input will require more effort for selecting a token.
-  // useEffect(() => {
-  //   if (isFocused) {
-  //     if (!amountRef.current) {
-  //       focusOn(amountFocusRef)
-  //     }
-  //   }
-  // }, [dispatchGetFees, focusOn, isFocused, wallet.childchainAssets])
-
-  // Retrieve fees from /fees.all when the component is mounted
   useEffect(() => {
     dispatchGetFees(wallet.childchainAssets)
 
