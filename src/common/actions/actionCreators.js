@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/react-native'
+import { ExceptionReporter } from 'common/reporter'
 
 export const createAsyncAction = ({
   operation: doAsyncAction,
@@ -17,9 +17,7 @@ export const createAsyncAction = ({
       } catch (err) {
         console.log(err)
         dispatch({ type: `${actionType}/FAILED`, err })
-        if (!__DEV__) {
-          Sentry.captureException(err)
-        }
+        ExceptionReporter.send(err)
       }
       const actionName = actionType.replace('/', '_')
       dispatch({ type: `LOADING/${actionName}/IDLE` })
@@ -37,8 +35,6 @@ export const createAction = (
   } catch (err) {
     console.log(err)
     dispatch({ type: `${actionType}/ERROR`, data: err })
-    if (!__DEV__) {
-      Sentry.captureException(err)
-    }
+    ExceptionReporter.send(err)
   }
 }

@@ -18,7 +18,7 @@ import {
 } from 'components/widgets'
 import { TransactionActionTypes } from 'common/constants'
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
-import { GoogleAnalytics } from 'common/analytics'
+import { EventReporter } from 'cocommon/reporter
 import * as BlockchainLabel from './blockchainLabel'
 import { getParamsForTransferPendingFromTransferConfirm } from './transferNavigation'
 
@@ -62,15 +62,15 @@ const TransferPending = ({ theme, navigation }) => {
   useEffect(() => {
     switch (transferType) {
       case TransferHelper.TYPE_DEPOSIT:
-        return GoogleAnalytics.sendEvent('transfer_deposited', {
+        return EventReporter.send('transfer_deposited', {
           hash
         })
       case TransferHelper.TYPE_TRANSFER_ROOTCHAIN:
-        return GoogleAnalytics.sendEvent('transfer_rootchain', {
+        return EventReporter.send('transfer_rootchain', {
           hash
         })
       default:
-        return GoogleAnalytics.sendEvent('transfer_childchain', {
+        return EventReporter.send('transfer_childchain', {
           hash
         })
     }

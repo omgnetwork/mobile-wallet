@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { onboardingActions, transactionActions } from 'common/actions'
 import * as ContentSelector from './contentSelector'
-import { GoogleAnalytics } from 'common/analytics'
+import { EventReporter } from 'cocommon/reporter
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import {
@@ -32,9 +32,9 @@ const OnboardingTourGuide = ({
   const handleEnableOnboardingAction = useCallback(
     enabled => {
       if (enabled) {
-        GoogleAnalytics.sendEvent('onboarding', { enabled: true })
+        EventReporter.send('onboarding', { enabled: true })
       } else {
-        GoogleAnalytics.sendEvent('onboarding', { enabled: false })
+        EventReporter.send('onboarding', { enabled: false })
       }
       dispatchEnableOnboarding(enabled)
       setTourVisible(false)

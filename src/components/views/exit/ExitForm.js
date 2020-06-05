@@ -5,7 +5,7 @@ import { withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useLoading } from 'common/hooks'
 import { plasmaActions } from 'common/actions'
-import { GoogleAnalytics } from 'common/analytics'
+import { EventReporter } from 'cocommon/reporter
 import {
   OMGText,
   OMGExitWarning,
@@ -63,7 +63,7 @@ const ExitForm = ({
 
   useEffect(() => {
     if (loading.success && loading.action === 'CHILDCHAIN_EXIT') {
-      GoogleAnalytics.sendEvent('transfer_exited', { hash: unconfirmedTx.hash })
+      EventReporter.send('transfer_exited', { hash: unconfirmedTx.hash })
       navigation.navigate('Balance')
     }
   })
