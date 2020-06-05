@@ -15,7 +15,15 @@ const OMGBottomSheet = ({
 }) => {
   const offBottom = new Animated.Value(320.0)
   const slide = useRef(offBottom)
-  const { hash, title, subtitle, pending, link } = feedback
+
+  const {
+    hash,
+    title,
+    subtitle,
+    pending,
+    internalLink,
+    externalLink
+  } = feedback
 
   useEffect(() => {
     if (show) {
@@ -45,19 +53,29 @@ const OMGBottomSheet = ({
     }
   }
 
-  const onTapExternalLink = useCallback(url => {
+  const onTapExternalLink = useCallback((url) => {
     Linking.openURL(url)
   }, [])
 
-  const renderLink = useCallback(() => {
+  const renderExternalLink = useCallback(() => {
     return (
       <TouchableOpacity
-        onPress={() => onTapExternalLink(link?.url)}
+        onPress={() => onTapExternalLink(externalLink?.url)}
         style={styles.smallMarginTop}>
-        <OMGText style={styles.textLink(theme)}>{link?.title}</OMGText>
+        <OMGText style={styles.textLink(theme)}>{externalLink?.title}</OMGText>
       </TouchableOpacity>
     )
-  }, [link, onTapExternalLink, theme])
+  }, [externalLink, onTapExternalLink, theme])
+
+  const renderInternalLink = useCallback(() => {
+    return (
+      <TouchableOpacity
+        onPress={() => console.log('navigate')}
+        style={styles.smallMarginTop}>
+        <OMGText style={styles.textLink(theme)}>{internalLink?.title}</OMGText>
+      </TouchableOpacity>
+    )
+  }, [internalLink, onTapExternalLink, theme])
 
   return (
     <Animated.View style={{ ...styles.container(theme, slide), ...style }}>
@@ -74,7 +92,10 @@ const OMGBottomSheet = ({
             {subtitle}
           </OMGText>
         )}
-        {link && renderLink()}
+        <View style={styles.links}>
+          {externalLink && renderExternalLink()}
+          {internalLink && renderInternalLink()}
+        </View>
       </View>
       <TouchableOpacity
         onPress={onPressClose}
@@ -102,7 +123,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: theme.colors.gray5
   }),
-  iconContainer: color => ({
+  iconContainer: (color) => ({
     width: 30,
     height: 30,
     borderWidth: 3,
@@ -121,17 +142,23 @@ const styles = StyleSheet.create({
   loading: {
     flex: 0
   },
-  textTitle: theme => ({
+  textTitle: (theme) => ({
     color: theme.colors.white
   }),
-  textSubtitle: theme => ({
+  textSubtitle: (theme) => ({
     flex: 1,
     marginTop: 2,
     fontSize: 8,
     marginRight: 16,
     color: theme.colors.white
   }),
-  textLink: theme => ({
+  links: {
+    marginTop: 5,
+    width: '80%',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  textLink: (theme) => ({
     fontSize: 8,
     color: theme.colors.blue
   }),
