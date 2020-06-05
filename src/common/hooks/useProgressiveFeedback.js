@@ -1,7 +1,6 @@
 import { useState, useCallback, useEffect } from 'react'
 import Config from 'react-native-config'
 import { TransactionActionTypes } from 'common/constants'
-import { Transaction } from 'common/blockchain'
 
 const useProgressiveFeedback = (
   primaryWallet,
