@@ -21,15 +21,14 @@
 		3A7EEF073014497B89EDC811 /* MessinaSansMono-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = D8FEECC5438C4F8C8835E93C /* MessinaSansMono-Light.otf */; };
 		3E988AC7244C4F22B03B7046 /* OMGFontIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EA92F585139B4B03A9F625FB /* OMGFontIcon.ttf */; };
 		71B952FEB1694F4E838D28C6 /* MessinaSansMono-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4BD391ABF0B04F5DBC7C4B8D /* MessinaSansMono-Book.otf */; };
-		7887680817D9039B2B4345C3 /* libPods-PlasmaWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4DB1EC4247FABC80007B6BB /* libPods-PlasmaWallet.a */; };
 		78BB2462972B45E282E97D4E /* MessinaSans-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 494129B0817C40B2B566300D /* MessinaSans-Bold.otf */; };
 		AF93B4D6639E460B9DACAB68 /* MessinaSans-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BAFF502928C4ECF85C816AB /* MessinaSans-SemiBold.otf */; };
 		BFC9C018DE894ECF94E174EB /* libPods-PlasmaWallet-PlasmaWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 038202B68F8B8683ED793D06 /* libPods-PlasmaWallet-PlasmaWalletTests.a */; };
 		C479231924612F2A001B1F4E /* SupportReactNative0.62.2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C479231824612F2A001B1F4E /* SupportReactNative0.62.2.swift */; };
 		C49E761123660727003B0D52 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */; };
-		C4AD05DB230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
-		C4AD05DC230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
-		C4AD05DD230AF9C30027E763 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DB230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DC230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		C4AD05DD230AF9C30027E763 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		D2A2277A48E64BA1A6CA92BA /* MessinaSans-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0359736497A843F3972493C8 /* MessinaSans-Light.otf */; };
 		D6DD8AB8C90447CCBFFCC6A7 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2752A0B5F702467A8625AC5D /* RNBackgroundFetch+AppDelegate.m */; };
 		D764F9A350CA45E88C984E40 /* MessinaSansMono-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 720399F0D2A44BE8B2D7918E /* MessinaSansMono-SemiBold.otf */; };
@@ -112,7 +111,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F856FFAE0AF45D49F1346DA /* TSBackgroundFetch.framework in Frameworks */,
-				7887680817D9039B2B4345C3 /* libPods-PlasmaWallet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,9 +389,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4AD05DB230AF9C30027E763 /* BuildFile in Resources */,
-				C4AD05DC230AF9C30027E763 /* BuildFile in Resources */,
-				C4AD05DD230AF9C30027E763 /* BuildFile in Resources */,
+				C4AD05DB230AF9C30027E763 /* (null) in Resources */,
+				C4AD05DC230AF9C30027E763 /* (null) in Resources */,
+				C4AD05DD230AF9C30027E763 /* (null) in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -723,7 +721,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 55;
+				CURRENT_PROJECT_VERSION = 56;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = KWTQ7XD7P6;
 				ENABLE_BITCODE = NO;
@@ -762,7 +760,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 55;
+				CURRENT_PROJECT_VERSION = 56;
 				DEVELOPMENT_TEAM = KWTQ7XD7P6;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
