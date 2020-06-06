@@ -149,7 +149,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   const TopMarker = ({ text }) => {
     return (
       <>
-        <View style={styles.titleContainer(theme)}>
+        <View style={styles.titleContainer}>
           {isRootchain ? (
             <ETHIcon
               fill={theme.colors.white}
@@ -180,7 +180,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
   return (
     <View style={styles.container(theme)}>
       {rendering && (
-        <View style={styles.contentContainer(theme)}>
+        <View style={styles.contentContainer}>
           <View style={styles.topContainer}>
             <View style={styles.renderContainer}>
               <TopMarker
@@ -263,11 +263,11 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     backgroundColor: theme.colors.black3
   }),
-  titleContainer: theme => ({
+  titleContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center'
-  }),
+  },
   title: theme => ({
     color: theme.colors.white,
     marginLeft: 'auto',
@@ -331,10 +331,10 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.gray
   }),
 
-  contentContainer: theme => ({
+  contentContainer: {
     flex: 1,
     justifyContent: 'center'
-  }),
+  },
   cameraContainer: {
     flex: Styles.getResponsiveSize(0.4, { small: 0.64, medium: 0.5 })
   },
@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   unconfirmedTx: state.transaction.unconfirmedTxs.length > 0,
   wallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress

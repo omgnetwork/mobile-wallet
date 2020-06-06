@@ -21,7 +21,7 @@ const OMGAlert = ({ loading, error, style }) => {
   return <FlashMessage style={style} />
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   loading: state.loading,
   error: state.error
 })

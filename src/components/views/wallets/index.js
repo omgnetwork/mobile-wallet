@@ -73,14 +73,14 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   loading: state.loading,
   wallets: state.wallets,
   provider: state.setting.provider,
   primaryWalletAddress: state.setting.primaryWalletAddress
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchDeleteAllWallets: () => walletActions.clear(dispatch),
   dispatchPrimaryWalletAddress: address =>
     settingActions.setPrimaryWallet(dispatch, address)

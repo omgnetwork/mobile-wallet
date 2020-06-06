@@ -50,7 +50,7 @@ const OMGAddressInput = ({
           placeholder='Paste address'
           hideUnderline={true}
         />
-        <View style={styles.rightContainer(theme)}>
+        <View style={styles.rightContainer}>
           <TouchableOpacity onPress={onPressPaste}>
             <OMGText weight='mono-regular' style={styles.textPaste(theme)}>
               Paste
@@ -109,12 +109,12 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: Styles.getResponsiveSize(14, { small: 10, medium: 12 })
   }),
-  rightContainer: theme => ({
+  rightContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 16
-  })
+  }
 })
 
 export default withTheme(OMGAddressInput)

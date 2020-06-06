@@ -1,17 +1,10 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import { ethereumActions } from 'common/actions'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import {
-  OMGButton,
-  OMGEmpty,
-  OMGFeeSelect,
-  OMGFontIcon,
-  OMGText,
-  OMGHeader
-} from 'components/widgets'
+import { OMGEmpty, OMGFeeSelect, OMGText, OMGHeader } from 'components/widgets'
 import {
   getParamsForTransferSelectFeeFromTransferForm,
   paramsForTransferSelectEthFeeToTransferForm
@@ -117,14 +110,14 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   loading: state.loading,
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
   )
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchGetRecommendedGas: () => dispatch(ethereumActions.getRecommendedGas())
 })
 

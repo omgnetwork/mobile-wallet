@@ -230,7 +230,7 @@ const TransferConfirm = ({
 
   const renderMaxTotal = useCallback(() => {
     return estimatedFee ? (
-      <View style={styles.totalContentContainer(theme)}>
+      <View style={styles.totalContentContainer}>
         <OMGText
           style={styles.totalAmountText(theme)}
           weight='mono-semi-bold'
@@ -402,11 +402,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: theme.colors.gray4
   }),
-  totalContentContainer: theme => ({
+  totalContentContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 10
-  }),
+  },
   totalContentRightContainer: {
     flexDirection: 'column',
     alignItems: 'flex-end'
@@ -470,7 +470,7 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state, _ownProps) => {
   const primaryWallet = state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   )
@@ -487,7 +487,7 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchSendToken: (
     token,
     selectedEthFee,

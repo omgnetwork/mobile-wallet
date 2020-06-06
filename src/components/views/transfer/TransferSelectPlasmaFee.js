@@ -3,14 +3,7 @@ import { View, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import {
-  OMGButton,
-  OMGEmpty,
-  OMGTokenFee,
-  OMGFontIcon,
-  OMGText,
-  OMGHeader
-} from 'components/widgets'
+import { OMGButton, OMGEmpty, OMGTokenFee, OMGHeader } from 'components/widgets'
 import {
   getParamsForTransferSelectPlasmaFeeFromTransferForm,
   paramsForTransferSelectPlasmaFeeToTransferForm
@@ -98,7 +91,7 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   loading: state.loading,
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress

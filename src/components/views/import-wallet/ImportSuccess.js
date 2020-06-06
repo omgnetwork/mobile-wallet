@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchSetPrimaryWallet: wallet =>
     settingActions.setPrimaryWallet(dispatch, wallet.address)
 })

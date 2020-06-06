@@ -104,9 +104,9 @@ class KeyboardShift extends React.Component {
   render() {
     const {
       Component,
-      innerRef,
-      onScroll,
-      onScrollEndDrag,
+      _innerRef,
+      _onScroll,
+      _onScrollEndDrag,
       keyboardDismissMode,
       ...rest
     } = this.props
@@ -274,9 +274,9 @@ class KeyboardShiftAndroid extends React.Component {
   render() {
     const {
       Component,
-      innerRef,
-      onScroll,
-      onScrollEndDrag,
+      _innerRef,
+      _onScroll,
+      _onScrollEndDrag,
       ...rest
     } = this.props
     return (
@@ -308,7 +308,7 @@ class KeyboardShiftAndroid extends React.Component {
 
   // this relies on the fact that keyboard did show
   // happens before everything scrolls up due to height changes
-  handleKeyboardShow = event => {
+  handleKeyboardShow = _event => {
     if (this.cancelHide) {
       this.cancelHide()
       this.cancelHide = null

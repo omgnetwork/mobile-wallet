@@ -56,7 +56,7 @@ const WalletSwitcherItem = ({
   )
 }
 
-const createStyles = (theme, selected) =>
+const createStyles = theme =>
   StyleSheet.create({
     container: {
       flexDirection: 'row',
