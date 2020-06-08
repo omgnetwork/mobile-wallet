@@ -79,7 +79,7 @@ jobs:
       - store_artifacts:
           path: test-results
 
-  mobile-wallet-dependency-audit:
+  mobile-wallet-lint:
     docker:
       - image: circleci/node:10
     steps:
