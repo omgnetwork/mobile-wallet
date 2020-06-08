@@ -33,7 +33,7 @@ function runAfterInteractions(fun, to = 25) {
 //    extraHeight
 //    innerRef
 
-const IS_IOS = Platform.OS == 'ios'
+const IS_IOS = Platform.OS === 'ios'
 
 const showEvent = IS_IOS ? 'keyboardWillShow' : 'keyboardDidShow'
 const hideEvent = IS_IOS ? 'keyboardWillHide' : 'keyboardDidHide'
@@ -179,16 +179,16 @@ class KeyboardShift extends React.Component {
     }
 
     // only fire this if we actually did something
-    if (this.lastScroll != null && this.ref) {
+    if (this.lastScroll !== null && this.ref) {
       // update inset right away to remove visible area as soon as possible
       this.ref.setNativeProps({ contentInset: { bottom: 0 } })
 
       this.cancelHide = runAfterInteractions(() => {
         if (this.ref && this.mounted) {
-          let scroll = this.scroll != null ? this.scroll : this.lastScroll
+          let scroll = this.scroll !== null ? this.scroll : this.lastScroll
           this.scroll = null
 
-          if (scroll != null && this.props.enableResetScrollToCoords) {
+          if (scroll !== null && this.props.enableResetScrollToCoords) {
             this.scrollTo(scroll + 0.001)
           }
           this.cancelHide = null
@@ -326,12 +326,12 @@ class KeyboardShiftAndroid extends React.Component {
     }
 
     // only fire this if we actually did something
-    if (this.lastScroll != null && this.ref) {
+    if (this.lastScroll !== null && this.ref) {
       this.cancelHide = runAfterInteractions(() => {
         if (
           this.ref &&
           this.mounted &&
-          this.scroll != null &&
+          this.scroll !== null &&
           this.props.enableResetScrollToCoords
         ) {
           this.scrollTo(this.scroll)
