@@ -53,7 +53,7 @@ const ProcessExitForm = ({
   useEffect(() => {
     async function getExitQueue() {
       const exitQueue = await Plasma.getExitQueue(transaction.contractAddress)
-      let position = exitQueue.queue.findIndex(
+      const position = exitQueue.queue.findIndex(
         q => q.exitId === transaction.exitId
       )
       setMaxExits(position + 1)

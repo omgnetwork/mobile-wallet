@@ -13,7 +13,7 @@ import {
 // returns a cancellable object
 function runAfterInteractions(fun, to = 25) {
   let prom = null
-  let timeout = setTimeout(() => {
+  const timeout = setTimeout(() => {
     prom = InteractionManager.runAfterInteractions(fun)
   }, to)
 
@@ -158,7 +158,7 @@ class KeyboardShift extends React.Component {
         const keyboardHeight = event.endCoordinates.height
         //const keyboardPosition = event.endCoordinates.screenY;
 
-        let gap = keyboardHeight + this.props.extraHeight
+        const gap = keyboardHeight + this.props.extraHeight
 
         // inset is also added on timeout so it doesn't look too awkward
         this.ref.setNativeProps({ contentInset: { bottom: gap } })
@@ -185,7 +185,7 @@ class KeyboardShift extends React.Component {
 
       this.cancelHide = runAfterInteractions(() => {
         if (this.ref && this.mounted) {
-          let scroll = this.scroll !== null ? this.scroll : this.lastScroll
+          const scroll = this.scroll !== null ? this.scroll : this.lastScroll
           this.scroll = null
 
           if (scroll !== null && this.props.enableResetScrollToCoords) {
@@ -247,7 +247,7 @@ class KeyboardShiftAndroid extends React.Component {
     if (event.nativeEvent.contentOffset) {
       // update this with a timeout since scrolling might happen
       // before keyboard show event
-      let scroll = event.nativeEvent.contentOffset.y
+      const scroll = event.nativeEvent.contentOffset.y
       if (this.scrollTimeout) {
         clearTimeout(this.scrollTimeout)
       }
@@ -344,7 +344,7 @@ class KeyboardShiftAndroid extends React.Component {
 
 export default class KeyboardShiftView extends React.Component {
   render() {
-    let {
+    const {
       Component,
       extraHeight,
       innerRef,
