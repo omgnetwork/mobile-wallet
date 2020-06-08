@@ -54,7 +54,4 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
     )
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MergeUtxosTracker)
+export default connect(mapStateToProps, mapDispatchToProps)(MergeUtxosTracker)

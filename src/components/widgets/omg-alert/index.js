@@ -26,7 +26,4 @@ const mapStateToProps = (state, _ownProps) => ({
   error: state.error
 })
 
-export default connect(
-  mapStateToProps,
-  null
-)(OMGAlert)
+export default connect(mapStateToProps, null)(OMGAlert)

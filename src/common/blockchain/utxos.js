@@ -42,9 +42,7 @@ export const getRequiredMerge = async (
       .map(key => utxosMap[key])
   }
 
-  return get(address)
-    .then(groupByCurrency)
-    .then(filterOnlyGreaterThanMinimum)
+  return get(address).then(groupByCurrency).then(filterOnlyGreaterThanMinimum)
 }
 
 export const sum = utxos => {

@@ -175,7 +175,4 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
     walletActions.refreshRootchain(dispatch, address, shouldRefresh)
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withTheme(Balance))
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(Balance))
