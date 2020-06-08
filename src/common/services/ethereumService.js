@@ -48,36 +48,15 @@ const getUpdatedBlock = txHistory => {
   return (txHistory.length && txHistory.slice(-1).pop().blockNumber) || 0
 }
 
-export const sendErc20Token = (wallet, options) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const abi = ContractABI.erc20Abi()
-      const { token } = options
-      const contract = new Ethereum.getContract(
-        token.contractAddress,
-        abi,
-        wallet
-      )
-      const pendingTransaction = await Ethereum.sendErc20Token(
-        contract,
-        options
-      )
-      resolve(pendingTransaction)
-    } catch (err) {
-      reject(err)
-    }
-  })
+export const sendErc20Token = async (wallet, options) => {
+  const abi = ContractABI.erc20Abi()
+  const { token } = options
+  const contract = new Ethereum.getContract(token.contractAddress, abi, wallet)
+  return Ethereum.sendErc20Token(contract, options)
 }
 
-export const sendEthToken = (wallet, options) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const transactionResponse = await Ethereum.sendEthToken(wallet, options)
-      resolve(transactionResponse)
-    } catch (err) {
-      reject(err)
-    }
-  })
+export const sendEthToken = async (wallet, options) => {
+  return Ethereum.sendEthToken(wallet, options)
 }
 
 export const getRecommendedGas = () => {
@@ -111,21 +90,11 @@ export const getRecommendedGas = () => {
   )
 }
 
-export const getTxs = (address, options, onlyErc20) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let response
-      if (onlyErc20) {
-        response = await Ethereum.getERC20Txs(address, options)
-      } else {
-        response = await Ethereum.getTxs(address, options)
-      }
-      const currentRootchainTxs = response.data.result
-      resolve(currentRootchainTxs)
-    } catch (err) {
-      reject(err)
-    }
-  })
+export const getTxs = async (address, options, onlyErc20) => {
+  const response = onlyErc20
+    ? await Ethereum.getERC20Txs(address, options)
+    : await Ethereum.getTxs(address, options)
+  return response.data.result
 }
 
 export const getInternalTxs = async (address, options) => {

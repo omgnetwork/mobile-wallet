@@ -2,14 +2,7 @@ import { Ethereum } from 'common/blockchain'
 import { settingStorage } from '../storages'
 
 export const create = async providerName => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const provider = await Ethereum.createProvider(providerName)
-      resolve(provider)
-    } catch (err) {
-      reject(err)
-    }
-  })
+  return Ethereum.createProvider(providerName)
 }
 
 export const getName = async defaultProviderName => {
@@ -17,29 +10,27 @@ export const getName = async defaultProviderName => {
   return providerName || defaultProviderName
 }
 
-export const getTransactionHistory = (address, lastBlockNumber) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const response = await Ethereum.getERC20Txs(address, lastBlockNumber)
+export const getTransactionHistory = async (address, lastBlockNumber) => {
+  try {
+    const response = await Ethereum.getERC20Txs(address, lastBlockNumber)
 
-      const formattedTxHistory = response.data.result.map(tx => {
-        return {
-          hash: tx.hash,
-          blockNumber: tx.blockNumber,
-          tokenName: tx.tokenName,
-          tokenSymbol: tx.tokenSymbol,
-          tokenDecimal: tx.tokenDecimal,
-          contractAddress: tx.contractAddress,
-          value: tx.value,
-          timestamp: tx.timeStamp,
-          from: tx.from,
-          to: tx.to
-        }
-      })
+    const formattedTxHistory = response.data.result.map(tx => {
+      return {
+        hash: tx.hash,
+        blockNumber: tx.blockNumber,
+        tokenName: tx.tokenName,
+        tokenSymbol: tx.tokenSymbol,
+        tokenDecimal: tx.tokenDecimal,
+        contractAddress: tx.contractAddress,
+        value: tx.value,
+        timestamp: tx.timeStamp,
+        from: tx.from,
+        to: tx.to
+      }
+    })
 
-      resolve(formattedTxHistory)
-    } catch (err) {
-      reject(err)
-    }
-  })
+    return formattedTxHistory
+  } catch (err) {
+    throw new Error(err)
+  }
 }
