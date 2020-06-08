@@ -1,6 +1,5 @@
 import React from 'react'
 import * as Views from 'components/views'
-import * as Widgets from 'components/widgets'
 import { SafeAreaView } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import { OMGStatusBar, OMGFontIcon } from 'components/widgets'
