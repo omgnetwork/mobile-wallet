@@ -9,8 +9,8 @@ workflows:
           requires:
             - mobile-wallet-build
       - mobile-wallet-lint:
-        requires:
-          - mobile-wallet-build
+          requires:
+            - mobile-wallet-build
       - mobile-wallet-dependency-audit:
           requires: 
             - mobile-wallet-build
