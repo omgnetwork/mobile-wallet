@@ -14,7 +14,9 @@ module.exports = {
   ],
   rules: {
     'react/prop-types': 'off',
-    'no-unused-vars': [2, { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }]
+    'no-unused-vars': [2, { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+    eqeqeq: ['error', 'always'],
+    'prefer-const': ['error']
   },
   env: {
     jest: true,
@@ -30,5 +32,10 @@ module.exports = {
   },
   globals: {
     __DEV__: true
+  },
+  settings: {
+    react: {
+      version: 'detect'
+    }
   }
 }
