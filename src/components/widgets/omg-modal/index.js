@@ -23,10 +23,9 @@ const OMGModal = ({
           {type === 'triangle-up' ? (
             <View style={[styles.triangleUp(theme), { left: arrowX }]} />
           ) : null}
-          <View
-            children={content}
-            style={[styles.square(theme), { height: height, width: width }]}
-          />
+          <View style={[styles.square(theme), { height, width }]}>
+            {content}
+          </View>
           {type === 'triangle-down' ? (
             <View style={[styles.triangleDown(theme), { left: arrowX }]} />
           ) : null}

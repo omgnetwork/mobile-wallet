@@ -9,8 +9,8 @@ module.exports = {
   plugins: ['react', 'react-native'],
   extends: [
     'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:prettier/recommended'
+    'plugin:react/recommended'
+    // 'plugin:prettier/recommended'
   ],
   rules: {
     'react/prop-types': 'off',
@@ -27,5 +27,8 @@ module.exports = {
     ecmaFeatures: {
       jsx: true
     }
+  },
+  globals: {
+    __DEV__: true
   }
 }
