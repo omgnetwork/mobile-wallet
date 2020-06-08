@@ -8,6 +8,9 @@ workflows:
       - mobile-wallet-tests:
           requires:
             - mobile-wallet-build
+      - mobile-wallet-lint:
+        requires:
+          - mobile-wallet-build
       - mobile-wallet-dependency-audit:
           requires: 
             - mobile-wallet-build
@@ -75,6 +78,16 @@ jobs:
           path: test-results
       - store_artifacts:
           path: test-results
+
+  mobile-wallet-dependency-audit:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run linting tests
+          command: npm run lint
 
   mobile-wallet-dependency-audit:
     docker:
