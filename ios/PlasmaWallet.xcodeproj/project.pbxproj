@@ -20,6 +20,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* PlasmaWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* PlasmaWalletTests.m */; };
 		3A7EEF073014497B89EDC811 /* MessinaSansMono-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = D8FEECC5438C4F8C8835E93C /* MessinaSansMono-Light.otf */; };
 		3E988AC7244C4F22B03B7046 /* OMGFontIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EA92F585139B4B03A9F625FB /* OMGFontIcon.ttf */; };
+		658FED9C9AEAFD81B0EED143 /* libPods-PlasmaWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4DB1EC4247FABC80007B6BB /* libPods-PlasmaWallet.a */; };
 		71B952FEB1694F4E838D28C6 /* MessinaSansMono-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4BD391ABF0B04F5DBC7C4B8D /* MessinaSansMono-Book.otf */; };
 		78BB2462972B45E282E97D4E /* MessinaSans-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 494129B0817C40B2B566300D /* MessinaSans-Bold.otf */; };
 		80DB5BBEABF7C3DBA9D1D801 /* libPods-PlasmaWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4DB1EC4247FABC80007B6BB /* libPods-PlasmaWallet.a */; };
@@ -112,7 +113,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F856FFAE0AF45D49F1346DA /* TSBackgroundFetch.framework in Frameworks */,
-				80DB5BBEABF7C3DBA9D1D801 /* libPods-PlasmaWallet.a in Frameworks */,
+				658FED9C9AEAFD81B0EED143 /* libPods-PlasmaWallet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,6 +284,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				C49E760E2364A30C003B0D52 /* Run Script */,
 				F4BC04E9A3B8F8D9FE765F91 /* [CP] Copy Pods Resources */,
+				620BBC8965104DF58644C374 /* Upload Debug Symbols to Sentry */,
 			);
 			buildRules = (
 			);
@@ -447,7 +449,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		06760A83C5E0F873ED737C25 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -505,7 +507,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		620BBC8965104DF58644C374 /* Upload Debug Symbols to Sentry */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Upload Debug Symbols to Sentry";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym";
 		};
 		9F0923F872A13C18412EA00E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

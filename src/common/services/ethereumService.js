@@ -33,7 +33,6 @@ export const fetchAssets = async (provider, address, lastBlockNumber) => {
       updatedAt: Datetime.now()
     }
   } catch (err) {
-    console.log(err)
     throw new Error(
       `Unable to fetch the rootchain assets for address ${address}.`
     )

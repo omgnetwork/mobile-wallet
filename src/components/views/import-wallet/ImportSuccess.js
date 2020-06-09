@@ -4,14 +4,14 @@ import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { settingActions } from 'common/actions'
 import { withNavigation } from 'react-navigation'
-import { GoogleAnalytics } from 'common/analytics'
+import { EventReporter } from 'common/reporter'
 import { OMGItemWallet, OMGText, OMGButton } from 'components/widgets'
 
 const ImportSuccess = ({ theme, navigation, dispatchSetPrimaryWallet }) => {
   const wallet = navigation.getParam('wallet')
 
   useEffect(() => {
-    GoogleAnalytics.sendEvent('imported_wallet', {})
+    EventReporter.send('imported_wallet', {})
   })
 
   return (
