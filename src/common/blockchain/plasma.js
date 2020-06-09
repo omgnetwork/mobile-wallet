@@ -1,8 +1,6 @@
 import { Plasma, web3 } from 'common/clients'
-import axios from 'axios'
 import { Gas, ContractAddress } from 'common/constants'
 import { Mapper } from 'common/utils'
-import Config from 'react-native-config'
 import BN from 'bn.js'
 import {
   TxOptions,
@@ -281,6 +279,6 @@ export const getExitQueue = async tokenContractAddress => {
 
 export const getFees = (currencies = []) => {
   return Plasma.ChildChain.getFees().then(response => {
-    return response['1'].filter(fee => currencies.indexOf(fee.currency) > -1)
+    return response['1']
   })
 }

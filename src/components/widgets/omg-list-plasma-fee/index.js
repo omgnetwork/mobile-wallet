@@ -1,29 +1,24 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, FlatList } from 'react-native'
 import { OMGEmpty, OMGTokenFee } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
+import { Token } from 'common/blockchain'
 
 const OMGListPlasmaFee = ({
   theme,
   fees = [],
-  supportedFees = [],
+  emptyMsg,
   loading,
   onPress,
+  provider,
   style
 }) => {
-  const symbolSupportedFees = supportedFees
-    .map(token => token.tokenSymbol)
-    .join(', ')
-
-  const emptyFeeTokenMsg = `Fee token must be deposited before transfer. The following tokens are supported [${symbolSupportedFees}]`
   return (
     <FlatList
       data={fees}
       keyExtractor={item => item.contractAddress}
       keyboardShouldPersistTaps='always'
-      ListEmptyComponent={
-        <OMGEmpty text={emptyFeeTokenMsg} loading={loading} />
-      }
+      ListEmptyComponent={<OMGEmpty text={emptyMsg} loading={loading} />}
       contentContainerStyle={[fees.length ? {} : styles.container, style]}
       renderItem={({ item }) => (
         <OMGTokenFee

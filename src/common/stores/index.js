@@ -46,8 +46,9 @@ const initialState = {
     startedExitTxs: [],
     feedbackCompleteTx: null
   },
-  fees: {
-    data: []
+  fee: {
+    available: [],
+    all: []
   }
 }
 

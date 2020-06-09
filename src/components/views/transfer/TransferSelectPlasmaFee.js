@@ -103,7 +103,7 @@ const mapStateToProps = (state, ownProps) => ({
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
   ),
-  fees: state.fees.data
+  fees: state.fee.available
 })
 
 export default connect(mapStateToProps)(

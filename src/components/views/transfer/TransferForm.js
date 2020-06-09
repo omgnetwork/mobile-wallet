@@ -335,7 +335,7 @@ const mapStateToProps = (state, ownProps) => ({
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
   loading: state.loading,
-  fees: state.fees.data,
+  fees: state.fee.available,
   gasOptions: state.gasOptions
 })
 
