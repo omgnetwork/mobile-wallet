@@ -82,7 +82,7 @@ const useProgressiveFeedback = (
     }
   }, [])
 
-  const getInternalLink = useCallback((actionType, hash) => {
+  const getInternalLink = useCallback(actionType => {
     switch (actionType) {
       case TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN:
         return {
@@ -94,7 +94,7 @@ const useProgressiveFeedback = (
   }, [])
 
   const formatFeedbackTx = useCallback(
-    (transaction) => {
+    transaction => {
       if (!transaction) return {}
       const { actionType, hash } = transaction.result
       if (transaction.pending) {
@@ -113,7 +113,7 @@ const useProgressiveFeedback = (
           pending: false,
           subtitle: getSubtitle(false, actionType),
           externalLink: getExternalLink(actionType, hash),
-          internalLink: getInternalLink(actionType, hash)
+          internalLink: getInternalLink(actionType)
         }
       }
     },

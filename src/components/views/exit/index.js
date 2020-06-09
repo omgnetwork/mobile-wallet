@@ -48,7 +48,7 @@ const Exit = ({ navigation, theme, primaryWallet }) => {
 }
 
 const styles = StyleSheet.create({
-  container: (theme) => ({
+  container: theme => ({
     flex: 1,
     backgroundColor: theme.colors.black5
   })
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, _ownProps) => ({
   primaryWallet: state.wallets.find(
-    (w) => w.address === state.setting.primaryWalletAddress
+    w => w.address === state.setting.primaryWalletAddress
   )
 })
 

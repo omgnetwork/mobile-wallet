@@ -53,7 +53,7 @@ const OMGBottomSheet = ({
     }
   }
 
-  const onTapExternalLink = useCallback((url) => {
+  const onTapExternalLink = useCallback(url => {
     Linking.openURL(url)
   }, [])
 
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: theme.colors.gray5
   }),
-  iconContainer: (color) => ({
+  iconContainer: color => ({
     width: 30,
     height: 30,
     borderWidth: 3,
@@ -142,10 +142,10 @@ const styles = StyleSheet.create({
   loading: {
     flex: 0
   },
-  textTitle: (theme) => ({
+  textTitle: theme => ({
     color: theme.colors.white
   }),
-  textSubtitle: (theme) => ({
+  textSubtitle: theme => ({
     flex: 1,
     marginTop: 2,
     fontSize: 8,
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
-  textLink: (theme) => ({
+  textLink: theme => ({
     fontSize: 8,
     color: theme.colors.blue
   }),

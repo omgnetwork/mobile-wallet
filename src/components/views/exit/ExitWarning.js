@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { connect } from 'react-redux'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { OMGButton, OMGExitPeriodWarning } from 'components/widgets'
@@ -47,9 +46,4 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state, ownProps) => ({})
-
-export default connect(
-  mapStateToProps,
-  null
-)(withNavigation(withTheme(ExitWarning)))
+export default withNavigation(withTheme(ExitWarning))
