@@ -131,14 +131,14 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   loading: state.loading,
   wallets: state.wallets,
   provider: state.setting.provider,
   error: state.error
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchImportWalletByMnemonic: (wallets, mnemonic, provider, name) =>
     dispatch(walletActions.importByMnemonic(wallets, mnemonic, provider, name))
 })

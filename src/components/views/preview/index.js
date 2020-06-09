@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { View, ScrollView } from 'react-native'
-import { withNavigation } from 'react-navigation'
 import { withTheme, Title } from 'react-native-paper'
 import {
   OMGRadioButton,
@@ -42,7 +41,7 @@ const mockFee = {
   symbol: 'Gwei'
 }
 
-const Preview = ({ navigation, theme }) => {
+const Preview = ({ theme }) => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -123,4 +122,4 @@ const Preview = ({ navigation, theme }) => {
   )
 }
 
-export default withNavigation(withTheme(Preview))
+export default withTheme(Preview)

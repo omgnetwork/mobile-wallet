@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Divider, Menu } from 'react-native-paper'
+import { Menu } from 'react-native-paper'
 
 const OMGMenu = ({ visible, items, onDismiss, anchorComponent, style }) => {
   const menuItems = items.map(({ title, onPress }) => (

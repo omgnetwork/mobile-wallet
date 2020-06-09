@@ -1,18 +1,31 @@
 module.exports = {
   root: true,
-  plugins: ['jest'],
+  parser: 'babel-eslint',
   overrides: [
     {
       files: ['**/tests/**/*.js']
     }
   ],
-  extends: ['@react-native-community', 'plugin:prettier/recommended'],
-  settings: {
-    'import/resolver': {
-      'babel-module': {}
-    }
-  },
+  plugins: ['react', 'react-native'],
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:prettier/recommended'
+  ],
   rules: {
-    'react-native/no-unused-styles': 2
+    'react/prop-types': 'off',
+    'no-unused-vars': [2, { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }]
+  },
+  env: {
+    jest: true,
+    node: true,
+    es6: true,
+    browser: true
+  },
+
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true
+    }
   }
 }

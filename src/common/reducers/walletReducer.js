@@ -127,32 +127,3 @@ export const walletsReducer = (state = [], action) => {
       return state
   }
 }
-
-const mergeAssets = (oldAssets, newAssets) => {
-  const contractAddresses = [...oldAssets, ...newAssets].map(
-    asset => asset.contractAddress
-  )
-  const contractAddressSet = new Set(contractAddresses)
-  const contractAddressList = Array.from(contractAddressSet)
-
-  return contractAddressList.map(contractAddress => {
-    const oldAsset = oldAssets.find(
-      asset => asset.contractAddress === contractAddress
-    )
-    const newAsset = newAssets.find(
-      asset => asset.contractAddress === contractAddress
-    )
-    return newAsset || oldAsset
-  })
-}
-
-const fromSamePlasmaContract = wallet => {
-  return (
-    wallet.plasmaFrameworkContractAddress ===
-    Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
-  )
-}
-
-const fromSameEthereumNetwork = wallet => {
-  return wallet.ethereumNetwork === Config.ETHEREUM_NETWORK
-}

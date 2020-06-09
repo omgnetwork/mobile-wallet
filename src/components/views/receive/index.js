@@ -92,10 +92,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center'
   },
-  qrContainer: theme => ({
+  qrContainer: {
     alignItems: 'center',
     padding: 4
-  }),
+  },
   title: theme => ({
     textTransform: 'uppercase',
     fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
   ),

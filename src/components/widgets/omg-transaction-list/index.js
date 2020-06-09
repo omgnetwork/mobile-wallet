@@ -11,13 +11,13 @@ import { TransactionTypes, ExitStatus } from 'common/constants'
 
 const OMGTransactionList = ({
   transactions,
-  theme,
   type,
   loading,
   renderHeader,
   address,
   style,
-  navigation
+  navigation,
+  _theme
 }) => {
   const getEmptyStatePayload = useCallback(() => {
     if (type === TransactionTypes.TYPE_RECENT) {
@@ -125,7 +125,7 @@ const OMGTransactionList = ({
           data={transactions}
           keyExtractor={tx => tx.hash}
           contentContainerStyle={
-            transactions?.length ? styles.content : styles.emptyContent(theme)
+            transactions?.length ? styles.content : styles.emptyContent
           }
           renderItem={({ item }) => getItemTransactionComponent(item)}
         />
@@ -141,10 +141,10 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 16
   },
-  emptyContent: theme => ({
+  emptyContent: {
     paddingHorizontal: 16,
     flexGrow: 1
-  })
+  }
 })
 
 export default withNavigation(withTheme(OMGTransactionList))

@@ -7,7 +7,7 @@ export const WELCOME_BOTTOM_SHEET = {
   buttonTextConfirm: 'TAKE A TOUR',
   buttonTextDismiss: 'NO, THANKS',
   isModal: true,
-  shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) =>
+  shouldDisplay: (enabledOnboarding, currentPage) =>
     enabledOnboarding === null && currentPage === 'childchain-balance'
 }
 

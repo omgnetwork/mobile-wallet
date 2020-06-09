@@ -12,7 +12,7 @@ const TransactionDetailHash = ({ theme, hash, style }) => {
   }, [hash])
 
   return (
-    <View style={{ ...styles.container(theme), ...style }}>
+    <View style={{ ...styles.container, ...style }}>
       <OMGText style={styles.hashText(theme)}>{hash}</OMGText>
       <TouchableOpacity onPress={handleCopyClick}>
         <OMGFontIcon
@@ -26,11 +26,11 @@ const TransactionDetailHash = ({ theme, hash, style }) => {
 }
 
 const styles = StyleSheet.create({
-  container: theme => ({
+  container: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 10
-  }),
+  },
   hashText: theme => ({
     flex: 1,
     marginRight: 24,

@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   primaryWallet: state.wallets.find(
     (w) => w.address === state.setting.primaryWalletAddress
   )

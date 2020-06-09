@@ -156,7 +156,7 @@ const TransferPending = ({ theme, navigation }) => {
             </View>
           </View>
           <View style={styles.bottomContainer(theme)}>
-            <View style={styles.totalContainer(theme)}>
+            <View style={styles.totalContainer}>
               <OMGText style={styles.totalText(theme)}>Total</OMGText>
               <OMGText style={styles.totalText(theme)}>
                 {BlockchainFormatter.formatTotalPrice(sendAmount, gasFeeUsd())}{' '}
@@ -213,11 +213,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 16
   }),
-  totalContainer: theme => ({
+  totalContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: Styles.getResponsiveSize(16, { small: 8, medium: 12 })
-  }),
+  },
   title: theme => ({
     fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
     color: theme.colors.white,
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   unconfirmedTxs: state.transaction.unconfirmedTxs,
   loading: state.loading,
   provider: state.setting.provider,

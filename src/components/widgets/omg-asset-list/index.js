@@ -12,7 +12,6 @@ const OMGAssetList = ({
   type,
   style,
   data,
-  hasRootchainAssets,
   renderItem,
   refreshControl,
   updatedAt,

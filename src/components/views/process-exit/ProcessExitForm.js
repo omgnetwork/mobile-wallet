@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state, _ownProps) => {
   return {
     blockchainWallet: state.setting.blockchainWallet,
     loading: state.loading,
@@ -149,7 +149,7 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchProcessExit: (blockchainWallet, utxo, maxExitsToProcess) => {
     dispatch(
       plasmaActions.processExits(blockchainWallet, utxo, maxExitsToProcess)

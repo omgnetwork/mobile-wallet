@@ -171,11 +171,11 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   currentPopup: state.onboarding.currentPopup
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchSetCurrentPopup: popup => {
     onboardingActions.setCurrentPopup(dispatch, popup)
   }
