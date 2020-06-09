@@ -4,82 +4,74 @@ import { BigNumber } from 'common/utils'
 import { Mapper } from 'common/utils'
 
 export const getPlasmaTx = async oldTransaction => {
-  try {
-    const transaction = await plasmaService.getTx(oldTransaction.hash)
-    return Mapper.mapChildchainTxDetail(oldTransaction, transaction)
-  } catch (err) {
-    throw new Error(err)
-  }
+  const transaction = await plasmaService.getTx(oldTransaction.hash)
+  return Mapper.mapChildchainTxDetail(oldTransaction, transaction)
 }
 
 export const getTxs = async (address, provider, options) => {
   const { page, limit, lastEthBlockNumber, lastOMGBlockNumber } = options
 
-  try {
-    const queryRootchainOptions = {
-      lastEthBlockNumber,
-      limit,
-      page
-    }
-
-    const queryChildchainOptions = {
-      blknum: lastOMGBlockNumber,
-      limit: limit
-    }
-
-    const pendingEthereumTxs = ethereumService.getTxs(
-      address,
-      queryRootchainOptions,
-      false
-    )
-    const pendingEthereumERC20Txs = ethereumService.getTxs(
-      address,
-      queryRootchainOptions,
-      true
-    )
-    const pendingEthereumInternalTxs = ethereumService.getInternalTxs(
-      address,
-      queryRootchainOptions
-    )
-    const childchainTxs = await plasmaService.getTxs(
-      address,
-      queryChildchainOptions
-    )
-
-    const standardExitBondSize = await Plasma.getStandardExitBond()
-
-    const pristineChildchainTxs = excludeSplittedTxs(childchainTxs)
-
-    const currencies = pristineChildchainTxs.map(
-      tx => Mapper.mapInputTransfer(tx).currency
-    )
-
-    const contractAddresses = Array.from(new Set(currencies))
-
-    const tokenMap = await Token.all(provider, contractAddresses, address)
-
-    const tokens = Object.keys(tokenMap).map(
-      contractAddress => tokenMap[contractAddress]
-    )
-
-    const transactions = await Promise.all([
-      pendingEthereumTxs,
-      pendingEthereumERC20Txs,
-      pendingEthereumInternalTxs
-    ]).then(([rootchainTxs, rootchainErc20Txs, rootchainInternalTxs]) => {
-      const txs = {
-        rootchainTxs,
-        rootchainErc20Txs,
-        rootchainInternalTxs,
-        childchainTxs: pristineChildchainTxs
-      }
-      return mergeTxs(txs, address, tokens, standardExitBondSize)
-    })
-
-    return transactions
-  } catch (err) {
-    throw new Error(err)
+  const queryRootchainOptions = {
+    lastEthBlockNumber,
+    limit,
+    page
   }
+
+  const queryChildchainOptions = {
+    blknum: lastOMGBlockNumber,
+    limit: limit
+  }
+
+  const pendingEthereumTxs = ethereumService.getTxs(
+    address,
+    queryRootchainOptions,
+    false
+  )
+  const pendingEthereumERC20Txs = ethereumService.getTxs(
+    address,
+    queryRootchainOptions,
+    true
+  )
+  const pendingEthereumInternalTxs = ethereumService.getInternalTxs(
+    address,
+    queryRootchainOptions
+  )
+  const childchainTxs = await plasmaService.getTxs(
+    address,
+    queryChildchainOptions
+  )
+
+  const standardExitBondSize = await Plasma.getStandardExitBond()
+
+  const pristineChildchainTxs = excludeSplittedTxs(childchainTxs)
+
+  const currencies = pristineChildchainTxs.map(
+    tx => Mapper.mapInputTransfer(tx).currency
+  )
+
+  const contractAddresses = Array.from(new Set(currencies))
+
+  const tokenMap = await Token.all(provider, contractAddresses, address)
+
+  const tokens = Object.keys(tokenMap).map(
+    contractAddress => tokenMap[contractAddress]
+  )
+
+  const transactions = await Promise.all([
+    pendingEthereumTxs,
+    pendingEthereumERC20Txs,
+    pendingEthereumInternalTxs
+  ]).then(([rootchainTxs, rootchainErc20Txs, rootchainInternalTxs]) => {
+    const txs = {
+      rootchainTxs,
+      rootchainErc20Txs,
+      rootchainInternalTxs,
+      childchainTxs: pristineChildchainTxs
+    }
+    return mergeTxs(txs, address, tokens, standardExitBondSize)
+  })
+
+  return transactions
 }
 
 export const getExitTxs = async address => {
