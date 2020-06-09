@@ -15,7 +15,11 @@ const createMainDrawerNavigator = () =>
       hideStatusBar: false,
       drawerBackgroundColor: 'white',
       edgeWidth: 0,
-      contentComponent: props => <OMGDrawerContent {...props} />
+      contentComponent: props =>
+        React.createElement(OMGDrawerContent, {
+          displayName: 'OMGDrawerContent',
+          ...props
+        })
     }
   )
 

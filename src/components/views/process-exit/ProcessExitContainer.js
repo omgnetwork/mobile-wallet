@@ -88,7 +88,4 @@ const mapStateToProps = (state, _ownProps) => ({
   )
 })
 
-export default connect(
-  mapStateToProps,
-  null
-)(withTheme(ProcessExit))
+export default connect(mapStateToProps, null)(withTheme(ProcessExit))

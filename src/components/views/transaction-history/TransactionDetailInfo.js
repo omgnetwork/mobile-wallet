@@ -235,7 +235,4 @@ const mapStateToProps = (state, _ownProps) => ({
   )
 })
 
-export default connect(
-  mapStateToProps,
-  null
-)(TransactionDetailInfo)
+export default connect(mapStateToProps, null)(TransactionDetailInfo)

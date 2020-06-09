@@ -9,14 +9,12 @@ export default {
   },
   getItem: key => {
     return new Promise(resolve => {
-      return cache.hasOwnProperty(key) ? resolve(cache[key]) : resolve(null)
+      return key in cache ? resolve(cache[key]) : resolve(null)
     })
   },
   removeItem: key => {
     return new Promise((resolve, reject) => {
-      return cache.hasOwnProperty(key)
-        ? resolve(delete cache[key])
-        : reject('No such key!')
+      return key in cache ? resolve(delete cache[key]) : reject('No such key!')
     })
   },
   clear: () => {

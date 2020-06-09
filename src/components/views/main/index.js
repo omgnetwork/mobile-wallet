@@ -38,7 +38,4 @@ const mapStateToProps = (state, _ownProps) => ({
   )
 })
 
-export default connect(
-  mapStateToProps,
-  null
-)(withTheme(MainContainer))
+export default connect(mapStateToProps, null)(withTheme(MainContainer))

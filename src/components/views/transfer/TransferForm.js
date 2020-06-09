@@ -115,24 +115,27 @@ const TransferForm = ({
     plasmaFee => {
       if (!Validator.isValidAddress(addressRef.current)) {
         setShowErrorAddress(true)
+        return false
       } else if (!Validator.isValidAmount(amountRef.current)) {
         setErrorAmountMessage('Invalid amount')
         setShowErrorAmount(true)
+        return false
       } else if (
         !Validator.isEnoughToken(amountRef.current, selectedToken.balance)
       ) {
         setErrorAmountMessage('Not enough balance')
         setShowErrorAmount(true)
+        return false
       } else if (
         transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN &&
         !plasmaFee
       ) {
+        return false
       } else {
         setShowErrorAddress(false)
         setShowErrorAmount(false)
         return true
       }
-      return false
     },
     [selectedToken.balance, transferType]
   )
