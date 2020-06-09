@@ -7,7 +7,7 @@ const envInfo = {
   plasmaContractAddress: Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
 }
 
-export const sendEvent = (eventName, params) => {
+export const send = (eventName, params) => {
   try {
     return firebase.analytics().logEvent(eventName, {
       ...params,

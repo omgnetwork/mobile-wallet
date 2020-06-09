@@ -79,3 +79,6 @@ keystore.properties
 GoogleService-Info.plist
 android/app/src/main/assets/containers
 ios/container
+
+# Sentry
+sentry.properties
