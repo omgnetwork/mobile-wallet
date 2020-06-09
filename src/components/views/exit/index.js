@@ -41,14 +41,14 @@ const Exit = ({ navigation, theme, primaryWallet }) => {
       {primaryWallet ? (
         <ExitNavigator navigation={navigation} />
       ) : (
-        <OMGEmpty text={'Wallet not found. Try importing a wallet first.'} />
+        <OMGEmpty text='Wallet not found. Try importing a wallet first.' />
       )}
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
-  container: theme => ({
+  container: (theme) => ({
     flex: 1,
     backgroundColor: theme.colors.black5
   })
@@ -56,11 +56,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => ({
   primaryWallet: state.wallets.find(
-    w => w.address === state.setting.primaryWalletAddress
+    (w) => w.address === state.setting.primaryWalletAddress
   )
 })
 
-export default connect(
-  mapStateToProps,
-  null
-)(withTheme(Exit))
+export default connect(mapStateToProps, null)(withTheme(Exit))
