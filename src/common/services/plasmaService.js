@@ -52,34 +52,24 @@ const getTokenContractAddresses = balances => {
 const getUtxoPos = utxos =>
   (utxos.length && utxos[0].utxo_pos.toString(10)) || '0'
 
-export const getTxs = (address, options) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const transactions = await Transaction.all(address, options)
-      const currentWatcherTxs = transactions.map(tx => ({
-        ...tx,
-        hash: tx.txhash
-      }))
-      resolve(currentWatcherTxs)
-    } catch (err) {
-      console.log(err)
-      reject(err)
-    }
-  })
+export const getTxs = async (address, options) => {
+  try {
+    const transactions = await Transaction.all(address, options)
+    return transactions.map(tx => ({
+      ...tx,
+      hash: tx.txhash
+    }))
+  } catch (err) {
+    throw new Error(err)
+  }
 }
 
-export const getTx = hash => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const transaction = await Transaction.get(hash)
-      resolve({
-        hash: transaction.txhash,
-        ...transaction
-      })
-    } catch (err) {
-      reject(err)
-    }
-  })
+export const getTx = async hash => {
+  const transaction = await Transaction.get(hash)
+  return {
+    hash: transaction.txhash,
+    ...transaction
+  }
 }
 
 export const mergeUTXOs = (
@@ -112,7 +102,7 @@ export const getFees = async tokens => {
     })
     return { fees, updatedAt: fees[0] ? fees[0].updated_at : null }
   } catch (err) {
-    throw err
+    throw new Error(err)
   }
 }
 
@@ -164,66 +154,60 @@ export const deposit = async (address, privateKey, token, gasPrice) => {
   }
 }
 
-export const exit = (blockchainWallet, token, utxos, gasPrice) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const hasExitQueue = await Token.hasExitQueue(token.contractAddress)
-      const { address, privateKey } = blockchainWallet
-      if (!hasExitQueue) {
-        await Token.createExitQueue(token.contractAddress, {
-          from: address,
-          privateKey,
-          gasPrice
-        })
-      }
+export const exit = async (blockchainWallet, token, utxos, gasPrice) => {
+  const hasExitQueue = await Token.hasExitQueue(token.contractAddress)
+  const { address, privateKey } = blockchainWallet
+  if (!hasExitQueue) {
+    await Token.createExitQueue(token.contractAddress, {
+      from: address,
+      privateKey,
+      gasPrice
+    })
+  }
 
-      let utxoToExit
-      if (utxos.length === 1) {
-        utxoToExit = utxos[0]
-      } else {
-        const { blknum } = await Utxos.merge(address, privateKey, utxos)
-        await Wait.waitChildChainBlknum(address, blknum)
-        utxoToExit = await Utxos.get(address, {
-          currency: token.contractAddress
-        }).then(latestUtxos => latestUtxos.find(utxo => utxo.blknum === blknum))
-      }
+  let utxoToExit
+  if (utxos.length === 1) {
+    utxoToExit = utxos[0]
+  } else {
+    const { blknum } = await Utxos.merge(address, privateKey, utxos)
+    await Wait.waitChildChainBlknum(address, blknum)
+    utxoToExit = await Utxos.get(address, {
+      currency: token.contractAddress
+    }).then(latestUtxos => latestUtxos.find(utxo => utxo.blknum === blknum))
+  }
 
-      const exitData = await Plasma.getExitData(utxoToExit)
+  const exitData = await Plasma.getExitData(utxoToExit)
 
-      const {
-        transactionHash: hash,
-        blockNumber: startedExitBlkNum,
-        gasUsed
-      } = await Plasma.standardExit(exitData, blockchainWallet, { gasPrice })
-      const exitId = await Plasma.getStandardExitId(utxoToExit, exitData)
-      const standardExitBond = await Plasma.getStandardExitBond()
+  const {
+    transactionHash: hash,
+    blockNumber: startedExitBlkNum,
+    gasUsed
+  } = await Plasma.standardExit(exitData, blockchainWallet, { gasPrice })
+  const exitId = await Plasma.getStandardExitId(utxoToExit, exitData)
+  const standardExitBond = await Plasma.getStandardExitBond()
 
-      console.log('standard exit hash', hash)
-      await Wait.waitForRootchainTransaction({
-        hash,
-        intervalMs: 1000,
-        confirmationThreshold: 1
-      })
-
-      const {
-        scheduledFinalizationTime: exitableAt
-      } = await Plasma.getExitTime(startedExitBlkNum, utxoToExit.blknum)
-
-      resolve({
-        hash,
-        exitId,
-        exitableAt,
-        blknum: utxoToExit.blknum,
-        to: Config.PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS,
-        flatFee: standardExitBond,
-        gasPrice,
-        gasUsed
-      })
-    } catch (err) {
-      console.log(err)
-      reject(err)
-    }
+  console.log('standard exit hash', hash)
+  await Wait.waitForRootchainTransaction({
+    hash,
+    intervalMs: 1000,
+    confirmationThreshold: 1
   })
+
+  const { scheduledFinalizationTime: exitableAt } = await Plasma.getExitTime(
+    startedExitBlkNum,
+    utxoToExit.blknum
+  )
+
+  return {
+    hash,
+    exitId,
+    exitableAt,
+    blknum: utxoToExit.blknum,
+    to: Config.PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS,
+    flatFee: standardExitBond,
+    gasPrice,
+    gasUsed
+  }
 }
 
 export const processExits = (

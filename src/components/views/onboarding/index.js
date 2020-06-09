@@ -160,7 +160,4 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
     transactionActions.invalidateFeedbackCompleteTx(dispatch, wallet)
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(OnboardingTourGuide)
+export default connect(mapStateToProps, mapDispatchToProps)(OnboardingTourGuide)

@@ -47,7 +47,4 @@ const mapStateToProps = (state, _ownProps) => ({
   startedExitTxs: state.transaction.startedExitTxs
 })
 
-export default connect(
-  mapStateToProps,
-  null
-)(BackgroundTaskTracker)
+export default connect(mapStateToProps, null)(BackgroundTaskTracker)

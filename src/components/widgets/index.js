@@ -29,7 +29,6 @@ import OMGMenu from './omg-menu'
 import OMGMenuIcon from './omg-menu-icon'
 import OMGMenuImage from './omg-menu-image'
 import OMGMnemonicConfirmBox from './omg-mnemonic-confirm-box'
-import OMGModal from './omg-modal'
 import {
   OMGOnboardingSheetWithButton,
   OMGOnboardingSheet,
@@ -104,7 +103,6 @@ export {
   OMGMenuIcon,
   OMGMenuImage,
   OMGMnemonicConfirmBox,
-  OMGModal,
   OMGOnboardingSheetWithButton,
   OMGOnboardingSheet,
   OMGOnboardingPopup,

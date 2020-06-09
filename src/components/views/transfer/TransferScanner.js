@@ -135,7 +135,7 @@ const TransferScanner = ({ theme, navigation, wallet, unconfirmedTx }) => {
         color={theme.colors.gray8}
       />
       <OMGText style={styles.unableText(theme)}>
-        Unable to Transfer,{'\n'}There's a pending transaction
+        {'Unable to transfer.\n There is a pending transaction'}
       </OMGText>
     </Animated.View>
   )

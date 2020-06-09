@@ -21,11 +21,12 @@ export const getGasUsed = (type, token, options) => {
   switch (type) {
     case TYPE_DEPOSIT:
       return GasEstimator.estimateDeposit(wallet.address, to, token)
-    case TYPE_TRANSFER_ROOTCHAIN:
+    case TYPE_TRANSFER_ROOTCHAIN: {
       const isEth = token.contractAddress === ContractAddress.ETH_ADDRESS
       return isEth
         ? GasEstimator.estimateTransferETH()
         : GasEstimator.estimateTransferErc20(wallet, to, token)
+    }
     case TYPE_TRANSFER_CHILDCHAIN:
       return GasEstimator.estimateTransferChildchain()
     case TYPE_EXIT:

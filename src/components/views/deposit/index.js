@@ -77,7 +77,4 @@ const mapStateToProps = (state, _ownProps) => ({
   )
 })
 
-export default connect(
-  mapStateToProps,
-  null
-)(withTheme(Deposit))
+export default connect(mapStateToProps, null)(withTheme(Deposit))

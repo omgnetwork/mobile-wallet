@@ -36,7 +36,7 @@ export const onboardingReducer = (state = {}, action) => {
         ...state,
         currentPopup: action.data.name
       }
-    case 'ONBOARDING/ADD_ANCHORED_COMPONENT/OK':
+    case 'ONBOARDING/ADD_ANCHORED_COMPONENT/OK': {
       const updatedAnchoredComponents = { ...state.anchoredComponents }
       updatedAnchoredComponents[action.data.name] = {
         top: action.data.top,
@@ -49,6 +49,7 @@ export const onboardingReducer = (state = {}, action) => {
         ...state,
         anchoredComponents: updatedAnchoredComponents
       }
+    }
     case 'WALLET/DELETE_ALL/OK':
       return {
         ...state,
