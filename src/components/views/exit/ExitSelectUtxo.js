@@ -58,7 +58,7 @@ const ExitSelectUtxo = ({ theme, primaryWallet, navigation }) => {
       </OMGText>
       <FlatList
         data={utxos}
-        keyExtractor={item => item.utxo_pos}
+        keyExtractor={item => item.utxo_pos.toString()}
         ItemSeparatorComponent={() => <Divider theme={theme} />}
         ListEmptyComponent={<OMGEmpty text='Empty assets' loading={loading} />}
         contentContainerStyle={

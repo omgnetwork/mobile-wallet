@@ -16,6 +16,7 @@ const OMGExitFee = ({
   onPressEdit
 }) => {
   const [ethPrice, setEthPrice] = useState()
+  const [feeUsd, setFeeUsd] = useState()
 
   const formatBond = useCallback(() => {
     return BlockchainFormatter.formatEthFromWei(exitBondValue)
@@ -47,13 +48,19 @@ const OMGExitFee = ({
     fetchEthPrice()
   }, [])
 
+  useEffect(() => {
+    if (ethPrice && formatTotalExitFee()) {
+      const price = BlockchainFormatter.formatTokenPrice(
+        formatTotalExitFee(),
+        ethPrice
+      )
+      setFeeUsd(price)
+    }
+  }, [ethPrice, formatTotalExitFee])
+
   const handleClickHyperlink = useCallback(() => {
     Linking.openURL('https://docs.omg.network/exitbonds')
   }, [])
-
-  const feeUsd =
-    ethPrice &&
-    BlockchainFormatter.formatTokenPrice(formatTotalExitFee(), ethPrice)
 
   return (
     <View style={[styles.background(theme), style]}>
