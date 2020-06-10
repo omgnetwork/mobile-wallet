@@ -104,14 +104,6 @@ const TransferForm = ({
     setEthFee(selectedEthFee || gasOptions[0])
   }, [gasOptions, selectedEthFee])
 
-  const navigateToSelectPlasmaFee = useCallback(() => {
-    const params = paramsForTransferFormToTransferSelectPlasmaFee({
-      selectedPlasmaFee,
-      fees
-    })
-    navigation.navigate('TransferSelectPlasmaFee', params)
-  }, [fees, navigation, selectedPlasmaFee])
-
   const navigateToSelectBalance = useCallback(() => {
     const params = paramsForTransferFormToTransferSelectBalance({
       selectedToken,
@@ -260,21 +252,12 @@ const TransferForm = ({
           </OMGBox>
           <OMGBox style={styles.feeContainer(theme, transferType)}>
             <OMGText style={styles.title(theme)}>Transaction Fee</OMGText>
-            {transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN ? (
-              <OMGFeeTokenInput
-                onPress={navigateToSelectPlasmaFee}
-                style={styles.mediumMarginTop}
-                feeToken={selectedPlasmaFee || fees[0]}
-                loading={loadingFeeToken}
-              />
-            ) : (
-              <OMGFeeInput
-                fee={ethFee}
-                loading={loadingGas}
-                style={styles.mediumMarginTop}
-                onPress={navigationToTransferSelectFee}
-              />
-            )}
+            <OMGFeeInput
+              fee={ethFee}
+              loading={loadingGas}
+              style={styles.mediumMarginTop}
+              onPress={navigationToTransferSelectFee}
+            />
           </OMGBox>
         </View>
         <View style={styles.buttonContainer}>

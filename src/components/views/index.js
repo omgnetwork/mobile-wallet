@@ -41,7 +41,6 @@ import {
   TransferSelectAddress,
   TransferSelectAmount,
   TransferSelectBalance,
-  TransferSelectPlasmaFee,
   TransferSelectFee,
   TransferSelectToken
 } from './transfer'
@@ -98,7 +97,6 @@ export {
   TransferSelectAmount,
   TransferSelectBalance,
   TransferSelectFee,
-  TransferSelectPlasmaFee,
   TransferSelectToken,
   TransactionHistory,
   TransactionHistoryFilter,

@@ -11,7 +11,6 @@ import TransferSelectAddress from './TransferSelectAddress'
 import TransferSelectAmount from './TransferSelectAmount'
 import TransferSelectBalance from './TransferSelectBalance'
 import TransferSelectFee from './TransferSelectFee'
-import TransferSelectPlasmaFee from './TransferSelectPlasmaFee'
 import TransferSelectToken from './TransferSelectToken'
 import * as TransferHelper from './transferHelper'
 import * as TransferNavigation from './transferNavigation'
@@ -32,6 +31,5 @@ export {
   TransferSelectAmount,
   TransferSelectBalance,
   TransferSelectFee,
-  TransferSelectPlasmaFee,
   TransferSelectToken
 }
