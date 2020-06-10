@@ -26,18 +26,17 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    paddingTop: 16,
     backgroundColor: theme.colors.black5,
     paddingHorizontal: 16,
     justifyContent: 'space-between'
   }),
   warningContainer: {
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingHorizontal: 40
   },
   warning: {
-    marginTop: Styles.getResponsiveSize(80, { small: 64, medium: 72 }),
-    height: Styles.getResponsiveSize(260, { small: 208, medium: 234 }),
-    width: Styles.getResponsiveSize(322, { small: 289.8, medium: 289.8 })
+    marginTop: Styles.getResponsiveSize(96, { small: 64, medium: 72 }),
+    paddingBottom: 80
   },
   buttonContainer: {
     flex: 1,

@@ -35,7 +35,7 @@ const useProgressiveFeedback = (
           ? 'Submitting a Withdrawal Request...'
           : 'Submitted a Withdrawal Request.'
       case TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT:
-        return pending ? 'Processing WIithdrawal...' : 'Withdrawal Successful'
+        return pending ? 'Processing Withdrawal...' : 'Withdrawal Successful'
       case TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS:
         return pending ? 'Merging Tokens...' : 'All set!'
       default:
