@@ -37,7 +37,7 @@ const TransferForm = ({
   wallet,
   theme,
   navigation,
-  isFocused,
+  _isFocused,
   dispatchGetFees,
   dispatchGetRecommendedGas,
   gasOptions,
@@ -76,17 +76,6 @@ const TransferForm = ({
   )
   const [errorAmountMessage, setErrorAmountMessage] = useState('Invalid amount')
 
-  // Feel not quite useful since the user will be likely to select the token to send first.
-  // Immediately set focus to amount input will require more effort for selecting a token.
-  // useEffect(() => {
-  //   if (isFocused) {
-  //     if (!amountRef.current) {
-  //       focusOn(amountFocusRef)
-  //     }
-  //   }
-  // }, [dispatchGetFees, focusOn, isFocused, wallet.childchainAssets])
-
-  // Retrieve fees from /fees.all when the component is mounted
   useEffect(() => {
     dispatchGetFees(wallet.childchainAssets)
 
@@ -118,24 +107,27 @@ const TransferForm = ({
     plasmaFee => {
       if (!Validator.isValidAddress(addressRef.current)) {
         setShowErrorAddress(true)
+        return false
       } else if (!Validator.isValidAmount(amountRef.current)) {
         setErrorAmountMessage('Invalid amount')
         setShowErrorAmount(true)
+        return false
       } else if (
         !Validator.isEnoughToken(amountRef.current, selectedToken.balance)
       ) {
         setErrorAmountMessage('Not enough balance')
         setShowErrorAmount(true)
+        return false
       } else if (
         transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN &&
         !plasmaFee
       ) {
+        return false
       } else {
         setShowErrorAddress(false)
         setShowErrorAmount(false)
         return true
       }
-      return false
     },
     [selectedToken.balance, transferType]
   )
@@ -294,7 +286,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: theme.colors.black3
   }),
-  feeContainer: (theme, transferType) => ({
+  feeContainer: theme => ({
     flexDirection: 'column',
     backgroundColor: theme.colors.black3
   }),
@@ -313,7 +305,7 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
@@ -322,7 +314,7 @@ const mapStateToProps = (state, ownProps) => ({
   gasOptions: state.gasOptions
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchGetFees: tokens => dispatch(plasmaActions.getFees(tokens)),
   dispatchGetRecommendedGas: () => dispatch(ethereumActions.getRecommendedGas())
 })

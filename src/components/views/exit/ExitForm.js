@@ -150,13 +150,13 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   loading: state.loading,
   blockchainWallet: state.setting.blockchainWallet,
   unconfirmedTx: state.transaction.unconfirmedTxs.slice(-1).pop()
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchExit: (blockchainWallet, token, utxos, gasPrice) =>
     dispatch(plasmaActions.exit(blockchainWallet, token, utxos, gasPrice))
 })

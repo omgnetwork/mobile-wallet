@@ -54,7 +54,7 @@ const initialState = {
 
 let store
 if (__DEV__) {
-  let reduxDebugger = createDebugger()
+  const reduxDebugger = createDebugger()
   store = createStore(
     persistedReducer,
     initialState,

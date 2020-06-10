@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback } from 'react'
 import { StyleSheet, View, FlatList } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGText, OMGEmpty } from 'components/widgets'

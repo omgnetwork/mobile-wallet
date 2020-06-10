@@ -10,7 +10,7 @@ export const get = address => {
 }
 
 export const all = (address, options) => {
-  const { blknum, limit } = options || { blknum: '0', limit: 10 }
+  const { limit } = options || { limit: 10 }
   return PlasmaClient.ChildChain.getTransactions({
     address: address,
     limit: limit || 10,

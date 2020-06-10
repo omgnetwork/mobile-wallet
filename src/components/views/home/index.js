@@ -100,7 +100,7 @@ const Home = ({
   }, [navigation])
 
   const handleOnPressScan = useCallback(() => {
-    navigation.navigate('Transfer')
+    navigation.navigate('TransferScanner')
   }, [navigation])
 
   const handleOnPressSidebarMenu = useCallback(() => {
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   loading: state.loading,
   unconfirmedTxs: state.transaction.unconfirmedTxs,
   feedbackCompleteTx: state.transaction.feedbackCompleteTx,
@@ -161,7 +161,7 @@ const mapStateToProps = (state, ownProps) => ({
   )
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchInvalidateFeedbackCompleteTx: wallet =>
     transactionActions.invalidateFeedbackCompleteTx(dispatch, wallet)
 })

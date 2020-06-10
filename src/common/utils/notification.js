@@ -10,7 +10,7 @@ export const create = ({ title, message }) => {
 
 export const init = () => {
   PushNotification.configure({
-    onNotification: function(notification) {
+    onNotification: function (notification) {
       notification.finish(PushNotificationIOS.FetchResult.NoData)
     },
 

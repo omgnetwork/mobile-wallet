@@ -64,7 +64,7 @@ const OMGExitFee = ({
 
   return (
     <View style={[styles.background(theme), style]}>
-      <View style={[styles.container(theme)]}>
+      <View style={[styles.container]}>
         <OMGEditItem
           title='Total'
           rightFirstLine={`${formatTotalExitFee() || 0} ETH`}
@@ -74,7 +74,7 @@ const OMGExitFee = ({
         />
       </View>
       <Divider theme={theme} />
-      <View style={[styles.container(theme)]}>
+      <View style={[styles.container]}>
         <Item
           title='Transaction Fee'
           loading={!gasUsed}
@@ -173,11 +173,11 @@ const styles = StyleSheet.create({
   background: theme => ({
     backgroundColor: theme.colors.gray7
   }),
-  container: theme => ({
+  container: {
     flexDirection: 'column',
     paddingVertical: 16,
     paddingHorizontal: 12
-  }),
+  },
   itemContainer: {
     flexDirection: 'column'
   },

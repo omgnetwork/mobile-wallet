@@ -14,8 +14,9 @@ import Disclaimer from './disclaimer'
 import Exit from './exit'
 import ExitSelectToken from './exit/ExitSelectToken'
 import ExitSelectUtxo from './exit/ExitSelectUtxo'
-import ExitSelectFee from './exit/ExitSelectFee'
 import ExitForm from './exit/ExitForm'
+import ExitSelectFee from './exit/ExitSelectFee'
+import ExitWarning from './exit/ExitWarning'
 import ImportWallet from './import-wallet'
 import ImportWalletForm from './import-wallet/ImportForm'
 import ImportWalletSuccess from './import-wallet/ImportSuccess'
@@ -31,6 +32,7 @@ import {
 import {
   TransferContainer as Transfer,
   TransferConfirm,
+  TransferScannerConfirm,
   TransferForm,
   TransferPending,
   TransferReceive,
@@ -73,6 +75,7 @@ export {
   ExitSelectUtxo,
   ExitSelectFee,
   ExitForm,
+  ExitWarning,
   ImportWallet,
   ImportWalletForm,
   ImportWalletSuccess,
@@ -95,6 +98,7 @@ export {
   TransferChoosePlasmaFee,
   TransferSelectAddress,
   TransferSelectAmount,
+  TransferScannerConfirm,
   TransferSelectBalance,
   TransferSelectFee,
   TransferSelectToken,

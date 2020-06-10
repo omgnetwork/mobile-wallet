@@ -115,21 +115,23 @@ const QRMarker = ({
         strokeWidth={strokeWidth}
       />
       <Path
-        d={`M${width},0 L${width -
-          strokeLength},0 M${width},0 L${width},${strokeLength}`}
+        d={`M${width},0 L${
+          width - strokeLength
+        },0 M${width},0 L${width},${strokeLength}`}
         stroke={strokeColor}
         strokeWidth={strokeWidth}
       />
       <Path
-        d={`M0,${height} L0,${height -
-          strokeLength} M0,${height} L${strokeLength},${height}`}
+        d={`M0,${height} L0,${
+          height - strokeLength
+        } M0,${height} L${strokeLength},${height}`}
         stroke={strokeColor}
         strokeWidth={strokeWidth}
       />
       <Path
-        d={`M${width},${height} L${width -
-          strokeLength},${height} M${width},${height} L${width},${height -
-          strokeLength}`}
+        d={`M${width},${height} L${
+          width - strokeLength
+        },${height} M${width},${height} L${width},${height - strokeLength}`}
         stroke={strokeColor}
         strokeWidth={strokeWidth}
       />
@@ -149,14 +151,11 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   unconfirmedTx: state.transaction.unconfirmedTxs.length > 0,
   wallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
   )
 })
 
-export default connect(
-  mapStateToProps,
-  null
-)(withTheme(OMGQRScanner))
+export default connect(mapStateToProps, null)(withTheme(OMGQRScanner))

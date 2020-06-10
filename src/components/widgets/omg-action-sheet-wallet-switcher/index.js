@@ -71,7 +71,7 @@ const OMGActionSheetWalletSwitcher = ({
   )
 }
 
-const createStyles = theme =>
+const createStyles = _theme =>
   StyleSheet.create({
     container: {
       paddingTop: 28,
@@ -85,11 +85,11 @@ const createStyles = theme =>
     }
   })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   primaryWalletNetwork: state.setting.primaryWalletNetwork
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchSetPrimaryWallet: (wallet, network) =>
     settingActions.setPrimaryWallet(dispatch, wallet.address, network),
   dispatchToggleWalletSwitcher: visible =>

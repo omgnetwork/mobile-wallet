@@ -45,7 +45,7 @@ const TransferReceive = ({
 
   return (
     <View style={styles.container(theme)}>
-      <View style={styles.contentContainer(theme)}>
+      <View style={styles.contentContainer}>
         <View style={styles.content}>
           <OMGIdenticon
             style={styles.identicon(theme)}
@@ -89,13 +89,13 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.black3,
     alignItems: 'center'
   }),
-  contentContainer: theme => ({
+  contentContainer: {
     width: Styles.getResponsiveSize(200, { small: 168, medium: 188 }),
     flexDirection: 'column',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
-  }),
+  },
   content: {
     alignItems: 'center'
   },
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
   ),

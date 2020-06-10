@@ -43,8 +43,6 @@ const Balance = ({
     : wallet.childchainAssets
 
   const hasPendingTransaction = unconfirmedTxs.length > 0
-  const hasRootchainAssets =
-    wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
 
   useEffect(() => {
     if (isEthereumNetwork && wallet.shouldRefresh) {
@@ -117,7 +115,6 @@ const Balance = ({
         amount={formatTotalBalance(totalBalance)}
         currency={currency}
         type={primaryWalletNetwork}
-        loading={loading}
         onPressMenu={onPressMenu}
         onPressSidebarMenu={onPressSidebarMenu}
         disableSend={hasPendingTransaction}
@@ -129,7 +126,6 @@ const Balance = ({
       />
       <OMGAssetList
         data={assets || []}
-        hasRootchainAssets={hasRootchainAssets}
         keyExtractor={item => item.contractAddress}
         type={primaryWalletNetwork}
         updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
@@ -157,7 +153,7 @@ const formatTotalBalance = balance => {
   })
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   provider: state.setting.provider,
   unconfirmedTxs: state.transaction.unconfirmedTxs,
   globalLoading: state.loading,
@@ -167,7 +163,7 @@ const mapStateToProps = (state, ownProps) => ({
   )
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchLoadOmiseGOAssets: (provider, wallet) =>
     dispatch(plasmaActions.fetchAssets(provider, wallet.address)),
   dispatchLoadEthereumAssets: (provider, address, lastBlockNumber) =>
@@ -180,7 +176,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     walletActions.refreshRootchain(dispatch, address, shouldRefresh)
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withTheme(Balance))
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(Balance))

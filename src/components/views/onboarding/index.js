@@ -135,7 +135,7 @@ const OnboardingTourGuide = ({
   return null
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   hasWallet: state.wallets.length > 0,
   wallet: state.setting.primaryWalletAddress
     ? state.wallets.find(
@@ -149,7 +149,7 @@ const mapStateToProps = (state, ownProps) => ({
   anchoredComponents: state.onboarding.anchoredComponents
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchEnableOnboarding: enabled => {
     onboardingActions.setEnableOnboarding(dispatch, enabled)
   },
@@ -160,7 +160,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     transactionActions.invalidateFeedbackCompleteTx(dispatch, wallet)
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(OnboardingTourGuide)
+export default connect(mapStateToProps, mapDispatchToProps)(OnboardingTourGuide)

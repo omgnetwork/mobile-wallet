@@ -206,17 +206,13 @@ export const standardExit = (exitData, blockchainWallet, options) => {
   })
 }
 
-let standardExitBond
 export const getStandardExitBond = async () => {
-  if (!standardExitBond) {
-    try {
-      const { bonds } = await Contract.getPaymentExitGame()
-      standardExitBond = bonds.standardExit.toString()
-    } catch (e) {
-      standardExitBond = '14000000000000000'
-    }
+  try {
+    const { bonds } = await Contract.getPaymentExitGame()
+    return bonds.standardExit.toString()
+  } catch (e) {
+    return '14000000000000000'
   }
-  return standardExitBond
 }
 
 export const getErrorReason = async hash => {
@@ -277,7 +273,7 @@ export const getExitQueue = async tokenContractAddress => {
   }
 }
 
-export const getFees = (currencies = []) => {
+export const getFees = () => {
   return Plasma.ChildChain.getFees().then(response => {
     return response['1']
   })

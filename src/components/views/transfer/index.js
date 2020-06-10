@@ -9,6 +9,7 @@ import TransferChooseGasFee from './TransferChooseGasFee'
 import TransferChoosePlasmaFee from './TransferChoosePlasmaFee'
 import TransferSelectAddress from './TransferSelectAddress'
 import TransferSelectAmount from './TransferSelectAmount'
+import TransferScannerConfirm from './TransferScannerConfirm'
 import TransferSelectBalance from './TransferSelectBalance'
 import TransferSelectFee from './TransferSelectFee'
 import TransferSelectToken from './TransferSelectToken'
@@ -29,6 +30,7 @@ export {
   TransferChoosePlasmaFee,
   TransferSelectAddress,
   TransferSelectAmount,
+  TransferScannerConfirm,
   TransferSelectBalance,
   TransferSelectFee,
   TransferSelectToken

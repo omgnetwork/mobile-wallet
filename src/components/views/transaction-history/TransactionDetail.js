@@ -122,7 +122,7 @@ const TransactionDetail = ({ navigation, theme }) => {
         contentContainerStyle={styles.scrollViewContainer(theme)}
         bounces={false}>
         <OMGBlockchainLabel
-          style={[styles.blockchainLabel(theme), styles.marginTopMedium]}
+          style={[styles.blockchainLabel, styles.marginTopMedium]}
           transferType={transferType}
           actionText={BlockchainLabels.getBlockchainTextActionLabel(
             transaction
@@ -192,10 +192,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.black5
   }),
-  blockchainLabel: theme => ({
+  blockchainLabel: {
     marginHorizontal: -16,
     paddingVertical: 10
-  }),
+  },
   marginTopMedium: {
     marginTop: 16
   },

@@ -56,7 +56,7 @@ export const waitForRootchainTransaction = ({
   hash,
   intervalMs,
   confirmationThreshold,
-  onCountdown = remaining => {}
+  onCountdown = () => {}
 }) => {
   return OmgUtil.waitForRootchainTransaction({
     web3,

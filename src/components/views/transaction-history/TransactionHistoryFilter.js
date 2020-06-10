@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   loading: state.loading,
   transactions: state.transaction.transactions,
   startedExitTxs: state.transaction.startedExitTxs,

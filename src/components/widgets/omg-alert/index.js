@@ -21,12 +21,9 @@ const OMGAlert = ({ loading, error, style }) => {
   return <FlashMessage style={style} />
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   loading: state.loading,
   error: state.error
 })
 
-export default connect(
-  mapStateToProps,
-  null
-)(OMGAlert)
+export default connect(mapStateToProps, null)(OMGAlert)

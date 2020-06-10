@@ -12,14 +12,16 @@ const OMGBlockchainLabel = ({ theme, actionText, transferType, style }) => {
       TransferHelper.TYPE_TRANSFER_CHILDCHAIN,
       TransferHelper.TYPE_DEPOSIT
     ].indexOf(transferType) === -1
-  const blockchainName = isEthereumRootchain ? 'Ethereum' : 'OMG Network'
+  const blockchainName = isEthereumRootchain
+    ? 'Ethereum Network'
+    : 'OMG Network'
   const BlockchainIcon = isEthereumRootchain ? IconEth : IconGo
 
   return (
     <View style={[styles.container(theme, isEthereumRootchain), style]}>
       <BlockchainIcon
-        width={isEthereumRootchain ? 14 : 52.17}
-        height={isEthereumRootchain ? 23 : 18}
+        width={isEthereumRootchain ? 18 : 60}
+        height={isEthereumRootchain ? 27 : 20}
         fill={isEthereumRootchain ? theme.colors.black5 : theme.colors.white}
       />
       <OMGText style={styles.text(theme, isEthereumRootchain)}>
@@ -31,16 +33,17 @@ const OMGBlockchainLabel = ({ theme, actionText, transferType, style }) => {
 
 const styles = StyleSheet.create({
   container: (theme, isRootchain) => ({
-    backgroundColor: isRootchain ? theme.colors.green2 : theme.colors.primary,
+    backgroundColor: isRootchain ? theme.colors.gray : theme.colors.primary,
     paddingVertical: Styles.getResponsiveSize(11, { small: 8, medium: 10 }),
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    height: 80
   }),
   text: (theme, isEthereumRootchain) => ({
     marginLeft: 16,
     color: isEthereumRootchain ? theme.colors.black5 : theme.colors.white,
-    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 })
+    fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 12 })
   })
 })
 

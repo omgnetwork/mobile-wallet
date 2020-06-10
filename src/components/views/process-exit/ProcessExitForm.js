@@ -53,7 +53,7 @@ const ProcessExitForm = ({
   useEffect(() => {
     async function getExitQueue() {
       const exitQueue = await Plasma.getExitQueue(transaction.contractAddress)
-      let position = exitQueue.queue.findIndex(
+      const position = exitQueue.queue.findIndex(
         q => q.exitId === transaction.exitId
       )
       setMaxExits(position + 1)
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state, _ownProps) => {
   return {
     blockchainWallet: state.setting.blockchainWallet,
     loading: state.loading,
@@ -149,7 +149,7 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchProcessExit: (blockchainWallet, utxo, maxExitsToProcess) => {
     dispatch(
       plasmaActions.processExits(blockchainWallet, utxo, maxExitsToProcess)

@@ -24,7 +24,7 @@ const OMGDotViewPager = ({ theme, children }) => {
       </ScrollView>
       <View style={styles.scrollDots}>
         {[...Array(3)].map((_, index) => {
-          let opacity = position.interpolate({
+          const opacity = position.interpolate({
             inputRange: [index - 1, index, index + 1],
             outputRange: [0.3, 1, 0.3],
             extrapolate: 'clamp'

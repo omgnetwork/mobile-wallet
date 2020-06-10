@@ -18,7 +18,7 @@ const useMergeInterval = (
   const running = useRef(false)
 
   const updateMergeStatus = useCallback(
-    (blknum, utxos) => {
+    blknum => {
       if (blockchainWallet) {
         const { address } = blockchainWallet
         dispatchUpdateMergeUtxosStatus(address, blknum)

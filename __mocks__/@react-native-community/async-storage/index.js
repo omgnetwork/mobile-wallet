@@ -7,23 +7,21 @@ export default {
         : resolve((cache[key] = value))
     })
   },
-  getItem: (key, value) => {
+  getItem: key => {
     return new Promise(resolve => {
-      return cache.hasOwnProperty(key) ? resolve(cache[key]) : resolve(null)
+      return key in cache ? resolve(cache[key]) : resolve(null)
     })
   },
   removeItem: key => {
     return new Promise((resolve, reject) => {
-      return cache.hasOwnProperty(key)
-        ? resolve(delete cache[key])
-        : reject('No such key!')
+      return key in cache ? resolve(delete cache[key]) : reject('No such key!')
     })
   },
-  clear: key => {
-    return new Promise((resolve, reject) => resolve((cache = {})))
+  clear: () => {
+    return new Promise((resolve, _reject) => resolve((cache = {})))
   },
 
-  getAllKeys: key => {
-    return new Promise((resolve, reject) => resolve(Object.keys(cache)))
+  getAllKeys: () => {
+    return new Promise((resolve, _reject) => resolve(Object.keys(cache)))
   }
 }

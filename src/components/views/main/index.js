@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   walletSwitcherVisible: state.walletSwitcher.visible,
   wallets: state.wallets,
   primaryWallet: state.wallets.find(
@@ -38,7 +38,4 @@ const mapStateToProps = (state, ownProps) => ({
   )
 })
 
-export default connect(
-  mapStateToProps,
-  null
-)(withTheme(MainContainer))
+export default connect(mapStateToProps, null)(withTheme(MainContainer))
