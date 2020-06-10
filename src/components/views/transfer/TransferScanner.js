@@ -3,6 +3,7 @@ import { View, StyleSheet, Animated, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
+import { BlockchainNetworkType } from 'common/constants'
 import {
   OMGText,
   OMGFontIcon,
@@ -262,7 +263,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => ({
   unconfirmedTx: state.transaction.unconfirmedTxs.length > 0,
-  isRootchain: state.setting.primaryWalletNetwork === 'Ethereum Network',
+  isRootchain:
+    state.setting.primaryWalletNetwork ===
+    BlockchainNetworkType.TYPE_ETHEREUM_NETWORK,
   wallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
   )
