@@ -111,7 +111,7 @@ const TransferScanner = ({
         <CloseIcon />
       </TouchableOpacity>
       {rendering && (
-        <View style={styles.contentContainer(theme)}>
+        <View style={styles.contentContainer}>
           <View style={styles.cameraContainer}>
             <OMGQRScanner
               showMarker={true}
@@ -234,10 +234,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderColor: theme.colors.gray
   }),
-  contentContainer: theme => ({
+  contentContainer: {
     flex: 1,
     justifyContent: 'center'
-  }),
+  },
   cameraContainer: {
     flex: Styles.getResponsiveSize(0.4, { small: 0.64, medium: 0.5 })
   }
