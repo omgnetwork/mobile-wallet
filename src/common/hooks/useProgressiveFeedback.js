@@ -24,28 +24,41 @@ const useProgressiveFeedback = (
 
   const getTransactionFeedbackTitle = useCallback((pending, actionType) => {
     switch (actionType) {
+      case TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN:
+        return pending
+          ? 'Pending transfer on the OMG Network'
+          : 'Transfer sent on the OMG Network'
       case TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT:
-        return pending ? 'Pending Deposit...' : 'Deposit Successful!'
+        return pending ? 'Pending Deposit...' : 'Deposited to the OMG Network.'
       case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
         return pending
           ? 'Submitting a Withdrawal Request...'
-          : 'Submitted a Withdrawal Request!'
+          : 'Submitted a Withdrawal Request.'
       case TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT:
-        return pending ? 'Pending Withdrawal...' : 'Withdrawal Successful!'
+        return pending ? 'Processing Withdrawal...' : 'Withdrawal Successful'
       case TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS:
-        return pending ? 'Uniting Tokens...' : 'All set!'
+        return pending ? 'Merging Tokens...' : 'All set!'
       default:
-        return pending ? 'Pending Transaction...' : 'Transfer Successful!'
+        return null
     }
   }, [])
 
   const getSubtitle = useCallback((pending, actionType) => {
     switch (actionType) {
+      case TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN:
+        return pending ? 'Please wait' : 'The transaction is being finalised'
+      case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
+        return pending
+          ? 'Please wait'
+          : 'Your withdrawal is pending. We will notify you once it finalizes.'
+      case TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT:
+        return pending
+          ? 'Please wait'
+          : 'Your funds are now on the Ethereum Network.'
       case TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS:
-        if (pending)
-          return 'We’re merging UTXOs. Hang tight! You can not transfer during this time.'
-        else
-          return 'Merged UTXOs. You can now transfer and do any activities as usual.'
+        return pending
+          ? 'We’re merging UTXOs. You can not transfer during this time.'
+          : 'Merged UTXOs. You can now transfer as usual.'
     }
   }, [])
 
@@ -69,6 +82,17 @@ const useProgressiveFeedback = (
     }
   }, [])
 
+  const getInternalLink = useCallback(actionType => {
+    switch (actionType) {
+      case TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN:
+        return {
+          title: 'View Transaction'
+        }
+      default:
+        return null
+    }
+  }, [])
+
   const formatFeedbackTx = useCallback(
     transaction => {
       if (!transaction) return {}
@@ -88,11 +112,12 @@ const useProgressiveFeedback = (
           hash: hash,
           pending: false,
           subtitle: getSubtitle(false, actionType),
-          link: getExternalLink(actionType, hash)
+          externalLink: getExternalLink(actionType, hash),
+          internalLink: getInternalLink(actionType)
         }
       }
     },
-    [getExternalLink, getSubtitle, getTransactionFeedbackTitle]
+    [getExternalLink, getInternalLink, getSubtitle, getTransactionFeedbackTitle]
   )
 
   const handleOnClose = useCallback(() => {
