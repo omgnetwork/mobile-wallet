@@ -33,26 +33,22 @@ const TransferScanner = ({
   const camera = useRef(null)
   const [address, setAddress] = useState(null)
   const [shouldDisableSending, setShouldDisableSending] = useState(false)
-  const hasRootchainAssets =
-    wallet && wallet.rootchainAssets && wallet.rootchainAssets.length > 0
-  const hasChildchainAssets =
-    wallet && wallet.childchainAssets && wallet.childchainAssets.length > 0
+  const assets = isRootchain
+    ? wallet?.rootchainAssets
+    : wallet?.childchainAssets
+  const hasAssets = assets?.length > 0
 
   const handleCloseClick = useCallback(() => {
     navigation.goBack()
   }, [navigation])
 
-  const getAssets = useCallback(() => {
-    return isRootchain ? wallet.rootchainAssets : wallet.childchainAssets
-  }, [isRootchain, wallet.childchainAssets, wallet.rootchainAssets])
-
   const navigateNext = useCallback(() => {
     navigation.navigate('TransferScannerConfirm', {
       address,
       isRootchain,
-      assets: getAssets()
+      assets
     })
-  }, [navigation, address, isRootchain, getAssets])
+  }, [navigation, address, isRootchain, assets])
 
   useEffect(() => {
     if (address && !shouldDisableSending) {
@@ -71,31 +67,17 @@ const TransferScanner = ({
   }, [navigation])
 
   const getEmptyStatePayload = useCallback(() => {
-    if (isRootchain && !hasRootchainAssets) {
+    if (!hasAssets) {
       return {
         imageName: 'EmptyRootchainWallet',
         text: 'Wallet is empty.\nShare wallet to receive fund.'
       }
-    } else if (!isRootchain && !hasChildchainAssets) {
-      return {
-        imageName: 'EmptyChildchainWallet',
-        text: 'Wallet is empty.\nShare wallet to receive fund.'
-      }
     }
-    return {}
-  }, [hasChildchainAssets, hasRootchainAssets, isRootchain])
+  }, [hasAssets])
 
   useEffect(() => {
-    if (unconfirmedTx) {
-      setShouldDisableSending(true)
-    } else if (isRootchain && !hasRootchainAssets) {
-      setShouldDisableSending(true)
-    } else if (!isRootchain && !hasChildchainAssets) {
-      setShouldDisableSending(true)
-    } else {
-      setShouldDisableSending(false)
-    }
-  }, [hasChildchainAssets, hasRootchainAssets, isRootchain, unconfirmedTx])
+    setShouldDisableSending(unconfirmedTx || !hasAssets)
+  }, [hasAssets, isRootchain, unconfirmedTx])
 
   const handleReceiveClick = useCallback(() => {
     navigation.navigate('Receive')
