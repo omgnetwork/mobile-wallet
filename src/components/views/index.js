@@ -32,6 +32,7 @@ import {
 import {
   TransferContainer as Transfer,
   TransferConfirm,
+  TransferScannerConfirm,
   TransferForm,
   TransferPending,
   TransferReceive,
@@ -87,6 +88,7 @@ export {
   TransferPending,
   TransferReceive,
   TransferScanner,
+  TransferScannerConfirm,
   TransferSelectBalance,
   TransferSelectFee,
   TransferSelectPlasmaFee,
