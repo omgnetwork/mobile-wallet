@@ -90,7 +90,7 @@ const ExitForm = ({
         <OMGText
           style={[styles.title(theme), styles.marginMedium]}
           weight='regular'>
-          Review Exit Detail
+          Review Withdrawal Details
         </OMGText>
         <OMGEditItem
           title='Amount'
@@ -110,7 +110,7 @@ const ExitForm = ({
         <OMGExitWarning style={styles.marginMedium} />
         <View style={styles.buttonContainer}>
           <OMGButton onPress={submit} loading={submitting}>
-            Confirm Exit
+            Confirm Withdrawal
           </OMGButton>
         </View>
       </ScrollView>
@@ -149,13 +149,13 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   loading: state.loading,
   blockchainWallet: state.setting.blockchainWallet,
   unconfirmedTx: state.transaction.unconfirmedTxs.slice(-1).pop()
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchExit: (blockchainWallet, token, utxos, gasPrice) =>
     dispatch(plasmaActions.exit(blockchainWallet, token, utxos, gasPrice))
 })

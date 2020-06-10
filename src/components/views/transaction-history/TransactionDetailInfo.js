@@ -12,7 +12,7 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
   const tokens = primaryWallet.childchainAssets
   const textExactDatetime = Formatter.formatTimeStamp(
     tx.timestamp,
-    'MMMM-DD-YYYY, HH:mm:ss A Z'
+    'MMMM-DD-YYYY, HH:mm:ss A'
   )
   const feeAmount = BlockchainFormatter.formatGasFee(
     tx.gasUsed,
@@ -229,13 +229,10 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   primaryWallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   )
 })
 
-export default connect(
-  mapStateToProps,
-  null
-)(TransactionDetailInfo)
+export default connect(mapStateToProps, null)(TransactionDetailInfo)

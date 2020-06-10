@@ -23,12 +23,7 @@ export const formatGasFee = (gasUsed, gasPriceWei, flatFee = '0') => {
 }
 
 // Output in USD
-export const formatGasFeeUsd = (
-  gasUsed,
-  gasPriceWei,
-  usdEth,
-  flatFee = '0'
-) => {
+export const formatGasFeeUsd = (gasUsed, gasPriceWei, usdEth) => {
   const bigNumberGasPriceWei = BigNumber.create(gasPriceWei)
   const bigNumberGasUsed = BigNumber.create(gasUsed)
   const bigNumberGasFee = bigNumberGasPriceWei.mul(bigNumberGasUsed)
@@ -59,7 +54,7 @@ export const formatTokenBalance = (amount, maxDecimal = 18) => {
 export const formatTokenBalanceFromSmallestUnit = (
   amount,
   tokenDecimal = 18,
-  displayDecimals = 5
+  displayDecimals = 6
 ) => {
   const balance = formatUnits(amount.toString(), tokenDecimal)
   return Formatter.format(balance, {

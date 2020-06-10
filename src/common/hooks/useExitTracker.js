@@ -7,7 +7,7 @@ import {
 } from 'common/constants'
 import BackgroundTimer from 'react-native-background-timer'
 
-const useExitTracker = blockchainWallet => {
+const useExitTracker = () => {
   const INTERVAL_PERIOD = 15000
   const [startedExitTxs, setStartedExitTxs] = useState([])
   const [notification, setNotification] = useState(null)

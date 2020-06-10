@@ -9,6 +9,7 @@ import { withNavigation, SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
 import { OMGStatusBar } from 'components/widgets'
 import { Move } from 'common/anims'
+import { ABIDecoder, Contract, ContractABI } from 'common/blockchain'
 import OmiseGOLogo from './assets/omisego.svg'
 
 const Initializer = ({
@@ -31,13 +32,24 @@ const Initializer = ({
   const loadingDuration = 1000 + Math.random() * 1000
 
   useEffect(() => {
-    async function initSecureEncryption() {
+    async function init() {
       if (Platform.OS === 'android') {
         await SecureEncryption.init()
       }
+      if (ABIDecoder.get().getABIs().length === 0) {
+        const erc20Abi = ContractABI.erc20Abi()
+        const plasmaContractAbi = Contract.getPlasmaContractABI()
+        const plasmaAbis = await Promise.all([
+          Contract.getPaymentExitGameABI(),
+          Contract.getERC20VaultABI(),
+          Contract.getEthVaultABI()
+        ])
+        ABIDecoder.init([erc20Abi, plasmaContractAbi, ...plasmaAbis])
+      }
       setReady(true)
     }
-    initSecureEncryption()
+
+    init()
   }, [])
 
   useEffect(() => {
@@ -134,7 +146,7 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
@@ -146,7 +158,7 @@ const mapStateToProps = (state, ownProps) => ({
   unconfirmedTxs: state.transaction.unconfirmedTxs
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchSetBlockchainWallet: (wallet, provider) =>
     dispatch(settingActions.setBlockchainWallet(wallet, provider)),
   dispatchSetPrimaryWallet: (wallet, network) =>

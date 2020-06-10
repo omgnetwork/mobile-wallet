@@ -33,17 +33,15 @@ const Exit = ({ navigation, theme, primaryWallet }) => {
         barStyle={'light-content'}
         backgroundColor={theme.colors.black5}
       />
-      <OMGHeader title='Exit' onPress={() => navigation.navigate('Home')} />
+      <OMGHeader title='Withdraw' onPress={() => navigation.navigate('Home')} />
       <OMGBlockchainLabel
-        actionText='Exit to'
+        actionText='Withdrawing to the'
         transferType={TransferHelper.TYPE_EXIT}
       />
       {primaryWallet ? (
         <ExitNavigator navigation={navigation} />
       ) : (
-        <OMGEmpty
-          text={'The wallet is not found. Try import a wallet first.'}
-        />
+        <OMGEmpty text='Wallet not found. Try importing a wallet first.' />
       )}
     </SafeAreaView>
   )
@@ -56,13 +54,10 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
   )
 })
 
-export default connect(
-  mapStateToProps,
-  null
-)(withTheme(Exit))
+export default connect(mapStateToProps, null)(withTheme(Exit))

@@ -1,5 +1,4 @@
 import * as TransferHelper from './transferHelper'
-import feeOptions from './feeOptions'
 
 export const getParamsForTransferForm = (navigation, wallet) => {
   const transferType = navigation.getParam('transferType')
@@ -49,7 +48,7 @@ export const paramsForTransferFormToTransferConfirm = ({
     toWallet: {
       name:
         transferType === TransferHelper.TYPE_DEPOSIT
-          ? 'Plasma Contract'
+          ? 'OMG Network'
           : 'Another wallet',
       address: address
     },

@@ -11,12 +11,12 @@ export const getBlockchainTextActionLabel = (screen, transferType) => {
 
 const getOngoingText = transferType => {
   return transferType === TransferHelper.TYPE_DEPOSIT
-    ? 'Depositing to'
-    : 'Sending on'
+    ? 'Depositing to the'
+    : 'Sending on the'
 }
 
 const getDoneText = transferType => {
   return transferType === TransferHelper.TYPE_DEPOSIT
-    ? 'Deposited to'
-    : 'Sent on'
+    ? 'Deposited to the'
+    : 'Sent on the'
 }

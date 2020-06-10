@@ -42,9 +42,7 @@ export const getRequiredMerge = async (
       .map(key => utxosMap[key])
   }
 
-  return get(address)
-    .then(groupByCurrency)
-    .then(filterOnlyGreaterThanMinimum)
+  return get(address).then(groupByCurrency).then(filterOnlyGreaterThanMinimum)
 }
 
 export const sum = utxos => {
@@ -86,7 +84,7 @@ export const mergeUntilThreshold = async (
     }
   }
 
-  let listOfUtxosGroup = []
+  const listOfUtxosGroup = []
   let utxosGroup = []
   for (let i = 0; i < utxos.length; i++) {
     utxosGroup.push(utxos[i])
@@ -110,7 +108,7 @@ export const mergeUntilThreshold = async (
   storeBlknum(blknum, utxos)
 
   await Wait.waitChildChainBlknum(address, blknum)
-  let newUtxos = await get(address, {
+  const newUtxos = await get(address, {
     currency: utxos[0].currency
   })
   return await mergeUntilThreshold(

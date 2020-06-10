@@ -90,7 +90,7 @@ const RootchainTransactionTracker = ({
   return null
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
@@ -98,7 +98,7 @@ const mapStateToProps = (state, ownProps) => ({
   unconfirmedTxs: state.transaction.unconfirmedTxs
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchAddStartedExitTx: tx =>
     transactionActions.addStartedExitTx(dispatch, tx),
   dispatchInvalidateUnconfirmedTx: confirmedTx =>

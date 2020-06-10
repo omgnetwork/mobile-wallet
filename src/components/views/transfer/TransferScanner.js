@@ -70,7 +70,7 @@ const TransferScanner = ({
     if (!hasAssets) {
       return {
         imageName: 'EmptyRootchainWallet',
-        text: 'Wallet is empty.\nShare wallet to receive fund.'
+        text: 'Your Wallet is empty.\nDeposit funds to get started.'
       }
     }
   }, [hasAssets])
@@ -92,7 +92,7 @@ const TransferScanner = ({
         color={theme.colors.gray8}
       />
       <OMGText style={styles.unableText(theme)}>
-        Unable to Transfer,{'\n'}There's a pending transaction
+        {'Unable to transfer.\n There is a pending transaction'}
       </OMGText>
     </Animated.View>
   )
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   unconfirmedTx: state.transaction.unconfirmedTxs.length > 0,
   isRootchain:
     state.setting.primaryWalletNetwork ===

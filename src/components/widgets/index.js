@@ -19,6 +19,7 @@ import OMGEditItem from './omg-edit-item'
 import OMGEmpty from './omg-empty'
 import OMGExitComplete from './omg-exit-complete'
 import OMGExitFee from './omg-exit-fee'
+import OMGExitPeriodWarning from './omg-exit-period-warning'
 import OMGExitWarning from './omg-exit-warning'
 import OMGFeeInput from './omg-fee-input'
 import OMGFeeSelect from './omg-fee-select'
@@ -28,7 +29,6 @@ import OMGMenu from './omg-menu'
 import OMGMenuIcon from './omg-menu-icon'
 import OMGMenuImage from './omg-menu-image'
 import OMGMnemonicConfirmBox from './omg-mnemonic-confirm-box'
-import OMGModal from './omg-modal'
 import {
   OMGOnboardingSheetWithButton,
   OMGOnboardingSheet,
@@ -85,6 +85,7 @@ export {
   OMGEmpty,
   OMGExitComplete,
   OMGExitFee,
+  OMGExitPeriodWarning,
   OMGExitWarning,
   OMGFeeInput,
   OMGFeeSelect,
@@ -102,7 +103,6 @@ export {
   OMGMenuIcon,
   OMGMenuImage,
   OMGMnemonicConfirmBox,
-  OMGModal,
   OMGOnboardingSheetWithButton,
   OMGOnboardingSheet,
   OMGOnboardingPopup,

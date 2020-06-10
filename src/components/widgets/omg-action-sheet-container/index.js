@@ -58,7 +58,7 @@ const createStyles = theme =>
     }
   })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchToggleWalletSwitcher: visible =>
     walletSwitcherActions.toggle(dispatch, visible)
 })

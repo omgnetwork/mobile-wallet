@@ -1,7 +1,7 @@
 import { Plasma, web3 } from 'common/clients'
 import axios from 'axios'
 import { Gas, ContractAddress } from 'common/constants'
-import { Mapper, BigNumber } from 'common/utils'
+import { Mapper } from 'common/utils'
 import Config from 'react-native-config'
 import BN from 'bn.js'
 import {
@@ -36,7 +36,6 @@ export const transfer = async (
   const childchainFee = Transaction.createFee(fee.contractAddress, fee.amount)
   const { address } = fromBlockchainWallet
   const utxos = await Utxos.get(address, {
-    currency: token.contractAddress,
     sort: (a, b) => new BN(b.amount).sub(new BN(a.amount))
   })
   const txBody = Transaction.createBody(

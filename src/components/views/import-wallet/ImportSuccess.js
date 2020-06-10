@@ -17,7 +17,7 @@ const ImportSuccess = ({ theme, navigation, dispatchSetPrimaryWallet }) => {
   return (
     <View style={styles.container(theme)}>
       <OMGText style={styles.title(theme)} weight='mono-semi-bold'>
-        Successfully Imported!
+        Import Successful!
       </OMGText>
       <OMGItemWallet wallet={wallet} style={styles.walletItem} />
       <View style={styles.buttonContainer}>
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchSetPrimaryWallet: wallet =>
     settingActions.setPrimaryWallet(dispatch, wallet.address)
 })

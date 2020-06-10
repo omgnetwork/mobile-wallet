@@ -159,13 +159,10 @@ const OMGDrawerContent = ({
               value={Config.ETHEREUM_NETWORK}
             />
             <DrawerEnvItem
-              title='Plasma Contract'
+              title='OMG Network Contract'
               value={Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS}
             />
-            <DrawerEnvItem
-              title='Watcher URL'
-              value={Config.WATCHER_URL}
-            />
+            <DrawerEnvItem title='Watcher URL' value={Config.WATCHER_URL} />
             <DrawerEnvItem title='Version' value={Config.VERSION} />
           </View>
         </View>
@@ -248,14 +245,14 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   primaryWallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
   wallets: state.wallets,
   provider: state.setting.provider
 })
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchToggleWalletSwitcher: visible =>
     walletSwitcherActions.toggle(dispatch, visible)
 })

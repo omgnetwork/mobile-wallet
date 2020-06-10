@@ -10,7 +10,6 @@ import { TaskScheduler } from 'common/native'
 
 const ProcessExitTransactionTracker = ({
   wallet,
-  blockchainWallet,
   startedExitTxs,
   dispatchUpdateStartedExitTxStatus
 }) => {
@@ -19,7 +18,7 @@ const ProcessExitTransactionTracker = ({
     exitNotification,
     setExitNotification,
     setStartedExitTxs
-  ] = useExitTracker(blockchainWallet)
+  ] = useExitTracker()
 
   const getConfirmedStartedExitTxs = useCallback(() => {
     return startedExitTxs.filter(Transaction.isConfirmedStartedExit)
@@ -47,9 +46,9 @@ const ProcessExitTransactionTracker = ({
     if (primaryWallet.current) {
       const confirmedStartedExitTxs = getConfirmedStartedExitTxs()
       if (Platform.OS === 'android') {
-        for (const { hash } of confirmedStartedExitTxs) {
+        for (const tx of confirmedStartedExitTxs) {
           TaskScheduler.bookTask(
-            hash,
+            tx.hash,
             'HeadlessProcessExit',
             Config.EXIT_PERIOD * 2
           )
@@ -65,7 +64,7 @@ const ProcessExitTransactionTracker = ({
   return null
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   wallet: state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
@@ -73,7 +72,7 @@ const mapStateToProps = (state, ownProps) => ({
   startedExitTxs: state.transaction.startedExitTxs
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchUpdateStartedExitTxStatus: tx =>
     transactionActions.updateStartedExitTxStatus(dispatch, tx.hash, tx.status)
 })

@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     color: theme.colors.red,
     marginTop: 8
   }),
-  text: (theme, disabled) => ({
+  text: theme => ({
     color: theme.colors.white,
     backgroundColor: theme.colors.black3,
     fontSize: Styles.getResponsiveSize(14, { small: 11, medium: 12 })

@@ -13,7 +13,6 @@ const OMGTextInput = ({
   defaultValue,
   placeholderTextColor,
   maxLength,
-  onChange,
   onChangeText,
   value,
   inputRef,

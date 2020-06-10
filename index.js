@@ -2,7 +2,6 @@
  * @format
  */
 
-import buffer from 'buffer'
 import 'ethers/dist/shims.js'
 
 import { AppRegistry } from 'react-native'

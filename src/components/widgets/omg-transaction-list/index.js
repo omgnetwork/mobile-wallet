@@ -11,34 +11,34 @@ import { TransactionTypes, ExitStatus } from 'common/constants'
 
 const OMGTransactionList = ({
   transactions,
-  theme,
   type,
   loading,
   renderHeader,
   address,
   style,
-  navigation
+  navigation,
+  _theme
 }) => {
   const getEmptyStatePayload = useCallback(() => {
     if (type === TransactionTypes.TYPE_RECENT) {
       return {
         imageName: 'EmptyTxRecent',
-        text: 'Empty activity history, try\nReceive | Deposit | Transfer'
+        text: 'No recent activity'
       }
     } else if (type === TransactionTypes.TYPE_DEPOSIT) {
       return {
         imageName: 'EmptyTxDeposit',
-        text: 'Empty Deposit History.\nTry deposit.'
+        text: 'Empty Deposit History.\nDeposit funds to get started!'
       }
     } else if (type === TransactionTypes.TYPE_EXIT) {
       return {
         imageName: 'EmptyTxExit',
-        text: 'Empty Exits History.'
+        text: 'Empty Withdrawal History.'
       }
     } else if (type === TransactionTypes.TYPE_PROCESS_EXIT) {
       return {
         imageName: 'EmptyTxExit',
-        text: 'Empty Process Exits History.'
+        text: 'Empty Withdrawal History.'
       }
     } else if (type === TransactionTypes.TYPE_FAILED) {
       return {
@@ -48,7 +48,7 @@ const OMGTransactionList = ({
     } else {
       return {
         imageName: 'EmptyTxAll',
-        text: 'Empty Transaction History\nTry transfer.'
+        text: 'Empty Transaction History\nTry out the OMG Network!'
       }
     }
   }, [type])
@@ -80,15 +80,14 @@ const OMGTransactionList = ({
     switch (tx.type) {
       case TransactionTypes.TYPE_DEPOSIT:
         return 'Deposit Details'
-      case TransactionTypes.TYPE_EXIT:
-        return 'Exit Details'
       case TransactionTypes.TYPE_PROCESS_EXIT:
-        return 'Process Exit Details'
+      case TransactionTypes.TYPE_EXIT:
+        return 'Withdrawal Details'
       case TransactionTypes.TYPE_SENT:
       case TransactionTypes.TYPE_RECEIVED:
         return 'Transaction Details'
       case TransactionTypes.TYPE_FAILED:
-        return 'Failed Details'
+        return 'Failure Details'
     }
   }
 
@@ -126,7 +125,7 @@ const OMGTransactionList = ({
           data={transactions}
           keyExtractor={tx => tx.hash}
           contentContainerStyle={
-            transactions?.length ? styles.content : styles.emptyContent(theme)
+            transactions?.length ? styles.content : styles.emptyContent
           }
           renderItem={({ item }) => getItemTransactionComponent(item)}
         />
@@ -142,10 +141,10 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 16
   },
-  emptyContent: theme => ({
+  emptyContent: {
     paddingHorizontal: 16,
     flexGrow: 1
-  })
+  }
 })
 
 export default withNavigation(withTheme(OMGTransactionList))

@@ -53,9 +53,9 @@ const OMGExitFee = ({
 
   return (
     <View style={[styles.background(theme), style]}>
-      <View style={[styles.container(theme)]}>
+      <View style={[styles.container]}>
         <OMGEditItem
-          title='Fee'
+          title='Total'
           loading={!gasUsed || !exitBondValue}
           value={formatTotalExitFee() || 0}
           onPress={onPressEdit}
@@ -63,7 +63,7 @@ const OMGExitFee = ({
         />
       </View>
       <Divider theme={theme} />
-      <View style={[styles.container(theme)]}>
+      <View style={[styles.container]}>
         <Item
           title='Transaction Fee'
           loading={!gasUsed}
@@ -73,7 +73,7 @@ const OMGExitFee = ({
         />
         <Item
           title='Exit Bond'
-          subtitle='You’ll get this back after successfully exited'
+          subtitle='You’ll receive your funds after successful withdrawal from the OMG Network.'
           loading={!exitBondValue}
           theme={theme}
           ethPrice={ethPrice}
@@ -162,11 +162,11 @@ const styles = StyleSheet.create({
   background: theme => ({
     backgroundColor: theme.colors.gray7
   }),
-  container: theme => ({
+  container: {
     flexDirection: 'column',
     paddingVertical: 16,
     paddingHorizontal: 12
-  }),
+  },
   itemContainer: {
     flexDirection: 'column'
   },

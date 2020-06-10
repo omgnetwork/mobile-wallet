@@ -93,10 +93,10 @@ const CreateWalletMnemonicConfirm = ({
         bounces={false}>
         <BackupMnemonicImage width={80} height={80} style={styles.image} />
         <OMGText weight='mono-semi-bold' style={styles.title}>
-          Confirm
+          Confirm Mnemonic Phrase
         </OMGText>
         <OMGText style={styles.description}>
-          Please select Mnemonic Phrase in correct order
+          Please select the words below in the correct order.
         </OMGText>
         <OMGMnemonicConfirmBox
           style={styles.confirmBox}
@@ -159,14 +159,14 @@ const createStyles = theme =>
     }
   })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   loading: state.loading,
   wallets: state.wallets,
   wallet: state.wallets.length && state.wallets.slice(-1).pop(),
   provider: state.setting.provider
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchCreateWallet: (wallets, mnemonic, provider, name) =>
     dispatch(walletActions.create(wallets, mnemonic, provider, name)),
   dispatchSetPrimaryWallet: wallet =>

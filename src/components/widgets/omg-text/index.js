@@ -45,7 +45,6 @@ const fontFamilySelector = weight => {
 const fontWeightSelector = weight => {
   switch (weight) {
     case 'bold':
-    case 'mono-semi-bold':
       return '700'
     case 'semi-bold':
     case 'mono-semi-bold':

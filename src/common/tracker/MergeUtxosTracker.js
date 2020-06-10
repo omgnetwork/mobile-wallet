@@ -32,13 +32,13 @@ const MergeUtxosTracker = ({
   return null
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   blockchainWallet: state.setting.blockchainWallet,
   unconfirmedTxs: state.transaction.unconfirmedTxs,
   loading: state.loading
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchUpdateMergeUtxosStatus: (address, blknum) =>
     transactionActions.updateMergeUtxosBlknum(dispatch, address, blknum),
   dispatchMergeUtxos: (address, privateKey, listOfUtxos, blknum, storeBlknum) =>
@@ -54,7 +54,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     )
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MergeUtxosTracker)
+export default connect(mapStateToProps, mapDispatchToProps)(MergeUtxosTracker)
