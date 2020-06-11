@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { TouchableOpacity, View, StyleSheet, Keyboard } from 'react-native'
 import Clipboard from '@react-native-community/clipboard'
 import { withTheme } from 'react-native-paper'
@@ -13,39 +13,27 @@ const OMGAddressInput = ({
   onPressScanQR,
   showError,
   returnKeyType,
-  onChangeAddress,
   onSubmitEditing,
-  inputRef,
+  addressText,
+  setAddressText,
   focusRef
 }) => {
-  const [inputText, setInputText] = useState(inputRef.current)
-
   const onPressPaste = useCallback(async () => {
     const clipboardContent = await Clipboard.getString()
-    inputRef.current = clipboardContent.trim()
-    setInputText(inputRef.current)
-    onChangeAddress(inputRef.current)
+    setAddressText(clipboardContent.trim())
     Keyboard.dismiss()
-  }, [inputRef, onChangeAddress])
-
-  const onChangeText = useCallback(
-    text => {
-      setInputText(text)
-      onChangeAddress(text)
-    },
-    [onChangeAddress]
-  )
+  }, [])
 
   return (
     <View style={[styles.container, style]}>
       <View style={styles.contentContainer}>
         <OMGTextInput
           style={styles.text(theme)}
-          defaultValue={inputRef.current}
-          inputRef={inputRef}
+          defaultValue={addressText}
+          onChangeText={setAddressText}
           focusRef={focusRef}
-          onChangeText={onChangeText}
-          value={inputText}
+          lines={2}
+          value={addressText}
           returnKeyType={returnKeyType}
           onSubmitEditing={onSubmitEditing}
           placeholder='Address'

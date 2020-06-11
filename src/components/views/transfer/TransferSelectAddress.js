@@ -1,10 +1,10 @@
-import React, { useRef, useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { withTheme } from 'react-native-paper'
 import { View, StyleSheet, Platform, KeyboardAvoidingView } from 'react-native'
 import { Validator } from 'common/blockchain'
 import { Header } from 'react-navigation-stack'
 import { Dimensions } from 'common/utils'
-import { withNavigation } from 'react-navigation'
+import { withNavigationFocus } from 'react-navigation'
 import {
   OMGAddressInput,
   OMGText,
@@ -12,19 +12,32 @@ import {
   OMGDismissKeyboard
 } from 'components/widgets'
 
-const TransferSelectAddress = ({ theme, navigation }) => {
-  const addressRef = useRef()
+const TransferSelectAddress = ({ theme, navigation, isFocused }) => {
+  const scannedAddress = navigation.dangerouslyGetParent().getParam('address')
   const styles = createStyles(theme)
-  const [disabled, setDisabled] = useState(true)
+  const [disabled, setDisabled] = useState(!scannedAddress)
+  const [addressText, setAddressText] = useState(scannedAddress)
 
-  const onChangeAddress = useCallback(address => {
-    const valid = Validator.isValidAddress(address)
-    setDisabled(!valid)
-  }, [])
+  useEffect(() => {
+    if (addressText) {
+      const valid = Validator.isValidAddress(addressText)
+      setDisabled(!valid)
+    }
+  }, [addressText, setDisabled])
+
+  useEffect(() => {
+    if (isFocused) {
+      setAddressText(navigation.dangerouslyGetParent().getParam('address'))
+    }
+  }, [isFocused, setAddressText])
 
   const onSubmit = useCallback(() => {
-    navigation.navigate('TransferSelectToken', { address: addressRef.current })
+    navigation.navigate('TransferSelectToken', { address: addressText })
   }, [navigation])
+
+  const onPressScanQR = useCallback(() => {
+    navigation.navigate('TransferScanner')
+  }, [])
 
   const keyboardAvoidingBehavior = Platform.OS === 'ios' ? 'padding' : null
   const statusBarHeight = Dimensions.getStatusBarHeight()
@@ -38,9 +51,10 @@ const TransferSelectAddress = ({ theme, navigation }) => {
           SEND TO
         </OMGText>
         <OMGAddressInput
-          inputRef={addressRef}
+          addressText={addressText}
+          setAddressText={setAddressText}
           style={styles.addressInput}
-          onChangeAddress={onChangeAddress}
+          onPressScanQR={onPressScanQR}
         />
         <View style={styles.buttonContainer}>
           <OMGButton disabled={disabled} onPress={onSubmit}>
@@ -77,4 +91,4 @@ const createStyles = theme =>
     }
   })
 
-export default withNavigation(withTheme(TransferSelectAddress))
+export default withNavigationFocus(withTheme(TransferSelectAddress))
