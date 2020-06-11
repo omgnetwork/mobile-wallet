@@ -45,7 +45,7 @@ export const ROOTCHAIN_POPUP = {
     enabledOnboarding,
     currentPage,
     nextPopup,
-    rootchainAssets
+    rootchainAssets = []
   }) => {
     return (
       enabledOnboarding &&
@@ -71,7 +71,7 @@ export const ROOTCHAIN_POPUP_EMPTY = {
     enabledOnboarding,
     currentPage,
     nextPopup,
-    rootchainAssets
+    rootchainAssets = []
   }) => {
     return (
       enabledOnboarding &&
