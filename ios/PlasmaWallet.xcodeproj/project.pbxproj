@@ -23,6 +23,7 @@
 		71B952FEB1694F4E838D28C6 /* MessinaSansMono-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4BD391ABF0B04F5DBC7C4B8D /* MessinaSansMono-Book.otf */; };
 		78BB2462972B45E282E97D4E /* MessinaSans-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 494129B0817C40B2B566300D /* MessinaSans-Bold.otf */; };
 		AF93B4D6639E460B9DACAB68 /* MessinaSans-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BAFF502928C4ECF85C816AB /* MessinaSans-SemiBold.otf */; };
+		B4E6C4A696AB31F4E2ED164F /* libPods-PlasmaWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4DB1EC4247FABC80007B6BB /* libPods-PlasmaWallet.a */; };
 		BFC9C018DE894ECF94E174EB /* libPods-PlasmaWallet-PlasmaWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 038202B68F8B8683ED793D06 /* libPods-PlasmaWallet-PlasmaWalletTests.a */; };
 		C479231924612F2A001B1F4E /* SupportReactNative0.62.2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C479231824612F2A001B1F4E /* SupportReactNative0.62.2.swift */; };
 		C49E761123660727003B0D52 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */; };
@@ -111,6 +112,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F856FFAE0AF45D49F1346DA /* TSBackgroundFetch.framework in Frameworks */,
+				B4E6C4A696AB31F4E2ED164F /* libPods-PlasmaWallet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -719,9 +721,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 359C6835F0C30CF64690E5A7 /* Pods-PlasmaWallet.debug.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 61;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = KWTQ7XD7P6;
 				ENABLE_BITCODE = NO;
@@ -735,6 +738,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.9.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DFB_SONARKIT_ENABLED=1",
@@ -758,9 +762,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AB581858E39E99898C048AB4 /* Pods-PlasmaWallet.release.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 61;
 				DEVELOPMENT_TEAM = KWTQ7XD7P6;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -773,6 +778,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.9.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DFB_SONARKIT_ENABLED=1",

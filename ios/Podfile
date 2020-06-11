@@ -73,6 +73,15 @@ def react_native_config_postinstall(installer)
   end
 end
 
+def deployment_target_postinstall(installer)
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+    end
+  end
+end
+
+
 target 'PlasmaWallet' do
   # Pods for PlasmaWallet
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
@@ -140,5 +149,6 @@ target 'PlasmaWallet' do
   post_install do |installer|
     flipper_post_install(installer)
     react_native_config_postinstall(installer)
+    deployment_target_postinstall(installer)
   end
 end
