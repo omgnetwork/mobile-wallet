@@ -26,14 +26,16 @@ const TransferSelectAddress = ({ theme, navigation, isFocused }) => {
   }, [addressText, setDisabled])
 
   useEffect(() => {
-    if (isFocused) {
-      setAddressText(navigation.dangerouslyGetParent().getParam('address'))
+    const addr = navigation.dangerouslyGetParent().getParam('address')
+    if (isFocused && addr) {
+      setAddressText(addr)
     }
   }, [isFocused, setAddressText])
 
   const onSubmit = useCallback(() => {
+    navigation.dangerouslyGetParent().setParams({ address: null })
     navigation.navigate('TransferSelectToken', { address: addressText })
-  }, [navigation])
+  }, [navigation, addressText])
 
   const onPressScanQR = useCallback(() => {
     navigation.navigate('TransferScanner')
