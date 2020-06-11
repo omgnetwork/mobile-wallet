@@ -109,7 +109,7 @@ jobs:
     working_directory: /Users/distiller/project
     environment:
       FL_OUTPUT_DIR: output
-      FASTLANE_LANE: beta
+      FASTLANE_LANE: upload_testflight
     shell: /bin/bash --login -o pipefail
     steps:
       - checkout

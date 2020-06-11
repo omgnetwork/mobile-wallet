@@ -16,9 +16,23 @@
 default_platform(:ios)
 
 platform :ios do
- before_all do
-    setup_circle_ci
- end
+  before_all do
+      setup_circle_ci
+  end
+
+
+  desc "Upload to Testflight" 
+  lane :upload_testflight do
+    increment_build_number(
+      build_number: latest_testflight_build_number(
+        initial_build_number: 1,
+        version: get_version_number(xcodeproj: "PlasmaWallet.xcodeproj")
+      ) + 1,
+    )
+    match(type: "appstore")
+    gym(scheme: "PlasmaWallet")
+    upload_to_testflight
+  end
 
   desc "Push a new beta build to TestFlight"
   lane :beta do
