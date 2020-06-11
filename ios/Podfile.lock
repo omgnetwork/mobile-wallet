@@ -453,7 +453,7 @@ DEPENDENCIES:
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-config (from `../node_modules/react-native-config`)
-  - react-native-flipper (from `../node_modules/react-native-flipper`)
+  - react-native-flipper (from `../node_modules/react-native-flipper/react-native-flipper.podspec`)
   - react-native-intercom (from `../node_modules/react-native-intercom`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -547,7 +547,7 @@ EXTERNAL SOURCES:
   react-native-config:
     :path: "../node_modules/react-native-config"
   react-native-flipper:
-    :path: "../node_modules/react-native-flipper"
+    :path: "../node_modules/react-native-flipper/react-native-flipper.podspec"
   react-native-intercom:
     :path: "../node_modules/react-native-intercom"
   react-native-randombytes:
@@ -676,6 +676,6 @@ SPEC CHECKSUMS:
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 0f56f5d611ee1e8eefaf41c248b8124790a9f8ba
+PODFILE CHECKSUM: d91e22c9b1ed7b4c50e8077ff7a9d3c6fc55ef79
 
 COCOAPODS: 1.8.4
