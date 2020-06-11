@@ -14,9 +14,10 @@ workflows:
       - mobile-wallet-dependency-audit:
           requires: 
             - mobile-wallet-build
-      - fastlane-build:
-          requires: 
-            - mobile-wallet-build
+  
+  mobile-wallet-release:
+    jobs:
+      - fastlane-build
 
   proxy-server-build-test-deploy:
     jobs:
