@@ -98,7 +98,7 @@ const createStyles = theme =>
     }
   })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   loading: state.loading,
   fees: state.fee.available,
   supportedFees: state.fee.all,
@@ -108,7 +108,7 @@ const mapStateToProps = (state, ownProps) => ({
   provider: state.setting.provider
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchGetFees: tokens => dispatch(plasmaActions.getFees(tokens))
 })
 

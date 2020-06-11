@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { StyleSheet, FlatList } from 'react-native'
 import { OMGEmpty, OMGTokenFee } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
-import { Token } from 'common/blockchain'
 
 const OMGListPlasmaFee = ({
-  theme,
   fees = [],
   emptyMsg,
   loading,
   onPress,
-  provider,
   style
 }) => {
   return (

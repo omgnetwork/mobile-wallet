@@ -33,8 +33,8 @@ const TransferReview = ({
     estimatedFee,
     estimatedFeeSymbol,
     estimatedFeeUsd,
-    estimatedTotal,
-    estimatedTotalUsd
+    _estimatedTotal,
+    _estimatedTotalUsd
   ] = useEstimatedFee({
     feeRate,
     transferToken,
@@ -141,7 +141,7 @@ const createStyles = theme =>
     }
   })
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state, _ownProps) => {
   const primaryWallet = state.wallets.find(
     wallet => wallet.address === state.setting.primaryWalletAddress
   )
@@ -156,7 +156,7 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   plasmaTransfer: (blockchainWallet, toAddress, token, fee) =>
     dispatch(plasmaActions.transfer(blockchainWallet, toAddress, token, fee)),
   ethereumTransfer: (blockchainWallet, toAddress, token, fee) =>

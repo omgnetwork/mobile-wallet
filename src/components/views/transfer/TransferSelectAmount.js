@@ -93,7 +93,7 @@ const createStyles = theme =>
     }
   })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   primaryWalletNetwork: state.setting.primaryWalletNetwork
 })
 

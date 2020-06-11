@@ -63,12 +63,12 @@ const createStyles = theme =>
     }
   })
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   fees: state.gasOptions,
   loading: state.loading
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchGetRecommendedGas: () => dispatch(ethereumActions.getRecommendedGas())
 })
 

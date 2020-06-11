@@ -16,8 +16,7 @@ import {
   OMGWalletAddress,
   OMGAmountInput,
   OMGFeeInput,
-  OMGBlockchainLabel,
-  OMGFeeTokenInput
+  OMGBlockchainLabel
 } from 'components/widgets'
 import { Validator } from 'common/blockchain'
 import * as BlockchainLabel from './blockchainLabel'

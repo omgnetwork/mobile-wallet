@@ -6,7 +6,6 @@ import { withTheme } from 'react-native-paper'
 import { OMGText, OMGQRCode } from 'components/widgets'
 import CloseIcon from './assets/close-icon.svg'
 
-import { paramsForTransferScannerToTransferSelectBalance } from './transferNavigation'
 import { Styles } from 'common/utils'
 
 function TransferScannerConfirm({ theme, navigation }) {
@@ -15,14 +14,9 @@ function TransferScannerConfirm({ theme, navigation }) {
   const assets = navigation.getParam('assets')
 
   const navigateNext = useCallback(() => {
-    navigation.navigate(
-      'TransferSelectBalance',
-      paramsForTransferScannerToTransferSelectBalance({
-        address,
-        isRootchain,
-        assets
-      })
-    )
+    navigation.navigate('Transfer', {
+      address
+    })
   }, [navigation, address, isRootchain, assets])
 
   const handleCloseClick = useCallback(() => {
@@ -73,10 +67,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: theme.colors.gray3
   }),
-  qrContainer: theme => ({
+  qrContainer: {
     alignItems: 'center',
     padding: 4
-  }),
+  },
   buttonContainer: theme => ({
     borderWidth: 1,
     backgroundColor: theme.colors.gray4,
