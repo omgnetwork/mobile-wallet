@@ -73,10 +73,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: theme.colors.gray3
   }),
-  qrContainer: theme => ({
+  qrContainer: {
     alignItems: 'center',
     padding: 4
-  }),
+  },
   buttonContainer: theme => ({
     borderWidth: 1,
     backgroundColor: theme.colors.gray4,
