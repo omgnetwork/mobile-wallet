@@ -2,7 +2,7 @@ import { createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import createMainDrawerNavigator from './main'
 import DepositNavigator from './deposit'
-import TransferNavigator from './transfer'
+import createTransferNavigator from './transfer'
 import ExitNavigator from './exit'
 import ImportWalletNavigator from './import-wallet'
 import BackupWalletNavigator from './backup-wallet'
@@ -15,8 +15,12 @@ import * as Views from 'components/views'
 
 const MainDrawerNavigator = createMainDrawerNavigator()
 
+const SelectAddressTransferNavigator = createTransferNavigator(false)
+const SelectTokenTransferNavigator = createTransferNavigator(true)
+
 Views.Main.router = MainDrawerNavigator.router
-Views.Transfer.router = TransferNavigator.router
+Views.Transfer.router = SelectAddressTransferNavigator.router
+Views.TransferScan.router = SelectTokenTransferNavigator.router
 Views.Deposit.router = DepositNavigator.router
 Views.Exit.router = ExitNavigator.router
 Views.ImportWallet.router = ImportWalletNavigator.router
@@ -70,7 +74,13 @@ export const AppNavigator = createStackNavigator(
     Transfer: {
       screen: Views.Transfer,
       params: {
-        navigator: TransferNavigator
+        navigator: SelectAddressTransferNavigator
+      }
+    },
+    TransferScan: {
+      screen: Views.TransferScan,
+      params: {
+        navigator: SelectTokenTransferNavigator
       }
     },
     TransferScanner: {

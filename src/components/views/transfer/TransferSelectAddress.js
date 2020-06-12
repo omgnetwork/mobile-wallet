@@ -28,6 +28,7 @@ const TransferSelectAddress = ({ theme, navigation, isFocused }) => {
     const addr = navigation.dangerouslyGetParent().getParam('address')
     if (isFocused && addr) {
       setAddressText(addr)
+      navigation.navigate('TransferSelectToken', { address: addressText })
     } else if (!isFocused) {
       navigation.dangerouslyGetParent().setParams({ address: null })
     }

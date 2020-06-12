@@ -10,14 +10,12 @@ import { Styles } from 'common/utils'
 
 function TransferScannerConfirm({ theme, navigation }) {
   const address = navigation.getParam('address')
-  const isRootchain = navigation.getParam('isRootchain')
-  const assets = navigation.getParam('assets')
 
   const navigateNext = useCallback(() => {
-    navigation.navigate('Transfer', {
+    navigation.navigate('TransferScan', {
       address
     })
-  }, [navigation, address, isRootchain, assets])
+  }, [navigation, address])
 
   const handleCloseClick = useCallback(() => {
     navigation.goBack()

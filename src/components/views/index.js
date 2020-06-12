@@ -31,6 +31,7 @@ import {
 } from './transaction-history'
 import {
   TransferContainer as Transfer,
+  TransferScanContainer as TransferScan,
   TransferConfirm,
   TransferScannerConfirm,
   TransferForm,
@@ -88,6 +89,7 @@ export {
   ProcessExitPending,
   Receive,
   Transfer,
+  TransferScan,
   TransferConfirm,
   TransferForm,
   TransferPending,

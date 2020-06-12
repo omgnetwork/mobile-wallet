@@ -11,7 +11,7 @@ import {
 } from 'components/widgets'
 import { Styles } from 'common/utils'
 
-const TransferContainer = ({ navigation, theme, primaryWallet }) => {
+const TransferScanContainer = ({ navigation, theme, primaryWallet }) => {
   const TransferNavigator = navigation.getParam('navigator')
   return (
     <SafeAreaView style={styles.container(theme)}>
@@ -72,4 +72,4 @@ const mapStateToProps = (state, _ownProps) => ({
 export default connect(
   mapStateToProps,
   null
-)(withTheme(TransferContainer))
+)(withTheme(TransferScanContainer))
