@@ -120,7 +120,7 @@ jobs:
           at: .
       - react-native/yarn_install
       - run:
-          command: cd ios & fastlane beta
+          command: cd ios && fastlane beta
           name: Run Fastlane
 
   # Proxy server build jobs
