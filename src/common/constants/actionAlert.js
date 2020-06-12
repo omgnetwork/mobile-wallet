@@ -1,9 +1,5 @@
 export const transfer = {
-  actions: [
-    'ROOTCHAIN_SEND_ERC20_TOKEN',
-    'ROOTCHAIN_SEND_ETH_TOKEN',
-    'ROOTCHAIN_SEND_TOKEN'
-  ],
+  actions: ['ROOTCHAIN_SEND_TOKEN'],
   msgSuccess: 'The transaction is sent. Track the progress at the Etherscan.'
 }
 

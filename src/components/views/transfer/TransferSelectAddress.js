@@ -13,10 +13,9 @@ import {
 } from 'components/widgets'
 
 const TransferSelectAddress = ({ theme, navigation, isFocused }) => {
-  const scannedAddress = navigation.dangerouslyGetParent().getParam('address')
   const styles = createStyles(theme)
-  const [disabled, setDisabled] = useState(!scannedAddress)
-  const [addressText, setAddressText] = useState(scannedAddress)
+  const [disabled, setDisabled] = useState(true)
+  const [addressText, setAddressText] = useState(null)
 
   useEffect(() => {
     if (addressText) {
@@ -29,11 +28,12 @@ const TransferSelectAddress = ({ theme, navigation, isFocused }) => {
     const addr = navigation.dangerouslyGetParent().getParam('address')
     if (isFocused && addr) {
       setAddressText(addr)
+    } else if (!isFocused) {
+      navigation.dangerouslyGetParent().setParams({ address: null })
     }
   }, [isFocused, setAddressText])
 
   const onSubmit = useCallback(() => {
-    navigation.dangerouslyGetParent().setParams({ address: null })
     navigation.navigate('TransferSelectToken', { address: addressText })
   }, [navigation, addressText])
 

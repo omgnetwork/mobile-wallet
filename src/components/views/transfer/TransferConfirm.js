@@ -16,7 +16,7 @@ import {
   ContractAddress,
   TransactionActionTypes
 } from 'common/constants'
-import { ethereumActions, plasmaActions } from 'common/actions'
+import { plasmaActions } from 'common/actions'
 import {
   OMGButton,
   OMGText,
@@ -31,7 +31,7 @@ const TransferConfirm = ({
   theme,
   navigation,
   blockchainWallet,
-  dispatchSendToken,
+  dispatchDeposit,
   unconfirmedTxs,
   ethToken,
   loading
@@ -251,14 +251,7 @@ const TransferConfirm = ({
   }, [estimatedFee, estimatedTotalAmount, estimatedTotalPrice, theme])
 
   const sendToken = () => {
-    dispatchSendToken(
-      token,
-      selectedEthFee,
-      blockchainWallet,
-      toWallet.address,
-      transferType,
-      selectedPlasmaFee
-    )
+    dispatchDeposit(token, selectedEthFee, blockchainWallet)
   }
 
   return (
@@ -488,68 +481,11 @@ const mapStateToProps = (state, _ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, _ownProps) => ({
-  dispatchSendToken: (
-    token,
-    selectedEthFee,
-    blockchainWallet,
-    toAddress,
-    transferType,
-    selectedPlasmaFee
-  ) =>
+  dispatchDeposit: (token, selectedEthFee, blockchainWallet) =>
     dispatch(
-      getAction(
-        token,
-        selectedEthFee,
-        blockchainWallet,
-        toAddress,
-        transferType,
-        selectedPlasmaFee
-      )
+      plasmaActions.deposit(blockchainWallet, token, selectedEthFee?.amount)
     )
 })
-
-const getAction = (
-  token,
-  selectedEthFee,
-  blockchainWallet,
-  toAddress,
-  transferType,
-  selectedPlasmaFee
-) => {
-  const IS_DEPOSIT = transferType === TransferHelper.TYPE_DEPOSIT
-  const ETH_TOKEN = token.contractAddress === ContractAddress.ETH_ADDRESS
-  const TRANFER_CHILDCHAIN =
-    transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN
-
-  if (IS_DEPOSIT) {
-    return plasmaActions.deposit(
-      blockchainWallet,
-      token,
-      selectedEthFee?.amount
-    )
-  } else if (TRANFER_CHILDCHAIN) {
-    return plasmaActions.transfer(
-      blockchainWallet,
-      toAddress,
-      token,
-      selectedPlasmaFee
-    )
-  } else if (ETH_TOKEN) {
-    return ethereumActions.sendEthToken(
-      token,
-      selectedEthFee,
-      blockchainWallet,
-      toAddress
-    )
-  } else {
-    return ethereumActions.sendErc20Token(
-      token,
-      selectedEthFee,
-      blockchainWallet,
-      toAddress
-    )
-  }
-}
 
 export default connect(
   mapStateToProps,
