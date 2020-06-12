@@ -42,13 +42,7 @@ workflows:
   mobile-wallet-release:
     jobs:
       - checkout_code
-      - react-native/ios_build:
-          build_configuration: Release
-          device: iPhone X
-          name: build_ios_release
-          node_version: '10.13.0'
-          project_path: ios/PlasmaWallet.xcodeproj
-          scheme: PlasmaWallet
+      - fastlane_release
 jobs:
   #
   # Mobile wallet build jobs
@@ -118,6 +112,16 @@ jobs:
       - persist_to_workspace:
           paths: .
           root: .
+
+  fastlane_release:
+    executor: react-native/linux_js
+    steps:
+      - attach_workspace:
+          at: .
+      - react-native/yarn_install
+      - run:
+          command: bundle exec fastlane beta
+          name: Run Fastlane
 
   # Proxy server build jobs
   proxy-server-build:
