@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { BigNumber } from 'common/utils'
 import { BlockchainFormatter } from 'common/blockchain'
 import { TransferHelper } from 'components/views/transfer'
 

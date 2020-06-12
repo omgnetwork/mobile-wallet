@@ -82,7 +82,4 @@ const mapStateToProps = (state, _ownProps) => ({
   )
 })
 
-export default connect(
-  mapStateToProps,
-  null
-)(withTheme(TransferContainer))
+export default connect(mapStateToProps, null)(withTheme(TransferContainer))

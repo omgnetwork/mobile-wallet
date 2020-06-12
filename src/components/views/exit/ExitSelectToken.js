@@ -24,7 +24,7 @@ const ExitSelectToken = ({ primaryWallet, navigation, loading }) => {
   )
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, _ownProps) => ({
   loading: state.loading,
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress

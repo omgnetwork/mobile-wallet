@@ -3,13 +3,7 @@ import { StyleSheet, FlatList } from 'react-native'
 import { OMGEmpty, OMGTokenFee } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 
-const OMGListPlasmaFee = ({
-  fees = [],
-  emptyMsg,
-  loading,
-  onPress,
-  style
-}) => {
+const OMGListPlasmaFee = ({ fees = [], emptyMsg, loading, onPress, style }) => {
   return (
     <FlatList
       data={fees}

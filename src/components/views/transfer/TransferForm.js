@@ -25,8 +25,7 @@ import {
   paramsForTransferFormToTransferSelectBalance,
   paramsForTransferFormToTransferConfirm,
   paramsForTransferFormToTransferScanner,
-  paramsForTransferFormToTransferSelectFee,
-  paramsForTransferFormToTransferSelectPlasmaFee
+  paramsForTransferFormToTransferSelectFee
 } from './transferNavigation'
 import { Styles } from 'common/utils'
 
@@ -63,11 +62,6 @@ const TransferForm = ({
   const [showErrorAddress, setShowErrorAddress] = useState(false)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
   const [ethFee, setEthFee] = useState(selectedEthFee)
-  const [loadingFeeToken] = useLoading(
-    loading,
-    'CHILDCHAIN_FEES',
-    fees.length === 0
-  )
   const [loadingGas] = useLoading(
     loading,
     'ROOTCHAIN_GET_RECOMMENDED_GAS',

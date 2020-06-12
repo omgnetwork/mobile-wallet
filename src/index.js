@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { YellowBox, Platform } from 'react-native'
 import { Provider } from 'react-redux'
