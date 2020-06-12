@@ -42,6 +42,13 @@ workflows:
   mobile-wallet-release:
     jobs:
       - checkout_code
+      - react-native/ios_build:
+          build_configuration: Release
+          device: iPhone X
+          name: build_ios_release
+          node_version: '10.13.0'
+          project_path: ios/PlasmaWallet.xcodeproj
+          scheme: PlasmaWallet
 jobs:
   #
   # Mobile wallet build jobs
