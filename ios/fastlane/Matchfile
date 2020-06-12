@@ -1,4 +1,4 @@
-git_url("https://github.com/omgnetwork/mobile-wallet-certificates")
+git_url(ENV["MATCH_GIT_URL"])
 
 storage_mode("git")
 
