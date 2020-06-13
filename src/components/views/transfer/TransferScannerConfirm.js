@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
-import { withNavigation } from 'react-navigation'
+import { withNavigation, NavigationActions } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 
 import { OMGText, OMGQRCode } from 'components/widgets'
@@ -12,9 +12,15 @@ function TransferScannerConfirm({ theme, navigation }) {
   const address = navigation.getParam('address')
 
   const navigateNext = useCallback(() => {
-    navigation.navigate('TransferScan', {
-      address
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'Transfer',
+
+      action: NavigationActions.navigate({
+        routeName: 'TransferSelectToken',
+        params: { address }
+      })
     })
+    navigation.dispatch(navigateAction)
   }, [navigation, address])
 
   const handleCloseClick = useCallback(() => {

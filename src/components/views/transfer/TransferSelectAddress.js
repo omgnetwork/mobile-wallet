@@ -4,7 +4,7 @@ import { View, StyleSheet, Platform, KeyboardAvoidingView } from 'react-native'
 import { Validator } from 'common/blockchain'
 import { Header } from 'react-navigation-stack'
 import { Dimensions } from 'common/utils'
-import { withNavigationFocus } from 'react-navigation'
+import { withNavigation } from 'react-navigation'
 import {
   OMGAddressInput,
   OMGText,
@@ -12,31 +12,21 @@ import {
   OMGDismissKeyboard
 } from 'components/widgets'
 
-const TransferSelectAddress = ({ theme, navigation, isFocused }) => {
+const TransferSelectAddress = ({ theme, navigation }) => {
   const styles = createStyles(theme)
   const [disabled, setDisabled] = useState(true)
-  const [addressText, setAddressText] = useState(null)
+  const [address, setAddress] = useState(null)
 
   useEffect(() => {
-    if (addressText) {
-      const valid = Validator.isValidAddress(addressText)
+    if (address) {
+      const valid = Validator.isValidAddress(address)
       setDisabled(!valid)
     }
-  }, [addressText, setDisabled])
-
-  useEffect(() => {
-    const addr = navigation.dangerouslyGetParent().getParam('address')
-    if (isFocused && addr) {
-      setAddressText(addr)
-      navigation.navigate('TransferSelectToken', { address: addressText })
-    } else if (!isFocused) {
-      navigation.dangerouslyGetParent().setParams({ address: null })
-    }
-  }, [isFocused, setAddressText])
+  }, [address, setDisabled])
 
   const onSubmit = useCallback(() => {
-    navigation.navigate('TransferSelectToken', { address: addressText })
-  }, [navigation, addressText])
+    navigation.navigate('TransferSelectToken', { address: address })
+  }, [navigation, address])
 
   const onPressScanQR = useCallback(() => {
     navigation.navigate('TransferScanner')
@@ -54,8 +44,8 @@ const TransferSelectAddress = ({ theme, navigation, isFocused }) => {
           SEND TO
         </OMGText>
         <OMGAddressInput
-          addressText={addressText}
-          setAddressText={setAddressText}
+          address={address}
+          setAddress={setAddress}
           style={styles.addressInput}
           onPressScanQR={onPressScanQR}
         />
@@ -94,4 +84,4 @@ const createStyles = theme =>
     }
   })
 
-export default withNavigationFocus(withTheme(TransferSelectAddress))
+export default withNavigation(withTheme(TransferSelectAddress))

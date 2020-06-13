@@ -1,5 +1,4 @@
 import TransferContainer from './TransferContainer'
-import TransferScanContainer from './TransferScanContainer'
 import TransferConfirm from './TransferConfirm'
 import TransferForm from './TransferForm'
 import TransferPending from './TransferPending'
@@ -21,7 +20,6 @@ export {
   TransferHelper,
   TransferNavigation,
   TransferContainer,
-  TransferScanContainer,
   TransferConfirm,
   TransferForm,
   TransferPending,

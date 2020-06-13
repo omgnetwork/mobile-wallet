@@ -14,13 +14,13 @@ const OMGAddressInput = ({
   showError,
   returnKeyType,
   onSubmitEditing,
-  addressText,
-  setAddressText,
+  address,
+  setAddress,
   focusRef
 }) => {
   const onPressPaste = useCallback(async () => {
     const clipboardContent = await Clipboard.getString()
-    setAddressText(clipboardContent.trim())
+    setAddress(clipboardContent.trim())
     Keyboard.dismiss()
   }, [])
 
@@ -29,11 +29,11 @@ const OMGAddressInput = ({
       <View style={styles.contentContainer}>
         <OMGTextInput
           style={styles.text(theme)}
-          defaultValue={addressText}
-          onChangeText={setAddressText}
+          defaultValue={address}
+          onChangeText={setAddress}
           focusRef={focusRef}
           lines={2}
-          value={addressText}
+          value={address}
           returnKeyType={returnKeyType}
           onSubmitEditing={onSubmitEditing}
           placeholder='Address'
