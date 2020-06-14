@@ -22,5 +22,9 @@ export const minus = (a, b) => {
 }
 
 export const divide = (a, b) => {
-  return new BigNumber(a).divide(new BigNumber(b).toString(10))
+  return new BigNumber(a).div(new BigNumber(b)).toString(10)
+}
+
+export const pow = (a, b) => {
+  return new BigNumber(a).exponentiatedBy(b)
 }
