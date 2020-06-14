@@ -51,8 +51,13 @@ const getUpdatedBlock = txHistory => {
 export const sendErc20Token = async (wallet, options) => {
   const abi = ContractABI.erc20Abi()
   const { token } = options
-  const contract = new Ethereum.getContract(token.contractAddress, abi, wallet)
-  return Ethereum.sendErc20Token(contract, options)
+  const contract = new Ethereum.getContract(token.contractAddress, abi)
+  const response = await Ethereum.sendErc20Token(contract, {
+    ...options,
+    wallet
+  })
+  console.log(response)
+  return response
 }
 
 export const sendEthToken = async (wallet, options) => {

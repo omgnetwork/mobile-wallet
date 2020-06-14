@@ -10,21 +10,20 @@ export const transfer = (blockchainWallet, toAddress, token, fee) => {
       fee,
       toAddress
     }
-    const { hash, from, nonce, gasPrice } =
+    const { hash } =
       token.contractAddress === ContractAddress.ETH_ADDRESS
         ? await ethereumService.sendEthToken(blockchainWallet, options)
         : await ethereumService.sendErc20Token(blockchainWallet, options)
 
     return {
-      hash: hash,
-      from: from,
+      hash,
+      from: blockchainWallet.address,
       to: toAddress,
-      nonce: nonce,
       value: token.balance,
       actionType: TransactionActionTypes.TYPE_ROOTCHAIN_SEND_TOKEN,
       symbol: token.tokenSymbol,
       gasUsed: null,
-      gasPrice: gasPrice.toString(),
+      gasPrice: fee.amount,
       createdAt: Datetime.now()
     }
   }

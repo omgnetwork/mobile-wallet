@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import Config from 'react-native-config'
 import { TransactionActionTypes } from 'common/constants'
+import { Transaction } from 'common/blockchain'
 
 const useProgressiveFeedback = (
   primaryWallet,
@@ -24,6 +25,10 @@ const useProgressiveFeedback = (
 
   const getTransactionFeedbackTitle = useCallback((pending, actionType) => {
     switch (actionType) {
+      case TransactionActionTypes.TYPE_ROOTCHAIN_SEND_TOKEN:
+        return pending
+          ? 'Pending transfer on Ethereum'
+          : 'Transfer sent on Ethereum'
       case TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN:
         return pending
           ? 'Pending transfer on the OMG Network'
@@ -45,6 +50,7 @@ const useProgressiveFeedback = (
 
   const getSubtitle = useCallback((pending, actionType) => {
     switch (actionType) {
+      case TransactionActionTypes.TYPE_ROOTCHAIN_SEND_TOKEN:
       case TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN:
         return pending ? 'Please wait' : 'The transaction is being finalised'
       case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
@@ -62,6 +68,11 @@ const useProgressiveFeedback = (
 
   const getExternalLink = useCallback((actionType, hash) => {
     switch (actionType) {
+      case TransactionActionTypes.TYPE_ROOTCHAIN_SEND_TOKEN:
+        return {
+          url: `${Config.ETHERSCAN_URL}tx/${hash}`,
+          title: 'View on Etherscan'
+        }
       case TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN:
         return {
           url: `${Config.BLOCK_EXPLORER_URL}transaction?id=${hash}`,
