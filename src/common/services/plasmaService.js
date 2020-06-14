@@ -3,7 +3,6 @@ import {
   BlockchainFormatter,
   Plasma,
   Token,
-  Parser,
   Wait,
   Transaction,
   Utxos

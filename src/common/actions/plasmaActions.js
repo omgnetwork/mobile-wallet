@@ -1,6 +1,5 @@
 import { createAsyncAction } from './actionCreators'
 import { plasmaService } from 'common/services'
-import { Parser } from 'common/blockchain'
 import { TransactionActionTypes, TransactionTypes, Gas } from 'common/constants'
 import { Datetime, Unit } from 'common/utils'
 
