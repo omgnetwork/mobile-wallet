@@ -10,7 +10,11 @@ export const multiply = (a, b) => {
 }
 
 export const plus = (a, b) => {
-  return new BigNumber(a).plus(new BigNumber(b)).toString(10)
+  const bnA = new BigNumber(a)
+  const bnB = new BigNumber(b)
+  const result = bnA.plus(bnB)
+  const minDecimalPlaces = Math.min(bnA.dp(), bnB.dp())
+  return result.dp(minDecimalPlaces, BigNumber.ROUND_UP).toString(10)
 }
 
 export const minus = (a, b) => {

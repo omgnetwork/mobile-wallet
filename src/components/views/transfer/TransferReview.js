@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { useEstimatedFee } from 'common/hooks'
@@ -25,17 +25,11 @@ const TransferReview = ({
   const token = navigation.getParam('token')
   const amount = navigation.getParam('amount')
   const toAddress = navigation.getParam('address')
-  const feeRate = navigation.getParam('fee')
+  const feeRate = navigation.getParam('feeRate')
   const amountUsd = BigNumber.multiply(amount, token.price)
   const transferToken = { ...token, balance: amount }
 
-  const [
-    estimatedFee,
-    estimatedFeeSymbol,
-    estimatedFeeUsd,
-    _estimatedTotal,
-    _estimatedTotalUsd
-  ] = useEstimatedFee({
+  const [estimatedFee, estimatedFeeSymbol, estimatedFeeUsd] = useEstimatedFee({
     feeRate,
     transferToken,
     ethToken,
@@ -43,6 +37,32 @@ const TransferReview = ({
     blockchainWallet,
     toAddress
   })
+
+  const [errorMsg, setErrorMsg] = useState(null)
+
+  useEffect(() => {
+    function checkBalanceAvailability() {
+      if (!estimatedFee) return
+
+      let minimumPaidAmount
+      if (feeRate.currency === token.contractAddress) {
+        minimumPaidAmount = BigNumber.plus(estimatedFee, amount)
+      } else {
+        minimumPaidAmount = estimatedFee
+      }
+
+      const hasEnoughBalance = token.balance >= minimumPaidAmount
+      if (!hasEnoughBalance) {
+        setErrorMsg(
+          `Require at least ${minimumPaidAmount} ${token.tokenSymbol} to proceed.`
+        )
+      } else {
+        setErrorMsg(null)
+      }
+    }
+
+    checkBalanceAvailability()
+  }, [estimatedFee, feeRate, token])
 
   const onPressEditAddress = useCallback(() => {
     navigation.navigate('TransferSelectAddress')
@@ -109,7 +129,15 @@ const TransferReview = ({
         style={[styles.marginMedium, styles.paddingMedium]}
       />
       <View style={styles.buttonContainer}>
-        <OMGButton onPress={onSubmit} loading={loading.show}>
+        {errorMsg && (
+          <OMGText style={styles.errorMsg} weight='regular'>
+            {errorMsg}
+          </OMGText>
+        )}
+        <OMGButton
+          onPress={onSubmit}
+          loading={loading.show}
+          disabled={errorMsg}>
           Confirm Transaction
         </OMGButton>
       </View>
@@ -129,9 +157,14 @@ const createStyles = theme =>
       color: theme.colors.gray2,
       lineHeight: 17
     },
+    errorMsg: {
+      color: theme.colors.red,
+      marginBottom: 16
+    },
     buttonContainer: {
       flex: 1,
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-end',
+      alignItems: 'center'
     },
     marginMedium: {
       marginTop: 16

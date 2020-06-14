@@ -31,9 +31,11 @@ const TransferSelectAmount = ({
   }, [isFocused])
 
   const onChangeAmount = useCallback(
-    amount => {
-      const valid = Validator.isValidAmount(amount) && amount < token.balance
-      setDisabled(!valid)
+    stringAmount => {
+      if (!Validator.isValidAmount(stringAmount)) return setDisabled(true)
+      const amount = Number(stringAmount)
+      const balance = Number(token.balance)
+      setDisabled(amount > balance)
     },
     [token.balance]
   )

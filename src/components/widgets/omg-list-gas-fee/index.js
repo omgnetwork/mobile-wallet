@@ -2,13 +2,13 @@ import React from 'react'
 import { StyleSheet, FlatList } from 'react-native'
 import { OMGEmpty, OMGFeeSelect } from 'components/widgets'
 
-const OMGListGasFee = ({ fees = [], loading, onPress, style }) => {
+const OMGListGasFee = ({ fees = [], loading, onPress, emptyMsg, style }) => {
   return (
     <FlatList
       data={fees}
       keyExtractor={item => item.speed}
       keyboardShouldPersistTaps='always'
-      ListEmptyComponent={<OMGEmpty text='Empty fees' loading={loading} />}
+      ListEmptyComponent={<OMGEmpty text={emptyMsg} loading={loading} />}
       contentContainerStyle={[fees.length ? {} : styles.container, style]}
       renderItem={({ item }) => (
         <OMGFeeSelect

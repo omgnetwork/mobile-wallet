@@ -51,7 +51,10 @@ const TransferSelectBalance = ({
         keyExtractor={item => item.contractAddress}
         keyboardShouldPersistTaps='always'
         ListEmptyComponent={
-          <OMGEmpty text='Empty assets' loading={loading.show} />
+          <OMGEmpty
+            text="There're no tokens available"
+            loading={loading.show}
+          />
         }
         contentContainerStyle={
           assets && assets.length

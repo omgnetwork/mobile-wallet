@@ -1,29 +1,44 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import { connect } from 'react-redux'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { StyleSheet, View } from 'react-native'
 import { ethereumActions } from 'common/actions'
 import { OMGListGasFee, OMGText } from 'components/widgets'
+import { ContractAddress } from 'common/constants'
 
 const TransferChooseGasFee = ({
   theme,
   fees,
   dispatchGetRecommendedGas,
+  wallet,
   loading,
   navigation
 }) => {
+  const [emptyMsg, setEmptyMsg] = useState(null)
+  const hasEth = wallet.rootchainAssets.some(
+    token => token.contractAddress === ContractAddress.ETH_ADDRESS
+  )
+
   useEffect(() => {
-    dispatchGetRecommendedGas()
+    hasEth && dispatchGetRecommendedGas()
   }, [dispatchGetRecommendedGas])
 
+  useEffect(() => {
+    if (!fees || fees.length === 0) {
+      setEmptyMsg('Fees are not available. Try again later.')
+    } else if (!hasEth) {
+      setEmptyMsg('Need more ETH to pay gas.')
+    }
+  }, [])
+
   const onSelectGas = useCallback(
-    fee => {
+    feeRate => {
       navigation.navigate('TransferReview', {
         token: navigation.getParam('token'),
         address: navigation.getParam('address'),
         amount: navigation.getParam('amount'),
-        fee
+        feeRate
       })
     },
     [navigation]
@@ -37,8 +52,9 @@ const TransferChooseGasFee = ({
         SELECT GAS RATE
       </OMGText>
       <OMGListGasFee
-        fees={fees}
+        fees={!emptyMsg && fees}
         style={styles.list}
+        emptyMsg={emptyMsg}
         loading={loading.show}
         onPress={onSelectGas}
       />
@@ -65,7 +81,10 @@ const createStyles = theme =>
 
 const mapStateToProps = (state, _ownProps) => ({
   fees: state.gasOptions,
-  loading: state.loading
+  loading: state.loading,
+  wallet: state.wallets.find(
+    wallet => wallet.address === state.setting.primaryWalletAddress
+  )
 })
 
 const mapDispatchToProps = (dispatch, _ownProps) => ({

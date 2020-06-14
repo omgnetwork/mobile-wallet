@@ -21,7 +21,10 @@ const OMGListItemTokenSelect = ({
         keyExtractor={item => item.contractAddress}
         ItemSeparatorComponent={() => <Divider theme={theme} />}
         ListEmptyComponent={
-          <OMGEmpty text='Empty assets' loading={loading.show} />
+          <OMGEmpty
+            text="There're no tokens available."
+            loading={loading.show}
+          />
         }
         contentContainerStyle={
           assets && assets.length ? styles.listContainer : styles.emptyContainer

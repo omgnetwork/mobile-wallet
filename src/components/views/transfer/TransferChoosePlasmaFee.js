@@ -53,12 +53,12 @@ const TransferChoosePlasmaFee = ({
   const styles = createStyles(theme)
 
   const onSelectPlasmaFee = useCallback(
-    fee => {
+    feeRate => {
       navigation.navigate('TransferReview', {
         token: navigation.getParam('token'),
         address: navigation.getParam('address'),
         amount: navigation.getParam('amount'),
-        fee
+        feeRate
       })
     },
     [navigation]
