@@ -36,7 +36,6 @@ export const convert = (amount, fromUnit, toUnit) => {
     throw new Error(`Unsupported unit ${toUnit}`)
   }
 
-  // const multiplier = BigNumber.pow(10, to - from)
   const multiplier = new BigNumber(10).exponentiatedBy(to - from)
 
   return new BigNumber(stringAmount).times(multiplier)
