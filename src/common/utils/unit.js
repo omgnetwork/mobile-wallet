@@ -24,7 +24,7 @@ const unitMap = {
 }
 
 export const convert = (amount, fromUnit, toUnit) => {
-  const stringAmount = amount.toString(10)
+  const stringAmount = amount.toString(10).replace(',', '.')
   const from =
     typeof fromUnit === 'string' ? unitMap[fromUnit.toLowerCase()] : fromUnit
   const to = typeof toUnit === 'string' ? unitMap[toUnit.toLowerCase()] : toUnit

@@ -16,6 +16,13 @@ describe('Test Unit', () => {
     expect(Unit.convertToString('2.34', 9, 18)).toBe('2340000000')
   })
 
+  test('convert european amount format', () => {
+    expect(Unit.convertToString('1,25', 0, 18)).toBe('1250000000000000000')
+    expect(Unit.convertToString('0,0000123', 0, 18)).toBe('12300000000000')
+    expect(Unit.convertToString('325,35', 18, 0)).toBe('0.00000000000000032535')
+    expect(Unit.convertToString('12300,95', 9, 0)).toBe('0.00001230095')
+  })
+
   test('convert equal', () => {
     expect(Unit.convertToString('100', 18, 18)).toBe('100')
     expect(Unit.convertToString('100', 0, 0)).toBe('100')
