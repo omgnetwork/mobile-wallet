@@ -17,17 +17,22 @@ const TransferReview = ({
   ethToken,
   ethereumTransfer,
   plasmaTransfer,
-  loading
+  loading,
+  wallet
 }) => {
   const styles = createStyles(theme)
   const isEthereum =
     primaryWalletNetwork === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
+  const assets = isEthereum ? wallet.rootchainAssets : wallet.childchainAssets
   const token = navigation.getParam('token')
   const amount = navigation.getParam('amount')
   const toAddress = navigation.getParam('address')
   const feeRate = navigation.getParam('feeRate')
   const amountUsd = BigNumber.multiply(amount, token.price)
   const transferToken = { ...token, balance: amount }
+  const feeToken = assets.find(
+    token => token.contractAddress === feeRate.currency
+  )
 
   const [estimatedFee, estimatedFeeSymbol, estimatedFeeUsd] = useEstimatedFee({
     feeRate,
@@ -51,10 +56,10 @@ const TransferReview = ({
         minimumPaidAmount = estimatedFee
       }
 
-      const hasEnoughBalance = token.balance >= minimumPaidAmount
+      const hasEnoughBalance = feeToken.balance >= minimumPaidAmount
       if (!hasEnoughBalance) {
         setErrorMsg(
-          `Require at least ${minimumPaidAmount} ${token.tokenSymbol} to proceed.`
+          `Require at least ${minimumPaidAmount} ${feeToken.tokenSymbol} to proceed.`
         )
       } else {
         setErrorMsg(null)
@@ -62,7 +67,7 @@ const TransferReview = ({
     }
 
     checkBalanceAvailability()
-  }, [estimatedFee, feeRate, token])
+  }, [estimatedFee, feeRate, token, feeToken])
 
   const onPressEditAddress = useCallback(() => {
     navigation.navigate('TransferSelectAddress')
@@ -137,7 +142,7 @@ const TransferReview = ({
         <OMGButton
           onPress={onSubmit}
           loading={loading.show}
-          disabled={errorMsg}>
+          disabled={!estimatedFee || errorMsg}>
           Confirm Transaction
         </OMGButton>
       </View>
@@ -185,7 +190,8 @@ const mapStateToProps = (state, _ownProps) => {
     primaryWalletNetwork: state.setting.primaryWalletNetwork,
     ethToken: primaryWallet.rootchainAssets.find(
       token => token.contractAddress === ContractAddress.ETH_ADDRESS
-    )
+    ),
+    wallet: primaryWallet
   }
 }
 
