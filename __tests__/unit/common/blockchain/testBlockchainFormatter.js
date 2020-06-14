@@ -43,12 +43,6 @@ describe('Test BlockchainFormatter', () => {
     expect(gasFeeUsd).toBe('0.01')
   })
 
-  it('formatEthFromWei should be equal to Wei / 10^18', () => {
-    const wei = '5000000000'
-    const eth = BlockchainFormatter.formatEthFromWei(wei)
-    expect(eth).toBe('0.000000005')
-  })
-
   it('formatTokenBalance should have comma when balance more than or equal to 1000', () => {
     const tokenBalance = '5000'
     const formattedTokenBalance = BlockchainFormatter.formatTokenBalance(

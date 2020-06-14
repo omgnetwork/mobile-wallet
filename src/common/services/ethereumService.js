@@ -1,6 +1,6 @@
-import { Ethereum, Token, ContractABI, Parser } from 'common/blockchain'
+import { Ethereum, Token, ContractABI } from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
-import { Datetime } from 'common/utils'
+import { Datetime, Unit } from 'common/utils'
 import { providerService } from 'common/services'
 
 export const fetchAssets = async (provider, address, lastBlockNumber) => {
@@ -65,8 +65,8 @@ export const getRecommendedGas = () => {
       {
         speed: 'Express',
         estimateTime: `${fastWait * 60} seconds`,
-        amount: Parser.parseUnits(fast.toString(), 8).toString(10),
         currency: ContractAddress.ETH_ADDRESS,
+        amount: Unit.convertToString(fast, 10, 18),
         displayAmount: fast / 10,
         symbol: 'Gwei',
         price: '1'
@@ -74,7 +74,7 @@ export const getRecommendedGas = () => {
       {
         speed: 'Standard',
         estimateTime: `${avgWait * 60} seconds`,
-        amount: Parser.parseUnits(average.toString(), 8).toString(10),
+        amount: Unit.convertToString(average, 10, 18),
         displayAmount: average / 10,
         currency: ContractAddress.ETH_ADDRESS,
         symbol: 'Gwei',
@@ -83,7 +83,7 @@ export const getRecommendedGas = () => {
       {
         speed: 'Low-Priority',
         estimateTime: `${safeLowWait * 60} seconds`,
-        amount: Parser.parseUnits(safeLow.toString(), 8).toString(10),
+        amount: Unit.convertToString(safeLow, 10, 18),
         displayAmount: safeLow / 10,
         currency: ContractAddress.ETH_ADDRESS,
         symbol: 'Gwei',

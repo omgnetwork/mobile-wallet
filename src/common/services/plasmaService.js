@@ -1,4 +1,4 @@
-import { Datetime, Mapper } from 'common/utils'
+import { Datetime, Mapper, Unit } from 'common/utils'
 import {
   BlockchainFormatter,
   Plasma,
@@ -133,10 +133,7 @@ export const transfer = async (
 }
 
 export const deposit = async (address, privateKey, token, gasPrice) => {
-  const weiAmount = Parser.parseUnits(
-    token.balance,
-    token.tokenDecimal
-  ).toString(10)
+  const weiAmount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
 
   const { hash, gasUsed } = await Plasma.deposit(
     address,
