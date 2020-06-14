@@ -133,7 +133,11 @@ const Balance = ({
         onRefresh={onRefresh}
         style={styles.list}
         renderItem={({ item }) => (
-          <OMGItemToken key={item.contractAddress} token={item} />
+          <OMGItemToken
+            key={item.contractAddress}
+            token={item}
+            style={styles.listItem}
+          />
         )}
       />
     </Fragment>
@@ -144,6 +148,9 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
     paddingTop: Styles.getResponsiveSize(32, { small: 20, medium: 24 })
+  },
+  listItem: {
+    marginTop: 8
   }
 })
 
