@@ -8,7 +8,6 @@ import {
   ContractABI,
   Transaction,
   OmgUtil,
-  Parser,
   Wait,
   Utxos,
   Ethereum
@@ -103,7 +102,7 @@ export const deposit = async (
 
       // Wait approve transaction for 1 block
       await Wait.waitForRootchainTransaction({
-        hash: approveReceipt.transactionHash,
+        hash: approveReceipt.hash,
         intervalMs: 3000,
         confirmationThreshold: 1
       })
@@ -120,11 +119,12 @@ export const deposit = async (
         depositGas,
         depositGasPrice
       )
+
       approveReceipt = await Ethereum.sendSignedTx(approveOptions, privateKey)
 
       // Wait approve transaction for 1 block
       await Wait.waitForRootchainTransaction({
-        hash: approveReceipt.transactionHash,
+        hash: approveReceipt.hash,
         intervalMs: 3000,
         confirmationThreshold: 1
       })

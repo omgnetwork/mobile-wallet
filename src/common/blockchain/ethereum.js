@@ -116,7 +116,6 @@ export const getGasFromGasStation = () => {
 
 export const getContract = (tokenContractAddress, abi) => {
   return new web3.eth.Contract(abi, tokenContractAddress)
-  // return new ethers.Contract(tokenContractAddress, abi, walletOrProvider)
 }
 
 export const createProvider = providerName => {

@@ -1,6 +1,6 @@
 import { Token } from 'common/blockchain'
 import { ethers } from 'ethers'
-import Config from '../../../config'
+import Config from '../config'
 
 const {
   TEST_ERC20_TOKEN_CONTRACT_ADDRESS,

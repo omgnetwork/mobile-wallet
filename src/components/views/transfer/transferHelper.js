@@ -25,7 +25,7 @@ export const getGasUsed = (type, token, options) => {
       const isEth = token.contractAddress === ContractAddress.ETH_ADDRESS
       return isEth
         ? GasEstimator.estimateTransferETH()
-        : GasEstimator.estimateTransferErc20(wallet, to, token)
+        : GasEstimator.estimateTransferErc20(wallet.address, to, token)
     }
     case TYPE_TRANSFER_CHILDCHAIN:
       return GasEstimator.estimateTransferChildchain()

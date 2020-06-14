@@ -3,9 +3,22 @@ import Config from '../../../config'
 import { ethers } from 'ethers'
 import { Unit } from 'common/utils'
 import { Gas } from 'common/constants'
+import { web3 } from 'common/clients'
 
 const mockWalletTransfer = wallet => {
   wallet.sendTransaction = jest.fn()
+}
+
+const mockWeb3SignTransaction = resp => {
+  web3.eth.accounts.signTransaction = jest
+    .fn()
+    .mockReturnValueOnce(Promise.resolve(resp))
+}
+
+const mockWeb3SendSignedTransactionResponse = resp => {
+  web3.eth.sendSignedTransaction = jest.fn((_rawTx, callback) =>
+    callback(null, resp)
+  )
 }
 
 const { TEST_PRIVATE_KEY, TEST_ADDRESS, ETHEREUM_NETWORK } = Config
@@ -40,17 +53,43 @@ describe('Test Ethereum Boundary', () => {
   })
 
   it('sendERC20Token should send expected parameters', () => {
-    const contract = { transfer: jest.fn() }
+    const mockEncodeAbi = jest.fn(() => '0x')
+    const mocktransfer = jest.fn(() => ({
+      encodeABI: mockEncodeAbi
+    }))
+    mockWeb3SignTransaction({ rawTransaction: '0x0' })
+    mockWeb3SendSignedTransactionResponse('0x1')
+
+    const wallet = new ethers.Wallet(TEST_PRIVATE_KEY, testProvider)
+    const contract = { methods: { transfer: mocktransfer } }
     const fee = { amount: '1000000000', symbol: 'wei' }
-    const token = { balance: '1', tokenDecimal: 5 }
-    const toAddress = TEST_ADDRESS
-    const expectedValue = Unit.convert(token.balance, 0, token.tokenDecimal)
-    const expectedFee = Unit.convert(fee.amount, 'wei', 'wei')
-    Ethereum.sendErc20Token(contract, { fee, token, toAddress })
-    expect(contract.transfer).toBeCalledWith(toAddress, expectedValue, {
-      gasPrice: expectedFee,
-      gasLimit: Gas.LOW_LIMIT
+    const token = { balance: '1', tokenDecimal: 5, contractAddress: '0x1234' }
+    const toAddress = '0x1'
+    const expectedValue = Unit.convertToString(
+      token.balance,
+      0,
+      token.tokenDecimal
+    )
+
+    const response = Ethereum.sendErc20Token(contract, {
+      fee,
+      token,
+      toAddress,
+      wallet
     })
+    expect(contract.methods.transfer).toBeCalledWith(toAddress, expectedValue)
+    expect(mockEncodeAbi).toBeCalled()
+    expect(web3.eth.accounts.signTransaction).toBeCalledWith(
+      {
+        data: '0x',
+        from: wallet.address,
+        gasLimit: Gas.LOW_LIMIT,
+        gasPrice: fee.amount,
+        to: toAddress
+      },
+      wallet.privateKey
+    )
+    return response.then(resp => expect(resp).toStrictEqual({ hash: '0x1' }))
   })
 
   it('generateWalletMnemonic must not contain duplicate words', () => {

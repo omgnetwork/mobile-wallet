@@ -9,12 +9,12 @@ import {
 import { web3, Plasma as PlasmaClient } from 'common/clients'
 import { Unit } from 'common/utils'
 
-export const estimateTransferErc20 = (wallet, to, token) => {
+export const estimateTransferErc20 = (from, to, token) => {
   const abi = ContractABI.erc20Abi()
   const contract = Ethereum.getContract(token.contractAddress, abi)
   const amount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
   const txDetails = {
-    from: wallet.address,
+    from,
     to,
     data: contract.methods.transfer(to, amount).encodeABI()
   }
@@ -91,11 +91,8 @@ export const estimateExit = async (
 export const web3EstimateGas = txDetails => {
   return new Promise((resolve, reject) => {
     web3.eth.estimateGas(txDetails, (err, result) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(result)
-      }
+      if (err) return reject(err)
+      return resolve(result)
     })
   })
 }

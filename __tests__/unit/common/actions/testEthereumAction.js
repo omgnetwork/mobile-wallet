@@ -16,7 +16,6 @@ const { ETHEREUM_NETWORK, TEST_PRIVATE_KEY, TEST_ADDRESS } = Config
 const mockTxOptions = {
   hash: 'any',
   from: 'any',
-  nonce: 'any',
   gasPrice: 'any'
 }
 
@@ -33,7 +32,7 @@ describe('Test Ethereum Actions', () => {
       tokenDecimal: 18,
       contractAddress: '0x1234'
     }
-    const fee = { amount: '10', symbol: 'gwei' }
+    const fee = { amount: '10', symbol: 'wei' }
     const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
     const toAddress = TEST_ADDRESS
     const store = mockStore({ unconfirmedTxs: [] })
@@ -48,9 +47,11 @@ describe('Test Ethereum Actions', () => {
           type: 'ROOTCHAIN/SEND_TOKEN/SUCCESS',
           data: {
             ...mockTxOptions,
+            from: wallet.address,
             to: toAddress,
             value: token.balance,
             gasUsed: null,
+            gasPrice: fee.amount,
             actionType: 'ROOTCHAIN_SEND_TOKEN',
             symbol: token.tokenSymbol,
             createdAt: dispatchedActions[1].data.createdAt
@@ -83,9 +84,11 @@ describe('Test Ethereum Actions', () => {
           type: 'ROOTCHAIN/SEND_TOKEN/SUCCESS',
           data: {
             ...mockTxOptions,
+            from: wallet.address,
             to: toAddress,
-            gasUsed: null,
             value: token.balance,
+            gasUsed: null,
+            gasPrice: fee.amount,
             actionType: 'ROOTCHAIN_SEND_TOKEN',
             symbol: token.tokenSymbol,
             createdAt: dispatchedActions[1].data.createdAt
