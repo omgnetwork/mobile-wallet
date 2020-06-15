@@ -115,8 +115,8 @@ jobs:
 
   fastlane_release:
     macos: 
-      xcode: "11.3"
-    shell: /bin/bash --login -o pipefail
+      xcode: 11.1
+      shell: /bin/bash --login -o pipefail
     steps:
       - checkout
       - run:
