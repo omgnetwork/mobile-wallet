@@ -1,7 +1,4 @@
-version: 2.1
-
-orbs:
-  react-native: react-native-community/react-native@4.4.2
+version: 2
 
 workflows:
   mobile-wallet-build-tests:
@@ -114,14 +111,18 @@ jobs:
           root: .
 
   fastlane_release:
-    executor: react-native/linux_js
+    macos:
+      xcode: "11.3"
     steps:
-      - attach_workspace:
-          at: .
-      - react-native/yarn_install
-      - run:
-          command: cd ios && fastlane beta
-          name: Run Fastlane
+      - checkout 
+      - restore_cache:
+          key: 1-gems-{{ checksum "Gemfile.lock" }}
+      - run: cd ios && bundle check || bundle install --path vendor/bundle
+      - save_cache:
+          key: 1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
 
   # Proxy server build jobs
   proxy-server-build:
