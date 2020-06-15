@@ -41,8 +41,10 @@ workflows:
 
   mobile-wallet-release:
     jobs:
-      - checkout_code
-      - fastlane_release
+      - mobile-wallet-build
+      - fastlane_release:
+          requires:
+            - mobile-wallet-build
 jobs:
   #
   # Mobile wallet build jobs
@@ -108,23 +110,34 @@ jobs:
   checkout_code:
     executor: react-native/linux_js
     steps:
-      - checkout
       - persist_to_workspace:
           paths: .
           root: .
 
   fastlane_release:
-    macos: 
-      xcode: 11.1.0
+    docker:
+      - image: circleci/ruby:latest
+    working_directory: ~/mobile-wallet
     shell: /bin/bash --login -o pipefail
     steps:
       - checkout
-      - run: cd ios
+      - run:
+          name: set Ruby version
+          command:  echo "ruby-2.4" > ~/.ruby-version
+      - attach_workspace:
+            at: .
+      - run:
+          command: gem install bundler && bundle install
+          working_directory: ios
+      - run:
+          command: bundle exec fastlane beta
+          working_directory: ios
 
   # Proxy server build jobs
   proxy-server-build:
     docker:
       - image: circleci/node:10
+
     steps:
       - checkout
       - restore_cache:
