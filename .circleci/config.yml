@@ -116,8 +116,7 @@ jobs:
   fastlane_release:
     executor: react-native/linux_js
     steps:
-      - attach_workspace:
-          at: .
+      - checkout
       - run:
           command: cd ios && gem install bundler && bundle check || bundle install --path vendor/bundle
           name: Set up Ruby environment
