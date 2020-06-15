@@ -115,13 +115,11 @@ jobs:
 
   fastlane_release:
     macos: 
-      xcode: 11.1
-      shell: /bin/bash --login -o pipefail
+      xcode: 11.1.0
+    shell: /bin/bash --login -o pipefail
     steps:
       - checkout
-      - run:
-          command: cd ios && gem install bundler && bundle check || bundle install --path vendor/bundle
-          name: Set up Ruby environment
+      - run: cd ios
 
   # Proxy server build jobs
   proxy-server-build:
