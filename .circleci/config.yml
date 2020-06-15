@@ -118,14 +118,21 @@ jobs:
     docker:
       - image: circleci/ruby:latest
     working_directory: ~/mobile-wallet
+    environment:
+      FL_OUTPUT_DIR: output
     shell: /bin/bash --login -o pipefail
     steps:
       - checkout
-      - attach_workspace:
-            at: .
-      - run:
-          command: gem install bundler && bundle install
+      - restore_cache:
+          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
+      - run: 
+          name: Checking and installing Ruby dependencies.
           working_directory: ios
+          command: bundle install
+      - save_cache:
+          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
+          paths:
+            - vendor/bundle
       - run:
           command: bundle exec fastlane beta
           working_directory: ios
