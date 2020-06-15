@@ -1,13 +1,7 @@
-import { ethers } from 'ethers'
 import Config from '../config'
 import { GasEstimator } from 'common/blockchain'
 
-const {
-  TEST_PRIVATE_KEY,
-  TEST_ADDRESS,
-  TEST_ERC20_TOKEN_CONTRACT_ADDRESS,
-  ETHEREUM_NETWORK
-} = Config
+const { TEST_ADDRESS, TEST_ERC20_TOKEN_CONTRACT_ADDRESS } = Config
 
 describe('Test Gas Estimator', () => {
   it('test estimate gas when sending erc20 token', () => {
