@@ -30,7 +30,7 @@ export const PLASMA_WALLET_BOTTOM_SHEET = {
 export const ROOTCHAIN_POPUP = {
   title: 'This is your Ethereum Wallet',
   key: 'ROOTCHAIN_POPUP',
-  paragraphs: ['It’s connected to the Ethereum.'],
+  paragraphs: ['It’s connected to Ethereum.'],
   buttonText: 'Next',
   isPopup: true,
   arrowDirection: 'up',
@@ -55,7 +55,7 @@ export const ROOTCHAIN_POPUP = {
 
 export const ROOTCHAIN_POPUP_EMPTY = {
   title: 'This is your Ethereum Wallet',
-  paragraphs: ['It’s connected to the Ethereum.'],
+  paragraphs: ['It’s connected to Ethereum.'],
   key: 'ROOTCHAIN_POPUP_EMPTY',
   buttonText: 'Next',
   isPopup: true,

@@ -5,21 +5,15 @@ import { Datetime } from 'common/utils'
 
 export const transfer = (blockchainWallet, toAddress, token, fee) => {
   const asyncAction = async () => {
-    let response
-
-    if (token.contractAddress === ContractAddress.ETH_ADDRESS) {
-      const options = {
-        token,
-        fee,
-        toAddress
-      }
-      response = await ethereumService.sendEthToken(blockchainWallet, options)
-    } else {
-      const options = { token, fee, toAddress }
-      response = await ethereumService.sendErc20Token(blockchainWallet, options)
+    const options = {
+      token,
+      fee,
+      toAddress
     }
-
-    const { hash, from, nonce, gasPrice } = response
+    const { hash, from, nonce, gasPrice } =
+      token.contractAddress === ContractAddress.ETH_ADDRESS
+        ? await ethereumService.sendEthToken(blockchainWallet, options)
+        : await ethereumService.sendErc20Token(blockchainWallet, options)
 
     return {
       hash: hash,

@@ -7,7 +7,7 @@ import {
   OMGTokenIcon
 } from './node_modules/components/widgets'
 import { withTheme } from 'react-native-paper'
-import { BlockchainFormatter } from './node_modules/common/blockchain'
+import { BlockchainFormatter } from './common/blockchain'
 
 const OMGItemTokenSelect = ({ token, style, onPress, selected, theme }) => {
   return (
