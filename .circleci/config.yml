@@ -114,7 +114,9 @@ jobs:
           root: .
 
   fastlane_release:
-    executor: react-native/linux_js
+    macos: 
+      xcode: "11.3"
+    shell: /bin/bash --login -o pipefail
     steps:
       - checkout
       - run:
