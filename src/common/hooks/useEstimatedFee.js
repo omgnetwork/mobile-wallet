@@ -50,7 +50,7 @@ const useEstimatedFee = ({
           fee: feeRate
         }
       )
-      const fee = BlockchainFormatter.formaztGasFee(gasUsed, feeRate.amount)
+      const fee = BlockchainFormatter.formatGasFee(gasUsed, feeRate.amount)
       const feeUsd = BlockchainFormatter.formatTokenPrice(fee, ethToken.price)
       const totalUsd = BlockchainFormatter.formatTotalPrice(amount, feeUsd)
       const total = BlockchainFormatter.formatTotalEthAmount(transferToken, fee)
