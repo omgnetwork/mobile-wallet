@@ -196,7 +196,6 @@ jobs:
   install-ruby-env:
     docker:
       - image: circleci/ruby:2.7.0
-    working_directory: ~/mobile-wallet
     steps:
       - checkout
       - restore_cache:
@@ -204,13 +203,14 @@ jobs:
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
       - run: 
           name: Installing Ruby dependencies.
-          working_directory: ios
-          command: gem install bundler && bundle config set path 'vendor/bundle' && bundle install
+          command: |
+            cd ios
+            gem install bundler && bundle config set path 'vendor/bundle' && bundle install
       - save_cache:
           name: Saving cache.
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
           paths:
-            - ios/vendor/bundle
+            - 'ios/vendor/bundle/'
       - persist_to_workspace:
           name: Persisting to workspace.
           root: .
@@ -219,12 +219,11 @@ jobs:
   fastlane-testflight-release:
     docker:
       - image: circleci/ruby:2.7.0
-    working_directory: ~/mobile-wallet
     steps:
       - attach_workspace:
           at: .
       - run: 
           name: Running Fastlane
-          working_directory: ios
-          command: bundle exec fastlane beta
-        
+          command: |
+            cd proxy-server
+            bundle exec fastlane beta
