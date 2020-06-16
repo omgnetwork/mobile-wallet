@@ -39,11 +39,11 @@ workflows:
 
   testflight-release:
     jobs:
-      - mobile-wallet-build
-      - fastlane-release
+      - install-ruby-env
+      - fastlane-testflight-release: 
+          requires: 
+            - install-ruby-env
   
-
-
 
 jobs:
   #
@@ -190,25 +190,41 @@ jobs:
           gcloud beta container clusters get-credentials $PROXY_SERVER_GCP_CLUSTER_DEVELOPMENT --region $PROXY_SERVER_GCP_REGION --project $PROXY_SERVER_GCP_PROJECT
           kubectl set image deployment/mobile-wallet-proxy mobile-wallet-proxy=$PROXY_SERVER_DOCKER_T
 
-  fastlane-release:
+
+
+
+  install-ruby-env:
     docker:
       - image: circleci/ruby:2.7.0
     working_directory: ~/mobile-wallet
-    environment:
-      FL_OUTPUT_DIR: output
-    shell: /bin/bash --login -o pipefail
     steps:
       - checkout
       - restore_cache:
+          name: Restoring cache.
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
       - run: 
-          name: Checking and installing Ruby dependencies.
+          name: Installing Ruby dependencies.
           working_directory: ios
-          command: bundle install
+          command: gem install bundler && bundle config set path 'vendor/bundle' && bundle install
       - save_cache:
+          name: Saving cache.
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
           paths:
             - vendor/bundle
-      - run:
-          command: bundle exec fastlane beta
+      - persist_to_workspace:
+          name: Persisting to workspace.
+          root: .
+          paths: '.'
+
+  fastlane-testflight-release:
+    docker:
+      - image: circleci/ruby:2.7.0
+    working_directory: ~/mobile-wallet
+    steps:
+      - attach_workspace:
+          at: .
+      - run: 
+          name: Run Fastlane
           working_directory: ios
+          command: bundle exec fastlane beta
+        
