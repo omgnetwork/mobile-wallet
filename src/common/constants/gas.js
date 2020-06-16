@@ -3,8 +3,6 @@ export const MEDIUM_LIMIT = 200000 // Gas limit 200k
 export const LOW_LIMIT = 100000 // Low limit for transfer 100k
 export const MINIMUM_GAS_USED = 21000
 
-export const HIGH_TRANSFER_GAS_PRICE = '24000000000'
-export const MEDIUM_TRANSFER_GAS_PRICE = '10000000000'
 export const LOW_TRANSFER_GAS_PRICE = '5000000000'
 export const DEPOSIT_ESTIMATED_GAS_USED = 150000
 export const DEPOSIT_APPROVED_ERC20_GAS_USED = 50000
