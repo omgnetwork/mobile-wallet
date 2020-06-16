@@ -142,13 +142,8 @@ android {
         applicationId "network.omisego.plasmawallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-<<<<<<< HEAD
-        versionCode 3145758
-        versionName "1.0.1"
-=======
         versionCode 3145759
         versionName "1.0.2"
->>>>>>> Replace omg token icon (#219)
         multiDexEnabled true
         missingDimensionStrategy "react-native-camera", "general"
     }
