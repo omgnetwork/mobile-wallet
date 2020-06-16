@@ -1,5 +1,5 @@
 export const HIGH_LIMIT = 2000000 // Gas Limit 2M
-export const MEDIUM_LIMIT = 200000 // Gas limit 200k
+export const MEDIUM_LIMIT = 500000 // Gas limit 500k
 export const LOW_LIMIT = 100000 // Low limit for transfer 100k
 export const MINIMUM_GAS_USED = 21000
 
