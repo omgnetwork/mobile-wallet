@@ -37,6 +37,14 @@ workflows:
             branches:
               only: master
 
+  testflight-release:
+    jobs:
+      - mobile-wallet-build
+      - fastlane-release
+  
+
+
+
 jobs:
   #
   # Mobile wallet build jobs
@@ -182,7 +190,7 @@ jobs:
           gcloud beta container clusters get-credentials $PROXY_SERVER_GCP_CLUSTER_DEVELOPMENT --region $PROXY_SERVER_GCP_REGION --project $PROXY_SERVER_GCP_PROJECT
           kubectl set image deployment/mobile-wallet-proxy mobile-wallet-proxy=$PROXY_SERVER_DOCKER_T
 
-  fastlane_release:
+  fastlane-release:
     docker:
       - image: circleci/ruby:2.7.0
     working_directory: ~/mobile-wallet
