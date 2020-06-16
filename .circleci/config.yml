@@ -1,9 +1,7 @@
-version: 2.1
-
-orbs:
-  react-native: react-native-community/react-native@4.4.2
+version: 2
 
 workflows:
+  version: 2
   mobile-wallet-build-tests:
     jobs:
       - mobile-wallet-build
@@ -39,12 +37,6 @@ workflows:
             branches:
               only: master
 
-  mobile-wallet-release:
-    jobs:
-      - mobile-wallet-build
-      - fastlane_release:
-          requires:
-            - mobile-wallet-build
 jobs:
   #
   # Mobile wallet build jobs
@@ -107,41 +99,10 @@ jobs:
           name: Audit mobile wallet dependencies
           command: npm run dependency-audit
 
-  checkout_code:
-    executor: react-native/linux_js
-    steps:
-      - persist_to_workspace:
-          paths: .
-          root: .
-
-  fastlane_release:
-    docker:
-      - image: circleci/ruby:latest
-    working_directory: ~/mobile-wallet
-    environment:
-      FL_OUTPUT_DIR: output
-    shell: /bin/bash --login -o pipefail
-    steps:
-      - checkout
-      - restore_cache:
-          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
-      - run: 
-          name: Checking and installing Ruby dependencies.
-          working_directory: ios
-          command: bundle install
-      - save_cache:
-          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-      - run:
-          command: bundle exec fastlane beta
-          working_directory: ios
-
   # Proxy server build jobs
   proxy-server-build:
     docker:
       - image: circleci/node:10
-
     steps:
       - checkout
       - restore_cache:
@@ -219,4 +180,27 @@ jobs:
           echo $PROXY_SERVER_GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
           gcloud auth configure-docker
           gcloud beta container clusters get-credentials $PROXY_SERVER_GCP_CLUSTER_DEVELOPMENT --region $PROXY_SERVER_GCP_REGION --project $PROXY_SERVER_GCP_PROJECT
-          kubectl set image deployment/mobile-wallet-proxy mobile-wallet-proxy=$PROXY_SERVER_DOCKER_TAG
+          kubectl set image deployment/mobile-wallet-proxy mobile-wallet-proxy=$PROXY_SERVER_DOCKER_T
+
+  fastlane_release:
+    docker:
+      - image: circleci/ruby:2.7.0
+    working_directory: ~/mobile-wallet
+    environment:
+      FL_OUTPUT_DIR: output
+    shell: /bin/bash --login -o pipefail
+    steps:
+      - checkout
+      - restore_cache:
+          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
+      - run: 
+          name: Checking and installing Ruby dependencies.
+          working_directory: ios
+          command: bundle install
+      - save_cache:
+          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - run:
+          command: bundle exec fastlane beta
+          working_directory: ios
