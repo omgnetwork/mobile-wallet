@@ -1,15 +1,18 @@
 import { GasEstimator } from 'common/blockchain'
-import { ContractAddress } from 'common/constants'
+import { BlockchainNetworkType, ContractAddress } from 'common/constants'
+import Config from 'react-native-config'
 
 export const TYPE_DEPOSIT = 1
 export const TYPE_TRANSFER_ROOTCHAIN = 2
 export const TYPE_TRANSFER_CHILDCHAIN = 3
 export const TYPE_EXIT = 4
 
-export const getTypes = (isRootchain, isDeposit) => {
-  if (isDeposit) {
+export const getType = (address, primaryWalletNetwork) => {
+  if (address === Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS) {
     return TYPE_DEPOSIT
-  } else if (isRootchain) {
+  } else if (
+    primaryWalletNetwork === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
+  ) {
     return TYPE_TRANSFER_ROOTCHAIN
   } else {
     return TYPE_TRANSFER_CHILDCHAIN
@@ -34,35 +37,11 @@ export const getGasUsed = (type, token, options) => {
   }
 }
 
-export const getTransferFee = (type, selectedTransferFee) => {
-  const childchainTransferFee = { amount: 0 }
+export const getAssets = (type, wallet) => {
   switch (type) {
-    case TYPE_DEPOSIT:
-    case TYPE_TRANSFER_ROOTCHAIN:
-      return selectedTransferFee
     case TYPE_TRANSFER_CHILDCHAIN:
-      return childchainTransferFee
+      return wallet.childchainAssets
     default:
-      return null
-  }
-}
-
-export const getAssets = (type, rootchainAssets, childchainAssets) => {
-  switch (type) {
-    case TYPE_EXIT:
-    case TYPE_TRANSFER_CHILDCHAIN:
-      return childchainAssets
-    default:
-      return rootchainAssets
-  }
-}
-
-export const getDefaultToken = (type, rootchainAssets, childchainAssets) => {
-  switch (type) {
-    case TYPE_EXIT:
-    case TYPE_TRANSFER_CHILDCHAIN:
-      return childchainAssets[0]
-    default:
-      return rootchainAssets[0]
+      return wallet.rootchainAssets
   }
 }

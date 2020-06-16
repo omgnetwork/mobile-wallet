@@ -6,7 +6,7 @@ const useEstimatedFee = ({
   feeRate,
   transferToken,
   ethToken,
-  isEthereum,
+  transactionType,
   blockchainWallet,
   toAddress
 }) => {
@@ -42,7 +42,7 @@ const useEstimatedFee = ({
 
     async function calculateEthereumFee() {
       const gasUsed = await TransferHelper.getGasUsed(
-        TransferHelper.TYPE_TRANSFER_ROOTCHAIN,
+        transactionType,
         transferToken,
         {
           wallet: blockchainWallet,
@@ -58,7 +58,7 @@ const useEstimatedFee = ({
       updateState({ fee, feeUsd, total, totalUsd })
     }
 
-    if (isEthereum) {
+    if (transactionType !== TransferHelper.TYPE_TRANSFER_CHILDCHAIN) {
       calculateEthereumFee()
     } else {
       calculateOMGNetworkFee()

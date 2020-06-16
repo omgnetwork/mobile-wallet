@@ -7,10 +7,8 @@ import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
 import { Alerter } from 'common/utils'
 import Balance from './Balance'
-import Config from 'react-native-config'
 import { OMGBottomSheet, OMGActionSheetMenus } from 'components/widgets'
 import { transactionActions } from 'common/actions'
-import { TransferHelper } from '../transfer'
 import { BlockchainNetworkType, Alert } from 'common/constants'
 
 const Home = ({
@@ -72,10 +70,7 @@ const Home = ({
     } else if (!hasRootchainAssets) {
       Alerter.show(Alert.FAILED_DEPOSIT_EMPTY_WALLET)
     } else {
-      navigation.navigate('TransferSelectBalance', {
-        transferType: TransferHelper.TYPE_DEPOSIT,
-        address: Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
-      })
+      navigation.navigate('Deposit')
     }
   }, [hasPendingTransaction, hasRootchainAssets, navigation])
 

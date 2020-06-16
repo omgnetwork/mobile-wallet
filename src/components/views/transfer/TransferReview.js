@@ -6,8 +6,15 @@ import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { BigNumber } from 'common/utils'
 import { OMGEditItem, OMGText, OMGButton } from 'components/widgets'
-import { BlockchainNetworkType, ContractAddress } from 'common/constants'
+import { ContractAddress } from 'common/constants'
 import { plasmaActions, ethereumActions } from 'common/actions'
+import {
+  getAssets,
+  getType,
+  TYPE_TRANSFER_CHILDCHAIN,
+  TYPE_DEPOSIT,
+  TYPE_TRANSFER_ROOTCHAIN
+} from './transferHelper'
 
 const TransferReview = ({
   theme,
@@ -17,17 +24,17 @@ const TransferReview = ({
   ethToken,
   ethereumTransfer,
   plasmaTransfer,
+  depositTransfer,
   loading,
   wallet
 }) => {
   const styles = createStyles(theme)
-  const isEthereum =
-    primaryWalletNetwork === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
-  const assets = isEthereum ? wallet.rootchainAssets : wallet.childchainAssets
   const token = navigation.getParam('token')
   const amount = navigation.getParam('amount')
   const toAddress = navigation.getParam('address')
   const feeRate = navigation.getParam('feeRate')
+  const transactionType = getType(toAddress, primaryWalletNetwork)
+  const assets = getAssets(transactionType, wallet)
   const amountUsd = BigNumber.multiply(amount, token.price)
   const transferToken = { ...token, balance: amount }
   const feeToken = assets.find(
@@ -38,7 +45,7 @@ const TransferReview = ({
     feeRate,
     transferToken,
     ethToken,
-    isEthereum,
+    transactionType,
     blockchainWallet,
     toAddress
   })
@@ -76,20 +83,34 @@ const TransferReview = ({
     navigation.navigate('TransferSelectAmount')
   }, [navigation])
   const onPressEditFee = useCallback(() => {
-    isEthereum
-      ? navigation.navigate('TransferChooseGasFee')
-      : navigation.navigate('TransferChoosePlasmaFee')
-  }, [isEthereum, navigation])
+    transactionType === TYPE_TRANSFER_CHILDCHAIN
+      ? navigation.navigate('TransferChoosePlasmaFee')
+      : navigation.navigate('TransferChooseGasFee')
+  }, [transactionType, navigation])
 
   const onSubmit = useCallback(() => {
-    isEthereum
-      ? ethereumTransfer(blockchainWallet, toAddress, transferToken, feeRate)
-      : plasmaTransfer(blockchainWallet, toAddress, transferToken, feeRate)
+    switch (transactionType) {
+      case TYPE_TRANSFER_CHILDCHAIN:
+        return plasmaTransfer(
+          blockchainWallet,
+          toAddress,
+          transferToken,
+          feeRate
+        )
+      case TYPE_TRANSFER_ROOTCHAIN:
+        return ethereumTransfer(
+          blockchainWallet,
+          toAddress,
+          transferToken,
+          feeRate
+        )
+      case TYPE_DEPOSIT:
+        return depositTransfer(blockchainWallet, transferToken, feeRate)
+    }
   }, [
     blockchainWallet,
     ethereumTransfer,
     feeRate,
-    isEthereum,
     plasmaTransfer,
     toAddress,
     transferToken
@@ -97,9 +118,11 @@ const TransferReview = ({
 
   useEffect(() => {
     if (
-      ['ROOTCHAIN_SEND_TOKEN', 'CHILDCHAIN_SEND_TOKEN'].includes(
-        loading.action
-      ) &&
+      [
+        'ROOTCHAIN_SEND_TOKEN',
+        'CHILDCHAIN_SEND_TOKEN',
+        'CHILDCHAIN_DEPOSIT'
+      ].includes(loading.action) &&
       loading.success
     ) {
       navigation.navigate('Home')
@@ -199,7 +222,9 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
   plasmaTransfer: (blockchainWallet, toAddress, token, fee) =>
     dispatch(plasmaActions.transfer(blockchainWallet, toAddress, token, fee)),
   ethereumTransfer: (blockchainWallet, toAddress, token, fee) =>
-    dispatch(ethereumActions.transfer(blockchainWallet, toAddress, token, fee))
+    dispatch(ethereumActions.transfer(blockchainWallet, toAddress, token, fee)),
+  depositTransfer: (blockchainWallet, token, fee) =>
+    dispatch(plasmaActions.deposit(blockchainWallet, token, fee))
 })
 
 export default connect(
