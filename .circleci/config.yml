@@ -225,5 +225,5 @@ jobs:
       - run: 
           name: Running Fastlane
           command: |
-            cd proxy-server
+            cd ios
             bundle exec fastlane beta
