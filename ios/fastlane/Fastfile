@@ -22,7 +22,7 @@ platform :ios do
   lane :beta do
     clear_derived_data
     match(type: "appstore", readonly: is_ci)
-    increment_build_number()
+    increment_build_number(xcodeproj: "PlasmaWallet.xcodeproj")
     build_ios_app(scheme: "PlasmaWallet", clean: true)
     upload_to_testflight
   end
