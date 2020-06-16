@@ -89,7 +89,7 @@ const createStyles = (theme, isRootchain) =>
   StyleSheet.create({
     container: {
       backgroundColor: isRootchain ? theme.colors.gray9 : theme.colors.primary,
-      paddingTop: Styles.getResponsiveSize(64, { small: 24, medium: 32 }),
+      paddingTop: 16,
       paddingBottom: Styles.getResponsiveSize(36, { small: 24, medium: 30 }),
       paddingHorizontal: 16
     },

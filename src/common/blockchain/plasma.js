@@ -1,8 +1,6 @@
 import { Plasma, web3 } from 'common/clients'
-import axios from 'axios'
 import { Gas, ContractAddress } from 'common/constants'
 import { Mapper } from 'common/utils'
-import Config from 'react-native-config'
 import BN from 'bn.js'
 import {
   TxOptions,
@@ -39,7 +37,7 @@ export const transfer = async (
     sort: (a, b) => new BN(b.amount).sub(new BN(a.amount))
   })
   const txBody = Transaction.createBody(
-    fromBlockchainWallet.address,
+    address,
     utxos,
     [payment],
     childchainFee,
@@ -208,17 +206,13 @@ export const standardExit = (exitData, blockchainWallet, options) => {
   })
 }
 
-let standardExitBond
 export const getStandardExitBond = async () => {
-  if (!standardExitBond) {
-    try {
-      const { bonds } = await Contract.getPaymentExitGame()
-      standardExitBond = bonds.standardExit.toString()
-    } catch (e) {
-      standardExitBond = '14000000000000000'
-    }
+  try {
+    const { bonds } = await Contract.getPaymentExitGame()
+    return bonds.standardExit.toString()
+  } catch (e) {
+    return '14000000000000000'
   }
-  return standardExitBond
 }
 
 export const getErrorReason = async hash => {
@@ -279,17 +273,8 @@ export const getExitQueue = async tokenContractAddress => {
   }
 }
 
-export const getFees = (currencies = []) => {
-  return axios
-    .post(`${Config.WATCHER_URL}fees.all`, {
-      params: {
-        currencies,
-        tx_types: []
-      }
-    })
-    .then(response => {
-      return response.data.data['1'].filter(
-        fee => currencies.indexOf(fee.currency) > -1
-      )
-    })
+export const getFees = () => {
+  return Plasma.ChildChain.getFees().then(response => {
+    return response['1']
+  })
 }

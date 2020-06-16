@@ -52,9 +52,7 @@ const useProgressiveFeedback = (
           ? 'Please wait'
           : 'Your withdrawal is pending. We will notify you once it finalizes.'
       case TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT:
-        return pending
-          ? 'Please wait'
-          : 'Your funds are now on the Ethereum Network.'
+        return pending ? 'Please wait' : 'Your funds are now on Ethereum.'
       case TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS:
         return pending
           ? 'We’re merging UTXOs. You can not transfer during this time.'

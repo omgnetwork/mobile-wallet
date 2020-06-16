@@ -45,8 +45,10 @@ import OMGQRScanner from './omg-qr-scanner'
 import OMGPasswordTextInput from './omg-password-text-input'
 import OMGProcessExitText from './omg-process-exit-text'
 import OMGRadioButton from './omg-radio-button'
+import OMGListItemTokenSelect from './omg-list-item-token-select'
+import OMGListGasFee from './omg-list-gas-fee'
+import OMGListPlasmaFee from './omg-list-plasma-fee'
 import OMGStatusBar from './omg-status-bar'
-import OMGTab from './omg-tab'
 import OMGText from './omg-text'
 import OMGTextChip from './omg-text-chip'
 import OMGTextInput from './omg-text-input'
@@ -54,7 +56,7 @@ import OMGTextInputBox from './omg-text-input-box'
 import OMGTokenFee from './omg-token-fee'
 import OMGTokenIcon from './omg-token-icon'
 import OMGTokenInput from './omg-token-input'
-import OMGTokenSelect from './omg-token-select'
+import OMGItemTokenSelect from './omg-item-token-select'
 import OMGItemExitTransaction from './omg-item-exit-transaction'
 import OMGItemTransaction from './omg-item-transaction'
 import OMGWalletAddress from './omg-wallet-address'
@@ -98,6 +100,9 @@ export {
   OMGItemToken,
   OMGItemExitTransaction,
   OMGItemTransaction,
+  OMGListItemTokenSelect,
+  OMGListGasFee,
+  OMGListPlasmaFee,
   OMGKeyboardShift,
   OMGMenu,
   OMGMenuIcon,
@@ -113,7 +118,6 @@ export {
   OMGRadioButton,
   OMGAlert,
   OMGStatusBar,
-  OMGTab,
   OMGText,
   OMGTextChip,
   OMGTextInput,
@@ -121,7 +125,7 @@ export {
   OMGTokenFee,
   OMGTokenIcon,
   OMGTokenInput,
-  OMGTokenSelect,
+  OMGItemTokenSelect,
   OMGWalletAddress,
   OMGTransactionFilter,
   OMGTransactionList,

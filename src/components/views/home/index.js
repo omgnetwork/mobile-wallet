@@ -1,7 +1,8 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import { connect } from 'react-redux'
+import { useSafeArea } from 'react-native-safe-area-context'
 import { StyleSheet, StatusBar } from 'react-native'
-import { SafeAreaView, withNavigationFocus } from 'react-navigation'
+import { withNavigationFocus, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
 import { Alerter } from 'common/utils'
@@ -34,6 +35,7 @@ const Home = ({
   )
 
   const [menuVisible, setMenuVisible] = useState(false)
+  const insets = useSafeArea()
 
   const onPressMenu = useCallback(() => {
     setMenuVisible(true)
@@ -107,7 +109,9 @@ const Home = ({
 
   const drawerNavigation = navigation.dangerouslyGetParent()
   return (
-    <SafeAreaView style={styles.safeAreaView(theme, primaryWalletNetwork)}>
+    <SafeAreaView
+      style={styles.safeAreaView(theme, primaryWalletNetwork)}
+      forceInset={{ bottom: 'never' }}>
       <Balance
         primaryWallet={primaryWallet}
         onPressMenu={onPressMenu}
@@ -117,7 +121,7 @@ const Home = ({
         onPressScan={handleOnPressScan}
       />
       <OMGBottomSheet
-        style={styles.bottomSheet}
+        style={styles.bottomSheet(insets)}
         show={visible}
         feedback={feedback}
         onPressClose={handleOnClose}
@@ -141,6 +145,9 @@ const styles = StyleSheet.create({
       primaryWalletNetwork === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
         ? theme.colors.gray9
         : theme.colors.primary
+  }),
+  bottomSheet: insets => ({
+    paddingBottom: insets.bottom
   })
 })
 

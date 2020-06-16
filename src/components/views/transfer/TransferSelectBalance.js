@@ -6,7 +6,7 @@ import { withTheme } from 'react-native-paper'
 import {
   OMGButton,
   OMGEmpty,
-  OMGTokenSelect,
+  OMGItemTokenSelect,
   OMGHeader
 } from 'components/widgets'
 import { TransferHelper } from 'components/views/transfer'
@@ -51,7 +51,10 @@ const TransferSelectBalance = ({
         keyExtractor={item => item.contractAddress}
         keyboardShouldPersistTaps='always'
         ListEmptyComponent={
-          <OMGEmpty text='Empty assets' loading={loading.show} />
+          <OMGEmpty
+            text="There're no tokens available"
+            loading={loading.show}
+          />
         }
         contentContainerStyle={
           assets && assets.length
@@ -59,7 +62,7 @@ const TransferSelectBalance = ({
             : { flexGrow: 1, justifyContent: 'center' }
         }
         renderItem={({ item }) => (
-          <OMGTokenSelect
+          <OMGItemTokenSelect
             key={item.contractAddress}
             token={item}
             onPress={() => {

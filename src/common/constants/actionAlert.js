@@ -1,6 +1,6 @@
 export const transfer = {
-  actions: ['ROOTCHAIN_SEND_ERC20_TOKEN', 'ROOTCHAIN_SEND_ETH_TOKEN'],
-  msgSuccess: 'The transaction is sent. Track the progress at the Etherscan.'
+  actions: ['ROOTCHAIN_SEND_TOKEN'],
+  msgSuccess: 'The transaction is sent. Track the progress on Etherscan.'
 }
 
 export const transferChildchain = {
@@ -11,7 +11,7 @@ export const transferChildchain = {
 
 export const deposit = {
   actions: ['CHILDCHAIN_DEPOSIT'],
-  msgSuccess: 'The deposit is pending. Track the progress on the Etherscan.'
+  msgSuccess: 'The deposit is pending. Track the progress on Etherscan.'
 }
 
 export const exit = {

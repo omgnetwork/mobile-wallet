@@ -66,6 +66,7 @@ export const getRecommendedGas = () => {
         speed: 'Express',
         estimateTime: `${fastWait * 60} seconds`,
         amount: Parser.parseUnits(fast.toString(), 8).toString(10),
+        currency: ContractAddress.ETH_ADDRESS,
         displayAmount: fast / 10,
         symbol: 'Gwei',
         price: '1'
@@ -75,6 +76,7 @@ export const getRecommendedGas = () => {
         estimateTime: `${avgWait * 60} seconds`,
         amount: Parser.parseUnits(average.toString(), 8).toString(10),
         displayAmount: average / 10,
+        currency: ContractAddress.ETH_ADDRESS,
         symbol: 'Gwei',
         price: '1'
       },
@@ -83,6 +85,7 @@ export const getRecommendedGas = () => {
         estimateTime: `${safeLowWait * 60} seconds`,
         amount: Parser.parseUnits(safeLow.toString(), 8).toString(10),
         displayAmount: safeLow / 10,
+        currency: ContractAddress.ETH_ADDRESS,
         symbol: 'Gwei',
         price: '1'
       }

@@ -1,23 +1,18 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
-import { connect } from 'react-redux'
-import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { OMGEmpty, OMGTokenSelect, OMGText } from 'components/widgets'
+import { OMGEmpty, OMGItemTokenSelect, OMGText } from 'components/widgets'
 import { Styles } from 'common/utils'
 
-const ExitSelectBalance = ({ theme, primaryWallet, navigation, loading }) => {
-  const assets = primaryWallet.childchainAssets
-
-  const confirm = useCallback(
-    token => {
-      navigation.navigate('ExitSelectUtxo', { token })
-    },
-    [navigation]
-  )
-
+const OMGListItemTokenSelect = ({
+  theme,
+  loading,
+  assets,
+  onSelectToken,
+  style
+}) => {
   return (
-    <View style={styles.container(theme)}>
+    <View style={[styles.container(theme), style]}>
       <OMGText style={styles.title(theme)} weight='regular'>
         Select Token
       </OMGText>
@@ -26,16 +21,19 @@ const ExitSelectBalance = ({ theme, primaryWallet, navigation, loading }) => {
         keyExtractor={item => item.contractAddress}
         ItemSeparatorComponent={() => <Divider theme={theme} />}
         ListEmptyComponent={
-          <OMGEmpty text='Empty assets' loading={loading.show} />
+          <OMGEmpty
+            text="There're no tokens available."
+            loading={loading.show}
+          />
         }
         contentContainerStyle={
           assets && assets.length ? styles.listContainer : styles.emptyContainer
         }
         renderItem={({ item }) => (
-          <OMGTokenSelect
+          <OMGItemTokenSelect
             key={item.contractAddress}
             token={item}
-            onPress={() => confirm(item)}
+            onPress={() => onSelectToken(item)}
           />
         )}
       />
@@ -51,9 +49,7 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    paddingTop: 16,
-    backgroundColor: theme.colors.black5,
-    paddingHorizontal: 16
+    backgroundColor: theme.colors.black5
   }),
   title: theme => ({
     fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
@@ -73,14 +69,4 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, _ownProps) => ({
-  loading: state.loading,
-  primaryWallet: state.wallets.find(
-    w => w.address === state.setting.primaryWalletAddress
-  )
-})
-
-export default connect(
-  mapStateToProps,
-  null
-)(withNavigation(withTheme(ExitSelectBalance)))
+export default withTheme(OMGListItemTokenSelect)

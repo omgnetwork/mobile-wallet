@@ -1,22 +1,18 @@
 import React from 'react'
 import { withTheme } from 'react-native-paper'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import { BlockchainFormatter } from 'common/blockchain'
 import { OMGText, OMGFontIcon, OMGEmpty } from 'components/widgets'
 import { Styles } from 'common/utils'
 
 const OMGEditItem = ({
   title,
   theme,
-  value,
-  symbol = 'ETH',
-  price,
+  rightFirstLine,
+  rightSecondLine,
   style,
   loading,
   onPress
 }) => {
-  const feeUsd = BlockchainFormatter.formatTokenPrice(value, price)
-
   return (
     <View style={[styles.container(theme), style]}>
       <View style={[styles.column, styles.stretch]}>
@@ -37,21 +33,23 @@ const OMGEditItem = ({
           <OMGFontIcon name='edit' size={10} color={theme.colors.blue2} />
         </TouchableOpacity>
       </View>
-      <View style={[styles.column, styles.alignRight]}>
+      <View style={[styles.column, styles.alignRight, styles.textSingleLine]}>
         {loading ? (
           <OMGEmpty loading={loading} style={styles.alignRight} />
         ) : (
           <>
             <OMGText style={[styles.textWhite(theme), styles.textBig]}>
-              {value} {symbol}
+              {rightFirstLine}
             </OMGText>
             <OMGText
+              numberOfLines={1}
+              ellipsizeMode='tail'
               style={[
                 styles.textGray(theme),
                 styles.textSmall,
                 styles.textMargin
               ]}>
-              {feeUsd} USD
+              {rightSecondLine}
             </OMGText>
           </>
         )}
@@ -98,6 +96,9 @@ const styles = StyleSheet.create({
   },
   textMargin: {
     marginTop: 6
+  },
+  textSingleLine: {
+    flex: 1
   },
   smallMarginRight: {
     marginRight: 4

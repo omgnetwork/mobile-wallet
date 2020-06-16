@@ -1,6 +1,7 @@
 import useFlashMessage from './useFlashMessage'
 import useRootchainTracker from './useRootchainTracker'
 import useChildchainTracker from './useChildchainTracker'
+import useEstimatedFee from './useEstimatedFee'
 import useExitTracker from './useExitTracker'
 import useLoading from './useLoading'
 import useMergeInterval from './useMergeInterval'
@@ -12,6 +13,7 @@ export {
   useFlashMessage,
   useRootchainTracker,
   useChildchainTracker,
+  useEstimatedFee,
   useExitTracker,
   useLoading,
   useMergeInterval,

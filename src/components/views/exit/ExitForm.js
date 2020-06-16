@@ -69,7 +69,7 @@ const ExitForm = ({
   })
 
   const navigateEditAmount = () => {
-    navigation.navigate('ExitSelectBalance')
+    navigation.navigate('ExitSelectToken')
   }
   const navigateEditFee = () => {
     navigation.navigate('ExitSelectFee')
@@ -84,6 +84,8 @@ const ExitForm = ({
     )
   }
 
+  const exitFee = BlockchainFormatter.formatTokenPrice(exitAmount, token.price)
+
   return (
     <View style={styles.container(theme)}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -94,10 +96,9 @@ const ExitForm = ({
         </OMGText>
         <OMGEditItem
           title='Amount'
-          value={exitAmount}
+          rightFirstLine={`${exitAmount} ${token.tokenSymbol}`}
+          rightSecondLine={`${exitFee} USD`}
           onPress={navigateEditAmount}
-          symbol={token.tokenSymbol}
-          price={token.price}
           style={[styles.marginMedium, styles.paddingMedium]}
         />
         <OMGExitFee

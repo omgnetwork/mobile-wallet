@@ -27,7 +27,7 @@ export default combineReducers({
   wallets: walletsReducer,
   loading: loadingReducer,
   transaction: transactionReducer,
-  fees: feeReducer,
+  fee: feeReducer,
   gasOptions: gasReducer,
   walletSwitcher: walletSwitcherReducer,
   onboarding: persistReducer(persistOnboardingConfig, onboardingReducer),

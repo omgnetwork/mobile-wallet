@@ -97,9 +97,6 @@ export const AppNavigator = createStackNavigator(
     TransferSelectFee: {
       screen: Views.TransferSelectFee
     },
-    TransferSelectPlasmaFee: {
-      screen: Views.TransferSelectPlasmaFee
-    },
     TransferPending: {
       screen: Views.TransferPending,
       navigationOptions: () => ({ gesturesEnabled: false })

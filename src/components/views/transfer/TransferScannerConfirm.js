@@ -1,29 +1,27 @@
 import React, { useCallback } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
-import { withNavigation } from 'react-navigation'
+import { withNavigation, NavigationActions } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 
 import { OMGText, OMGQRCode } from 'components/widgets'
 import CloseIcon from './assets/close-icon.svg'
 
-import { paramsForTransferScannerToTransferSelectBalance } from './transferNavigation'
 import { Styles } from 'common/utils'
 
 function TransferScannerConfirm({ theme, navigation }) {
   const address = navigation.getParam('address')
-  const isRootchain = navigation.getParam('isRootchain')
-  const assets = navigation.getParam('assets')
 
   const navigateNext = useCallback(() => {
-    navigation.navigate(
-      'TransferSelectBalance',
-      paramsForTransferScannerToTransferSelectBalance({
-        address,
-        isRootchain,
-        assets
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'Transfer',
+
+      action: NavigationActions.navigate({
+        routeName: 'TransferSelectToken',
+        params: { address }
       })
-    )
-  }, [navigation, address, isRootchain, assets])
+    })
+    navigation.dispatch(navigateAction)
+  }, [navigation, address])
 
   const handleCloseClick = useCallback(() => {
     navigation.goBack()
@@ -73,10 +71,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: theme.colors.gray3
   }),
-  qrContainer: theme => ({
+  qrContainer: {
     alignItems: 'center',
     padding: 4
-  }),
+  },
   buttonContainer: theme => ({
     borderWidth: 1,
     backgroundColor: theme.colors.gray4,

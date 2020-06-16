@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import Clipboard from '@react-native-community/clipboard'
 import { SafeAreaView, withNavigation } from 'react-navigation'
@@ -20,8 +20,15 @@ const OMGDrawerContent = ({
   navigation,
   primaryWallet,
   dispatchToggleWalletSwitcher,
+  unconfirmedTxs,
   theme
 }) => {
+  const [hasPendingTx, setHasPendingTx] = useState(unconfirmedTxs.length > 0)
+
+  useEffect(() => {
+    setHasPendingTx(unconfirmedTxs.length > 0)
+  }, [setHasPendingTx, unconfirmedTxs])
+
   const handleCopyClick = useCallback(() => {
     Clipboard.setString(primaryWallet.address)
     Alerter.show(Alert.SUCCESS_COPIED_ADDRESS)
@@ -114,7 +121,8 @@ const OMGDrawerContent = ({
           />
           <View style={styles.btnContainer}>
             <TouchableOpacity
-              style={styles.btn(theme)}
+              style={styles.btn(theme, hasPendingTx)}
+              disabled={hasPendingTx}
               onPress={openWalletSwitcher}>
               <IconShuffle color={theme.colors.white} size={12} />
               <OMGText style={styles.btnText(theme)} weight='book'>
@@ -130,16 +138,19 @@ const OMGDrawerContent = ({
           </OMGText>
           <DrawerMenuItem
             title='Import Wallet'
+            disabled={hasPendingTx}
             onPress={() => closeDrawerAndNavigate('ImportWallet')}
           />
           <View style={styles.divider(theme)} />
           <DrawerMenuItem
             title='Create Wallet'
+            disabled={hasPendingTx}
             onPress={() => closeDrawerAndNavigate('CreateWallet')}
           />
           <View style={styles.divider(theme)} />
           <DrawerMenuItem
             title='Delete Wallet'
+            disabled={hasPendingTx}
             onPress={() => closeDrawerAndNavigate('DeleteWallet')}
           />
           <View style={styles.divider(theme)} />
@@ -212,12 +223,13 @@ const styles = StyleSheet.create({
   btnContainer: {
     alignItems: 'flex-start'
   },
-  btn: theme => ({
+  btn: (theme, disabledChangeWallet) => ({
     marginTop: 10,
     width: 'auto',
     flexDirection: 'row',
     paddingHorizontal: 16,
     borderRadius: 16,
+    opacity: disabledChangeWallet ? 0.4 : 1.0,
     paddingVertical: 10,
     backgroundColor: theme.colors.blue3
   }),
@@ -250,7 +262,8 @@ const mapStateToProps = (state, _ownProps) => ({
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
   wallets: state.wallets,
-  provider: state.setting.provider
+  provider: state.setting.provider,
+  unconfirmedTxs: state.transaction.unconfirmedTxs
 })
 const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchToggleWalletSwitcher: visible =>

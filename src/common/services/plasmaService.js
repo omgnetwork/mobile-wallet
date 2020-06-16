@@ -90,17 +90,17 @@ export const mergeUTXOs = (
 
 export const getFees = async tokens => {
   try {
-    const currencies = tokens.map(token => token.contractAddress)
-    const fees = await Plasma.getFees(currencies).then(feeTokens => {
-      return feeTokens.map(feeToken => {
-        const token = tokens.find(t => t.contractAddress === feeToken.currency)
-        return {
-          ...feeToken,
-          ...token
-        }
-      })
+    const all = await Plasma.getFees()
+    const available = all.flatMap(fee => {
+      const token = tokens.find(t => t.contractAddress === fee.currency)
+      return token ? [{ ...fee, ...token }] : []
     })
-    return { fees, updatedAt: fees[0] ? fees[0].updated_at : null }
+
+    return {
+      available,
+      all,
+      updatedAt: all[0] ? all[0].updated_at : null
+    }
   } catch (err) {
     throw new Error(err)
   }

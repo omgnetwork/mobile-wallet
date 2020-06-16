@@ -12,10 +12,10 @@ import DeleteWallet from './delete-wallet'
 import Deposit from './deposit'
 import Disclaimer from './disclaimer'
 import Exit from './exit'
-import ExitForm from './exit/ExitForm'
-import ExitSelectBalance from './exit/ExitSelectBalance'
-import ExitSelectFee from './exit/ExitSelectFee'
+import ExitSelectToken from './exit/ExitSelectToken'
 import ExitSelectUtxo from './exit/ExitSelectUtxo'
+import ExitForm from './exit/ExitForm'
+import ExitSelectFee from './exit/ExitSelectFee'
 import ExitWarning from './exit/ExitWarning'
 import ImportWallet from './import-wallet'
 import ImportWalletForm from './import-wallet/ImportForm'
@@ -37,9 +37,14 @@ import {
   TransferPending,
   TransferReceive,
   TransferScanner,
+  TransferChooseGasFee,
+  TransferChoosePlasmaFee,
+  TransferReview,
+  TransferSelectAddress,
+  TransferSelectAmount,
   TransferSelectBalance,
-  TransferSelectPlasmaFee,
-  TransferSelectFee
+  TransferSelectFee,
+  TransferSelectToken
 } from './transfer'
 import {
   ProcessExitContainer as ProcessExit,
@@ -66,7 +71,7 @@ export {
   Deposit,
   Disclaimer,
   Exit,
-  ExitSelectBalance,
+  ExitSelectToken,
   ExitSelectUtxo,
   ExitSelectFee,
   ExitForm,
@@ -87,11 +92,16 @@ export {
   TransferForm,
   TransferPending,
   TransferReceive,
+  TransferReview,
   TransferScanner,
+  TransferChooseGasFee,
+  TransferChoosePlasmaFee,
+  TransferSelectAddress,
+  TransferSelectAmount,
   TransferScannerConfirm,
   TransferSelectBalance,
   TransferSelectFee,
-  TransferSelectPlasmaFee,
+  TransferSelectToken,
   TransactionHistory,
   TransactionHistoryFilter,
   TransactionDetail,

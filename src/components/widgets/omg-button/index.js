@@ -56,7 +56,7 @@ const OMGButton = ({
       disabled={disabled || loading}
       activeOpacity={0.7}
       style={{
-        ...styles.container(theme),
+        ...styles.container(theme, disabled),
         ...style,
         ...opacity,
         transform: [{ scale: scale.current }]
@@ -84,11 +84,12 @@ const styles = StyleSheet.create({
     fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     textTransform: 'uppercase'
   }),
-  container: theme => ({
+  container: (theme, disabled) => ({
     justifyContent: 'center',
-    backgroundColor: theme.colors.white,
+    backgroundColor: disabled ? theme.colors.gray9 : theme.colors.white,
     alignSelf: 'center',
     width: '100%',
+    borderRadius: 22,
     paddingHorizontal: 8,
     paddingVertical: 12,
     flexDirection: 'row'

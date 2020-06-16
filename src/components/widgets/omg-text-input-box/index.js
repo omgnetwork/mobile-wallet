@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
   text: theme => ({
     color: theme.colors.white,
     backgroundColor: theme.colors.black3,
+    borderBottomWidth: 0,
     fontSize: Styles.getResponsiveSize(14, { small: 11, medium: 12 })
   })
 })

@@ -27,18 +27,54 @@ export const PLASMA_WALLET_BOTTOM_SHEET = {
   }
 }
 
-export const ETHEREUM_WALLET_BOTTOM_SHEET = {
-  title: "Let's try get some fund !",
-  key: 'ETHEREUM_WALLET_BOTTOM_SHEET',
-  imageCenterName: 'TourEthereumWallet',
-  imageBottomName: 'TourSwipe',
-  textBottomBig: 'SWIPE LEFT AGAIN',
-  textBottomSmall: 'to try topup wallet',
-  shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) => {
+export const ROOTCHAIN_POPUP = {
+  title: 'This is your Ethereum Wallet',
+  key: 'ROOTCHAIN_POPUP',
+  paragraphs: ['It’s connected to Ethereum.'],
+  buttonText: 'Next',
+  isPopup: true,
+  arrowDirection: 'up',
+  anchoredTo: 'EthereumBlockchainLabel',
+  onPress: (navigation, setNextPopup) => {
+    setNextPopup('DEPOSIT_POPUP')
+  },
+  shouldDisplay: ({
+    enabledOnboarding,
+    currentPage,
+    nextPopup,
+    rootchainAssets
+  }) => {
     return (
       enabledOnboarding &&
       currentPage === 'rootchain-balance' &&
-      !viewedPopups.includes('ETHEREUM_WALLET_BOTTOM_SHEET')
+      nextPopup === 'ROOTCHAIN_POPUP' &&
+      rootchainAssets.length > 0
+    )
+  }
+}
+
+export const ROOTCHAIN_POPUP_EMPTY = {
+  title: 'This is your Ethereum Wallet',
+  paragraphs: ['It’s connected to Ethereum.'],
+  key: 'ROOTCHAIN_POPUP_EMPTY',
+  buttonText: 'Next',
+  isPopup: true,
+  arrowDirection: 'up',
+  onPress: (navigation, setNextPopup) => {
+    setNextPopup('TRY_DEPOSIT_ETH_POPUP')
+  },
+  anchoredTo: 'EthereumBlockchainLabel',
+  shouldDisplay: ({
+    enabledOnboarding,
+    currentPage,
+    nextPopup,
+    rootchainAssets
+  }) => {
+    return (
+      enabledOnboarding &&
+      currentPage === 'rootchain-balance' &&
+      nextPopup === 'ROOTCHAIN_POPUP' &&
+      rootchainAssets.length === 0
     )
   }
 }
@@ -61,26 +97,6 @@ export const TRY_DEPOSIT_OMG_POPUP = {
       enabledOnboarding &&
       currentPage === 'address-qr' &&
       nextPopup === 'TRY_DEPOSIT_OMG_POPUP'
-    )
-  }
-}
-
-export const ROOTCHAIN_POPUP = {
-  title: 'The root chain is our main Ethereum blockchain.',
-  key: 'ROOTCHAIN_POPUP',
-  paragraphs: [
-    'In this section you can see the value of all your stored coins on the blockchain for this wallet.'
-  ],
-  buttonText: 'GOT IT',
-  isPopup: true,
-  arrowDirection: 'up',
-  anchoredTo: 'EthereumBlockchainLabel',
-  shouldDisplay: (enabledOnboarding, currentPage, viewedPopups) => {
-    return (
-      enabledOnboarding &&
-      currentPage === 'rootchain-balance' &&
-      viewedPopups.includes('ADDRESS_QR_BOTTOM_SHEET') &&
-      !viewedPopups.includes('ROOTCHAIN_POPUP')
     )
   }
 }
