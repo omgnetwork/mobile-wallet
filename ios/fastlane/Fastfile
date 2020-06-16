@@ -16,9 +16,7 @@
 default_platform(:ios)
 
 platform :ios do
-  before_all do
-      setup_circle_ci
-  end
+  skip_docs
 
   desc "Push a new beta build to TestFlight"
   lane :beta do
