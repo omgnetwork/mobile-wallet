@@ -214,7 +214,7 @@ jobs:
       - persist_to_workspace:
           name: Persisting to workspace.
           root: .
-          paths: '.'
+          paths: 'ios/'
 
   fastlane-testflight-release:
     docker:
