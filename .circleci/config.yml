@@ -191,6 +191,7 @@ jobs:
   fastlane-testflight-release:
       docker:
         - image: circleci/ruby:2.7.0
+      shell: /bin/bash --login -o pipefail
       steps:
         - checkout
         - restore_cache:
