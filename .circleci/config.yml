@@ -39,10 +39,7 @@ workflows:
 
   testflight-release:
     jobs:
-      - install-ruby-env
-      - fastlane-testflight-release: 
-          requires: 
-            - install-ruby-env
+      - fastlane-testflight-release
   
 
 jobs:
@@ -191,39 +188,30 @@ jobs:
           kubectl set image deployment/mobile-wallet-proxy mobile-wallet-proxy=$PROXY_SERVER_DOCKER_T
 
 
-
-
-  install-ruby-env:
-    docker:
-      - image: circleci/ruby:2.7.0
-    steps:
-      - checkout
-      - restore_cache:
-          name: Restoring cache.
-          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
-      - run: 
-          name: Installing Ruby dependencies.
-          command: |
-            cd ios
-            gem install bundler && bundle config set path 'vendor/bundle' && bundle install
-      - save_cache:
-          name: Saving cache.
-          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
-          paths:
-            - 'ios/vendor/bundle/'
-      - persist_to_workspace:
-          name: Persisting to workspace.
-          root: .
-          paths: 'ios/'
-
   fastlane-testflight-release:
-    docker:
-      - image: circleci/ruby:2.7.0
-    steps:
-      - attach_workspace:
-          at: .
-      - run: 
-          name: Running Fastlane
-          command: |
-            cd ios
-            bundle exec fastlane beta
+      docker:
+        - image: circleci/ruby:2.7.0
+      steps:
+        - checkout
+        - restore_cache:
+            name: Restoring cache.
+            key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
+        - run: 
+            name: Installing Ruby dependencies
+            command: |
+              cd ios
+              gem install bundler && bundle config set path 'vendor/bundle' && bundle install
+        - save_cache:
+            name: Saving cache.
+            key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
+            paths:
+              - 'ios/vendor/bundle/'
+        - persist_to_workspace:
+            name: Persisting to workspace
+            root: .
+            paths: 'ios/'
+        - run: 
+            name: Running Fastlane
+            command: |
+              cd ios
+              bundle exec fastlane testflight_ci
