@@ -1,7 +1,7 @@
-version: 2
+version: 2.1
 
 workflows:
-  version: 2
+  version: 2.1
   mobile-wallet-build-tests:
     jobs:
       - mobile-wallet-build
@@ -189,8 +189,8 @@ jobs:
 
 
   fastlane-testflight-release:
-      docker:
-        - image: circleci/ruby:2.7.0
+      macos:
+        xcode: "11.1.0"
       shell: /bin/bash --login -o pipefail
       steps:
         - checkout
