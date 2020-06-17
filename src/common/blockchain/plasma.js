@@ -53,6 +53,76 @@ export const transfer = async (
   return Transaction.submit(signedTxn)
 }
 
+export const isRequireApproveErc20 = async (from, amount, erc20Address) => {
+  const { address: erc20VaultAddress } = await Plasma.RootChain.getErc20Vault()
+  const erc20Contract = new web3.eth.Contract(
+    ContractABI.erc20Abi(),
+    erc20Address
+  )
+  const allowance = await Contract.allowanceTokenForTransfer(
+    erc20Contract,
+    from,
+    erc20VaultAddress
+  )
+
+  const bnAllowance = new BN(allowance)
+
+  return bnAllowance.gt(amount)
+}
+
+export const approveErc20Deposit = async (erc20Address, amount, txOptions) => {
+  const { address: erc20VaultAddress } = await Plasma.RootChain.getErc20Vault()
+  const erc20Contract = new web3.eth.Contract(
+    ContractABI.erc20Abi(),
+    erc20Address
+  )
+  const allowance = await Contract.allowanceTokenForTransfer(
+    erc20Contract,
+    txOptions.from,
+    erc20VaultAddress
+  )
+
+  console.log('allowance', allowance)
+
+  let bnAllowance = new BN(allowance)
+  const bnAmount = new BN(amount)
+  const bnZero = new BN(0)
+  let approveReceipt
+  // If the allowance less than the desired amount, we need to reset to zero first inorder to update it.
+  // Some erc20 contract prevent to update non-zero allowance e.g. OmiseGO Token.
+  if (bnAllowance.gt(bnZero) && bnAllowance.lt(bnAmount)) {
+    approveReceipt = await Plasma.RootChain.approveToken({
+      erc20Address,
+      amount: 0,
+      txOptions
+    })
+    bnAllowance = new BN(0)
+
+    // Wait approve transaction for 1 block
+    await Wait.waitForRootchainTransaction({
+      hash: approveReceipt.transactionHash,
+      intervalMs: 3000,
+      confirmationThreshold: 1
+    })
+  }
+
+  if (bnAllowance.eq(bnZero)) {
+    approveReceipt = await Plasma.RootChain.approveToken({
+      erc20Address,
+      amount,
+      txOptions
+    })
+
+    // Wait approve transaction for 1 block
+    await Wait.waitForRootchainTransaction({
+      hash: approveReceipt.transactionHash,
+      intervalMs: 3000,
+      confirmationThreshold: 1
+    })
+  }
+  return approveReceipt
+}
+
 export const deposit = async (
   address,
   privateKey,
