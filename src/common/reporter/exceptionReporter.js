@@ -5,3 +5,13 @@ export const send = exception => {
     Sentry.captureException(exception)
   }
 }
+
+export const reportWhenError = (operation, errorHandler) => {
+  try {
+    return operation()
+  } catch (exception) {
+    console.log(exception)
+    errorHandler(exception)
+    send(exception)
+  }
+}

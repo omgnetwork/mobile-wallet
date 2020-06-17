@@ -1,18 +1,54 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { OMGText, OMGTokenIcon, OMGButton } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
-import { Styles } from 'common/utils'
-import { plasmaActions } from 'common/actions'
+import { Styles, Unit } from 'common/utils'
+import { ExceptionReporter } from 'common/reporter'
+import { plasmaService } from 'common/services'
 
-const DepositApprove = ({ theme, navigation }) => {
+const DepositApprove = ({ theme, navigation, privateKey }) => {
   const styles = createStyles(theme)
   const feeRate = navigation.getParam('feeRate')
   const amount = navigation.getParam('amount')
   const token = navigation.getParam('token')
   const address = navigation.getParam('address')
+  const [approving, setApproving] = useState(false)
+
+  const handleApprovePressed = useCallback(() => {
+    async function approve(weiAmount) {
+      setApproving(true)
+      const requiredApprove = await plasmaService.isRequireApproveErc20(
+        address,
+        weiAmount,
+        token.contractAddress
+      )
+      if (requiredApprove) {
+        const receipt = await plasmaService.approveErc20Deposit(
+          token.contractAddress,
+          weiAmount,
+          address,
+          feeRate.amount,
+          privateKey
+        )
+        console.log(receipt)
+      }
+      setApproving(false)
+      navigation.navigate('TransferReview', {
+        feeRate,
+        amount,
+        token,
+        address
+      })
+    }
+
+    const weiAmount = Unit.convertToString(amount, 0, token.tokenDecimal)
+    ExceptionReporter.reportWhenError(
+      () => approve(weiAmount),
+      _err => setApproving(false)
+    )
+  }, [feeRate, address, amount, token])
 
   return (
     <View style={styles.container}>
@@ -38,7 +74,9 @@ const DepositApprove = ({ theme, navigation }) => {
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <OMGButton>Approve</OMGButton>
+        <OMGButton onPress={handleApprovePressed} loading={approving}>
+          {approving ? 'Waiting for approval...' : 'Approve'}
+        </OMGButton>
       </View>
     </View>
   )
@@ -92,12 +130,11 @@ const createStyles = theme =>
     }
   })
 
-const mapDispatchToProps = (dispatch, _ownProps) => ({
-  plasmaTransfer: (blockchainWallet, toAddress, token, fee) =>
-    dispatch(plasmaActions.transfer(blockchainWallet, toAddress, token, fee))
+const mapStateToProps = (state, _ownProps) => ({
+  privateKey: state.setting.blockchainWallet.privateKey
 })
 
 export default connect(
-  null,
-  mapDispatchToProps
+  mapStateToProps,
+  null
 )(withNavigation(withTheme(DepositApprove)))

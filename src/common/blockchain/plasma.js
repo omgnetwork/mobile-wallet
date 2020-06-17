@@ -67,7 +67,7 @@ export const isRequireApproveErc20 = async (from, amount, erc20Address) => {
 
   const bnAllowance = new BN(allowance)
 
-  return bnAllowance.gt(amount)
+  return bnAllowance.lt(amount)
 }
 
 export const approveErc20Deposit = async (erc20Address, amount, txOptions) => {
@@ -81,8 +81,6 @@ export const approveErc20Deposit = async (erc20Address, amount, txOptions) => {
     txOptions.from,
     erc20VaultAddress
   )
-
-  console.log('allowance', allowance)
 
   let bnAllowance = new BN(allowance)
   const bnAmount = new BN(amount)
@@ -130,78 +128,8 @@ export const deposit = async (
   tokenContractAddress,
   options = {}
 ) => {
-  const erc20Contract = new web3.eth.Contract(
-    ContractABI.erc20Abi(),
-    tokenContractAddress
-  )
   const depositGas = options.gas || Gas.MEDIUM_LIMIT
   const depositGasPrice = options.gasPrice || Gas.DEPOSIT_GAS_PRICE
-  const isEth = tokenContractAddress === ContractAddress.ETH_ADDRESS
-
-  // SEND ERC20 APPROVAL TRANSACTION 👇
-
-  let approveReceipt
-  if (!isEth) {
-    const {
-      address: erc20VaultAddress
-    } = await Plasma.RootChain.getErc20Vault()
-
-    const allowance = await Contract.allowanceTokenForTransfer(
-      erc20Contract,
-      address,
-      erc20VaultAddress
-    )
-
-    let bnAllowance = new BN(allowance)
-    const bnAmount = new BN(weiAmount)
-    const bnZero = new BN(0)
-
-    // If the allowance less than the desired amount, we need to reset to zero first inorder to update it.
-    // Some erc20 contract prevent to update non-zero allowance e.g. OmiseGO Token.
-    if (bnAllowance.gt(bnZero) && bnAllowance.lt(bnAmount)) {
-      const approveOptions = TxOptions.createApproveErc20Options(
-        address,
-        tokenContractAddress,
-        erc20Contract,
-        erc20VaultAddress,
-        '0',
-        depositGas,
-        depositGasPrice
-      )
-      approveReceipt = await Ethereum.sendSignedTx(approveOptions, privateKey)
-
-      // Wait approve transaction for 1 block
-      await Wait.waitForRootchainTransaction({
-        hash: approveReceipt.hash,
-        intervalMs: 3000,
-        confirmationThreshold: 1
-      })
-      bnAllowance = new BN(0)
-    }
-
-    if (bnAllowance.eq(bnZero)) {
-      const approveOptions = TxOptions.createApproveErc20Options(
-        address,
-        tokenContractAddress,
-        erc20Contract,
-        erc20VaultAddress,
-        weiAmount,
-        depositGas,
-        depositGasPrice
-      )
-
-      approveReceipt = await Ethereum.sendSignedTx(approveOptions, privateKey)
-
-      // Wait approve transaction for 1 block
-      await Wait.waitForRootchainTransaction({
-        hash: approveReceipt.hash,
-        intervalMs: 3000,
-        confirmationThreshold: 1
-      })
-    }
-  }
-
-  // SEND DEPOSIT TRANSACTION 👇
 
   const depositOptions = TxOptions.createDepositOptions(
     address,
@@ -216,11 +144,7 @@ export const deposit = async (
     txOptions: depositOptions
   })
 
-  if (approveReceipt) {
-    return receiptWithGasPrice(receipt, depositGasPrice, approveReceipt.gasUsed)
-  } else {
-    return receiptWithGasPrice(receipt, depositGasPrice)
-  }
+  return receiptWithGasPrice(receipt, depositGasPrice)
 }
 
 export const mergeListOfUtxos = async (

@@ -131,6 +131,21 @@ export const transfer = async (
   }
 }
 
+export const isRequireApproveErc20 = (from, amount, erc20Address) => {
+  return Plasma.isRequireApproveErc20(from, amount, erc20Address)
+}
+
+export const approveErc20Deposit = (
+  erc20Address,
+  amount,
+  from,
+  gasPrice,
+  privateKey
+) => {
+  const txOptions = { from, gasPrice, privateKey }
+  return Plasma.approveErc20Deposit(erc20Address, amount, txOptions)
+}
+
 export const deposit = async (address, privateKey, token, gasPrice) => {
   const weiAmount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
 
