@@ -4,7 +4,8 @@ import {
   TxOptions,
   Plasma,
   ContractABI,
-  Transaction
+  Transaction,
+  Contract
 } from 'common/blockchain'
 import { web3, Plasma as PlasmaClient } from 'common/clients'
 import { Unit } from 'common/utils'
@@ -24,6 +25,32 @@ export const estimateTransferErc20 = (from, to, token) => {
 
 export const estimateTransferETH = () => {
   return Promise.resolve('21000')
+}
+
+export const estimateApproveErc20 = async (from, token) => {
+  const erc20Contract = new web3.eth.Contract(
+    ContractABI.erc20Abi(),
+    token.contractAddress
+  )
+  const {
+    address: erc20VaultAddress
+  } = await PlasmaClient.RootChain.getErc20Vault()
+  const approveErc20Tx = TxOptions.createApproveErc20Options(
+    from,
+    token.contractAddress,
+    erc20Contract,
+    erc20VaultAddress,
+    1,
+    Gas.MEDIUM_LIMIT,
+    Gas.DEPOSIT_GAS_PRICE
+  )
+  const estimatedErc20ApprovalGas = await web3EstimateGas(approveErc20Tx)
+  const allowance = await Contract.allowanceTokenForTransfer(
+    erc20Contract,
+    from,
+    erc20VaultAddress
+  )
+  return allowance !== 0 ? estimatedErc20ApprovalGas * 2 : estimateApproveErc20
 }
 
 export const estimateDeposit = async (from, to, token) => {
