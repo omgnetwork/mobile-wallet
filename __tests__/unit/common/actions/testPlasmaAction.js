@@ -12,7 +12,6 @@ import { getMockStore } from '../../../helpers'
 import { plasmaActions } from 'common/actions'
 import { ContractAddress, Gas } from 'common/constants'
 
-jest.mock('common/analytics/crashAnalytics.js')
 jest.mock('common/services/plasmaService.js')
 jest.spyOn(global, 'requestAnimationFrame').mockImplementation(cb => cb())
 

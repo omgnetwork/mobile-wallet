@@ -90,6 +90,7 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 /**
@@ -141,8 +142,8 @@ android {
         applicationId "network.omisego.plasmawallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3145758
-        versionName "1.0.1"
+        versionCode 3145759
+        versionName "1.0.2"
         multiDexEnabled true
         missingDimensionStrategy "react-native-camera", "general"
     }
