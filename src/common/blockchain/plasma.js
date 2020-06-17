@@ -59,7 +59,7 @@ export const isRequireApproveErc20 = async (from, amount, erc20Address) => {
     ContractABI.erc20Abi(),
     erc20Address
   )
-  const allowance = await Contract.allowanceTokenForTransfer(
+  const allowance = await Contract.getErc20Allowance(
     erc20Contract,
     from,
     erc20VaultAddress
@@ -67,7 +67,7 @@ export const isRequireApproveErc20 = async (from, amount, erc20Address) => {
 
   const bnAllowance = new BN(allowance)
 
-  return bnAllowance.lt(amount)
+  return bnAllowance.gte(amount)
 }
 
 export const approveErc20Deposit = async (erc20Address, amount, txOptions) => {
@@ -76,7 +76,7 @@ export const approveErc20Deposit = async (erc20Address, amount, txOptions) => {
     ContractABI.erc20Abi(),
     erc20Address
   )
-  const allowance = await Contract.allowanceTokenForTransfer(
+  const allowance = await Contract.getErc20Allowance(
     erc20Contract,
     txOptions.from,
     erc20VaultAddress
@@ -85,6 +85,7 @@ export const approveErc20Deposit = async (erc20Address, amount, txOptions) => {
   let bnAllowance = new BN(allowance)
   const bnAmount = new BN(amount)
   const bnZero = new BN(0)
+
   let approveReceipt
   // If the allowance less than the desired amount, we need to reset to zero first inorder to update it.
   // Some erc20 contract prevent to update non-zero allowance e.g. OmiseGO Token.

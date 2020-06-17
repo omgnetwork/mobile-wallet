@@ -45,7 +45,7 @@ export const estimateApproveErc20 = async (from, token) => {
     Gas.DEPOSIT_GAS_PRICE
   )
   const estimatedErc20ApprovalGas = await web3EstimateGas(approveErc20Tx)
-  const allowance = await Contract.allowanceTokenForTransfer(
+  const allowance = await Contract.getErc20Allowance(
     erc20Contract,
     from,
     erc20VaultAddress

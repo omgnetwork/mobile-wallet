@@ -15,7 +15,7 @@ jest.mock('common/blockchain/contract.js')
 
 const { getBalance, getUtxos } = PlasmaClient.ChildChain
 const { deposit, getErc20Vault } = PlasmaClient.RootChain
-const { allowanceTokenForTransfer } = Contract
+const { getErc20Allowance } = Contract
 const { TEST_ADDRESS, TEST_PRIVATE_KEY, ERC20_VAULT_CONTRACT_ADDRESS } = Config
 
 const FIVE_GWEI = '5000000000'
@@ -29,7 +29,7 @@ const mockGetUtxosResponse = resp => {
 }
 
 const mockAllowance = resp => {
-  allowanceTokenForTransfer.mockReturnValueOnce(Promise.resolve(resp))
+  getErc20Allowance.mockReturnValueOnce(Promise.resolve(resp))
 }
 
 const mockDepositResponse = resp => {

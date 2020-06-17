@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
@@ -8,7 +8,7 @@ import { Styles, Unit } from 'common/utils'
 import { ExceptionReporter } from 'common/reporter'
 import { plasmaService } from 'common/services'
 
-const DepositApprove = ({ theme, navigation, privateKey }) => {
+const DepositApprove = ({ theme, blockchainWallet, navigation }) => {
   const styles = createStyles(theme)
   const feeRate = navigation.getParam('feeRate')
   const amount = navigation.getParam('amount')
@@ -19,20 +19,20 @@ const DepositApprove = ({ theme, navigation, privateKey }) => {
   const handleApprovePressed = useCallback(() => {
     async function approve(weiAmount) {
       setApproving(true)
+      const { address: from, privateKey } = blockchainWallet
       const requiredApprove = await plasmaService.isRequireApproveErc20(
-        address,
+        from,
         weiAmount,
         token.contractAddress
       )
       if (requiredApprove) {
-        const receipt = await plasmaService.approveErc20Deposit(
+        await plasmaService.approveErc20Deposit(
           token.contractAddress,
           weiAmount,
-          address,
+          from,
           feeRate.amount,
           privateKey
         )
-        console.log(receipt)
       }
       setApproving(false)
       navigation.navigate('TransferReview', {
@@ -131,7 +131,7 @@ const createStyles = theme =>
   })
 
 const mapStateToProps = (state, _ownProps) => ({
-  privateKey: state.setting.blockchainWallet.privateKey
+  blockchainWallet: state.setting.blockchainWallet
 })
 
 export default connect(
