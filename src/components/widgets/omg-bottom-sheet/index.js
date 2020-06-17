@@ -88,6 +88,7 @@ const OMGBottomSheet = ({
           <OMGText
             style={[styles.textSubtitle(theme), styles.smallMarginTop]}
             ellipsizeMode='tail'
+            weight='regular'
             numberOfLines={subtitle === hash ? 1 : null}>
             {subtitle}
           </OMGText>
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
   textSubtitle: theme => ({
     flex: 1,
     marginTop: 2,
-    fontSize: 8,
+    fontSize: 10,
     marginRight: 16,
     color: theme.colors.white
   }),
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   textLink: theme => ({
-    fontSize: 8,
+    fontSize: 10,
     color: theme.colors.blue
   }),
   smallMarginTop: {

@@ -1,4 +1,10 @@
-import { Plasma, Contract, ContractABI, Utxos } from 'common/blockchain'
+import {
+  Plasma,
+  Contract,
+  ContractABI,
+  Utxos,
+  Ethereum
+} from 'common/blockchain'
 import { Plasma as PlasmaClient, web3 } from 'common/clients'
 import Config from 'react-native-config'
 import BN from 'bn.js'
@@ -22,8 +28,8 @@ const mockGetUtxosResponse = resp => {
   getUtxos.mockReturnValueOnce(Promise.resolve(resp))
 }
 
-const mockApprove = () => {
-  allowanceTokenForTransfer.mockReturnValueOnce(Promise.resolve(false))
+const mockAllowance = resp => {
+  allowanceTokenForTransfer.mockReturnValueOnce(Promise.resolve(resp))
 }
 
 const mockDepositResponse = resp => {
@@ -34,16 +40,8 @@ const mockGetErc20Vault = resp => {
   getErc20Vault.mockReturnValueOnce(Promise.resolve(resp))
 }
 
-const mockWeb3SignTransaction = resp => {
-  web3.eth.accounts.signTransaction = jest
-    .fn()
-    .mockReturnValueOnce(Promise.resolve(resp))
-}
-
-const mockWeb3SendSignedTransaction = resp => {
-  web3.eth.sendSignedTransaction = jest
-    .fn()
-    .mockReturnValueOnce(Promise.resolve(resp))
+const mockSendSignedTx = resp => {
+  Ethereum.sendSignedTx = jest.fn().mockReturnValueOnce(Promise.resolve(resp))
 }
 
 describe('Test Plasma Boundary', () => {
@@ -485,17 +483,17 @@ describe('Test Plasma Boundary', () => {
     })
   })
 
-  it('deposit with erc20 should invoke the deposit function with expected parameters', () => {
+  it('deposit with erc20 should invoke the deposit function with expected parameters', async () => {
     const from = TEST_ADDRESS
     const privateKey = TEST_PRIVATE_KEY
     const amount = FIVE_GWEI
     const gas = 30000
     const gasPrice = '6000000'
+    const mockTxHash = '0x0'
 
     mockGetErc20Vault({ address: ERC20_VAULT_CONTRACT_ADDRESS })
-    mockWeb3SignTransaction({ rawTransaction: 'rawTransaction' })
-    mockWeb3SendSignedTransaction({ gasUsed: gas })
-    mockApprove()
+    mockSendSignedTx({ hash: mockTxHash })
+    mockAllowance(0)
     mockDepositResponse({
       hash: 'any',
       from: 'any',
@@ -512,7 +510,7 @@ describe('Test Plasma Boundary', () => {
       .approve(ERC20_VAULT_CONTRACT_ADDRESS, amount)
       .encodeABI()
 
-    return Plasma.deposit(
+    const response = Plasma.deposit(
       from,
       privateKey,
       amount,
@@ -521,9 +519,11 @@ describe('Test Plasma Boundary', () => {
         gas,
         gasPrice
       }
-    ).then(_ => {
+    )
+
+    return response.then(_ => {
       // Send Approve Transaction
-      expect(web3.eth.accounts.signTransaction).toBeCalledWith(
+      expect(Ethereum.sendSignedTx).toBeCalledWith(
         {
           data: expectedApproveABIData,
           from,

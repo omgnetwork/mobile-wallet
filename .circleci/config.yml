@@ -12,7 +12,7 @@ workflows:
           requires:
             - mobile-wallet-build
       - mobile-wallet-dependency-audit:
-          requires: 
+          requires:
             - mobile-wallet-build
 
   proxy-server-build-test-deploy:
@@ -24,8 +24,8 @@ workflows:
       - proxy-server-test:
           requires:
             - proxy-server-build
-      - proxy-server-dependency-audit: 
-          requires: 
+      - proxy-server-dependency-audit:
+          requires:
             - proxy-server-build
       - proxy-server-publish:
           requires:
@@ -70,7 +70,7 @@ jobs:
       - run:
           name: Run mobile-wallet tests with JUnit as reporter
           command: |
-            npm run test --ci --runInBand --reporters=default --reporters=jest-junit --reporters=jest-html-reporters
+            npm run test-unit --ci --runInBand --reporters=default --reporters=jest-junit --reporters=jest-html-reporters
           environment:
             JEST_SUITE_NAME: 'results.xml'
             JEST_JUNIT_OUTPUT_DIR: 'test-results'
@@ -145,14 +145,14 @@ jobs:
             cd proxy-server
             npm run test
 
-  proxy-server-dependency-audit: 
+  proxy-server-dependency-audit:
     docker:
       - image: circleci/node:10
     steps:
       - attach_workspace:
           at: .
       - run:
-          name: Audit proxy server dependencies 
+          name: Audit proxy server dependencies
           command: |
             cd proxy-server
             npm run dependency-audit

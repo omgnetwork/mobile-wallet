@@ -10,6 +10,8 @@
     "clean": "react-native clean-project-auto",
     "clean-start": "react-native start -- --reset-cache",
     "test": "jest",
+    "test-unit": "jest __tests__/unit/",
+    "test-integration": "jest __tests__/integration/",
     "lint": "eslint .",
     "fix": "eslint . --fix",
     "dependency-audit": "audit-ci --moderate",
@@ -138,7 +140,7 @@
     "preset": "react-native",
     "testMatch": [
       "**/__tests__/unit/**/*.js",
-      "**/__tests__/scenario/**/*.js"
+      "**/__tests__/integration/**/*.js"
     ],
     "reporters": [
       "default",

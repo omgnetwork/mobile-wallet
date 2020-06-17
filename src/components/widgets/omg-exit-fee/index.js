@@ -19,7 +19,7 @@ const OMGExitFee = ({
   const [feeUsd, setFeeUsd] = useState()
 
   const formatBond = useCallback(() => {
-    return BlockchainFormatter.formatEthFromWei(exitBondValue)
+    return BlockchainFormatter.formatUnits(exitBondValue, 'ether')
   }, [exitBondValue])
 
   const formatGasFee = useCallback(() => {

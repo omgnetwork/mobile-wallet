@@ -1,6 +1,6 @@
 import { Plasma, web3 } from 'common/clients'
 import { Gas, ContractAddress } from 'common/constants'
-import { Mapper } from 'common/utils'
+import { Mapper, Unit } from 'common/utils'
 import BN from 'bn.js'
 import {
   TxOptions,
@@ -8,9 +8,9 @@ import {
   ContractABI,
   Transaction,
   OmgUtil,
-  Parser,
   Wait,
-  Utxos
+  Utxos,
+  Ethereum
 } from 'common/blockchain'
 
 export const getBalances = address => {
@@ -29,7 +29,7 @@ export const transfer = async (
   const payment = Transaction.createPayment(
     toAddress,
     token.contractAddress,
-    Parser.parseUnits(token.balance, token.tokenDecimal).toString(16)
+    Unit.convertToString(token.balance, 0, token.tokenDecimal, 16)
   )
   const childchainFee = Transaction.createFee(fee.contractAddress, fee.amount)
   const { address } = fromBlockchainWallet
@@ -98,11 +98,11 @@ export const deposit = async (
         depositGas,
         depositGasPrice
       )
-      approveReceipt = await approveErc20(approveOptions, privateKey)
+      approveReceipt = await Ethereum.sendSignedTx(approveOptions, privateKey)
 
       // Wait approve transaction for 1 block
       await Wait.waitForRootchainTransaction({
-        hash: approveReceipt.transactionHash,
+        hash: approveReceipt.hash,
         intervalMs: 3000,
         confirmationThreshold: 1
       })
@@ -119,11 +119,12 @@ export const deposit = async (
         depositGas,
         depositGasPrice
       )
-      approveReceipt = await approveErc20(approveOptions, privateKey)
+
+      approveReceipt = await Ethereum.sendSignedTx(approveOptions, privateKey)
 
       // Wait approve transaction for 1 block
       await Wait.waitForRootchainTransaction({
-        hash: approveReceipt.transactionHash,
+        hash: approveReceipt.hash,
         intervalMs: 3000,
         confirmationThreshold: 1
       })
@@ -169,15 +170,6 @@ export const mergeListOfUtxos = async (
     )
   )
   return Promise.all(pendingMergeUtxos)
-}
-
-const approveErc20 = async (approveOptions, ownerPrivateKey) => {
-  const signedApproveTx = await web3.eth.accounts.signTransaction(
-    approveOptions,
-    ownerPrivateKey
-  )
-
-  return web3.eth.sendSignedTransaction(signedApproveTx.rawTransaction)
 }
 
 const receiptWithGasPrice = (txReceipt, gasPrice, additionalGasUsed = 0) => {

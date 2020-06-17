@@ -13,6 +13,7 @@ import * as Mapper from './mapper'
 import * as Dimensions from './dimensions'
 import * as Reanimated from './reanimated'
 import * as Styles from './styles'
+import * as Unit from './unit'
 
 export {
   Alerter,
@@ -26,8 +27,9 @@ export {
   Polling,
   Locale,
   Price,
+  Reanimated,
   Storage,
   Styles,
   Token,
-  Reanimated
+  Unit
 }

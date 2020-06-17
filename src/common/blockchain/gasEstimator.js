@@ -1,6 +1,5 @@
 import { Gas, ContractAddress } from 'common/constants'
 import {
-  Parser,
   Ethereum,
   TxOptions,
   Plasma,
@@ -8,17 +7,19 @@ import {
   Transaction
 } from 'common/blockchain'
 import { web3, Plasma as PlasmaClient } from 'common/clients'
+import { Unit } from 'common/utils'
 
-export const estimateTransferErc20 = (wallet, to, token) => {
+export const estimateTransferErc20 = (from, to, token) => {
   const abi = ContractABI.erc20Abi()
-  const contract = new Ethereum.getContract(token.contractAddress, abi, wallet)
-  const amount = Parser.parseUnits(token.balance, token.tokenDecimal)
-  const gasOptions = {
-    gasLimit: Gas.LOW_LIMIT,
-    gasPrice: Parser.parseUnits(Gas.LOW_TRANSFER_GAS_PRICE, 'wei')
+  const contract = Ethereum.getContract(token.contractAddress, abi)
+  const amount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
+  const txDetails = {
+    from,
+    to,
+    data: contract.methods.transfer(to, amount).encodeABI()
   }
 
-  return contract.estimate.transfer(to, amount, gasOptions)
+  return web3EstimateGas(txDetails)
 }
 
 export const estimateTransferETH = () => {
@@ -39,10 +40,7 @@ export const estimateDeposit = async (from, to, token) => {
     const {
       address: erc20VaultAddress
     } = await PlasmaClient.RootChain.getErc20Vault()
-    const weiAmount = Parser.parseUnits(
-      token.balance,
-      token.tokenDecimal
-    ).toString(10)
+    const weiAmount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
     const approveErc20Tx = TxOptions.createApproveErc20Options(
       from,
       token.contractAddress,
@@ -93,11 +91,8 @@ export const estimateExit = async (
 export const web3EstimateGas = txDetails => {
   return new Promise((resolve, reject) => {
     web3.eth.estimateGas(txDetails, (err, result) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(result)
-      }
+      if (err) return reject(err)
+      return resolve(result)
     })
   })
 }
