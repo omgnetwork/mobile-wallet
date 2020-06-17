@@ -28,6 +28,12 @@ export const estimateTransferETH = () => {
 }
 
 export const estimateApproveErc20 = async (from, token) => {
+  if (
+    !Plasma.isRequireApproveErc20(from, token.amount, token.contractAddress)
+  ) {
+    return 0
+  }
+
   const erc20Contract = new web3.eth.Contract(
     ContractABI.erc20Abi(),
     token.contractAddress
@@ -40,9 +46,7 @@ export const estimateApproveErc20 = async (from, token) => {
     token.contractAddress,
     erc20Contract,
     erc20VaultAddress,
-    1,
-    Gas.MEDIUM_LIMIT,
-    Gas.DEPOSIT_GAS_PRICE
+    token.amount
   )
   const estimatedErc20ApprovalGas = await web3EstimateGas(approveErc20Tx)
   const allowance = await Contract.getErc20Allowance(
@@ -50,7 +54,10 @@ export const estimateApproveErc20 = async (from, token) => {
     from,
     erc20VaultAddress
   )
-  return allowance !== 0 ? estimatedErc20ApprovalGas * 2 : estimateApproveErc20
+
+  return allowance !== '0'
+    ? estimatedErc20ApprovalGas * 2
+    : estimatedErc20ApprovalGas
 }
 
 export const estimateDeposit = async (from, to, token) => {

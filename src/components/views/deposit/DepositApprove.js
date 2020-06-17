@@ -2,19 +2,36 @@ import React, { useCallback, useState } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
-import { OMGText, OMGTokenIcon, OMGButton } from 'components/widgets'
+import { useEstimatedFee } from 'common/hooks'
+import { ContractAddress } from 'common/constants'
+import {
+  OMGText,
+  OMGTokenIcon,
+  OMGButton,
+  OMGEditItem
+} from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import { Styles, Unit } from 'common/utils'
 import { ExceptionReporter } from 'common/reporter'
+import { TYPE_APPROVE_ERC20 } from 'components/views/transfer/transferHelper'
 import { plasmaService } from 'common/services'
 
-const DepositApprove = ({ theme, blockchainWallet, navigation }) => {
+const DepositApprove = ({ theme, blockchainWallet, navigation, ethToken }) => {
   const styles = createStyles(theme)
   const feeRate = navigation.getParam('feeRate')
   const amount = navigation.getParam('amount')
   const token = navigation.getParam('token')
   const address = navigation.getParam('address')
   const [approving, setApproving] = useState(false)
+
+  const [estimatedFee, estimatedFeeSymbol, estimatedFeeUsd] = useEstimatedFee({
+    feeRate,
+    transferToken: { ...token, amount },
+    ethToken,
+    transactionType: TYPE_APPROVE_ERC20,
+    blockchainWallet,
+    toAddress: address
+  })
 
   const handleApprovePressed = useCallback(() => {
     async function approve(weiAmount) {
@@ -50,6 +67,10 @@ const DepositApprove = ({ theme, blockchainWallet, navigation }) => {
     )
   }, [feeRate, address, amount, token])
 
+  const onPressEditFee = useCallback(() => {
+    navigation.navigate('TransferChooseGasFee')
+  }, [navigation])
+
   return (
     <View style={styles.container}>
       <OMGText style={styles.title} weight='regular'>
@@ -73,6 +94,14 @@ const DepositApprove = ({ theme, blockchainWallet, navigation }) => {
           </OMGText>
         </View>
       </View>
+      <OMGEditItem
+        title='Fee'
+        loading={!estimatedFee}
+        rightFirstLine={`${estimatedFee} ${estimatedFeeSymbol}`}
+        rightSecondLine={`${estimatedFeeUsd} USD`}
+        onPress={onPressEditFee}
+        style={[styles.paddingMedium, styles.mediumMarginTop]}
+      />
       <View style={styles.buttonContainer}>
         <OMGButton onPress={handleApprovePressed} loading={approving}>
           {approving ? 'Waiting for approval...' : 'Approve'}
@@ -92,7 +121,7 @@ const createStyles = theme =>
         small: 12,
         medium: 16
       }),
-      paddingBottom: 16
+      paddingBottom: 32
     },
     title: {
       color: theme.colors.white
@@ -124,15 +153,29 @@ const createStyles = theme =>
     smallMarginTop: {
       marginTop: 8
     },
+    mediumMarginTop: {
+      marginTop: 24
+    },
+    paddingMedium: {
+      padding: 12
+    },
     buttonContainer: {
       flex: 1,
       justifyContent: 'flex-end'
     }
   })
 
-const mapStateToProps = (state, _ownProps) => ({
-  blockchainWallet: state.setting.blockchainWallet
-})
+const mapStateToProps = (state, _ownProps) => {
+  const primaryWallet = state.wallets.find(
+    wallet => wallet.address === state.setting.primaryWalletAddress
+  )
+  return {
+    blockchainWallet: state.setting.blockchainWallet,
+    ethToken: primaryWallet.rootchainAssets.find(
+      token => token.contractAddress === ContractAddress.ETH_ADDRESS
+    )
+  }
+}
 
 export default connect(
   mapStateToProps,
