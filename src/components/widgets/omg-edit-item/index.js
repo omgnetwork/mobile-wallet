@@ -9,6 +9,7 @@ const OMGEditItem = ({
   theme,
   rightFirstLine,
   rightSecondLine,
+  editable = true,
   style,
   loading,
   onPress
@@ -19,19 +20,21 @@ const OMGEditItem = ({
         <OMGText style={[styles.textWhite(theme), styles.textBig]}>
           {title}
         </OMGText>
-        <TouchableOpacity
-          style={[styles.row, styles.textMargin]}
-          onPress={onPress}>
-          <OMGText
-            style={[
-              styles.textBlue(theme),
-              styles.textSmall,
-              styles.smallMarginRight
-            ]}>
-            Edit
-          </OMGText>
-          <OMGFontIcon name='edit' size={10} color={theme.colors.blue2} />
-        </TouchableOpacity>
+        {editable && (
+          <TouchableOpacity
+            style={[styles.row, styles.textMargin]}
+            onPress={onPress}>
+            <OMGText
+              style={[
+                styles.textBlue(theme),
+                styles.textSmall,
+                styles.smallMarginRight
+              ]}>
+              Edit
+            </OMGText>
+            <OMGFontIcon name='edit' size={10} color={theme.colors.blue2} />
+          </TouchableOpacity>
+        )}
       </View>
       <View style={[styles.column, styles.alignRight, styles.textSingleLine]}>
         {loading ? (

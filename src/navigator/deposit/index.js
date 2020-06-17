@@ -12,6 +12,7 @@ export default createStackNavigator(
     },
     TransferSelectAmount: Views.TransferSelectAmount,
     TransferChooseGasFee: Views.TransferChooseGasFee,
+    DepositApprove: Views.DepositApprove,
     TransferReview: Views.TransferReview
   },
   {

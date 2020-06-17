@@ -10,6 +10,7 @@ import CreateWalletMnemonicConfirm from './create-wallet/CreateWalletMnemonicCon
 import CreateWalletMnemonicFailed from './create-wallet/CreateWalletMnemonicFailed'
 import DeleteWallet from './delete-wallet'
 import Deposit from './deposit'
+import DepositApprove from './deposit/DepositApprove'
 import Disclaimer from './disclaimer'
 import Exit from './exit'
 import ExitSelectToken from './exit/ExitSelectToken'
@@ -64,6 +65,7 @@ export {
   CreateWalletMnemonicFailed,
   DeleteWallet,
   Deposit,
+  DepositApprove,
   Disclaimer,
   Exit,
   ExitSelectToken,

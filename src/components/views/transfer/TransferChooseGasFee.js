@@ -34,12 +34,18 @@ const TransferChooseGasFee = ({
 
   const onSelectGas = useCallback(
     feeRate => {
-      navigation.navigate('TransferReview', {
+      const token = navigation.getParam('token')
+      const navigationParams = {
         token: navigation.getParam('token'),
         address: navigation.getParam('address'),
         amount: navigation.getParam('amount'),
         feeRate
-      })
+      }
+      if (token.contractAddress !== ContractAddress.ETH_ADDRESS) {
+        navigation.navigate('DepositApprove', navigationParams)
+      } else {
+        navigation.navigate('TransferReview', navigationParams)
+      }
     },
     [navigation]
   )

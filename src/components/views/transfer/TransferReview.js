@@ -151,8 +151,11 @@ const TransferReview = ({
       />
       <OMGEditItem
         title='To'
-        rightFirstLine='Address'
+        rightFirstLine={
+          transactionType === TYPE_DEPOSIT ? 'OMG Network' : 'Address'
+        }
         rightSecondLine={toAddress}
+        editable={transactionType !== TYPE_DEPOSIT}
         onPress={onPressEditAddress}
         style={[styles.marginMedium, styles.paddingMedium]}
       />
