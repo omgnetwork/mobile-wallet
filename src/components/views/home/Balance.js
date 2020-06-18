@@ -45,7 +45,7 @@ const Balance = ({
   const hasPendingTransaction = unconfirmedTxs.length > 0
 
   useEffect(() => {
-    if (isEthereumNetwork && wallet.shouldRefresh) {
+    if (wallet.shouldRefresh) {
       setLoading(true)
       dispatchLoadEthereumAssets(
         provider,
@@ -53,7 +53,9 @@ const Balance = ({
         wallet.updatedBlock || '0'
       )
       dispatchRefreshRootchain(wallet.address, false)
-    } else if (wallet.shouldRefreshChildchain) {
+    }
+
+    if (!isEthereumNetwork && wallet.shouldRefreshChildchain) {
       setLoading(true)
       dispatchLoadOmiseGOAssets(provider, wallet)
       dispatchGetRecommendedGas()
@@ -94,7 +96,8 @@ const Balance = ({
       }, 0)
 
       setTotalBalance(totalPrices)
-    } else if (wallet.childchainAssets) {
+    } else if (!isEthereumNetwork && wallet.childchainAssets) {
+      setLoading(false)
       const totalPrices = wallet.childchainAssets.reduce((acc, asset) => {
         const parsedAmount = parseFloat(asset.balance)
         const tokenPrice = parsedAmount * asset.price
