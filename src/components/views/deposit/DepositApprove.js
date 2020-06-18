@@ -2,7 +2,8 @@ import React, { useCallback, useState, useEffect } from 'react'
 import { withNavigationFocus } from 'react-navigation'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
-import { useEstimatedFee } from 'common/hooks'
+import { withTheme } from 'react-native-paper'
+import { useEstimatedFee, useCheckBalanceAvailability } from 'common/hooks'
 import { ContractAddress } from 'common/constants'
 import {
   OMGText,
@@ -11,10 +12,13 @@ import {
   OMGEditItem,
   OMGEmpty
 } from 'components/widgets'
-import { withTheme } from 'react-native-paper'
 import { Styles, Unit } from 'common/utils'
 import { ExceptionReporter } from 'common/reporter'
-import { TYPE_APPROVE_ERC20 } from 'components/views/transfer/transferHelper'
+import {
+  getAssets,
+  TYPE_APPROVE_ERC20,
+  TYPE_DEPOSIT
+} from 'components/views/transfer/transferHelper'
 import { plasmaService } from 'common/services'
 
 const DepositApprove = ({
@@ -22,6 +26,7 @@ const DepositApprove = ({
   blockchainWallet,
   navigation,
   ethToken,
+  wallet,
   isFocused
 }) => {
   const feeRate = navigation.getParam('feeRate')
@@ -30,14 +35,24 @@ const DepositApprove = ({
   const address = navigation.getParam('address')
   const [approving, setApproving] = useState(false)
   const [verifying, setVerifying] = useState(true)
-
+  const assets = getAssets(TYPE_DEPOSIT, wallet)
+  const feeToken = assets.find(
+    token => token.contractAddress === feeRate.currency
+  )
   const [estimatedFee, estimatedFeeSymbol, estimatedFeeUsd] = useEstimatedFee({
     feeRate,
-    transferToken: { ...token, amount },
     ethToken,
-    transactionType: TYPE_APPROVE_ERC20,
     blockchainWallet,
+    transferToken: { ...token, balance: amount },
+    transactionType: TYPE_APPROVE_ERC20,
     toAddress: address
+  })
+  const [hasEnoughBalance, minimumAmount] = useCheckBalanceAvailability({
+    feeRate,
+    feeToken,
+    sendToken: token,
+    sendAmount: amount,
+    estimatedFee
   })
 
   useEffect(() => {
@@ -138,10 +153,15 @@ const DepositApprove = ({
         </View>
       )}
       <View style={styles.bottomContainer}>
+        {!hasEnoughBalance && (
+          <OMGText style={styles.errorMsg} weight='regular'>
+            {`Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`}
+          </OMGText>
+        )}
         <OMGButton
           onPress={handleApprovePressed}
           loading={approving}
-          disabled={verifying}>
+          disabled={!hasEnoughBalance || verifying}>
           {verifying
             ? 'Checking if require approval..'
             : approving
@@ -213,6 +233,9 @@ const createStyles = theme =>
       marginTop: 16,
       color: theme.colors.gray2
     },
+    errorMsg: {
+      color: theme.colors.red
+    },
     emptyView: {
       marginTop: 36
     }
@@ -224,6 +247,7 @@ const mapStateToProps = (state, _ownProps) => {
   )
   return {
     blockchainWallet: state.setting.blockchainWallet,
+    wallet: primaryWallet,
     ethToken: primaryWallet.rootchainAssets.find(
       token => token.contractAddress === ContractAddress.ETH_ADDRESS
     )

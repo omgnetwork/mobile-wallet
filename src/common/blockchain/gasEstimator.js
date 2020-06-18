@@ -28,9 +28,8 @@ export const estimateTransferETH = () => {
 }
 
 export const estimateApproveErc20 = async (from, token) => {
-  if (
-    !Plasma.isRequireApproveErc20(from, token.amount, token.contractAddress)
-  ) {
+  const weiAmount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
+  if (!Plasma.isRequireApproveErc20(from, weiAmount, token.contractAddress)) {
     return 0
   }
 
@@ -46,7 +45,9 @@ export const estimateApproveErc20 = async (from, token) => {
     token.contractAddress,
     erc20Contract,
     erc20VaultAddress,
-    token.amount
+    token.balance,
+    Gas.MEDIUM_LIMIT,
+    Gas.DEPOSIT_GAS_PRICE
   )
   const estimatedErc20ApprovalGas = await web3EstimateGas(approveErc20Tx)
   const allowance = await Contract.getErc20Allowance(

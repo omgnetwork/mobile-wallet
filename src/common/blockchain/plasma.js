@@ -64,9 +64,10 @@ export const isRequireApproveErc20 = async (from, amount, erc20Address) => {
     erc20VaultAddress
   )
 
+  const bnAmount = new BN(amount)
   const bnAllowance = new BN(allowance)
 
-  return bnAllowance.lt(amount)
+  return bnAllowance.lt(bnAmount)
 }
 
 export const approveErc20Deposit = async (erc20Address, amount, txOptions) => {
@@ -127,11 +128,13 @@ export const deposit = async (
   tokenContractAddress,
   options = {}
 ) => {
+  const depositGas = options.gas || Gas.MEDIUM_LIMIT
   const depositGasPrice = options.gasPrice || Gas.DEPOSIT_GAS_PRICE
 
   const depositOptions = TxOptions.createDepositOptions(
     address,
     privateKey,
+    depositGas,
     depositGasPrice
   )
 
@@ -143,6 +146,7 @@ export const deposit = async (
 
   return {
     ...receipt,
+    hash: receipt.transactionHash,
     gasPrice: depositGasPrice
   }
 }

@@ -63,7 +63,14 @@ const useEstimatedFee = ({
     } else {
       calculateOMGNetworkFee()
     }
-  })
+  }, [
+    feeRate,
+    transferToken,
+    ethToken,
+    transactionType,
+    blockchainWallet,
+    toAddress
+  ])
 
   return [
     estimatedFee,
