@@ -1,7 +1,6 @@
 export const createDepositOptions = (
   ownerAddress,
   ownerPrivateKey,
-  gas,
   gasPrice
 ) => {
   if (!ownerAddress) throw new Error('ownerAddress is missing')
@@ -11,7 +10,6 @@ export const createDepositOptions = (
   return {
     from: ownerAddress,
     privateKey: ownerPrivateKey,
-    gas,
     gasPrice
   }
 }
