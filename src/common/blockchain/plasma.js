@@ -1,5 +1,5 @@
 import { Plasma, web3 } from 'common/clients'
-import { Gas, ContractAddress } from 'common/constants'
+import { Gas } from 'common/constants'
 import { Mapper, Unit } from 'common/utils'
 import BN from 'bn.js'
 import {
@@ -9,8 +9,7 @@ import {
   Transaction,
   OmgUtil,
   Wait,
-  Utxos,
-  Ethereum
+  Utxos
 } from 'common/blockchain'
 
 export const getBalances = address => {
@@ -67,7 +66,7 @@ export const isRequireApproveErc20 = async (from, amount, erc20Address) => {
 
   const bnAllowance = new BN(allowance)
 
-  return bnAllowance.gte(amount)
+  return bnAllowance.lt(amount)
 }
 
 export const approveErc20Deposit = async (erc20Address, amount, txOptions) => {
@@ -112,7 +111,6 @@ export const approveErc20Deposit = async (erc20Address, amount, txOptions) => {
       txOptions
     })
 
-    // Wait approve transaction for 1 block
     await Wait.waitForRootchainTransaction({
       hash: approveReceipt.transactionHash,
       intervalMs: 3000,
@@ -129,13 +127,11 @@ export const deposit = async (
   tokenContractAddress,
   options = {}
 ) => {
-  const depositGas = options.gas || Gas.MEDIUM_LIMIT
   const depositGasPrice = options.gasPrice || Gas.DEPOSIT_GAS_PRICE
 
   const depositOptions = TxOptions.createDepositOptions(
     address,
     privateKey,
-    depositGas,
     depositGasPrice
   )
 
@@ -145,7 +141,10 @@ export const deposit = async (
     txOptions: depositOptions
   })
 
-  return receiptWithGasPrice(receipt, depositGasPrice)
+  return {
+    ...receipt,
+    gasPrice: depositGasPrice
+  }
 }
 
 export const mergeListOfUtxos = async (
@@ -165,18 +164,6 @@ export const mergeListOfUtxos = async (
     )
   )
   return Promise.all(pendingMergeUtxos)
-}
-
-const receiptWithGasPrice = (txReceipt, gasPrice, additionalGasUsed = 0) => {
-  return {
-    hash: txReceipt.transactionHash,
-    from: txReceipt.from,
-    to: txReceipt.to,
-    blockNumber: txReceipt.blockNumber,
-    blockHash: txReceipt.blockHash,
-    gasUsed: txReceipt.gasUsed + additionalGasUsed,
-    gasPrice: gasPrice
-  }
 }
 
 export const standardExit = (exitData, blockchainWallet, options) => {

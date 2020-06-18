@@ -6,7 +6,6 @@ export const createDepositOptions = (
 ) => {
   if (!ownerAddress) throw new Error('ownerAddress is missing')
   if (!ownerPrivateKey) throw new Error('ownerPrivateKey is missing')
-  if (!gas) throw new Error('gas is missing')
   if (!gasPrice) throw new Error('gasPrice is missing')
 
   return {
