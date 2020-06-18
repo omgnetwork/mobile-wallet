@@ -41,7 +41,7 @@ const mockGetErc20Vault = resp => {
 }
 
 const mockSendSignedTx = resp => {
-  Ethereum.sendSignedTx = jest.fn().mockReturnValueOnce(Promise.resolve(resp))
+  Ethereum.signSendTx = jest.fn().mockReturnValueOnce(Promise.resolve(resp))
 }
 
 describe('Test Plasma Boundary', () => {
@@ -523,7 +523,7 @@ describe('Test Plasma Boundary', () => {
 
     return response.then(_ => {
       // Send Approve Transaction
-      expect(Ethereum.sendSignedTx).toBeCalledWith(
+      expect(Ethereum.signSendTx).toBeCalledWith(
         {
           data: expectedApproveABIData,
           from,

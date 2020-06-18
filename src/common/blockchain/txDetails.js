@@ -1,5 +1,25 @@
 import { ContractAddress } from 'common/constants'
 import { Plasma } from 'common/clients'
+import { Gas } from 'common/constants'
+
+export const getTransferEth = (from, to, amount, fee) => {
+  return {
+    from,
+    to,
+    value: amount,
+    gas: Gas.MINIMUM_GAS_USED,
+    gasPrice: fee.amount
+  }
+}
+
+export const getTransferErc20 = (from, to, amount, fee, contract) => {
+  return {
+    from,
+    to,
+    data: contract.methods.transfer(to, amount).encodeABI(),
+    gasPrice: fee.amount
+  }
+}
 
 export const getDeposit = async (
   tokenContractAddress,
