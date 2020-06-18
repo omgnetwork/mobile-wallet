@@ -19,6 +19,7 @@ import {
   TYPE_APPROVE_ERC20,
   TYPE_DEPOSIT
 } from 'components/views/transfer/transferHelper'
+import { walletActions } from 'common/actions'
 import { plasmaService } from 'common/services'
 
 const DepositApprove = ({
@@ -27,7 +28,8 @@ const DepositApprove = ({
   navigation,
   ethToken,
   wallet,
-  isFocused
+  isFocused,
+  dispatchRefreshRootchain
 }) => {
   const feeRate = navigation.getParam('feeRate')
   const amount = navigation.getParam('amount')
@@ -95,7 +97,7 @@ const DepositApprove = ({
         privateKey
       )
       setApproving(false)
-
+      dispatchRefreshRootchain(wallet.address, true)
       navigation.navigate('TransferReview', {
         feeRate,
         amount,
@@ -260,7 +262,12 @@ const mapStateToProps = (state, _ownProps) => {
   }
 }
 
+const mapDispatchToProps = (dispatch, _ownProps) => ({
+  dispatchRefreshRootchain: (address, shouldRefresh) =>
+    walletActions.refreshRootchain(dispatch, address, shouldRefresh)
+})
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withNavigationFocus(withTheme(DepositApprove)))
