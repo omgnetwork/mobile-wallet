@@ -10,9 +10,6 @@ import {
 import { web3, Plasma as PlasmaClient } from 'common/clients'
 import { Unit } from 'common/utils'
 
-// This value is used for increasing the gas estimation to avoid transaction reverted because the gas limit is too low.
-const GAS_ESTIMATION_MULTIPLIER = 1.1
-
 export const estimateTransferErc20 = (from, to, token) => {
   const abi = ContractABI.erc20Abi()
   const contract = Ethereum.getContract(token.contractAddress, abi)
@@ -27,7 +24,7 @@ export const estimateTransferErc20 = (from, to, token) => {
 }
 
 export const estimateTransferETH = () => {
-  return Promise.resolve('21000')
+  return Promise.resolve(Gas.MINIMUM_GAS_USED)
 }
 
 export const estimateApproveErc20 = async (from, token) => {
@@ -73,7 +70,9 @@ export const estimateDeposit = async (from, amount, tokenContractAddress) => {
       Gas.MEDIUM_LIMIT,
       Gas.DEPOSIT_GAS_PRICE
     )
-    return web3EstimateGas(depositTxOptions)
+
+    // Increase the gas estimation a bit to avoid transaction reverted because the gas limit is too low.
+    return web3EstimateGas(depositTxOptions).then(gas => parseInt(gas * 1.1))
   } catch (err) {
     console.log(err)
     return Gas.DEPOSIT_ESTIMATED_GAS_USED
@@ -112,7 +111,7 @@ export const web3EstimateGas = txDetails => {
   return new Promise((resolve, reject) => {
     web3.eth.estimateGas(txDetails, (err, result) => {
       if (err) return reject(err)
-      return resolve(parseInt(result * GAS_ESTIMATION_MULTIPLIER))
+      return resolve(parseInt(result))
     })
   })
 }

@@ -8,7 +8,8 @@ import {
   Transaction,
   OmgUtil,
   Wait,
-  Utxos
+  Utxos,
+  GasEstimator
 } from 'common/blockchain'
 
 export const getBalances = address => {
@@ -129,12 +130,19 @@ export const deposit = async (
 ) => {
   const depositGasPrice = options.gasPrice || Gas.DEPOSIT_GAS_PRICE
 
+  const gas = await GasEstimator.estimateDeposit(
+    address,
+    weiAmount,
+    tokenContractAddress
+  )
+
   const receipt = await Plasma.RootChain.deposit({
     amount: weiAmount,
     currency: tokenContractAddress,
     txOptions: {
       from: address,
       privateKey,
+      gas,
       gasPrice: depositGasPrice
     }
   })
