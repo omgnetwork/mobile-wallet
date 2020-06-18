@@ -63,7 +63,7 @@ const ExitForm = ({
 
   useEffect(() => {
     if (loading.success && loading.action === 'CHILDCHAIN_EXIT') {
-      EventReporter.sendEvent('transfer_exited', { hash: unconfirmedTx.hash })
+      EventReporter.send('transfer_exited', { hash: unconfirmedTx.hash })
       navigation.navigate('Home')
     }
   })
