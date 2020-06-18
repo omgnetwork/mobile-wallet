@@ -191,12 +191,12 @@ const createStyles = theme =>
       paddingBottom: 32
     },
     title: {
-      fontSize: 16,
+      fontSize: 14,
       color: theme.colors.white
     },
     description: {
       color: theme.colors.gray6,
-      fontSize: 14,
+      fontSize: 12,
       marginTop: 8,
       lineHeight: 16
     },
