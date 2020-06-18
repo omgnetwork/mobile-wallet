@@ -1,6 +1,7 @@
 import { GasEstimator } from 'common/blockchain'
 import { BlockchainNetworkType, ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
+import { Unit } from 'common/utils'
 
 export const TYPE_DEPOSIT = 1
 export const TYPE_TRANSFER_ROOTCHAIN = 2
@@ -25,8 +26,18 @@ export const getGasUsed = (type, token, options) => {
   switch (type) {
     case TYPE_APPROVE_ERC20:
       return GasEstimator.estimateApproveErc20(wallet.address, token)
-    case TYPE_DEPOSIT:
-      return GasEstimator.estimateDeposit(wallet.address, to, token)
+    case TYPE_DEPOSIT: {
+      const weiAmount = Unit.convertToString(
+        token.balance,
+        0,
+        token.tokenDecimal
+      )
+      return GasEstimator.estimateDeposit(
+        wallet.address,
+        weiAmount,
+        token.contractAddress
+      )
+    }
     case TYPE_TRANSFER_ROOTCHAIN: {
       const isEth = token.contractAddress === ContractAddress.ETH_ADDRESS
       return isEth

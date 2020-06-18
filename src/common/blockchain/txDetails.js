@@ -1,23 +1,36 @@
-export const createDepositOptions = (
-  ownerAddress,
-  ownerPrivateKey,
+import { ContractAddress } from 'common/constants'
+import { Plasma } from 'common/clients'
+
+export const getDeposit = async (
+  tokenContractAddress,
+  from,
+  amount,
   gas,
   gasPrice
 ) => {
-  if (!ownerAddress) throw new Error('ownerAddress is missing')
-  if (!ownerPrivateKey) throw new Error('ownerPrivateKey is missing')
-  if (!gas) throw new Error('gas is missing')
-  if (!gasPrice) throw new Error('gasPrice is missing')
+  const _amount = amount.toString()
+  const isEth = tokenContractAddress === ContractAddress.ETH_ADDRESS
+  const { address, contract } = isEth
+    ? await Plasma.RootChain.getEthVault()
+    : await Plasma.RootChain.getErc20Vault()
+
+  const depositTx = Plasma.Utils.transaction.encodeDeposit(
+    from,
+    _amount,
+    tokenContractAddress
+  )
 
   return {
-    from: ownerAddress,
-    privateKey: ownerPrivateKey,
+    from,
+    to: address,
+    ...(isEth ? { value: _amount } : {}),
+    data: contract.methods.deposit(depositTx).encodeABI(),
     gas,
     gasPrice
   }
 }
 
-export const createApproveErc20Options = (
+export const getApproveErc20 = (
   ownerAddress,
   tokenContractAddress,
   erc20Contract,

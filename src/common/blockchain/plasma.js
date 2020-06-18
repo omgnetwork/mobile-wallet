@@ -3,7 +3,6 @@ import { Gas } from 'common/constants'
 import { Mapper, Unit } from 'common/utils'
 import BN from 'bn.js'
 import {
-  TxOptions,
   Contract,
   ContractABI,
   Transaction,
@@ -128,20 +127,16 @@ export const deposit = async (
   tokenContractAddress,
   options = {}
 ) => {
-  const depositGas = options.gas || Gas.MEDIUM_LIMIT
   const depositGasPrice = options.gasPrice || Gas.DEPOSIT_GAS_PRICE
-
-  const depositOptions = TxOptions.createDepositOptions(
-    address,
-    privateKey,
-    depositGas,
-    depositGasPrice
-  )
 
   const receipt = await Plasma.RootChain.deposit({
     amount: weiAmount,
     currency: tokenContractAddress,
-    txOptions: depositOptions
+    txOptions: {
+      from: address,
+      privateKey,
+      gasPrice: depositGasPrice
+    }
   })
 
   return {
@@ -178,7 +173,6 @@ export const standardExit = (exitData, blockchainWallet, options) => {
     txOptions: {
       privateKey: blockchainWallet.privateKey,
       from: blockchainWallet.address,
-      gas: options.gasLimit || Gas.HIGH_LIMIT,
       gasPrice: options.gasPrice || Gas.EXIT_GAS_PRICE
     }
   })

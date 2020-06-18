@@ -5,7 +5,7 @@ import * as Plasma from './plasma'
 import * as Contract from './contract'
 import * as ContractABI from './contractAbi'
 import * as GasEstimator from './gasEstimator'
-import * as TxOptions from './txOptions'
+import * as TxDetails from './txDetails'
 import * as Token from './token'
 import * as Transaction from './transaction'
 import * as Parser from './parser'
@@ -21,7 +21,7 @@ export {
   Contract,
   ContractABI,
   GasEstimator,
-  TxOptions,
+  TxDetails,
   BlockchainFormatter,
   Parser,
   OmgUtil,

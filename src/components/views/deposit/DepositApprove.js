@@ -168,9 +168,11 @@ const DepositApprove = ({
             ? 'Waiting for approval...'
             : 'Approve'}
         </OMGButton>
-        <OMGText style={styles.textEstimateTime} weight='regular'>
-          This process is usually takes about 15 - 30 seconds.
-        </OMGText>
+        {hasEnoughBalance && (
+          <OMGText style={styles.textEstimateTime} weight='regular'>
+            This process is usually takes about 15 - 30 seconds.
+          </OMGText>
+        )}
       </View>
     </View>
   )
@@ -234,6 +236,7 @@ const createStyles = theme =>
       color: theme.colors.gray2
     },
     errorMsg: {
+      marginBottom: 12,
       color: theme.colors.red
     },
     emptyView: {

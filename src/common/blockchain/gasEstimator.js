@@ -1,7 +1,7 @@
-import { Gas, ContractAddress } from 'common/constants'
+import { Gas } from 'common/constants'
 import {
   Ethereum,
-  TxOptions,
+  TxDetails,
   Plasma,
   ContractABI,
   Transaction,
@@ -40,7 +40,7 @@ export const estimateApproveErc20 = async (from, token) => {
   const {
     address: erc20VaultAddress
   } = await PlasmaClient.RootChain.getErc20Vault()
-  const approveErc20Tx = TxOptions.createApproveErc20Options(
+  const approveErc20Tx = TxDetails.getApproveErc20(
     from,
     token.contractAddress,
     erc20Contract,
@@ -61,37 +61,19 @@ export const estimateApproveErc20 = async (from, token) => {
     : estimatedErc20ApprovalGas
 }
 
-export const estimateDeposit = async (from, to, token) => {
-  const isEth = token.contractAddress === ContractAddress.ETH_ADDRESS
-  const gasForDepositTx = Gas.DEPOSIT_ESTIMATED_GAS_USED
-  const gasForApproveErc20 = Gas.DEPOSIT_APPROVED_ERC20_GAS_USED
-  const defaultGasUsed = gasForDepositTx + (isEth ? 0 : gasForApproveErc20)
-
+export const estimateDeposit = async (from, amount, tokenContractAddress) => {
   try {
-    const erc20Contract = new web3.eth.Contract(
-      ContractABI.erc20Abi(),
-      token.contractAddress
-    )
-    const {
-      address: erc20VaultAddress
-    } = await PlasmaClient.RootChain.getErc20Vault()
-    const weiAmount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
-    const approveErc20Tx = TxOptions.createApproveErc20Options(
+    const depositTxOptions = await TxDetails.getDeposit(
+      tokenContractAddress,
       from,
-      token.contractAddress,
-      erc20Contract,
-      erc20VaultAddress,
-      weiAmount,
+      amount,
       Gas.MEDIUM_LIMIT,
       Gas.DEPOSIT_GAS_PRICE
     )
-    const estimatedErc20ApprovalGas = await web3EstimateGas(approveErc20Tx)
-    return isEth
-      ? gasForDepositTx
-      : Number(estimatedErc20ApprovalGas) + Number(gasForDepositTx)
+    return web3EstimateGas(depositTxOptions)
   } catch (err) {
     console.log(err)
-    return defaultGasUsed
+    return Gas.DEPOSIT_ESTIMATED_GAS_USED
   }
 }
 

@@ -13,12 +13,21 @@ const useEstimatedFee = ({
   const [estimatedFeeSymbol, setEstimatedFeeSymbol] = useState(null)
   const [estimatedFee, setEstimatedFee] = useState(null)
   const [estimatedFeeUsd, setEstimatedFeeUsd] = useState(null)
+  const [estimatedGasUsed, setEstimatedGasUsed] = useState(null)
   const [estimatedTotal, setEstimatedTotal] = useState(null)
   const [estimatedTotalUsd, setEstimatedTotalUsd] = useState(null)
 
   const amount = transferToken.balance
 
-  function updateState({ fee, feeSymbol = 'ETH', feeUsd, total, totalUsd }) {
+  function updateState({
+    gasUsed = 0,
+    fee,
+    feeSymbol = 'ETH',
+    feeUsd,
+    total,
+    totalUsd
+  }) {
+    setEstimatedGasUsed(gasUsed)
     setEstimatedFeeSymbol(feeSymbol)
     setEstimatedFee(fee)
     setEstimatedFeeUsd(feeUsd)
@@ -55,7 +64,7 @@ const useEstimatedFee = ({
       const totalUsd = BlockchainFormatter.formatTotalPrice(amount, feeUsd)
       const total = BlockchainFormatter.formatTotalEthAmount(transferToken, fee)
 
-      updateState({ fee, feeUsd, total, totalUsd })
+      updateState({ gasUsed, fee, feeUsd, total, totalUsd })
     }
 
     if (transactionType !== TransferHelper.TYPE_TRANSFER_CHILDCHAIN) {
@@ -76,6 +85,7 @@ const useEstimatedFee = ({
     estimatedFee,
     estimatedFeeSymbol,
     estimatedFeeUsd,
+    estimatedGasUsed,
     estimatedTotal,
     estimatedTotalUsd
   ]

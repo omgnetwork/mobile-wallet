@@ -9,20 +9,24 @@ const useCheckBalanceAvailability = ({
   estimatedFee
 }) => {
   const [enoughBalance, setEnoughBalance] = useState(true)
+  const [minimumPaidAmount, setMinimumPaidAmount] = useState(0)
 
-  let minimumPaidAmount = 0
   useEffect(() => {
     function checkBalanceAvailability() {
       if (!estimatedFee) return
 
+      let minimumAmount = 0
       if (feeRate.currency === sendToken.contractAddress) {
-        minimumPaidAmount = BigNumber.plus(estimatedFee, sendAmount)
+        minimumAmount = BigNumber.plus(estimatedFee, sendAmount)
       } else {
-        minimumPaidAmount = estimatedFee
+        minimumAmount = estimatedFee
       }
 
-      const hasEnoughBalance = feeToken.balance >= minimumPaidAmount
+      const hasEnoughBalance =
+        BigNumber.compare(feeToken.balance, minimumAmount) >= 0
+
       setEnoughBalance(hasEnoughBalance)
+      setMinimumPaidAmount(minimumAmount)
     }
 
     checkBalanceAvailability()
