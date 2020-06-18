@@ -153,7 +153,7 @@ const DepositApprove = ({
         </View>
       )}
       <View style={styles.bottomContainer}>
-        {!hasEnoughBalance && (
+        {!hasEnoughBalance && minimumAmount > 0 && (
           <OMGText style={styles.errorMsg} weight='regular'>
             {`Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`}
           </OMGText>

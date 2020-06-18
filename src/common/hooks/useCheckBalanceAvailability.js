@@ -8,7 +8,7 @@ const useCheckBalanceAvailability = ({
   sendAmount,
   estimatedFee
 }) => {
-  const [enoughBalance, setEnoughBalance] = useState(true)
+  const [enoughBalance, setEnoughBalance] = useState(false)
   const [minimumPaidAmount, setMinimumPaidAmount] = useState(0)
 
   useEffect(() => {
