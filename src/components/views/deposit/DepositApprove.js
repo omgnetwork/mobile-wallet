@@ -55,6 +55,8 @@ const DepositApprove = ({
     estimatedFee
   })
 
+  const showErrorMsg = !hasEnoughBalance && minimumAmount > 0
+
   useEffect(() => {
     async function checkIfRequireApproveErc20(weiAmount, from) {
       setVerifying(true)
@@ -153,7 +155,7 @@ const DepositApprove = ({
         </View>
       )}
       <View style={styles.bottomContainer}>
-        {!hasEnoughBalance && minimumAmount > 0 && (
+        {showErrorMsg && (
           <OMGText style={styles.errorMsg} weight='regular'>
             {`Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`}
           </OMGText>
