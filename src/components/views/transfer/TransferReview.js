@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { useEstimatedFee } from 'common/hooks'
+import { useEstimatedFee, useCheckBalanceAvailability } from 'common/hooks'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { BigNumber } from 'common/utils'
@@ -49,32 +49,15 @@ const TransferReview = ({
     blockchainWallet,
     toAddress
   })
+  const [hasEnoughBalance, minimumAmount] = useCheckBalanceAvailability({
+    feeRate,
+    feeToken,
+    sendToken: token,
+    sendAmount: amount,
+    estimatedFee
+  })
 
-  const [errorMsg, setErrorMsg] = useState(null)
-
-  useEffect(() => {
-    function checkBalanceAvailability() {
-      if (!estimatedFee) return
-
-      let minimumPaidAmount
-      if (feeRate.currency === token.contractAddress) {
-        minimumPaidAmount = BigNumber.plus(estimatedFee, amount)
-      } else {
-        minimumPaidAmount = estimatedFee
-      }
-
-      const hasEnoughBalance = feeToken.balance >= minimumPaidAmount
-      if (!hasEnoughBalance) {
-        setErrorMsg(
-          `Require at least ${minimumPaidAmount} ${feeToken.tokenSymbol} to proceed.`
-        )
-      } else {
-        setErrorMsg(null)
-      }
-    }
-
-    checkBalanceAvailability()
-  }, [estimatedFee, feeRate, token, feeToken])
+  const showErrorMsg = !hasEnoughBalance && minimumAmount > 0
 
   const onPressEditAddress = useCallback(() => {
     navigation.navigate('TransferSelectAddress')
@@ -160,17 +143,22 @@ const TransferReview = ({
         style={[styles.marginMedium, styles.paddingMedium]}
       />
       <View style={styles.buttonContainer}>
-        {errorMsg && (
+        {showErrorMsg && (
           <OMGText style={styles.errorMsg} weight='regular'>
-            {errorMsg}
+            {`Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`}
           </OMGText>
         )}
         <OMGButton
           onPress={onSubmit}
           loading={loading.show}
-          disabled={!estimatedFee || errorMsg}>
+          disabled={!hasEnoughBalance}>
           Confirm Transaction
         </OMGButton>
+        {hasEnoughBalance && transactionType === TYPE_DEPOSIT && (
+          <OMGText style={styles.textEstimateTime} weight='regular'>
+            This process is usually takes about 15 - 30 seconds.
+          </OMGText>
+        )}
       </View>
     </View>
   )
@@ -202,6 +190,10 @@ const createStyles = theme =>
     },
     paddingMedium: {
       padding: 12
+    },
+    textEstimateTime: {
+      marginTop: 16,
+      color: theme.colors.gray2
     }
   })
 
