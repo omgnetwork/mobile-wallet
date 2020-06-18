@@ -15,8 +15,9 @@ export const getTransferEth = (from, to, amount, fee) => {
 export const getTransferErc20 = (from, to, amount, fee, contract) => {
   return {
     from,
-    to,
+    to: contract._address,
     data: contract.methods.transfer(to, amount).encodeABI(),
+    gas: Gas.LOW_LIMIT,
     gasPrice: fee.amount
   }
 }
