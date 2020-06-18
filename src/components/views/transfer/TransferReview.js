@@ -40,7 +40,6 @@ const TransferReview = ({
   const feeToken = assets.find(
     token => token.contractAddress === feeRate.currency
   )
-
   const [estimatedFee, estimatedFeeSymbol, estimatedFeeUsd] = useEstimatedFee({
     feeRate,
     transferToken,
@@ -56,8 +55,6 @@ const TransferReview = ({
     sendAmount: amount,
     estimatedFee
   })
-
-  const showErrorMsg = !hasEnoughBalance && minimumAmount > 0
 
   const onPressEditAddress = useCallback(() => {
     navigation.navigate('TransferSelectAddress')
@@ -112,6 +109,8 @@ const TransferReview = ({
     }
   }, [loading, loading.success, navigation])
 
+  const showErrorMsg = !hasEnoughBalance && minimumAmount > 0
+
   return (
     <View style={styles.container}>
       <OMGText style={styles.title} weight='book'>
@@ -150,15 +149,17 @@ const TransferReview = ({
         )}
         <OMGButton
           onPress={onSubmit}
-          loading={loading.show}
+          loading={minimumAmount === 0 || loading.show}
           disabled={!hasEnoughBalance}>
-          Confirm Transaction
+          {minimumAmount === 0 ? 'Checking Balance...' : 'Confirm Transaction'}
         </OMGButton>
-        {hasEnoughBalance && transactionType === TYPE_DEPOSIT && (
-          <OMGText style={styles.textEstimateTime} weight='regular'>
-            This process is usually takes about 15 - 30 seconds.
-          </OMGText>
-        )}
+        <OMGText
+          style={styles.textEstimateTime(
+            hasEnoughBalance && transactionType === TYPE_DEPOSIT
+          )}
+          weight='regular'>
+          This process is usually takes about 15 - 30 seconds.
+        </OMGText>
       </View>
     </View>
   )
@@ -191,10 +192,11 @@ const createStyles = theme =>
     paddingMedium: {
       padding: 12
     },
-    textEstimateTime: {
+    textEstimateTime: visible => ({
       marginTop: 16,
-      color: theme.colors.gray2
-    }
+      color: theme.colors.gray2,
+      opacity: visible ? 1.0 : 0.0
+    })
   })
 
 const mapStateToProps = (state, _ownProps) => {

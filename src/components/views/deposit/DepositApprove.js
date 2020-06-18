@@ -171,11 +171,9 @@ const DepositApprove = ({
             ? 'Waiting for approval...'
             : 'Approve'}
         </OMGButton>
-        {!disableBtn && (
-          <OMGText style={styles.textEstimateTime} weight='regular'>
-            This process is usually takes about 15 - 30 seconds.
-          </OMGText>
-        )}
+        <OMGText style={styles.textEstimateTime(!disableBtn)} weight='regular'>
+          This process is usually takes about 15 - 30 seconds.
+        </OMGText>
       </View>
     </View>
   )
@@ -235,10 +233,11 @@ const createStyles = theme =>
       justifyContent: 'flex-end',
       alignItems: 'center'
     },
-    textEstimateTime: {
+    textEstimateTime: visible => ({
       marginTop: 16,
-      color: theme.colors.gray2
-    },
+      color: theme.colors.gray2,
+      opacity: visible ? 1.0 : 0.0
+    }),
     errorMsg: {
       marginBottom: 12,
       color: theme.colors.red
