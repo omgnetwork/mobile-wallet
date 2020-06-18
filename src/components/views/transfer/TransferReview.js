@@ -160,7 +160,7 @@ const TransferReview = ({
           {loadingBalance || minimumAmount === 0
             ? 'Checking Balance...'
             : loading.show
-            ? 'Waiting for confirmation...'
+            ? 'Sending...'
             : 'Confirm Transaction'}
         </OMGButton>
         <OMGText
