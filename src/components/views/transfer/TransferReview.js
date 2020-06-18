@@ -1,7 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { useEstimatedFee, useCheckBalanceAvailability } from 'common/hooks'
+import {
+  useEstimatedFee,
+  useCheckBalanceAvailability,
+  useLoading
+} from 'common/hooks'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { BigNumber } from 'common/utils'
@@ -55,6 +59,7 @@ const TransferReview = ({
     sendAmount: amount,
     estimatedFee
   })
+  const [loadingBalance] = useLoading(loading, 'ROOTCHAIN_FETCH_ASSETS')
 
   const onPressEditAddress = useCallback(() => {
     navigation.navigate('TransferSelectAddress')
@@ -110,6 +115,7 @@ const TransferReview = ({
   }, [loading, loading.success, navigation])
 
   const showErrorMsg = !hasEnoughBalance && minimumAmount > 0
+  const btnLoading = minimumAmount === 0 || loading.show
 
   return (
     <View style={styles.container}>
@@ -149,9 +155,13 @@ const TransferReview = ({
         )}
         <OMGButton
           onPress={onSubmit}
-          loading={minimumAmount === 0 || loading.show}
+          loading={btnLoading}
           disabled={!hasEnoughBalance}>
-          {minimumAmount === 0 ? 'Checking Balance...' : 'Confirm Transaction'}
+          {loadingBalance || minimumAmount === 0
+            ? 'Checking Balance...'
+            : loading.show
+            ? 'Waiting for confirmation...'
+            : 'Confirm Transaction'}
         </OMGButton>
         <OMGText
           style={styles.textEstimateTime(
