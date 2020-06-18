@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end'
   },
   textMargin: {
-    marginTop: 6
+    marginTop: 10
   },
   textSingleLine: {
     flex: 1
