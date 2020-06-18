@@ -8,7 +8,8 @@ import {
   OMGText,
   OMGTokenIcon,
   OMGButton,
-  OMGEditItem
+  OMGEditItem,
+  OMGEmpty
 } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import { Styles, Unit } from 'common/utils'
@@ -101,35 +102,41 @@ const DepositApprove = ({
 
   return (
     <View style={styles.container}>
-      <OMGText style={styles.title} weight='regular'>
-        APPROVE {token.symbol} TOKEN
-      </OMGText>
-      <OMGText style={styles.description} weight='regular'>
-        Please approve to move {amount} {token.tokenSymbol} from Ethereum to the
-        OMG Network.
-      </OMGText>
-      <View style={styles.tokenContainer}>
-        <OMGTokenIcon token={token} size={28} />
-        <View style={styles.tokenDetailContainer}>
-          <OMGText weight='regular' style={styles.textTokenDetail}>
-            Token Contract Address
+      {verifying ? (
+        <OMGEmpty loading={verifying} style={styles.emptyView} />
+      ) : (
+        <View>
+          <OMGText style={styles.title} weight='regular'>
+            APPROVE {token.symbol} TOKEN
           </OMGText>
-          <OMGText
-            style={[styles.textTokenDetail, styles.smallMarginTop]}
-            ellipsizeMode='middle'
-            numberOfLines={1}>
-            {token.contractAddress}
+          <OMGText style={styles.description} weight='regular'>
+            Please approve to move {amount} {token.tokenSymbol} from Ethereum to
+            the OMG Network.
           </OMGText>
+          <View style={styles.tokenContainer}>
+            <OMGTokenIcon token={token} size={28} />
+            <View style={styles.tokenDetailContainer}>
+              <OMGText weight='regular' style={styles.textTokenDetail}>
+                Token Contract Address
+              </OMGText>
+              <OMGText
+                style={[styles.textTokenDetail, styles.smallMarginTop]}
+                ellipsizeMode='middle'
+                numberOfLines={1}>
+                {token.contractAddress}
+              </OMGText>
+            </View>
+          </View>
+          <OMGEditItem
+            title='Fee'
+            loading={!estimatedFee}
+            rightFirstLine={`${estimatedFee} ${estimatedFeeSymbol}`}
+            rightSecondLine={`${estimatedFeeUsd} USD`}
+            onPress={onPressEditFee}
+            style={[styles.paddingMedium, styles.mediumMarginTop]}
+          />
         </View>
-      </View>
-      <OMGEditItem
-        title='Fee'
-        loading={!estimatedFee}
-        rightFirstLine={`${estimatedFee} ${estimatedFeeSymbol}`}
-        rightSecondLine={`${estimatedFeeUsd} USD`}
-        onPress={onPressEditFee}
-        style={[styles.paddingMedium, styles.mediumMarginTop]}
-      />
+      )}
       <View style={styles.bottomContainer}>
         <OMGButton
           onPress={handleApprovePressed}
@@ -142,7 +149,7 @@ const DepositApprove = ({
             : 'Approve'}
         </OMGButton>
         <OMGText style={styles.textEstimateTime} weight='regular'>
-          This process is usually takes about 30 seconds.
+          This process is usually takes about 15 - 30 seconds.
         </OMGText>
       </View>
     </View>
@@ -205,6 +212,9 @@ const createStyles = theme =>
     textEstimateTime: {
       marginTop: 16,
       color: theme.colors.gray2
+    },
+    emptyView: {
+      marginTop: 36
     }
   })
 
