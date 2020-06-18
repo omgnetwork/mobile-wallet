@@ -29,8 +29,10 @@ const TransferChooseGasFee = ({
       setEmptyMsg('Fees are not available. Try again later.')
     } else if (!hasEth) {
       setEmptyMsg('Need more ETH to pay gas.')
+    } else {
+      setEmptyMsg(null)
     }
-  }, [])
+  }, [fees])
 
   const onSelectGas = useCallback(
     feeRate => {
