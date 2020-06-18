@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
@@ -17,12 +17,12 @@ import { TYPE_APPROVE_ERC20 } from 'components/views/transfer/transferHelper'
 import { plasmaService } from 'common/services'
 
 const DepositApprove = ({ theme, blockchainWallet, navigation, ethToken }) => {
-  const styles = createStyles(theme)
   const feeRate = navigation.getParam('feeRate')
   const amount = navigation.getParam('amount')
   const token = navigation.getParam('token')
   const address = navigation.getParam('address')
   const [approving, setApproving] = useState(false)
+  const [verifying, setVerifying] = useState(true)
 
   const [estimatedFee, estimatedFeeSymbol, estimatedFeeUsd] = useEstimatedFee({
     feeRate,
@@ -33,25 +33,43 @@ const DepositApprove = ({ theme, blockchainWallet, navigation, ethToken }) => {
     toAddress: address
   })
 
-  const handleApprovePressed = useCallback(() => {
-    async function approve(weiAmount) {
-      setApproving(true)
-      const { address: from, privateKey } = blockchainWallet
+  useEffect(() => {
+    async function checkIfRequireApproveErc20(weiAmount, from) {
+      setVerifying(true)
       const requiredApprove = await plasmaService.isRequireApproveErc20(
         from,
         weiAmount,
         token.contractAddress
       )
-      if (requiredApprove) {
-        await plasmaService.approveErc20Deposit(
-          token.contractAddress,
-          weiAmount,
-          from,
-          feeRate.amount,
-          privateKey
-        )
+      setVerifying(false)
+
+      if (!requiredApprove) {
+        navigation.navigate('TransferReview', {
+          feeRate,
+          amount,
+          token,
+          address
+        })
       }
+    }
+
+    const { address: from } = blockchainWallet
+    const weiAmount = Unit.convertToString(amount, 0, token.tokenDecimal)
+    checkIfRequireApproveErc20(weiAmount, from)
+  }, [])
+
+  const handleApprovePressed = useCallback(() => {
+    async function approve(weiAmount, from, privateKey) {
+      setApproving(true)
+      await plasmaService.approveErc20Deposit(
+        token.contractAddress,
+        weiAmount,
+        from,
+        feeRate.amount,
+        privateKey
+      )
       setApproving(false)
+
       navigation.navigate('TransferReview', {
         feeRate,
         amount,
@@ -59,10 +77,10 @@ const DepositApprove = ({ theme, blockchainWallet, navigation, ethToken }) => {
         address
       })
     }
-
+    const { address: from, privateKey } = blockchainWallet
     const weiAmount = Unit.convertToString(amount, 0, token.tokenDecimal)
     ExceptionReporter.reportWhenError(
-      () => approve(weiAmount),
+      () => approve(weiAmount, from, privateKey),
       _err => setApproving(false)
     )
   }, [feeRate, address, amount, token])
@@ -70,6 +88,8 @@ const DepositApprove = ({ theme, blockchainWallet, navigation, ethToken }) => {
   const onPressEditFee = useCallback(() => {
     navigation.navigate('TransferChooseGasFee')
   }, [navigation])
+
+  const styles = createStyles(theme)
 
   return (
     <View style={styles.container}>
@@ -103,9 +123,17 @@ const DepositApprove = ({ theme, blockchainWallet, navigation, ethToken }) => {
         style={[styles.paddingMedium, styles.mediumMarginTop]}
       />
       <View style={styles.buttonContainer}>
-        <OMGButton onPress={handleApprovePressed} loading={approving}>
-          {approving ? 'Waiting for approval...' : 'Approve'}
+        <OMGButton
+          onPress={handleApprovePressed}
+          loading={approving}
+          disabled={verifying}>
+          {verifying
+            ? 'Checking if require approval..'
+            : approving
+            ? 'Waiting for approval...'
+            : 'Approve'}
         </OMGButton>
+        <OMGText>This process will be approximately taken about 30s</OMGText>
       </View>
     </View>
   )
