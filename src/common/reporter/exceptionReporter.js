@@ -8,7 +8,7 @@ export const send = exception => {
   }
 }
 
-export const reportWhenError = (operation, errorHandler) => {
+export const reportWhenError = (operation, errorHandler = () => null) => {
   try {
     return operation()
   } catch (exception) {
