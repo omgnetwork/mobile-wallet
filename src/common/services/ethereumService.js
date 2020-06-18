@@ -55,7 +55,6 @@ export const sendErc20Token = async (wallet, options) => {
     ...options,
     wallet
   })
-  console.log(response)
   return response
 }
 

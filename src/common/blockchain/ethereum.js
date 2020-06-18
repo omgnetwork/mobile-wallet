@@ -110,7 +110,6 @@ export const sendErc20Token = async (contract, options) => {
   )
 
   txDetails.gas = await web3EstimateGas(txDetails)
-
   return signSendTx(txDetails, wallet.privateKey)
 }
 
