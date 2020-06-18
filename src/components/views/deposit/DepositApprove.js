@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { withNavigation } from 'react-navigation'
+import { withNavigationFocus } from 'react-navigation'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { useEstimatedFee } from 'common/hooks'
@@ -16,7 +16,13 @@ import { ExceptionReporter } from 'common/reporter'
 import { TYPE_APPROVE_ERC20 } from 'components/views/transfer/transferHelper'
 import { plasmaService } from 'common/services'
 
-const DepositApprove = ({ theme, blockchainWallet, navigation, ethToken }) => {
+const DepositApprove = ({
+  theme,
+  blockchainWallet,
+  navigation,
+  ethToken,
+  isFocused
+}) => {
   const feeRate = navigation.getParam('feeRate')
   const amount = navigation.getParam('amount')
   const token = navigation.getParam('token')
@@ -53,10 +59,12 @@ const DepositApprove = ({ theme, blockchainWallet, navigation, ethToken }) => {
       }
     }
 
-    const { address: from } = blockchainWallet
-    const weiAmount = Unit.convertToString(amount, 0, token.tokenDecimal)
-    checkIfRequireApproveErc20(weiAmount, from)
-  }, [])
+    if (isFocused) {
+      const { address: from } = blockchainWallet
+      const weiAmount = Unit.convertToString(amount, 0, token.tokenDecimal)
+      checkIfRequireApproveErc20(weiAmount, from)
+    }
+  }, [isFocused])
 
   const handleApprovePressed = useCallback(() => {
     async function approve(weiAmount, from, privateKey) {
@@ -96,7 +104,7 @@ const DepositApprove = ({ theme, blockchainWallet, navigation, ethToken }) => {
       <OMGText style={styles.title} weight='regular'>
         APPROVE {token.symbol} TOKEN
       </OMGText>
-      <OMGText style={styles.description}>
+      <OMGText style={styles.description} weight='regular'>
         Please approve to move {amount} {token.tokenSymbol} from Ethereum to the
         OMG Network.
       </OMGText>
@@ -122,7 +130,7 @@ const DepositApprove = ({ theme, blockchainWallet, navigation, ethToken }) => {
         onPress={onPressEditFee}
         style={[styles.paddingMedium, styles.mediumMarginTop]}
       />
-      <View style={styles.buttonContainer}>
+      <View style={styles.bottomContainer}>
         <OMGButton
           onPress={handleApprovePressed}
           loading={approving}
@@ -133,7 +141,9 @@ const DepositApprove = ({ theme, blockchainWallet, navigation, ethToken }) => {
             ? 'Waiting for approval...'
             : 'Approve'}
         </OMGButton>
-        <OMGText>This process will be approximately taken about 30s</OMGText>
+        <OMGText style={styles.textEstimateTime} weight='regular'>
+          This process is usually takes about 30 seconds.
+        </OMGText>
       </View>
     </View>
   )
@@ -187,9 +197,14 @@ const createStyles = theme =>
     paddingMedium: {
       padding: 12
     },
-    buttonContainer: {
+    bottomContainer: {
       flex: 1,
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-end',
+      alignItems: 'center'
+    },
+    textEstimateTime: {
+      marginTop: 16,
+      color: theme.colors.gray2
     }
   })
 
@@ -208,4 +223,4 @@ const mapStateToProps = (state, _ownProps) => {
 export default connect(
   mapStateToProps,
   null
-)(withNavigation(withTheme(DepositApprove)))
+)(withNavigationFocus(withTheme(DepositApprove)))
