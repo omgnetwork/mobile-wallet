@@ -1,9 +1,9 @@
 import * as Sentry from '@sentry/react-native'
-import Config from 'react-native-config'
 
 const isDev = typeof __DEV__ === 'boolean' && __DEV__
+
 export const send = exception => {
-  if (Config.ETHEREUM_NETWORK === 'mainnet' && !isDev) {
+  if (!isDev) {
     Sentry.captureException(exception)
   }
 }
