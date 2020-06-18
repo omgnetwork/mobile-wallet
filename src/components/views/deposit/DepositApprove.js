@@ -57,8 +57,6 @@ const DepositApprove = ({
     estimatedFee
   })
 
-  const showErrorMsg = !hasEnoughBalance && minimumAmount > 0
-
   useEffect(() => {
     async function checkIfRequireApproveErc20(weiAmount, from) {
       setVerifying(true)
@@ -118,7 +116,8 @@ const DepositApprove = ({
   }, [navigation])
 
   const styles = createStyles(theme)
-
+  const showErrorMsg = !hasEnoughBalance && minimumAmount > 0
+  const disableBtn = !hasEnoughBalance || verifying
   return (
     <View style={styles.container}>
       {verifying ? (
@@ -165,14 +164,14 @@ const DepositApprove = ({
         <OMGButton
           onPress={handleApprovePressed}
           loading={approving}
-          disabled={!hasEnoughBalance || verifying}>
+          disabled={disableBtn}>
           {verifying
             ? 'Checking if require approval..'
             : approving
             ? 'Waiting for approval...'
             : 'Approve'}
         </OMGButton>
-        {hasEnoughBalance && (
+        {!disableBtn && (
           <OMGText style={styles.textEstimateTime} weight='regular'>
             This process is usually takes about 15 - 30 seconds.
           </OMGText>
