@@ -5,7 +5,8 @@ import { withTheme } from 'react-native-paper'
 import { StyleSheet, View } from 'react-native'
 import { ethereumActions } from 'common/actions'
 import { OMGListGasFee, OMGText } from 'components/widgets'
-import { ContractAddress } from 'common/constants'
+import { ContractAddress, BlockchainNetworkType } from 'common/constants'
+import { getType, TYPE_DEPOSIT } from 'components/views/transfer/transferHelper'
 
 const TransferChooseGasFee = ({
   theme,
@@ -16,8 +17,13 @@ const TransferChooseGasFee = ({
   navigation
 }) => {
   const [emptyMsg, setEmptyMsg] = useState(null)
+  const address = navigation.getParam('address')
   const hasEth = wallet.rootchainAssets.some(
     token => token.contractAddress === ContractAddress.ETH_ADDRESS
+  )
+  const transactionType = getType(
+    address,
+    BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
   )
 
   useEffect(() => {
@@ -36,14 +42,13 @@ const TransferChooseGasFee = ({
 
   const onSelectGas = useCallback(
     feeRate => {
-      const token = navigation.getParam('token')
       const navigationParams = {
         token: navigation.getParam('token'),
-        address: navigation.getParam('address'),
+        address,
         amount: navigation.getParam('amount'),
         feeRate
       }
-      if (token.contractAddress !== ContractAddress.ETH_ADDRESS) {
+      if (transactionType === TYPE_DEPOSIT) {
         navigation.navigate('DepositApprove', navigationParams)
       } else {
         navigation.navigate('TransferReview', navigationParams)
