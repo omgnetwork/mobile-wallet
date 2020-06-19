@@ -31,13 +31,13 @@ MATCH_GIT_URL     The URL of the GitHub repo containing certificates and provisi
 
 ## iOS
 
-### ios beta
+### ios testflight_local
 
 ```
-fastlane ios beta
+fastlane ios testflight_local
 ```
 
-Push a new beta build to TestFlight
+Push a new build to TestFlight (local)
 
 ---
 
