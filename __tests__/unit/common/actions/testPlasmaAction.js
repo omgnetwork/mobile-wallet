@@ -115,7 +115,7 @@ describe('Test Plasma Actions', () => {
     const store = mockStore({})
 
     return store
-      .dispatch(plasmaActions.deposit(wallet, token, 'any'))
+      .dispatch(plasmaActions.deposit(wallet, token, { amount: 'any' }))
       .then(() => {
         const actions = store.getActions()
         expect(actions).toStrictEqual([
@@ -151,7 +151,7 @@ describe('Test Plasma Actions', () => {
     const store = mockStore({})
 
     return store
-      .dispatch(plasmaActions.deposit(wallet, token, 'any'))
+      .dispatch(plasmaActions.deposit(wallet, token, { amount: 'any' }))
       .then(() => {
         const actions = store.getActions()
         expect(actions).toStrictEqual([
