@@ -1,4 +1,4 @@
-import { Plasma, Contract, Utxos, Ethereum } from 'common/blockchain'
+import { Plasma, Contract, Utxos } from 'common/blockchain'
 import { Plasma as PlasmaClient } from 'common/clients'
 import Config from 'react-native-config'
 import BN from 'bn.js'
@@ -38,7 +38,7 @@ const mockWaitToBeSkipped = () => {
   Wait.waitForRootchainTransaction.mockReturnValue(Promise.resolve())
 }
 
-const mockGasEstimator = resp => {
+const mockDepositGasEstimated = resp => {
   GasEstimator.estimateDeposit.mockReturnValueOnce(Promise.resolve(resp))
 }
 
@@ -48,10 +48,6 @@ const mockDepositReceipt = resp => {
 
 const mockGetErc20Vault = resp => {
   getErc20Vault.mockReturnValueOnce(Promise.resolve(resp))
-}
-
-const mockSendSignedTx = resp => {
-  Ethereum.signSendTx = jest.fn().mockReturnValueOnce(Promise.resolve(resp))
 }
 
 describe('Test Plasma Boundary', () => {
@@ -468,7 +464,7 @@ describe('Test Plasma Boundary', () => {
       blockHash: 'any'
     }
 
-    mockGasEstimator(estimateGasUsedDeposit)
+    mockDepositGasEstimated(estimateGasUsedDeposit)
     mockDepositReceipt(depositReceipt)
 
     return Plasma.deposit(

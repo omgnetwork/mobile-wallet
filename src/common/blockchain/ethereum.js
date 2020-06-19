@@ -94,6 +94,7 @@ export const sendEthToken = (wallet, options) => {
     amount,
     fee
   )
+
   return signSendTx(txDetails, wallet.privateKey)
 }
 
