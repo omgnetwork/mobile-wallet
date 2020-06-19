@@ -1,26 +1,27 @@
 # Release iOS IPA to the Testflight
 
-1. Open Xcode at `ios`
-2. If you don't have apple ids belong to OmiseGO team, get that first, then go to `Preference > Accounts` and add it.
-3. In `Signing & Capabilities` make sure that the team is `Omise Go Pte. Ltd`
-4. In `General` bump the build version so it won't conflict with the previous builds.
-5. Go to `Product > Archive` waiting the build to finish, then follow the instructions below:
+# Installation
 
-![ios-archive-instruction-3](../public/ios-archive-instruction-4.png)
+1. Make sure you have the latest version of the Xcode command line tools installed:
 
-![ios-archive-instruction-5](../public/ios-archive-instruction-5.png)
+```
+xcode-select --install
+```
 
-![ios-archive-instruction-6](../public/ios-archive-instruction-6.png)
+2. Install _fastlane_ using `brew cask install fastlane` or alternatively `[sudo] gem install fastlane -NV`.
 
-![ios-archive-instruction-7](../public/ios-archive-instruction-7.png)
+3. Create a `.env.default` file in the `ios` folder and add your configuration:
 
-![ios-archive-instruction-8](../public/ios-archive-instruction-8.png)
+```env
+APPLE_ID=         Your Apple ID
+TEAM_ID=          Your Apple Developer Portal Team ID
+ITC_TEAM_ID       Your iTunes Connect Team ID
+MATCH_GIT_URL     The URL of the GitHub repo containing certificates and provisioning profiles for match signing
+```
 
-![ios-archive-instruction-9](../public/ios-archive-instruction-9.png)
+4. From the `/ios` directory, run `pod install`. 
 
-![ios-archive-instruction-10](../public/ios-archive-instruction-10.png)
-
-![ios-archive-instruction-11](../public/ios-archive-instruction-11.png)
+5. Also from the `/ios` directory, run `fastlane ios testflight_local` and wait for the job to complete.
 
 6. Go to https://appstoreconnect.apple.com/WebObjects/iTunesConnect.woa/ra/ng/app/1482235242 (You need to login first)
 
