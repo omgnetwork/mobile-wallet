@@ -16,9 +16,10 @@ const OMGExitFee = ({
   onPressEdit
 }) => {
   const [ethPrice, setEthPrice] = useState()
+  const [feeUsd, setFeeUsd] = useState()
 
   const formatBond = useCallback(() => {
-    return BlockchainFormatter.formatEthFromWei(exitBondValue)
+    return BlockchainFormatter.formatUnits(exitBondValue, 'ether')
   }, [exitBondValue])
 
   const formatGasFee = useCallback(() => {
@@ -47,6 +48,16 @@ const OMGExitFee = ({
     fetchEthPrice()
   }, [])
 
+  useEffect(() => {
+    if (ethPrice && formatTotalExitFee()) {
+      const price = BlockchainFormatter.formatTokenPrice(
+        formatTotalExitFee(),
+        ethPrice
+      )
+      setFeeUsd(price)
+    }
+  }, [ethPrice, formatTotalExitFee])
+
   const handleClickHyperlink = useCallback(() => {
     Linking.openURL('https://docs.omg.network/exitbonds')
   }, [])
@@ -56,10 +67,10 @@ const OMGExitFee = ({
       <View style={[styles.container]}>
         <OMGEditItem
           title='Total'
+          rightFirstLine={`${formatTotalExitFee() || 0} ETH`}
+          rightSecondLine={`${feeUsd} USD`}
           loading={!gasUsed || !exitBondValue}
-          value={formatTotalExitFee() || 0}
           onPress={onPressEdit}
-          price={ethPrice}
         />
       </View>
       <Divider theme={theme} />

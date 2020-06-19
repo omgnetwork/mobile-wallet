@@ -1,9 +1,8 @@
-import { Datetime, Mapper } from 'common/utils'
+import { Datetime, Mapper, Unit } from 'common/utils'
 import {
   BlockchainFormatter,
   Plasma,
   Token,
-  Parser,
   Wait,
   Transaction,
   Utxos
@@ -90,17 +89,17 @@ export const mergeUTXOs = (
 
 export const getFees = async tokens => {
   try {
-    const currencies = tokens.map(token => token.contractAddress)
-    const fees = await Plasma.getFees(currencies).then(feeTokens => {
-      return feeTokens.map(feeToken => {
-        const token = tokens.find(t => t.contractAddress === feeToken.currency)
-        return {
-          ...feeToken,
-          ...token
-        }
-      })
+    const all = await Plasma.getFees()
+    const available = all.flatMap(fee => {
+      const token = tokens.find(t => t.contractAddress === fee.currency)
+      return token ? [{ ...fee, ...token }] : []
     })
-    return { fees, updatedAt: fees[0] ? fees[0].updated_at : null }
+
+    return {
+      available,
+      all,
+      updatedAt: all[0] ? all[0].updated_at : null
+    }
   } catch (err) {
     throw new Error(err)
   }
@@ -133,10 +132,7 @@ export const transfer = async (
 }
 
 export const deposit = async (address, privateKey, token, gasPrice) => {
-  const weiAmount = Parser.parseUnits(
-    token.balance,
-    token.tokenDecimal
-  ).toString(10)
+  const weiAmount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
 
   const { hash, gasUsed } = await Plasma.deposit(
     address,

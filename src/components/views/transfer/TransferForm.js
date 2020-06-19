@@ -16,8 +16,7 @@ import {
   OMGWalletAddress,
   OMGAmountInput,
   OMGFeeInput,
-  OMGBlockchainLabel,
-  OMGFeeTokenInput
+  OMGBlockchainLabel
 } from 'components/widgets'
 import { Validator } from 'common/blockchain'
 import * as BlockchainLabel from './blockchainLabel'
@@ -26,8 +25,7 @@ import {
   paramsForTransferFormToTransferSelectBalance,
   paramsForTransferFormToTransferConfirm,
   paramsForTransferFormToTransferScanner,
-  paramsForTransferFormToTransferSelectFee,
-  paramsForTransferFormToTransferSelectPlasmaFee
+  paramsForTransferFormToTransferSelectFee
 } from './transferNavigation'
 import { Styles } from 'common/utils'
 
@@ -64,11 +62,6 @@ const TransferForm = ({
   const [showErrorAddress, setShowErrorAddress] = useState(false)
   const [showErrorAmount, setShowErrorAmount] = useState(false)
   const [ethFee, setEthFee] = useState(selectedEthFee)
-  const [loadingFeeToken] = useLoading(
-    loading,
-    'CHILDCHAIN_FEES',
-    fees.length === 0
-  )
   const [loadingGas] = useLoading(
     loading,
     'ROOTCHAIN_GET_RECOMMENDED_GAS',
@@ -92,14 +85,6 @@ const TransferForm = ({
   useEffect(() => {
     setEthFee(selectedEthFee || gasOptions[0])
   }, [gasOptions, selectedEthFee])
-
-  const navigateToSelectPlasmaFee = useCallback(() => {
-    const params = paramsForTransferFormToTransferSelectPlasmaFee({
-      selectedPlasmaFee,
-      fees
-    })
-    navigation.navigate('TransferSelectPlasmaFee', params)
-  }, [fees, navigation, selectedPlasmaFee])
 
   const navigateToSelectBalance = useCallback(() => {
     const params = paramsForTransferFormToTransferSelectBalance({
@@ -252,21 +237,12 @@ const TransferForm = ({
           </OMGBox>
           <OMGBox style={styles.feeContainer(theme, transferType)}>
             <OMGText style={styles.title(theme)}>Transaction Fee</OMGText>
-            {transferType === TransferHelper.TYPE_TRANSFER_CHILDCHAIN ? (
-              <OMGFeeTokenInput
-                onPress={navigateToSelectPlasmaFee}
-                style={styles.mediumMarginTop}
-                feeToken={selectedPlasmaFee || fees[0]}
-                loading={loadingFeeToken}
-              />
-            ) : (
-              <OMGFeeInput
-                fee={ethFee}
-                loading={loadingGas}
-                style={styles.mediumMarginTop}
-                onPress={navigationToTransferSelectFee}
-              />
-            )}
+            <OMGFeeInput
+              fee={ethFee}
+              loading={loadingGas}
+              style={styles.mediumMarginTop}
+              onPress={navigationToTransferSelectFee}
+            />
           </OMGBox>
         </View>
         <View style={styles.buttonContainer}>
@@ -327,7 +303,7 @@ const mapStateToProps = (state, _ownProps) => ({
     wallet => wallet.address === state.setting.primaryWalletAddress
   ),
   loading: state.loading,
-  fees: state.fees.data,
+  fees: state.fee.available,
   gasOptions: state.gasOptions
 })
 

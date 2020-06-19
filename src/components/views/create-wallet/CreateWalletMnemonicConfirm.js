@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
-import { GoogleAnalytics } from 'common/analytics'
+import { EventReporter } from 'common/reporter'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
 import { View, ScrollView, StyleSheet } from 'react-native'
@@ -67,7 +67,7 @@ const CreateWalletMnemonicConfirm = ({
 
   useEffect(() => {
     if (loading.success && loading.action === 'WALLET_CREATE' && wallet) {
-      GoogleAnalytics.sendEvent('created_wallet', {})
+      EventReporter.send('created_wallet', {})
       dispatchSetPrimaryWallet(wallet)
       navigation.navigate('Home')
     }

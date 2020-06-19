@@ -41,6 +41,7 @@ const Balance = ({
   const assets = isEthereumNetwork
     ? wallet.rootchainAssets
     : wallet.childchainAssets
+
   const hasPendingTransaction = unconfirmedTxs.length > 0
 
   useEffect(() => {
@@ -70,7 +71,7 @@ const Balance = ({
     wallet
   ])
 
-  const handleReload = useCallback(() => {
+  const onRefresh = useCallback(() => {
     if (isEthereumNetwork) {
       dispatchRefreshRootchain(wallet.address, true)
     } else {
@@ -129,10 +130,14 @@ const Balance = ({
         type={primaryWalletNetwork}
         updatedAt={Datetime.format(wallet.updatedAt, 'LTS')}
         loading={loading}
-        handleReload={handleReload}
+        onRefresh={onRefresh}
         style={styles.list}
         renderItem={({ item }) => (
-          <OMGItemToken key={item.contractAddress} token={item} />
+          <OMGItemToken
+            key={item.contractAddress}
+            token={item}
+            style={styles.listItem}
+          />
         )}
       />
     </Fragment>
@@ -143,6 +148,9 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
     paddingTop: Styles.getResponsiveSize(32, { small: 20, medium: 24 })
+  },
+  listItem: {
+    marginTop: 8
   }
 })
 

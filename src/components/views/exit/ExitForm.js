@@ -5,7 +5,7 @@ import { withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useLoading } from 'common/hooks'
 import { plasmaActions } from 'common/actions'
-import { GoogleAnalytics } from 'common/analytics'
+import { EventReporter } from 'common/reporter'
 import {
   OMGText,
   OMGExitWarning,
@@ -63,13 +63,13 @@ const ExitForm = ({
 
   useEffect(() => {
     if (loading.success && loading.action === 'CHILDCHAIN_EXIT') {
-      GoogleAnalytics.sendEvent('transfer_exited', { hash: unconfirmedTx.hash })
+      EventReporter.sendEvent('transfer_exited', { hash: unconfirmedTx.hash })
       navigation.navigate('Home')
     }
   })
 
   const navigateEditAmount = () => {
-    navigation.navigate('ExitSelectBalance')
+    navigation.navigate('ExitSelectToken')
   }
   const navigateEditFee = () => {
     navigation.navigate('ExitSelectFee')
@@ -84,6 +84,8 @@ const ExitForm = ({
     )
   }
 
+  const exitFee = BlockchainFormatter.formatTokenPrice(exitAmount, token.price)
+
   return (
     <View style={styles.container(theme)}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -94,10 +96,9 @@ const ExitForm = ({
         </OMGText>
         <OMGEditItem
           title='Amount'
-          value={exitAmount}
+          rightFirstLine={`${exitAmount} ${token.tokenSymbol}`}
+          rightSecondLine={`${exitFee} USD`}
           onPress={navigateEditAmount}
-          symbol={token.tokenSymbol}
-          price={token.price}
           style={[styles.marginMedium, styles.paddingMedium]}
         />
         <OMGExitFee

@@ -4,20 +4,22 @@ export default {
   CHILDCHAIN_DEPOSIT_CONFIRMATION_BLOCKS: 12,
   CHILDCHAIN_EXIT_CONFIRMATION_BLOCKS: 12,
   ROOTCHAIN_TRANSFER_CONFIRMATION_BLOCKS: 1,
+  EXIT_PERIOD: 1200000,
   ETHERSCAN_API_KEY: 'VCKWHFAA6M5AR8SFVXC43DEMEA8JN2H3WZ',
-  ETHERSCAN_API_URL: 'https://api-ropsten.etherscan.io/api/',
-  ETHERSCAN_URL: 'https://ropsten.etherscan.io/',
-  ETHEREUM_NETWORK: 'ropsten',
-  OMISEGO_NETWORK: 'lumpini',
-  WEB3_HTTP_PROVIDER: 'https://dev-a69c763-mwproxy-ropsten-01.omg.network/api',
+  ETHERSCAN_API_URL: 'https://api-rinkeby.etherscan.io/api/',
+  ETHERSCAN_URL: 'https://rinkeby.etherscan.io/',
+  ETHEREUM_NETWORK: 'rinkeby',
+  OMISEGO_NETWORK: 'rinkeby',
+  WEB3_HTTP_PROVIDER: 'https://sandbox-mwproxy-rinkeby-01.omg.network/api/',
   PLASMA_FRAMEWORK_CONTRACT_ADDRESS:
-    '0x1499442e7ee8c7cf2ae33f5e096d1a5b9c013cff',
-  ETH_VAULT_CONTRACT_ADDRESS: '0xe637769f388f309e1cca8dd679a95a7b64a5bd06',
-  ERC20_VAULT_CONTRACT_ADDRESS: '0x3fa3ae3aa4348f98da81511a6a2ca5a228fa2c8a',
-  WATCHER_URL: 'https://dev-a69c763-watcher-info-ropsten-01.omg.network/',
-  BLOCK_EXPLORER_URL:
-    'https://dev-a69c763-blockexplorer-ropsten-01.omg.network/',
-  EXIT_PERIOD: 300000,
+    '0xae5c517b54c356c1189ff6b3a007d29729992d44',
+  PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS:
+    '0x30f7632231828a5a31b45a06a84e31ea83d19490',
+
+  ETH_VAULT_CONTRACT_ADDRESS: '0xde3f5ff2145b5c178ef57c1983330abbf13e0575',
+  ERC20_VAULT_CONTRACT_ADDRESS: '0xe3dddcec03e6b747177a2e04c3e05007d0f2ddca',
+  WATCHER_URL: 'https://sandbox-watcher-info-rinkeby-01.omg.network/',
+  BLOCK_EXPLORER_URL: 'https://sandbox-blockexplorer-rinkeby-01.omg.network/',
 
   // For Testing
   TEST_FUND_ADDRESS: process.env.MW_TEST_FUND_ADDRESS,

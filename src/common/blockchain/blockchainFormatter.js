@@ -1,5 +1,4 @@
 import { ethers } from 'ethers'
-import { Parser } from 'common/blockchain'
 import { BigNumber, Formatter, Datetime } from 'common/utils'
 import { DateFormat } from 'common/constants'
 
@@ -31,12 +30,6 @@ export const formatGasFeeUsd = (gasUsed, gasPriceWei, usdEth) => {
   return Formatter.format(BigNumber.multiply(gasFeeString, usdEth), {
     maxDecimal: 2
   })
-}
-
-export const formatEthFromWei = wei => {
-  if (!wei) return '0'
-  const weiFee = Parser.parseUnits(wei, 'wei')
-  return formatUnits(weiFee, 'ether')
 }
 
 export const formatProcessExitAt = datetime => {

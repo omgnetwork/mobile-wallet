@@ -1,5 +1,6 @@
 import { ethereumActions } from 'common/actions'
 import { getMockStore } from '../../../helpers/index'
+import { ContractAddress } from 'common/constants'
 import { ethers } from 'ethers'
 import {
   sendErc20Token,
@@ -15,7 +16,6 @@ const { ETHEREUM_NETWORK, TEST_PRIVATE_KEY, TEST_ADDRESS } = Config
 const mockTxOptions = {
   hash: 'any',
   from: 'any',
-  nonce: 'any',
   gasPrice: 'any'
 }
 
@@ -25,61 +25,76 @@ const mockEthereumService = (method, resp) => {
 }
 
 describe('Test Ethereum Actions', () => {
-  it('sendErc20Token should dispatch expected actions to the store', () => {
-    const token = { balance: '10', tokenSymbol: 'OMG', tokenDecimal: 18 }
-    const fee = { amount: '10', symbol: 'gwei' }
+  it('transfer with erc20 should invoke sendErc20Token and dispatch expected actions to the store', () => {
+    const token = {
+      balance: '10',
+      tokenSymbol: 'OMG',
+      tokenDecimal: 18,
+      contractAddress: '0x1234'
+    }
+    const fee = { amount: '10', symbol: 'wei' }
     const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
     const toAddress = TEST_ADDRESS
     const store = mockStore({ unconfirmedTxs: [] })
     mockEthereumService(sendErc20Token, mockTxOptions)
-    const action = ethereumActions.sendErc20Token(token, fee, wallet, toAddress)
+    const action = ethereumActions.transfer(wallet, toAddress, token, fee)
     return store.dispatch(action).then(() => {
       expect(sendErc20Token).toBeCalledWith(wallet, { token, fee, toAddress })
       const dispatchedActions = store.getActions()
       expect(dispatchedActions).toStrictEqual([
-        { type: 'ROOTCHAIN/SEND_ERC20_TOKEN/INITIATED' },
+        { type: 'ROOTCHAIN/SEND_TOKEN/INITIATED' },
         {
-          type: 'ROOTCHAIN/SEND_ERC20_TOKEN/SUCCESS',
+          type: 'ROOTCHAIN/SEND_TOKEN/SUCCESS',
           data: {
             ...mockTxOptions,
+            from: wallet.address,
             to: toAddress,
             value: token.balance,
+            gasUsed: null,
+            gasPrice: fee.amount,
             actionType: 'ROOTCHAIN_SEND_TOKEN',
             symbol: token.tokenSymbol,
             createdAt: dispatchedActions[1].data.createdAt
           }
         },
-        { type: 'LOADING/ROOTCHAIN_SEND_ERC20_TOKEN/IDLE' }
+        { type: 'LOADING/ROOTCHAIN_SEND_TOKEN/IDLE' }
       ])
     })
   })
 
-  it('sendEthToken should dispatch expected actions to the store', () => {
-    const token = { balance: '10', tokenSymbol: 'OMG', tokenDecimal: 18 }
+  it('transfer with eth should invoke sendEthToken and dispatch expected actions to the store', () => {
+    const token = {
+      balance: '10',
+      tokenSymbol: 'ETH',
+      tokenDecimal: 18,
+      contractAddress: ContractAddress.ETH_ADDRESS
+    }
     const fee = { amount: '10', symbol: 'gwei' }
     const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
     const toAddress = TEST_ADDRESS
     const store = mockStore({ unconfirmedTxs: [] })
     mockEthereumService(sendEthToken, mockTxOptions)
-    const action = ethereumActions.sendEthToken(token, fee, wallet, toAddress)
+    const action = ethereumActions.transfer(wallet, toAddress, token, fee)
     return store.dispatch(action).then(() => {
       expect(sendEthToken).toBeCalledWith(wallet, { token, fee, toAddress })
       const dispatchedActions = store.getActions()
       expect(dispatchedActions).toStrictEqual([
-        { type: 'ROOTCHAIN/SEND_ETH_TOKEN/INITIATED' },
+        { type: 'ROOTCHAIN/SEND_TOKEN/INITIATED' },
         {
-          type: 'ROOTCHAIN/SEND_ETH_TOKEN/SUCCESS',
+          type: 'ROOTCHAIN/SEND_TOKEN/SUCCESS',
           data: {
             ...mockTxOptions,
+            from: wallet.address,
             to: toAddress,
-            gasUsed: null,
             value: token.balance,
+            gasUsed: null,
+            gasPrice: fee.amount,
             actionType: 'ROOTCHAIN_SEND_TOKEN',
             symbol: token.tokenSymbol,
             createdAt: dispatchedActions[1].data.createdAt
           }
         },
-        { type: 'LOADING/ROOTCHAIN_SEND_ETH_TOKEN/IDLE' }
+        { type: 'LOADING/ROOTCHAIN_SEND_TOKEN/IDLE' }
       ])
     })
   })

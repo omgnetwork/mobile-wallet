@@ -4,11 +4,19 @@ import { OMGText, OMGFontIcon } from 'components/widgets'
 import { Styles } from 'common/utils'
 import { withTheme } from 'react-native-paper'
 
-const DrawerMenuItem = ({ theme, title, style, onPress, showCaret = true }) => {
-  const styles = createStyles(theme)
+const DrawerMenuItem = ({
+  theme,
+  title,
+  disabled,
+  style,
+  onPress,
+  showCaret = true
+}) => {
+  const styles = createStyles(theme, disabled)
   return (
     <TouchableOpacity
       style={{ ...styles.container, ...style }}
+      disabled={disabled}
       onPress={onPress}>
       <OMGText style={styles.titleLeft} weight='book'>
         {title}
@@ -19,12 +27,13 @@ const DrawerMenuItem = ({ theme, title, style, onPress, showCaret = true }) => {
     </TouchableOpacity>
   )
 }
-const createStyles = theme =>
+const createStyles = (theme, disabled) =>
   StyleSheet.create({
     container: {
       flexDirection: 'row',
       paddingVertical: 16,
-      alignItems: 'center'
+      alignItems: 'center',
+      opacity: disabled ? 0.4 : 1.0
     },
     titleLeft: {
       flex: 1,

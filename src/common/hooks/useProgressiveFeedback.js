@@ -24,6 +24,10 @@ const useProgressiveFeedback = (
 
   const getTransactionFeedbackTitle = useCallback((pending, actionType) => {
     switch (actionType) {
+      case TransactionActionTypes.TYPE_ROOTCHAIN_SEND_TOKEN:
+        return pending
+          ? 'Pending transfer on Ethereum'
+          : 'Transfer sent on Ethereum'
       case TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN:
         return pending
           ? 'Pending transfer on the OMG Network'
@@ -45,6 +49,7 @@ const useProgressiveFeedback = (
 
   const getSubtitle = useCallback((pending, actionType) => {
     switch (actionType) {
+      case TransactionActionTypes.TYPE_ROOTCHAIN_SEND_TOKEN:
       case TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN:
         return pending ? 'Please wait' : 'The transaction is being finalised'
       case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
@@ -52,9 +57,7 @@ const useProgressiveFeedback = (
           ? 'Please wait'
           : 'Your withdrawal is pending. We will notify you once it finalizes.'
       case TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT:
-        return pending
-          ? 'Please wait'
-          : 'Your funds are now on the Ethereum Network.'
+        return pending ? 'Please wait' : 'Your funds are now on Ethereum.'
       case TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS:
         return pending
           ? 'We’re merging UTXOs. You can not transfer during this time.'
@@ -64,6 +67,11 @@ const useProgressiveFeedback = (
 
   const getExternalLink = useCallback((actionType, hash) => {
     switch (actionType) {
+      case TransactionActionTypes.TYPE_ROOTCHAIN_SEND_TOKEN:
+        return {
+          url: `${Config.ETHERSCAN_URL}tx/${hash}`,
+          title: 'View on Etherscan'
+        }
       case TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN:
         return {
           url: `${Config.BLOCK_EXPLORER_URL}transaction?id=${hash}`,

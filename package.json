@@ -1,6 +1,6 @@
 {
   "name": "PlasmaWallet",
-  "version": "0.9.0",
+  "version": "1.0.1",
   "private": true,
   "engines": {
     "node": "10.13.0"
@@ -10,6 +10,8 @@
     "clean": "react-native clean-project-auto",
     "clean-start": "react-native start -- --reset-cache",
     "test": "jest",
+    "test-unit": "jest __tests__/unit/",
+    "test-integration": "jest __tests__/integration/",
     "lint": "eslint .",
     "fix": "eslint . --fix",
     "dependency-audit": "audit-ci --moderate",
@@ -23,8 +25,8 @@
     "android-ropsten": "ENVFILE=.env.ropsten react-native run-android",
     "ios-local": "ENVFILE=.env.local react-native run-ios --simulator='iPhone 7'",
     "android-local": "ENVFILE=.env.local react-native run-android",
-    "build-android": "cd android && ./gradlew assembleRelease && cd .. && mkdir -p artifacts && cp android/app/build/outputs/apk/release/*.apk artifacts/",
-    "build-android-aab": "cd android && ./gradlew bundleRelease && cd .. && mkdir -p artifacts && cp android/app/build/outputs/bundle/release/*.aab artifacts/",
+    "build-android": "cd android && ./gradlew assembleRelease && cd .. && mkdir -p artifacts && cp android/app/build/outputs/apk/release/*.apk artifacts/ && open artifacts",
+    "build-android-aab": "cd android && ./gradlew bundleRelease && cd .. && mkdir -p artifacts && cp android/app/build/outputs/bundle/release/*.aab artifacts/ && open artifacts",
     "build-ios": "npm run ios-archive && npm run ios-export && mkdir -p artifacts && cp ios/build/Apps/PlasmaWallet.ipa artifacts/",
     "ios-archive": "xcodebuild archive -archivePath ios/PlasmaWallet/PlasmaWallet.xcarchive -workspace ios/PlasmaWallet.xcworkspace -scheme PlasmaWallet",
     "ios-export": "xcodebuild -exportArchive -archivePath ios/PlasmaWallet/PlasmaWallet.xcarchive -exportOptionsPlist ios/PlasmaWallet/ExportOptions.plist -exportPath ios/build",
@@ -41,6 +43,7 @@
     "@react-native-community/clipboard": "^1.2.2",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/push-notification-ios": "^1.0.2",
+    "@sentry/react-native": "^1.4.2",
     "abi-decoder": "^2.3.0",
     "assert": "^1.5.0",
     "asyncstorage-down": "^4.2.0",
@@ -138,7 +141,7 @@
     "preset": "react-native",
     "testMatch": [
       "**/__tests__/unit/**/*.js",
-      "**/__tests__/scenario/**/*.js"
+      "**/__tests__/integration/**/*.js"
     ],
     "reporters": [
       "default",

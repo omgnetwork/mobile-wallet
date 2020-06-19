@@ -1,8 +1,9 @@
 import { ethers } from 'ethers'
-import { Parser } from 'common/blockchain'
+import { web3 } from 'common/clients'
 import { Gas } from 'common/constants/'
 import axios from 'axios'
 import Config from 'react-native-config'
+import { Unit } from 'common/utils'
 
 export const importWalletMnemonic = mnemonic => {
   return ethers.Wallet.fromMnemonic(mnemonic)
@@ -86,23 +87,25 @@ export const sendEthToken = (wallet, options) => {
   const { fee, token, toAddress } = options
   return wallet.sendTransaction({
     to: toAddress,
-    value: Parser.parseUnits(token.balance, 'ether'),
+    value: Unit.convert(token.balance, 'ether', 'wei'),
     gasLimit: Gas.LOW_LIMIT,
-    gasPrice: Parser.parseUnits(fee.amount, 'wei')
+    gasPrice: Unit.convert(fee.amount, 'wei', 'wei')
   })
 }
 
 export const sendErc20Token = (contract, options) => {
-  const { fee, token, toAddress } = options
+  const { fee, token, toAddress, wallet } = options
+  const amount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
 
-  const amount = Parser.parseUnits(token.balance, token.numberOfDecimals)
-
-  const gasOptions = {
+  const txDetails = {
+    from: wallet.address,
+    to: toAddress,
+    data: contract.methods.transfer(toAddress, amount).encodeABI(),
     gasLimit: Gas.LOW_LIMIT,
-    gasPrice: Parser.parseUnits(fee.amount, 'wei')
+    gasPrice: fee.amount
   }
 
-  return contract.transfer(toAddress, amount, gasOptions)
+  return sendSignedTx(txDetails, wallet.privateKey)
 }
 
 export const getGasFromGasStation = () => {
@@ -111,10 +114,24 @@ export const getGasFromGasStation = () => {
     .then(response => response.data)
 }
 
-export const getContract = (tokenContractAddress, abi, walletOrProvider) => {
-  return new ethers.Contract(tokenContractAddress, abi, walletOrProvider)
+export const getContract = (tokenContractAddress, abi) => {
+  return new web3.eth.Contract(abi, tokenContractAddress)
 }
 
 export const createProvider = providerName => {
   return ethers.getDefaultProvider(providerName)
+}
+
+export const sendSignedTx = async (txDetails, privateKey) => {
+  const signedTx = await web3.eth.accounts.signTransaction(
+    txDetails,
+    privateKey
+  )
+
+  return new Promise((resolve, reject) => {
+    web3.eth.sendSignedTransaction(signedTx.rawTransaction, (error, hash) => {
+      if (error) return reject(error)
+      return resolve({ hash })
+    })
+  })
 }

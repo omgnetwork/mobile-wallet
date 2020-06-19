@@ -1,8 +1,7 @@
 import { createAsyncAction } from './actionCreators'
 import { plasmaService } from 'common/services'
-import { Parser } from 'common/blockchain'
 import { TransactionActionTypes, TransactionTypes, Gas } from 'common/constants'
-import { Datetime } from 'common/utils'
+import { Datetime, Unit } from 'common/utils'
 
 export const fetchAssets = (provider, address) => {
   const asyncAction = async () => {
@@ -144,10 +143,7 @@ export const exit = (blockchainWallet, token, utxos, gasPrice) => {
       from: blockchainWallet.address,
       to: to,
       value: token.balance,
-      smallestValue: Parser.parseUnits(
-        token.balance,
-        token.tokenDecimal
-      ).toString(),
+      smallestValue: Unit.convertToString(token.balance, 0, token.tokenDecimal),
       symbol: token.tokenSymbol,
       exitableAt,
       exitId: exitId,
@@ -172,9 +168,10 @@ export const exit = (blockchainWallet, token, utxos, gasPrice) => {
 
 export const getFees = tokens => {
   const asyncAction = async () => {
-    const { fees, updatedAt } = await plasmaService.getFees(tokens)
+    const { available, updatedAt, all } = await plasmaService.getFees(tokens)
     return {
-      data: fees,
+      available,
+      all,
       updatedAt
     }
   }

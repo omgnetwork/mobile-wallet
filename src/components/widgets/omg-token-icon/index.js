@@ -5,6 +5,8 @@ import { OMGIdenticon, OMGEmpty } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import { Token } from 'common/blockchain'
 
+const OMG = '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07'
+
 const OMGTokenIcon = ({ token, theme, style, size }) => {
   const [isError, setIsError] = useState(false)
   const [isEth, setIsEth] = useState(
@@ -47,9 +49,13 @@ const OMGTokenIcon = ({ token, theme, style, size }) => {
     <View style={[styles.icon(theme, iconContainerSize), style]}>
       <Image
         style={styles.innerIcon(size)}
-        source={{
-          uri: iconUri
-        }}
+        source={
+          contractAddressChecksum === OMG
+            ? require('./assets/omg.png')
+            : {
+                uri: iconUri
+              }
+        }
         onLoad={() => setIsError(false)}
         onError={() => {
           if (!isEth) setIsError(true)

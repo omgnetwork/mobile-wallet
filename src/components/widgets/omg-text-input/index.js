@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { TextInput, StyleSheet, Platform } from 'react-native'
 import { withTheme } from 'react-native-paper'
-import PropTypes from 'prop-types'
+import { hexToRgb } from 'common/styles/colors'
 
 const OMGTextInput = ({
   style,
@@ -25,13 +25,13 @@ const OMGTextInput = ({
   disabled,
   theme
 }) => {
-  const [underlineTextcolor, setUnderlineTextcolor] = useState(
-    theme.colors.black5
-  )
+  const inactiveUnderlineColor = hexToRgb(theme.colors.blue, 0.7)
+  const activeUnderlineColor = theme.colors.blue
+
+  const [underlineColor, setUnderlineColor] = useState(inactiveUnderlineColor)
   const numberOfLines = lines ? lines : 1
   return (
     <TextInput
-      mode='flat'
       placeholder={placeholder}
       placeholderTextColor={placeholderTextColor || theme.colors.gray6}
       ref={focusRef}
@@ -44,16 +44,17 @@ const OMGTextInput = ({
           inputRef.current = text
         }
       }}
-      underlineColorAndroid={hideUnderline ? 'transparent' : underlineTextcolor}
+      underlineColorAndroid={hideUnderline ? 'transparent' : underlineColor}
       onBlur={() => {
-        setUnderlineTextcolor(theme.colors.black5)
+        setUnderlineColor(inactiveUnderlineColor)
         onBlur?.()
       }}
       onFocus={() => {
-        setUnderlineTextcolor(theme.colors.gray4)
+        setUnderlineColor(activeUnderlineColor)
         onFocus?.()
       }}
       importantForAutofill='no'
+      autoCorrect={false}
       maxLength={maxLength}
       onSubmitEditing={onSubmitEditing}
       returnKeyType={returnKeyType || 'done'}
@@ -64,9 +65,9 @@ const OMGTextInput = ({
       value={value}
       textAlignVertical={lines > 1 ? 'top' : 'center'}
       keyboardType={keyboardType}
-      selectionColor={selectionColor || theme.colors.gray4}
+      selectionColor={selectionColor || theme.colors.white}
       style={{
-        ...styles.textInput(theme),
+        ...styles.textInput(underlineColor, hideUnderline),
         ...style,
         minHeight: Math.max(
           20,
@@ -76,19 +77,19 @@ const OMGTextInput = ({
     />
   )
 }
+
 const styles = StyleSheet.create({
-  textInput: theme => ({
+  textInput: (underlineColor, hideUnderline) => ({
     fontFamily: 'MessinaSansMono-Book',
-    backgroundColor: theme.colors.black3,
     paddingVertical: Platform.OS === 'ios' ? 8 : 0,
     marginLeft: Platform.OS === 'ios' ? 0 : -4,
+    borderBottomWidth: hideUnderline ? 0 : 1,
+    borderColor: underlineColor,
+    paddingBottom: hideUnderline ? 8 : 16,
     letterSpacing: -0.64,
-    fontSize: 16
+    fontSize: 16,
+    lineHeight: 19
   })
 })
-
-OMGTextInput.propTypes = {
-  placeholder: PropTypes.string
-}
 
 export default withTheme(OMGTextInput)

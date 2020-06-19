@@ -7,7 +7,7 @@ import { Styles } from 'common/utils'
 
 const ExitWarning = ({ theme, navigation }) => {
   const confirm = useCallback(() => {
-    navigation.navigate('ExitSelectBalance')
+    navigation.navigate('ExitSelectToken')
   }, [navigation])
 
   return (
