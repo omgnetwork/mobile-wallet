@@ -1,7 +1,7 @@
-version: 2.1
+version: 2
 
 workflows:
-  version: 2.1
+  version: 2
   mobile-wallet-build-tests:
     jobs:
       - mobile-wallet-build
@@ -12,7 +12,7 @@ workflows:
           requires:
             - mobile-wallet-build
       - mobile-wallet-dependency-audit:
-          requires: 
+          requires:
             - mobile-wallet-build
 
   proxy-server-build-test-deploy:
@@ -24,8 +24,8 @@ workflows:
       - proxy-server-test:
           requires:
             - proxy-server-build
-      - proxy-server-dependency-audit: 
-          requires: 
+      - proxy-server-dependency-audit:
+          requires:
             - proxy-server-build
       - proxy-server-publish:
           requires:
@@ -36,11 +36,6 @@ workflows:
           filters:
             branches:
               only: master
-
-  testflight-release:
-    jobs:
-      - fastlane-testflight-release
-  
 
 jobs:
   #
@@ -75,7 +70,7 @@ jobs:
       - run:
           name: Run mobile-wallet tests with JUnit as reporter
           command: |
-            npm run test --ci --runInBand --reporters=default --reporters=jest-junit --reporters=jest-html-reporters
+            npm run test-unit --ci --runInBand --reporters=default --reporters=jest-junit --reporters=jest-html-reporters
           environment:
             JEST_SUITE_NAME: 'results.xml'
             JEST_JUNIT_OUTPUT_DIR: 'test-results'
@@ -137,6 +132,7 @@ jobs:
           command: |
             cd proxy-server
             npm run lint
+
   proxy-server-test:
     docker:
       - image: circleci/node:10
@@ -148,17 +144,19 @@ jobs:
           command: |
             cd proxy-server
             npm run test
-  proxy-server-dependency-audit: 
+
+  proxy-server-dependency-audit:
     docker:
       - image: circleci/node:10
     steps:
       - attach_workspace:
           at: .
       - run:
-          name: Audit proxy server dependencies 
+          name: Audit proxy server dependencies
           command: |
             cd proxy-server
             npm run dependency-audit
+
   proxy-server-publish:
     docker:
       - image: google/cloud-sdk
@@ -175,6 +173,7 @@ jobs:
           docker build -t $PROXY_SERVER_DOCKER_IMAGE_NAME .
           docker tag $PROXY_SERVER_DOCKER_IMAGE_NAME $PROXY_SERVER_DOCKER_TAG
           docker push $PROXY_SERVER_DOCKER_TAG
+
   proxy-server-deploy:
     docker:
       - image: google/cloud-sdk
@@ -185,34 +184,4 @@ jobs:
           echo $PROXY_SERVER_GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
           gcloud auth configure-docker
           gcloud beta container clusters get-credentials $PROXY_SERVER_GCP_CLUSTER_DEVELOPMENT --region $PROXY_SERVER_GCP_REGION --project $PROXY_SERVER_GCP_PROJECT
-          kubectl set image deployment/mobile-wallet-proxy mobile-wallet-proxy=$PROXY_SERVER_DOCKER_T
-
-
-  fastlane-testflight-release:
-      macos:
-        xcode: "11.1.0"
-      shell: /bin/bash --login -o pipefail
-      steps:
-        - checkout
-        - restore_cache:
-            name: Restoring cache.
-            key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
-        - run: 
-            name: Installing Ruby dependencies
-            command: |
-              cd ios
-              gem install bundler && bundle config set path 'vendor/bundle' && bundle install
-        - save_cache:
-            name: Saving cache.
-            key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
-            paths:
-              - 'ios/vendor/bundle/'
-        - persist_to_workspace:
-            name: Persisting to workspace
-            root: .
-            paths: 'ios/'
-        - run: 
-            name: Running Fastlane
-            command: |
-              cd ios
-              bundle exec fastlane testflight_ci
+          kubectl set image deployment/mobile-wallet-proxy mobile-wallet-proxy=$PROXY_SERVER_DOCKER_TAG
