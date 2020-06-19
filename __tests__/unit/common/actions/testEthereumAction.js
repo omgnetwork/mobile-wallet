@@ -25,7 +25,7 @@ const mockEthereumService = (method, resp) => {
 }
 
 describe('Test Ethereum Actions', () => {
-  it('transfer with erc20 should invoke sendErc20Token and dispatch expected actions to the store', () => {
+  test('transfer with erc20 should invoke sendErc20Token and dispatch expected actions to the store', () => {
     const token = {
       balance: '10',
       tokenSymbol: 'OMG',
@@ -62,7 +62,7 @@ describe('Test Ethereum Actions', () => {
     })
   })
 
-  it('transfer with eth should invoke sendEthToken and dispatch expected actions to the store', () => {
+  test('transfer with eth should invoke sendEthToken and dispatch expected actions to the store', () => {
     const token = {
       balance: '10',
       tokenSymbol: 'ETH',
@@ -99,7 +99,7 @@ describe('Test Ethereum Actions', () => {
     })
   })
 
-  it('fetchAssets should dispatch expected actions to the store', () => {
+  test('fetchAssets should dispatch expected actions to the store', () => {
     const provider = ethers.getDefaultProvider(ETHEREUM_NETWORK)
     const action = ethereumActions.fetchAssets(provider, TEST_ADDRESS, 0)
     const store = mockStore({ unconfirmedTxs: [] })

@@ -26,7 +26,7 @@ const { TEST_PRIVATE_KEY, TEST_ADDRESS, ETHEREUM_NETWORK } = Config
 const testProvider = Ethereum.createProvider(ETHEREUM_NETWORK)
 
 describe('Test Ethereum Boundary', () => {
-  it('importWalletMnemonic should return a wallet when given 12-words mnemonic', () => {
+  test('importWalletMnemonic should return a wallet when given 12-words mnemonic', () => {
     const newMnemonic = Ethereum.generateWalletMnemonic()
     const { signingKey, address } = Ethereum.importWalletMnemonic(newMnemonic)
     const { mnemonic, privateKey } = signingKey
@@ -35,7 +35,7 @@ describe('Test Ethereum Boundary', () => {
     expect(address).toBeDefined()
   })
 
-  it('sendEthToken should send expected parameters', () => {
+  test('sendEthToken should send expected parameters', () => {
     const wallet = new ethers.Wallet(TEST_PRIVATE_KEY, testProvider)
     mockWalletTransfer(wallet)
     const fee = { amount: '1000000000', symbol: 'wei' }
@@ -52,7 +52,7 @@ describe('Test Ethereum Boundary', () => {
     })
   })
 
-  it('sendERC20Token should send expected parameters', () => {
+  test('sendERC20Token should send expected parameters', () => {
     const mockEncodeAbi = jest.fn(() => '0x')
     const mocktransfer = jest.fn(() => ({
       encodeABI: mockEncodeAbi
@@ -92,7 +92,7 @@ describe('Test Ethereum Boundary', () => {
     return response.then(resp => expect(resp).toStrictEqual({ hash: '0x1' }))
   })
 
-  it('generateWalletMnemonic must not contain duplicate words', () => {
+  test('generateWalletMnemonic must not contain duplicate words', () => {
     let validCount = 0
     for (let i = 0; i < 1000; i++) {
       const mnemonic = Ethereum.generateWalletMnemonic()
