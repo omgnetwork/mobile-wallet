@@ -1,10 +1,10 @@
 # Release iOS IPA to the Testflight
 
-# Installation
+## Installation
 
 1. Make sure you have the latest version of the Xcode command line tools installed:
 
-```
+```sh
 xcode-select --install
 ```
 
@@ -13,13 +13,11 @@ xcode-select --install
 3. Create a `.env.default` file in the `ios` folder and add your configuration:
 
 ```env
-APPLE_ID=         Your Apple ID
-TEAM_ID=          Your Apple Developer Portal Team ID
-ITC_TEAM_ID       Your iTunes Connect Team ID
+FASTLANE_USER     Your App Store Connect Email
 MATCH_GIT_URL     The URL of the GitHub repo containing certificates and provisioning profiles for match signing
 ```
 
-4. From the `/ios` directory, run `pod install`. 
+4. From the `/ios` directory, run `pod install`.
 
 5. Also from the `/ios` directory, run `fastlane ios testflight_local` and wait for the job to complete.
 
