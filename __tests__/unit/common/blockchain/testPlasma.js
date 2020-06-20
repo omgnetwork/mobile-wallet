@@ -1,9 +1,8 @@
-import { Plasma, Contract, Utxos } from 'common/blockchain'
+import { Plasma, Utxos } from 'common/blockchain'
 import { Plasma as PlasmaClient } from 'common/clients'
 import Config from 'react-native-config'
 import BN from 'bn.js'
 import { GasEstimator } from 'common/blockchain'
-import { Wait } from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
 
 jest.mock('common/blockchain/gasEstimator.js')
@@ -12,8 +11,7 @@ jest.mock('@omisego/react-native-omg-js')
 jest.mock('common/blockchain/contract.js')
 
 const { getBalance, getUtxos } = PlasmaClient.ChildChain
-const { deposit, getErc20Vault } = PlasmaClient.RootChain
-const { getErc20Allowance } = Contract
+const { deposit } = PlasmaClient.RootChain
 const { TEST_ADDRESS, TEST_PRIVATE_KEY } = Config
 
 const FIVE_GWEI = '5000000000'
@@ -26,28 +24,12 @@ const mockGetUtxosResponse = resp => {
   getUtxos.mockReturnValueOnce(Promise.resolve(resp))
 }
 
-const mockAllowance = resp => {
-  getErc20Allowance.mockReturnValueOnce(Promise.resolve(resp))
-}
-
-const mockApproveToken = resp => {
-  PlasmaClient.RootChain.approveToken.mockReturnValue(Promise.resolve(resp))
-}
-
-const mockWaitToBeSkipped = () => {
-  Wait.waitForRootchainTransaction.mockReturnValue(Promise.resolve())
-}
-
 const mockDepositGasEstimated = resp => {
   GasEstimator.estimateDeposit.mockReturnValueOnce(Promise.resolve(resp))
 }
 
 const mockDepositReceipt = resp => {
   deposit.mockReturnValueOnce(Promise.resolve(resp))
-}
-
-const mockGetErc20Vault = resp => {
-  getErc20Vault.mockReturnValueOnce(Promise.resolve(resp))
 }
 
 describe('Test Plasma Boundary', () => {
@@ -492,68 +474,5 @@ describe('Test Plasma Boundary', () => {
         gasPrice
       })
     })
-  })
-
-  test('approve should call approveToken twice if 0 < allowance < amount', () => {
-    const erc20Address = Config.TEST_ERC20_TOKEN_CONTRACT_ADDRESS
-    const amount = '1000000'
-    const txOptions = {
-      from: '0x1234',
-      privateKey: 'privateKey',
-      gas: 50000,
-      gasPrice: 100000
-    }
-    const allowance = 500000
-
-    mockWaitToBeSkipped()
-    mockGetErc20Vault({ address: Config.ERC20_VAULT_CONTRACT_ADDRESS })
-    mockAllowance(allowance)
-    mockApproveToken({
-      transactionHash: 'transactionHash'
-    })
-
-    return Plasma.approveErc20Deposit(erc20Address, amount, txOptions).then(
-      () => {
-        expect(PlasmaClient.RootChain.approveToken).toBeCalledWith({
-          erc20Address,
-          amount: 0,
-          txOptions
-        })
-        expect(PlasmaClient.RootChain.approveToken).toBeCalledWith({
-          erc20Address,
-          amount,
-          txOptions
-        })
-      }
-    )
-  })
-
-  test('approve should call approveToken once if allowance === 0', () => {
-    const erc20Address = Config.TEST_ERC20_TOKEN_CONTRACT_ADDRESS
-    const amount = '1000000'
-    const txOptions = {
-      from: '0x1234',
-      privateKey: 'privateKey',
-      gas: 50000,
-      gasPrice: 100000
-    }
-    const allowance = 0
-
-    mockWaitToBeSkipped()
-    mockGetErc20Vault({ address: Config.ERC20_VAULT_CONTRACT_ADDRESS })
-    mockAllowance(allowance)
-    mockApproveToken({
-      transactionHash: 'transactionHash'
-    })
-
-    return Plasma.approveErc20Deposit(erc20Address, amount, txOptions).then(
-      () => {
-        expect(PlasmaClient.RootChain.approveToken).toBeCalledWith({
-          erc20Address,
-          amount,
-          txOptions
-        })
-      }
-    )
   })
 })

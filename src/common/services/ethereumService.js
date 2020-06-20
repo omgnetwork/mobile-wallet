@@ -62,6 +62,21 @@ export const sendEthToken = async (wallet, options) => {
   return Ethereum.sendEthToken(wallet, options)
 }
 
+export const isRequireApproveErc20 = (from, amount, erc20Address) => {
+  return Ethereum.isRequireApproveErc20(from, amount, erc20Address)
+}
+
+export const approveErc20Deposit = (
+  erc20Address,
+  amount,
+  from,
+  gasPrice,
+  privateKey
+) => {
+  const txOptions = { from, gasPrice, privateKey }
+  return Ethereum.approveErc20Deposit(erc20Address, amount, txOptions)
+}
+
 export const getRecommendedGas = () => {
   return Ethereum.getGasFromGasStation().then(
     ({ fast, average, safeLow, fastWait, avgWait, safeLowWait }) => [

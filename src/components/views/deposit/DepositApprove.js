@@ -20,7 +20,7 @@ import {
   TYPE_DEPOSIT
 } from 'components/views/transfer/transferHelper'
 import { walletActions } from 'common/actions'
-import { plasmaService } from 'common/services'
+import { ethereumService } from 'common/services'
 
 const DepositApprove = ({
   theme,
@@ -60,7 +60,7 @@ const DepositApprove = ({
   useEffect(() => {
     async function checkIfRequireApproveErc20(weiAmount, from) {
       setVerifying(true)
-      const requiredApprove = await plasmaService.isRequireApproveErc20(
+      const requiredApprove = await ethereumService.isRequireApproveErc20(
         from,
         weiAmount,
         token.contractAddress
@@ -87,7 +87,7 @@ const DepositApprove = ({
   const handleApprovePressed = useCallback(() => {
     async function approve(weiAmount, from, privateKey) {
       setApproving(true)
-      await plasmaService.approveErc20Deposit(
+      await ethereumService.approveErc20Deposit(
         token.contractAddress,
         weiAmount,
         from,

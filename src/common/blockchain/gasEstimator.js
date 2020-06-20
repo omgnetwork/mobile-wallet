@@ -33,7 +33,7 @@ export const estimateApproveErc20 = async (from, token) => {
     return 0
   }
 
-  const approveErc20Tx = TxDetails.getApproveErc20(
+  const approveErc20Tx = await TxDetails.getApproveErc20(
     from,
     token.contractAddress,
     weiAmount,
@@ -41,7 +41,6 @@ export const estimateApproveErc20 = async (from, token) => {
     Gas.DEPOSIT_GAS_PRICE
   )
   const estimatedErc20ApprovalGas = await web3EstimateGas(approveErc20Tx)
-
   const allowance = await Contract.getErc20Allowance(
     from,
     token.contractAddress
@@ -52,15 +51,22 @@ export const estimateApproveErc20 = async (from, token) => {
     : estimatedErc20ApprovalGas
 }
 
-export const estimateDeposit = async (from, amount, tokenContractAddress) => {
+export const estimateDeposit = async (
+  from,
+  amount,
+  tokenContractAddress,
+  txDetails
+) => {
   try {
-    const depositTxOptions = await TxDetails.getDeposit(
-      tokenContractAddress,
-      from,
-      amount,
-      Gas.MEDIUM_LIMIT,
-      Gas.DEPOSIT_GAS_PRICE
-    )
+    const depositTxOptions =
+      txDetails ||
+      (await TxDetails.getDeposit(
+        tokenContractAddress,
+        from,
+        amount,
+        Gas.MEDIUM_LIMIT,
+        Gas.DEPOSIT_GAS_PRICE
+      ))
 
     // Increase the gas estimation a bit to avoid transaction reverted because the gas limit is too low.
     return web3EstimateGas(depositTxOptions).then(gas => parseInt(gas * 1.1))

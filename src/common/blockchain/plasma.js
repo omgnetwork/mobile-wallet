@@ -4,10 +4,8 @@ import { Mapper, Unit } from 'common/utils'
 import BN from 'bn.js'
 import {
   Contract,
-  ContractABI,
   Transaction,
   OmgUtil,
-  Wait,
   Utxos,
   GasEstimator,
   TxDetails
@@ -60,51 +58,6 @@ export const isRequireApproveErc20 = async (from, amount, erc20Address) => {
   const bnAllowance = new BN(allowance)
 
   return bnAllowance.lt(bnAmount)
-}
-
-export const approveErc20Deposit = async (erc20Address, amount, txOptions) => {
-  const allowance = await Contract.getErc20Allowance(
-    txOptions.from,
-    erc20Address
-  )
-
-  let bnAllowance = new BN(allowance)
-  const bnAmount = new BN(amount)
-  const bnZero = new BN(0)
-
-  let approveReceipt
-  // If the allowance less than the desired amount, we need to reset to zero first inorder to update it.
-  // Some erc20 contract prevent to update non-zero allowance e.g. OmiseGO Token.
-  if (bnAllowance.gt(bnZero) && bnAllowance.lt(bnAmount)) {
-    approveReceipt = await Plasma.RootChain.approveToken({
-      erc20Address,
-      amount: 0,
-      txOptions
-    })
-    bnAllowance = new BN(0)
-
-    // Wait approve transaction for 1 block
-    await Wait.waitForRootchainTransaction({
-      hash: approveReceipt.transactionHash,
-      intervalMs: 3000,
-      confirmationThreshold: 1
-    })
-  }
-
-  if (bnAllowance.eq(bnZero)) {
-    approveReceipt = await Plasma.RootChain.approveToken({
-      erc20Address,
-      amount,
-      txOptions
-    })
-
-    await Wait.waitForRootchainTransaction({
-      hash: approveReceipt.transactionHash,
-      intervalMs: 3000,
-      confirmationThreshold: 1
-    })
-  }
-  return approveReceipt
 }
 
 export const deposit = async (

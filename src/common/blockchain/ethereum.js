@@ -2,8 +2,9 @@ import { ethers } from 'ethers'
 import { web3 } from 'common/clients'
 import axios from 'axios'
 import Config from 'react-native-config'
+import BN from 'bn.js'
 import { Unit } from 'common/utils'
-import { TxDetails } from 'common/blockchain'
+import { TxDetails, Contract, Wait } from 'common/blockchain'
 import { web3EstimateGas } from './gasEstimator'
 
 export const importWalletMnemonic = mnemonic => {
@@ -112,6 +113,55 @@ export const sendErc20Token = async (contract, options) => {
 
   txDetails.gas = await web3EstimateGas(txDetails)
   return signSendTx(txDetails, wallet.privateKey)
+}
+
+export const approveErc20Deposit = async (erc20Address, amount, txOptions) => {
+  const { from, privateKey, gas, gasPrice } = txOptions
+  const allowance = await Contract.getErc20Allowance(
+    txOptions.from,
+    erc20Address
+  )
+
+  const bnAllowance = new BN(allowance)
+  const bnAmount = new BN(amount)
+  const bnZero = new BN(0)
+
+  // If the allowance less than the desired amount, we need to reset to zero first inorder to update it.
+  // Some erc20 contract prevent to update non-zero allowance e.g. OmiseGO Token.
+  if (bnAllowance.gt(bnZero) && bnAllowance.lt(bnAmount)) {
+    const txDetails = await TxDetails.getApproveErc20(
+      from,
+      erc20Address,
+      0,
+      gas,
+      gasPrice
+    )
+    const { hash } = await signSendTx(txDetails, privateKey)
+
+    // Wait approve transaction for 1 block
+    await Wait.waitForRootchainTransaction({
+      hash,
+      intervalMs: 3000,
+      confirmationThreshold: 1
+    })
+  }
+
+  const txDetails = await TxDetails.getApproveErc20(
+    from,
+    erc20Address,
+    amount,
+    gas,
+    gasPrice
+  )
+  const { hash } = await signSendTx(txDetails, privateKey)
+
+  await Wait.waitForRootchainTransaction({
+    hash,
+    intervalMs: 3000,
+    confirmationThreshold: 1
+  })
+
+  return { hash }
 }
 
 export const getGasFromGasStation = () => {
