@@ -98,8 +98,8 @@ const TransferReview = ({
         return depositTransfer(
           blockchainWallet,
           transferToken,
-          feeRate,
-          estimatedGasUsed
+          estimatedGasUsed,
+          feeRate.amount
         )
     }
   }, [
@@ -240,8 +240,8 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
     dispatch(plasmaActions.transfer(blockchainWallet, toAddress, token, fee)),
   ethereumTransfer: (blockchainWallet, toAddress, token, fee) =>
     dispatch(ethereumActions.transfer(blockchainWallet, toAddress, token, fee)),
-  depositTransfer: (blockchainWallet, token, fee, gas) =>
-    dispatch(plasmaActions.deposit(blockchainWallet, token, fee, gas))
+  depositTransfer: (blockchainWallet, token, gas, gasPrice) =>
+    dispatch(plasmaActions.deposit(blockchainWallet, token, { gas, gasPrice }))
 })
 
 export default connect(

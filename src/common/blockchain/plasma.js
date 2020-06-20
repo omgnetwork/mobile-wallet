@@ -59,8 +59,7 @@ export const deposit = async (
   tokenContractAddress,
   options = {}
 ) => {
-  const gas = options.gas || Gas.MEDIUM_LIMIT
-  const gasPrice = options.gasPrice || Gas.DEPOSIT_GAS_PRICE
+  const { gas, gasPrice } = options
 
   const txDetails = await TxDetails.getDeposit(
     tokenContractAddress,
