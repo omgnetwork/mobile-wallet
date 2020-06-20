@@ -8,7 +8,8 @@ import {
   OmgUtil,
   Utxos,
   GasEstimator,
-  TxDetails
+  TxDetails,
+  Ethereum
 } from 'common/blockchain'
 
 export const getBalances = address => {
@@ -58,30 +59,18 @@ export const deposit = async (
   tokenContractAddress,
   options = {}
 ) => {
-  const depositGasPrice = options.gasPrice || Gas.DEPOSIT_GAS_PRICE
+  const gas = options.gas || Gas.MEDIUM_LIMIT
+  const gasPrice = options.gasPrice || Gas.DEPOSIT_GAS_PRICE
 
-  const gas = await GasEstimator.estimateDeposit(
+  const txDetails = await TxDetails.getDeposit(
+    tokenContractAddress,
     address,
     weiAmount,
-    tokenContractAddress
+    gas,
+    gasPrice
   )
 
-  const receipt = await Plasma.RootChain.deposit({
-    amount: weiAmount,
-    currency: tokenContractAddress,
-    txOptions: {
-      from: address,
-      privateKey,
-      gas,
-      gasPrice: depositGasPrice
-    }
-  })
-
-  return {
-    ...receipt,
-    hash: receipt.transactionHash,
-    gasPrice: depositGasPrice
-  }
+  return Ethereum.signSendTx(txDetails, privateKey)
 }
 
 export const mergeListOfUtxos = async (

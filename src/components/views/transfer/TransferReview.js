@@ -44,7 +44,12 @@ const TransferReview = ({
   const feeToken = assets.find(
     token => token.contractAddress === feeRate.currency
   )
-  const [estimatedFee, estimatedFeeSymbol, estimatedFeeUsd] = useEstimatedFee({
+  const [
+    estimatedFee,
+    estimatedFeeSymbol,
+    estimatedFeeUsd,
+    estimatedGasUsed
+  ] = useEstimatedFee({
     feeRate,
     transferToken,
     ethToken,
@@ -90,7 +95,12 @@ const TransferReview = ({
           feeRate
         )
       case TYPE_DEPOSIT:
-        return depositTransfer(blockchainWallet, transferToken, feeRate)
+        return depositTransfer(
+          blockchainWallet,
+          transferToken,
+          feeRate,
+          estimatedGasUsed
+        )
     }
   }, [
     blockchainWallet,
@@ -230,8 +240,8 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
     dispatch(plasmaActions.transfer(blockchainWallet, toAddress, token, fee)),
   ethereumTransfer: (blockchainWallet, toAddress, token, fee) =>
     dispatch(ethereumActions.transfer(blockchainWallet, toAddress, token, fee)),
-  depositTransfer: (blockchainWallet, token, fee) =>
-    dispatch(plasmaActions.deposit(blockchainWallet, token, fee))
+  depositTransfer: (blockchainWallet, token, fee, gas) =>
+    dispatch(plasmaActions.deposit(blockchainWallet, token, fee, gas))
 })
 
 export default connect(

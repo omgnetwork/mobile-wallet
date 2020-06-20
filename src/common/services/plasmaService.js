@@ -131,22 +131,23 @@ export const transfer = async (
   }
 }
 
-export const deposit = async (address, privateKey, token, gasPrice) => {
+export const deposit = async (address, privateKey, token, gas, gasPrice) => {
   const weiAmount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
 
-  const { hash, gasUsed } = await Plasma.deposit(
+  const { hash } = await Plasma.deposit(
     address,
     privateKey,
     weiAmount,
     token.contractAddress,
     {
+      gas,
       gasPrice
     }
   )
   return {
     hash,
     gasPrice,
-    gasUsed
+    gasUsed: gas
   }
 }
 
