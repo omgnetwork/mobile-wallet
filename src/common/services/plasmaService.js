@@ -112,23 +112,13 @@ export const transfer = async (
   fee = { contractAddress: ContractAddress.ETH_ADDRESS, amount: 1 },
   metadata
 ) => {
-  try {
-    const receipt = await Plasma.transfer(
-      fromBlockchainWallet,
-      toAddress,
-      token,
-      fee,
-      metadata
-    )
-
-    return receipt
-  } catch (err) {
-    if (err.message === 'submit:client_error') {
-      throw new Error('Something went wrong on the childchain')
-    } else {
-      throw err
-    }
-  }
+  const payment = Transaction.createPayment(
+    toAddress,
+    token.contractAddress,
+    Unit.convertToString(token.balance, 0, token.tokenDecimal, 16)
+  )
+  const childchainFee = Transaction.createFee(fee.contractAddress, fee.amount)
+  return Plasma.transfer(fromBlockchainWallet, payment, childchainFee, metadata)
 }
 
 export const deposit = async (address, privateKey, token, gasOptions) => {

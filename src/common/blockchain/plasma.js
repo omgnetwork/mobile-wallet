@@ -20,18 +20,11 @@ export const getBalances = address => {
 
 export const transfer = async (
   fromBlockchainWallet,
-  toAddress,
-  token,
+  payment,
   fee,
   metadata
 ) => {
-  const payment = Transaction.createPayment(
-    toAddress,
-    token.contractAddress,
-    Unit.convertToString(token.balance, 0, token.tokenDecimal, 16)
-  )
-  const childchainFee = Transaction.createFee(fee.contractAddress, fee.amount)
-  const { address } = fromBlockchainWallet
+  const { address, privateKey } = fromBlockchainWallet
   const utxos = await Utxos.get(address, {
     sort: (a, b) => new BN(b.amount).sub(new BN(a.amount))
   })
@@ -39,14 +32,12 @@ export const transfer = async (
     address,
     utxos,
     [payment],
-    childchainFee,
+    fee,
     metadata
   )
 
   const typedData = Transaction.getTypedData(txBody)
-  const privateKeys = new Array(txBody.inputs.length).fill(
-    fromBlockchainWallet.privateKey
-  )
+  const privateKeys = new Array(txBody.inputs.length).fill(privateKey)
   const signatures = Transaction.sign(typedData, privateKeys)
   const signedTxn = Transaction.buildSigned(typedData, signatures)
   return Transaction.submit(signedTxn)
