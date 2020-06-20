@@ -1,5 +1,6 @@
 import { ContractAddress } from 'common/constants'
-import { Plasma } from 'common/clients'
+import { Plasma, web3 } from 'common/clients'
+import { ContractABI } from 'common/blockchain'
 import { Gas } from 'common/constants'
 
 export const getTransferEth = (from, to, amount, fee) => {
@@ -51,22 +52,18 @@ export const getDeposit = async (
   }
 }
 
-export const getApproveErc20 = (
+export const getApproveErc20 = async (
   ownerAddress,
   tokenContractAddress,
-  erc20Contract,
-  erc20VaultAddress,
   depositWeiAmount,
   gas,
   gasPrice
 ) => {
-  if (!ownerAddress) throw new Error('ownerAddress is missing')
-  if (!tokenContractAddress) throw new Error('tokenContractAddress is missing')
-  if (!erc20Contract) throw new Error('erc20Contract is missing')
-  if (!erc20VaultAddress) throw new Error('erc20VaultAddress is missing')
-  if (!depositWeiAmount) throw new Error('depositWeiAmount is missing')
-  if (!gas) throw new Error('gas is missing')
-  if (!gasPrice) throw new Error('gasPrice is missing')
+  const erc20Contract = new web3.eth.Contract(
+    ContractABI.erc20Abi(),
+    tokenContractAddress
+  )
+  const { address: erc20VaultAddress } = await Plasma.RootChain.getErc20Vault()
 
   return {
     from: ownerAddress,

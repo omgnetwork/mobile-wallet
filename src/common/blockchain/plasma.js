@@ -9,7 +9,8 @@ import {
   OmgUtil,
   Wait,
   Utxos,
-  GasEstimator
+  GasEstimator,
+  TxDetails
 } from 'common/blockchain'
 
 export const getBalances = address => {
@@ -53,16 +54,7 @@ export const transfer = async (
 }
 
 export const isRequireApproveErc20 = async (from, amount, erc20Address) => {
-  const { address: erc20VaultAddress } = await Plasma.RootChain.getErc20Vault()
-  const erc20Contract = new web3.eth.Contract(
-    ContractABI.erc20Abi(),
-    erc20Address
-  )
-  const allowance = await Contract.getErc20Allowance(
-    erc20Contract,
-    from,
-    erc20VaultAddress
-  )
+  const allowance = await Contract.getErc20Allowance(from, erc20Address)
 
   const bnAmount = new BN(amount)
   const bnAllowance = new BN(allowance)
@@ -71,15 +63,9 @@ export const isRequireApproveErc20 = async (from, amount, erc20Address) => {
 }
 
 export const approveErc20Deposit = async (erc20Address, amount, txOptions) => {
-  const { address: erc20VaultAddress } = await Plasma.RootChain.getErc20Vault()
-  const erc20Contract = new web3.eth.Contract(
-    ContractABI.erc20Abi(),
-    erc20Address
-  )
   const allowance = await Contract.getErc20Allowance(
-    erc20Contract,
     txOptions.from,
-    erc20VaultAddress
+    erc20Address
   )
 
   let bnAllowance = new BN(allowance)

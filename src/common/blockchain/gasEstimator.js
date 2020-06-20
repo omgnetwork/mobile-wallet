@@ -33,27 +33,18 @@ export const estimateApproveErc20 = async (from, token) => {
     return 0
   }
 
-  const erc20Contract = new web3.eth.Contract(
-    ContractABI.erc20Abi(),
-    token.contractAddress
-  )
-  const {
-    address: erc20VaultAddress
-  } = await PlasmaClient.RootChain.getErc20Vault()
   const approveErc20Tx = TxDetails.getApproveErc20(
     from,
     token.contractAddress,
-    erc20Contract,
-    erc20VaultAddress,
-    token.balance,
+    weiAmount,
     Gas.MEDIUM_LIMIT,
     Gas.DEPOSIT_GAS_PRICE
   )
   const estimatedErc20ApprovalGas = await web3EstimateGas(approveErc20Tx)
+
   const allowance = await Contract.getErc20Allowance(
-    erc20Contract,
     from,
-    erc20VaultAddress
+    token.contractAddress
   )
 
   return allowance !== '0'
