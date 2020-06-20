@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { OMGListItemTokenSelect } from 'components/widgets'
-import { BlockchainNetworkType } from 'common/constants'
+import { getAssets, getType } from './transferHelper'
 
 const TransferSelectToken = ({
   primaryWallet,
@@ -12,16 +12,15 @@ const TransferSelectToken = ({
   navigation,
   loading
 }) => {
-  const assets =
-    primaryWalletNetwork === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
-      ? primaryWallet.rootchainAssets
-      : primaryWallet.childchainAssets
+  const address = navigation.getParam('address')
+  const transactionType = getType(address, primaryWalletNetwork)
+  const assets = getAssets(transactionType, primaryWallet)
 
   const onSelectToken = useCallback(
     token => {
       navigation.navigate('TransferSelectAmount', {
         token,
-        address: navigation.getParam('address')
+        address
       })
     },
     [navigation]

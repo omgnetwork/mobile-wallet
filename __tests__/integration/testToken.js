@@ -12,7 +12,7 @@ const testWalletAddress = '0x4522fb44C2aB359e76eCc75C22C9409690F12241'
 const [ETH, DAI, OMG, KCK, HYP] = TEST_TOKENS
 
 describe('Test Token Util', () => {
-  it('Token.get should return {name, symbol, decimals, price, balance, contractAddress}', () => {
+  test('Token.get should return {name, symbol, decimals, price, balance, contractAddress}', () => {
     const testProvider = ethers.getDefaultProvider(ETHEREUM_NETWORK)
     const pendingDetails = Token.get(
       testProvider,
@@ -32,7 +32,7 @@ describe('Test Token Util', () => {
     )
   }, 30000)
 
-  it('Token.all should return [contractAddress: {tokenName, tokenSymbol, tokenDecimal, price, balance}]', () => {
+  test('Token.all should return [contractAddress: {tokenName, tokenSymbol, tokenDecimal, price, balance}]', () => {
     const testProvider = ethers.getDefaultProvider('homestead')
     return Token.all(
       testProvider,

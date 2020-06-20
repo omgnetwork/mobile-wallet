@@ -1,24 +1,22 @@
 import { createStackNavigator } from 'react-navigation-stack'
-import Config from 'react-native-config'
 import * as Views from 'components/views'
+import Config from 'react-native-config'
 
 export default createStackNavigator(
   {
-    TransferForm: {
-      screen: Views.TransferForm,
+    TransferSelectToken: {
+      screen: Views.TransferSelectToken,
       params: {
-        address: Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS,
-        isDeposit: true
+        address: Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
       }
     },
-    TransferConfirm: {
-      screen: Views.TransferConfirm,
-      navigationOptions: () => ({ gesturesEnabled: false })
-    }
+    TransferSelectAmount: Views.TransferSelectAmount,
+    TransferChooseGasFee: Views.TransferChooseGasFee,
+    DepositApprove: Views.DepositApprove,
+    TransferReview: Views.TransferReview
   },
   {
-    initialRouteName: 'TransferForm',
-    initialRouteKey: 'TransferForm',
+    initialRouteName: 'TransferSelectToken',
     headerMode: 'none'
   }
 )

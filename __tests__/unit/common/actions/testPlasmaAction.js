@@ -47,7 +47,7 @@ const mockPlasmaService = (method, resp) => {
 }
 
 describe('Test Plasma Actions', () => {
-  it('fetchAssets should dispatch actions as expected', () => {
+  test('fetchAssets should dispatch actions as expected', () => {
     const childchainAssets = [
       {
         tokenName: 'Ether',
@@ -102,7 +102,7 @@ describe('Test Plasma Actions', () => {
       })
   })
 
-  it('deposit with eth should dispatch actions as expected', () => {
+  test('deposit with eth should dispatch actions as expected', () => {
     const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
     const token = {
       balance: '0.001',
@@ -115,7 +115,7 @@ describe('Test Plasma Actions', () => {
     const store = mockStore({})
 
     return store
-      .dispatch(plasmaActions.deposit(wallet, token, 'any'))
+      .dispatch(plasmaActions.deposit(wallet, token, { amount: 'any' }))
       .then(() => {
         const actions = store.getActions()
         expect(actions).toStrictEqual([
@@ -138,7 +138,7 @@ describe('Test Plasma Actions', () => {
       })
   })
 
-  it('depositErc20 should dispatch actions as expected', () => {
+  test('depositErc20 should dispatch actions as expected', () => {
     const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
     const token = {
       balance: '0.001',
@@ -151,7 +151,7 @@ describe('Test Plasma Actions', () => {
     const store = mockStore({})
 
     return store
-      .dispatch(plasmaActions.deposit(wallet, token, 'any'))
+      .dispatch(plasmaActions.deposit(wallet, token, { amount: 'any' }))
       .then(() => {
         const actions = store.getActions()
         expect(actions).toStrictEqual([
@@ -174,7 +174,7 @@ describe('Test Plasma Actions', () => {
       })
   })
 
-  it('transfer should dispatch actions as expected', () => {
+  test('transfer should dispatch actions as expected', () => {
     const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
     const toAddress = TEST_ADDRESS
     const token = {
@@ -218,7 +218,7 @@ describe('Test Plasma Actions', () => {
       })
   })
 
-  it('exit should dispatch actions as expected', () => {
+  test('exit should dispatch actions as expected', () => {
     const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
     const token = {
       balance: '0.001',

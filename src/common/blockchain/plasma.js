@@ -1,16 +1,15 @@
 import { Plasma, web3 } from 'common/clients'
-import { Gas, ContractAddress } from 'common/constants'
+import { Gas } from 'common/constants'
 import { Mapper, Unit } from 'common/utils'
 import BN from 'bn.js'
 import {
-  TxOptions,
   Contract,
   ContractABI,
   Transaction,
   OmgUtil,
   Wait,
   Utxos,
-  Ethereum
+  GasEstimator
 } from 'common/blockchain'
 
 export const getBalances = address => {
@@ -53,6 +52,75 @@ export const transfer = async (
   return Transaction.submit(signedTxn)
 }
 
+export const isRequireApproveErc20 = async (from, amount, erc20Address) => {
+  const { address: erc20VaultAddress } = await Plasma.RootChain.getErc20Vault()
+  const erc20Contract = new web3.eth.Contract(
+    ContractABI.erc20Abi(),
+    erc20Address
+  )
+  const allowance = await Contract.getErc20Allowance(
+    erc20Contract,
+    from,
+    erc20VaultAddress
+  )
+
+  const bnAmount = new BN(amount)
+  const bnAllowance = new BN(allowance)
+
+  return bnAllowance.lt(bnAmount)
+}
+
+export const approveErc20Deposit = async (erc20Address, amount, txOptions) => {
+  const { address: erc20VaultAddress } = await Plasma.RootChain.getErc20Vault()
+  const erc20Contract = new web3.eth.Contract(
+    ContractABI.erc20Abi(),
+    erc20Address
+  )
+  const allowance = await Contract.getErc20Allowance(
+    erc20Contract,
+    txOptions.from,
+    erc20VaultAddress
+  )
+
+  let bnAllowance = new BN(allowance)
+  const bnAmount = new BN(amount)
+  const bnZero = new BN(0)
+
+  let approveReceipt
+  // If the allowance less than the desired amount, we need to reset to zero first inorder to update it.
+  // Some erc20 contract prevent to update non-zero allowance e.g. OmiseGO Token.
+  if (bnAllowance.gt(bnZero) && bnAllowance.lt(bnAmount)) {
+    approveReceipt = await Plasma.RootChain.approveToken({
+      erc20Address,
+      amount: 0,
+      txOptions
+    })
+    bnAllowance = new BN(0)
+
+    // Wait approve transaction for 1 block
+    await Wait.waitForRootchainTransaction({
+      hash: approveReceipt.transactionHash,
+      intervalMs: 3000,
+      confirmationThreshold: 1
+    })
+  }
+
+  if (bnAllowance.eq(bnZero)) {
+    approveReceipt = await Plasma.RootChain.approveToken({
+      erc20Address,
+      amount,
+      txOptions
+    })
+
+    await Wait.waitForRootchainTransaction({
+      hash: approveReceipt.transactionHash,
+      intervalMs: 3000,
+      confirmationThreshold: 1
+    })
+  }
+  return approveReceipt
+}
+
 export const deposit = async (
   address,
   privateKey,
@@ -60,96 +128,29 @@ export const deposit = async (
   tokenContractAddress,
   options = {}
 ) => {
-  const erc20Contract = new web3.eth.Contract(
-    ContractABI.erc20Abi(),
-    tokenContractAddress
-  )
-  const depositGas = options.gas || Gas.MEDIUM_LIMIT
   const depositGasPrice = options.gasPrice || Gas.DEPOSIT_GAS_PRICE
-  const isEth = tokenContractAddress === ContractAddress.ETH_ADDRESS
 
-  // SEND ERC20 APPROVAL TRANSACTION 👇
-
-  let approveReceipt
-  if (!isEth) {
-    const {
-      address: erc20VaultAddress
-    } = await Plasma.RootChain.getErc20Vault()
-
-    const allowance = await Contract.allowanceTokenForTransfer(
-      erc20Contract,
-      address,
-      erc20VaultAddress
-    )
-
-    let bnAllowance = new BN(allowance)
-    const bnAmount = new BN(weiAmount)
-    const bnZero = new BN(0)
-
-    // If the allowance less than the desired amount, we need to reset to zero first inorder to update it.
-    // Some erc20 contract prevent to update non-zero allowance e.g. OmiseGO Token.
-    if (bnAllowance.gt(bnZero) && bnAllowance.lt(bnAmount)) {
-      const approveOptions = TxOptions.createApproveErc20Options(
-        address,
-        tokenContractAddress,
-        erc20Contract,
-        erc20VaultAddress,
-        '0',
-        depositGas,
-        depositGasPrice
-      )
-      approveReceipt = await Ethereum.sendSignedTx(approveOptions, privateKey)
-
-      // Wait approve transaction for 1 block
-      await Wait.waitForRootchainTransaction({
-        hash: approveReceipt.hash,
-        intervalMs: 3000,
-        confirmationThreshold: 1
-      })
-      bnAllowance = new BN(0)
-    }
-
-    if (bnAllowance.eq(bnZero)) {
-      const approveOptions = TxOptions.createApproveErc20Options(
-        address,
-        tokenContractAddress,
-        erc20Contract,
-        erc20VaultAddress,
-        weiAmount,
-        depositGas,
-        depositGasPrice
-      )
-
-      approveReceipt = await Ethereum.sendSignedTx(approveOptions, privateKey)
-
-      // Wait approve transaction for 1 block
-      await Wait.waitForRootchainTransaction({
-        hash: approveReceipt.hash,
-        intervalMs: 3000,
-        confirmationThreshold: 1
-      })
-    }
-  }
-
-  // SEND DEPOSIT TRANSACTION 👇
-
-  const depositOptions = TxOptions.createDepositOptions(
+  const gas = await GasEstimator.estimateDeposit(
     address,
-    privateKey,
-    depositGas,
-    depositGasPrice
+    weiAmount,
+    tokenContractAddress
   )
 
   const receipt = await Plasma.RootChain.deposit({
     amount: weiAmount,
     currency: tokenContractAddress,
-    txOptions: depositOptions
+    txOptions: {
+      from: address,
+      privateKey,
+      gas,
+      gasPrice: depositGasPrice
+    }
   })
 
-  if (approveReceipt) {
-    return receiptWithGasPrice(receipt, depositGasPrice, approveReceipt.gasUsed)
-  } else {
-    return receiptWithGasPrice(receipt, depositGasPrice)
+  return {
+    ...receipt,
+    hash: receipt.transactionHash,
+    gasPrice: depositGasPrice
   }
 }
 
@@ -172,18 +173,6 @@ export const mergeListOfUtxos = async (
   return Promise.all(pendingMergeUtxos)
 }
 
-const receiptWithGasPrice = (txReceipt, gasPrice, additionalGasUsed = 0) => {
-  return {
-    hash: txReceipt.transactionHash,
-    from: txReceipt.from,
-    to: txReceipt.to,
-    blockNumber: txReceipt.blockNumber,
-    blockHash: txReceipt.blockHash,
-    gasUsed: txReceipt.gasUsed + additionalGasUsed,
-    gasPrice: gasPrice
-  }
-}
-
 export const standardExit = (exitData, blockchainWallet, options) => {
   return Plasma.RootChain.startStandardExit({
     utxoPos: exitData.utxo_pos,
@@ -192,7 +181,6 @@ export const standardExit = (exitData, blockchainWallet, options) => {
     txOptions: {
       privateKey: blockchainWallet.privateKey,
       from: blockchainWallet.address,
-      gas: options.gasLimit || Gas.HIGH_LIMIT,
       gasPrice: options.gasPrice || Gas.EXIT_GAS_PRICE
     }
   })

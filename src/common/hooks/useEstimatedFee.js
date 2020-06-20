@@ -6,19 +6,28 @@ const useEstimatedFee = ({
   feeRate,
   transferToken,
   ethToken,
-  isEthereum,
+  transactionType,
   blockchainWallet,
   toAddress
 }) => {
   const [estimatedFeeSymbol, setEstimatedFeeSymbol] = useState(null)
   const [estimatedFee, setEstimatedFee] = useState(null)
   const [estimatedFeeUsd, setEstimatedFeeUsd] = useState(null)
+  const [estimatedGasUsed, setEstimatedGasUsed] = useState(null)
   const [estimatedTotal, setEstimatedTotal] = useState(null)
   const [estimatedTotalUsd, setEstimatedTotalUsd] = useState(null)
 
   const amount = transferToken.balance
 
-  function updateState({ fee, feeSymbol = 'ETH', feeUsd, total, totalUsd }) {
+  function updateState({
+    gasUsed = 0,
+    fee,
+    feeSymbol = 'ETH',
+    feeUsd,
+    total,
+    totalUsd
+  }) {
+    setEstimatedGasUsed(gasUsed)
     setEstimatedFeeSymbol(feeSymbol)
     setEstimatedFee(fee)
     setEstimatedFeeUsd(feeUsd)
@@ -42,7 +51,7 @@ const useEstimatedFee = ({
 
     async function calculateEthereumFee() {
       const gasUsed = await TransferHelper.getGasUsed(
-        TransferHelper.TYPE_TRANSFER_ROOTCHAIN,
+        transactionType,
         transferToken,
         {
           wallet: blockchainWallet,
@@ -55,20 +64,28 @@ const useEstimatedFee = ({
       const totalUsd = BlockchainFormatter.formatTotalPrice(amount, feeUsd)
       const total = BlockchainFormatter.formatTotalEthAmount(transferToken, fee)
 
-      updateState({ fee, feeUsd, total, totalUsd })
+      updateState({ gasUsed, fee, feeUsd, total, totalUsd })
     }
 
-    if (isEthereum) {
+    if (transactionType !== TransferHelper.TYPE_TRANSFER_CHILDCHAIN) {
       calculateEthereumFee()
     } else {
       calculateOMGNetworkFee()
     }
-  })
+  }, [
+    feeRate,
+    transferToken,
+    ethToken,
+    transactionType,
+    blockchainWallet,
+    toAddress
+  ])
 
   return [
     estimatedFee,
     estimatedFeeSymbol,
     estimatedFeeUsd,
+    estimatedGasUsed,
     estimatedTotal,
     estimatedTotalUsd
   ]

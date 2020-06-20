@@ -4,7 +4,7 @@ import { GasEstimator } from 'common/blockchain'
 const { TEST_ADDRESS, TEST_ERC20_TOKEN_CONTRACT_ADDRESS } = Config
 
 describe('Test Gas Estimator', () => {
-  it('test estimate gas when sending erc20 token', () => {
+  test('test estimate gas when sending erc20 token', () => {
     const token = {
       contractAddress: TEST_ERC20_TOKEN_CONTRACT_ADDRESS,
       balance: '5',

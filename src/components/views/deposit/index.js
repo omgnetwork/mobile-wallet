@@ -1,49 +1,41 @@
-import React, { useEffect } from 'react'
-import { View, StyleSheet, StatusBar, TouchableOpacity } from 'react-native'
+import React from 'react'
+import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
-import { OMGFontIcon, OMGText, OMGStatusBar } from 'components/widgets'
+import {
+  OMGFontIcon,
+  OMGText,
+  OMGStatusBar,
+  OMGEmpty
+} from 'components/widgets'
+import { Styles } from 'common/utils'
 
-const Deposit = ({ navigation, theme }) => {
-  const ChildChainTransferNavigator = navigation.getParam('navigator')
-
-  useEffect(() => {
-    function didFocus() {
-      StatusBar.setBarStyle('light-content')
-      StatusBar.setBackgroundColor(theme.colors.black5)
-    }
-
-    const didFocusSubscription = navigation.addListener('didFocus', didFocus)
-
-    return () => {
-      didFocusSubscription.remove()
-    }
-  }, [navigation, theme.colors.black5])
-
+const DepositContainer = ({ navigation, theme, primaryWallet }) => {
+  const DepositNavigator = navigation.getParam('navigator')
   return (
     <SafeAreaView style={styles.container(theme)}>
       <OMGStatusBar
         barStyle={'light-content'}
         backgroundColor={theme.colors.black5}
       />
-      <View style={styles.titleContainer}>
-        <OMGText style={styles.title(theme)} weight='regular'>
-          Deposit
-        </OMGText>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Home')
-          }}>
-          <OMGFontIcon
-            name='x-mark'
-            size={18}
-            color={theme.colors.white}
-            style={styles.icon}
-          />
-        </TouchableOpacity>
+      <View style={styles.header}>
+        <OMGFontIcon
+          name='chevron-left'
+          size={18}
+          color={theme.colors.white}
+          style={styles.headerIcon}
+          onPress={() => navigation.navigate('Home')}
+        />
+        <OMGText style={styles.title(theme)}>Deposit</OMGText>
       </View>
-      <ChildChainTransferNavigator navigation={navigation} />
+      {primaryWallet ? (
+        <DepositNavigator navigation={navigation} />
+      ) : (
+        <OMGEmpty
+          text={'The wallet is not found. Try import a wallet first.'}
+        />
+      )}
     </SafeAreaView>
   )
 }
@@ -53,21 +45,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.black5
   }),
-  titleContainer: {
-    paddingVertical: 24,
-    paddingRight: 16,
+  header: {
+    alignItems: 'center',
     flexDirection: 'row',
-    alignItems: 'center'
+    paddingHorizontal: 16,
+    paddingVertical: 40
   },
   title: theme => ({
     flex: 1,
     marginHorizontal: 16,
-    fontSize: 18,
+    fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
     textTransform: 'uppercase',
     color: theme.colors.white
   }),
-  icon: {
-    opacity: 1.0
+  headerIcon: {
+    padding: 8
   }
 })
 
@@ -77,4 +69,4 @@ const mapStateToProps = (state, _ownProps) => ({
   )
 })
 
-export default connect(mapStateToProps, null)(withTheme(Deposit))
+export default connect(mapStateToProps, null)(withTheme(DepositContainer))

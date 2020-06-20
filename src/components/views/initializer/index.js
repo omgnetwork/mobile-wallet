@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import { OMGStatusBar } from 'components/widgets'
 import { Move } from 'common/anims'
 import { ABIDecoder, Contract, ContractABI } from 'common/blockchain'
+import { ExceptionReporter } from 'common/reporter'
 import OmiseGOLogo from './assets/omisego.svg'
 
 const Initializer = ({
@@ -49,6 +50,7 @@ const Initializer = ({
       setReady(true)
     }
 
+    ExceptionReporter.reportWhenError(init)
     init()
   }, [])
 

@@ -4,13 +4,13 @@ import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigationFocus } from 'react-navigation'
 import { Validator } from 'common/blockchain'
+import { getType, TYPE_TRANSFER_CHILDCHAIN } from './transferHelper'
 import {
   OMGText,
   OMGAmountInput,
   OMGButton,
   OMGDismissKeyboard
 } from 'components/widgets'
-import { BlockchainNetworkType } from 'common/constants'
 
 const TransferSelectAmount = ({
   navigation,
@@ -22,6 +22,7 @@ const TransferSelectAmount = ({
   const ref = useRef(0)
   const focusRef = useRef(null)
   const token = navigation.getParam('token')
+  const address = navigation.getParam('address')
   const [disabled, setDisabled] = useState(true)
 
   useEffect(() => {
@@ -41,15 +42,17 @@ const TransferSelectAmount = ({
   )
 
   const onSubmit = useCallback(() => {
+    const type = getType(address, primaryWalletNetwork)
+
     const destination =
-      primaryWalletNetwork === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK
-        ? 'TransferChooseGasFee'
-        : 'TransferChoosePlasmaFee'
+      type === TYPE_TRANSFER_CHILDCHAIN
+        ? 'TransferChoosePlasmaFee'
+        : 'TransferChooseGasFee'
 
     navigation.navigate(destination, {
-      address: navigation.getParam('address'),
-      amount: ref.current,
-      token
+      address,
+      token,
+      amount: ref.current
     })
   }, [navigation, primaryWalletNetwork, token])
 

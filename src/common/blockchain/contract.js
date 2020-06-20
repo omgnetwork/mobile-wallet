@@ -1,6 +1,6 @@
 import { Plasma } from 'common/clients'
 
-export const allowanceTokenForTransfer = async (
+export const getErc20Allowance = async (
   erc20Contract,
   address,
   erc20VaultAddress

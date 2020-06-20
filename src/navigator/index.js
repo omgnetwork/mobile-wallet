@@ -91,17 +91,7 @@ export const AppNavigator = createStackNavigator(
         navigator: ProcessExitNavigator
       }
     },
-    TransferSelectBalance: {
-      screen: Views.TransferSelectBalance
-    },
-    TransferSelectFee: {
-      screen: Views.TransferSelectFee
-    },
-    TransferPending: {
-      screen: Views.TransferPending,
-      navigationOptions: () => ({ gesturesEnabled: false })
-    },
-    TransferDeposit: {
+    Deposit: {
       screen: Views.Deposit,
       params: {
         navigator: DepositNavigator

@@ -1,22 +1,20 @@
-import {
-  Plasma,
-  Contract,
-  ContractABI,
-  Utxos,
-  Ethereum
-} from 'common/blockchain'
-import { Plasma as PlasmaClient, web3 } from 'common/clients'
+import { Plasma, Contract, Utxos } from 'common/blockchain'
+import { Plasma as PlasmaClient } from 'common/clients'
 import Config from 'react-native-config'
 import BN from 'bn.js'
+import { GasEstimator } from 'common/blockchain'
+import { Wait } from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
 
+jest.mock('common/blockchain/gasEstimator.js')
+jest.mock('common/blockchain/wait.js')
 jest.mock('@omisego/react-native-omg-js')
 jest.mock('common/blockchain/contract.js')
 
 const { getBalance, getUtxos } = PlasmaClient.ChildChain
 const { deposit, getErc20Vault } = PlasmaClient.RootChain
-const { allowanceTokenForTransfer } = Contract
-const { TEST_ADDRESS, TEST_PRIVATE_KEY, ERC20_VAULT_CONTRACT_ADDRESS } = Config
+const { getErc20Allowance } = Contract
+const { TEST_ADDRESS, TEST_PRIVATE_KEY } = Config
 
 const FIVE_GWEI = '5000000000'
 
@@ -29,10 +27,22 @@ const mockGetUtxosResponse = resp => {
 }
 
 const mockAllowance = resp => {
-  allowanceTokenForTransfer.mockReturnValueOnce(Promise.resolve(resp))
+  getErc20Allowance.mockReturnValueOnce(Promise.resolve(resp))
 }
 
-const mockDepositResponse = resp => {
+const mockApproveToken = resp => {
+  PlasmaClient.RootChain.approveToken.mockReturnValue(Promise.resolve(resp))
+}
+
+const mockWaitToBeSkipped = () => {
+  Wait.waitForRootchainTransaction.mockReturnValue(Promise.resolve())
+}
+
+const mockDepositGasEstimated = resp => {
+  GasEstimator.estimateDeposit.mockReturnValueOnce(Promise.resolve(resp))
+}
+
+const mockDepositReceipt = resp => {
   deposit.mockReturnValueOnce(Promise.resolve(resp))
 }
 
@@ -40,12 +50,8 @@ const mockGetErc20Vault = resp => {
   getErc20Vault.mockReturnValueOnce(Promise.resolve(resp))
 }
 
-const mockSendSignedTx = resp => {
-  Ethereum.sendSignedTx = jest.fn().mockReturnValueOnce(Promise.resolve(resp))
-}
-
 describe('Test Plasma Boundary', () => {
-  it('getBalances should return BN amount as a string', () => {
+  test('getBalances should return BN amount as a string', () => {
     const balances = [
       {
         amount: new BN('5000000000'),
@@ -64,7 +70,7 @@ describe('Test Plasma Boundary', () => {
     })
   })
 
-  it('getUtxos should return BN amount as a string', () => {
+  test('getUtxos should return BN amount as a string', () => {
     const utxos = [
       {
         amount: new BN('5000000000000000000'),
@@ -93,7 +99,7 @@ describe('Test Plasma Boundary', () => {
     })
   })
 
-  it('getUtxos should return utxos where `utxo.currency` === `currency`', () => {
+  test('getUtxos should return utxos where `utxo.currency` === `currency`', () => {
     const utxos = [
       {
         amount: new BN('5000000000000000000'),
@@ -135,7 +141,7 @@ describe('Test Plasma Boundary', () => {
     })
   })
 
-  it('getUtxos should return all utxos if not given `currency`', () => {
+  test('getUtxos should return all utxos if not given `currency`', () => {
     const utxos = [
       {
         amount: new BN('5000000000000000000'),
@@ -184,7 +190,7 @@ describe('Test Plasma Boundary', () => {
     })
   })
 
-  it('getUtxos should return utxos where `utxo.currency` === `currency` and `utxo.utxo_pos` >= `fromUtxoPos`', () => {
+  test('getUtxos should return utxos where `utxo.currency` === `currency` and `utxo.utxo_pos` >= `fromUtxoPos`', () => {
     const utxos = [
       {
         amount: new BN('5000000000000000000'),
@@ -254,7 +260,7 @@ describe('Test Plasma Boundary', () => {
     })
   })
 
-  it('getUtxos should return utxos where `utxo.utxo_pos` >= `fromUtxoPos`', () => {
+  test('getUtxos should return utxos where `utxo.utxo_pos` >= `fromUtxoPos`', () => {
     const utxos = [
       {
         amount: new BN('5000000000000000000'),
@@ -331,7 +337,7 @@ describe('Test Plasma Boundary', () => {
     })
   })
 
-  it('getUtxos should sort utxos by `utxo_pos` in descending', () => {
+  test('getUtxos should sort utxos by `utxo_pos` in descending', () => {
     const utxos = [
       {
         amount: new BN('10000000000000000'),
@@ -397,7 +403,7 @@ describe('Test Plasma Boundary', () => {
     })
   })
 
-  it('getRequiredMerge should returns utxos with length > 1', () => {
+  test('getRequiredMerge should returns utxos with length > 1', () => {
     const utxos = [
       {
         amount: '10000000000000000',
@@ -444,21 +450,22 @@ describe('Test Plasma Boundary', () => {
     })
   })
 
-  it('deposit with eth should invoke the deposit function with expected parameters', () => {
+  test('deposit should invoke the deposit function with expected parameters', () => {
     const from = TEST_ADDRESS
     const privateKey = TEST_PRIVATE_KEY
     const amount = FIVE_GWEI
-    const gas = 30000
     const gasPrice = '6000000'
-
-    mockDepositResponse({
-      hash: 'any',
+    const estimateGasUsedDeposit = 168000
+    const depositReceipt = {
+      transactionHash: 'transactionHash',
       from: 'any',
       to: 'any',
       blockNumber: 'any',
-      blockHash: 'any',
-      gasUsed: 'any'
-    })
+      blockHash: 'any'
+    }
+
+    mockDepositGasEstimated(estimateGasUsedDeposit)
+    mockDepositReceipt(depositReceipt)
 
     return Plasma.deposit(
       from,
@@ -466,84 +473,87 @@ describe('Test Plasma Boundary', () => {
       amount,
       ContractAddress.ETH_ADDRESS,
       {
-        gas,
         gasPrice
       }
-    ).then(_ => {
+    ).then(resp => {
       expect(deposit).toBeCalledWith({
         amount,
         currency: ContractAddress.ETH_ADDRESS,
         txOptions: {
           from,
-          gas,
+          gas: estimateGasUsedDeposit,
           gasPrice,
           privateKey
         }
+      })
+      expect(resp).toEqual({
+        ...depositReceipt,
+        hash: depositReceipt.transactionHash,
+        gasPrice
       })
     })
   })
 
-  it('deposit with erc20 should invoke the deposit function with expected parameters', async () => {
-    const from = TEST_ADDRESS
-    const privateKey = TEST_PRIVATE_KEY
-    const amount = FIVE_GWEI
-    const gas = 30000
-    const gasPrice = '6000000'
-    const mockTxHash = '0x0'
+  test('approve should call approveToken twice if 0 < allowance < amount', () => {
+    const erc20Address = Config.TEST_ERC20_TOKEN_CONTRACT_ADDRESS
+    const amount = '1000000'
+    const txOptions = {
+      from: '0x1234',
+      privateKey: 'privateKey',
+      gas: 50000,
+      gasPrice: 100000
+    }
+    const allowance = 500000
 
-    mockGetErc20Vault({ address: ERC20_VAULT_CONTRACT_ADDRESS })
-    mockSendSignedTx({ hash: mockTxHash })
-    mockAllowance(0)
-    mockDepositResponse({
-      hash: 'any',
-      from: 'any',
-      to: 'any',
-      blockNumber: 'any',
-      blockHash: 'any',
-      gasUsed: 'any'
+    mockWaitToBeSkipped()
+    mockGetErc20Vault({ address: Config.ERC20_VAULT_CONTRACT_ADDRESS })
+    mockAllowance(allowance)
+    mockApproveToken({
+      transactionHash: 'transactionHash'
     })
 
-    const expectedApproveABIData = new web3.eth.Contract(
-      ContractABI.erc20Abi(),
-      ERC20_VAULT_CONTRACT_ADDRESS
-    ).methods
-      .approve(ERC20_VAULT_CONTRACT_ADDRESS, amount)
-      .encodeABI()
-
-    const response = Plasma.deposit(
-      from,
-      privateKey,
-      amount,
-      ERC20_VAULT_CONTRACT_ADDRESS,
-      {
-        gas,
-        gasPrice
+    return Plasma.approveErc20Deposit(erc20Address, amount, txOptions).then(
+      () => {
+        expect(PlasmaClient.RootChain.approveToken).toBeCalledWith({
+          erc20Address,
+          amount: 0,
+          txOptions
+        })
+        expect(PlasmaClient.RootChain.approveToken).toBeCalledWith({
+          erc20Address,
+          amount,
+          txOptions
+        })
       }
     )
+  })
 
-    return response.then(_ => {
-      // Send Approve Transaction
-      expect(Ethereum.sendSignedTx).toBeCalledWith(
-        {
-          data: expectedApproveABIData,
-          from,
-          gas,
-          gasPrice,
-          to: ERC20_VAULT_CONTRACT_ADDRESS
-        },
-        privateKey
-      )
+  test('approve should call approveToken once if allowance === 0', () => {
+    const erc20Address = Config.TEST_ERC20_TOKEN_CONTRACT_ADDRESS
+    const amount = '1000000'
+    const txOptions = {
+      from: '0x1234',
+      privateKey: 'privateKey',
+      gas: 50000,
+      gasPrice: 100000
+    }
+    const allowance = 0
 
-      expect(deposit).toBeCalledWith({
-        amount,
-        currency: ERC20_VAULT_CONTRACT_ADDRESS,
-        txOptions: {
-          from,
-          gas,
-          gasPrice,
-          privateKey
-        }
-      })
+    mockWaitToBeSkipped()
+    mockGetErc20Vault({ address: Config.ERC20_VAULT_CONTRACT_ADDRESS })
+    mockAllowance(allowance)
+    mockApproveToken({
+      transactionHash: 'transactionHash'
     })
+
+    return Plasma.approveErc20Deposit(erc20Address, amount, txOptions).then(
+      () => {
+        expect(PlasmaClient.RootChain.approveToken).toBeCalledWith({
+          erc20Address,
+          amount,
+          txOptions
+        })
+      }
+    )
   })
 })

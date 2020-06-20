@@ -20,14 +20,6 @@ const WarpPortalNavigator = createStackNavigator(
       screen: Views.Home,
       navigationOptions: () => ({ title: 'Home' })
     },
-    TransferSelectBalance: {
-      screen: Views.TransferSelectBalance,
-      navigationOptions: () => ({ title: 'Select Balance' })
-    },
-    TransferSelectFee: {
-      screen: Views.TransferSelectFee,
-      navigationOptions: () => ({ title: 'Select Fee' })
-    },
     CreateWallet: {
       screen: Views.CreateWallet,
       params: {
@@ -45,10 +37,6 @@ const WarpPortalNavigator = createStackNavigator(
     TransferReceive: {
       screen: Views.TransferReceive,
       navigationOptions: () => ({ title: 'Receive' })
-    },
-    TransferForm: {
-      screen: Views.TransferForm,
-      navigationOptions: () => ({ title: 'TransferForm' })
     },
     Transfer: {
       screen: Views.Transfer,
