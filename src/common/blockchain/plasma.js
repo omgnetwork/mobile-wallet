@@ -51,15 +51,6 @@ export const transfer = async (
   return Transaction.submit(signedTxn)
 }
 
-export const isRequireApproveErc20 = async (from, amount, erc20Address) => {
-  const allowance = await Contract.getErc20Allowance(from, erc20Address)
-
-  const bnAmount = new BN(amount)
-  const bnAllowance = new BN(allowance)
-
-  return bnAllowance.lt(bnAmount)
-}
-
 export const deposit = async (
   address,
   privateKey,
