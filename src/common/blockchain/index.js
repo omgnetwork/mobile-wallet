@@ -13,6 +13,7 @@ import * as Wait from './wait'
 import * as Validator from './validator'
 import * as Utxos from './utxos'
 import * as BlockchainFormatter from './blockchainFormatter'
+import * as BlockchainParams from './blockchainParams'
 
 export {
   ABIDecoder,
@@ -23,6 +24,7 @@ export {
   GasEstimator,
   TxDetails,
   BlockchainFormatter,
+  BlockchainParams,
   Parser,
   OmgUtil,
   Transaction,

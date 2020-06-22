@@ -1,13 +1,12 @@
 import { Plasma, web3 } from 'common/clients'
 import { Gas } from 'common/constants'
-import { Mapper, Unit } from 'common/utils'
+import { Mapper } from 'common/utils'
 import BN from 'bn.js'
 import {
   Contract,
   Transaction,
   OmgUtil,
   Utxos,
-  GasEstimator,
   TxDetails,
   Ethereum
 } from 'common/blockchain'
