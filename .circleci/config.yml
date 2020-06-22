@@ -192,7 +192,7 @@ jobs:
 
   fastlane-to-testflight:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.2.0"
     shell: /bin/bash --login -o pipefail
     steps:
       - checkout
@@ -206,7 +206,7 @@ jobs:
             echo "$SENTRY_CONFIG" | base64 --decode > ios/sentry.properties
       - run: 
           name: Set Ruby version
-          command:  echo "ruby-2.7" > ~/.ruby-version
+          command:  echo 'chruby ruby-2.6' >> ~/.bash_profile
       - restore_cache:
           name: Restoring cache (Ruby)
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
