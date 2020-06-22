@@ -7,7 +7,7 @@ import { withTheme } from 'react-native-paper'
 import { OMGEmpty, OMGFeeSelect, OMGText } from 'components/widgets'
 import { Styles } from 'common/utils'
 
-const TransferSelectFee = ({
+const ExitSelectFee = ({
   theme,
   loading,
   dispatchGetRecommendedGas,
@@ -107,4 +107,4 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNavigation(withTheme(TransferSelectFee)))
+)(withNavigation(withTheme(ExitSelectFee)))

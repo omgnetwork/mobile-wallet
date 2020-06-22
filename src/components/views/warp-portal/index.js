@@ -16,18 +16,6 @@ const WarpPortal = ({ navigation }) => {
         <Button
           mode='outlined'
           style={styles.button}
-          onPress={() => navigation.navigate('TransferForm')}>
-          TransferForm
-        </Button>
-        <Button
-          mode='outlined'
-          style={styles.button}
-          onPress={() => navigation.navigate('TransferSelectBalance')}>
-          TransferSelectBalance
-        </Button>
-        <Button
-          mode='outlined'
-          style={styles.button}
           onPress={() => navigation.navigate('Deposit')}>
           Deposit
         </Button>

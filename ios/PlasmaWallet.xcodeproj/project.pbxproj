@@ -21,10 +21,9 @@
 		2DCD954D1E0B4F2C00145EB5 /* PlasmaWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* PlasmaWalletTests.m */; };
 		3A7EEF073014497B89EDC811 /* MessinaSansMono-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = D8FEECC5438C4F8C8835E93C /* MessinaSansMono-Light.otf */; };
 		3E988AC7244C4F22B03B7046 /* OMGFontIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EA92F585139B4B03A9F625FB /* OMGFontIcon.ttf */; };
-		658FED9C9AEAFD81B0EED143 /* libPods-PlasmaWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4DB1EC4247FABC80007B6BB /* libPods-PlasmaWallet.a */; };
+		4A62EA982044A4910C620D2B /* libPods-PlasmaWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4DB1EC4247FABC80007B6BB /* libPods-PlasmaWallet.a */; };
 		71B952FEB1694F4E838D28C6 /* MessinaSansMono-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4BD391ABF0B04F5DBC7C4B8D /* MessinaSansMono-Book.otf */; };
 		78BB2462972B45E282E97D4E /* MessinaSans-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 494129B0817C40B2B566300D /* MessinaSans-Bold.otf */; };
-		80DB5BBEABF7C3DBA9D1D801 /* libPods-PlasmaWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4DB1EC4247FABC80007B6BB /* libPods-PlasmaWallet.a */; };
 		AF93B4D6639E460B9DACAB68 /* MessinaSans-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BAFF502928C4ECF85C816AB /* MessinaSans-SemiBold.otf */; };
 		C479231924612F2A001B1F4E /* SupportReactNative0.62.2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C479231824612F2A001B1F4E /* SupportReactNative0.62.2.swift */; };
 		C49E761123660727003B0D52 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49E760F2365ACDB003B0D52 /* GoogleService-Info.plist */; };
@@ -110,7 +109,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F856FFAE0AF45D49F1346DA /* TSBackgroundFetch.framework in Frameworks */,
-				08F0BF45EDA2040FE5A738EC /* libPods-PlasmaWallet.a in Frameworks */,
+				4A62EA982044A4910C620D2B /* libPods-PlasmaWallet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

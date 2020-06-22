@@ -1,10 +1,11 @@
-import { Gas, ContractAddress } from 'common/constants'
+import { Gas } from 'common/constants'
 import {
   Ethereum,
-  TxOptions,
+  TxDetails,
   Plasma,
   ContractABI,
-  Transaction
+  Transaction,
+  Contract
 } from 'common/blockchain'
 import { web3, Plasma as PlasmaClient } from 'common/clients'
 import { Unit } from 'common/utils'
@@ -23,40 +24,58 @@ export const estimateTransferErc20 = (from, to, token) => {
 }
 
 export const estimateTransferETH = () => {
-  return Promise.resolve('21000')
+  return Promise.resolve(Gas.MINIMUM_GAS_USED)
 }
 
-export const estimateDeposit = async (from, to, token) => {
-  const isEth = token.contractAddress === ContractAddress.ETH_ADDRESS
-  const gasForDepositTx = Gas.DEPOSIT_ESTIMATED_GAS_USED
-  const gasForApproveErc20 = Gas.DEPOSIT_APPROVED_ERC20_GAS_USED
-  const defaultGasUsed = gasForDepositTx + (isEth ? 0 : gasForApproveErc20)
+export const estimateApproveErc20 = async (from, token) => {
+  const weiAmount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
+  if (!Plasma.isRequireApproveErc20(from, weiAmount, token.contractAddress)) {
+    return 0
+  }
 
+  const erc20Contract = new web3.eth.Contract(
+    ContractABI.erc20Abi(),
+    token.contractAddress
+  )
+  const {
+    address: erc20VaultAddress
+  } = await PlasmaClient.RootChain.getErc20Vault()
+  const approveErc20Tx = TxDetails.getApproveErc20(
+    from,
+    token.contractAddress,
+    erc20Contract,
+    erc20VaultAddress,
+    token.balance,
+    Gas.MEDIUM_LIMIT,
+    Gas.DEPOSIT_GAS_PRICE
+  )
+  const estimatedErc20ApprovalGas = await web3EstimateGas(approveErc20Tx)
+  const allowance = await Contract.getErc20Allowance(
+    erc20Contract,
+    from,
+    erc20VaultAddress
+  )
+
+  return allowance !== '0'
+    ? estimatedErc20ApprovalGas * 2
+    : estimatedErc20ApprovalGas
+}
+
+export const estimateDeposit = async (from, amount, tokenContractAddress) => {
   try {
-    const erc20Contract = new web3.eth.Contract(
-      ContractABI.erc20Abi(),
-      token.contractAddress
-    )
-    const {
-      address: erc20VaultAddress
-    } = await PlasmaClient.RootChain.getErc20Vault()
-    const weiAmount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
-    const approveErc20Tx = TxOptions.createApproveErc20Options(
+    const depositTxOptions = await TxDetails.getDeposit(
+      tokenContractAddress,
       from,
-      token.contractAddress,
-      erc20Contract,
-      erc20VaultAddress,
-      weiAmount,
+      amount,
       Gas.MEDIUM_LIMIT,
       Gas.DEPOSIT_GAS_PRICE
     )
-    const estimatedErc20ApprovalGas = await web3EstimateGas(approveErc20Tx)
-    return isEth
-      ? gasForDepositTx
-      : Number(estimatedErc20ApprovalGas) + Number(gasForDepositTx)
+
+    // Increase the gas estimation a bit to avoid transaction reverted because the gas limit is too low.
+    return web3EstimateGas(depositTxOptions).then(gas => parseInt(gas * 1.1))
   } catch (err) {
     console.log(err)
-    return defaultGasUsed
+    return Gas.DEPOSIT_ESTIMATED_GAS_USED
   }
 }
 
@@ -92,7 +111,7 @@ export const web3EstimateGas = txDetails => {
   return new Promise((resolve, reject) => {
     web3.eth.estimateGas(txDetails, (err, result) => {
       if (err) return reject(err)
-      return resolve(result)
+      return resolve(parseInt(result))
     })
   })
 }

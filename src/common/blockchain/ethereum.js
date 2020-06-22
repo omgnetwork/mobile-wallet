@@ -1,9 +1,10 @@
 import { ethers } from 'ethers'
 import { web3 } from 'common/clients'
-import { Gas } from 'common/constants/'
 import axios from 'axios'
 import Config from 'react-native-config'
 import { Unit } from 'common/utils'
+import { TxDetails } from 'common/blockchain'
+import { web3EstimateGas } from './gasEstimator'
 
 export const importWalletMnemonic = mnemonic => {
   return ethers.Wallet.fromMnemonic(mnemonic)
@@ -85,27 +86,32 @@ export const getInternalTxs = (address, options) => {
 
 export const sendEthToken = (wallet, options) => {
   const { fee, token, toAddress } = options
-  return wallet.sendTransaction({
-    to: toAddress,
-    value: Unit.convert(token.balance, 'ether', 'wei'),
-    gasLimit: Gas.LOW_LIMIT,
-    gasPrice: Unit.convert(fee.amount, 'wei', 'wei')
-  })
+  const amount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
+
+  const txDetails = TxDetails.getTransferEth(
+    wallet.address,
+    toAddress,
+    amount,
+    fee
+  )
+
+  return signSendTx(txDetails, wallet.privateKey)
 }
 
-export const sendErc20Token = (contract, options) => {
+export const sendErc20Token = async (contract, options) => {
   const { fee, token, toAddress, wallet } = options
   const amount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
 
-  const txDetails = {
-    from: wallet.address,
-    to: toAddress,
-    data: contract.methods.transfer(toAddress, amount).encodeABI(),
-    gasLimit: Gas.LOW_LIMIT,
-    gasPrice: fee.amount
-  }
+  const txDetails = TxDetails.getTransferErc20(
+    wallet.address,
+    toAddress,
+    amount,
+    fee,
+    contract
+  )
 
-  return sendSignedTx(txDetails, wallet.privateKey)
+  txDetails.gas = await web3EstimateGas(txDetails)
+  return signSendTx(txDetails, wallet.privateKey)
 }
 
 export const getGasFromGasStation = () => {
@@ -122,7 +128,7 @@ export const createProvider = providerName => {
   return ethers.getDefaultProvider(providerName)
 }
 
-export const sendSignedTx = async (txDetails, privateKey) => {
+export const signSendTx = async (txDetails, privateKey) => {
   const signedTx = await web3.eth.accounts.signTransaction(
     txDetails,
     privateKey

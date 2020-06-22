@@ -23,8 +23,9 @@ export const fetchAssets = (provider, address) => {
   })
 }
 
-export const deposit = (blockchainWallet, token, gasPrice) => {
+export const deposit = (blockchainWallet, token, fee) => {
   const asyncAction = async () => {
+    const gasPrice = fee.amount
     const { hash, gasUsed } = await plasmaService.deposit(
       blockchainWallet.address,
       blockchainWallet.privateKey,
@@ -39,8 +40,8 @@ export const deposit = (blockchainWallet, token, gasPrice) => {
       symbol: token.tokenSymbol,
       tokenDecimal: token.tokenDecimal,
       contractAddress: token.contractAddress,
-      gasPrice: gasPrice,
-      gasUsed: gasUsed,
+      gasPrice,
+      gasUsed,
       actionType: TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT,
       createdAt: Datetime.now()
     }

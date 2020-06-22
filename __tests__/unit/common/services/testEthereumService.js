@@ -57,7 +57,7 @@ const [ETH_DETAIL, DAI_DETAIL, OMG_DETAIL, KCK_DETAIL] = [
 ]
 
 describe('Test Ethereum Services', () => {
-  it('fetchAssets should return a list of assets', () => {
+  test('fetchAssets should return a list of assets', () => {
     mockProviderService(getTransactionHistory, [
       { contractAddress: KCK },
       { contractAddress: DAI },

@@ -24,3 +24,7 @@ export const minus = (a, b) => {
 export const divide = (a, b) => {
   return new BigNumber(a).div(new BigNumber(b)).toString(10)
 }
+
+export const compare = (a, b) => {
+  return new BigNumber(a).comparedTo(new BigNumber(b))
+}

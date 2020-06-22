@@ -10,6 +10,7 @@ import CreateWalletMnemonicConfirm from './create-wallet/CreateWalletMnemonicCon
 import CreateWalletMnemonicFailed from './create-wallet/CreateWalletMnemonicFailed'
 import DeleteWallet from './delete-wallet'
 import Deposit from './deposit'
+import DepositApprove from './deposit/DepositApprove'
 import Disclaimer from './disclaimer'
 import Exit from './exit'
 import ExitSelectToken from './exit/ExitSelectToken'
@@ -31,10 +32,7 @@ import {
 } from './transaction-history'
 import {
   TransferContainer as Transfer,
-  TransferConfirm,
   TransferScannerConfirm,
-  TransferForm,
-  TransferPending,
   TransferReceive,
   TransferScanner,
   TransferChooseGasFee,
@@ -42,8 +40,6 @@ import {
   TransferReview,
   TransferSelectAddress,
   TransferSelectAmount,
-  TransferSelectBalance,
-  TransferSelectFee,
   TransferSelectToken
 } from './transfer'
 import {
@@ -69,6 +65,7 @@ export {
   CreateWalletMnemonicFailed,
   DeleteWallet,
   Deposit,
+  DepositApprove,
   Disclaimer,
   Exit,
   ExitSelectToken,
@@ -88,9 +85,6 @@ export {
   ProcessExitPending,
   Receive,
   Transfer,
-  TransferConfirm,
-  TransferForm,
-  TransferPending,
   TransferReceive,
   TransferReview,
   TransferScanner,
@@ -99,8 +93,6 @@ export {
   TransferSelectAddress,
   TransferSelectAmount,
   TransferScannerConfirm,
-  TransferSelectBalance,
-  TransferSelectFee,
   TransferSelectToken,
   TransactionHistory,
   TransactionHistoryFilter,

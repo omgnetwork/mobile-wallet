@@ -8,6 +8,7 @@ import useMergeInterval from './useMergeInterval'
 import useInterval from './useInterval'
 import useProgressiveFeedback from './useProgressiveFeedback'
 import usePositionMeasurement from './usePositionMeasurement'
+import useCheckBalanceAvailability from './useCheckBalanceAvailability'
 
 export {
   useFlashMessage,
@@ -19,5 +20,6 @@ export {
   useMergeInterval,
   useInterval,
   useProgressiveFeedback,
-  usePositionMeasurement
+  usePositionMeasurement,
+  useCheckBalanceAvailability
 }

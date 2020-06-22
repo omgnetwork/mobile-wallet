@@ -19,7 +19,9 @@ const OMGExitFee = ({
   const [feeUsd, setFeeUsd] = useState()
 
   const formatBond = useCallback(() => {
-    return BlockchainFormatter.formatUnits(exitBondValue, 'ether')
+    if (exitBondValue)
+      return BlockchainFormatter.formatUnits(exitBondValue, 'ether')
+    else return 0
   }, [exitBondValue])
 
   const formatGasFee = useCallback(() => {
@@ -134,12 +136,13 @@ const Item = ({
       <View style={[styles.itemSubContainer, styles.alignRight]}>
         {!!subtitle && (
           <OMGText
-            numberOfLines={2}
+            numberOfLines={3}
             style={[
               styles.textGray(theme),
               styles.textSmall,
               styles.marginSmall,
-              styles.stretch
+              styles.stretch,
+              styles.marginRightSmall
             ]}>
             {subtitle}
           </OMGText>
@@ -212,6 +215,9 @@ const styles = StyleSheet.create({
   },
   marginSmall: {
     marginTop: 2
+  },
+  marginRightSmall: {
+    marginRight: 4
   },
   hyperlinkText: theme => ({
     color: theme.colors.blue,

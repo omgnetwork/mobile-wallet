@@ -8,12 +8,7 @@ const navigator = createStackNavigator(
     TransferSelectAmount: Views.TransferSelectAmount,
     TransferChoosePlasmaFee: Views.TransferChoosePlasmaFee,
     TransferChooseGasFee: Views.TransferChooseGasFee,
-    TransferReview: Views.TransferReview,
-    TransferForm: Views.TransferForm,
-    TransferConfirm: {
-      screen: Views.TransferConfirm,
-      navigationOptions: () => ({ gesturesEnabled: false })
-    }
+    TransferReview: Views.TransferReview
   },
   {
     initialRouteName: 'TransferSelectAddress',
