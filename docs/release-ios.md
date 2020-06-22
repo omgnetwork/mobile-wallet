@@ -17,13 +17,15 @@ FASTLANE_USER     Your App Store Connect Email
 MATCH_GIT_URL     The URL of the GitHub repo containing certificates and provisioning profiles for match signing
 ```
 
-4. From the `/ios` directory, run `pod install`.
+4. If not done already, link [Sentry](https://docs.sentry.io/platforms/react-native/#linking) by running `npx sentry-wizard -i reactNative -p ios android`.
 
-5. Also from the `/ios` directory, run `fastlane ios testflight_local` and wait for the job to complete.
+5. From the `/ios` directory, run `pod install`.
 
-6. Go to https://appstoreconnect.apple.com/WebObjects/iTunesConnect.woa/ra/ng/app/1482235242 (You need to login first)
+6. Also from the `/ios` directory, run `fastlane ios testflight_local` and wait for the job to complete.
 
-7. Go to `Testflight`, then please follow steps below:
+7. Go to https://appstoreconnect.apple.com/WebObjects/iTunesConnect.woa/ra/ng/app/1482235242 (You need to login first)
+
+8. Go to `Testflight`, then please follow steps below:
 
 ![ios-archive-instruction-12](../public/ios-archive-instruction-12.png)
 
