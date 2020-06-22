@@ -36,6 +36,10 @@ workflows:
           filters:
             branches:
               only: master
+  
+  testflight-release: 
+    jobs: 
+      fastlane-to-testflight
 
 jobs:
   #
@@ -185,3 +189,40 @@ jobs:
           gcloud auth configure-docker
           gcloud beta container clusters get-credentials $PROXY_SERVER_GCP_CLUSTER_DEVELOPMENT --region $PROXY_SERVER_GCP_REGION --project $PROXY_SERVER_GCP_PROJECT
           kubectl set image deployment/mobile-wallet-proxy mobile-wallet-proxy=$PROXY_SERVER_DOCKER_TAG
+
+  fastlane-to-testflight:
+    macos:
+      xcode: "11.1.0"
+    shell: /bin/bash --login -o pipefail
+    steps:
+      - checkout
+      - run: 
+          name: Decrypting and adding Firebase configuration file
+          command: |
+            echo "$FIREBASE_CONFIG" | base64 --decode > ios/PlasmaWallet/wallet/GoogleService-Info.plist
+      - run: 
+          name: Decrypting and adding Sentry configuration file
+          command: |
+            echo "$SENTRY_CONFIG" | base64 --decode > ios/sentry.properties
+      - restore_cache:
+          name: Restoring cache (Ruby)
+          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
+      - run: 
+          name: Installing Ruby dependencies 
+          command: |
+            cd ios
+            gem install bundler && bundle config set path 'vendor/bundle' && bundle install
+      - save_cache:
+          name: Saving cache (Ruby)
+          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
+          paths:
+            - 'ios/vendor/bundle/'
+      - persist_to_workspace:
+          name: Persisting to workspace
+          root: .
+          paths: 'ios/'
+      - run: 
+          name: Running Fastlane
+          command: |
+            cd ios
+            bundle exec fastlane testflight_ci

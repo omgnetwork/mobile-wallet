@@ -31,4 +31,17 @@ platform :ios do
     build_ios_app(scheme: "PlasmaWallet", clean: true)
     upload_to_testflight
   end
+
+  desc "Push a new build to TestFlight (CI)"
+  lane :testflight_ci do
+    match(type: "appstore")
+    increment_build_number(
+      build_number: latest_testflight_build_number(
+        initial_build_number: 1,
+        version: get_version_number(xcodeproj: "PlasmaWallet.xcodeproj", target: "PlasmaWallet")
+      ) + 1
+    )
+    build_ios_app(scheme: "PlasmaWallet")
+    upload_to_testflight
+  end
 end
