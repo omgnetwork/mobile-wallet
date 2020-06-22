@@ -39,7 +39,7 @@ workflows:
   
   testflight-release: 
     jobs: 
-      fastlane-to-testflight
+      - fastlane-to-testflight
 
 jobs:
   #
