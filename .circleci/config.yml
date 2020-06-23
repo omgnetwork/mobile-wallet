@@ -237,7 +237,9 @@ jobs:
           paths: 'ios/'
       - run: 
           name: Installing CocoaPods
-          command: bundle exec pod install
+          command: |
+          cd ios 
+          bundle exec pod install
       - run: 
           name: Running Fastlane
           command: |
