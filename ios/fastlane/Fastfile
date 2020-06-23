@@ -46,7 +46,15 @@ platform :ios do
         version: get_version_number(xcodeproj: "PlasmaWallet.xcodeproj", target: "PlasmaWallet")
       ) + 1
     )
-    build_ios_app(scheme: "PlasmaWallet")
+    build_ios_app(
+      scheme: "PlasmaWallet"
+      export_options: {
+        method: "app-store",
+        provisioningProfiles: { 
+          "network.omisego.Plasma-Wallet" => "match AppStore network.omisego.Plasma-Wallet",
+        }
+      }
+    )
     upload_to_testflight
   end
 end
