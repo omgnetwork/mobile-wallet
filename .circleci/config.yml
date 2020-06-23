@@ -209,7 +209,7 @@ jobs:
           key: v1-mobile-wallet-node-modules-{{ checksum "package-lock.json" }}
       - run:
           name: Installing Node dependencies.
-          command: npm install
+          command: node -v
       - save_cache:
           name: Saving cache (Node)
           key: v1-mobile-wallet-node-modules-{{ checksum "package-lock.json" }}
