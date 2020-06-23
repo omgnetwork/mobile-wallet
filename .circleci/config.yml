@@ -40,7 +40,7 @@ workflows:
   testflight-release: 
     jobs: 
       - mobile-wallet-build
-      - fastlane-to-testflight
+      - fastlane-to-testflight:
           requires: 
             - mobile-wallet-build
 
