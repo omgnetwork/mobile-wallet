@@ -218,7 +218,6 @@ jobs:
           name: Installing Ruby dependencies 
           command: |
             cd ios
-            ruby -v
             sudo gem install bundler && bundle config set path 'vendor/bundle' && bundle install
       - save_cache:
           name: Saving cache (Ruby)
@@ -233,7 +232,6 @@ jobs:
           name: Installing CocoaPods
           command: |
             cd ios
-            ruby -v
             bundle exec pod install
       - run: 
           name: Running Fastlane
