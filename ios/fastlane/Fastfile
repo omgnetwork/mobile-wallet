@@ -17,6 +17,10 @@ default_platform(:ios)
 
 platform :ios do
   skip_docs
+
+  before_all do
+    setup_circle_ci
+  end
   
   desc "Push a new build to TestFlight (local)"
   lane :testflight_local do
@@ -34,7 +38,6 @@ platform :ios do
 
   desc "Push a new build to TestFlight (CI)"
   lane :testflight_ci do
-    xcversion(version: "11.2.0")
     match(type: "appstore")
     increment_build_number(
       build_number: latest_testflight_build_number(
