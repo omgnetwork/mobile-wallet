@@ -47,7 +47,7 @@ platform :ios do
       ) + 1
     )
     build_ios_app(
-      scheme: "PlasmaWallet"
+      scheme: "PlasmaWallet",
       export_options: {
         method: "app-store",
         provisioningProfiles: { 
