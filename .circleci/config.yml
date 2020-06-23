@@ -196,14 +196,14 @@ jobs:
     shell: /bin/bash --login -o pipefail
     steps:
       - checkout
-      # - run: 
-      #     name: Decrypting and adding Firebase configuration file
-      #     command: echo "$FIREBASE_CONFIG" | base64 --decode > ios/PlasmaWallet/wallet/GoogleService-Info.plist
-      # - run: 
-      #     name: Decrypting and adding Sentry configuration file
-      #     command: echo "$SENTRY_CONFIG" | base64 --decode > ios/sentry.properties
       - run: 
-          command: npm install
+          name: Decrypting and adding Firebase configuration file
+          command: echo "$FIREBASE_CONFIG" | base64 --decode > ios/PlasmaWallet/wallet/GoogleService-Info.plist
+      - run: 
+          name: Decrypting and adding Sentry configuration file
+          command: echo "$SENTRY_CONFIG" | base64 --decode > ios/sentry.properties
+      # - run: 
+      #     command: npm install
       - run: 
           name: Set Ruby version
           command:  echo 'chruby ruby-2.7' >> ~/.bash_profile
@@ -224,11 +224,11 @@ jobs:
           name: Persisting to workspace
           root: .
           paths: 'ios/'
-      - run: 
-          name: Installing CocoaPods
-          command: bundle exec pod install
       # - run: 
-      #     name: Running Fastlane
-      #     command: |
-      #       cd ios
-      #       bundle exec fastlane testflight_ci
+      #     name: Installing CocoaPods
+      #     command: bundle exec pod install
+      - run: 
+          name: Running Fastlane
+          command: |
+            cd ios
+            bundle exec fastlane testflight_ci
