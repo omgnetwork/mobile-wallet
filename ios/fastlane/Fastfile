@@ -51,7 +51,7 @@ platform :ios do
       export_options: {
         method: "app-store",
         provisioningProfiles: { 
-          "network.omisego.Plasma-Wallet" => "match AppStore network.omisego.Plasma-Wallet",
+          "network.omisego.Plasma-Wallet" => "match AppStore network.omisego.Plasma-Wallet"
         }
       }
     )
