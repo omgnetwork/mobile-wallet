@@ -1,7 +1,6 @@
 import { GasEstimator } from 'common/blockchain'
 import { BlockchainNetworkType, ContractAddress } from 'common/constants'
 import Config from 'react-native-config'
-import { Unit } from 'common/utils'
 
 export const TYPE_DEPOSIT = 1
 export const TYPE_TRANSFER_ROOTCHAIN = 2
@@ -21,33 +20,23 @@ export const getType = (address, primaryWalletNetwork) => {
   }
 }
 
-export const getGasUsed = (type, token, options) => {
-  const { wallet, to, includeExitBond } = options
+export const getGasUsed = (type, sendTransactionParams) => {
   switch (type) {
     case TYPE_APPROVE_ERC20:
-      return GasEstimator.estimateApproveErc20(wallet.address, token)
-    case TYPE_DEPOSIT: {
-      const weiAmount = Unit.convertToString(
-        token.balance,
-        0,
-        token.tokenDecimal
-      )
-      return GasEstimator.estimateDeposit(
-        wallet.address,
-        weiAmount,
-        token.contractAddress
-      )
-    }
+      return GasEstimator.estimateApproveErc20(sendTransactionParams)
+    case TYPE_DEPOSIT:
+      return GasEstimator.estimateDeposit(sendTransactionParams)
     case TYPE_TRANSFER_ROOTCHAIN: {
+      const { token } = sendTransactionParams.smallestUnitAmount
       const isEth = token.contractAddress === ContractAddress.ETH_ADDRESS
       return isEth
         ? GasEstimator.estimateTransferETH()
-        : GasEstimator.estimateTransferErc20(wallet.address, to, token)
+        : GasEstimator.estimateTransferErc20(sendTransactionParams)
     }
     case TYPE_TRANSFER_CHILDCHAIN:
       return GasEstimator.estimateTransferChildchain()
     case TYPE_EXIT:
-      return GasEstimator.estimateExit(wallet, token, includeExitBond)
+      return GasEstimator.estimateExit(wallet, token, true)
   }
 }
 

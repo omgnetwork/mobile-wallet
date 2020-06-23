@@ -12,7 +12,7 @@ import {
   OMGEditItem,
   OMGEmpty
 } from 'components/widgets'
-import { Styles, Unit } from 'common/utils'
+import { Styles } from 'common/utils'
 import { ExceptionReporter } from 'common/reporter'
 import {
   getAssets,
@@ -21,12 +21,12 @@ import {
 } from 'components/views/transfer/transferHelper'
 import { walletActions } from 'common/actions'
 import { ethereumService } from 'common/services'
+import { BlockchainParams } from 'common/blockchain'
 
 const DepositApprove = ({
   theme,
   blockchainWallet,
   navigation,
-  ethToken,
   wallet,
   isFocused,
   dispatchRefreshRootchain
@@ -41,29 +41,36 @@ const DepositApprove = ({
   const feeToken = assets.find(
     token => token.contractAddress === feeRate.currency
   )
-  const [estimatedFee, estimatedFeeSymbol, estimatedFeeUsd] = useEstimatedFee({
-    feeRate,
-    ethToken,
+  const sendTransactionParams = BlockchainParams.toSendTransactionParams({
     blockchainWallet,
-    transferToken: { ...token, balance: amount },
-    transactionType: TYPE_APPROVE_ERC20,
-    toAddress: address
+    toAddress: address,
+    token,
+    amount,
+    gas: null,
+    gasPrice: feeRate.amount,
+    gasToken: feeToken
   })
+
+  const [
+    estimatedFee,
+    estimatedFeeSymbol,
+    estimatedFeeUsd,
+    estimatedGasUsed
+  ] = useEstimatedFee({
+    transactionType: TYPE_APPROVE_ERC20,
+    sendTransactionParams
+  })
+
   const [hasEnoughBalance, minimumAmount] = useCheckBalanceAvailability({
-    feeRate,
-    feeToken,
-    sendToken: token,
-    sendAmount: amount,
+    sendTransactionParams,
     estimatedFee
   })
 
   useEffect(() => {
-    async function checkIfRequireApproveErc20(weiAmount, from) {
+    async function checkIfRequireApproveErc20() {
       setVerifying(true)
       const requiredApprove = await ethereumService.isRequireApproveErc20(
-        from,
-        weiAmount,
-        token.contractAddress
+        sendTransactionParams
       )
       setVerifying(false)
 
@@ -78,22 +85,20 @@ const DepositApprove = ({
     }
 
     if (isFocused) {
-      const { address: from } = blockchainWallet
-      const weiAmount = Unit.convertToString(amount, 0, token.tokenDecimal)
-      checkIfRequireApproveErc20(weiAmount, from)
+      checkIfRequireApproveErc20()
     }
   }, [isFocused])
 
   const handleApprovePressed = useCallback(() => {
-    async function approve(weiAmount, from, privateKey) {
+    async function approve() {
       setApproving(true)
-      await ethereumService.approveErc20Deposit(
-        token.contractAddress,
-        weiAmount,
-        from,
-        feeRate.amount,
-        privateKey
-      )
+      await ethereumService.approveErc20Deposit({
+        ...sendTransactionParams,
+        gasOptions: {
+          ...sendTransactionParams.gasOptions,
+          gas: estimatedGasUsed
+        }
+      })
       setApproving(false)
       dispatchRefreshRootchain(wallet.address, true)
       navigation.navigate('TransferReview', {
@@ -103,10 +108,8 @@ const DepositApprove = ({
         address
       })
     }
-    const { address: from, privateKey } = blockchainWallet
-    const weiAmount = Unit.convertToString(amount, 0, token.tokenDecimal)
     ExceptionReporter.reportWhenError(
-      () => approve(weiAmount, from, privateKey),
+      () => approve(),
       _err => setApproving(false)
     )
   }, [feeRate, address, amount, token])
@@ -253,10 +256,7 @@ const mapStateToProps = (state, _ownProps) => {
   )
   return {
     blockchainWallet: state.setting.blockchainWallet,
-    wallet: primaryWallet,
-    ethToken: primaryWallet.rootchainAssets.find(
-      token => token.contractAddress === ContractAddress.ETH_ADDRESS
-    )
+    wallet: primaryWallet
   }
 }
 

@@ -6,14 +6,18 @@ export const toSendTransactionParams = ({
   token,
   amount,
   gas,
-  fee
+  gasPrice,
+  gasToken
 }) => {
   const { address: from, privateKey } = blockchainWallet
   const to = toAddress
   return {
     addresses: { from, to },
-    smallestUnitAmount: Unit.convertToString(amount, 0, token.tokenDecimal),
+    smallestUnitAmount: {
+      token,
+      amount: Unit.convertToString(amount, 0, token.tokenDecimal)
+    },
     privateKey,
-    gasOptions: { gas, gasPrice: fee.amount }
+    gasOptions: { gas, gasPrice, gasToken }
   }
 }

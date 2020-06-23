@@ -3,27 +3,26 @@ import { createAsyncAction } from './actionCreators'
 import { TransactionActionTypes, ContractAddress } from 'common/constants'
 import { Datetime } from 'common/utils'
 
-export const transfer = (blockchainWallet, toAddress, token, fee) => {
+export const transfer = sendTransactionParams => {
   const asyncAction = async () => {
-    const options = {
-      token,
-      fee,
-      toAddress
-    }
-    const { hash } =
+    const { from, to } = sendTransactionParams.addresses
+    const { token } = sendTransactionParams.smallestUnitAmount
+    const { gas, gasPrice } = sendTransactionParams.gasOptions
+
+    const { hash, value } =
       token.contractAddress === ContractAddress.ETH_ADDRESS
-        ? await ethereumService.sendEthToken(blockchainWallet, options)
-        : await ethereumService.sendErc20Token(blockchainWallet, options)
+        ? await ethereumService.sendEthToken(sendTransactionParams)
+        : await ethereumService.sendErc20Token(sendTransactionParams)
 
     return {
       hash,
-      from: blockchainWallet.address,
-      to: toAddress,
-      value: token.balance,
+      from,
+      to,
+      value,
       actionType: TransactionActionTypes.TYPE_ROOTCHAIN_SEND_TOKEN,
       symbol: token.tokenSymbol,
-      gasUsed: null,
-      gasPrice: fee.amount,
+      gasUsed: gas,
+      gasPrice,
       createdAt: Datetime.now()
     }
   }

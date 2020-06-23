@@ -7,6 +7,81 @@ import { Unit } from 'common/utils'
 import { TxDetails, Contract, Wait } from 'common/blockchain'
 import { web3EstimateGas } from './gasEstimator'
 
+export const sendEthToken = sendTransactionParams => {
+  const txDetails = TxDetails.getTransferEth(sendTransactionParams)
+  return signSendTx(txDetails, sendTransactionParams.privateKey)
+}
+
+export const sendErc20Token = async sendTransactionParams => {
+  const txDetails = TxDetails.getTransferErc20(sendTransactionParams)
+  return signSendTx(txDetails, sendTransactionParams.privateKey)
+}
+
+export const isRequireApproveErc20 = async ({
+  addresses,
+  smallestUnitAmount
+}) => {
+  const { from } = addresses
+  const { token, amount } = smallestUnitAmount
+
+  const allowance = await Contract.getErc20Allowance(
+    from,
+    token.contractAddress
+  )
+
+  const bnAmount = new BN(amount)
+  const bnAllowance = new BN(allowance)
+
+  return bnAllowance.lt(bnAmount)
+}
+
+export const approveErc20Deposit = async sendTransactionParams => {
+  const { from } = sendTransactionParams.addresses
+  const { token, amount } = sendTransactionParams.smallestUnitAmount
+  const allowance = await Contract.getErc20Allowance(
+    from,
+    token.contractAddress
+  )
+
+  const bnAllowance = new BN(allowance)
+  const bnAmount = new BN(amount)
+  const bnZero = new BN(0)
+
+  // If the allowance less than the desired amount, we need to reset to zero first inorder to update it.
+  // Some erc20 contract prevent to update non-zero allowance e.g. OmiseGO Token.
+  if (bnAllowance.gt(bnZero) && bnAllowance.lt(bnAmount)) {
+    const txDetails = await TxDetails.getApproveErc20({
+      ...sendTransactionParams,
+      smallestUnitAmount: {
+        ...sendTransactionParams.smallestUnitAmount,
+        amount: 0
+      }
+    })
+    const { hash } = await signSendTx(
+      txDetails,
+      sendTransactionParams.privateKey
+    )
+
+    // Wait approve transaction for 1 block
+    await Wait.waitForRootchainTransaction({
+      hash,
+      intervalMs: 3000,
+      confirmationThreshold: 1
+    })
+  }
+
+  const txDetails = await TxDetails.getApproveErc20(sendTransactionParams)
+  const { hash } = await signSendTx(txDetails, sendTransactionParams.privateKey)
+
+  await Wait.waitForRootchainTransaction({
+    hash,
+    intervalMs: 3000,
+    confirmationThreshold: 1
+  })
+
+  return { hash }
+}
+
 export const importWalletMnemonic = mnemonic => {
   return ethers.Wallet.fromMnemonic(mnemonic)
 }
@@ -83,94 +158,6 @@ export const getInternalTxs = (address, options) => {
       endblock: '99999999'
     }
   })
-}
-
-export const sendEthToken = (wallet, options) => {
-  const { fee, token, toAddress } = options
-  const amount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
-
-  const txDetails = TxDetails.getTransferEth(
-    wallet.address,
-    toAddress,
-    amount,
-    fee
-  )
-
-  return signSendTx(txDetails, wallet.privateKey)
-}
-
-export const sendErc20Token = async (contract, options) => {
-  const { fee, token, toAddress, wallet } = options
-  const amount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
-
-  const txDetails = TxDetails.getTransferErc20(
-    wallet.address,
-    toAddress,
-    amount,
-    fee,
-    contract
-  )
-
-  txDetails.gas = await web3EstimateGas(txDetails)
-  return signSendTx(txDetails, wallet.privateKey)
-}
-
-export const isRequireApproveErc20 = async (from, amount, erc20Address) => {
-  const allowance = await Contract.getErc20Allowance(from, erc20Address)
-
-  const bnAmount = new BN(amount)
-  const bnAllowance = new BN(allowance)
-
-  return bnAllowance.lt(bnAmount)
-}
-
-export const approveErc20Deposit = async (erc20Address, amount, txOptions) => {
-  const { from, privateKey, gas, gasPrice } = txOptions
-  const allowance = await Contract.getErc20Allowance(
-    txOptions.from,
-    erc20Address
-  )
-
-  const bnAllowance = new BN(allowance)
-  const bnAmount = new BN(amount)
-  const bnZero = new BN(0)
-
-  // If the allowance less than the desired amount, we need to reset to zero first inorder to update it.
-  // Some erc20 contract prevent to update non-zero allowance e.g. OmiseGO Token.
-  if (bnAllowance.gt(bnZero) && bnAllowance.lt(bnAmount)) {
-    const txDetails = await TxDetails.getApproveErc20(
-      from,
-      erc20Address,
-      0,
-      gas,
-      gasPrice
-    )
-    const { hash } = await signSendTx(txDetails, privateKey)
-
-    // Wait approve transaction for 1 block
-    await Wait.waitForRootchainTransaction({
-      hash,
-      intervalMs: 3000,
-      confirmationThreshold: 1
-    })
-  }
-
-  const txDetails = await TxDetails.getApproveErc20(
-    from,
-    erc20Address,
-    amount,
-    gas,
-    gasPrice
-  )
-  const { hash } = await signSendTx(txDetails, privateKey)
-
-  await Wait.waitForRootchainTransaction({
-    hash,
-    intervalMs: 3000,
-    confirmationThreshold: 1
-  })
-
-  return { hash }
 }
 
 export const getGasFromGasStation = () => {

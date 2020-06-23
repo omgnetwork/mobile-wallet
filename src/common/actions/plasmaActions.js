@@ -23,20 +23,19 @@ export const fetchAssets = (provider, address) => {
   })
 }
 
-export const deposit = (blockchainWallet, token, gasOptions) => {
+export const deposit = sendTransactionParams => {
   const asyncAction = async () => {
-    const { gas, gasPrice } = gasOptions
-    const { hash } = await plasmaService.deposit(
-      blockchainWallet.address,
-      blockchainWallet.privateKey,
-      token,
-      gasOptions
-    )
+    const { from, to } = sendTransactionParams.addresses
+    const { token } = sendTransactionParams.smallestUnitAmount
+    const { gas, gasPrice } = sendTransactionParams.gasOptions
+
+    const { hash, value } = await plasmaService.deposit(sendTransactionParams)
 
     return {
       hash,
-      from: blockchainWallet.address,
-      value: token.balance,
+      from,
+      to,
+      value,
       symbol: token.tokenSymbol,
       tokenDecimal: token.tokenDecimal,
       contractAddress: token.contractAddress,
@@ -52,25 +51,28 @@ export const deposit = (blockchainWallet, token, gasOptions) => {
   })
 }
 
-export const transfer = (blockchainWallet, toAddress, token, feeToken) => {
+export const transfer = sendTransactionParams => {
   const asyncAction = async () => {
-    const { txhash } = await plasmaService.transfer(
-      blockchainWallet,
-      toAddress,
-      token,
-      feeToken
+    const { addresses, smallestUnitAmount, gasOptions } = sendTransactionParams
+    const { gasPrice, gasToken } = gasOptions
+    const { from, to } = addresses
+    const { token } = smallestUnitAmount
+
+    const { txhash, value } = await plasmaService.transfer(
+      sendTransactionParams
     )
 
     return {
       hash: txhash,
-      from: blockchainWallet.address,
-      value: token.balance,
+      from,
+      to,
+      value,
       symbol: token.tokenSymbol,
       tokenDecimal: token.tokenDecimal,
       contractAddress: token.contractAddress,
       gasUsed: 1,
-      gasPrice: feeToken.amount,
-      gasToken: feeToken,
+      gasPrice,
+      gasToken,
       actionType: TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN,
       createdAt: Datetime.now()
     }

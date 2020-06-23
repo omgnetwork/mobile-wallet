@@ -105,32 +105,35 @@ export const getFees = async tokens => {
   }
 }
 
-export const transfer = async (
-  fromBlockchainWallet,
-  toAddress,
-  token,
-  fee = { contractAddress: ContractAddress.ETH_ADDRESS, amount: 1 },
-  metadata
-) => {
-  const payment = Transaction.createPayment(
-    toAddress,
-    token.contractAddress,
-    Unit.convertToString(token.balance, 0, token.tokenDecimal, 16)
-  )
-  const childchainFee = Transaction.createFee(fee.contractAddress, fee.amount)
-  return Plasma.transfer(fromBlockchainWallet, payment, childchainFee, metadata)
+export const transfer = async sendTransactionParams => {
+  const { token, amount } = sendTransactionParams.smallestUnitAmount
+  const { txhash } = await Plasma.transfer({
+    ...sendTransactionParams,
+    smallestUnitAmount: {
+      ...sendTransactionParams.smallestUnitAmount,
+      amount: Unit.convertToString(
+        amount,
+        token.tokenDecimal,
+        token.tokenDecimal,
+        16
+      )
+    }
+  })
+
+  return {
+    hash: txhash,
+    value: Unit.convertToString(amount, token.tokenDecimal, 0)
+  }
 }
 
-export const deposit = async (address, privateKey, token, gasOptions) => {
-  const weiAmount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
+export const deposit = async sendTransactionParams => {
+  const { token, amount } = sendTransactionParams.smallestUnitAmount
+  const { hash } = await Plasma.deposit(sendTransactionParams)
 
-  return await Plasma.deposit(
-    address,
-    privateKey,
-    weiAmount,
-    token.contractAddress,
-    gasOptions
-  )
+  return {
+    hash,
+    value: Unit.convertToString(amount, token.tokenDecimal, 0)
+  }
 }
 
 export const exit = async (blockchainWallet, token, utxos, gasPrice) => {

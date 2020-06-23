@@ -19,6 +19,7 @@ import {
   TYPE_DEPOSIT,
   TYPE_TRANSFER_ROOTCHAIN
 } from './transferHelper'
+import { BlockchainParams } from 'common/blockchain'
 
 const TransferReview = ({
   theme,
@@ -40,28 +41,31 @@ const TransferReview = ({
   const transactionType = getType(toAddress, primaryWalletNetwork)
   const assets = getAssets(transactionType, wallet)
   const amountUsd = BigNumber.multiply(amount, token.price)
-  const transferToken = { ...token, balance: amount }
   const feeToken = assets.find(
     token => token.contractAddress === feeRate.currency
   )
+  const sendTransactionParams = BlockchainParams.toSendTransactionParams({
+    blockchainWallet,
+    toAddress,
+    token,
+    amount,
+    gas: null,
+    gasPrice: feeRate.amount,
+    gasToken: feeToken
+  })
+
   const [
     estimatedFee,
     estimatedFeeSymbol,
     estimatedFeeUsd,
     estimatedGasUsed
   ] = useEstimatedFee({
-    feeRate,
-    transferToken,
-    ethToken,
     transactionType,
-    blockchainWallet,
-    toAddress
+    sendTransactionParams
   })
+
   const [hasEnoughBalance, minimumAmount] = useCheckBalanceAvailability({
-    feeRate,
-    feeToken,
-    sendToken: token,
-    sendAmount: amount,
+    sendTransactionParams,
     estimatedFee
   })
   const [loadingBalance] = useLoading(loading, 'ROOTCHAIN_FETCH_ASSETS')
@@ -79,37 +83,16 @@ const TransferReview = ({
   }, [transactionType, navigation])
 
   const onSubmit = useCallback(() => {
+    sendTransactionParams.gasOptions.gas = estimatedGasUsed
     switch (transactionType) {
       case TYPE_TRANSFER_CHILDCHAIN:
-        return plasmaTransfer(
-          blockchainWallet,
-          toAddress,
-          transferToken,
-          feeRate
-        )
+        return plasmaTransfer(sendTransactionParams)
       case TYPE_TRANSFER_ROOTCHAIN:
-        return ethereumTransfer(
-          blockchainWallet,
-          toAddress,
-          transferToken,
-          feeRate
-        )
+        return ethereumTransfer(sendTransactionParams)
       case TYPE_DEPOSIT:
-        return depositTransfer(
-          blockchainWallet,
-          transferToken,
-          estimatedGasUsed,
-          feeRate.amount
-        )
+        return depositTransfer(sendTransactionParams)
     }
-  }, [
-    blockchainWallet,
-    ethereumTransfer,
-    feeRate,
-    plasmaTransfer,
-    toAddress,
-    transferToken
-  ])
+  }, [ethereumTransfer, depositTransfer, plasmaTransfer, sendTransactionParams])
 
   useEffect(() => {
     if (
@@ -236,12 +219,12 @@ const mapStateToProps = (state, _ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, _ownProps) => ({
-  plasmaTransfer: (blockchainWallet, toAddress, token, fee) =>
-    dispatch(plasmaActions.transfer(blockchainWallet, toAddress, token, fee)),
-  ethereumTransfer: (blockchainWallet, toAddress, token, fee) =>
-    dispatch(ethereumActions.transfer(blockchainWallet, toAddress, token, fee)),
-  depositTransfer: (blockchainWallet, token, gas, gasPrice) =>
-    dispatch(plasmaActions.deposit(blockchainWallet, token, { gas, gasPrice }))
+  plasmaTransfer: sendTransactionParams =>
+    dispatch(plasmaActions.transfer(sendTransactionParams)),
+  ethereumTransfer: sendTransactionParams =>
+    dispatch(ethereumActions.transfer(sendTransactionParams)),
+  depositTransfer: sendTransactionParams =>
+    dispatch(plasmaActions.deposit(sendTransactionParams))
 })
 
 export default connect(

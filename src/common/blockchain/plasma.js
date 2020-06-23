@@ -17,24 +17,21 @@ export const getBalances = address => {
   })
 }
 
-export const transfer = async (
-  fromBlockchainWallet,
-  payment,
-  fee,
-  metadata
-) => {
-  const { address, privateKey } = fromBlockchainWallet
-  const utxos = await Utxos.get(address, {
+export const transfer = async ({
+  addresses,
+  smallestUnitAmount,
+  privateKey,
+  gasOptions
+}) => {
+  const { from, to } = addresses
+  const { amount, token } = smallestUnitAmount
+  const { gasToken, gasPrice } = gasOptions
+  const fee = Transaction.createFee(gasToken.contractAddress, gasPrice)
+  const payment = Transaction.createPayment(to, token.contractAddress, amount)
+  const utxos = await Utxos.get(from, {
     sort: (a, b) => new BN(b.amount).sub(new BN(a.amount))
   })
-  const txBody = Transaction.createBody(
-    address,
-    utxos,
-    [payment],
-    fee,
-    metadata
-  )
-
+  const txBody = Transaction.createBody(from, utxos, [payment], fee)
   const typedData = Transaction.getTypedData(txBody)
   const privateKeys = new Array(txBody.inputs.length).fill(privateKey)
   const signatures = Transaction.sign(typedData, privateKeys)
@@ -42,24 +39,9 @@ export const transfer = async (
   return Transaction.submit(signedTxn)
 }
 
-export const deposit = async (
-  address,
-  privateKey,
-  weiAmount,
-  tokenContractAddress,
-  options = {}
-) => {
-  const { gas, gasPrice } = options
-
-  const txDetails = await TxDetails.getDeposit(
-    tokenContractAddress,
-    address,
-    weiAmount,
-    gas,
-    gasPrice
-  )
-
-  return Ethereum.signSendTx(txDetails, privateKey)
+export const deposit = async sendTransactionParams => {
+  const txDetails = await TxDetails.getDeposit(sendTransactionParams)
+  return Ethereum.signSendTx(txDetails, sendTransactionParams.privateKey)
 }
 
 export const mergeListOfUtxos = async (
