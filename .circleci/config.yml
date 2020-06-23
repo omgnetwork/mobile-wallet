@@ -195,7 +195,7 @@ jobs:
 
   fastlane-to-testflight:
     macos:
-      xcode: "11.5.0"
+      xcode: "11.5.0" # Software manifest: https://circle-macos-docs.s3.amazonaws.com/image-manifest/v2960/index.html
     environment:
       FL_OUTPUT_DIR: output
     shell: /bin/bash --login -o pipefail
@@ -210,7 +210,7 @@ jobs:
           command: echo "$SENTRY_CONFIG" | base64 --decode > ios/sentry.properties
       - run: 
           name: Set Ruby version
-          command:  echo 'chruby ruby-2.6.3' >> ~/.bash_profile
+          command:  echo 'chruby ruby-2.6.6' >> ~/.bash_profile
       - restore_cache:
           name: Restoring cache (Ruby)
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
@@ -218,6 +218,7 @@ jobs:
           name: Installing Ruby dependencies 
           command: |
             cd ios
+            ruby -v
             sudo gem install bundler && bundle config set path 'vendor/bundle' && bundle install
       - save_cache:
           name: Saving cache (Ruby)
@@ -231,7 +232,8 @@ jobs:
       - run: 
           name: Installing CocoaPods
           command: |
-            cd ios 
+            cd ios
+            ruby -v
             bundle exec pod install
       - run: 
           name: Running Fastlane
