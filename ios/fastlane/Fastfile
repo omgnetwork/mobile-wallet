@@ -38,6 +38,7 @@ platform :ios do
 
   desc "Push a new build to TestFlight (CI)"
   lane :testflight_ci do
+    update_code_signing_settings(use_automatic_signing: false)
     match(type: "appstore", readonly: true)
     increment_build_number(
       build_number: latest_testflight_build_number(
