@@ -200,7 +200,8 @@ jobs:
       FL_OUTPUT_DIR: output
     shell: /bin/bash --login -o pipefail
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - run: 
           name: Decrypting and adding Firebase configuration file
           command: echo "$FIREBASE_CONFIG" | base64 --decode > ios/PlasmaWallet/wallet/GoogleService-Info.plist
