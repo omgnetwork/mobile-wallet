@@ -192,7 +192,7 @@ jobs:
 
   fastlane-to-testflight:
     macos:
-      xcode: "11.2.1"
+      xcode: "11.1"
     environment:
       FL_OUTPUT_DIR: output
     shell: /bin/bash --login -o pipefail
