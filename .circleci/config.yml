@@ -192,7 +192,9 @@ jobs:
 
   fastlane-to-testflight:
     macos:
-      xcode: "11.2.0"
+      xcode: "11.2.1"
+    environment:
+      FL_OUTPUT_DIR: output
     shell: /bin/bash --login -o pipefail
     steps:
       - checkout
@@ -214,7 +216,7 @@ jobs:
           name: Installing Ruby dependencies 
           command: |
             cd ios
-            bundle config set path 'vendor/bundle' && bundle install
+            sudo gem install bundle && bundle config set path 'vendor/bundle' && bundle install
       - save_cache:
           name: Saving cache (Ruby)
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
