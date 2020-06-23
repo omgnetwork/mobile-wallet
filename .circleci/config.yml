@@ -217,7 +217,7 @@ jobs:
             - node_modules
       - run: 
           name: Set Ruby version
-          command:  echo 'chruby ruby-2.7' >> ~/.bash_profile
+          command:  echo 'chruby ruby-2.7.0' >> ~/.bash_profile
       - restore_cache:
           name: Restoring cache (Ruby)
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}

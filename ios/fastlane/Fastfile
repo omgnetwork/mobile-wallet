@@ -38,7 +38,6 @@ platform :ios do
 
   desc "Push a new build to TestFlight (CI)"
   lane :testflight_ci do
-    update_code_signing_settings(use_automatic_signing: false)
     match(type: "appstore", readonly: true)
     increment_build_number(
       build_number: latest_testflight_build_number(
@@ -46,15 +45,7 @@ platform :ios do
         version: get_version_number(xcodeproj: "PlasmaWallet.xcodeproj", target: "PlasmaWallet")
       ) + 1
     )
-    build_ios_app(
-      scheme: "PlasmaWallet",
-      export_options: {
-        method: "app-store",
-        provisioningProfiles: { 
-          "network.omisego.Plasma-Wallet" => "match AppStore network.omisego.Plasma-Wallet"
-        }
-      }
-    )
+    build_ios_app(scheme: "PlasmaWallet")
     upload_to_testflight
   end
 end
