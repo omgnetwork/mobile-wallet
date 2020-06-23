@@ -214,7 +214,7 @@ jobs:
           name: Installing Ruby dependencies 
           command: |
             cd ios
-            gem install bundler && bundle config set path 'vendor/bundle' && bundle install
+            bundle config set path 'vendor/bundle' && bundle install
       - save_cache:
           name: Saving cache (Ruby)
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
