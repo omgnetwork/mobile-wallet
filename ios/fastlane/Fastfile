@@ -46,7 +46,7 @@ platform :ios do
         version: get_version_number(xcodeproj: "PlasmaWallet.xcodeproj", target: "PlasmaWallet")
       ) + 1
     )
-    build_ios_app(scheme: "PlasmaWallet", silent: true, clean: true)
+    build_ios_app(scheme: "PlasmaWallet", silent: true, clean: true, include_symbols: true)
     upload_to_testflight
   end
 end
