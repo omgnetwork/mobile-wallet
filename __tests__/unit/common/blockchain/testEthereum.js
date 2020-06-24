@@ -101,7 +101,7 @@ describe('Test Ethereum Boundary', () => {
     mockWeb3SendSignedTransactionResponse('0x1')
     mockTransferErc20TxDetails(txDetails)
 
-    const sendTransactionParams = BlockchainParams.toSendTransactionParams({
+    const sendTransactionParams = BlockchainParams.createSendTransactionParams({
       blockchainWallet: { privateKey: 'privateKey', address: '0x0' },
       toAddress: '0x2',
       amount: '1000000',
@@ -152,7 +152,7 @@ describe('Test Ethereum Boundary', () => {
     mockWeb3SignTransaction(signedTx)
     mockWeb3SendSignedTransactionResponse('0x1')
 
-    const sendTransactionParams = BlockchainParams.toSendTransactionParams({
+    const sendTransactionParams = BlockchainParams.createSendTransactionParams({
       blockchainWallet: { privateKey: 'privateKey', address: '0x0' },
       toAddress: '0x2',
       amount: '1000000',
@@ -201,7 +201,7 @@ describe('Test Ethereum Boundary', () => {
     mockWeb3SignTransaction(signedTx)
     mockWeb3SendSignedTransactionResponse('0x1')
 
-    const sendTransactionParams = BlockchainParams.toSendTransactionParams({
+    const sendTransactionParams = BlockchainParams.createSendTransactionParams({
       blockchainWallet: { privateKey: 'privateKey', address: '0x0' },
       toAddress: '0x2',
       amount: '1000000',

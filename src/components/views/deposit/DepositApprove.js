@@ -40,7 +40,7 @@ const DepositApprove = ({
   const feeToken = assets.find(
     token => token.contractAddress === feeRate.currency
   )
-  const sendTransactionParams = BlockchainParams.toSendTransactionParams({
+  const sendTransactionParams = BlockchainParams.createSendTransactionParams({
     blockchainWallet,
     toAddress: address,
     token,

@@ -106,7 +106,7 @@ describe('Test Plasma Actions', () => {
 
     const store = mockStore({})
 
-    const sendTransactionParams = BlockchainParams.toSendTransactionParams({
+    const sendTransactionParams = BlockchainParams.createSendTransactionParams({
       blockchainWallet: { privateKey: 'privateKey', address: '0x0' },
       toAddress: '0x2',
       amount: '1000000',
@@ -158,7 +158,7 @@ describe('Test Plasma Actions', () => {
     }
     mockPlasmaService(transfer, transferResponse)
 
-    const sendTransactionParams = BlockchainParams.toSendTransactionParams({
+    const sendTransactionParams = BlockchainParams.createSendTransactionParams({
       blockchainWallet: { privateKey: 'privateKey', address: '0x0' },
       toAddress: '0x2',
       amount: '1000000',

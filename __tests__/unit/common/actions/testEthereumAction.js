@@ -29,7 +29,7 @@ describe('Test Ethereum Actions', () => {
     const store = mockStore({ unconfirmedTxs: [] })
     mockEthereumService(sendErc20Token, mockTxOptions)
 
-    const sendTransactionParams = BlockchainParams.toSendTransactionParams({
+    const sendTransactionParams = BlockchainParams.createSendTransactionParams({
       blockchainWallet: { privateKey: 'privateKey', address: '0x0' },
       toAddress: '0x2',
       amount: '1000000',
@@ -76,7 +76,7 @@ describe('Test Ethereum Actions', () => {
     const store = mockStore({ unconfirmedTxs: [] })
     mockEthereumService(sendEthToken, mockTxOptions)
 
-    const sendTransactionParams = BlockchainParams.toSendTransactionParams({
+    const sendTransactionParams = BlockchainParams.createSendTransactionParams({
       blockchainWallet: { privateKey: 'privateKey', address: '0x0' },
       toAddress: '0x2',
       amount: '1000000',

@@ -444,7 +444,7 @@ describe('Test Plasma Boundary', () => {
   test('deposit should invoke the deposit function with expected parameters', () => {
     const txDetails = {}
     const expectedResponse = { hash: '0x1' }
-    const sendTransactionParams = BlockchainParams.toSendTransactionParams({
+    const sendTransactionParams = BlockchainParams.createSendTransactionParams({
       blockchainWallet: { privateKey: TEST_PRIVATE_KEY, address: TEST_ADDRESS },
       toAddress: TEST_ADDRESS,
       token: { contractAddress: ContractAddress.ETH_ADDRESS, tokenDecimal: 18 },

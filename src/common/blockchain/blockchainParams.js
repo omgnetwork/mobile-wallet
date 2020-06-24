@@ -1,6 +1,6 @@
 import { Unit } from 'common/utils'
 
-export const toSendTransactionParams = ({
+export const createSendTransactionParams = ({
   blockchainWallet,
   toAddress,
   token,

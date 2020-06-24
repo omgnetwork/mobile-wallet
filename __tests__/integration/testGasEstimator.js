@@ -5,7 +5,7 @@ const { TEST_ADDRESS, TEST_ERC20_TOKEN_CONTRACT_ADDRESS } = Config
 
 describe('Test Gas Estimator', () => {
   test('test estimate gas when sending erc20 token', () => {
-    const sendTransactionParams = BlockchainParams.toSendTransactionParams({
+    const sendTransactionParams = BlockchainParams.createSendTransactionParams({
       blockchainWallet: { address: TEST_ADDRESS },
       toAddress: TEST_ADDRESS,
       token: {
