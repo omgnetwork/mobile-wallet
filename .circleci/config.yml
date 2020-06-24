@@ -37,6 +37,8 @@ jobs:
   fastlane-to-testflight:
     macos:
       xcode: 11.4.0 # Image manifest: https://circle-macos-docs.s3.amazonaws.com/image-manifest/v2960/index.html
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
       - attach_workspace:
           at: .
