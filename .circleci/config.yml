@@ -49,6 +49,13 @@ jobs:
           name: Decrypting and adding Sentry configuration file
           command: echo "$SENTRY_CONFIG" | base64 --decode > ios/sentry.properties
       - run:
+          name: Install sentry-cli
+          command: npm install @sentry/cli
+      - save_cache:
+          key: v1-mobile-wallet-node-modules-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run:
           name: Set Ruby version
           command: echo 'chruby ruby-2.6.6' >> ~/.bash_profile
       - restore_cache:
