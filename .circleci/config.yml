@@ -49,6 +49,9 @@ jobs:
           name: Decrypting and adding Sentry configuration file
           command: echo "$SENTRY_CONFIG" | base64 --decode > ios/sentry.properties
       - run:
+          name: Decrypting and adding .env file
+          command: echo "$ENV_MAINNET" | base64 --decode > .env
+      - run:
           name: Install sentry-cli
           command: npm install @sentry/cli
       - save_cache:
