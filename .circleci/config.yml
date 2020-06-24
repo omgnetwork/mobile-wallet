@@ -36,12 +36,12 @@ workflows:
           filters:
             branches:
               only: master
-  
-  testflight-release: 
-    jobs: 
+
+  testflight-release:
+    jobs:
       - mobile-wallet-build
       - fastlane-to-testflight:
-          requires: 
+          requires:
             - mobile-wallet-build
 
 jobs:
@@ -195,24 +195,24 @@ jobs:
 
   fastlane-to-testflight:
     macos:
-      xcode: "11.5.0" # Image manifest: https://circle-macos-docs.s3.amazonaws.com/image-manifest/v2960/index.html
+      xcode: 11.3.0 # Image manifest: https://circle-macos-docs.s3.amazonaws.com/image-manifest/v2960/index.html
     steps:
       - attach_workspace:
           at: .
-      - run: 
+      - run:
           name: Decrypting and adding Firebase configuration file
           command: echo "$FIREBASE_CONFIG" | base64 --decode > ios/PlasmaWallet/wallet/GoogleService-Info.plist
-      - run: 
+      - run:
           name: Decrypting and adding Sentry configuration file
           command: echo "$SENTRY_CONFIG" | base64 --decode > ios/sentry.properties
-      - run: 
+      - run:
           name: Set Ruby version
-          command:  echo 'chruby ruby-2.6.6' >> ~/.bash_profile
+          command: echo 'chruby ruby-2.6.6' >> ~/.bash_profile
       - restore_cache:
           name: Restoring cache (Ruby)
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
-      - run: 
-          name: Installing Ruby dependencies 
+      - run:
+          name: Installing Ruby dependencies
           command: |
             cd ios
             sudo gem install bundler && bundle config set path 'vendor/bundle' && bundle install
@@ -225,12 +225,12 @@ jobs:
           name: Persisting to workspace
           root: .
           paths: 'ios/'
-      - run: 
+      - run:
           name: Installing CocoaPods
           command: |
             cd ios
             bundle exec pod install
-      - run: 
+      - run:
           name: Running Fastlane
           command: |
             cd ios
