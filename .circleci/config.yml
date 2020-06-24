@@ -196,9 +196,6 @@ jobs:
   fastlane-to-testflight:
     macos:
       xcode: "11.5.0" # Image manifest: https://circle-macos-docs.s3.amazonaws.com/image-manifest/v2960/index.html
-    environment:
-      FL_OUTPUT_DIR: output
-    shell: /bin/bash --login -o pipefail
     steps:
       - attach_workspace:
           at: .
@@ -218,6 +215,7 @@ jobs:
           name: Installing Ruby dependencies 
           command: |
             cd ios
+            ruby -v
             sudo gem install bundler && bundle config set path 'vendor/bundle' && bundle install
       - save_cache:
           name: Saving cache (Ruby)
@@ -232,6 +230,7 @@ jobs:
           name: Installing CocoaPods
           command: |
             cd ios
+            ruby -v
             bundle exec pod install
       - run: 
           name: Running Fastlane
