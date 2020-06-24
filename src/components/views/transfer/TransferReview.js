@@ -26,7 +26,6 @@ const TransferReview = ({
   navigation,
   blockchainWallet,
   primaryWalletNetwork,
-  ethToken,
   ethereumTransfer,
   plasmaTransfer,
   depositTransfer,

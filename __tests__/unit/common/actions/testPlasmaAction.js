@@ -11,7 +11,7 @@ import { TransactionActionTypes, TransactionTypes } from 'common/constants'
 import Config from 'react-native-config'
 import { getMockStore } from '../../../helpers'
 import { plasmaActions } from 'common/actions'
-import { ContractAddress, Gas } from 'common/constants'
+import { Gas } from 'common/constants'
 
 jest.mock('common/services/plasmaService.js')
 jest.spyOn(global, 'requestAnimationFrame').mockImplementation(cb => cb())

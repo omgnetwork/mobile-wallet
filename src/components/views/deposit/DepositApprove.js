@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { useEstimatedFee, useCheckBalanceAvailability } from 'common/hooks'
-import { ContractAddress } from 'common/constants'
 import {
   OMGText,
   OMGTokenIcon,

@@ -1,4 +1,4 @@
-import { Ethereum, Token, ContractABI } from 'common/blockchain'
+import { Ethereum, Token } from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
 import { Datetime, Unit } from 'common/utils'
 import { providerService } from 'common/services'

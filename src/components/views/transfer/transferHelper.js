@@ -36,7 +36,7 @@ export const getGasUsed = (type, sendTransactionParams) => {
     case TYPE_TRANSFER_CHILDCHAIN:
       return GasEstimator.estimateTransferChildchain()
     case TYPE_EXIT:
-      return GasEstimator.estimateExit(wallet, token, true)
+      return GasEstimator.estimateExit(sendTransactionParams)
   }
 }
 

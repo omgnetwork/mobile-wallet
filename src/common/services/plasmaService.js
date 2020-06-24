@@ -8,7 +8,6 @@ import {
   Utxos
 } from 'common/blockchain'
 import Config from 'react-native-config'
-import { ContractAddress } from 'common/constants'
 
 export const fetchAssets = async (provider, address) => {
   try {
