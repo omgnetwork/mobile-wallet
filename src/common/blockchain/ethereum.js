@@ -3,9 +3,7 @@ import { web3 } from 'common/clients'
 import axios from 'axios'
 import Config from 'react-native-config'
 import BN from 'bn.js'
-import { Unit } from 'common/utils'
 import { TxDetails, Contract, Wait } from 'common/blockchain'
-import { web3EstimateGas } from './gasEstimator'
 
 export const sendEthToken = sendTransactionParams => {
   const txDetails = TxDetails.getTransferEth(sendTransactionParams)

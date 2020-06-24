@@ -1,8 +1,14 @@
-import { Plasma, Utxos, Ethereum, TxDetails } from 'common/blockchain'
+import {
+  Plasma,
+  Utxos,
+  Ethereum,
+  TxDetails,
+  BlockchainParams
+} from 'common/blockchain'
 import { Plasma as PlasmaClient } from 'common/clients'
 import Config from 'react-native-config'
 import BN from 'bn.js'
-import { GasEstimator } from 'common/blockchain'
+import { ContractAddress } from 'common/constants'
 
 jest.mock('@omisego/react-native-omg-js')
 jest.mock('common/blockchain/gasEstimator.js')
@@ -13,7 +19,6 @@ jest.mock('@omisego/react-native-omg-js')
 jest.mock('common/blockchain/contract.js')
 
 const { getBalance, getUtxos } = PlasmaClient.ChildChain
-const { getErc20Vault } = PlasmaClient.RootChain
 const { getDeposit } = TxDetails
 const { signSendTx } = Ethereum
 const { TEST_ADDRESS, TEST_PRIVATE_KEY } = Config
@@ -26,14 +31,6 @@ const mockGetBalancesResponse = resp => {
 
 const mockGetUtxosResponse = resp => {
   getUtxos.mockReturnValueOnce(Promise.resolve(resp))
-}
-
-const mockGetErc20Vault = resp => {
-  getErc20Vault.mockReturnValueOnce(Promise.resolve(resp))
-}
-
-const mockDepositGasEstimated = resp => {
-  GasEstimator.estimateDeposit.mockReturnValueOnce(Promise.resolve(resp))
 }
 
 const mockGetDepositTxDetails = resp => {
@@ -445,35 +442,23 @@ describe('Test Plasma Boundary', () => {
   })
 
   test('deposit should invoke the deposit function with expected parameters', () => {
-    const from = TEST_ADDRESS
-    const privateKey = TEST_PRIVATE_KEY
-    const amount = FIVE_GWEI
-    const gasPrice = '6000000'
-    const estimateGasUsedDeposit = 168000
     const txDetails = {}
     const expectedResponse = { hash: '0x1' }
+    const sendTransactionParams = BlockchainParams.toSendTransactionParams({
+      blockchainWallet: { privateKey: TEST_PRIVATE_KEY, address: TEST_ADDRESS },
+      toAddress: TEST_ADDRESS,
+      token: { contractAddress: ContractAddress.ETH_ADDRESS, tokenDecimal: 18 },
+      amount: FIVE_GWEI,
+      gas: null,
+      gasPrice: '6000000'
+    })
 
     mockGetDepositTxDetails(txDetails)
     mockSignSendTx(expectedResponse)
 
-    return Plasma.deposit(
-      from,
-      privateKey,
-      amount,
-      Config.TEST_ERC20_TOKEN_CONTRACT_ADDRESS,
-      {
-        gas: estimateGasUsedDeposit,
-        gasPrice
-      }
-    ).then(resp => {
-      expect(getDeposit).toBeCalledWith(
-        Config.TEST_ERC20_TOKEN_CONTRACT_ADDRESS,
-        from,
-        amount,
-        estimateGasUsedDeposit,
-        gasPrice
-      )
-      expect(signSendTx).toBeCalledWith(txDetails, privateKey)
+    return Plasma.deposit(sendTransactionParams).then(resp => {
+      expect(getDeposit).toBeCalledWith(sendTransactionParams)
+      expect(signSendTx).toBeCalledWith(txDetails, TEST_PRIVATE_KEY)
       expect(resp).toBe(expectedResponse)
     })
   })

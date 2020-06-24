@@ -1,7 +1,7 @@
-import { Ethereum, Contract, Wait } from 'common/blockchain'
+import { Ethereum, Contract, Wait, BlockchainParams } from 'common/blockchain'
 import { web3, Plasma } from 'common/clients'
 import Config from 'react-native-config'
-import { TxDetails, GasEstimator } from 'common/blockchain'
+import { TxDetails } from 'common/blockchain'
 
 jest.mock('@omisego/react-native-omg-js')
 jest.mock('common/blockchain/wait.js')
@@ -23,10 +23,6 @@ const mockTransferEthTxDetails = resp => {
 
 const mockGetApproveErc20TxDetails = resp => {
   getApproveErc20.mockReturnValue(resp)
-}
-
-const mockWeb3EstimateGas = resp => {
-  GasEstimator.web3EstimateGas.mockReturnValueOnce(Promise.resolve(resp))
 }
 
 const mockAllowance = resp => {
@@ -99,32 +95,28 @@ describe('Test Ethereum Boundary', () => {
 
   test('sendERC20Token should send expected parameters', () => {
     const signedTx = { rawTransaction: '0x0' }
-    const mockEstimatedGas = 50000
     const txDetails = { type: 'sendErc20Token' }
 
     mockWeb3SignTransaction(signedTx)
     mockWeb3SendSignedTransactionResponse('0x1')
-    mockWeb3EstimateGas(mockEstimatedGas)
     mockTransferErc20TxDetails(txDetails)
 
-    const contract = 'contract'
-    const options = {
-      fee: 'any',
+    const sendTransactionParams = BlockchainParams.toSendTransactionParams({
+      blockchainWallet: { privateKey: 'privateKey', address: '0x0' },
+      toAddress: '0x2',
+      amount: '1000000',
       token: {
-        balance: 1,
+        contractAddress: Config.TEST_ERC20_TOKEN_CONTRACT_ADDRESS,
         tokenDecimal: 18
       },
-      toAddress: 'any',
-      wallet: {
-        address: 'any',
-        privateKey: 'privateKey'
-      }
-    }
+      gas: 50000,
+      gasPrice: 100000
+    })
 
-    return Ethereum.sendErc20Token(contract, options).then(resp => {
+    return Ethereum.sendErc20Token(sendTransactionParams).then(resp => {
       expect(web3.eth.accounts.signTransaction).toBeCalledWith(
-        { ...txDetails, gas: mockEstimatedGas },
-        options.wallet.privateKey
+        txDetails,
+        'privateKey'
       )
       expect(web3.eth.sendSignedTransaction).toBeCalledWith(
         signedTx.rawTransaction,
@@ -149,16 +141,8 @@ describe('Test Ethereum Boundary', () => {
   })
 
   test('approve should call approveToken twice if 0 < allowance < amount', () => {
-    const erc20Address = Config.TEST_ERC20_TOKEN_CONTRACT_ADDRESS
-    const amount = '1000000'
-    const txOptions = {
-      from: '0x1234',
-      privateKey: 'privateKey',
-      gas: 50000,
-      gasPrice: 100000
-    }
     const allowance = 500000
-    const txDetails = { ...txOptions, data: {} }
+    const txDetails = {}
     const signedTx = { rawTransaction: '0x0' }
 
     mockAllowance(allowance)
@@ -168,56 +152,46 @@ describe('Test Ethereum Boundary', () => {
     mockWeb3SignTransaction(signedTx)
     mockWeb3SendSignedTransactionResponse('0x1')
 
-    return Ethereum.approveErc20Deposit(erc20Address, amount, txOptions).then(
-      resp => {
-        expect(getApproveErc20).toBeCalledWith(
-          txOptions.from,
-          erc20Address,
-          0,
-          txOptions.gas,
-          txOptions.gasPrice
-        )
-        expect(web3.eth.accounts.signTransaction).toBeCalledWith(
-          txDetails,
-          txOptions.privateKey
-        )
-        expect(web3.eth.sendSignedTransaction).toBeCalledWith(
-          signedTx.rawTransaction,
-          expect.anything()
-        )
+    const sendTransactionParams = BlockchainParams.toSendTransactionParams({
+      blockchainWallet: { privateKey: 'privateKey', address: '0x0' },
+      toAddress: '0x2',
+      amount: '1000000',
+      token: {
+        contractAddress: Config.TEST_ERC20_TOKEN_CONTRACT_ADDRESS,
+        tokenDecimal: 18
+      },
+      gas: 50000,
+      gasPrice: 100000
+    })
 
-        expect(getApproveErc20).toBeCalledWith(
-          txOptions.from,
-          erc20Address,
-          amount,
-          txOptions.gas,
-          txOptions.gasPrice
-        )
-        expect(web3.eth.accounts.signTransaction).toBeCalledWith(
-          txDetails,
-          txOptions.privateKey
-        )
-        expect(web3.eth.sendSignedTransaction).toBeCalledWith(
-          signedTx.rawTransaction,
-          expect.anything()
-        )
+    return Ethereum.approveErc20Deposit(sendTransactionParams).then(resp => {
+      expect(getApproveErc20).toBeCalledWith(sendTransactionParams)
+      expect(web3.eth.accounts.signTransaction).toBeCalledWith(
+        txDetails,
+        'privateKey'
+      )
+      expect(web3.eth.sendSignedTransaction).toBeCalledWith(
+        signedTx.rawTransaction,
+        expect.anything()
+      )
 
-        expect(resp).toStrictEqual({ hash: '0x1' })
-      }
-    )
+      expect(getApproveErc20).toBeCalledWith(sendTransactionParams)
+      expect(web3.eth.accounts.signTransaction).toBeCalledWith(
+        txDetails,
+        'privateKey'
+      )
+      expect(web3.eth.sendSignedTransaction).toBeCalledWith(
+        signedTx.rawTransaction,
+        expect.anything()
+      )
+
+      expect(resp).toStrictEqual({ hash: '0x1' })
+    })
   })
 
   test('approve should call approveToken once if allowance === 0', () => {
-    const erc20Address = Config.TEST_ERC20_TOKEN_CONTRACT_ADDRESS
-    const amount = '1000000'
-    const txOptions = {
-      from: '0x1234',
-      privateKey: 'privateKey',
-      gas: 50000,
-      gasPrice: 100000
-    }
     const allowance = 0
-    const txDetails = { ...txOptions, data: {} }
+    const txDetails = {}
     const signedTx = { rawTransaction: '0x0' }
 
     mockAllowance(allowance)
@@ -227,26 +201,29 @@ describe('Test Ethereum Boundary', () => {
     mockWeb3SignTransaction(signedTx)
     mockWeb3SendSignedTransactionResponse('0x1')
 
-    return Ethereum.approveErc20Deposit(erc20Address, amount, txOptions).then(
-      resp => {
-        expect(getApproveErc20).toBeCalledWith(
-          txOptions.from,
-          erc20Address,
-          amount,
-          txOptions.gas,
-          txOptions.gasPrice
-        )
-        expect(web3.eth.accounts.signTransaction).toBeCalledWith(
-          txDetails,
-          txOptions.privateKey
-        )
-        expect(web3.eth.sendSignedTransaction).toBeCalledWith(
-          signedTx.rawTransaction,
-          expect.anything()
-        )
+    const sendTransactionParams = BlockchainParams.toSendTransactionParams({
+      blockchainWallet: { privateKey: 'privateKey', address: '0x0' },
+      toAddress: '0x2',
+      amount: '1000000',
+      token: {
+        contractAddress: Config.TEST_ERC20_TOKEN_CONTRACT_ADDRESS,
+        tokenDecimal: 18
+      },
+      gasPrice: 100000
+    })
 
-        expect(resp).toStrictEqual({ hash: '0x1' })
-      }
-    )
+    return Ethereum.approveErc20Deposit(sendTransactionParams).then(resp => {
+      expect(getApproveErc20).toBeCalledWith(sendTransactionParams)
+      expect(web3.eth.accounts.signTransaction).toBeCalledWith(
+        txDetails,
+        'privateKey'
+      )
+      expect(web3.eth.sendSignedTransaction).toBeCalledWith(
+        signedTx.rawTransaction,
+        expect.anything()
+      )
+
+      expect(resp).toStrictEqual({ hash: '0x1' })
+    })
   })
 })
