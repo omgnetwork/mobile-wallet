@@ -16,12 +16,12 @@
 default_platform(:ios)
 
 platform :ios do
-  skip_docs
-
   before_all do
     setup_circle_ci
   end
   
+  skip_docs
+
   desc "Push a new build to TestFlight (local)"
   lane :testflight_local do
     clear_derived_data
@@ -47,7 +47,7 @@ platform :ios do
         version: get_version_number(xcodeproj: "PlasmaWallet.xcodeproj", target: "PlasmaWallet")
       ) + 1
     )
-    build_ios_app(scheme: "PlasmaWallet")
+    build_ios_app(scheme: "PlasmaWallet", clean: true)
     upload_to_testflight
   end
 end
