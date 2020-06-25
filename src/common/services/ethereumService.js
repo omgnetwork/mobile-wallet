@@ -1,6 +1,6 @@
-import { Ethereum, Token } from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
 import { Datetime, Unit } from 'common/utils'
+import { Ethereum, Token } from 'common/blockchain'
 import { providerService } from 'common/services'
 
 export const fetchAssets = async (provider, address, lastBlockNumber) => {
@@ -73,7 +73,12 @@ export const isRequireApproveErc20 = sendTransactionParams => {
 }
 
 export const approveErc20Deposit = sendTransactionParams => {
-  return Ethereum.approveErc20Deposit(sendTransactionParams)
+  const { token, amount } = sendTransactionParams.smallestUnitAmount
+  const { hash } = Ethereum.approveErc20Deposit(sendTransactionParams)
+  return {
+    hash,
+    value: Unit.convertToString(amount, token.tokenDecimal, 0)
+  }
 }
 
 export const getRecommendedGas = () => {
