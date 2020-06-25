@@ -15,17 +15,9 @@ export const sendErc20Token = async sendTransactionParams => {
   return signSendTx(txDetails, sendTransactionParams.privateKey)
 }
 
-export const isRequireApproveErc20 = async ({
-  addresses,
-  smallestUnitAmount
-}) => {
-  const { from } = addresses
-  const { token, amount } = smallestUnitAmount
-
-  const allowance = await Contract.getErc20Allowance(
-    from,
-    token.contractAddress
-  )
+export const isRequireApproveErc20 = async sendTransactionParams => {
+  const { amount } = sendTransactionParams.smallestUnitAmount
+  const allowance = await Contract.getErc20Allowance(sendTransactionParams)
 
   const bnAmount = new BN(amount)
   const bnAllowance = new BN(allowance)
@@ -34,12 +26,8 @@ export const isRequireApproveErc20 = async ({
 }
 
 export const approveErc20Deposit = async sendTransactionParams => {
-  const { from } = sendTransactionParams.addresses
-  const { token, amount } = sendTransactionParams.smallestUnitAmount
-  const allowance = await Contract.getErc20Allowance(
-    from,
-    token.contractAddress
-  )
+  const { amount } = sendTransactionParams.smallestUnitAmount
+  const allowance = await Contract.getErc20Allowance(sendTransactionParams)
 
   const bnAllowance = new BN(allowance)
   const bnAmount = new BN(amount)

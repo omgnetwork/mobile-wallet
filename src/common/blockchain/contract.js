@@ -1,14 +1,17 @@
 import { Plasma, web3 } from 'common/clients'
 import { ContractABI } from 'common/blockchain'
 
-export const getErc20Allowance = async (address, tokenContractAddress) => {
+export const getErc20Allowance = async ({ smallestUnitAmount, addresses }) => {
+  const { token } = smallestUnitAmount
+  const { from } = addresses
+
   const erc20Contract = new web3.eth.Contract(
     ContractABI.erc20Abi(),
-    tokenContractAddress
+    token.contractAddress
   )
   const { address: erc20VaultAddress } = await Plasma.RootChain.getErc20Vault()
 
-  return erc20Contract.methods.allowance(address, erc20VaultAddress).call()
+  return erc20Contract.methods.allowance(from, erc20VaultAddress).call()
 }
 
 export const getPaymentExitGame = () => {

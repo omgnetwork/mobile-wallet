@@ -18,18 +18,13 @@ export const estimateTransferETH = () => {
 }
 
 export const estimateApproveErc20 = async sendTransactionParams => {
-  const { from } = sendTransactionParams.addresses
-  const { token } = sendTransactionParams.smallestUnitAmount
   if (!Ethereum.isRequireApproveErc20(sendTransactionParams)) {
     return 0
   }
 
   const approveErc20Tx = await TxDetails.getApproveErc20(sendTransactionParams)
+  const allowance = await Contract.getErc20Allowance(sendTransactionParams)
   const estimatedErc20ApprovalGas = await web3EstimateGas(approveErc20Tx)
-  const allowance = await Contract.getErc20Allowance(
-    from,
-    token.contractAddress
-  )
 
   return allowance !== '0'
     ? estimatedErc20ApprovalGas * 2
