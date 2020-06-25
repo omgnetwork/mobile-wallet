@@ -91,13 +91,8 @@ const DepositApprove = ({
   const handleApprovePressed = useCallback(() => {
     async function approve() {
       setApproving(true)
-      await ethereumService.approveErc20Deposit({
-        ...sendTransactionParams,
-        gasOptions: {
-          ...sendTransactionParams.gasOptions,
-          gas: estimatedGasUsed
-        }
-      })
+      sendTransactionParams.gas = estimatedGasUsed
+      await ethereumService.approveErc20Deposit(sendTransactionParams)
       setApproving(false)
       dispatchRefreshRootchain(wallet.address, true)
       navigation.navigate('TransferReview', {

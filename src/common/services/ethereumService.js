@@ -49,7 +49,6 @@ const getUpdatedBlock = txHistory => {
 
 export const sendErc20Token = async sendTransactionParams => {
   const { token, amount } = sendTransactionParams.smallestUnitAmount
-
   const { hash } = await Ethereum.sendErc20Token(sendTransactionParams)
 
   return {
