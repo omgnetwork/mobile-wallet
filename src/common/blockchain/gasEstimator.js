@@ -31,10 +31,9 @@ export const estimateApproveErc20 = async sendTransactionParams => {
     : estimatedErc20ApprovalGas
 }
 
-export const estimateDeposit = async (sendTransactionParams, txDetails) => {
+export const estimateDeposit = async sendTransactionParams => {
   try {
-    const depositTxOptions =
-      txDetails || (await TxDetails.getDeposit(sendTransactionParams))
+    const depositTxOptions = await TxDetails.getDeposit(sendTransactionParams)
 
     // Increase the gas estimation a bit to avoid transaction reverted because the gas limit is too low.
     return web3EstimateGas(depositTxOptions).then(gas => parseInt(gas * 1.1))
