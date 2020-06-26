@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { useMergeInterval } from 'common/hooks'
 import { plasmaActions, transactionActions } from 'common/actions'
 
-const MAXIMUM_UTXOS_PER_CURRENCY = 4
+const MAXIMUM_UTXOS_PER_CURRENCY = 1
 
 const MergeUtxosTracker = ({
   blockchainWallet,
@@ -14,7 +14,8 @@ const MergeUtxosTracker = ({
 }) => {
   const [setLoading, setBlockchainWallet, setUnconfirmedTx] = useMergeInterval(
     dispatchUpdateMergeUtxosStatus,
-    dispatchMergeUtxos
+    dispatchMergeUtxos,
+    MAXIMUM_UTXOS_PER_CURRENCY
   )
 
   useEffect(() => {

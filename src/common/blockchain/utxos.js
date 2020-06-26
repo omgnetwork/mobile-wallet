@@ -16,33 +16,53 @@ export const get = (address, options) => {
     .then(utxos => utxos.sort(sort || sortingUtxoPos))
 }
 
-export const getRequiredMerge = async (
-  address,
-  unsubmittedBlknum,
-  maximumUtxosPerCurrency = 4
+// export const getRequiredMerge = async (
+//   address,
+//   unsubmittedBlknum,
+//   maximumUtxosPerCurrency = 1
+// ) => {
+//   if (unsubmittedBlknum) {
+//     await Wait.waitChildChainBlknum(address, unsubmittedBlknum)
+//   }
+
+//   const groupByCurrency = utxos => {
+//     return utxos.reduce((acc, utxo) => {
+//       const { currency } = utxo
+//       if (!acc[currency]) {
+//         acc[currency] = []
+//       }
+//       acc[currency].push(utxo)
+//       return acc
+//     }, {})
+//   }
+
+//   const filterOnlyGreaterThanMinimum = utxosMap => {
+//     return Object.keys(utxosMap)
+//       .filter(key => utxosMap[key].length > maximumUtxosPerCurrency)
+//       .map(key => utxosMap[key])
+//   }
+
+//   return get(address).then(groupByCurrency).then(filterOnlyGreaterThanMinimum)
+// }
+
+export const mapByCurrency = utxos => {
+  return utxos.reduce((acc, utxo) => {
+    const { currency } = utxo
+    if (!acc[currency]) {
+      acc[currency] = []
+    }
+    acc[currency].push(utxo)
+    return acc
+  }, {})
+}
+
+export const filterOnlyGreaterThanMaximum = (
+  utxosMap,
+  maximumUtxosPerCurrency
 ) => {
-  if (unsubmittedBlknum) {
-    await Wait.waitChildChainBlknum(address, unsubmittedBlknum)
-  }
-
-  const groupByCurrency = utxos => {
-    return utxos.reduce((acc, utxo) => {
-      const { currency } = utxo
-      if (!acc[currency]) {
-        acc[currency] = []
-      }
-      acc[currency].push(utxo)
-      return acc
-    }, {})
-  }
-
-  const filterOnlyGreaterThanMinimum = utxosMap => {
-    return Object.keys(utxosMap)
-      .filter(key => utxosMap[key].length > maximumUtxosPerCurrency)
-      .map(key => utxosMap[key])
-  }
-
-  return get(address).then(groupByCurrency).then(filterOnlyGreaterThanMinimum)
+  return Object.keys(utxosMap)
+    .filter(key => utxosMap[key].length > maximumUtxosPerCurrency)
+    .map(key => utxosMap[key])
 }
 
 export const sum = utxos => {

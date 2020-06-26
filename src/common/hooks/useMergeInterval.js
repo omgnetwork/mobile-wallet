@@ -10,6 +10,7 @@ const MERGE_UTXOS_LOADING_ACTION = 'CHILDCHAIN_MERGE_UTXOS'
 const useMergeInterval = (
   dispatchUpdateMergeUtxosStatus,
   dispatchMergeUtxos,
+  maximumUtxosPerCurrency,
   interval = DEFAULT_INTERVAL
 ) => {
   const [blockchainWallet, setBlockchainWallet] = useState(null)
@@ -30,13 +31,17 @@ const useMergeInterval = (
   const checkAndMerge = useCallback(async () => {
     const { address, privateKey } = blockchainWallet
     const unsubmittedBlknum = unconfirmedTx?.blknum
-    const listOfUtxos = await Utxos.getRequiredMerge(address, unsubmittedBlknum)
+    const listOfRequiredMergeUtxos = await Utxos.get(address)
+      .then(Utxos.mapByCurrency)
+      .then(utxosMap =>
+        Utxos.filterOnlyGreaterThanMaximum(utxosMap, maximumUtxosPerCurrency)
+      )
 
-    if (unsubmittedBlknum || listOfUtxos.length > 0) {
+    if (unsubmittedBlknum || listOfRequiredMergeUtxos.length > 0) {
       dispatchMergeUtxos(
         address,
         privateKey,
-        listOfUtxos,
+        listOfRequiredMergeUtxos,
         unsubmittedBlknum,
         updateMergeStatus
       )
