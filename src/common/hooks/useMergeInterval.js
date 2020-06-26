@@ -57,13 +57,13 @@ const useMergeInterval = (
       const utxos = await Utxos.get(address)
       const hasBlknumInWatcher = utxos.some(utxo => utxo.blknum === blknum)
 
-      if (!hasBlknumInWatcher) return
+      if (blknum && !hasBlknumInWatcher) return
 
-      const listOfRequiredMergeUtxos = utxos
-        .then(Utxos.mapByCurrency)
-        .then(utxosMap =>
-          Utxos.filterOnlyGreaterThanMaximum(utxosMap, maximumUtxosPerCurrency)
-        )
+      const utxosMap = Utxos.mapByCurrency(utxos)
+      const listOfRequiredMergeUtxos = Utxos.filterOnlyGreaterThanMaximum(
+        utxosMap,
+        maximumUtxosPerCurrency
+      )
 
       if (listOfRequiredMergeUtxos.length > 0) {
         merge({ address, privateKey }, listOfRequiredMergeUtxos)
@@ -74,14 +74,14 @@ const useMergeInterval = (
     if (!blockchainWallet) return
 
     if (!unconfirmedTx) {
-      mergeIfRequired(blockchainWallet)
+      return mergeIfRequired(blockchainWallet, null)
     }
 
     if (
       unconfirmedTx.actionType ===
       TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
     ) {
-      mergeIfRequired(blockchainWallet)
+      mergeIfRequired(blockchainWallet, unconfirmedTx?.blknum)
     }
   }, interval)
 

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useMergeInterval } from 'common/hooks'
+import { BlockchainNetworkType } from 'common/constants'
 import { plasmaActions, transactionActions } from 'common/actions'
 
 const MAXIMUM_UTXOS_PER_CURRENCY = 1
@@ -10,8 +11,12 @@ const MergeUtxosTracker = ({
   unconfirmedTxs,
   loading,
   dispatchUpdateMergeUtxosStatus,
-  dispatchMergeUtxos
+  dispatchMergeUtxos,
+  primaryWalletNetwork
 }) => {
+  if (primaryWalletNetwork === BlockchainNetworkType.TYPE_ETHEREUM_NETWORK)
+    return null
+
   const [setLoading, setBlockchainWallet, setUnconfirmedTx] = useMergeInterval(
     dispatchUpdateMergeUtxosStatus,
     dispatchMergeUtxos,
@@ -36,7 +41,8 @@ const MergeUtxosTracker = ({
 const mapStateToProps = (state, _ownProps) => ({
   blockchainWallet: state.setting.blockchainWallet,
   unconfirmedTxs: state.transaction.unconfirmedTxs,
-  loading: state.loading
+  loading: state.loading,
+  primaryWalletNetwork: state.setting.primaryWalletNetwork
 })
 
 const mapDispatchToProps = (dispatch, _ownProps) => ({
