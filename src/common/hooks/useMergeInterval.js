@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, useRef } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { Vibration } from 'react-native'
 import { Utxos } from 'common/blockchain'
 import { useInterval } from 'common/hooks'
@@ -16,9 +16,8 @@ const useMergeInterval = (
   const [blockchainWallet, setBlockchainWallet] = useState(null)
   const [loading, setLoading] = useState(true)
   const [unconfirmedTx, setUnconfirmedTx] = useState(false)
-  const running = useRef(false)
 
-  const updateMergeStatus = useCallback(
+  const updateBlknum = useCallback(
     blknum => {
       if (blockchainWallet) {
         const { address } = blockchainWallet
@@ -28,25 +27,20 @@ const useMergeInterval = (
     [blockchainWallet, dispatchUpdateMergeUtxosStatus]
   )
 
-  const checkAndMerge = useCallback(async () => {
-    const { address, privateKey } = blockchainWallet
-    const unsubmittedBlknum = unconfirmedTx?.blknum
-    const listOfRequiredMergeUtxos = await Utxos.get(address)
-      .then(Utxos.mapByCurrency)
-      .then(utxosMap =>
-        Utxos.filterOnlyGreaterThanMaximum(utxosMap, maximumUtxosPerCurrency)
-      )
-
-    if (unsubmittedBlknum || listOfRequiredMergeUtxos.length > 0) {
-      dispatchMergeUtxos(
-        address,
-        privateKey,
-        listOfRequiredMergeUtxos,
-        unsubmittedBlknum,
-        updateMergeStatus
-      )
-    }
-  }, [blockchainWallet, dispatchMergeUtxos, unconfirmedTx, updateMergeStatus])
+  const merge = useCallback(
+    ({ address, privateKey }, listOfRequiredMergeUtxos) => {
+      if (listOfRequiredMergeUtxos.length > 0) {
+        dispatchMergeUtxos(
+          address,
+          privateKey,
+          maximumUtxosPerCurrency,
+          listOfRequiredMergeUtxos,
+          updateBlknum
+        )
+      }
+    },
+    [blockchainWallet, dispatchMergeUtxos, unconfirmedTx, updateBlknum]
+  )
 
   // Vibrate after the merging is done
   useEffect(() => {
@@ -54,27 +48,40 @@ const useMergeInterval = (
       if (loading.success) {
         Vibration.vibrate()
       }
-      running.current = loading.show
     }
   }, [loading])
 
   // If there's no pending transaction, check for the utxos to merge periodically.
   useInterval(() => {
+    async function mergeIfRequired({ address, privateKey }, blknum) {
+      const utxos = await Utxos.get(address)
+      const hasBlknumInWatcher = utxos.some(utxo => utxo.blknum === blknum)
+
+      if (!hasBlknumInWatcher) return
+
+      const listOfRequiredMergeUtxos = utxos
+        .then(Utxos.mapByCurrency)
+        .then(utxosMap =>
+          Utxos.filterOnlyGreaterThanMaximum(utxosMap, maximumUtxosPerCurrency)
+        )
+
+      if (listOfRequiredMergeUtxos.length > 0) {
+        merge({ address, privateKey }, listOfRequiredMergeUtxos)
+      }
+    }
+
     // Return if the blockchain wallet has not been loaded
     if (!blockchainWallet) return
 
-    // Return if it's still running.
-    if (running.current) return
-
     if (!unconfirmedTx) {
-      return checkAndMerge()
+      mergeIfRequired(blockchainWallet)
     }
 
     if (
       unconfirmedTx.actionType ===
       TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
     ) {
-      return checkAndMerge()
+      mergeIfRequired(blockchainWallet)
     }
   }, interval)
 

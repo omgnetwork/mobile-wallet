@@ -42,15 +42,20 @@ const mapStateToProps = (state, _ownProps) => ({
 const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchUpdateMergeUtxosStatus: (address, blknum) =>
     transactionActions.updateMergeUtxosBlknum(dispatch, address, blknum),
-  dispatchMergeUtxos: (address, privateKey, listOfUtxos, blknum, storeBlknum) =>
+  dispatchMergeUtxos: (
+    address,
+    privateKey,
+    maximumUtxosPerCurrenncy,
+    listOfUtxos,
+    updateBlknumCallback
+  ) =>
     dispatch(
       plasmaActions.mergeUTXOs(
         address,
         privateKey,
-        MAXIMUM_UTXOS_PER_CURRENCY,
+        maximumUtxosPerCurrenncy,
         listOfUtxos,
-        blknum,
-        storeBlknum
+        updateBlknumCallback
       )
     )
 })

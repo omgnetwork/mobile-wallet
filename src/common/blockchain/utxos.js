@@ -16,35 +16,6 @@ export const get = (address, options) => {
     .then(utxos => utxos.sort(sort || sortingUtxoPos))
 }
 
-// export const getRequiredMerge = async (
-//   address,
-//   unsubmittedBlknum,
-//   maximumUtxosPerCurrency = 1
-// ) => {
-//   if (unsubmittedBlknum) {
-//     await Wait.waitChildChainBlknum(address, unsubmittedBlknum)
-//   }
-
-//   const groupByCurrency = utxos => {
-//     return utxos.reduce((acc, utxo) => {
-//       const { currency } = utxo
-//       if (!acc[currency]) {
-//         acc[currency] = []
-//       }
-//       acc[currency].push(utxo)
-//       return acc
-//     }, {})
-//   }
-
-//   const filterOnlyGreaterThanMinimum = utxosMap => {
-//     return Object.keys(utxosMap)
-//       .filter(key => utxosMap[key].length > maximumUtxosPerCurrency)
-//       .map(key => utxosMap[key])
-//   }
-
-//   return get(address).then(groupByCurrency).then(filterOnlyGreaterThanMinimum)
-// }
-
 export const mapByCurrency = utxos => {
   return utxos.reduce((acc, utxo) => {
     const { currency } = utxo
@@ -94,7 +65,7 @@ export const mergeUntilThreshold = async (
   privateKey,
   maximumUtxosPerCurrency,
   utxos,
-  storeBlknum
+  updateBlknumCallback
 ) => {
   if (utxos.length <= maximumUtxosPerCurrency) {
     const blknum = utxos[0].blknum
@@ -124,19 +95,19 @@ export const mergeUntilThreshold = async (
   const receipts = await Promise.all(pendingTxs)
   const { blknum } = receipts.sort((a, b) => b.blknum - a.blknum)[0]
 
-  // Store blknum to the local storage.
-  storeBlknum(blknum, utxos)
+  updateBlknumCallback(blknum, utxos)
 
   await Wait.waitChildChainBlknum(address, blknum)
   const newUtxos = await get(address, {
     currency: utxos[0].currency
   })
+
   return await mergeUntilThreshold(
     address,
     privateKey,
     maximumUtxosPerCurrency,
     newUtxos,
-    storeBlknum
+    updateBlknumCallback
   )
 }
 

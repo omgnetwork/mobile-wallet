@@ -49,7 +49,7 @@ export const mergeListOfUtxos = async (
   privateKey,
   maximumUtxosPerCurrency = 4,
   listOfUtxos,
-  storeBlknum = () => {}
+  updateBlknumCallback = () => {}
 ) => {
   const pendingMergeUtxos = listOfUtxos.map(utxos =>
     Utxos.mergeUntilThreshold(
@@ -57,7 +57,7 @@ export const mergeListOfUtxos = async (
       privateKey,
       maximumUtxosPerCurrency,
       utxos,
-      storeBlknum
+      updateBlknumCallback
     )
   )
   return Promise.all(pendingMergeUtxos)
