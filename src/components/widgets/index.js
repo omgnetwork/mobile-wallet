@@ -44,7 +44,6 @@ import OMGQRCode from './omg-qr-code'
 import OMGQRScanner from './omg-qr-scanner'
 import OMGPasswordTextInput from './omg-password-text-input'
 import OMGProcessExitText from './omg-process-exit-text'
-import OMGRadioButton from './omg-radio-button'
 import OMGListItemTokenSelect from './omg-list-item-token-select'
 import OMGListGasFee from './omg-list-gas-fee'
 import OMGListPlasmaFee from './omg-list-plasma-fee'
@@ -115,7 +114,6 @@ export {
   OMGQRScanner,
   OMGPasswordTextInput,
   OMGProcessExitText,
-  OMGRadioButton,
   OMGAlert,
   OMGStatusBar,
   OMGText,
