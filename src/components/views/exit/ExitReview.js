@@ -87,16 +87,7 @@ const ExitReview = ({
       setExitBond(bond)
     }
 
-    async function getEstimateExitFee() {
-      const estimatedFee = await GasEstimator.estimateExit(
-        blockchainWallet,
-        amount
-      )
-      setGasUsed(estimatedFee)
-    }
-
     getStandardExitBond()
-    getEstimateExitFee()
   }, [blockchainWallet, amount])
 
   useEffect(() => {
@@ -126,31 +117,31 @@ const ExitReview = ({
 
   return (
     <View style={styles.container(theme)}>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-        <OMGText
-          style={[styles.title(theme), styles.marginMedium]}
-          weight='regular'>
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <OMGText style={[styles.title(theme)]} weight='regular'>
           Review Withdrawal Details
         </OMGText>
-        <OMGEditItem
-          title='Amount'
-          rightFirstLine={`${exitAmount} ${token.tokenSymbol}`}
-          rightSecondLine={`${exitFee} USD`}
-          onPress={navigateEditAmount}
-          style={[styles.marginMedium, styles.paddingMedium]}
-        />
-        <OMGExitFee
-          gasUsed={estimatedGasUsed}
-          onPressEdit={navigateEditFee}
-          gasPrice={feeRate.amount}
-          exitBondValue={exitBond}
-          style={[styles.marginSmall]}
-        />
-        <OMGExitWarning style={styles.marginMedium} />
-        <View style={styles.buttonContainer}>
-          <OMGButton onPress={submit} loading={submitting}>
-            Confirm Withdrawal
-          </OMGButton>
+        <View style={[styles.contentContainer, styles.marginMedium]}>
+          <OMGEditItem
+            title='Amount'
+            rightFirstLine={`${exitAmount} ${token.tokenSymbol}`}
+            rightSecondLine={`${exitFee} USD`}
+            onPress={navigateEditAmount}
+            style={[styles.marginMedium, styles.paddingMedium]}
+          />
+          <OMGExitFee
+            gasUsed={estimatedGasUsed}
+            onPressEdit={navigateEditFee}
+            gasPrice={feeRate.amount}
+            exitBondValue={exitBond}
+            style={[styles.marginMedium]}
+          />
+          <OMGExitWarning style={styles.marginMedium} />
+          <View style={styles.buttonContainer}>
+            <OMGButton onPress={submit} loading={submitting}>
+              Confirm Withdrawal
+            </OMGButton>
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -162,16 +153,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.black5
   }),
-  contentContainer: {
+  scrollView: {
     flexGrow: 1,
     paddingHorizontal: 16,
     paddingBottom: 16
   },
+  contentContainer: {
+    flex: 1
+  },
   title: theme => ({
     fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
-    color: theme.colors.white,
+    color: theme.colors.gray2,
     textTransform: 'uppercase'
   }),
+  warning: {
+    borderRadius: 8
+  },
   marginMedium: {
     marginTop: 16
   },

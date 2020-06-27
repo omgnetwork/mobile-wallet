@@ -47,6 +47,7 @@ const ExitSelectFee = ({
         Select Transaction Fee
       </OMGText>
       <FlatList
+        style={styles.list}
         data={gasOptions || []}
         keyExtractor={item => item.speed}
         ItemSeparatorComponent={() => <Divider theme={theme} />}
@@ -86,6 +87,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.black2,
     height: 1
   }),
+  list: {
+    marginTop: 16
+  },
   emptyContainer: {
     flexGrow: 1,
     justifyContent: 'center'

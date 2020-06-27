@@ -10,8 +10,8 @@ import { Formatter } from 'common/utils'
 const OMGExitFee = ({
   theme,
   gasUsed,
-  exitBondValue,
   gasPrice,
+  exitBondValue,
   style,
   onPressEdit
 }) => {
@@ -174,7 +174,8 @@ const Divider = ({ theme }) => {
 
 const styles = StyleSheet.create({
   background: theme => ({
-    backgroundColor: theme.colors.gray7
+    backgroundColor: theme.colors.gray7,
+    borderRadius: 8
   }),
   container: {
     flexDirection: 'column',
