@@ -6,7 +6,9 @@ import { OMGButton, OMGExitPeriodWarning } from 'components/widgets'
 
 const ExitWarning = ({ theme, navigation }) => {
   const confirm = useCallback(() => {
-    navigation.navigate('ExitSelectToken')
+    navigation.navigate('ExitSelectToken', {
+      address: navigation.getParam('address')
+    })
   }, [navigation])
 
   return (

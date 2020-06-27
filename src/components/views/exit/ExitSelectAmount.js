@@ -3,20 +3,22 @@ import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigationFocus } from 'react-navigation'
-import { Validator } from 'common/blockchain'
+import { Validator, Utxos } from 'common/blockchain'
 import {
   OMGText,
   OMGAmountInput,
   OMGButton,
+  OMGEmpty,
   OMGDismissKeyboard
 } from 'components/widgets'
 import { Styles } from 'common/utils'
 
-const ExitSelectAmount = ({ navigation, theme, isFocused }) => {
-  const styles = createStyles(theme)
+const ExitSelectAmount = ({ navigation, theme, isFocused, primaryWallet }) => {
+  const token = navigation.getParam('token')
   const ref = useRef(0)
   const focusRef = useRef(null)
-  const token = navigation.getParam('token')
+  const [utxo, setUtxo] = useState([])
+  const [loading, setLoading] = useState(false)
   const [disabled, setDisabled] = useState(true)
 
   useEffect(() => {
@@ -24,6 +26,19 @@ const ExitSelectAmount = ({ navigation, theme, isFocused }) => {
       focusRef.current?.focus()
     }
   }, [isFocused])
+
+  useEffect(() => {
+    fetchUtxos()
+  }, [fetchUtxos])
+
+  const fetchUtxos = useCallback(async () => {
+    setLoading(true)
+    const result = await Utxos.get(primaryWallet.address, {
+      currency: token.contractAddress
+    })
+    setUtxo(result[0])
+    setLoading(false)
+  }, [primaryWallet.address, token.contractAddress])
 
   const onChangeAmount = useCallback(
     stringAmount => {
@@ -36,29 +51,39 @@ const ExitSelectAmount = ({ navigation, theme, isFocused }) => {
   )
 
   const onSubmit = useCallback(() => {
-    navigation.navigate('ExitSelectForm', {
+    navigation.navigate('ExitSelectFee', {
       token,
-      amount: ref.current
+      utxo,
+      amount: ref.current,
+      address: navigation.getParam('address')
     })
-  }, [navigation, token])
+  }, [navigation, token, utxo])
+
+  const styles = createStyles(theme)
 
   return (
     <OMGDismissKeyboard style={styles.container}>
-      <OMGText style={styles.title} weight='regular'>
-        Amount
-      </OMGText>
-      <OMGAmountInput
-        token={token}
-        onChangeAmount={onChangeAmount}
-        inputRef={ref}
-        focusRef={focusRef}
-        style={styles.amountInput}
-      />
-      <View style={styles.buttonContainer}>
-        <OMGButton disabled={disabled} onPress={onSubmit}>
-          Next
-        </OMGButton>
-      </View>
+      {loading ? (
+        <OMGEmpty loading={loading} />
+      ) : (
+        <>
+          <OMGText style={styles.title} weight='regular'>
+            Amount
+          </OMGText>
+          <OMGAmountInput
+            token={token}
+            onChangeAmount={onChangeAmount}
+            inputRef={ref}
+            focusRef={focusRef}
+            style={styles.amountInput}
+          />
+          <View style={styles.buttonContainer}>
+            <OMGButton disabled={disabled} onPress={onSubmit}>
+              Next
+            </OMGButton>
+          </View>
+        </>
+      )}
     </OMGDismissKeyboard>
   )
 }
@@ -86,7 +111,10 @@ const createStyles = theme =>
   })
 
 const mapStateToProps = (state, _ownProps) => ({
-  primaryWalletNetwork: state.setting.primaryWalletNetwork
+  primaryWalletNetwork: state.setting.primaryWalletNetwork,
+  primaryWallet: state.wallets.find(
+    w => w.address === state.setting.primaryWalletAddress
+  )
 })
 
 export default connect(

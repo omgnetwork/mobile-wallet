@@ -3,7 +3,12 @@ import { connect } from 'react-redux'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { withNavigationFocus } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { useLoading } from 'common/hooks'
+import { TransferHelper } from 'components/views/transfer'
+import {
+  useLoading,
+  useEstimatedFee,
+  useCheckBalanceAvailability
+} from 'common/hooks'
 import { plasmaActions } from 'common/actions'
 import { EventReporter } from 'common/reporter'
 import {
@@ -16,31 +21,64 @@ import {
 import {
   Plasma,
   GasEstimator,
-  Utxos,
-  BlockchainFormatter
+  BlockchainFormatter,
+  BlockchainParams
 } from 'common/blockchain'
 import { Styles, Formatter } from 'common/utils'
 
-const ExitForm = ({
+const ExitReview = ({
   theme,
   navigation,
   blockchainWallet,
   dispatchExit,
   unconfirmedTx,
+  primaryWallet,
   loading
 }) => {
-  const utxos = navigation.getParam('utxos')
+  const amount = navigation.getParam('amount')
   const token = navigation.getParam('token')
-  const fee = navigation.getParam('fee')
-  const formattedAmount = BlockchainFormatter.formatUnits(
-    Utxos.sum(utxos).toString(10),
-    token.tokenDecimal
-  )
-  const exitAmount = Formatter.format(formattedAmount, {
-    maxDecimal: token.tokenDecimal
-  })
+  const address = navigation.getParam('address')
+  const feeRate = navigation.getParam('feeRate')
+  const utxo = navigation.getParam('utxo')
+  const assets = primaryWallet.childchainAssets
+
   const [exitBond, setExitBond] = useState(null)
   const [gasUsed, setGasUsed] = useState(null)
+
+  const exitAmount = Formatter.format(amount, {
+    maxDecimal: token.tokenDecimal
+  })
+  const feeToken = assets.find(
+    token => token.contractAddress === feeRate.currency
+  )
+
+  const sendTransactionParams = BlockchainParams.createSendTransactionParams({
+    blockchainWallet,
+    toAddress: address,
+    token,
+    amount,
+    gas: null,
+    gasPrice: feeRate.amount,
+    gasToken: feeToken,
+    utxo
+  })
+
+  const [
+    estimatedFee,
+    estimatedFeeSymbol,
+    estimatedFeeUsd,
+    estimatedGasUsed
+  ] = useEstimatedFee({
+    transactionType: TransferHelper.TYPE_EXIT,
+    sendTransactionParams
+  })
+
+  const [hasEnoughBalance, minimumAmount] = useCheckBalanceAvailability({
+    sendTransactionParams,
+    estimatedFee,
+    fixedCost: exitBond
+  })
+
   const [submitting] = useLoading(loading, 'CHILDCHAIN_EXIT')
 
   useEffect(() => {
@@ -52,14 +90,14 @@ const ExitForm = ({
     async function getEstimateExitFee() {
       const estimatedFee = await GasEstimator.estimateExit(
         blockchainWallet,
-        utxos
+        amount
       )
       setGasUsed(estimatedFee)
     }
 
     getStandardExitBond()
     getEstimateExitFee()
-  }, [blockchainWallet, utxos])
+  }, [blockchainWallet, amount])
 
   useEffect(() => {
     if (loading.success && loading.action === 'CHILDCHAIN_EXIT') {
@@ -79,8 +117,8 @@ const ExitForm = ({
     dispatchExit(
       blockchainWallet,
       { ...token, balance: exitAmount },
-      utxos,
-      fee.amount
+      amount,
+      feeRate.amount
     )
   }
 
@@ -102,9 +140,9 @@ const ExitForm = ({
           style={[styles.marginMedium, styles.paddingMedium]}
         />
         <OMGExitFee
-          gasUsed={gasUsed}
+          gasUsed={estimatedGasUsed}
           onPressEdit={navigateEditFee}
-          gasPrice={fee.amount}
+          gasPrice={feeRate.amount}
           exitBondValue={exitBond}
           style={[styles.marginSmall]}
         />
@@ -152,6 +190,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, _ownProps) => ({
   loading: state.loading,
+  primaryWallet: state.wallets.find(
+    w => w.address === state.setting.primaryWalletAddress
+  ),
   blockchainWallet: state.setting.blockchainWallet,
   unconfirmedTx: state.transaction.unconfirmedTxs.slice(-1).pop()
 })
@@ -164,4 +205,4 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNavigationFocus(withTheme(ExitForm)))
+)(withNavigationFocus(withTheme(ExitReview)))

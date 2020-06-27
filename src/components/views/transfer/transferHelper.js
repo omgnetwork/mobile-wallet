@@ -26,6 +26,8 @@ export const getGasUsed = (type, sendTransactionParams) => {
       return GasEstimator.estimateApproveErc20(sendTransactionParams)
     case TYPE_DEPOSIT:
       return GasEstimator.estimateDeposit(sendTransactionParams)
+    case TYPE_EXIT:
+      return GasEstimator.estimateExit(sendTransactionParams)
     case TYPE_TRANSFER_ROOTCHAIN: {
       const { token } = sendTransactionParams.smallestUnitAmount
       const isEth = token.contractAddress === ContractAddress.ETH_ADDRESS
@@ -35,8 +37,6 @@ export const getGasUsed = (type, sendTransactionParams) => {
     }
     case TYPE_TRANSFER_CHILDCHAIN:
       return GasEstimator.estimateTransferChildchain()
-    case TYPE_EXIT:
-      return GasEstimator.estimateExit(sendTransactionParams)
   }
 }
 

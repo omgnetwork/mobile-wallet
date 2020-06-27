@@ -15,7 +15,8 @@ const ExitSelectFee = ({
   navigation
 }) => {
   const token = navigation.getParam('token')
-  const utxos = navigation.getParam('utxos')
+  const amount = navigation.getParam('amount')
+  const utxo = navigation.getParam('utxo')
   const [loadingFees, setLoadingFees] = useState(false)
 
   useEffect(() => {
@@ -29,19 +30,20 @@ const ExitSelectFee = ({
   }, [dispatchGetRecommendedGas])
 
   const navigate = useCallback(
-    fee => {
-      navigation.navigate('ExitForm', {
-        fee,
-        utxos,
-        token
+    feeRate => {
+      navigation.navigate('ExitReview', {
+        feeRate,
+        amount,
+        token,
+        utxo
       })
     },
-    [navigation, token, utxos]
+    [navigation, token, amount]
   )
 
   return (
     <View style={styles.container(theme)}>
-      <OMGText style={styles.headerTitle(theme)} weight='regular'>
+      <OMGText style={styles.title(theme)} weight='regular'>
         Select Transaction Fee
       </OMGText>
       <FlatList
@@ -72,14 +74,12 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    paddingHorizontal: 16,
-    paddingVertical: Styles.getResponsiveSize(16, { small: 8, medium: 12 }),
+    paddingHorizontal: 26,
     backgroundColor: theme.colors.black5
   }),
-  headerTitle: theme => ({
+  title: theme => ({
     fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     color: theme.colors.gray2,
-    marginTop: 8,
     textTransform: 'uppercase'
   }),
   divider: theme => ({

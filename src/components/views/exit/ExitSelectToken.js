@@ -10,7 +10,10 @@ const ExitSelectToken = ({ primaryWallet, navigation, loading }) => {
 
   const onSelectToken = useCallback(
     token => {
-      navigation.navigate('ExitSelectAmount', { token })
+      navigation.navigate('ExitSelectAmount', {
+        token,
+        address: navigation.getParam('address')
+      })
     },
     [navigation]
   )
