@@ -8,8 +8,11 @@ import {
   OmgUtil,
   Utxos,
   TxDetails,
-  Ethereum
+  Ethereum,
+  Wait,
+  Token
 } from 'common/blockchain'
+import Config from 'react-native-config'
 
 export const getBalances = address => {
   return Plasma.ChildChain.getBalance(address).then(balances => {
@@ -94,6 +97,62 @@ export const getErrorReason = async hash => {
   }
 }
 
+export const exit = async (blockchainWallet, token, utxos, gasPrice) => {
+  const hasExitQueue = await Token.hasExitQueue(token.contractAddress)
+  const { address, privateKey } = blockchainWallet
+  if (!hasExitQueue) {
+    await Token.createExitQueue(token.contractAddress, {
+      from: address,
+      privateKey,
+      gasPrice
+    })
+  }
+
+  let utxoToExit
+  if (utxos.length === 1) {
+    utxoToExit = utxos[0]
+  } else {
+    const { blknum } = await Utxos.merge(address, privateKey, utxos)
+    await Wait.waitChildChainBlknum(address, blknum)
+    utxoToExit = await Utxos.get(address, {
+      currency: token.contractAddress
+    }).then(latestUtxos => latestUtxos.find(utxo => utxo.blknum === blknum))
+  }
+
+  const exitData = await Plasma.ChildChain.getExitData(utxoToExit)
+
+  const {
+    transactionHash: hash,
+    blockNumber: startedExitBlkNum,
+    gasUsed
+  } = await standardExit(exitData, blockchainWallet, { gasPrice })
+  const exitId = await getStandardExitId(utxoToExit, exitData)
+  const standardExitBond = await getStandardExitBond()
+
+  console.log('standard exit hash', hash)
+  await Wait.waitForRootchainTransaction({
+    hash,
+    intervalMs: 1000,
+    confirmationThreshold: 1
+  })
+
+  const { scheduledFinalizationTime: exitableAt } = await Plasma.getExitTime(
+    startedExitBlkNum,
+    utxoToExit.blknum
+  )
+
+  return {
+    hash,
+    exitId,
+    exitableAt,
+    blknum: utxoToExit.blknum,
+    to: Config.PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS,
+    flatFee: standardExitBond,
+    gasPrice,
+    gasUsed
+  }
+}
+
 export const getStandardExitId = (utxoToExit, exitData) => {
   return Plasma.RootChain.getStandardExitId({
     txBytes: exitData.txbytes,
@@ -116,20 +175,6 @@ export const processExits = (contractAddress, maxExitsToProcess, txOptions) => {
     maxExitsToProcess: parseInt(maxExitsToProcess, 10),
     txOptions
   })
-}
-
-export const getExitData = utxo => {
-  const { amount, blknum, currency, oindex, owner, txindex, utxo_pos } = utxo
-  const params = {
-    amount,
-    blknum,
-    currency,
-    oindex,
-    owner,
-    txindex,
-    utxo_pos
-  }
-  return Plasma.ChildChain.getExitData(params)
 }
 
 export const getExitQueue = async tokenContractAddress => {

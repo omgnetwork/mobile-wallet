@@ -136,59 +136,7 @@ export const deposit = async sendTransactionParams => {
 }
 
 export const exit = async (blockchainWallet, token, utxos, gasPrice) => {
-  const hasExitQueue = await Token.hasExitQueue(token.contractAddress)
-  const { address, privateKey } = blockchainWallet
-  if (!hasExitQueue) {
-    await Token.createExitQueue(token.contractAddress, {
-      from: address,
-      privateKey,
-      gasPrice
-    })
-  }
-
-  let utxoToExit
-  if (utxos.length === 1) {
-    utxoToExit = utxos[0]
-  } else {
-    const { blknum } = await Utxos.merge(address, privateKey, utxos)
-    await Wait.waitChildChainBlknum(address, blknum)
-    utxoToExit = await Utxos.get(address, {
-      currency: token.contractAddress
-    }).then(latestUtxos => latestUtxos.find(utxo => utxo.blknum === blknum))
-  }
-
-  const exitData = await Plasma.getExitData(utxoToExit)
-
-  const {
-    transactionHash: hash,
-    blockNumber: startedExitBlkNum,
-    gasUsed
-  } = await Plasma.standardExit(exitData, blockchainWallet, { gasPrice })
-  const exitId = await Plasma.getStandardExitId(utxoToExit, exitData)
-  const standardExitBond = await Plasma.getStandardExitBond()
-
-  console.log('standard exit hash', hash)
-  await Wait.waitForRootchainTransaction({
-    hash,
-    intervalMs: 1000,
-    confirmationThreshold: 1
-  })
-
-  const { scheduledFinalizationTime: exitableAt } = await Plasma.getExitTime(
-    startedExitBlkNum,
-    utxoToExit.blknum
-  )
-
-  return {
-    hash,
-    exitId,
-    exitableAt,
-    blknum: utxoToExit.blknum,
-    to: Config.PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS,
-    flatFee: standardExitBond,
-    gasPrice,
-    gasUsed
-  }
+  return Plasma.exit(blockchainWallet, token, utxos, gasPrice)
 }
 
 export const processExits = (

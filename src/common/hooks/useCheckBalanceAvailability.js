@@ -3,7 +3,8 @@ import { BigNumber } from 'common/utils'
 
 const useCheckBalanceAvailability = ({
   sendTransactionParams,
-  estimatedFee
+  estimatedFee,
+  fixedCost
 }) => {
   const [enoughBalance, setEnoughBalance] = useState(false)
   const [minimumPaidAmount, setMinimumPaidAmount] = useState(0)
@@ -24,6 +25,10 @@ const useCheckBalanceAvailability = ({
         minimumAmount = estimatedFee
       }
 
+      if (fixedCost) {
+        minimumAmount = BigNumber.plus(minimumAmount, fixedCost)
+      }
+
       const hasEnoughBalance =
         BigNumber.compare(gasToken.balance, minimumAmount) >= 0
 
@@ -32,7 +37,7 @@ const useCheckBalanceAvailability = ({
     }
 
     checkBalanceAvailability()
-  }, [estimatedFee, sendTransactionParams])
+  }, [estimatedFee, fixedCost, sendTransactionParams])
 
   return [enoughBalance, minimumPaidAmount]
 }
