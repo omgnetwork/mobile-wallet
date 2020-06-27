@@ -18,7 +18,11 @@ export const estimateTransferETH = () => {
 }
 
 export const estimateApproveErc20 = async sendTransactionParams => {
-  if (!Ethereum.isRequireApproveErc20(sendTransactionParams)) {
+  const isRequiredApproval = await Ethereum.isRequireApproveErc20(
+    sendTransactionParams
+  )
+
+  if (!isRequiredApproval) {
     return 0
   }
 

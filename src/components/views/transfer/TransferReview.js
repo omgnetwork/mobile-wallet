@@ -91,7 +91,14 @@ const TransferReview = ({
       case TYPE_DEPOSIT:
         return depositTransfer(sendTransactionParams)
     }
-  }, [ethereumTransfer, depositTransfer, plasmaTransfer, sendTransactionParams])
+  }, [
+    ethereumTransfer,
+    depositTransfer,
+    plasmaTransfer,
+    sendTransactionParams,
+    transactionType,
+    estimatedGasUsed
+  ])
 
   useEffect(() => {
     if (

@@ -68,7 +68,7 @@ export const getDeposit = async ({
     to: address,
     ...(isEth ? { value: amount } : {}),
     data: contract.methods.deposit(depositTx).encodeABI(),
-    gas,
+    gas: gas || Gas.DEPOSIT_ESTIMATED_GAS_USED,
     gasPrice
   }
 }
@@ -91,8 +91,8 @@ export const getApproveErc20 = async ({
   return {
     from,
     to: token.contractAddress,
-    gas: gas,
-    gasPrice: gasPrice,
+    gas: gas || Gas.DEPOSIT_APPROVED_ERC20_GAS_USED,
+    gasPrice,
     data: erc20Contract.methods.approve(erc20VaultAddress, amount).encodeABI()
   }
 }
