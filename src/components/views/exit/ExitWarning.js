@@ -3,7 +3,6 @@ import { View, StyleSheet } from 'react-native'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { OMGButton, OMGExitPeriodWarning } from 'components/widgets'
-import { Styles } from 'common/utils'
 
 const ExitWarning = ({ theme, navigation }) => {
   const confirm = useCallback(() => {
@@ -13,7 +12,7 @@ const ExitWarning = ({ theme, navigation }) => {
   return (
     <View style={styles.container(theme)}>
       <View style={styles.warningContainer}>
-        <OMGExitPeriodWarning style={styles.warning} />
+        <OMGExitPeriodWarning />
       </View>
       <View style={[styles.buttonContainer]}>
         <OMGButton onPress={confirm}>Next</OMGButton>
@@ -27,16 +26,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: theme.colors.black5,
-    paddingHorizontal: 16,
+    paddingHorizontal: 26,
     justifyContent: 'space-between'
   }),
   warningContainer: {
     alignItems: 'center',
-    paddingHorizontal: 40
-  },
-  warning: {
-    marginTop: Styles.getResponsiveSize(96, { small: 64, medium: 72 }),
-    paddingBottom: 80
+    paddingHorizontal: 10
   },
   buttonContainer: {
     flex: 1,

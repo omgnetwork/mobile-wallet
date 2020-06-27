@@ -15,8 +15,9 @@ import Disclaimer from './disclaimer'
 import Exit from './exit'
 import ExitSelectToken from './exit/ExitSelectToken'
 import ExitSelectUtxo from './exit/ExitSelectUtxo'
-import ExitForm from './exit/ExitForm'
+import ExitSelectAmount from './exit/ExitSelectAmount'
 import ExitSelectFee from './exit/ExitSelectFee'
+import ExitForm from './exit/ExitForm'
 import ExitWarning from './exit/ExitWarning'
 import ImportWallet from './import-wallet'
 import ImportWalletForm from './import-wallet/ImportForm'
@@ -71,6 +72,7 @@ export {
   ExitSelectToken,
   ExitSelectUtxo,
   ExitSelectFee,
+  ExitSelectAmount,
   ExitForm,
   ExitWarning,
   ImportWallet,

@@ -7,9 +7,10 @@ import { OMGListItemTokenSelect } from 'components/widgets'
 
 const ExitSelectToken = ({ primaryWallet, navigation, loading }) => {
   const assets = primaryWallet.childchainAssets
+
   const onSelectToken = useCallback(
     token => {
-      navigation.navigate('ExitSelectUtxo', { token })
+      navigation.navigate('ExitSelectAmount', { token })
     },
     [navigation]
   )
@@ -33,8 +34,7 @@ const mapStateToProps = (state, _ownProps) => ({
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 26,
-    paddingTop: 40
+    paddingHorizontal: 26
   }
 })
 
