@@ -71,9 +71,9 @@ export const isRequireApproveErc20 = sendTransactionParams => {
   return Ethereum.isRequireApproveErc20(sendTransactionParams)
 }
 
-export const approveErc20Deposit = sendTransactionParams => {
+export const approveErc20Deposit = async sendTransactionParams => {
   const { token, amount } = sendTransactionParams.smallestUnitAmount
-  const { hash } = Ethereum.approveErc20Deposit(sendTransactionParams)
+  const { hash } = await Ethereum.approveErc20Deposit(sendTransactionParams)
   return {
     hash,
     value: Unit.convertToString(amount, token.tokenDecimal, 0)

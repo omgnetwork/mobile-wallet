@@ -102,10 +102,8 @@ const DepositApprove = ({
         address
       })
     }
-    ExceptionReporter.reportWhenError(
-      () => approve(),
-      _err => setApproving(false)
-    )
+
+    ExceptionReporter.reportWhenError(approve, _err => setApproving(false))
   }, [feeRate, address, amount, token])
 
   const onPressEditFee = useCallback(() => {
