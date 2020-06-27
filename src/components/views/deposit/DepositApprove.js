@@ -54,13 +54,14 @@ const DepositApprove = ({
     estimatedFee,
     estimatedFeeSymbol,
     estimatedFeeUsd,
-    estimatedGasUsed
+    estimatedGasUsed,
+    gasEstimationError
   ] = useEstimatedFee({
     transactionType: TYPE_APPROVE_ERC20,
     sendTransactionParams
   })
 
-  const [hasEnoughBalance, minimumAmount] = useCheckBalanceAvailability({
+  const [sufficientBalance, minimumAmount] = useCheckBalanceAvailability({
     sendTransactionParams,
     estimatedFee
   })
@@ -111,8 +112,10 @@ const DepositApprove = ({
   }, [navigation])
 
   const styles = createStyles(theme)
-  const showErrorMsg = !hasEnoughBalance && minimumAmount > 0
-  const disableBtn = !hasEnoughBalance || verifying
+  const insufficientBalanceError = !sufficientBalance && minimumAmount > 0
+  const hasError = insufficientBalanceError || gasEstimationError
+  const disableBtn = insufficientBalanceError || verifying
+
   return (
     <View style={styles.container}>
       {verifying ? (
@@ -151,9 +154,11 @@ const DepositApprove = ({
         </View>
       )}
       <View style={styles.bottomContainer}>
-        {showErrorMsg && (
+        {hasError && (
           <OMGText style={styles.errorMsg} weight='regular'>
-            {`Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`}
+            {insufficientBalanceError
+              ? `Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`
+              : `The transaction might be failed.`}
           </OMGText>
         )}
         <OMGButton

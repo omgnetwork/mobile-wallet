@@ -7,8 +7,9 @@ const useEstimatedFee = ({ transactionType, sendTransactionParams }) => {
   const [estimatedFee, setEstimatedFee] = useState(null)
   const [estimatedFeeUsd, setEstimatedFeeUsd] = useState(null)
   const [estimatedGasUsed, setEstimatedGasUsed] = useState(null)
-  const [estimatedTotal, setEstimatedTotal] = useState(null)
-  const [estimatedTotalUsd, setEstimatedTotalUsd] = useState(null)
+  const [error, setError] = useState(null)
+  const [_estimatedTotal, setEstimatedTotal] = useState(null)
+  const [_estimatedTotalUsd, setEstimatedTotalUsd] = useState(null)
 
   function updateState({
     gasUsed = 0,
@@ -16,26 +17,32 @@ const useEstimatedFee = ({ transactionType, sendTransactionParams }) => {
     feeSymbol = 'ETH',
     feeUsd,
     total,
-    totalUsd
+    totalUsd,
+    error
   }) {
-    setEstimatedGasUsed(gasUsed)
-    setEstimatedFeeSymbol(feeSymbol)
-    setEstimatedFee(fee)
-    setEstimatedFeeUsd(feeUsd)
-    setEstimatedTotal(total)
-    setEstimatedTotalUsd(totalUsd)
+    if (error) {
+      setError(error)
+    } else {
+      setEstimatedGasUsed(gasUsed)
+      setEstimatedFeeSymbol(feeSymbol)
+      setEstimatedFee(fee)
+      setEstimatedFeeUsd(feeUsd)
+      setEstimatedTotal(total)
+      setEstimatedTotalUsd(totalUsd)
+    }
   }
 
   useEffect(() => {
     async function calculateFee() {
+      const feeSymbol = gasToken.tokenSymbol
+      const { token, amount } = sendTransactionParams.smallestUnitAmount
+      const { gasPrice, gasToken } = sendTransactionParams.gasOptions
+
       try {
         const gasUsed = await TransferHelper.getGasUsed(
           transactionType,
           sendTransactionParams
         )
-        const { token, amount } = sendTransactionParams.smallestUnitAmount
-        const { gasPrice, gasToken } = sendTransactionParams.gasOptions
-        const feeSymbol = gasToken.tokenSymbol
         const fee = BlockchainFormatter.formatGasFee(gasUsed, gasPrice)
         const feeUsd = BlockchainFormatter.formatTokenPrice(fee, gasToken.price)
         const total = BlockchainFormatter.formatTotalEthAmount(token, fee)
@@ -44,6 +51,7 @@ const useEstimatedFee = ({ transactionType, sendTransactionParams }) => {
         updateState({ gasUsed, feeSymbol, fee, feeUsd, total, totalUsd })
       } catch (e) {
         console.log(e)
+        updateState({ error: e.message })
       }
     }
 
@@ -55,8 +63,7 @@ const useEstimatedFee = ({ transactionType, sendTransactionParams }) => {
     estimatedFeeSymbol,
     estimatedFeeUsd,
     estimatedGasUsed,
-    estimatedTotal,
-    estimatedTotalUsd
+    error
   ]
 }
 

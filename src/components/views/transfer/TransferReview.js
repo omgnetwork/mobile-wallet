@@ -57,13 +57,14 @@ const TransferReview = ({
     estimatedFee,
     estimatedFeeSymbol,
     estimatedFeeUsd,
-    estimatedGasUsed
+    estimatedGasUsed,
+    gasEstimationError
   ] = useEstimatedFee({
     transactionType,
     sendTransactionParams
   })
 
-  const [hasEnoughBalance, minimumAmount] = useCheckBalanceAvailability({
+  const [sufficientBalance, minimumAmount] = useCheckBalanceAvailability({
     sendTransactionParams,
     estimatedFee
   })
@@ -113,7 +114,8 @@ const TransferReview = ({
     }
   }, [loading, loading.success, navigation])
 
-  const showErrorMsg = !hasEnoughBalance && minimumAmount > 0
+  const insufficientBalanceError = !sufficientBalance && minimumAmount > 0
+  const hasError = insufficientBalanceError || gasEstimationError
   const btnLoading = minimumAmount === 0 || loading.show
 
   return (
@@ -147,15 +149,17 @@ const TransferReview = ({
         style={[styles.marginMedium, styles.paddingMedium]}
       />
       <View style={styles.buttonContainer}>
-        {showErrorMsg && (
+        {hasError && (
           <OMGText style={styles.errorMsg} weight='regular'>
-            {`Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`}
+            {insufficientBalanceError
+              ? `Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`
+              : `The transaction might be failed.`}
           </OMGText>
         )}
         <OMGButton
           onPress={onSubmit}
           loading={btnLoading}
-          disabled={!hasEnoughBalance}>
+          disabled={insufficientBalanceError}>
           {loadingBalance || minimumAmount === 0
             ? 'Checking Balance...'
             : loading.show
@@ -164,7 +168,7 @@ const TransferReview = ({
         </OMGButton>
         <OMGText
           style={styles.textEstimateTime(
-            hasEnoughBalance && transactionType === TYPE_DEPOSIT
+            sufficientBalance && transactionType === TYPE_DEPOSIT
           )}
           weight='regular'>
           This process is usually takes about 15 - 30 seconds.
