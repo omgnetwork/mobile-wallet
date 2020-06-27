@@ -37,7 +37,7 @@ const useEstimatedFee = ({ transactionType, sendTransactionParams }) => {
         const { gasPrice, gasToken } = sendTransactionParams.gasOptions
         const feeSymbol = gasToken.tokenSymbol
         const fee = BlockchainFormatter.formatGasFee(gasUsed, gasPrice)
-        const feeUsd = BlockchainFormatter.formatTokenPrice(fee, token.price)
+        const feeUsd = BlockchainFormatter.formatTokenPrice(fee, gasToken.price)
         const total = BlockchainFormatter.formatTotalEthAmount(token, fee)
         const totalUsd = BlockchainFormatter.formatTotalPrice(amount, feeUsd)
 
