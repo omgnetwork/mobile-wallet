@@ -3,13 +3,7 @@ import { StyleSheet, StatusBar } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-navigation'
 import { connect } from 'react-redux'
-import {
-  OMGHeader,
-  OMGStatusBar,
-  OMGEmpty,
-  OMGBlockchainLabel
-} from 'components/widgets'
-import { TransferHelper } from 'components/views/transfer'
+import { OMGHeader, OMGStatusBar, OMGEmpty } from 'components/widgets'
 
 const Exit = ({ navigation, theme, primaryWallet }) => {
   const ExitNavigator = navigation.getParam('navigator')
@@ -34,10 +28,6 @@ const Exit = ({ navigation, theme, primaryWallet }) => {
         backgroundColor={theme.colors.black5}
       />
       <OMGHeader title='Withdraw' onPress={() => navigation.navigate('Home')} />
-      <OMGBlockchainLabel
-        actionText='Withdrawing to the'
-        transferType={TransferHelper.TYPE_EXIT}
-      />
       {primaryWallet ? (
         <ExitNavigator navigation={navigation} />
       ) : (
