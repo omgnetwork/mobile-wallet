@@ -4,7 +4,7 @@ import { Utxos } from 'common/blockchain'
 import { useInterval } from 'common/hooks'
 import { TransactionActionTypes } from 'common/constants'
 
-const DEFAULT_INTERVAL = 15000 // 15s
+const DEFAULT_INTERVAL = 10000 // 10s
 const MERGE_UTXOS_LOADING_ACTION = 'CHILDCHAIN_MERGE_UTXOS'
 
 const useMergeInterval = (
