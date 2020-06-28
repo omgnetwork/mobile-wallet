@@ -22,12 +22,6 @@ const ExitSelectAmount = ({ navigation, theme, isFocused, primaryWallet }) => {
   const [disabled, setDisabled] = useState(true)
 
   useEffect(() => {
-    if (isFocused) {
-      focusRef.current?.focus()
-    }
-  }, [isFocused])
-
-  useEffect(() => {
     fetchUtxos()
   }, [fetchUtxos])
 
@@ -38,6 +32,7 @@ const ExitSelectAmount = ({ navigation, theme, isFocused, primaryWallet }) => {
     })
     setUtxo(result[0])
     setLoading(false)
+    focusRef.current?.focus()
   }, [primaryWallet.address, token.contractAddress])
 
   const onChangeAmount = useCallback(

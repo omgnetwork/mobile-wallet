@@ -102,19 +102,26 @@ export const getExit = async ({
   addresses,
   gasOptions
 }) => {
-  const { from } = addresses
-  const { utxo } = smallestUnitAmount
-  const { gas, gasPrice } = gasOptions
-  const { utxo_pos, txbytes, proof } = await Plasma.ChildChain.getExitData(utxo)
-  const { contract, address, bonds } = await Contract.getPaymentExitGame()
-  return {
-    from,
-    to: address,
-    value: bonds.standardExit,
-    data: contract.methods
-      .startStandardExit([utxo_pos.toString(), txbytes, proof])
-      .encodeABI(),
-    gas: gas || Gas.EXIT_ESTIMATED_GAS_USED,
-    gasPrice
+  try {
+    const { from } = addresses
+    const { utxo } = smallestUnitAmount
+    const { gas, gasPrice } = gasOptions
+    const { utxo_pos, txbytes, proof } = await Plasma.ChildChain.getExitData(
+      utxo
+    )
+    const { contract, address, bonds } = await Contract.getPaymentExitGame()
+    console.log(address)
+    return {
+      from,
+      to: address,
+      value: bonds.standardExit,
+      data: contract.methods
+        .startStandardExit([utxo_pos.toString(), txbytes, proof])
+        .encodeABI(),
+      gas: gas || Gas.EXIT_ESTIMATED_GAS_USED,
+      gasPrice
+    }
+  } catch (e) {
+    console.log(e)
   }
 }

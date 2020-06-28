@@ -19,6 +19,7 @@ export const estimateDeposit = sendTransactionParams => {
 }
 
 export const estimateExit = sendTransactionParams => {
+  console.log('estimateExit')
   return TxDetails.getExit(sendTransactionParams)
     .then(estimateGas)
     .then(overEstimated)

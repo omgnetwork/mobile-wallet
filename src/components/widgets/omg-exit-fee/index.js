@@ -1,64 +1,28 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { withTheme } from 'react-native-paper'
-import { BlockchainFormatter, Token } from 'common/blockchain'
-import { ContractAddress } from 'common/constants'
-import Config from 'react-native-config'
+import { BlockchainFormatter } from 'common/blockchain'
 import { View, StyleSheet, TouchableOpacity, Linking } from 'react-native'
 import { OMGText, OMGEmpty, OMGEditItem } from 'components/widgets'
-import { Formatter } from 'common/utils'
+import { Formatter, BigNumber } from 'common/utils'
 
-const OMGExitFee = ({
-  theme,
-  gasUsed,
-  gasPrice,
-  exitBondValue,
-  style,
-  onPressEdit
-}) => {
-  const [ethPrice, setEthPrice] = useState()
-  const [feeUsd, setFeeUsd] = useState()
-
-  const formatBond = useCallback(() => {
-    if (exitBondValue)
-      return BlockchainFormatter.formatUnits(exitBondValue, 'ether')
-    else return 0
-  }, [exitBondValue])
-
-  const formatGasFee = useCallback(() => {
-    return BlockchainFormatter.formatGasFee(gasUsed, gasPrice)
-  }, [gasUsed, gasPrice])
+const OMGExitFee = ({ theme, style, fee, feeToken, exitBond, onPressEdit }) => {
+  const [totalFeeUsd, setTotalFeeUsd] = useState()
 
   const formatTotalExitFee = useCallback(() => {
-    if (gasUsed && exitBondValue) {
-      const gasFee = BlockchainFormatter.formatGasFee(
-        gasUsed,
-        gasPrice,
-        exitBondValue
-      )
-      return Formatter.format(gasFee, { maxDecimal: 18 })
+    if (fee && exitBond) {
+      return BigNumber.plus(fee, exitBond)
     }
-  }, [exitBondValue, gasUsed, gasPrice])
+  }, [exitBond, fee])
 
   useEffect(() => {
-    async function fetchEthPrice() {
-      const price = await Token.getPrice(
-        ContractAddress.ETH_ADDRESS,
-        Config.ETHEREUM_NETWORK
-      )
-      setEthPrice(price)
-    }
-    fetchEthPrice()
-  }, [])
-
-  useEffect(() => {
-    if (ethPrice && formatTotalExitFee()) {
-      const price = BlockchainFormatter.formatTokenPrice(
+    if (feeToken?.price && formatTotalExitFee()) {
+      const feeUsd = BlockchainFormatter.formatTokenPrice(
         formatTotalExitFee(),
-        ethPrice
+        feeToken.price
       )
-      setFeeUsd(price)
+      setTotalFeeUsd(feeUsd)
     }
-  }, [ethPrice, formatTotalExitFee])
+  }, [feeToken, formatTotalExitFee])
 
   const handleClickHyperlink = useCallback(() => {
     Linking.openURL('https://docs.omg.network/exitbonds')
@@ -70,8 +34,8 @@ const OMGExitFee = ({
         <OMGEditItem
           title='Total'
           rightFirstLine={`${formatTotalExitFee() || 0} ETH`}
-          rightSecondLine={`${feeUsd} USD`}
-          loading={!gasUsed || !exitBondValue}
+          rightSecondLine={`${totalFeeUsd} USD`}
+          loading={!fee || !exitBond}
           onPress={onPressEdit}
         />
       </View>
@@ -79,18 +43,18 @@ const OMGExitFee = ({
       <View style={[styles.container]}>
         <Item
           title='Transaction Fee'
-          loading={!gasUsed}
+          loading={!fee}
           theme={theme}
-          ethPrice={ethPrice}
-          value={formatGasFee(gasUsed)}
+          feeToken={feeToken}
+          value={fee}
         />
         <Item
           title='Exit Bond'
           subtitle='You’ll receive your funds after successful withdrawal from the OMG Network.'
-          loading={!exitBondValue}
+          loading={!exitBond}
           theme={theme}
-          ethPrice={ethPrice}
-          value={formatBond()}
+          value={exitBond}
+          feeToken={feeToken}
           itemStyle={styles.itemMargin}
         />
         <TouchableOpacity
@@ -109,11 +73,12 @@ const Item = ({
   value,
   itemStyle,
   theme,
-  ethPrice,
+  feeToken,
   loading
 }) => {
-  const localizedValue = Formatter.format(value, { maxDecimal: 8 })
-  const feeUsd = BlockchainFormatter.formatTokenPrice(value, ethPrice)
+  const localizedValue = value && Formatter.format(value, { maxDecimal: 8 })
+  const feeUsd =
+    value && BlockchainFormatter.formatTokenPrice(value, feeToken.price)
 
   return (
     <View style={[styles.itemContainer, itemStyle]}>

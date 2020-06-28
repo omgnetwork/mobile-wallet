@@ -24,7 +24,7 @@ import {
   BlockchainFormatter,
   BlockchainParams
 } from 'common/blockchain'
-import { Styles, Formatter } from 'common/utils'
+import { Styles, Formatter, Unit } from 'common/utils'
 
 const ExitReview = ({
   theme,
@@ -40,15 +40,13 @@ const ExitReview = ({
   const address = navigation.getParam('address')
   const feeRate = navigation.getParam('feeRate')
   const utxo = navigation.getParam('utxo')
-  const assets = primaryWallet.childchainAssets
 
   const [exitBond, setExitBond] = useState(null)
-  const [gasUsed, setGasUsed] = useState(null)
 
   const exitAmount = Formatter.format(amount, {
     maxDecimal: token.tokenDecimal
   })
-  const feeToken = assets.find(
+  const feeToken = primaryWallet.rootchainAssets.find(
     token => token.contractAddress === feeRate.currency
   )
 
@@ -63,12 +61,7 @@ const ExitReview = ({
     utxo
   })
 
-  const [
-    estimatedFee,
-    estimatedFeeSymbol,
-    estimatedFeeUsd,
-    estimatedGasUsed
-  ] = useEstimatedFee({
+  const [estimatedFee] = useEstimatedFee({
     transactionType: TransferHelper.TYPE_EXIT,
     sendTransactionParams
   })
@@ -79,27 +72,29 @@ const ExitReview = ({
     fixedCost: exitBond
   })
 
-  const [submitting] = useLoading(loading, 'CHILDCHAIN_EXIT')
-
   useEffect(() => {
     async function getStandardExitBond() {
       const bond = await Plasma.getStandardExitBond()
-      setExitBond(bond)
+      const largestUnitBond = Unit.convertToString(bond, 18, 0)
+      setExitBond(largestUnitBond)
     }
 
     getStandardExitBond()
-  }, [blockchainWallet, amount])
+  }, [])
+
+  const [submitting] = useLoading(loading, 'CHILDCHAIN_EXIT')
 
   useEffect(() => {
     if (loading.success && loading.action === 'CHILDCHAIN_EXIT') {
       EventReporter.send('transfer_exited', { hash: unconfirmedTx.hash })
       navigation.navigate('Home')
     }
-  })
+  }, [loading])
 
   const navigateEditAmount = () => {
     navigation.navigate('ExitSelectToken')
   }
+
   const navigateEditFee = () => {
     navigation.navigate('ExitSelectFee')
   }
@@ -114,7 +109,6 @@ const ExitReview = ({
   }
 
   const exitFee = BlockchainFormatter.formatTokenPrice(exitAmount, token.price)
-
   return (
     <View style={styles.container(theme)}>
       <ScrollView contentContainerStyle={styles.scrollView}>
@@ -130,10 +124,10 @@ const ExitReview = ({
             style={[styles.marginMedium, styles.paddingMedium]}
           />
           <OMGExitFee
-            gasUsed={estimatedGasUsed}
+            exitBond={exitBond}
+            fee={estimatedFee}
+            feeToken={feeToken}
             onPressEdit={navigateEditFee}
-            gasPrice={feeRate.amount}
-            exitBondValue={exitBond}
             style={[styles.marginMedium]}
           />
           <OMGExitWarning style={styles.marginMedium} />
