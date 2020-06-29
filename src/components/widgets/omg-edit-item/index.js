@@ -9,6 +9,7 @@ const OMGEditItem = ({
   theme,
   rightFirstLine,
   rightSecondLine,
+  error,
   editable = true,
   style,
   loading,
@@ -41,8 +42,9 @@ const OMGEditItem = ({
           <OMGEmpty loading={loading} style={styles.alignRight} />
         ) : (
           <>
-            <OMGText style={[styles.textWhite(theme), styles.textBig]}>
-              {rightFirstLine}
+            <OMGText
+              style={[styles.textFirstLine(theme, error), styles.textBig]}>
+              {error ? 'Estimation Failed' : rightFirstLine}
             </OMGText>
             <OMGText
               numberOfLines={1}
@@ -52,7 +54,7 @@ const OMGEditItem = ({
                 styles.textSmall,
                 styles.textMargin
               ]}>
-              {rightSecondLine}
+              {!error && rightSecondLine}
             </OMGText>
           </>
         )}
@@ -77,6 +79,9 @@ const styles = StyleSheet.create({
   stretch: {
     flex: 1
   },
+  textFirstLine: (theme, error) => ({
+    color: error ? theme.colors.gray2 : theme.colors.white
+  }),
   textWhite: theme => ({
     color: theme.colors.white
   }),

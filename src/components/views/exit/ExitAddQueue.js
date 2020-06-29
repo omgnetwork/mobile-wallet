@@ -53,13 +53,14 @@ const ExitAddQueue = ({
     estimatedFee,
     estimatedFeeSymbol,
     estimatedFeeUsd,
-    estimatedGasUsed
+    estimatedGasUsed,
+    gasEstimationError
   ] = useEstimatedFee({
     transactionType: TYPE_CREATE_EXIT_QUEUE,
     sendTransactionParams
   })
 
-  const [hasEnoughBalance, minimumAmount] = useCheckBalanceAvailability({
+  const [sufficientBalance, minimumAmount] = useCheckBalanceAvailability({
     sendTransactionParams,
     estimatedFee
   })
@@ -73,12 +74,12 @@ const ExitAddQueue = ({
       setVerifying(false)
 
       if (hasExitQueue) {
-        // navigation.navigate('ExitReview', {
-        //   feeRate,
-        //   amount,
-        //   token,
-        //   address
-        // })
+        navigation.navigate('ExitReview', {
+          feeRate,
+          amount,
+          token,
+          address
+        })
       }
     }
 
@@ -90,7 +91,6 @@ const ExitAddQueue = ({
   const handleCreatePressed = useCallback(() => {
     async function approve() {
       setCreating(true)
-      sendTransactionParams.gasOptions.gas = estimatedGasUsed
       await plasmaService.createExitQueue(sendTransactionParams)
       setCreating(false)
       dispatchRefreshRootchain(wallet.address, true)
@@ -110,9 +110,13 @@ const ExitAddQueue = ({
   }, [navigation])
 
   const styles = createStyles(theme)
-  const showErrorMsg = !hasEnoughBalance && minimumAmount > 0
-  const disableBtn = !hasEnoughBalance || verifying
-
+  const insufficientBalanceError = !sufficientBalance && minimumAmount > 0
+  const hasError = insufficientBalanceError || gasEstimationError
+  const disableBtn = insufficientBalanceError || verifying
+  const feeRightFirstLine = gasEstimationError
+    ? 'Estimation failed'
+    : `${estimatedFee} ${estimatedFeeSymbol}`
+  const feeRightSecondLine = gasEstimationError ? '' : `${estimatedFeeUsd} USD`
   return (
     <View style={styles.container}>
       {verifying ? (
@@ -123,9 +127,8 @@ const ExitAddQueue = ({
             Create {token.tokenSymbol} Exit Queue
           </OMGText>
           <OMGText style={styles.description} weight='regular'>
-            Please create an exit queue for the {token.tokenSymbol} token.{'\n'}
-            Note that this action is only required if the selected token has
-            never been exited from the system.
+            This action is only required if the selected token has never been
+            exited from the system.
           </OMGText>
           <View style={styles.tokenContainer}>
             <OMGTokenIcon token={token} size={28} />
@@ -143,18 +146,21 @@ const ExitAddQueue = ({
           </View>
           <OMGEditItem
             title='Fee'
-            loading={!estimatedFee}
-            rightFirstLine={`${estimatedFee} ${estimatedFeeSymbol}`}
-            rightSecondLine={`${estimatedFeeUsd} USD`}
+            error={gasEstimationError}
+            loading={!gasEstimationError && !estimatedFee}
+            rightFirstLine={feeRightFirstLine}
+            rightSecondLine={feeRightSecondLine}
             onPress={onPressEditFee}
             style={[styles.paddingMedium, styles.mediumMarginTop]}
           />
         </View>
       )}
       <View style={styles.bottomContainer}>
-        {showErrorMsg && (
+        {!verifying && !creating && hasError && (
           <OMGText style={styles.errorMsg} weight='regular'>
-            {`Require at least ${minimumAmount} ${gasToken.tokenSymbol} to proceed.`}
+            {insufficientBalanceError
+              ? `Require at least ${minimumAmount} ${gasToken.tokenSymbol} to proceed.`
+              : `The transaction might be failed.`}
           </OMGText>
         )}
         <OMGButton
@@ -188,14 +194,14 @@ const createStyles = theme =>
       paddingBottom: 32
     },
     title: {
-      fontSize: 14,
+      fontSize: 16,
       color: theme.colors.white
     },
     description: {
       color: theme.colors.gray6,
-      fontSize: 12,
+      fontSize: 14,
       marginTop: 8,
-      lineHeight: 16
+      lineHeight: 18
     },
     tokenContainer: {
       flexDirection: 'row',
