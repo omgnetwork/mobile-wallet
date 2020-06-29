@@ -23,11 +23,13 @@ MATCH_GIT_URL     The URL of the GitHub repo containing certificates and provisi
 
 5. From the `/ios` directory, run `bundle exec pod install`.
 
-6. Also from the `/ios` directory, run `bundle exec fastlane ios testflight_local` and wait for the job to complete.
+6. Ensure the `MARKETING_VERSION` fields in `ios/PlasmaWallet.xcodeproj/project.pbxproj` are set to the desired version.
 
-7. Go to https://appstoreconnect.apple.com/WebObjects/iTunesConnect.woa/ra/ng/app/1482235242 (You need to login first)
+7. Also from the `/ios` directory, run `bundle exec fastlane ios testflight_local` and wait for the job to complete.
 
-8. Go to `Testflight`, then please follow steps below:
+8. Go to https://appstoreconnect.apple.com/WebObjects/iTunesConnect.woa/ra/ng/app/1482235242 (You need to login first)
+
+9. Go to `Testflight`, then please follow steps below:
 
 ![ios-archive-instruction-12](../public/ios-archive-instruction-12.png)
 
@@ -45,3 +47,25 @@ MATCH_GIT_URL     The URL of the GitHub repo containing certificates and provisi
 For reference:
 
 ![fix-ios-error](../public/fix-ios-error.png)
+
+
+## Note on CircleCI Release
+
+### Versioning
+
+The version is set in the `MARKETING_VERSION` fields found in `ios/PlasmaWallet.xcodeproj/project.pbxproj`. 
+
+Ensure this is updated in order to pair your build with the right version on TestFlight.
+
+### Encrypted Files
+
+The following files are stored as `base64` strings in the CircleCI environment: 
+
+- `.env`
+- `GoogleService-Info.plist`
+- `sentry.properties`
+
+To change these files, encrypt the updated versions into `base64` and store them on CircleCI. 
+
+**Note**: the `.env` file currently needs to be updated for any version bump. 
+
