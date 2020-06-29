@@ -221,30 +221,30 @@ jobs:
       - run:
           name: Set Ruby version
           command: echo 'chruby ruby-2.6.6' >> ~/.bash_profile
-      - restore_cache:
-          name: Restoring cache (Ruby)
-          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
-      - run:
-          name: Installing Ruby dependencies
-          command: |
-            cd ios
-            sudo gem install bundler && bundle config set path 'vendor/bundle' && bundle install
-      - save_cache:
-          name: Saving cache (Ruby)
-          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
-          paths:
-            - 'ios/vendor/bundle/'
-      - persist_to_workspace:
-          name: Persisting to workspace
-          root: .
-          paths: 'ios/'
+      # - restore_cache:
+      #     name: Restoring cache (Ruby)
+      #     key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
+      # - run:
+      #     name: Installing Ruby dependencies
+      #     command: |
+      #       cd ios
+      #       sudo gem install bundler && bundle config set path 'vendor/bundle' && bundle install
+      # - save_cache:
+      #     name: Saving cache (Ruby)
+      #     key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
+      #     paths:
+      #       - 'ios/vendor/bundle/'
+      # - persist_to_workspace:
+      #     name: Persisting to workspace
+      #     root: .
+      #     paths: 'ios/'
       - run:
           name: Installing CocoaPods
           command: |
             cd ios
-            bundle exec pod install
+            pod install
       - run:
           name: Running Fastlane
           command: |
             cd ios
-            bundle exec fastlane testflight_ci
+            fastlane testflight_ci
