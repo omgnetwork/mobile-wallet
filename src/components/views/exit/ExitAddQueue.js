@@ -78,7 +78,8 @@ const ExitAddQueue = ({
           feeRate,
           amount,
           token,
-          address
+          address,
+          utxo: navigation.getParam('utxo')
         })
       }
     }
@@ -91,7 +92,13 @@ const ExitAddQueue = ({
   const handleCreatePressed = useCallback(() => {
     async function approve() {
       setCreating(true)
-      await plasmaService.createExitQueue(sendTransactionParams)
+      await plasmaService.createExitQueue({
+        ...sendTransactionParams,
+        gasOptions: {
+          ...sendTransactionParams.gasOptions,
+          gas: estimatedGasUsed
+        }
+      })
       setCreating(false)
       dispatchRefreshRootchain(wallet.address, true)
       navigation.navigate('ExitReview', {
@@ -103,7 +110,7 @@ const ExitAddQueue = ({
     }
 
     ExceptionReporter.reportWhenError(approve, _err => setCreating(false))
-  }, [feeRate, address, amount, token, estimatedGasUsed])
+  }, [feeRate, address, amount, token, estimatedGasUsed, sendTransactionParams])
 
   const onPressEditFee = useCallback(() => {
     navigation.navigate('ExitSelectFee')
