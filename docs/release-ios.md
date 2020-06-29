@@ -19,9 +19,11 @@ MATCH_GIT_URL     The URL of the GitHub repo containing certificates and provisi
 
 4. If not done already, link [Sentry](https://docs.sentry.io/platforms/react-native/#linking) by running `npx sentry-wizard -i reactNative -p ios android`.
 
-5. From the `/ios` directory, run `pod install`.
+5. If not done already, insert `GoogleService-Info.plist` into `ios/PlasmaWallet/wallet`. You can find it in the [OMG drive](https://drive.google.com/drive/folders/1MMak_4mg5IZ-mv2zBOEok9FCYlMPqf2v?usp=sharing).
 
-6. Also from the `/ios` directory, run `fastlane ios testflight_local` and wait for the job to complete.
+5. From the `/ios` directory, run `bundle exec pod install`.
+
+6. Also from the `/ios` directory, run `bundle exec fastlane ios testflight_local` and wait for the job to complete.
 
 7. Go to https://appstoreconnect.apple.com/WebObjects/iTunesConnect.woa/ra/ng/app/1482235242 (You need to login first)
 
