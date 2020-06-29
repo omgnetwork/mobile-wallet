@@ -38,7 +38,6 @@ platform :ios do
 
   desc "Push a new build to TestFlight (CI)"
   lane :testflight_ci do
-    clear_derived_data
     match(type: "appstore", readonly: true)
     increment_build_number(build_number: ENV["CIRCLE_BUILD_NUM"])
     build_ios_app(scheme: "PlasmaWallet", silent: true, clean: true, include_symbols: true)
