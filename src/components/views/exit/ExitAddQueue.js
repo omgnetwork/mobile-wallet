@@ -11,18 +11,15 @@ import {
   OMGEditItem,
   OMGEmpty
 } from 'components/widgets'
+import Config from 'react-native-config'
 import { Styles } from 'common/utils'
 import { ExceptionReporter } from 'common/reporter'
-import {
-  getAssets,
-  TYPE_APPROVE_ERC20,
-  TYPE_DEPOSIT
-} from 'components/views/transfer/transferHelper'
+import { TYPE_CREATE_EXIT_QUEUE } from 'components/views/transfer/transferHelper'
 import { walletActions } from 'common/actions'
-import { ethereumService } from 'common/services'
+import { plasmaService } from 'common/services'
 import { BlockchainParams } from 'common/blockchain'
 
-const DepositApprove = ({
+const ExitAddQueue = ({
   theme,
   blockchainWallet,
   navigation,
@@ -34,69 +31,70 @@ const DepositApprove = ({
   const amount = navigation.getParam('amount')
   const token = navigation.getParam('token')
   const address = navigation.getParam('address')
-  const [approving, setApproving] = useState(false)
+
+  const [creating, setCreating] = useState(false)
   const [verifying, setVerifying] = useState(true)
-  const assets = getAssets(TYPE_DEPOSIT, wallet)
-  const feeToken = assets.find(
+
+  const assets = wallet.rootchainAssets
+  const gasToken = assets.find(
     token => token.contractAddress === feeRate.currency
   )
   const sendTransactionParams = BlockchainParams.createSendTransactionParams({
     blockchainWallet,
-    toAddress: address,
+    toAddress: Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS,
     token,
     amount,
     gas: null,
     gasPrice: feeRate.amount,
-    gasToken: feeToken
+    gasToken
   })
 
   const [
     estimatedFee,
     estimatedFeeSymbol,
     estimatedFeeUsd,
-    estimatedGasUsed,
-    gasEstimationError
+    estimatedGasUsed
   ] = useEstimatedFee({
-    transactionType: TYPE_APPROVE_ERC20,
+    transactionType: TYPE_CREATE_EXIT_QUEUE,
     sendTransactionParams
   })
 
-  const [sufficientBalance, minimumAmount] = useCheckBalanceAvailability({
+  const [hasEnoughBalance, minimumAmount] = useCheckBalanceAvailability({
     sendTransactionParams,
     estimatedFee
   })
 
   useEffect(() => {
-    async function checkIfRequireApproveErc20() {
+    async function checkIfRequireCreateExitQueue() {
       setVerifying(true)
-      const requiredApprove = await ethereumService.isRequireApproveErc20(
+      const hasExitQueue = await plasmaService.hasExitQueue(
         sendTransactionParams
       )
       setVerifying(false)
 
-      if (!requiredApprove) {
-        navigation.navigate('TransferReview', {
-          feeRate,
-          amount,
-          token,
-          address
-        })
+      if (hasExitQueue) {
+        // navigation.navigate('ExitReview', {
+        //   feeRate,
+        //   amount,
+        //   token,
+        //   address
+        // })
       }
     }
 
     if (isFocused) {
-      checkIfRequireApproveErc20()
+      checkIfRequireCreateExitQueue()
     }
   }, [isFocused])
 
-  const handleApprovePressed = useCallback(() => {
+  const handleCreatePressed = useCallback(() => {
     async function approve() {
-      setApproving(true)
+      setCreating(true)
       sendTransactionParams.gasOptions.gas = estimatedGasUsed
-      await ethereumService.approveErc20Deposit(sendTransactionParams)
-      setApproving(false)
+      await plasmaService.createExitQueue(sendTransactionParams)
+      setCreating(false)
       dispatchRefreshRootchain(wallet.address, true)
-      navigation.navigate('TransferReview', {
+      navigation.navigate('ExitReview', {
         feeRate,
         amount,
         token,
@@ -104,17 +102,16 @@ const DepositApprove = ({
       })
     }
 
-    ExceptionReporter.reportWhenError(approve, _err => setApproving(false))
+    ExceptionReporter.reportWhenError(approve, _err => setCreating(false))
   }, [feeRate, address, amount, token, estimatedGasUsed])
 
   const onPressEditFee = useCallback(() => {
-    navigation.navigate('TransferChooseGasFee')
+    navigation.navigate('ExitSelectFee')
   }, [navigation])
 
   const styles = createStyles(theme)
-  const insufficientBalanceError = !sufficientBalance && minimumAmount > 0
-  const hasError = insufficientBalanceError || gasEstimationError
-  const disableBtn = insufficientBalanceError || verifying
+  const showErrorMsg = !hasEnoughBalance && minimumAmount > 0
+  const disableBtn = !hasEnoughBalance || verifying
 
   return (
     <View style={styles.container}>
@@ -123,11 +120,12 @@ const DepositApprove = ({
       ) : (
         <View>
           <OMGText style={styles.title} weight='regular'>
-            APPROVE {token.symbol} TOKEN
+            Create {token.tokenSymbol} Exit Queue
           </OMGText>
           <OMGText style={styles.description} weight='regular'>
-            Please approve to move {amount} {token.tokenSymbol} from Ethereum to
-            the OMG Network.
+            Please create an exit queue for the {token.tokenSymbol} token.{'\n'}
+            Note that this action is only required if the selected token has
+            never been exited from the system.
           </OMGText>
           <View style={styles.tokenContainer}>
             <OMGTokenIcon token={token} size={28} />
@@ -154,22 +152,20 @@ const DepositApprove = ({
         </View>
       )}
       <View style={styles.bottomContainer}>
-        {hasError && (
+        {showErrorMsg && (
           <OMGText style={styles.errorMsg} weight='regular'>
-            {insufficientBalanceError
-              ? `Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`
-              : `The transaction might be failed.`}
+            {`Require at least ${minimumAmount} ${gasToken.tokenSymbol} to proceed.`}
           </OMGText>
         )}
         <OMGButton
-          onPress={handleApprovePressed}
-          loading={approving}
+          onPress={handleCreatePressed}
+          loading={creating}
           disabled={disableBtn}>
           {verifying
-            ? 'Checking if require approval..'
-            : approving
-            ? 'Waiting for approval...'
-            : 'Approve'}
+            ? 'Verifying..'
+            : creating
+            ? 'Waiting queue creation...'
+            : 'Create a Queue'}
         </OMGButton>
         <OMGText style={styles.textEstimateTime(!disableBtn)} weight='regular'>
           This process is usually takes about 15 - 30 seconds.
@@ -265,4 +261,4 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNavigationFocus(withTheme(DepositApprove)))
+)(withNavigationFocus(withTheme(ExitAddQueue)))

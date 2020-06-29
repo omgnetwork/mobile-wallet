@@ -135,6 +135,12 @@ export const deposit = async sendTransactionParams => {
   }
 }
 
+export const hasExitQueue = sendTransactionParams =>
+  Token.hasExitQueue(sendTransactionParams)
+
+export const createExitQueue = sendTransactionParams =>
+  Token.createExitQueue(sendTransactionParams)
+
 export const exit = async (blockchainWallet, token, utxos, gasPrice) => {
   return Plasma.exit(blockchainWallet, token, utxos, gasPrice)
 }

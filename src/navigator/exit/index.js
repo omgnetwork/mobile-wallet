@@ -10,6 +10,7 @@ export default createStackNavigator(
         address: Config.PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
       }
     },
+    ExitAddQueue: Views.ExitAddQueue,
     ExitSelectToken: Views.ExitSelectToken,
     ExitSelectAmount: Views.ExitSelectAmount,
     ExitSelectFee: Views.ExitSelectFee,

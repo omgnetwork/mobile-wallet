@@ -19,10 +19,13 @@ export const estimateDeposit = sendTransactionParams => {
 }
 
 export const estimateExit = sendTransactionParams => {
-  console.log('estimateExit')
   return TxDetails.getExit(sendTransactionParams)
     .then(estimateGas)
     .then(overEstimated)
+}
+
+export const estimateCreateExitQueue = async sendTransactionParams => {
+  return TxDetails.getCreateExitQueue(sendTransactionParams).then(estimateGas)
 }
 
 export const estimateApproveErc20 = async sendTransactionParams => {

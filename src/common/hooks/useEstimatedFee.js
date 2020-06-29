@@ -42,7 +42,7 @@ const useEstimatedFee = ({ transactionType, sendTransactionParams }) => {
         const gasUsed = await TransferHelper.getGasUsed(
           transactionType,
           sendTransactionParams
-        )
+        ).catch(err => console.log('test', err))
         const fee = BlockchainFormatter.formatGasFee(gasUsed, gasPrice)
         const feeUsd = BlockchainFormatter.formatTokenPrice(fee, gasToken.price)
         const total = BlockchainFormatter.formatTotalEthAmount(token, fee)
@@ -55,7 +55,11 @@ const useEstimatedFee = ({ transactionType, sendTransactionParams }) => {
       }
     }
 
-    calculateFee()
+    try {
+      calculateFee()
+    } catch (er) {
+      console.log(er)
+    }
   }, [sendTransactionParams])
 
   return [

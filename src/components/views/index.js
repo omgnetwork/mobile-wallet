@@ -13,6 +13,7 @@ import Deposit from './deposit'
 import DepositApprove from './deposit/DepositApprove'
 import Disclaimer from './disclaimer'
 import Exit from './exit'
+import ExitAddQueue from './exit/ExitAddQueue'
 import ExitSelectToken from './exit/ExitSelectToken'
 import ExitSelectUtxo from './exit/ExitSelectUtxo'
 import ExitSelectAmount from './exit/ExitSelectAmount'
@@ -69,6 +70,7 @@ export {
   DepositApprove,
   Disclaimer,
   Exit,
+  ExitAddQueue,
   ExitSelectToken,
   ExitSelectUtxo,
   ExitSelectFee,

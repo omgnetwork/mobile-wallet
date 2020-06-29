@@ -97,6 +97,20 @@ export const getErrorReason = async hash => {
   }
 }
 
+export const hasExitQueue = ({ smallestUnitAmount }) => {
+  const { token } = smallestUnitAmount
+  return Token.hasExitQueue(token.contractAddress)
+}
+
+export const createExitQueue = ({ addresses, privateKey }) => {
+  const { from } = addresses
+  return Token.createExitQueue(token.contractAddress, {
+    from: address,
+    privateKey,
+    gasPrice
+  })
+}
+
 export const exit = async (blockchainWallet, token, utxos, gasPrice) => {
   const hasExitQueue = await Token.hasExitQueue(token.contractAddress)
   const { address, privateKey } = blockchainWallet

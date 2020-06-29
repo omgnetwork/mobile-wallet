@@ -7,6 +7,7 @@ export const TYPE_TRANSFER_ROOTCHAIN = 2
 export const TYPE_TRANSFER_CHILDCHAIN = 3
 export const TYPE_EXIT = 4
 export const TYPE_APPROVE_ERC20 = 5
+export const TYPE_CREATE_EXIT_QUEUE = 6
 
 export const getType = (address, primaryWalletNetwork) => {
   if (address === Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS) {
@@ -28,6 +29,8 @@ export const getGasUsed = (type, sendTransactionParams) => {
       return GasEstimator.estimateDeposit(sendTransactionParams)
     case TYPE_EXIT:
       return GasEstimator.estimateExit(sendTransactionParams)
+    case TYPE_CREATE_EXIT_QUEUE:
+      return GasEstimator.estimateCreateExitQueue(sendTransactionParams)
     case TYPE_TRANSFER_ROOTCHAIN: {
       const { token } = sendTransactionParams.smallestUnitAmount
       const isEth = token.contractAddress === ContractAddress.ETH_ADDRESS

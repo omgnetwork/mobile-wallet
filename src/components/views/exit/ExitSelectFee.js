@@ -31,7 +31,7 @@ const ExitSelectFee = ({
 
   const navigate = useCallback(
     feeRate => {
-      navigation.navigate('ExitReview', {
+      navigation.navigate('ExitAddQueue', {
         feeRate,
         amount,
         token,
