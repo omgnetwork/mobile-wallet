@@ -113,10 +113,7 @@ const ExitAddQueue = ({
   const insufficientBalanceError = !sufficientBalance && minimumAmount > 0
   const hasError = insufficientBalanceError || gasEstimationError
   const disableBtn = insufficientBalanceError || verifying
-  const feeRightFirstLine = gasEstimationError
-    ? 'Estimation failed'
-    : `${estimatedFee} ${estimatedFeeSymbol}`
-  const feeRightSecondLine = gasEstimationError ? '' : `${estimatedFeeUsd} USD`
+
   return (
     <View style={styles.container}>
       {verifying ? (
@@ -148,8 +145,8 @@ const ExitAddQueue = ({
             title='Fee'
             error={gasEstimationError}
             loading={!gasEstimationError && !estimatedFee}
-            rightFirstLine={feeRightFirstLine}
-            rightSecondLine={feeRightSecondLine}
+            rightFirstLine={`${estimatedFee} ${estimatedFeeSymbol}`}
+            rightSecondLine={`${estimatedFeeUsd} USD`}
             onPress={onPressEditFee}
             style={[styles.paddingMedium, styles.mediumMarginTop]}
           />
@@ -158,9 +155,8 @@ const ExitAddQueue = ({
       <View style={styles.bottomContainer}>
         {!verifying && !creating && hasError && (
           <OMGText style={styles.errorMsg} weight='regular'>
-            {insufficientBalanceError
-              ? `Require at least ${minimumAmount} ${gasToken.tokenSymbol} to proceed.`
-              : `The transaction might be failed.`}
+            {insufficientBalanceError &&
+              `Require at least ${minimumAmount} ${gasToken.tokenSymbol} to proceed.`}
           </OMGText>
         )}
         <OMGButton
