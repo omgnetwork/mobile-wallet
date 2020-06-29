@@ -25,6 +25,7 @@ platform :ios do
   desc "Push a new build to TestFlight (local)"
   lane :testflight_local do
     clear_derived_data
+    update_code_signing_settings(use_automatic_signing: false)
     match(type: "appstore")
     increment_build_number(
       build_number: latest_testflight_build_number(
