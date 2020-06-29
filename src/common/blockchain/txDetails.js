@@ -127,7 +127,7 @@ export const getCreateExitQueue = async ({
   const { from } = addresses
   const { token } = smallestUnitAmount
   const { gas, gasPrice } = gasOptions
-  const contract = await Plasma.RootChain.plasmaContract
+  const contract = Plasma.RootChain.plasmaContract
   const vaultId = token.contractAddress === ContractAddress.ETH_ADDRESS ? 1 : 2
 
   return {
@@ -137,6 +137,6 @@ export const getCreateExitQueue = async ({
       .addExitQueue(vaultId, token.contractAddress)
       .encodeABI(),
     gas: gas || Gas.ADD_EXIT_QUEUE_GAS_USED,
-    gasPrice: gasPrice
+    gasPrice
   }
 }

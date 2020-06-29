@@ -4,9 +4,9 @@ import { web3 } from 'common/clients'
 
 const OVER_ESTIMATED_RATIO = 1.1
 
-export const estimateTransferChildchain = () => 1
+export const estimateTransferChildchain = async () => 1
 
-export const estimateTransferETH = () => Gas.MINIMUM_GAS_USED
+export const estimateTransferETH = async () => Gas.MINIMUM_GAS_USED
 
 export const estimateTransferErc20 = sendTransactionParams => {
   return TxDetails.getTransferErc20(sendTransactionParams).then(estimateGas)
@@ -24,8 +24,10 @@ export const estimateExit = sendTransactionParams => {
     .then(overEstimated)
 }
 
-export const estimateCreateExitQueue = async sendTransactionParams => {
-  return TxDetails.getCreateExitQueue(sendTransactionParams).then(estimateGas)
+export const estimateCreateExitQueue = sendTransactionParams => {
+  return TxDetails.getCreateExitQueue(sendTransactionParams)
+    .then(estimateGas)
+    .then(overEstimated)
 }
 
 export const estimateApproveErc20 = async sendTransactionParams => {
