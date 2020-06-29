@@ -20,7 +20,6 @@ import {
 } from 'components/widgets'
 import {
   Plasma,
-  GasEstimator,
   BlockchainFormatter,
   BlockchainParams
 } from 'common/blockchain'
@@ -61,16 +60,24 @@ const ExitReview = ({
     utxo
   })
 
-  const [estimatedFee] = useEstimatedFee({
+  const [
+    estimatedFee,
+    _estimatedFeeSymbol,
+    _estimatedFeeUsd,
+    _estimatedGasUsed,
+    gasEstimationError
+  ] = useEstimatedFee({
     transactionType: TransferHelper.TYPE_EXIT,
     sendTransactionParams
   })
 
-  const [hasEnoughBalance, minimumAmount] = useCheckBalanceAvailability({
+  const [sufficientBalance, minimumAmount] = useCheckBalanceAvailability({
     sendTransactionParams,
     estimatedFee,
     fixedCost: exitBond
   })
+
+  const [loadingBalance] = useLoading(loading, 'ROOTCHAIN_FETCH_ASSETS')
 
   useEffect(() => {
     async function getStandardExitBond() {
@@ -81,8 +88,6 @@ const ExitReview = ({
 
     getStandardExitBond()
   }, [])
-
-  const [submitting] = useLoading(loading, 'CHILDCHAIN_EXIT')
 
   useEffect(() => {
     if (loading.success && loading.action === 'CHILDCHAIN_EXIT') {
@@ -99,7 +104,7 @@ const ExitReview = ({
     navigation.navigate('ExitSelectFee')
   }
 
-  const submit = () => {
+  const onSubmit = () => {
     dispatchExit(
       blockchainWallet,
       { ...token, balance: exitAmount },
@@ -107,6 +112,10 @@ const ExitReview = ({
       feeRate.amount
     )
   }
+
+  const insufficientBalanceError = !sufficientBalance && minimumAmount > 0
+  const hasError = insufficientBalanceError || gasEstimationError
+  const btnLoading = minimumAmount === 0 || loading.show
 
   const exitFee = BlockchainFormatter.formatTokenPrice(exitAmount, token.price)
   return (
@@ -132,9 +141,28 @@ const ExitReview = ({
           />
           <OMGExitWarning style={styles.marginMedium} />
           <View style={styles.buttonContainer}>
-            <OMGButton onPress={submit} loading={submitting}>
-              Confirm Withdrawal
+            {hasError && (
+              <OMGText style={styles.errorMsg(theme)} weight='regular'>
+                {insufficientBalanceError
+                  ? `Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`
+                  : `The transaction might be failed.`}
+              </OMGText>
+            )}
+            <OMGButton
+              onPress={onSubmit}
+              loading={btnLoading}
+              disabled={insufficientBalanceError}>
+              {loadingBalance || minimumAmount === 0
+                ? 'Checking Balance...'
+                : loading.show
+                ? 'Sending...'
+                : 'Confirm Transaction'}
             </OMGButton>
+            <OMGText
+              style={styles.textEstimateTime(theme, sufficientBalance)}
+              weight='regular'>
+              This process is usually takes about 15 - 30 seconds.
+            </OMGText>
           </View>
         </View>
       </ScrollView>
@@ -172,11 +200,20 @@ const styles = StyleSheet.create({
   paddingMedium: {
     padding: 12
   },
+  errorMsg: theme => ({
+    color: theme.colors.red,
+    marginBottom: 16
+  }),
   buttonContainer: {
     flex: 1,
-    paddingTop: 16,
-    justifyContent: 'flex-end'
-  }
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+  },
+  textEstimateTime: (theme, visible) => ({
+    marginTop: 16,
+    color: theme.colors.gray2,
+    opacity: visible ? 1.0 : 0.0
+  })
 })
 
 const mapStateToProps = (state, _ownProps) => ({

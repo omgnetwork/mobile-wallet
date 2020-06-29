@@ -166,13 +166,6 @@ const TransferReview = ({
             ? 'Sending...'
             : 'Confirm Transaction'}
         </OMGButton>
-        <OMGText
-          style={styles.textEstimateTime(
-            sufficientBalance && transactionType === TYPE_DEPOSIT
-          )}
-          weight='regular'>
-          This process is usually takes about 15 - 30 seconds.
-        </OMGText>
       </View>
     </View>
   )
