@@ -8,6 +8,8 @@ export const createSendTransactionParams = ({
   gas,
   gasPrice,
   gasToken,
+  feeToken,
+  feeUtxo,
   utxo
 }) => {
   const { address: from, privateKey } = blockchainWallet
@@ -20,6 +22,6 @@ export const createSendTransactionParams = ({
       amount: Unit.convertToString(amount, 0, token.tokenDecimal)
     },
     privateKey,
-    gasOptions: { gas, gasPrice, gasToken }
+    gasOptions: { gas, gasPrice, gasToken, feeToken, feeUtxo }
   }
 }

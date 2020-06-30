@@ -1,13 +1,11 @@
-import { Datetime, Mapper, Unit } from 'common/utils'
+import { Datetime, Mapper, Unit, BigNumber } from 'common/utils'
 import {
   BlockchainFormatter,
   Plasma,
   Token,
-  Wait,
   Transaction,
   Utxos
 } from 'common/blockchain'
-import Config from 'react-native-config'
 
 export const fetchAssets = async (provider, address) => {
   try {
@@ -94,8 +92,25 @@ export const getFees = async tokens => {
       return token ? [{ ...fee, ...token }] : []
     })
 
+    const sortedByAvailability = (a, b) => {
+      const smallestUnitBalanceA = Unit.convertToString(
+        a.balance,
+        0,
+        a.tokenDecimal
+      )
+      const smallestUnitBalanceB = Unit.convertToString(
+        b.balance,
+        0,
+        b.tokenDecimal
+      )
+      const balancePerAmountA = BigNumber.divide(smallestUnitBalanceA, a.amount)
+      const balancePerAmountB = BigNumber.divide(smallestUnitBalanceB, b.amount)
+
+      return BigNumber.minus(balancePerAmountB, balancePerAmountA)
+    }
+
     return {
-      available,
+      available: available.sort(sortedByAvailability),
       all,
       updatedAt: all[0] ? all[0].updated_at : null
     }
@@ -141,8 +156,21 @@ export const hasExitQueue = sendTransactionParams =>
 export const createExitQueue = sendTransactionParams =>
   Token.createExitQueue(sendTransactionParams)
 
-export const exit = async (blockchainWallet, token, utxos, gasPrice) => {
-  return Plasma.exit(blockchainWallet, token, utxos, gasPrice)
+export const exit = async sendTransactionParams => {
+  const { amount, token } = sendTransactionParams.smallestUnitAmount
+  const { from, to } = sendTransactionParams.addresses
+  const { hash, exitId, blknum } = await Plasma.exit(sendTransactionParams)
+  const standardExitBond = await Plasma.getStandardExitBond()
+
+  return {
+    hash,
+    from,
+    to,
+    exitId,
+    blknum,
+    value: Unit.convertToString(amount, token.tokenDecimal, 0),
+    flatFee: standardExitBond
+  }
 }
 
 export const processExits = (

@@ -1,7 +1,7 @@
 import Config from 'react-native-config'
 import { useEffect, useCallback, useState } from 'react'
 import { NotificationMessages, TransactionActionTypes } from 'common/constants'
-import { Wait } from 'common/blockchain'
+import { Wait, Plasma } from 'common/blockchain'
 
 const getConfirmationsThreshold = tx => {
   if (tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT) {
@@ -18,7 +18,7 @@ const useRootchainTracker = wallet => {
   const [notification, setNotification] = useState(null)
 
   const buildNotification = useCallback(
-    confirmedTx => {
+    async confirmedTx => {
       if (
         confirmedTx.actionType ===
         TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT
@@ -35,6 +35,13 @@ const useRootchainTracker = wallet => {
       } else if (
         confirmedTx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_EXIT
       ) {
+        const {
+          scheduledFinalizationTime: exitableAt
+        } = await Plasma.getExitTime(
+          confirmedTx.rootchainBlockNumber,
+          confirmedTx.blknum
+        )
+        console.log('exitableAt', exitableAt)
         return {
           ...NotificationMessages.NOTIFY_TRANSACTION_START_STANDARD_EXITED(
             wallet.current.name,
@@ -42,7 +49,7 @@ const useRootchainTracker = wallet => {
             confirmedTx.symbol
           ),
           type: 'childchain',
-          confirmedTxs: [confirmedTx]
+          confirmedTxs: [{ ...confirmedTx, exitableAt }]
         }
       } else if (
         confirmedTx.actionType ===
@@ -87,7 +94,7 @@ const useRootchainTracker = wallet => {
         rootchainBlockNumber: receipt.blockNumber,
         gasUsed: receipt.gasUsed
       }
-      const payload = buildNotification(notificationTxPayload)
+      const payload = await buildNotification(notificationTxPayload)
       setNotification(payload)
       setUnconfirmedRootchainTxs(pendingRootchainTxs.slice(0, -1))
     }

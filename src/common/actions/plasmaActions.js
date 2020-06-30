@@ -112,34 +112,31 @@ export const mergeUTXOs = (
   })
 }
 
-export const exit = (blockchainWallet, token, utxos, gasPrice) => {
+export const exit = sendTransactionParams => {
   const asyncAction = async () => {
-    const {
-      hash,
-      exitId,
-      blknum,
-      flatFee,
-      exitableAt,
-      to,
-      gasUsed
-    } = await plasmaService.exit(blockchainWallet, token, utxos, gasPrice)
+    const { from, to } = sendTransactionParams.addresses
+    const { gas, gasPrice } = sendTransactionParams.gasOptions
+    const { token, amount } = sendTransactionParams.smallestUnitAmount
+
+    const { hash, exitId, blknum, value, flatFee } = await plasmaService.exit(
+      sendTransactionParams
+    )
 
     return {
       hash,
-      from: blockchainWallet.address,
-      to: to,
-      value: token.balance,
-      smallestValue: Unit.convertToString(token.balance, 0, token.tokenDecimal),
+      from,
+      to,
+      value,
+      smallestValue: amount,
       symbol: token.tokenSymbol,
-      exitableAt,
       exitId: exitId,
       blknum,
-      tokenDecimal: token.tokenDecimal,
+      tokenDecimal: token.dispatchGetFeestokenDecimal,
       tokenPrice: token.price,
       contractAddress: token.contractAddress,
       flatFee,
       gasPrice,
-      gasUsed,
+      gasUsed: gas,
       actionType: TransactionActionTypes.TYPE_CHILDCHAIN_EXIT,
       type: TransactionTypes.TYPE_EXIT,
       createdAt: Datetime.now(),

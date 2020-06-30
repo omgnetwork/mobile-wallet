@@ -1,6 +1,6 @@
 import { Transaction, Wait } from 'common/blockchain'
 import { Plasma as PlasmaClient } from 'common/clients'
-import { Mapper } from 'common/utils'
+import { Mapper, Unit } from 'common/utils'
 import BN from 'bn.js'
 
 export const get = (address, options) => {
@@ -111,24 +111,51 @@ export const mergeUntilThreshold = async (
   )
 }
 
-export const split = (address, privateKey, utxo, amount, fee) => {
+export const split = ({
+  addresses,
+  privateKey,
+  smallestUnitAmount,
+  gasOptions
+}) => {
+  const { utxo, amount } = smallestUnitAmount
+  const { from } = addresses
+  const { feeUtxo, feeToken } = gasOptions
+
+  console.log('feeUtxo', feeUtxo)
+
   const _metadata = 'Split UTXOs'
-  const fromUtxo = { ...utxo, amount: utxo.amount.toString() }
-  const { currency } = fromUtxo
-  const payment = Transaction.createPayment(address, currency, amount)
-  const payments = new Array(3).fill(payment)
+  const fromUtxos = [
+    { ...utxo, amount: utxo.amount.toString() },
+    {
+      ...feeUtxo,
+      amount: feeUtxo.amount.toString()
+    }
+  ]
+  const payment = Transaction.createPayment(from, utxo.currency, amount)
+  // const payments = new Array(3).fill(payment)
+  console.log('fromUtxos', fromUtxos)
   const txBody = Transaction.createBody(
-    address,
-    [fromUtxo],
-    payments,
-    fee,
+    from,
+    fromUtxos,
+    [payment],
+    { amount: feeToken.amount, currency: feeToken.currency },
     _metadata
   )
+  console.log('txBody', txBody)
   const typedData = Transaction.getTypedData(txBody)
+  console.log('typeData', typedData)
   const privateKeys = new Array(txBody.inputs.length).fill(privateKey)
-  const signatures = Transaction.sign(typedData, privateKeys)
-  const signedTxn = Transaction.buildSigned(typedData, signatures)
-  return Transaction.submit(signedTxn)
+  console.log('privateKeys', privateKeys)
+  try {
+    const signatures = Transaction.sign(typedData, privateKeys)
+    console.log('signatures', signatures)
+    const signedTxn = Transaction.buildSigned(typedData, signatures)
+
+    console.log('signedTx', signedTxn)
+    return Transaction.submit(signedTxn)
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 // Recursively split the utxos for the given currency until the given round is zero

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import { ethereumActions } from 'common/actions'
@@ -6,6 +6,7 @@ import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { OMGEmpty, OMGFeeSelect, OMGText } from 'components/widgets'
 import { Styles } from 'common/utils'
+import { useLoading } from 'common/hooks'
 
 const ExitSelectFee = ({
   theme,
@@ -17,13 +18,10 @@ const ExitSelectFee = ({
   const token = navigation.getParam('token')
   const amount = navigation.getParam('amount')
   const utxo = navigation.getParam('utxo')
-  const [loadingFees, setLoadingFees] = useState(false)
+  const feeUtxo = navigation.getParam('feeUtxo')
+  const feeToken = navigation.getParam('feeToken')
 
-  useEffect(() => {
-    if (loading.action === 'CHILDCHAIN_FEES') {
-      setLoadingFees(loading.show)
-    }
-  }, [loading.action, loading.show])
+  const [loadingFees] = useLoading(loading, 'ROOTCHAIN_GET_RECOMMENDED_GAS')
 
   useEffect(() => {
     dispatchGetRecommendedGas()
@@ -35,7 +33,9 @@ const ExitSelectFee = ({
         feeRate,
         amount,
         token,
-        utxo
+        utxo,
+        feeUtxo,
+        feeToken
       })
     },
     [navigation, token, amount]

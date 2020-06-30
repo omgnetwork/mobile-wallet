@@ -79,7 +79,9 @@ const ExitAddQueue = ({
           amount,
           token,
           address,
-          utxo: navigation.getParam('utxo')
+          utxo: navigation.getParam('utxo'),
+          feeUtxo: navigation.getParam('feeUtxo'),
+          feeToken: navigation.getParam('feeToken')
         })
       }
     }
@@ -105,12 +107,23 @@ const ExitAddQueue = ({
         feeRate,
         amount,
         token,
-        address
+        address,
+        utxo: navigation.getParam('utxo'),
+        feeUtxo: navigation.getParam('feeUtxo'),
+        feeToken: navigation.getParam('feeToken')
       })
     }
 
     ExceptionReporter.reportWhenError(approve, _err => setCreating(false))
-  }, [feeRate, address, amount, token, estimatedGasUsed, sendTransactionParams])
+  }, [
+    feeRate,
+    address,
+    navigation,
+    amount,
+    token,
+    estimatedGasUsed,
+    sendTransactionParams
+  ])
 
   const onPressEditFee = useCallback(() => {
     navigation.navigate('ExitSelectFee')

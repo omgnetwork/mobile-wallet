@@ -29,23 +29,26 @@ const ExitReview = ({
   theme,
   navigation,
   blockchainWallet,
-  dispatchExit,
+  exit,
   unconfirmedTx,
   primaryWallet,
-  loading
+  loading,
+  dispatchGetFees
 }) => {
   const amount = navigation.getParam('amount')
   const token = navigation.getParam('token')
   const address = navigation.getParam('address')
   const feeRate = navigation.getParam('feeRate')
   const utxo = navigation.getParam('utxo')
+  const feeUtxo = navigation.getParam('feeUtxo')
+  const feeToken = navigation.getParam('feeToken')
 
-  const [exitBond, setExitBond] = useState(null)
+  const [exitBond, setExitBond] = useState()
 
   const exitAmount = Formatter.format(amount, {
     maxDecimal: token.tokenDecimal
   })
-  const feeToken = primaryWallet.rootchainAssets.find(
+  const gasToken = primaryWallet.rootchainAssets.find(
     token => token.contractAddress === feeRate.currency
   )
 
@@ -56,7 +59,9 @@ const ExitReview = ({
     amount,
     gas: null,
     gasPrice: feeRate.amount,
-    gasToken: feeToken,
+    gasToken,
+    feeToken,
+    feeUtxo,
     utxo
   })
 
@@ -78,6 +83,9 @@ const ExitReview = ({
   })
 
   const [loadingBalance] = useLoading(loading, 'ROOTCHAIN_FETCH_ASSETS')
+  const [loadingFee] = useLoading(loading, 'CHILDCHAIN_FEES')
+  const [loadingExit] = useLoading(loading, 'CHILDCHAIN_EXIT')
+  const isLoading = loadingBalance || loadingFee
 
   useEffect(() => {
     async function getStandardExitBond() {
@@ -86,8 +94,13 @@ const ExitReview = ({
       setExitBond(largestUnitBond)
     }
 
+    function getOMGFee() {
+      dispatchGetFees(primaryWallet.childchainAssets)
+    }
+
     getStandardExitBond()
-  }, [])
+    getOMGFee()
+  }, [primaryWallet.childchainAssets, dispatchGetFees])
 
   useEffect(() => {
     if (loading.success && loading.action === 'CHILDCHAIN_EXIT') {
@@ -105,17 +118,12 @@ const ExitReview = ({
   }
 
   const onSubmit = () => {
-    dispatchExit(
-      blockchainWallet,
-      { ...token, balance: exitAmount },
-      amount,
-      feeRate.amount
-    )
+    exit(sendTransactionParams)
   }
 
   const insufficientBalanceError = !sufficientBalance && minimumAmount > 0
   const hasError = insufficientBalanceError || gasEstimationError
-  const btnLoading = minimumAmount === 0 || loading.show
+  const btnLoading = minimumAmount === 0 || isLoading || loadingExit
 
   const exitFee = BlockchainFormatter.formatTokenPrice(exitAmount, token.price)
   return (
@@ -135,7 +143,7 @@ const ExitReview = ({
           <OMGExitFee
             exitBond={exitBond}
             fee={estimatedFee}
-            feeToken={feeToken}
+            feeToken={gasToken}
             onPressEdit={navigateEditFee}
             style={[styles.marginMedium]}
           />
@@ -144,7 +152,7 @@ const ExitReview = ({
             {hasError && (
               <OMGText style={styles.errorMsg(theme)} weight='regular'>
                 {insufficientBalanceError
-                  ? `Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`
+                  ? `Require at least ${minimumAmount} ${gasToken.tokenSymbol} to proceed.`
                   : `The transaction might be failed.`}
               </OMGText>
             )}
@@ -152,9 +160,9 @@ const ExitReview = ({
               onPress={onSubmit}
               loading={btnLoading}
               disabled={insufficientBalanceError}>
-              {loadingBalance || minimumAmount === 0
+              {isLoading || minimumAmount === 0
                 ? 'Checking Balance...'
-                : loading.show
+                : loadingExit
                 ? 'Sending...'
                 : 'Confirm Transaction'}
             </OMGButton>
@@ -222,12 +230,14 @@ const mapStateToProps = (state, _ownProps) => ({
     w => w.address === state.setting.primaryWalletAddress
   ),
   blockchainWallet: state.setting.blockchainWallet,
-  unconfirmedTx: state.transaction.unconfirmedTxs.slice(-1).pop()
+  unconfirmedTx: state.transaction.unconfirmedTxs.slice(-1).pop(),
+  fees: state.fee.available
 })
 
 const mapDispatchToProps = (dispatch, _ownProps) => ({
-  dispatchExit: (blockchainWallet, token, utxos, gasPrice) =>
-    dispatch(plasmaActions.exit(blockchainWallet, token, utxos, gasPrice))
+  exit: sendTransactionParams =>
+    dispatch(plasmaActions.exit(sendTransactionParams)),
+  dispatchGetFees: tokens => dispatch(plasmaActions.getFees(tokens))
 })
 
 export default connect(

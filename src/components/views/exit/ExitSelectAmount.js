@@ -12,25 +12,37 @@ import {
   OMGDismissKeyboard
 } from 'components/widgets'
 import { Styles } from 'common/utils'
+import { plasmaService } from 'common/services'
 
 const ExitSelectAmount = ({ navigation, theme, isFocused, primaryWallet }) => {
   const token = navigation.getParam('token')
   const ref = useRef(0)
   const focusRef = useRef(null)
-  const [utxo, setUtxo] = useState([])
+  const [utxo, setUtxo] = useState()
+  const [feeUtxo, setFeeUtxo] = useState()
+  const [feeToken, setFeeToken] = useState()
   const [loading, setLoading] = useState(false)
   const [disabled, setDisabled] = useState(true)
 
   useEffect(() => {
-    fetchUtxos()
+    if (isFocused) {
+      fetchUtxos()
+    }
   }, [fetchUtxos])
 
   const fetchUtxos = useCallback(async () => {
     setLoading(true)
-    const result = await Utxos.get(primaryWallet.address, {
-      currency: token.contractAddress
-    })
-    setUtxo(result[0])
+    const utxos = await Utxos.get(primaryWallet.address)
+    const fee = await plasmaService
+      .getFees(primaryWallet.childchainAssets)
+      .then(({ available }) => available?.[0])
+    const selectedUtxo = utxos.find(
+      utxo => utxo.currency === token.contractAddress
+    )
+    const selectedFeeUtxo = utxos.find(utxo => utxo.currency === fee?.currency)
+    setUtxo(selectedUtxo)
+    setFeeUtxo(selectedFeeUtxo)
+    setFeeToken(fee)
     setLoading(false)
     focusRef.current?.focus()
   }, [primaryWallet.address, token.contractAddress])
@@ -49,10 +61,12 @@ const ExitSelectAmount = ({ navigation, theme, isFocused, primaryWallet }) => {
     navigation.navigate('ExitSelectFee', {
       token,
       utxo,
+      feeUtxo,
+      feeToken,
       amount: ref.current,
       address: navigation.getParam('address')
     })
-  }, [navigation, token, utxo])
+  }, [navigation, token, utxo, feeUtxo, feeToken])
 
   const styles = createStyles(theme)
 
