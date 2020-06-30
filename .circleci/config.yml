@@ -14,6 +14,14 @@ workflows:
       - mobile-wallet-dependency-audit:
           requires:
             - mobile-wallet-build
+      - fastlane-to-testflight: 
+          requires:
+            - mobile-wallet-build
+          filters:
+            branches:
+              only: 
+                - v2.5
+                - master
 
   proxy-server-build-test-deploy:
     jobs:
@@ -38,29 +46,6 @@ workflows:
               only: master
 
 jobs:
-  #
-  # Mobile wallet build jobs
-  #
-  mobile-wallet-build:
-    docker:
-      - image: circleci/node:10
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v1-mobile-wallet-node-modules-{{ checksum "package-lock.json" }}
-      - run:
-          name: Run mobile-wallet build
-          command: npm install
-      - save_cache:
-          key: v1-mobile-wallet-node-modules-{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
-      - persist_to_workspace:
-          name: Persist workspace
-          root: .
-          paths: '.'
-
   mobile-wallet-tests:
     docker:
       - image: circleci/node:10
@@ -156,6 +141,7 @@ jobs:
           command: |
             cd proxy-server
             npm run dependency-audit
+            npm run dependency-audit
 
   proxy-server-publish:
     docker:
@@ -185,3 +171,81 @@ jobs:
           gcloud auth configure-docker
           gcloud beta container clusters get-credentials $PROXY_SERVER_GCP_CLUSTER_DEVELOPMENT --region $PROXY_SERVER_GCP_REGION --project $PROXY_SERVER_GCP_PROJECT
           kubectl set image deployment/mobile-wallet-proxy mobile-wallet-proxy=$PROXY_SERVER_DOCKER_TAG
+
+  #
+  # Mobile wallet build jobs
+  #
+  mobile-wallet-build:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-mobile-wallet-node-modules-{{ checksum "package-lock.json" }}
+      - run:
+          name: Run mobile-wallet build
+          command: npm install
+      - save_cache:
+          key: v1-mobile-wallet-node-modules-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          name: Persist workspace
+          root: .
+          paths: '.'
+
+  fastlane-to-testflight:
+    macos:
+      xcode: 11.5.0 # Image manifest: https://circle-macos-docs.s3.amazonaws.com/image-manifest/v2960/index.html
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Decrypting and adding Firebase configuration file
+          command: echo "$FIREBASE_CONFIG" | base64 --decode > ios/PlasmaWallet/wallet/GoogleService-Info.plist
+      - run:
+          name: Decrypting and adding Sentry configuration file
+          command: echo "$SENTRY_CONFIG" | base64 --decode > ios/sentry.properties
+      - run:
+          name: Decrypting and adding .env file
+          command: echo "$ENV_MAINNET" | base64 --decode > .env
+      - run:
+          name: Install sentry-cli
+          command: npm install @sentry/cli
+      - save_cache:
+          key: v1-mobile-wallet-node-modules-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Set Ruby version
+          command: echo 'chruby ruby-2.6.6' >> ~/.bash_profile
+      - restore_cache:
+          name: Restoring cache (Ruby)
+          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
+      - run:
+          name: Installing Ruby dependencies
+          command: |
+            cd ios
+            sudo gem install bundler && bundle config set path 'vendor/bundle' && bundle install
+      - save_cache:
+          name: Saving cache (Ruby)
+          key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
+          paths:
+            - 'ios/vendor/bundle/'
+      - persist_to_workspace:
+          name: Persisting to workspace
+          root: .
+          paths: 'ios/'
+      - run:
+          name: Installing CocoaPods
+          command: |
+            cd ios
+            bundle exec pod install
+      - run:
+          name: Running Fastlane
+          command: |
+            cd ios
+            bundle exec fastlane testflight_ci

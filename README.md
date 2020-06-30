@@ -1,19 +1,34 @@
 # Plasma Wallet
 
-A Plasma educational app that allows you to manage your fund on the Ethereum network and OmiseGO network.
+A mobile application to manage your funds on the Ethereum and OMG networks. 
 
-## Before Installation (Optional for development, but need for deployment)
+## Requirements
 
-Download all files at [OmiseGO Drive](https://drive.google.com/drive/folders/1MMak_4mg5IZ-mv2zBOEok9FCYlMPqf2v?usp=sharing)
+- Node 10.13.0
+- Ruby 2.6.6 and Bundler 2.1.4
+
+\* _The version of Ruby is intended to match the version declared on the CircleCI macOS executor._
+
+\* _Installing Fastlane and Cocoapods with Bundler is intended to control versions across machines._
 
 ## Installation
 
-1. `npm install`
-2. `cd ios && pod install`
-3. `cd android/app && keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000`
-4. Create `.env` file and fill the missing data into the following template:
+Run `npm install`
 
-```
+### For iOS
+
+1. From the `/ios` folder, install Ruby dependencies with `bundle install`.
+2. Install Pods with `bundle exec pod install`.
+
+### For Android
+
+1. `cd android/app && keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000`
+
+## Environment
+
+4. Create an `.env` file and add your configuration
+
+```env
 CHILDCHAIN_DEPOSIT_CONFIRMATION_BLOCKS=12
 CHILDCHAIN_EXIT_CONFIRMATION_BLOCKS=12
 ROOTCHAIN_TRANSFER_CONFIRMATION_BLOCKS=1
@@ -39,15 +54,21 @@ MW_TEST_FUND_ADDRESS=<TEST_FUND_ADDRESS>
 MW_TEST_FUND_PRIVATE_KEY=<TEST_FUND_PRIVATE_KEY>
 ```
 
-5. Download the `GoogleService-Info.plist` from [OmiseGO Drive](https://drive.google.com/drive/folders/1MMak_4mg5IZ-mv2zBOEok9FCYlMPqf2v?usp=sharing), (Required for both ios development and deployment)
-   - Copy `GoogleService-Info.plist`, then paste at `ios/PlasmaWallet/wallet/GoogleService-Info.plist`
+### For iOS
 
-6. From downloaded files, (Optional for development, but need for deployment)
+Download the `GoogleService-Info.plist` from [OMG Drive](https://drive.google.com/drive/folders/1MMak_4mg5IZ-mv2zBOEok9FCYlMPqf2v?usp=sharing) and insert it in `ios/PlasmaWallet/wallet/GoogleService-Info.plist`. (Required for both development and release)
+
+
+### For Android
+
+From files on the [drive](https://drive.google.com/drive/folders/1MMak_4mg5IZ-mv2zBOEok9FCYlMPqf2v):
    - Copy `release.keystore`, then paste at `android/app/release.keystore`
    - Copy `keystore.properties`, then paste at `android/keystore.properties`
    - Copy `google-services.json`, then paste at `android/app/google-servies.json`
    - Copy `GTM-5VHN7FC.json`, then paste at `ios/container/GTM-5VHN7FC.json`.
    - Copy `GTM-PGZXFH4.json`, then paste at `android/app/src/main/assets/containers/GTM-PGZXFH4.json`.
+
+(Optional for development)
 
 ## Running
 

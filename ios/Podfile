@@ -132,7 +132,6 @@ target 'PlasmaWallet' do
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
   pod 'react-native-intercom', :path => '../node_modules/react-native-intercom'
-  pod 'react-native-flipper', :path => '../node_modules/react-native-flipper/react-native-flipper.podspec', :configuration => 'Debug'
 
 
   target 'PlasmaWalletTests' do
