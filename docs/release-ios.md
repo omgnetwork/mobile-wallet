@@ -55,7 +55,7 @@ For reference:
 
 The version is set in the `MARKETING_VERSION` fields found in `ios/PlasmaWallet.xcodeproj/project.pbxproj`. 
 
-Ensure this is updated in order to pair your build with the right version on TestFlight.
+Ensure this is updated in order to pair your build with the right version number on TestFlight.
 
 ### Encrypted Files
 
