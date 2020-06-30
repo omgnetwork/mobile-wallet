@@ -12,7 +12,7 @@
     "test": "jest",
     "test-unit": "jest __tests__/unit/",
     "test-integration": "jest __tests__/integration/",
-    "lint": "eslint .",
+    "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
     "fix": "eslint . --fix",
     "dependency-audit": "audit-ci --moderate",
     "ios": "react-native run-ios --simulator='iPhone 11'",
@@ -44,6 +44,8 @@
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/push-notification-ios": "^1.0.2",
     "@sentry/react-native": "^1.4.2",
+    "@types/react": "^16.9.41",
+    "@types/react-native": "^0.62.14",
     "abi-decoder": "^2.3.0",
     "assert": "^1.5.0",
     "asyncstorage-down": "^4.2.0",
@@ -109,6 +111,9 @@
     "@babel/preset-env": "^7.7.4",
     "@babel/runtime": "^7.6.2",
     "@react-native-community/cli-platform-ios": "^3.0.0",
+    "@types/jest": "^26.0.3",
+    "@typescript-eslint/eslint-plugin": "^3.5.0",
+    "@typescript-eslint/parser": "^3.5.0",
     "audit-ci": "^3.0.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^24.9.0",
@@ -122,6 +127,7 @@
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-native": "^3.8.1",
+    "i": "^0.3.6",
     "jest": "^25.1.0",
     "jest-html-reporters": "^1.2.1",
     "jest-junit": "^10.0.0",
@@ -129,19 +135,21 @@
     "metro-config": "^0.58.0",
     "metro-react-native-babel-preset": "^0.58.0",
     "metro-react-native-babel-transformer": "^0.57.0",
+    "npm": "^6.14.5",
     "prettier": "^2.0.5",
     "react-native-clean-project": "^3.3.0",
     "react-test-renderer": "16.11.0",
     "react-transform-hmr": "^1.0.4",
     "redux-devtools-extension": "^2.13.8",
     "redux-mock-store": "^1.5.4",
-    "rn-nodeify": "^10.1.0"
+    "rn-nodeify": "^10.1.0",
+    "typescript": "^3.9.5"
   },
   "jest": {
     "preset": "react-native",
     "testMatch": [
-      "**/__tests__/unit/**/*.js",
-      "**/__tests__/integration/**/*.js"
+      "**/__tests__/unit/**/*.(ts|js)",
+      "**/__tests__/integration/**/*.(ts|js)"
     ],
     "reporters": [
       "default",
