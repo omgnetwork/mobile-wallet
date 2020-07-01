@@ -53,13 +53,10 @@ const useEstimatedFee = ({ transactionType, sendTransactionParams }) => {
       }
     }
 
-    calculateFee()
-  }, [
-    updateState,
-    transactionType,
-    sendTransactionParams.smallestUnitAmount,
-    sendTransactionParams.gasOptions
-  ])
+    if (sendTransactionParams) {
+      calculateFee()
+    }
+  }, [transactionType, sendTransactionParams])
 
   return [
     estimatedFee,

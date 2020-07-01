@@ -34,20 +34,26 @@ const ExitAddQueue = ({
 
   const [creating, setCreating] = useState(false)
   const [verifying, setVerifying] = useState(true)
+  const [sendTransactionParams, setSendTransactionParams] = useState()
 
   const assets = wallet.rootchainAssets
   const gasToken = assets.find(
     token => token.contractAddress === feeRate.currency
   )
-  const sendTransactionParams = BlockchainParams.createSendTransactionParams({
-    blockchainWallet,
-    toAddress: Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS,
-    token,
-    amount,
-    gas: null,
-    gasPrice: feeRate.amount,
-    gasToken
-  })
+
+  useEffect(() => {
+    setSendTransactionParams(
+      BlockchainParams.createSendTransactionParams({
+        blockchainWallet,
+        toAddress: Config.PLASMA_FRAMEWORK_CONTRACT_ADDRESS,
+        token,
+        amount,
+        gas: null,
+        gasPrice: feeRate.amount,
+        gasToken
+      })
+    )
+  }, [blockchainWallet, feeRate, token, amount])
 
   const [
     estimatedFee,
@@ -89,11 +95,12 @@ const ExitAddQueue = ({
     if (isFocused) {
       checkIfRequireCreateExitQueue()
     }
-  }, [isFocused])
+  }, [isFocused, sendTransactionParams])
 
   const handleCreatePressed = useCallback(() => {
     async function approve() {
       setCreating(true)
+      console.log(estimatedGasUsed)
       await plasmaService.createExitQueue({
         ...sendTransactionParams,
         gasOptions: {
@@ -114,7 +121,9 @@ const ExitAddQueue = ({
       })
     }
 
-    ExceptionReporter.reportWhenError(approve, _err => setCreating(false))
+    if (estimatedGasUsed) {
+      ExceptionReporter.reportWhenError(approve, _err => setCreating(false))
+    }
   }, [
     feeRate,
     address,

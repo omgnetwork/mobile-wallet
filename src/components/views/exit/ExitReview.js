@@ -44,6 +44,7 @@ const ExitReview = ({
   const feeToken = navigation.getParam('feeToken')
 
   const [exitBond, setExitBond] = useState()
+  const [sendTransactionParams, setSendTransactionParams] = useState()
 
   const exitAmount = Formatter.format(amount, {
     maxDecimal: token.tokenDecimal
@@ -52,18 +53,22 @@ const ExitReview = ({
     token => token.contractAddress === feeRate.currency
   )
 
-  const sendTransactionParams = BlockchainParams.createSendTransactionParams({
-    blockchainWallet,
-    toAddress: address,
-    token,
-    amount,
-    gas: null,
-    gasPrice: feeRate.amount,
-    gasToken,
-    feeToken,
-    feeUtxo,
-    utxo
-  })
+  useEffect(() => {
+    setSendTransactionParams(
+      BlockchainParams.createSendTransactionParams({
+        blockchainWallet,
+        toAddress: address,
+        token,
+        amount,
+        gas: null,
+        gasPrice: feeRate.amount,
+        gasToken,
+        feeToken,
+        feeUtxo,
+        utxo
+      })
+    )
+  }, [blockchainWallet, feeRate, token, amount])
 
   const [
     estimatedFee,

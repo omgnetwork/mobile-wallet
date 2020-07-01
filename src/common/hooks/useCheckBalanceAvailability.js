@@ -36,7 +36,9 @@ const useCheckBalanceAvailability = ({
       setMinimumPaidAmount(minimumAmount)
     }
 
-    checkBalanceAvailability()
+    if (sendTransactionParams) {
+      checkBalanceAvailability()
+    }
   }, [estimatedFee, fixedCost, sendTransactionParams])
 
   return [enoughBalance, minimumPaidAmount]
