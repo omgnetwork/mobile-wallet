@@ -37,8 +37,6 @@ const RootchainTransactionTracker = ({
       }
 
       dispatchInvalidateUnconfirmedTx(confirmedTx)
-      notificationService.sendNotification(rootNotification)
-      setRootNotification(null)
       invalidatedTxs.current = [...invalidatedTxs.current, confirmedTx.hash]
 
       switch (rootNotification.type) {
@@ -56,10 +54,16 @@ const RootchainTransactionTracker = ({
     dispatchRefreshRootchain,
     primaryWallet,
     dispatchRefreshAll,
-    unconfirmedTxs,
     dispatchAddStartedExitTx,
     setRootNotification
   ])
+
+  useEffect(() => {
+    if (rootNotification) {
+      notificationService.sendNotification(rootNotification)
+      setRootNotification(null)
+    }
+  }, [rootNotification])
 
   const filterTxs = useCallback(
     filterFunc => unconfirmedTxs.filter(filterFunc),
