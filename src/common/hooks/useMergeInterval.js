@@ -6,6 +6,11 @@ import { TransactionActionTypes } from 'common/constants'
 
 const DEFAULT_INTERVAL = 10000 // 10s
 const MERGE_UTXOS_LOADING_ACTION = 'CHILDCHAIN_MERGE_UTXOS'
+const RESTRICTED_ACTIONS = [
+  'CHILDCHAIN_DEPOSIT',
+  'CHILDCHAIN_SEND_TOKEN',
+  'CHILDCHAIN_EXIT'
+]
 
 const useMergeInterval = (
   dispatchUpdateMergeUtxosStatus,
@@ -72,6 +77,9 @@ const useMergeInterval = (
 
     // Return if the blockchain wallet has not been loaded
     if (!blockchainWallet) return
+
+    // Return if there's pending actions that possibly change the number of utxos.
+    if (RESTRICTED_ACTIONS.includes(loading.action)) return
 
     if (!unconfirmedTx) {
       return mergeIfRequired(blockchainWallet, null)
