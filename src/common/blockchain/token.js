@@ -27,7 +27,7 @@ export const createExitQueue = async ({
   addresses,
   privateKey
 }) => {
-  const txDetails = TxDetails.getCreateExitQueue({
+  const txDetails = await TxDetails.getCreateExitQueue({
     smallestUnitAmount,
     gasOptions,
     addresses

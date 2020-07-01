@@ -9,10 +9,8 @@ import {
   Utxos,
   TxDetails,
   Ethereum,
-  Wait,
-  Token
+  Wait
 } from 'common/blockchain'
-import Config from 'react-native-config'
 
 export const getBalances = address => {
   return Plasma.ChildChain.getBalance(address).then(balances => {
