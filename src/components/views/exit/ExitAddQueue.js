@@ -137,7 +137,7 @@ const ExitAddQueue = ({
   return (
     <View style={styles.container}>
       <OMGText style={styles.title} weight='regular'>
-        Create {token.tokenSymbol} Exit Queue
+        Create Exit Queue
       </OMGText>
       {verifying ? (
         <OMGEmpty loading={verifying} style={styles.emptyView} />
