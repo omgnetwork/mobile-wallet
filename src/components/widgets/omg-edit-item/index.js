@@ -6,11 +6,14 @@ import { Styles } from 'common/utils'
 
 const OMGEditItem = ({
   title,
+  subtitle,
   theme,
   rightFirstLine,
   rightSecondLine,
+  rightThirdLine,
   error,
   editable = true,
+  titleTextStyle,
   style,
   loading,
   onPress
@@ -18,12 +21,23 @@ const OMGEditItem = ({
   return (
     <View style={[styles.container(theme), style]}>
       <View style={[styles.column, styles.stretch]}>
-        <OMGText style={[styles.textWhite(theme), styles.textBig]}>
+        <OMGText
+          style={[styles.textWhite(theme), styles.textBig, titleTextStyle]}>
           {title}
         </OMGText>
+        {subtitle && (
+          <OMGText
+            style={[
+              styles.textGray(theme),
+              styles.textSmall,
+              styles.smallTextMargin
+            ]}>
+            {subtitle}
+          </OMGText>
+        )}
         {editable && (
           <TouchableOpacity
-            style={[styles.row, styles.textMargin]}
+            style={[styles.row, styles.smallTextMargin]}
             onPress={onPress}>
             <OMGText
               style={[
@@ -38,24 +52,44 @@ const OMGEditItem = ({
         )}
       </View>
       <View style={[styles.column, styles.alignRight, styles.textSingleLine]}>
-        {loading ? (
-          <OMGEmpty loading={loading} style={styles.alignRight} />
-        ) : (
+        {loading && <OMGEmpty loading={loading} style={styles.alignRight} />}
+        {!loading && (
           <>
-            <OMGText
-              style={[styles.textFirstLine(theme, error), styles.textBig]}>
-              {error ? 'Estimation Failed' : rightFirstLine}
-            </OMGText>
-            <OMGText
-              numberOfLines={1}
-              ellipsizeMode='tail'
-              style={[
-                styles.textGray(theme),
-                styles.textSmall,
-                styles.textMargin
-              ]}>
-              {!error && rightSecondLine}
-            </OMGText>
+            {rightFirstLine && (
+              <OMGText
+                style={[
+                  styles.textFirstLine(theme, error),
+                  styles.textBig,
+                  titleTextStyle
+                ]}>
+                {error ? 'Estimation Failed' : rightFirstLine}
+              </OMGText>
+            )}
+            {rightSecondLine && (
+              <OMGText
+                numberOfLines={1}
+                ellipsizeMode='tail'
+                style={[
+                  styles.textWhite(theme),
+                  styles.textBig,
+                  styles.smallTextMargin,
+                  titleTextStyle
+                ]}>
+                {!error && rightSecondLine}
+              </OMGText>
+            )}
+            {rightThirdLine && (
+              <OMGText
+                numberOfLines={1}
+                ellipsizeMode='tail'
+                style={[
+                  styles.textGray(theme),
+                  styles.textSmall,
+                  styles.smallTextMargin
+                ]}>
+                {!error && rightThirdLine}
+              </OMGText>
+            )}
           </>
         )}
       </View>
@@ -105,6 +139,9 @@ const styles = StyleSheet.create({
   },
   textMargin: {
     marginTop: 10
+  },
+  smallTextMargin: {
+    marginTop: 4
   },
   textSingleLine: {
     flex: 1

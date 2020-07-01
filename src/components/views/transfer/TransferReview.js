@@ -126,7 +126,7 @@ const TransferReview = ({
       <OMGEditItem
         title='Amount'
         rightFirstLine={`${amount} ${token.tokenSymbol}`}
-        rightSecondLine={`${amountUsd} USD`}
+        rightThirdLine={`${amountUsd} USD`}
         onPress={onPressEditAmount}
         style={[styles.marginMedium, styles.paddingMedium]}
       />
@@ -134,7 +134,7 @@ const TransferReview = ({
         title='Estimated Fee'
         loading={!estimatedFee}
         rightFirstLine={`${estimatedFee} ${estimatedFeeSymbol}`}
-        rightSecondLine={`${estimatedFeeUsd} USD`}
+        rightThirdLine={`${estimatedFeeUsd} USD`}
         onPress={onPressEditFee}
         style={[styles.marginMedium, styles.paddingMedium]}
       />
@@ -143,7 +143,7 @@ const TransferReview = ({
         rightFirstLine={
           transactionType === TYPE_DEPOSIT ? 'OMG Network' : 'Address'
         }
-        rightSecondLine={toAddress}
+        rightThirdLine={toAddress}
         editable={transactionType !== TYPE_DEPOSIT}
         onPress={onPressEditAddress}
         style={[styles.marginMedium, styles.paddingMedium]}

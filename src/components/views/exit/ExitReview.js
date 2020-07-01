@@ -136,15 +136,16 @@ const ExitReview = ({
           <OMGEditItem
             title='Amount'
             rightFirstLine={`${exitAmount} ${token.tokenSymbol}`}
-            rightSecondLine={`${exitFee} USD`}
+            rightThirdLine={`${exitFee} USD`}
             onPress={navigateEditAmount}
             style={[styles.marginMedium, styles.paddingMedium]}
           />
           <OMGExitFee
             error={gasEstimationError}
             exitBond={exitBond}
-            fee={estimatedFee}
-            feeToken={gasToken}
+            transactionFee={estimatedFee}
+            gasToken={gasToken}
+            feeToken={feeToken}
             onPressEdit={navigateEditFee}
             style={[styles.marginMedium]}
           />

@@ -166,7 +166,7 @@ const ExitAddQueue = ({
             error={gasEstimationError}
             loading={!gasEstimationError && !estimatedFee}
             rightFirstLine={`${estimatedFee} ${estimatedFeeSymbol}`}
-            rightSecondLine={`${estimatedFeeUsd} USD`}
+            rightThirdLine={`${estimatedFeeUsd} USD`}
             onPress={onPressEditFee}
             style={[styles.paddingMedium, styles.mediumMarginTop]}
           />
