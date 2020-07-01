@@ -58,12 +58,10 @@ export const transfer = sendTransactionParams => {
     const { from, to } = addresses
     const { token } = smallestUnitAmount
 
-    const { txhash, value } = await plasmaService.transfer(
-      sendTransactionParams
-    )
+    const { hash, value } = await plasmaService.transfer(sendTransactionParams)
 
     return {
-      hash: txhash,
+      hash,
       from,
       to,
       value,
