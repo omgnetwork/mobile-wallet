@@ -152,7 +152,12 @@ export const getExitQueue = async tokenContractAddress => {
 }
 
 export const getFees = () => {
-  return Plasma.ChildChain.getFees().then(response => {
-    return response['1']
-  })
+  return Plasma.ChildChain.getFees()
+    .then(response => response['1'])
+    .then(all =>
+      all.map(fee => ({
+        ...fee,
+        amount: fee.amount.toString(10)
+      }))
+    )
 }
