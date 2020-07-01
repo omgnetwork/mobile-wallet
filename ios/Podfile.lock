@@ -303,7 +303,7 @@ PODS:
     - React
   - react-native-config (0.11.7):
     - React
-  - react-native-flipper (0.39.0):
+  - react-native-flipper (0.45.0):
     - React
   - react-native-intercom (14.0.0):
     - Intercom (~> 6.0.0)
@@ -654,7 +654,7 @@ SPEC CHECKSUMS:
   react-native-background-timer: 1b6e6b4e10f1b74c367a1fdc3c72b67c619b222b
   react-native-camera: 576f6dbb490af4285de1f8002a09dd3daa86c112
   react-native-config: 55548054279d92e0e4566ea15a8b9b81028ec342
-  react-native-flipper: 5dc086b3fe71a6ebb8b4e42e4b9191cf07fe50ac
+  react-native-flipper: bc9162dfd46c95bbe032e62e162ae936bfafd94b
   react-native-intercom: 8682a2da729caec7905348269b10f05c94a2aa44
   react-native-randombytes: 3638d24759d67c68f6ccba60c52a7a8a8faa6a23
   react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
