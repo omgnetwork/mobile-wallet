@@ -141,6 +141,7 @@ const ExitReview = ({
             style={[styles.marginMedium, styles.paddingMedium]}
           />
           <OMGExitFee
+            error={gasEstimationError}
             exitBond={exitBond}
             fee={estimatedFee}
             feeToken={gasToken}
@@ -163,8 +164,8 @@ const ExitReview = ({
               {isLoading || minimumAmount === 0
                 ? 'Checking Balance...'
                 : loadingExit
-                ? 'Sending...'
-                : 'Confirm Transaction'}
+                ? 'Withdrawing...'
+                : 'Withdraw'}
             </OMGButton>
             <OMGText
               style={styles.textEstimateTime(theme, sufficientBalance)}

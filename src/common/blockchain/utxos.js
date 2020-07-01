@@ -121,19 +121,19 @@ export const split = ({
   const { from } = addresses
   const { feeUtxo, feeToken } = gasOptions
 
-  console.log('feeUtxo', feeUtxo)
-
   const _metadata = 'Split UTXOs'
-  const fromUtxos = [
-    { ...utxo, amount: utxo.amount.toString() },
-    {
-      ...feeUtxo,
-      amount: feeUtxo.amount.toString()
-    }
-  ]
+  const fromUtxos =
+    feeUtxo.currency !== utxo.currency
+      ? [
+          { ...utxo, amount: utxo.amount.toString() },
+          {
+            ...feeUtxo,
+            amount: feeUtxo.amount.toString()
+          }
+        ]
+      : [{ ...utxo, amount: utxo.amount.toString() }]
   const payment = Transaction.createPayment(from, utxo.currency, amount)
   // const payments = new Array(3).fill(payment)
-  console.log('fromUtxos', fromUtxos)
   const txBody = Transaction.createBody(
     from,
     fromUtxos,
@@ -141,21 +141,11 @@ export const split = ({
     { amount: feeToken.amount, currency: feeToken.currency },
     _metadata
   )
-  console.log('txBody', txBody)
   const typedData = Transaction.getTypedData(txBody)
-  console.log('typeData', typedData)
   const privateKeys = new Array(txBody.inputs.length).fill(privateKey)
-  console.log('privateKeys', privateKeys)
-  try {
-    const signatures = Transaction.sign(typedData, privateKeys)
-    console.log('signatures', signatures)
-    const signedTxn = Transaction.buildSigned(typedData, signatures)
-
-    console.log('signedTx', signedTxn)
-    return Transaction.submit(signedTxn)
-  } catch (err) {
-    console.error(err)
-  }
+  const signatures = Transaction.sign(typedData, privateKeys)
+  const signedTxn = Transaction.buildSigned(typedData, signatures)
+  return Transaction.submit(signedTxn)
 }
 
 // Recursively split the utxos for the given currency until the given round is zero

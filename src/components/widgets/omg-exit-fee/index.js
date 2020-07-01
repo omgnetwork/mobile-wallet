@@ -5,7 +5,15 @@ import { View, StyleSheet, TouchableOpacity, Linking } from 'react-native'
 import { OMGText, OMGEmpty, OMGEditItem } from 'components/widgets'
 import { Formatter, BigNumber } from 'common/utils'
 
-const OMGExitFee = ({ theme, style, fee, feeToken, exitBond, onPressEdit }) => {
+const OMGExitFee = ({
+  theme,
+  style,
+  fee,
+  feeToken,
+  exitBond,
+  error,
+  onPressEdit
+}) => {
   const [totalFeeUsd, setTotalFeeUsd] = useState()
 
   const formatTotalExitFee = useCallback(() => {
@@ -33,6 +41,7 @@ const OMGExitFee = ({ theme, style, fee, feeToken, exitBond, onPressEdit }) => {
       <View style={[styles.container]}>
         <OMGEditItem
           title='Total'
+          error={error}
           rightFirstLine={`${formatTotalExitFee() || 0} ETH`}
           rightSecondLine={`${totalFeeUsd} USD`}
           loading={!fee || !exitBond}
@@ -44,6 +53,7 @@ const OMGExitFee = ({ theme, style, fee, feeToken, exitBond, onPressEdit }) => {
         <Item
           title='Transaction Fee'
           loading={!fee}
+          error={error}
           theme={theme}
           feeToken={feeToken}
           value={fee}
@@ -71,6 +81,7 @@ const Item = ({
   title,
   subtitle,
   value,
+  error,
   itemStyle,
   theme,
   feeToken,
@@ -88,8 +99,9 @@ const Item = ({
           {title}
         </OMGText>
         {!loading ? (
-          <OMGText style={[styles.textWhite(theme), styles.textSmall]}>
-            {localizedValue} ETH
+          <OMGText
+            style={[styles.textFirstLine(theme, error), styles.textSmall]}>
+            {error ? 'Estimation Failed' : `${localizedValue} ETH`}
           </OMGText>
         ) : (
           <OMGEmpty
@@ -112,7 +124,7 @@ const Item = ({
             {subtitle}
           </OMGText>
         )}
-        {!loading ? (
+        {!loading && (
           <OMGText
             style={[
               styles.textWhite(theme),
@@ -122,11 +134,6 @@ const Item = ({
             ]}>
             {feeUsd} USD
           </OMGText>
-        ) : (
-          <OMGEmpty
-            loading={loading}
-            style={[styles.alignRight, styles.marginSmall]}
-          />
         )}
       </View>
     </View>
@@ -160,6 +167,9 @@ const styles = StyleSheet.create({
   alignTop: {
     alignSelf: 'flex-start'
   },
+  textFirstLine: (theme, error) => ({
+    color: error ? theme.colors.gray2 : theme.colors.white
+  }),
   textWhite: theme => ({
     color: theme.colors.white
   }),
