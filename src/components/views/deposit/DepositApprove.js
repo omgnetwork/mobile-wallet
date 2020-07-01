@@ -40,16 +40,22 @@ const DepositApprove = ({
   const feeToken = assets.find(
     token => token.contractAddress === feeRate.currency
   )
-  const sendTransactionParams = BlockchainParams.createSendTransactionParams({
-    blockchainWallet,
-    toAddress: address,
-    token,
-    amount,
-    gas: null,
-    gasPrice: feeRate.amount,
-    gasToken: feeToken
-  })
 
+  const [sendTransactionParams, setSendTransactionParams] = useState()
+
+  useEffect(() => {
+    setSendTransactionParams(
+      BlockchainParams.createSendTransactionParams({
+        blockchainWallet,
+        toAddress: address,
+        token,
+        amount,
+        gas: null,
+        gasPrice: feeRate.amount,
+        gasToken: feeToken
+      })
+    )
+  }, [blockchainWallet, address, feeRate, feeToken, token, amount])
   const [
     estimatedFee,
     estimatedFeeSymbol,
@@ -87,7 +93,7 @@ const DepositApprove = ({
     if (isFocused) {
       checkIfRequireApproveErc20()
     }
-  }, [isFocused])
+  }, [isFocused, sendTransactionParams])
 
   const handleApprovePressed = useCallback(() => {
     async function approve() {
@@ -110,7 +116,7 @@ const DepositApprove = ({
     }
 
     ExceptionReporter.reportWhenError(approve, _err => setApproving(false))
-  }, [feeRate, address, amount, token, estimatedGasUsed])
+  }, [feeRate, address, amount, token, estimatedGasUsed, sendTransactionParams])
 
   const onPressEditFee = useCallback(() => {
     navigation.navigate('TransferChooseGasFee')
@@ -119,7 +125,10 @@ const DepositApprove = ({
   const styles = createStyles(theme)
   const insufficientBalanceError = !sufficientBalance && minimumAmount > 0
   const hasError = insufficientBalanceError || gasEstimationError
-  const disableBtn = insufficientBalanceError || verifying
+  const disableBtn =
+    insufficientBalanceError ||
+    (!gasEstimationError && !estimatedGasUsed) ||
+    verifying
 
   return (
     <View style={styles.container}>

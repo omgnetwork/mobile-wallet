@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import {
@@ -43,15 +43,21 @@ const TransferReview = ({
   const feeToken = assets.find(
     token => token.contractAddress === feeRate.currency
   )
-  const sendTransactionParams = BlockchainParams.createSendTransactionParams({
-    blockchainWallet,
-    toAddress,
-    token,
-    amount,
-    gas: null,
-    gasPrice: feeRate.amount,
-    gasToken: feeToken
-  })
+  const [sendTransactionParams, setSendTransactionParams] = useState()
+
+  useEffect(() => {
+    setSendTransactionParams(
+      BlockchainParams.createSendTransactionParams({
+        blockchainWallet,
+        toAddress,
+        token,
+        amount,
+        gas: null,
+        gasPrice: feeRate.amount,
+        gasToken: feeToken
+      })
+    )
+  }, [blockchainWallet, toAddress, token, amount, feeRate, feeToken])
 
   const [
     estimatedFee,
