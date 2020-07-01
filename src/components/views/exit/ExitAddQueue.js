@@ -136,13 +136,13 @@ const ExitAddQueue = ({
 
   return (
     <View style={styles.container}>
+      <OMGText style={styles.title} weight='regular'>
+        Create {token.tokenSymbol} Exit Queue
+      </OMGText>
       {verifying ? (
         <OMGEmpty loading={verifying} style={styles.emptyView} />
       ) : (
         <View>
-          <OMGText style={styles.title} weight='regular'>
-            Create {token.tokenSymbol} Exit Queue
-          </OMGText>
           <OMGText style={styles.description} weight='regular'>
             This action is only required if the selected token has never been
             exited from the system.
@@ -210,8 +210,9 @@ const createStyles = theme =>
       paddingBottom: 32
     },
     title: {
-      fontSize: 16,
-      color: theme.colors.white
+      fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+      color: theme.colors.gray2,
+      textTransform: 'uppercase'
     },
     description: {
       color: theme.colors.gray6,

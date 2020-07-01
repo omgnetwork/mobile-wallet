@@ -8,7 +8,7 @@ import {
 } from 'common/hooks'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
-import { BigNumber } from 'common/utils'
+import { BigNumber, Styles } from 'common/utils'
 import { OMGEditItem, OMGText, OMGButton } from 'components/widgets'
 import { ContractAddress } from 'common/constants'
 import { plasmaActions, ethereumActions } from 'common/actions'
@@ -120,7 +120,7 @@ const TransferReview = ({
 
   return (
     <View style={styles.container}>
-      <OMGText style={styles.title} weight='book'>
+      <OMGText style={styles.title} weight='regular'>
         REVIEW
       </OMGText>
       <OMGEditItem
@@ -180,8 +180,9 @@ const createStyles = theme =>
       backgroundColor: theme.colors.black5
     },
     title: {
+      fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
       color: theme.colors.gray2,
-      lineHeight: 17
+      textTransform: 'uppercase'
     },
     errorMsg: {
       color: theme.colors.red,

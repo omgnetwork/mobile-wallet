@@ -123,13 +123,13 @@ const DepositApprove = ({
 
   return (
     <View style={styles.container}>
+      <OMGText style={styles.title} weight='regular'>
+        APPROVE {token.symbol} TOKEN
+      </OMGText>
       {verifying ? (
         <OMGEmpty loading={verifying} style={styles.emptyView} />
       ) : (
         <View>
-          <OMGText style={styles.title} weight='regular'>
-            APPROVE {token.symbol} TOKEN
-          </OMGText>
           <OMGText style={styles.description} weight='regular'>
             Please approve to move {amount} {token.tokenSymbol} from Ethereum to
             the OMG Network.
@@ -197,8 +197,9 @@ const createStyles = theme =>
       paddingBottom: 32
     },
     title: {
-      fontSize: 14,
-      color: theme.colors.white
+      fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+      color: theme.colors.gray2,
+      textTransform: 'uppercase'
     },
     description: {
       color: theme.colors.gray6,
