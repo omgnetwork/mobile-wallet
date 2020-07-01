@@ -60,7 +60,7 @@ const RootchainTransactionTracker = ({
 
   useEffect(() => {
     if (rootNotification) {
-      notificationService.sendNotification(rootNotification)
+      // notificationService.sendNotification(rootNotification)
       setRootNotification(null)
     }
   }, [rootNotification])
