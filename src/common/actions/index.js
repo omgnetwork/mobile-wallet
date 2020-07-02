@@ -6,6 +6,7 @@ import * as plasmaActions from './plasmaActions'
 import * as transactionActions from './transactionActions'
 import * as onboardingActions from './onboardingActions'
 import * as walletSwitcherActions from './walletSwitcherActions'
+import * as depositActions from './depositActions'
 
 export {
   walletActions,
@@ -15,5 +16,6 @@ export {
   ethereumActions,
   onboardingActions,
   transactionActions,
-  walletSwitcherActions
+  walletSwitcherActions,
+  depositActions
 }
