@@ -3,7 +3,7 @@ import { Plasma, web3 } from 'common/clients'
 import { ContractABI, Ethereum, Contract } from 'common/blockchain'
 import { Gas } from 'common/constants'
 
-export const getTransferEth = ({
+export const getTransferEth = async ({
   addresses,
   smallestUnitAmount,
   gasOptions
@@ -21,7 +21,7 @@ export const getTransferEth = ({
   }
 }
 
-export const getTransferErc20 = ({
+export const getTransferErc20 = async ({
   addresses,
   smallestUnitAmount,
   gasOptions
