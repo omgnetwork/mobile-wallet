@@ -61,9 +61,6 @@ const Initializer = ({
       navigation.navigate('Welcome')
     } else if (wallet && provider && blockchainWallet) {
       navigation.navigate('MainContent')
-      if (Platform.OS === 'android') {
-        registerHeadlessService()
-      }
     } else if (shouldGetBlockchainWallet(wallet, blockchainWallet, provider)) {
       setTimeout(() => {
         dispatchSetBlockchainWallet(wallet, provider)
@@ -80,7 +77,6 @@ const Initializer = ({
     primaryWalletNetwork,
     provider,
     ready,
-    registerHeadlessService,
     wallet,
     wallets
   ])
@@ -90,10 +86,12 @@ const Initializer = ({
     return loadingAnim.stop
   }, [loadingAnim])
 
-  const registerHeadlessService = useCallback(() => {
-    AppRegistry.registerHeadlessTask('HeadlessProcessExit', () =>
-      HeadlessProcessExit.bind(null, store)
-    )
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      AppRegistry.registerHeadlessTask('HeadlessProcessExit', () =>
+        HeadlessProcessExit.bind(null, store)
+      )
+    }
   }, [])
 
   const renderChildren = () => {

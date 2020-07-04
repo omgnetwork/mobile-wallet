@@ -81,11 +81,10 @@ const OMGTextInput = ({
 const styles = StyleSheet.create({
   textInput: (underlineColor, hideUnderline) => ({
     fontFamily: 'MessinaSansMono-Book',
-    paddingVertical: Platform.OS === 'ios' ? 8 : 0,
+    paddingVertical: 8,
     marginLeft: Platform.OS === 'ios' ? 0 : -4,
     borderBottomWidth: hideUnderline ? 0 : 1,
     borderColor: underlineColor,
-    paddingBottom: hideUnderline ? 8 : 0,
     letterSpacing: -0.64,
     fontSize: 16,
     lineHeight: 19

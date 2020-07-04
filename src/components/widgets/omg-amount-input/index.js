@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: underlineColor,
     alignItems: 'center',
-    paddingVertical: Styles.getResponsiveSize(10, { small: 6, medium: 8 })
+    paddingVertical: Styles.getResponsiveSize(6, { small: 2, medium: 4 })
   }),
   logo: {
     width: Styles.getResponsiveSize(24, { small: 18, medium: 20 }),
