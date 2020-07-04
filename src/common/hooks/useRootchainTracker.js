@@ -10,6 +10,8 @@ const {
   TYPE_CHILDCHAIN_PROCESS_EXIT
 } = TransactionActionTypes
 
+const { sendNotification } = notificationService
+
 const getConfirmationsThreshold = actionType => {
   switch (actionType) {
     case TYPE_CHILDCHAIN_DEPOSIT:
@@ -21,8 +23,12 @@ const getConfirmationsThreshold = actionType => {
   }
 }
 
-const useRootchainTracker = ({ name: walletName }, cleanup) => {
-  const [pendingRootchainTxs, setUnconfirmedRootchainTxs] = useState([])
+const useRootchainTracker = (
+  { name: walletName },
+  dispatchUpdateBlocksToWait,
+  cleanup
+) => {
+  const [pendingTx, setPendingTx] = useState(null)
 
   const buildNotification = useCallback(
     async ({ actionType, value, symbol }) => {
@@ -62,11 +68,13 @@ const useRootchainTracker = ({ name: walletName }, cleanup) => {
         hash,
         intervalMs: 5000,
         blocksToWait: getConfirmationsThreshold(actionType),
-        onCountdown: remaining =>
+        onCountdown: remaining => {
           console.log(`Confirmation is remaining by ${remaining} blocks`)
+          dispatchUpdateBlocksToWait({ hash }, remaining)
+        }
       })
     },
-    [buildNotification, pendingRootchainTxs]
+    [buildNotification]
   )
 
   const addExitTimeIfNeeded = useCallback(async (tx, receipt) => {
@@ -81,21 +89,20 @@ const useRootchainTracker = ({ name: walletName }, cleanup) => {
   }, [])
 
   useEffect(() => {
-    if (pendingRootchainTxs.length) {
-      const pendingTx = pendingRootchainTxs.slice(-1).pop()
+    if (pendingTx) {
       const { waitForReceipt, cancel } = waitForConfirmation(pendingTx)
 
       waitForReceipt
         .then(receipt => addExitTimeIfNeeded(pendingTx, receipt))
         .then(buildNotification)
-        .then(notificationService.sendNotification)
+        .then(sendNotification)
         .then(() => cleanup(pendingTx))
 
       return cancel
     }
-  }, [pendingRootchainTxs])
+  }, [pendingTx?.hash])
 
-  return [setUnconfirmedRootchainTxs]
+  return [setPendingTx]
 }
 
 export default useRootchainTracker

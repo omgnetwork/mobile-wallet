@@ -1,13 +1,16 @@
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, useRef } from 'react'
 import { connect } from 'react-redux'
 import { TransactionActionTypes } from 'common/constants'
 import { useRootchainTracker } from 'common/hooks'
 import { Transaction } from 'common/blockchain'
 import { walletActions, transactionActions } from 'common/actions'
 
+const { TYPE_CHILDCHAIN_SEND_TOKEN } = TransactionActionTypes
+
 const RootchainTransactionTracker = ({
   wallet,
   unconfirmedTxs,
+  dispatchUpdateBlocksToWait,
   dispatchAddStartedExitTx,
   dispatchInvalidateUnconfirmedTx,
   dispatchRefreshAll
@@ -23,15 +26,22 @@ const RootchainTransactionTracker = ({
     dispatchRefreshAll(wallet.address)
   }, [])
 
-  const [setUnconfirmedTxs] = useRootchainTracker(wallet, cleanup)
+  const [setPendingTx] = useRootchainTracker(
+    wallet,
+    dispatchUpdateBlocksToWait,
+    cleanup
+  )
 
   useEffect(() => {
-    const txs = unconfirmedTxs.filter(
-      unconfirmedTx =>
-        unconfirmedTx.actionType !==
-        TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
-    )
-    setUnconfirmedTxs(txs)
+    if (unconfirmedTxs.length === 0) {
+      return setPendingTx(null)
+    }
+
+    const pendingTx = unconfirmedTxs[0]
+
+    if (pendingTx.actionType !== TYPE_CHILDCHAIN_SEND_TOKEN) {
+      setPendingTx(pendingTx)
+    }
   }, [unconfirmedTxs])
 
   return null
@@ -51,7 +61,9 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchInvalidateUnconfirmedTx: confirmedTx =>
     transactionActions.invalidateUnconfirmedTx(dispatch, confirmedTx),
   dispatchRefreshAll: address =>
-    walletActions.refreshAll(dispatch, address, true)
+    walletActions.refreshAll(dispatch, address, true),
+  dispatchUpdateBlocksToWait: (tx, blocksToWait) =>
+    transactionActions.updateBlocksToWait(dispatch, tx, blocksToWait)
 })
 
 export default connect(

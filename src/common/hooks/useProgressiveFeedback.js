@@ -47,23 +47,37 @@ const useProgressiveFeedback = (
     }
   }, [])
 
-  const getSubtitle = useCallback((pending, actionType) => {
-    switch (actionType) {
-      case TransactionActionTypes.TYPE_ROOTCHAIN_SEND_TOKEN:
-      case TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN:
-        return pending ? 'Please wait' : 'The transaction is being finalised'
-      case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
-        return pending
-          ? 'Please wait'
-          : 'Your withdrawal is pending. We will notify you once it finalizes.'
-      case TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT:
-        return pending ? 'Please wait' : 'Your funds are now on Ethereum.'
-      case TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS:
-        return pending
-          ? 'We’re merging UTXOs. You can not transfer during this time.'
-          : 'Merged UTXOs. You can now transfer as usual.'
-    }
-  }, [])
+  const getSubtitle = useCallback(
+    (pending, actionType) => {
+      const {
+        result: { blocksToWait }
+      } = selectFeedbackTx()
+      switch (actionType) {
+        case TransactionActionTypes.TYPE_ROOTCHAIN_SEND_TOKEN:
+        case TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN:
+          return pending ? 'Please wait' : 'The transaction is being finalised'
+        case TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT:
+          return pending
+            ? blocksToWait
+              ? `Confirmation is remaining by ${blocksToWait} blocks`
+              : 'Please wait'
+            : 'Your funds are now on the OMG Network!'
+        case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
+          return pending
+            ? blocksToWait
+              ? `Confirmation is remaining by ${blocksToWait} blocks`
+              : 'Please wait'
+            : 'Your withdrawal is pending. We will notify you once it finalizes.'
+        case TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT:
+          return pending ? 'Please wait' : 'Your funds are now on Ethereum.'
+        case TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS:
+          return pending
+            ? 'We’re merging UTXOs. You can not transfer during this time.'
+            : 'Merged UTXOs. You can now transfer as usual.'
+      }
+    },
+    [selectFeedbackTx]
+  )
 
   const getExternalLink = useCallback((actionType, hash) => {
     switch (actionType) {
