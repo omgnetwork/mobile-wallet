@@ -4,6 +4,7 @@ import { withTheme } from 'react-native-paper'
 import { OMGFontIcon, OMGText, OMGEmpty } from 'components/widgets'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Slide } from 'common/anims'
+import { Styles } from 'common/utils'
 
 const OMGBottomSheet = ({
   theme,
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 20,
+    paddingVertical: Styles.getResponsiveSize(24, { small: 16, medium: 20 }),
     paddingHorizontal: 28,
     transform: [{ translateY: slide.current }],
     position: 'absolute',
