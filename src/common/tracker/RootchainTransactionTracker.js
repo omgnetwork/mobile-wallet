@@ -12,6 +12,8 @@ const RootchainTransactionTracker = ({
   dispatchInvalidateUnconfirmedTx,
   dispatchRefreshAll
 }) => {
+  if (!wallet) return null
+
   const cleanup = useCallback(tx => {
     if (Transaction.isUnconfirmStartedExit(tx)) {
       dispatchAddStartedExitTx(tx)
@@ -24,17 +26,13 @@ const RootchainTransactionTracker = ({
   const [setUnconfirmedTxs] = useRootchainTracker(wallet, cleanup)
 
   useEffect(() => {
-    if (wallet) {
-      const txs = unconfirmedTxs.filter(
-        unconfirmedTx =>
-          unconfirmedTx.actionType !==
-          TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
-      )
-      setUnconfirmedTxs(txs)
-    } else {
-      setUnconfirmedTxs([])
-    }
-  }, [wallet, setUnconfirmedTxs, unconfirmedTxs])
+    const txs = unconfirmedTxs.filter(
+      unconfirmedTx =>
+        unconfirmedTx.actionType !==
+        TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
+    )
+    setUnconfirmedTxs(txs)
+  }, [unconfirmedTxs])
 
   return null
 }

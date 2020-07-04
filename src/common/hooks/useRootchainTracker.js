@@ -10,7 +10,7 @@ const {
   TYPE_CHILDCHAIN_PROCESS_EXIT
 } = TransactionActionTypes
 
-const getConfirmationsThreshold = ({ actionType }) => {
+const getConfirmationsThreshold = actionType => {
   switch (actionType) {
     case TYPE_CHILDCHAIN_DEPOSIT:
       return Config.CHILDCHAIN_DEPOSIT_CONFIRMATION_BLOCKS
@@ -56,53 +56,43 @@ const useRootchainTracker = ({ name: walletName }, cleanup) => {
     [walletName]
   )
 
-  const waitForConfirmation = useCallback(async () => {
-    const pendingTx = pendingRootchainTxs.slice(-1).pop()
-    const receipt = await Wait.waitForRootchainTransaction({
-      hash: pendingTx.hash,
-      intervalMs: 3000,
-      confirmationThreshold: getConfirmationsThreshold(pendingTx),
-      onCountdown: remaining =>
-        console.log(`Confirmation is remaining by ${remaining} blocks`)
-    })
-    if (receipt) {
-      return {
-        ...pendingTx,
-        rootchainBlknum: receipt.blockNumber,
-        gasUsed: receipt.gasUsed
-      }
-    }
-  }, [buildNotification, pendingRootchainTxs])
+  const waitForConfirmation = useCallback(
+    ({ hash, actionType }) => {
+      return Wait.waitForBlockConfirmation({
+        hash,
+        intervalMs: 5000,
+        blocksToWait: getConfirmationsThreshold(actionType),
+        onCountdown: remaining =>
+          console.log(`Confirmation is remaining by ${remaining} blocks`)
+      })
+    },
+    [buildNotification, pendingRootchainTxs]
+  )
 
-  const addExitTimeIfNeeded = useCallback(async tx => {
+  const addExitTimeIfNeeded = useCallback(async (tx, receipt) => {
     if (tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_EXIT) {
       const {
         scheduledFinalizationTime: exitableAt
-      } = await Plasma.getExitTime(tx.rootchainBlknum, tx.blknum)
-      return { ...tx, exitableAt }
+      } = await Plasma.getExitTime(receipt.blockNumber, tx.blknum)
+      return { ...tx, exitableAt, gasUsed: receipt.gasUsed }
     } else {
       return tx
     }
   }, [])
 
   useEffect(() => {
-    let subscribed = true
+    if (pendingRootchainTxs.length) {
+      const pendingTx = pendingRootchainTxs.slice(-1).pop()
+      const { waitForReceipt, cancel } = waitForConfirmation(pendingTx)
 
-    if (subscribed && pendingRootchainTxs.length) {
-      waitForConfirmation()
-        .then(payload => subscribed && addExitTimeIfNeeded(payload))
-        .then(async tx => {
-          if (!subscribed) return
+      waitForReceipt
+        .then(receipt => addExitTimeIfNeeded(pendingTx, receipt))
+        .then(buildNotification)
+        .then(notificationService.sendNotification)
+        .then(() => cleanup(pendingTx))
 
-          const notificationPayload = await buildNotification(tx)
-          notificationService.sendNotification(notificationPayload)
-
-          setUnconfirmedRootchainTxs([])
-          cleanup(tx)
-        })
+      return cancel
     }
-
-    return () => (subscribed = false)
   }, [pendingRootchainTxs])
 
   return [setUnconfirmedRootchainTxs]
