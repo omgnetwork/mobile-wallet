@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: 16,
-    paddingVertical: 40
+    paddingHorizontal: Styles.getResponsiveSize(16, { small: 8, medium: 8 }),
+    paddingVertical: Styles.getResponsiveSize(40, { small: 24, medium: 24 })
   },
   title: theme => ({
     flex: 1,
