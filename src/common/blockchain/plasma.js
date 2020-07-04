@@ -1,5 +1,4 @@
 import { Plasma, web3 } from 'common/clients'
-import { Gas } from 'common/constants'
 import { Mapper } from 'common/utils'
 import BN from 'bn.js'
 import {
