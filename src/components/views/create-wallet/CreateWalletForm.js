@@ -2,11 +2,11 @@ import React, { useRef, useState } from 'react'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { connect } from 'react-redux'
-import { Header } from 'react-navigation-stack'
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
 import { Dimensions } from 'common/utils'
 import { Validator } from 'common/blockchain'
 import { Alert } from 'common/constants'
+import { useHeaderHeight } from 'react-navigation-stack'
 import {
   OMGButton,
   OMGText,
@@ -41,12 +41,14 @@ const CreateWalletForm = ({ wallets, navigation, theme }) => {
     })
   }
 
+  const headerHeight = useHeaderHeight()
+
   return (
     <OMGDismissKeyboard style={styles.container(theme)}>
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior={keyboardAvoidingBehavior}
-        keyboardVerticalOffset={Header.HEIGHT + statusBarHeight}>
+        keyboardVerticalOffset={headerHeight + statusBarHeight}>
         <OMGText weight='mono-semi-bold' style={styles.textTitle(theme)}>
           Name
         </OMGText>

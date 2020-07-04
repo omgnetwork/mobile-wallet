@@ -1,5 +1,6 @@
 import * as Views from 'components/views'
 import { createStackNavigator } from 'react-navigation-stack'
+import { TransitionPresets } from 'react-navigation-stack'
 
 const navigator = createStackNavigator(
   {
@@ -12,7 +13,11 @@ const navigator = createStackNavigator(
   },
   {
     initialRouteName: 'TransferSelectAddress',
-    headerMode: 'none'
+    headerMode: 'none',
+    defaultNavigationOptions: {
+      ...TransitionPresets.SlideFromRightIOS,
+      cardStyle: { opacity: 1, backgroundColor: 'transparent' }
+    }
   }
 )
 

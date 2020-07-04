@@ -1,5 +1,6 @@
 import { createStackNavigator } from 'react-navigation-stack'
 import * as Views from 'components/views'
+import { TransitionPresets } from 'react-navigation-stack'
 
 export default (ImportWalletNavigator, CreateWalletNavigator) =>
   createStackNavigator(
@@ -21,6 +22,9 @@ export default (ImportWalletNavigator, CreateWalletNavigator) =>
     },
     {
       initialRouteName: 'Welcome',
-      headerMode: 'none'
+      headerMode: 'none',
+      transitionConfig: () => ({
+        screenInterpolator: StackViewStyleInterpolator.forHorizontal
+      })
     }
   )
