@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import DepositIcon from './assets/ic-deposit'
 import WithdrawIcon from './assets/ic-withdraw'
-import { settingActions, walletSwitcherActions } from 'common/actions'
+import { settingActions } from 'common/actions'
 import { OMGFontIcon, OMGText } from 'components/widgets'
 import { Styles } from 'common/utils'
 
@@ -117,9 +117,7 @@ const mapStateToProps = (state, _ownProps) => ({
 
 const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchSetPrimaryWallet: (wallet, network) =>
-    settingActions.setPrimaryWallet(dispatch, wallet.address, network),
-  dispatchToggleWalletSwitcher: visible =>
-    walletSwitcherActions.toggle(dispatch, visible)
+    settingActions.setPrimaryWallet(dispatch, wallet.address, network)
 })
 
 export default connect(
