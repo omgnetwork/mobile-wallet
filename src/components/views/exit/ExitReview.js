@@ -222,7 +222,8 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     justifyContent: 'flex-end',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingTop: 16
   },
   textEstimateTime: (theme, visible) => ({
     marginTop: 16,
