@@ -8,6 +8,7 @@ import DepositIcon from './assets/ic-deposit'
 import WithdrawIcon from './assets/ic-withdraw'
 import { settingActions, walletSwitcherActions } from 'common/actions'
 import { OMGFontIcon, OMGText } from 'components/widgets'
+import { Styles } from 'common/utils'
 
 const OMGActionSheetMenus = ({
   theme,
@@ -92,12 +93,12 @@ const createStyles = theme =>
     row: {
       flexDirection: 'row',
       alignItems: 'center',
-      paddingVertical: 28
+      paddingVertical: Styles.getResponsiveSize(28, { small: 16, medium: 20 })
     },
     textMenu: {
       color: theme.colors.black5,
-      fontSize: 16,
-      lineHeight: 19,
+      fontSize: Styles.getResponsiveSize(16, { small: 14, medium: 14 }),
+      lineHeight: Styles.getResponsiveSize(19, { small: 16, medium: 16 }),
       marginLeft: 26
     },
     caretRight: {
