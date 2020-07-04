@@ -44,7 +44,7 @@ const OMGTextInput = ({
           inputRef.current = text
         }
       }}
-      underlineColorAndroid={hideUnderline ? 'transparent' : underlineColor}
+      underlineColorAndroid={'transparent'}
       onBlur={() => {
         setUnderlineColor(inactiveUnderlineColor)
         onBlur?.()
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     marginLeft: Platform.OS === 'ios' ? 0 : -4,
     borderBottomWidth: hideUnderline ? 0 : 1,
     borderColor: underlineColor,
-    paddingBottom: hideUnderline ? 8 : 16,
+    paddingBottom: hideUnderline ? 8 : 0,
     letterSpacing: -0.64,
     fontSize: 16,
     lineHeight: 19
