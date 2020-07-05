@@ -123,22 +123,14 @@ export const split = ({
 
   const _metadata = 'Split UTXOs'
   const fromUtxos =
-    feeUtxo.currency !== utxo.currency
-      ? [
-          { ...utxo, amount: utxo.amount.toString() },
-          {
-            ...feeUtxo,
-            amount: feeUtxo.amount.toString()
-          }
-        ]
-      : [{ ...utxo, amount: utxo.amount.toString() }]
+    feeUtxo.currency === utxo.currency ? [utxo] : [utxo, feeUtxo]
   const payment = Transaction.createPayment(from, utxo.currency, amount)
-  // const payments = new Array(3).fill(payment)
+  const fee = { amount: feeToken.amount, currency: feeToken.currency }
   const txBody = Transaction.createBody(
     from,
     fromUtxos,
     [payment],
-    { amount: feeToken.amount, currency: feeToken.currency },
+    fee,
     _metadata
   )
   const typedData = Transaction.getTypedData(txBody)
