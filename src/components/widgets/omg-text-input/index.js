@@ -22,7 +22,7 @@ const OMGTextInput = ({
   onSubmitEditing,
   selectionColor,
   onBlur,
-  editable = false,
+  editable = true,
   theme
 }) => {
   const inactiveUnderlineColor = hexToRgb(theme.colors.blue, 0.5)
