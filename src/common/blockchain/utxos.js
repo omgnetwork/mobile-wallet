@@ -1,6 +1,6 @@
 import { Transaction, Wait } from 'common/blockchain'
 import { Plasma as PlasmaClient } from 'common/clients'
-import { Mapper, Unit } from 'common/utils'
+import { Mapper } from 'common/utils'
 import BN from 'bn.js'
 
 export const get = (address, options) => {

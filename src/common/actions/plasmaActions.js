@@ -129,7 +129,7 @@ export const exit = sendTransactionParams => {
       symbol: token.tokenSymbol,
       exitId: exitId,
       blknum,
-      tokenDecimal: token.dispatchGetFeestokenDecimal,
+      tokenDecimal: token.tokenDecimal,
       tokenPrice: token.price,
       contractAddress: token.contractAddress,
       flatFee,
