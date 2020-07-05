@@ -100,7 +100,6 @@ const ExitAddQueue = ({
   const handleCreatePressed = useCallback(() => {
     async function approve() {
       setCreating(true)
-      console.log(estimatedGasUsed)
       await plasmaService.createExitQueue({
         ...sendTransactionParams,
         gasOptions: {

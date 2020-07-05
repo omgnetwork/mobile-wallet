@@ -30,7 +30,7 @@ const OMGTextInputBox = ({
           style={{ ...styles.text(theme, disabled), ...textStyle }}
           inputRef={inputRef}
           hideUnderline={true}
-          disabled={disabled}
+          editable={!disabled}
           maxLength={maxLength}
           lines={numberOfLines}
           onFocus={() => setFocus(true)}

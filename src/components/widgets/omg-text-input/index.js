@@ -22,10 +22,10 @@ const OMGTextInput = ({
   onSubmitEditing,
   selectionColor,
   onBlur,
-  disabled,
+  editable = false,
   theme
 }) => {
-  const inactiveUnderlineColor = hexToRgb(theme.colors.blue, 0.7)
+  const inactiveUnderlineColor = hexToRgb(theme.colors.blue, 0.5)
   const activeUnderlineColor = theme.colors.blue
 
   const [underlineColor, setUnderlineColor] = useState(inactiveUnderlineColor)
@@ -59,7 +59,7 @@ const OMGTextInput = ({
       onSubmitEditing={onSubmitEditing}
       returnKeyType={returnKeyType || 'done'}
       numberOfLines={numberOfLines}
-      editable={disabled === undefined ? true : !disabled}
+      editable={editable}
       multiline={numberOfLines > 1}
       defaultValue={defaultValue}
       value={value}

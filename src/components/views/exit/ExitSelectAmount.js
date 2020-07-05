@@ -3,18 +3,23 @@ import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigationFocus } from 'react-navigation'
-import { Validator, Utxos } from 'common/blockchain'
+import { Validator, Utxos, Token } from 'common/blockchain'
 import {
   OMGText,
   OMGAmountInput,
   OMGButton,
-  OMGEmpty,
   OMGDismissKeyboard
 } from 'components/widgets'
-import { Styles } from 'common/utils'
+import { Styles, Unit, BigNumber } from 'common/utils'
 import { plasmaService } from 'common/services'
 
-const ExitSelectAmount = ({ navigation, theme, isFocused, primaryWallet }) => {
+const ExitSelectAmount = ({
+  navigation,
+  theme,
+  isFocused,
+  primaryWallet,
+  provider
+}) => {
   const token = navigation.getParam('token')
   const ref = useRef(0)
   const focusRef = useRef(null)
@@ -22,7 +27,8 @@ const ExitSelectAmount = ({ navigation, theme, isFocused, primaryWallet }) => {
   const [feeUtxo, setFeeUtxo] = useState()
   const [feeToken, setFeeToken] = useState()
   const [loading, setLoading] = useState(false)
-  const [disabled, setDisabled] = useState(true)
+  const [errorMsg, setErrorMsg] = useState()
+  const [wrongBalanceError, setWrongBalanceError] = useState(true)
 
   useEffect(() => {
     if (isFocused) {
@@ -33,9 +39,10 @@ const ExitSelectAmount = ({ navigation, theme, isFocused, primaryWallet }) => {
   const fetchUtxos = useCallback(async () => {
     setLoading(true)
     const utxos = await Utxos.get(primaryWallet.address)
-    const fee = await plasmaService
-      .getFees(primaryWallet.childchainAssets)
-      .then(({ available }) => available?.[0])
+    const { all, available } = await plasmaService.getFees(
+      primaryWallet.childchainAssets
+    )
+    const fee = available?.[0]
     const selectedUtxo = utxos.find(
       utxo => utxo.currency === token.contractAddress
     )
@@ -43,16 +50,43 @@ const ExitSelectAmount = ({ navigation, theme, isFocused, primaryWallet }) => {
     setUtxo(selectedUtxo)
     setFeeUtxo(selectedFeeUtxo)
     setFeeToken(fee)
+
+    const smallestUnitFeeBalance =
+      fee && Unit.convertToString(fee.balance, 0, fee.tokenDecimal)
+
+    if (!fee || BigNumber.compare(smallestUnitFeeBalance, fee.amount) < 0) {
+      const contactAddresses = all.map(({ currency }) => currency)
+      const tokenMap = await Token.all(
+        provider,
+        contactAddresses,
+        primaryWallet.address
+      )
+      const tokenSymbols = Object.keys(tokenMap).map(
+        key => tokenMap[key].tokenSymbol
+      )
+      setErrorMsg(
+        `Deposit at least one of accepted fees to proceed. Accepted fees are ${tokenSymbols.join(
+          ', '
+        )}.`
+      )
+      focusRef.current?.blur()
+    } else {
+      focusRef.current?.focus()
+    }
+
     setLoading(false)
-    focusRef.current?.focus()
   }, [primaryWallet.address, token.contractAddress])
 
   const onChangeAmount = useCallback(
     stringAmount => {
-      if (!Validator.isValidAmount(stringAmount)) return setDisabled(true)
+      if (!Validator.isValidAmount(stringAmount)) {
+        setWrongBalanceError(true)
+        return setErrorMsg('Invalid amount')
+      }
       const amount = Number(stringAmount)
       const balance = Number(token.balance)
-      setDisabled(amount > balance)
+      setWrongBalanceError(amount > balance)
+      setErrorMsg(amount > balance ? 'Invalid amount' : null)
     },
     [token.balance]
   )
@@ -68,31 +102,33 @@ const ExitSelectAmount = ({ navigation, theme, isFocused, primaryWallet }) => {
     })
   }, [navigation, token, utxo, feeUtxo, feeToken])
 
+  const hasError = errorMsg || wrongBalanceError
+
   const styles = createStyles(theme)
 
   return (
     <OMGDismissKeyboard style={styles.container}>
-      {loading ? (
-        <OMGEmpty loading={loading} />
-      ) : (
-        <>
-          <OMGText style={styles.title} weight='regular'>
-            Amount
+      <OMGText style={styles.title} weight='regular'>
+        Amount
+      </OMGText>
+      <OMGAmountInput
+        token={token}
+        onChangeAmount={onChangeAmount}
+        inputRef={ref}
+        editable={!!feeToken}
+        focusRef={focusRef}
+        style={styles.amountInput}
+      />
+      <View style={styles.buttonContainer}>
+        {hasError && (
+          <OMGText style={styles.errorMsg} weight='regular'>
+            {errorMsg}
           </OMGText>
-          <OMGAmountInput
-            token={token}
-            onChangeAmount={onChangeAmount}
-            inputRef={ref}
-            focusRef={focusRef}
-            style={styles.amountInput}
-          />
-          <View style={styles.buttonContainer}>
-            <OMGButton disabled={disabled} onPress={onSubmit}>
-              Next
-            </OMGButton>
-          </View>
-        </>
-      )}
+        )}
+        <OMGButton onPress={onSubmit} loading={loading} disabled={hasError}>
+          {loading ? 'Checking Fees...' : 'Next'}
+        </OMGButton>
+      </View>
     </OMGDismissKeyboard>
   )
 }
@@ -115,7 +151,12 @@ const createStyles = theme =>
     },
     buttonContainer: {
       flex: 1,
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-end',
+      alignItems: 'center'
+    },
+    errorMsg: {
+      color: theme.colors.red,
+      marginBottom: 16
     }
   })
 
@@ -123,7 +164,8 @@ const mapStateToProps = (state, _ownProps) => ({
   primaryWalletNetwork: state.setting.primaryWalletNetwork,
   primaryWallet: state.wallets.find(
     w => w.address === state.setting.primaryWalletAddress
-  )
+  ),
+  provider: state.setting.provider
 })
 
 export default connect(

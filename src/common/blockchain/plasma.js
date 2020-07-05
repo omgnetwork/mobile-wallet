@@ -99,8 +99,6 @@ export const exit = async sendTransactionParams => {
     currency: token.contractAddress
   }).then(latestUtxos => latestUtxos.find(utxo => utxo.blknum === blknum))
 
-  console.log('utxoToExit', utxoToExit)
-
   sendTransactionParams.smallestUnitAmount.utxo = utxoToExit
 
   const { hash } = await standardExit(sendTransactionParams)

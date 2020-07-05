@@ -70,9 +70,7 @@ const OMGBottomSheet = ({
 
   const renderInternalLink = useCallback(() => {
     return (
-      <TouchableOpacity
-        onPress={() => console.log('navigate')}
-        style={styles.smallMarginTop}>
+      <TouchableOpacity style={styles.smallMarginTop}>
         <OMGText style={styles.textLink(theme)}>{internalLink?.title}</OMGText>
       </TouchableOpacity>
     )
