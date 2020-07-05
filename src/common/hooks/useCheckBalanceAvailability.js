@@ -2,10 +2,7 @@ import { useEffect, useState } from 'react'
 import { BigNumber } from 'common/utils'
 
 const useCheckBalanceAvailability = ({
-  feeRate,
-  feeToken,
-  sendToken,
-  sendAmount,
+  sendTransactionParams,
   estimatedFee
 }) => {
   const [enoughBalance, setEnoughBalance] = useState(false)
@@ -14,23 +11,28 @@ const useCheckBalanceAvailability = ({
   useEffect(() => {
     function checkBalanceAvailability() {
       if (!estimatedFee) return
+      if (!sendTransactionParams) return
+      const { smallestUnitAmount, gasOptions } = sendTransactionParams
 
       let minimumAmount = 0
-      if (feeRate.currency === sendToken.contractAddress) {
-        minimumAmount = BigNumber.plus(estimatedFee, sendAmount)
+
+      const { gasToken } = gasOptions
+      const { token, amount } = smallestUnitAmount
+      if (gasToken.currency === token.contractAddress) {
+        minimumAmount = BigNumber.plus(estimatedFee, amount)
       } else {
         minimumAmount = estimatedFee
       }
 
       const hasEnoughBalance =
-        BigNumber.compare(feeToken.balance, minimumAmount) >= 0
+        BigNumber.compare(gasToken.balance, minimumAmount) >= 0
 
       setEnoughBalance(hasEnoughBalance)
       setMinimumPaidAmount(minimumAmount)
     }
 
     checkBalanceAvailability()
-  }, [estimatedFee, feeRate, feeToken])
+  }, [estimatedFee, sendTransactionParams])
 
   return [enoughBalance, minimumPaidAmount]
 }

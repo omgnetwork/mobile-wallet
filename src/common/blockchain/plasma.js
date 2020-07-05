@@ -1,15 +1,14 @@
 import { Plasma, web3 } from 'common/clients'
 import { Gas } from 'common/constants'
-import { Mapper, Unit } from 'common/utils'
+import { Mapper } from 'common/utils'
 import BN from 'bn.js'
 import {
   Contract,
-  ContractABI,
   Transaction,
   OmgUtil,
-  Wait,
   Utxos,
-  GasEstimator
+  TxDetails,
+  Ethereum
 } from 'common/blockchain'
 
 export const getBalances = address => {
@@ -18,140 +17,31 @@ export const getBalances = address => {
   })
 }
 
-export const transfer = async (
-  fromBlockchainWallet,
-  toAddress,
-  token,
-  fee,
-  metadata
-) => {
-  const payment = Transaction.createPayment(
-    toAddress,
-    token.contractAddress,
-    Unit.convertToString(token.balance, 0, token.tokenDecimal, 16)
-  )
-  const childchainFee = Transaction.createFee(fee.contractAddress, fee.amount)
-  const { address } = fromBlockchainWallet
-  const utxos = await Utxos.get(address, {
+export const transfer = async ({
+  addresses,
+  smallestUnitAmount,
+  privateKey,
+  gasOptions
+}) => {
+  const { from, to } = addresses
+  const { amount, token } = smallestUnitAmount
+  const { gasToken, gasPrice } = gasOptions
+  const fee = Transaction.createFee(gasToken.contractAddress, gasPrice)
+  const payment = Transaction.createPayment(to, token.contractAddress, amount)
+  const utxos = await Utxos.get(from, {
     sort: (a, b) => new BN(b.amount).sub(new BN(a.amount))
   })
-  const txBody = Transaction.createBody(
-    address,
-    utxos,
-    [payment],
-    childchainFee,
-    metadata
-  )
-
+  const txBody = Transaction.createBody(from, utxos, [payment], fee)
   const typedData = Transaction.getTypedData(txBody)
-  const privateKeys = new Array(txBody.inputs.length).fill(
-    fromBlockchainWallet.privateKey
-  )
+  const privateKeys = new Array(txBody.inputs.length).fill(privateKey)
   const signatures = Transaction.sign(typedData, privateKeys)
   const signedTxn = Transaction.buildSigned(typedData, signatures)
   return Transaction.submit(signedTxn)
 }
 
-export const isRequireApproveErc20 = async (from, amount, erc20Address) => {
-  const { address: erc20VaultAddress } = await Plasma.RootChain.getErc20Vault()
-  const erc20Contract = new web3.eth.Contract(
-    ContractABI.erc20Abi(),
-    erc20Address
-  )
-  const allowance = await Contract.getErc20Allowance(
-    erc20Contract,
-    from,
-    erc20VaultAddress
-  )
-
-  const bnAmount = new BN(amount)
-  const bnAllowance = new BN(allowance)
-
-  return bnAllowance.lt(bnAmount)
-}
-
-export const approveErc20Deposit = async (erc20Address, amount, txOptions) => {
-  const { address: erc20VaultAddress } = await Plasma.RootChain.getErc20Vault()
-  const erc20Contract = new web3.eth.Contract(
-    ContractABI.erc20Abi(),
-    erc20Address
-  )
-  const allowance = await Contract.getErc20Allowance(
-    erc20Contract,
-    txOptions.from,
-    erc20VaultAddress
-  )
-
-  let bnAllowance = new BN(allowance)
-  const bnAmount = new BN(amount)
-  const bnZero = new BN(0)
-
-  let approveReceipt
-  // If the allowance less than the desired amount, we need to reset to zero first inorder to update it.
-  // Some erc20 contract prevent to update non-zero allowance e.g. OmiseGO Token.
-  if (bnAllowance.gt(bnZero) && bnAllowance.lt(bnAmount)) {
-    approveReceipt = await Plasma.RootChain.approveToken({
-      erc20Address,
-      amount: 0,
-      txOptions
-    })
-    bnAllowance = new BN(0)
-
-    // Wait approve transaction for 1 block
-    await Wait.waitForRootchainTransaction({
-      hash: approveReceipt.transactionHash,
-      intervalMs: 3000,
-      confirmationThreshold: 1
-    })
-  }
-
-  if (bnAllowance.eq(bnZero)) {
-    approveReceipt = await Plasma.RootChain.approveToken({
-      erc20Address,
-      amount,
-      txOptions
-    })
-
-    await Wait.waitForRootchainTransaction({
-      hash: approveReceipt.transactionHash,
-      intervalMs: 3000,
-      confirmationThreshold: 1
-    })
-  }
-  return approveReceipt
-}
-
-export const deposit = async (
-  address,
-  privateKey,
-  weiAmount,
-  tokenContractAddress,
-  options = {}
-) => {
-  const depositGasPrice = options.gasPrice || Gas.DEPOSIT_GAS_PRICE
-
-  const gas = await GasEstimator.estimateDeposit(
-    address,
-    weiAmount,
-    tokenContractAddress
-  )
-
-  const receipt = await Plasma.RootChain.deposit({
-    amount: weiAmount,
-    currency: tokenContractAddress,
-    txOptions: {
-      from: address,
-      privateKey,
-      gas,
-      gasPrice: depositGasPrice
-    }
-  })
-
-  return {
-    ...receipt,
-    hash: receipt.transactionHash,
-    gasPrice: depositGasPrice
-  }
+export const deposit = async sendTransactionParams => {
+  const txDetails = await TxDetails.getDeposit(sendTransactionParams)
+  return Ethereum.signSendTx(txDetails, sendTransactionParams.privateKey)
 }
 
 export const mergeListOfUtxos = async (
@@ -159,7 +49,7 @@ export const mergeListOfUtxos = async (
   privateKey,
   maximumUtxosPerCurrency = 4,
   listOfUtxos,
-  storeBlknum = () => {}
+  updateBlknumCallback = () => {}
 ) => {
   const pendingMergeUtxos = listOfUtxos.map(utxos =>
     Utxos.mergeUntilThreshold(
@@ -167,7 +57,7 @@ export const mergeListOfUtxos = async (
       privateKey,
       maximumUtxosPerCurrency,
       utxos,
-      storeBlknum
+      updateBlknumCallback
     )
   )
   return Promise.all(pendingMergeUtxos)

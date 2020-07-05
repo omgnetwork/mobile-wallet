@@ -23,25 +23,24 @@ export const fetchAssets = (provider, address) => {
   })
 }
 
-export const deposit = (blockchainWallet, token, fee) => {
+export const deposit = sendTransactionParams => {
   const asyncAction = async () => {
-    const gasPrice = fee.amount
-    const { hash, gasUsed } = await plasmaService.deposit(
-      blockchainWallet.address,
-      blockchainWallet.privateKey,
-      token,
-      gasPrice
-    )
+    const { from, to } = sendTransactionParams.addresses
+    const { token } = sendTransactionParams.smallestUnitAmount
+    const { gas, gasPrice } = sendTransactionParams.gasOptions
+
+    const { hash, value } = await plasmaService.deposit(sendTransactionParams)
 
     return {
       hash,
-      from: blockchainWallet.address,
-      value: token.balance,
+      from,
+      to,
+      value,
       symbol: token.tokenSymbol,
       tokenDecimal: token.tokenDecimal,
       contractAddress: token.contractAddress,
       gasPrice,
-      gasUsed,
+      gasUsed: gas,
       actionType: TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT,
       createdAt: Datetime.now()
     }
@@ -52,25 +51,28 @@ export const deposit = (blockchainWallet, token, fee) => {
   })
 }
 
-export const transfer = (blockchainWallet, toAddress, token, feeToken) => {
+export const transfer = sendTransactionParams => {
   const asyncAction = async () => {
-    const { txhash } = await plasmaService.transfer(
-      blockchainWallet,
-      toAddress,
-      token,
-      feeToken
+    const { addresses, smallestUnitAmount, gasOptions } = sendTransactionParams
+    const { gasPrice, gasToken } = gasOptions
+    const { from, to } = addresses
+    const { token } = smallestUnitAmount
+
+    const { txhash, value } = await plasmaService.transfer(
+      sendTransactionParams
     )
 
     return {
       hash: txhash,
-      from: blockchainWallet.address,
-      value: token.balance,
+      from,
+      to,
+      value,
       symbol: token.tokenSymbol,
       tokenDecimal: token.tokenDecimal,
       contractAddress: token.contractAddress,
       gasUsed: 1,
-      gasPrice: 1,
-      gasToken: feeToken,
+      gasPrice,
+      gasToken,
       actionType: TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN,
       createdAt: Datetime.now()
     }
@@ -87,36 +89,19 @@ export const mergeUTXOs = (
   privateKey,
   maximumUtxosPerCurrency,
   listOfUtxos,
-  blknum,
-  storeBlknum
+  updateBlknumCallback
 ) => {
   const asyncAction = async () => {
-    if (listOfUtxos.length === 0) {
-      return {
-        address,
-        blknum,
-        actionType: TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
-      }
-    }
-
-    const receipts = await plasmaService.mergeUTXOs(
+    await plasmaService.mergeUTXOs(
       address,
       privateKey,
       maximumUtxosPerCurrency,
       listOfUtxos,
-      storeBlknum
+      updateBlknumCallback
     )
-
-    if (!receipts) return
-
-    // Get highest blk num
-    const { blknum: lastBlknum } = receipts.sort(
-      (a, b) => b.blknum - a.blknum
-    )[0]
 
     return {
       address,
-      blknum: lastBlknum,
       actionType: TransactionActionTypes.TYPE_CHILDCHAIN_MERGE_UTXOS
     }
   }

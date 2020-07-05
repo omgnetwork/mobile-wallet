@@ -66,11 +66,11 @@ describe('Test Merge UTXOs', () => {
       )
     }
 
-    const listOfUtxos = await Utxos.getRequiredMerge(
-      testWallet.address,
-      null,
-      MAXIMUM_UTXOS_PER_CURRENCY
-    )
+    const listOfRequiredMergeUtxos = await Utxos.get(testWallet.address)
+      .then(Utxos.mapByCurrency)
+      .then((utxosMap, maximumUtxosPerCurrency) =>
+        Utxos.filterOnlyGreaterThanMaximum(utxosMap, maximumUtxosPerCurrency)
+      )
 
     // Merge utxos recursively
     console.log('Waiting for merging...')
@@ -78,7 +78,7 @@ describe('Test Merge UTXOs', () => {
       testWallet.address,
       testWallet.privateKey,
       MAXIMUM_UTXOS_PER_CURRENCY,
-      listOfUtxos
+      listOfRequiredMergeUtxos
     )
 
     // Assert if the number of utxos is less than or equal to MAXIMUM_UTXOS_PER_CURRENCY

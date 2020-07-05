@@ -1,6 +1,6 @@
-import { Ethereum, Token, ContractABI } from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
 import { Datetime, Unit } from 'common/utils'
+import { Ethereum, Token } from 'common/blockchain'
 import { providerService } from 'common/services'
 
 export const fetchAssets = async (provider, address, lastBlockNumber) => {
@@ -47,19 +47,37 @@ const getUpdatedBlock = txHistory => {
   return (txHistory.length && txHistory.slice(-1).pop().blockNumber) || 0
 }
 
-export const sendErc20Token = async (wallet, options) => {
-  const abi = ContractABI.erc20Abi()
-  const { token } = options
-  const contract = new Ethereum.getContract(token.contractAddress, abi)
-  const response = await Ethereum.sendErc20Token(contract, {
-    ...options,
-    wallet
-  })
-  return response
+export const sendErc20Token = async sendTransactionParams => {
+  const { token, amount } = sendTransactionParams.smallestUnitAmount
+  const { hash } = await Ethereum.sendErc20Token(sendTransactionParams)
+
+  return {
+    hash,
+    value: Unit.convertToString(amount, token.tokenDecimal, 0)
+  }
 }
 
-export const sendEthToken = async (wallet, options) => {
-  return Ethereum.sendEthToken(wallet, options)
+export const sendEthToken = async sendTransactionParams => {
+  const { token, amount } = sendTransactionParams.smallestUnitAmount
+  const { hash } = await Ethereum.sendEthToken(sendTransactionParams)
+
+  return {
+    hash,
+    value: Unit.convertToString(amount, token.tokenDecimal, 0)
+  }
+}
+
+export const isRequireApproveErc20 = sendTransactionParams => {
+  return Ethereum.isRequireApproveErc20(sendTransactionParams)
+}
+
+export const approveErc20Deposit = async sendTransactionParams => {
+  const { token, amount } = sendTransactionParams.smallestUnitAmount
+  const { hash } = await Ethereum.approveErc20Deposit(sendTransactionParams)
+  return {
+    hash,
+    value: Unit.convertToString(amount, token.tokenDecimal, 0)
+  }
 }
 
 export const getRecommendedGas = () => {

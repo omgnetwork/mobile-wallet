@@ -19,13 +19,13 @@ import {
   TYPE_DEPOSIT,
   TYPE_TRANSFER_ROOTCHAIN
 } from './transferHelper'
+import { BlockchainParams } from 'common/blockchain'
 
 const TransferReview = ({
   theme,
   navigation,
   blockchainWallet,
   primaryWalletNetwork,
-  ethToken,
   ethereumTransfer,
   plasmaTransfer,
   depositTransfer,
@@ -40,23 +40,32 @@ const TransferReview = ({
   const transactionType = getType(toAddress, primaryWalletNetwork)
   const assets = getAssets(transactionType, wallet)
   const amountUsd = BigNumber.multiply(amount, token.price)
-  const transferToken = { ...token, balance: amount }
   const feeToken = assets.find(
     token => token.contractAddress === feeRate.currency
   )
-  const [estimatedFee, estimatedFeeSymbol, estimatedFeeUsd] = useEstimatedFee({
-    feeRate,
-    transferToken,
-    ethToken,
-    transactionType,
+  const sendTransactionParams = BlockchainParams.createSendTransactionParams({
     blockchainWallet,
-    toAddress
+    toAddress,
+    token,
+    amount,
+    gas: null,
+    gasPrice: feeRate.amount,
+    gasToken: feeToken
   })
-  const [hasEnoughBalance, minimumAmount] = useCheckBalanceAvailability({
-    feeRate,
-    feeToken,
-    sendToken: token,
-    sendAmount: amount,
+
+  const [
+    estimatedFee,
+    estimatedFeeSymbol,
+    estimatedFeeUsd,
+    estimatedGasUsed,
+    gasEstimationError
+  ] = useEstimatedFee({
+    transactionType,
+    sendTransactionParams
+  })
+
+  const [sufficientBalance, minimumAmount] = useCheckBalanceAvailability({
+    sendTransactionParams,
     estimatedFee
   })
   const [loadingBalance] = useLoading(loading, 'ROOTCHAIN_FETCH_ASSETS')
@@ -74,31 +83,22 @@ const TransferReview = ({
   }, [transactionType, navigation])
 
   const onSubmit = useCallback(() => {
+    sendTransactionParams.gasOptions.gas = estimatedGasUsed
     switch (transactionType) {
       case TYPE_TRANSFER_CHILDCHAIN:
-        return plasmaTransfer(
-          blockchainWallet,
-          toAddress,
-          transferToken,
-          feeRate
-        )
+        return plasmaTransfer(sendTransactionParams)
       case TYPE_TRANSFER_ROOTCHAIN:
-        return ethereumTransfer(
-          blockchainWallet,
-          toAddress,
-          transferToken,
-          feeRate
-        )
+        return ethereumTransfer(sendTransactionParams)
       case TYPE_DEPOSIT:
-        return depositTransfer(blockchainWallet, transferToken, feeRate)
+        return depositTransfer(sendTransactionParams)
     }
   }, [
-    blockchainWallet,
     ethereumTransfer,
-    feeRate,
+    depositTransfer,
     plasmaTransfer,
-    toAddress,
-    transferToken
+    sendTransactionParams,
+    transactionType,
+    estimatedGasUsed
   ])
 
   useEffect(() => {
@@ -114,7 +114,8 @@ const TransferReview = ({
     }
   }, [loading, loading.success, navigation])
 
-  const showErrorMsg = !hasEnoughBalance && minimumAmount > 0
+  const insufficientBalanceError = !sufficientBalance && minimumAmount > 0
+  const hasError = insufficientBalanceError || gasEstimationError
   const btnLoading = minimumAmount === 0 || loading.show
 
   return (
@@ -148,15 +149,17 @@ const TransferReview = ({
         style={[styles.marginMedium, styles.paddingMedium]}
       />
       <View style={styles.buttonContainer}>
-        {showErrorMsg && (
+        {hasError && (
           <OMGText style={styles.errorMsg} weight='regular'>
-            {`Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`}
+            {insufficientBalanceError
+              ? `Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`
+              : `The transaction might be failed.`}
           </OMGText>
         )}
         <OMGButton
           onPress={onSubmit}
           loading={btnLoading}
-          disabled={!hasEnoughBalance}>
+          disabled={insufficientBalanceError}>
           {loadingBalance || minimumAmount === 0
             ? 'Checking Balance...'
             : loading.show
@@ -165,7 +168,7 @@ const TransferReview = ({
         </OMGButton>
         <OMGText
           style={styles.textEstimateTime(
-            hasEnoughBalance && transactionType === TYPE_DEPOSIT
+            sufficientBalance && transactionType === TYPE_DEPOSIT
           )}
           weight='regular'>
           This process is usually takes about 15 - 30 seconds.
@@ -226,12 +229,12 @@ const mapStateToProps = (state, _ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, _ownProps) => ({
-  plasmaTransfer: (blockchainWallet, toAddress, token, fee) =>
-    dispatch(plasmaActions.transfer(blockchainWallet, toAddress, token, fee)),
-  ethereumTransfer: (blockchainWallet, toAddress, token, fee) =>
-    dispatch(ethereumActions.transfer(blockchainWallet, toAddress, token, fee)),
-  depositTransfer: (blockchainWallet, token, fee) =>
-    dispatch(plasmaActions.deposit(blockchainWallet, token, fee))
+  plasmaTransfer: sendTransactionParams =>
+    dispatch(plasmaActions.transfer(sendTransactionParams)),
+  ethereumTransfer: sendTransactionParams =>
+    dispatch(ethereumActions.transfer(sendTransactionParams)),
+  depositTransfer: sendTransactionParams =>
+    dispatch(plasmaActions.deposit(sendTransactionParams))
 })
 
 export default connect(
