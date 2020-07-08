@@ -2,6 +2,10 @@ import axios from 'axios'
 import JSONBigInt from 'json-bigint'
 import Config from 'react-native-config'
 
+import { Datetime } from 'common/utils'
+import { Token } from 'common/blockchain'
+import { TransactionTypes, BlockchainNetworkType } from 'common/constants'
+
 const JSONBigIntString = JSONBigInt({ storeAsString: true })
 
 const WatcherInfo = axios.create({
@@ -12,14 +16,44 @@ const WatcherInfo = axios.create({
 })
 
 export const getDeposits = async (
+  provider,
   address,
   options = { limit: 50, page: 1 }
 ) => {
   const { limit, page } = options
-  const deposits = await WatcherInfo.post('/deposit.all', {
+
+  const { data: response } = await WatcherInfo.post('/deposit.all', {
     address,
     limit,
     page
   })
-  return deposits.data.data
+
+  const { data: deposits } = response
+  const depositsNormalized = await Promise.all(
+    deposits.map(deposit => {
+      const normalized = normalise(deposit, provider)
+      return normalized
+    })
+  )
+  return depositsNormalized
+}
+
+const normalise = async (deposit, provider) => {
+  const { amount, currency } = deposit.txoutputs[0]
+  const [tokenName, tokenSymbol, tokenDecimal] = await Token.getContractInfo(
+    provider,
+    currency
+  )
+
+  return {
+    contractAddress: currency,
+    hash: deposit.root_chain_txhash,
+    network: BlockchainNetworkType.TYPE_ETHEREUM_NETWORK,
+    tokenDecimal,
+    tokenName,
+    tokenSymbol,
+    type: TransactionTypes.TYPE_DEPOSIT,
+    value: amount,
+    timestamp: Datetime.toTimestamp(deposit.inserted_at)
+  }
 }

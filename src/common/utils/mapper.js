@@ -4,8 +4,28 @@ import {
   BlockchainNetworkType
 } from 'common/constants'
 import { Token, Transaction } from 'common/blockchain'
-import { BigNumber } from 'common/utils'
+import { BigNumber, Datetime } from 'common/utils'
 import BN from 'bn.js'
+
+export const mapDeposit = async (deposit, provider) => {
+  const { amount, currency } = deposit.txoutputs[0]
+  const [tokenName, tokenSymbol, tokenDecimal] = await Token.getContractInfo(
+    provider,
+    currency
+  )
+
+  return {
+    contractAddress: currency,
+    hash: deposit.root_chain_txhash,
+    network: BlockchainNetworkType.TYPE_ETHEREUM_NETWORK,
+    tokenDecimal,
+    tokenName,
+    tokenSymbol,
+    type: TransactionTypes.TYPE_DEPOSIT,
+    value: amount,
+    timestamp: Datetime.toTimestamp(deposit.inserted_at)
+  }
+}
 
 export const mapChildchainTx = (tx, tokens, walletAddress) => {
   const input = mapInputTransfer(tx)

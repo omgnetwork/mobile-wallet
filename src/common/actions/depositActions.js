@@ -1,9 +1,13 @@
 import { createAsyncAction } from './actionCreators'
 import { depositService } from 'common/services'
 
-export const fetchDepositHistory = (address, options) => {
+export const fetchDepositHistory = (provider, address, options) => {
   const asyncAction = async () => {
-    const deposits = await depositService.getDeposits(address, options)
+    const deposits = await depositService.getDeposits(
+      provider,
+      address,
+      options
+    )
     return { deposits }
   }
   return createAsyncAction({
