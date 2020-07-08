@@ -81,7 +81,7 @@ const OMGExitFee = ({
             gasToken.price
           )} USD`
         }`}
-        titleTextStyle={styles.editItemTextTitle}
+        textStyle={styles.editItemTextTitle}
       />
       <OMGEditItem
         editable={false}
@@ -93,7 +93,7 @@ const OMGExitFee = ({
           splitFee && BlockchainFormatter.formatTokenBalance(splitFee)
         } ${feeToken.tokenSymbol}`}
         rightThirdLine={`${splitFeeUsd} USD`}
-        titleTextStyle={styles.editItemTextTitle}
+        textStyle={styles.editItemTextTitle}
       />
       <OMGEditItem
         editable={false}
@@ -106,7 +106,7 @@ const OMGExitFee = ({
           exitBond &&
           BlockchainFormatter.formatTokenPrice(exitBond, gasToken.price)
         } USD`}
-        titleTextStyle={styles.editItemTextTitle}
+        textStyle={styles.editItemTextTitle}
       />
       <TouchableOpacity
         style={[styles.hyperlinkButton, styles.marginMedium]}

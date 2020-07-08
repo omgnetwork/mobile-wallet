@@ -11,18 +11,20 @@ const OMGEditItem = ({
   rightFirstLine,
   rightSecondLine,
   rightThirdLine,
+  firstLineEllipsizeMode = 'middle',
+  secondLineEllipsizeMode = 'middle',
+  thirdLineEllipsizeMode = 'middle',
   error,
   editable = true,
-  titleTextStyle,
+  textStyle = {},
   style,
   loading,
   onPress
 }) => {
   return (
     <View style={[styles.container(theme), style]}>
-      <View style={[styles.column, styles.stretch]}>
-        <OMGText
-          style={[styles.textWhite(theme), styles.textBig, titleTextStyle]}>
+      <View style={styles.column}>
+        <OMGText style={[styles.textWhite(theme), styles.textBig, textStyle]}>
           {title}
         </OMGText>
         {subtitle && (
@@ -51,16 +53,19 @@ const OMGEditItem = ({
           </TouchableOpacity>
         )}
       </View>
-      <View style={[styles.column, styles.alignRight, styles.textSingleLine]}>
+      <View style={[styles.column]}>
         {loading && <OMGEmpty loading={loading} style={styles.alignRight} />}
         {!loading && (
           <>
             {rightFirstLine && (
               <OMGText
+                numberOfLines={1}
+                ellipsizeMode={firstLineEllipsizeMode}
                 style={[
                   styles.textFirstLine(theme, error),
                   styles.textBig,
-                  titleTextStyle
+                  styles.alignRight,
+                  textStyle
                 ]}>
                 {error ? 'Estimation Failed' : rightFirstLine}
               </OMGText>
@@ -68,12 +73,13 @@ const OMGEditItem = ({
             {rightSecondLine && (
               <OMGText
                 numberOfLines={1}
-                ellipsizeMode='tail'
+                ellipsizeMode={secondLineEllipsizeMode}
                 style={[
                   styles.textWhite(theme),
                   styles.textBig,
                   styles.smallTextMargin,
-                  titleTextStyle
+                  styles.alignRight,
+                  textStyle
                 ]}>
                 {!error && rightSecondLine}
               </OMGText>
@@ -81,11 +87,13 @@ const OMGEditItem = ({
             {rightThirdLine && (
               <OMGText
                 numberOfLines={1}
-                ellipsizeMode='tail'
+                ellipsizeMode={thirdLineEllipsizeMode}
                 style={[
                   styles.textGray(theme),
                   styles.textSmall,
-                  styles.smallTextMargin
+                  styles.smallTextMargin,
+                  styles.alignRight,
+                  textStyle
                 ]}>
                 {!error && rightThirdLine}
               </OMGText>
@@ -104,14 +112,11 @@ const styles = StyleSheet.create({
     borderRadius: 8
   }),
   column: {
-    flexDirection: 'column'
+    flexDirection: 'column',
+    flex: 1
   },
   row: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  stretch: {
-    flex: 1
+    flexDirection: 'row'
   },
   textFirstLine: (theme, error) => ({
     color: error ? theme.colors.gray2 : theme.colors.white
@@ -134,17 +139,11 @@ const styles = StyleSheet.create({
     letterSpacing: -0.64
   },
   alignRight: {
-    marginLeft: 'auto',
-    alignItems: 'flex-end'
-  },
-  textMargin: {
-    marginTop: 10
+    alignItems: 'flex-end',
+    textAlign: 'right'
   },
   smallTextMargin: {
     marginTop: 4
-  },
-  textSingleLine: {
-    flex: 1
   },
   smallMarginRight: {
     marginRight: 4
