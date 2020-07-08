@@ -1,12 +1,15 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
+import { connect } from 'react-redux'
+
 import {
   OMGEmpty,
   OMGItemTransaction,
   OMGItemExitTransaction
 } from 'components/widgets'
+import { depositActions } from 'common/actions'
 import { TransactionTypes, ExitStatus } from 'common/constants'
 
 const OMGTransactionList = ({
@@ -17,6 +20,7 @@ const OMGTransactionList = ({
   address,
   style,
   navigation,
+  dispatchTransactionFetch,
   _theme
 }) => {
   const getEmptyStatePayload = useCallback(() => {
@@ -114,6 +118,23 @@ const OMGTransactionList = ({
     [address, handleClickExitTx, handleClickTx]
   )
 
+  const [fetched, setFetched] = useState(false)
+  const [fetching, setFetching] = useState(false)
+
+  useEffect(() => {
+    if (['DEPOSITS_ALL'].includes(loading.action) && !loading.show) {
+      setFetching(false)
+      setFetched(true)
+    }
+  }, [loading.action, loading.show, loading.success, address])
+
+  useEffect(() => {
+    if (address && !fetching && !fetched) {
+      dispatchTransactionFetch()
+      setFetching(true)
+    }
+  }, [type, transactions])
+
   return (
     <View style={{ ...styles.container, ...style }}>
       {loading ? (
@@ -122,6 +143,8 @@ const OMGTransactionList = ({
         <FlatList
           ListHeaderComponent={renderHeader && renderHeader()}
           ListEmptyComponent={<OMGEmpty {...getEmptyStatePayload()} />}
+          refreshing={false}
+          onRefresh={dispatchTransactionFetch}
           data={transactions}
           keyExtractor={tx => tx.hash}
           contentContainerStyle={
@@ -147,4 +170,40 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withNavigation(withTheme(OMGTransactionList))
+const mapStateToProps = (state, ownProps) => {
+  const { type } = ownProps
+
+  let transactions
+
+  switch (type) {
+    case TransactionTypes.TYPE_DEPOSIT:
+      transactions = state.deposit.deposits
+  }
+
+  return { transactions }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const { address, provider, type } = ownProps
+
+  let action
+
+  switch (type) {
+    case TransactionTypes.TYPE_DEPOSIT:
+      action = depositActions.fetchDepositHistory(provider, address, {
+        page: 1,
+        limit: 50
+      })
+  }
+
+  const dispatchTransactionFetch = () => {
+    dispatch(action)
+  }
+
+  return { dispatchTransactionFetch }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withNavigation(withTheme(OMGTransactionList)))

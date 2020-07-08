@@ -12,8 +12,7 @@ import {
 const TransactionHistoryFilter = ({
   theme,
   navigation,
-  transactions,
-  startedExitTxs,
+  provider,
   wallet,
   loading
 }) => {
@@ -31,11 +30,10 @@ const TransactionHistoryFilter = ({
         onPress={() => navigation.navigate('MainContent')}
       />
       <OMGTransactionFilter
-        transactions={transactions}
-        startedExitTxs={startedExitTxs}
         types={types}
         loading={loading}
         address={wallet && wallet.address}
+        provider={provider}
       />
     </SafeAreaView>
   )
@@ -48,14 +46,15 @@ const styles = StyleSheet.create({
   })
 })
 
-const mapStateToProps = (state, _ownProps) => ({
-  loading: state.loading,
-  transactions: state.transaction.transactions,
-  startedExitTxs: state.transaction.startedExitTxs,
-  wallet: state.wallets.find(
-    wallet => wallet.address === state.setting.primaryWalletAddress
-  )
-})
+const mapStateToProps = (state, _ownProps) => {
+  return {
+    provider: state.setting.provider,
+    loading: state.loading,
+    wallet: state.wallets.find(
+      wallet => wallet.address === state.setting.primaryWalletAddress
+    )
+  }
+}
 
 export default connect(
   mapStateToProps,
