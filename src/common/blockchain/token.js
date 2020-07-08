@@ -1,8 +1,10 @@
 import { ethers } from 'ethers'
+import { tokenActions } from 'common/actions'
 import { ContractABI, BlockchainFormatter, Parser } from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
 import { Plasma as PlasmaClient } from 'common/clients'
 import { priceService } from 'common/services'
+import { store } from 'common/stores'
 import Config from 'react-native-config'
 
 export const find = (contractAddress, tokens) => {
@@ -114,4 +116,54 @@ const getBalance = (contract, accountAddress) => {
 
 const getEthBalance = (provider, address) => {
   return provider.getBalance(address).then(balance => balance.toString(10))
+}
+
+export const getContractInfo = async (provider, tokenContractAddress) => {
+  const { tokens } = store.getState()
+  const cachedInfo = tokens[tokenContractAddress]
+  const cachedUnknowns = cachedInfo && cachedInfo.includes('UNKNOWN')
+
+  if (cachedInfo && !cachedUnknowns) {
+    return cachedInfo
+  }
+
+  const contract = new ethers.Contract(
+    tokenContractAddress,
+    ContractABI.erc20Abi(),
+    provider
+  )
+  const bytes32Contract = new ethers.Contract(
+    tokenContractAddress,
+    ContractABI.bytes32Erc20Abi(),
+    provider
+  )
+
+  let name, symbol, decimals
+
+  try {
+    name = await getName(contract, bytes32Contract)
+  } catch {
+    name = 'UNKNOWN'
+  }
+
+  try {
+    symbol = await getSymbol(contract, bytes32Contract)
+  } catch {
+    symbol = 'UNKNOWN'
+  }
+
+  try {
+    decimals = await getDecimals(contract)
+  } catch {
+    decimals = 'UNKNOWN'
+  }
+
+  const tokenContractInfo = [name, symbol, decimals]
+
+  tokenActions.addTokenContractInfo(store.dispatch, {
+    tokenContractAddress,
+    tokenContractInfo
+  })
+
+  return tokenContractInfo
 }
