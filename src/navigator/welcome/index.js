@@ -23,8 +23,9 @@ export default (ImportWalletNavigator, CreateWalletNavigator) =>
     {
       initialRouteName: 'Welcome',
       headerMode: 'none',
-      transitionConfig: () => ({
-        screenInterpolator: StackViewStyleInterpolator.forHorizontal
-      })
+      defaultNavigationOptions: {
+        ...TransitionPresets.SlideFromRightIOS,
+        cardStyle: { opacity: 1, backgroundColor: 'transparent' }
+      }
     }
   )

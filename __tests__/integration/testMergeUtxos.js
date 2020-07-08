@@ -135,8 +135,6 @@ describe('Test Merge UTXOs', () => {
         }
       )
 
-      console.log(JSON.stringify(splitTransactionParams))
-
       const newUtxos = await splitUntilRoundZero(splitTransactionParams, 2)
       console.log(
         `Split has done, now the wallet ${testWallet.address} has ${newUtxos.length} utxos.`

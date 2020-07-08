@@ -3,7 +3,7 @@ import { withTheme } from 'react-native-paper'
 import { StyleSheet, View, TouchableOpacity, Linking } from 'react-native'
 import { BlockchainFormatter } from 'common/blockchain'
 import { OMGEditItem, OMGText } from 'components/widgets'
-import { Styles, BigNumber, Unit } from 'common/utils'
+import { BigNumber, Unit } from 'common/utils'
 
 const OMGExitFee = ({
   theme,

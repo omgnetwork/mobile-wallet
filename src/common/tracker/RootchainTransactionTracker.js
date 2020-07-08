@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef } from 'react'
+import { useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { TransactionActionTypes } from 'common/constants'
 import { useRootchainTracker } from 'common/hooks'
