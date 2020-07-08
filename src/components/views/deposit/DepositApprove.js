@@ -186,7 +186,7 @@ const DepositApprove = ({
             : 'Approve'}
         </OMGButton>
         <OMGText style={styles.textEstimateTime(!disableBtn)} weight='regular'>
-          This process is usually takes about 15 - 30 seconds.
+          This process usually takes about 15 - 30 seconds.
         </OMGText>
       </View>
     </View>

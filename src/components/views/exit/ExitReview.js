@@ -176,7 +176,7 @@ const ExitReview = ({
             <OMGText
               style={styles.textEstimateTime(theme, sufficientBalance)}
               weight='regular'>
-              This process is usually takes about 15 - 30 seconds.
+              This process usually takes about 15 - 30 seconds.
             </OMGText>
           </View>
         </View>
