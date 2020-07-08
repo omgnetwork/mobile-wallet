@@ -89,14 +89,20 @@ const TransferReview = ({
   }, [transactionType, navigation])
 
   const onSubmit = useCallback(() => {
-    sendTransactionParams.gasOptions.gas = estimatedGasUsed
+    const withGasSendTransactionParams = {
+      ...sendTransactionParams,
+      gasOptions: {
+        ...sendTransactionParams.gasOptions,
+        gas: estimatedGasUsed
+      }
+    }
     switch (transactionType) {
       case TYPE_TRANSFER_CHILDCHAIN:
-        return plasmaTransfer(sendTransactionParams)
+        return plasmaTransfer(withGasSendTransactionParams)
       case TYPE_TRANSFER_ROOTCHAIN:
-        return ethereumTransfer(sendTransactionParams)
+        return ethereumTransfer(withGasSendTransactionParams)
       case TYPE_DEPOSIT:
-        return depositTransfer(sendTransactionParams)
+        return depositTransfer(withGasSendTransactionParams)
     }
   }, [
     ethereumTransfer,
