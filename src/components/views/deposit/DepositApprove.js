@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { useEstimatedFee, useCheckBalanceAvailability } from 'common/hooks'
-import { ContractAddress } from 'common/constants'
 import {
   OMGText,
   OMGTokenIcon,
@@ -12,7 +11,7 @@ import {
   OMGEditItem,
   OMGEmpty
 } from 'components/widgets'
-import { Styles, Unit } from 'common/utils'
+import { Styles } from 'common/utils'
 import { ExceptionReporter } from 'common/reporter'
 import {
   getAssets,
@@ -20,13 +19,13 @@ import {
   TYPE_DEPOSIT
 } from 'components/views/transfer/transferHelper'
 import { walletActions } from 'common/actions'
-import { plasmaService } from 'common/services'
+import { ethereumService } from 'common/services'
+import { BlockchainParams } from 'common/blockchain'
 
 const DepositApprove = ({
   theme,
   blockchainWallet,
   navigation,
-  ethToken,
   wallet,
   isFocused,
   dispatchRefreshRootchain
@@ -41,29 +40,37 @@ const DepositApprove = ({
   const feeToken = assets.find(
     token => token.contractAddress === feeRate.currency
   )
-  const [estimatedFee, estimatedFeeSymbol, estimatedFeeUsd] = useEstimatedFee({
-    feeRate,
-    ethToken,
+  const sendTransactionParams = BlockchainParams.createSendTransactionParams({
     blockchainWallet,
-    transferToken: { ...token, balance: amount },
-    transactionType: TYPE_APPROVE_ERC20,
-    toAddress: address
+    toAddress: address,
+    token,
+    amount,
+    gas: null,
+    gasPrice: feeRate.amount,
+    gasToken: feeToken
   })
-  const [hasEnoughBalance, minimumAmount] = useCheckBalanceAvailability({
-    feeRate,
-    feeToken,
-    sendToken: token,
-    sendAmount: amount,
+
+  const [
+    estimatedFee,
+    estimatedFeeSymbol,
+    estimatedFeeUsd,
+    estimatedGasUsed,
+    gasEstimationError
+  ] = useEstimatedFee({
+    transactionType: TYPE_APPROVE_ERC20,
+    sendTransactionParams
+  })
+
+  const [sufficientBalance, minimumAmount] = useCheckBalanceAvailability({
+    sendTransactionParams,
     estimatedFee
   })
 
   useEffect(() => {
-    async function checkIfRequireApproveErc20(weiAmount, from) {
+    async function checkIfRequireApproveErc20() {
       setVerifying(true)
-      const requiredApprove = await plasmaService.isRequireApproveErc20(
-        from,
-        weiAmount,
-        token.contractAddress
+      const requiredApprove = await ethereumService.isRequireApproveErc20(
+        sendTransactionParams
       )
       setVerifying(false)
 
@@ -78,22 +85,15 @@ const DepositApprove = ({
     }
 
     if (isFocused) {
-      const { address: from } = blockchainWallet
-      const weiAmount = Unit.convertToString(amount, 0, token.tokenDecimal)
-      checkIfRequireApproveErc20(weiAmount, from)
+      checkIfRequireApproveErc20()
     }
   }, [isFocused])
 
   const handleApprovePressed = useCallback(() => {
-    async function approve(weiAmount, from, privateKey) {
+    async function approve() {
       setApproving(true)
-      await plasmaService.approveErc20Deposit(
-        token.contractAddress,
-        weiAmount,
-        from,
-        feeRate.amount,
-        privateKey
-      )
+      sendTransactionParams.gasOptions.gas = estimatedGasUsed
+      await ethereumService.approveErc20Deposit(sendTransactionParams)
       setApproving(false)
       dispatchRefreshRootchain(wallet.address, true)
       navigation.navigate('TransferReview', {
@@ -103,21 +103,19 @@ const DepositApprove = ({
         address
       })
     }
-    const { address: from, privateKey } = blockchainWallet
-    const weiAmount = Unit.convertToString(amount, 0, token.tokenDecimal)
-    ExceptionReporter.reportWhenError(
-      () => approve(weiAmount, from, privateKey),
-      _err => setApproving(false)
-    )
-  }, [feeRate, address, amount, token])
+
+    ExceptionReporter.reportWhenError(approve, _err => setApproving(false))
+  }, [feeRate, address, amount, token, estimatedGasUsed])
 
   const onPressEditFee = useCallback(() => {
     navigation.navigate('TransferChooseGasFee')
   }, [navigation])
 
   const styles = createStyles(theme)
-  const showErrorMsg = !hasEnoughBalance && minimumAmount > 0
-  const disableBtn = !hasEnoughBalance || verifying
+  const insufficientBalanceError = !sufficientBalance && minimumAmount > 0
+  const hasError = insufficientBalanceError || gasEstimationError
+  const disableBtn = insufficientBalanceError || verifying
+
   return (
     <View style={styles.container}>
       {verifying ? (
@@ -156,9 +154,11 @@ const DepositApprove = ({
         </View>
       )}
       <View style={styles.bottomContainer}>
-        {showErrorMsg && (
+        {hasError && (
           <OMGText style={styles.errorMsg} weight='regular'>
-            {`Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`}
+            {insufficientBalanceError
+              ? `Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`
+              : `The transaction might be failed.`}
           </OMGText>
         )}
         <OMGButton
@@ -253,10 +253,7 @@ const mapStateToProps = (state, _ownProps) => {
   )
   return {
     blockchainWallet: state.setting.blockchainWallet,
-    wallet: primaryWallet,
-    ethToken: primaryWallet.rootchainAssets.find(
-      token => token.contractAddress === ContractAddress.ETH_ADDRESS
-    )
+    wallet: primaryWallet
   }
 }
 

@@ -1,80 +1,98 @@
 import { ContractAddress } from 'common/constants'
-import { Plasma } from 'common/clients'
+import { Plasma, web3 } from 'common/clients'
+import { ContractABI, Ethereum } from 'common/blockchain'
 import { Gas } from 'common/constants'
 
-export const getTransferEth = (from, to, amount, fee) => {
+export const getTransferEth = ({
+  addresses,
+  smallestUnitAmount,
+  gasOptions
+}) => {
+  const { from, to } = addresses
+  const { amount } = smallestUnitAmount
+  const { gas, gasPrice } = gasOptions
+
   return {
     from,
     to,
     value: amount,
-    gas: Gas.MINIMUM_GAS_USED,
-    gasPrice: fee.amount
+    gas: gas || Gas.MINIMUM_GAS_USED,
+    gasPrice
   }
 }
 
-export const getTransferErc20 = (from, to, amount, fee, contract) => {
+export const getTransferErc20 = ({
+  addresses,
+  smallestUnitAmount,
+  gasOptions
+}) => {
+  const { from, to } = addresses
+  const { amount, token } = smallestUnitAmount
+  const { gas, gasPrice } = gasOptions
+
+  const abi = ContractABI.erc20Abi()
+  const contract = Ethereum.getContract(token.contractAddress, abi)
+
   return {
     from,
     to: contract._address,
     data: contract.methods.transfer(to, amount).encodeABI(),
-    gas: Gas.LOW_LIMIT,
-    gasPrice: fee.amount
+    gas: gas || Gas.LOW_LIMIT,
+    gasPrice
   }
 }
 
-export const getDeposit = async (
-  tokenContractAddress,
-  from,
-  amount,
-  gas,
-  gasPrice
-) => {
-  const _amount = amount.toString()
-  const isEth = tokenContractAddress === ContractAddress.ETH_ADDRESS
+export const getDeposit = async ({
+  smallestUnitAmount,
+  addresses,
+  gasOptions
+}) => {
+  const { token, amount } = smallestUnitAmount
+  const { from } = addresses
+  const { gas, gasPrice } = gasOptions
+
+  const isEth = token.contractAddress === ContractAddress.ETH_ADDRESS
+
   const { address, contract } = isEth
     ? await Plasma.RootChain.getEthVault()
     : await Plasma.RootChain.getErc20Vault()
 
   const depositTx = Plasma.Utils.transaction.encodeDeposit(
     from,
-    _amount,
-    tokenContractAddress
+    amount,
+    token.contractAddress
   )
 
   return {
     from,
     to: address,
-    ...(isEth ? { value: _amount } : {}),
+    ...(isEth ? { value: amount } : {}),
     data: contract.methods.deposit(depositTx).encodeABI(),
-    gas,
+    gas: gas || Gas.DEPOSIT_ESTIMATED_GAS_USED,
     gasPrice
   }
 }
 
-export const getApproveErc20 = (
-  ownerAddress,
-  tokenContractAddress,
-  erc20Contract,
-  erc20VaultAddress,
-  depositWeiAmount,
-  gas,
-  gasPrice
-) => {
-  if (!ownerAddress) throw new Error('ownerAddress is missing')
-  if (!tokenContractAddress) throw new Error('tokenContractAddress is missing')
-  if (!erc20Contract) throw new Error('erc20Contract is missing')
-  if (!erc20VaultAddress) throw new Error('erc20VaultAddress is missing')
-  if (!depositWeiAmount) throw new Error('depositWeiAmount is missing')
-  if (!gas) throw new Error('gas is missing')
-  if (!gasPrice) throw new Error('gasPrice is missing')
+export const getApproveErc20 = async ({
+  smallestUnitAmount,
+  addresses,
+  gasOptions
+}) => {
+  const { token, amount } = smallestUnitAmount
+  const { from } = addresses
+  const { gas, gasPrice } = gasOptions
+
+  const erc20Contract = new web3.eth.Contract(
+    ContractABI.erc20Abi(),
+    token.contractAddress
+  )
+  const { address: erc20VaultAddress } = await Plasma.RootChain.getErc20Vault()
 
   return {
-    from: ownerAddress,
-    to: tokenContractAddress,
-    gas: gas,
-    gasPrice: gasPrice,
-    data: erc20Contract.methods
-      .approve(erc20VaultAddress, depositWeiAmount)
-      .encodeABI()
+    from,
+    to: token.contractAddress,
+    gas: gas || Gas.DEPOSIT_APPROVED_ERC20_GAS_USED,
+    gasPrice,
+    data: erc20Contract.methods.approve(erc20VaultAddress, amount).encodeABI()
   }
 }

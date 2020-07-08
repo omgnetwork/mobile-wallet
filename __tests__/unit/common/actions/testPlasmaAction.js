@@ -6,11 +6,12 @@ import {
 } from 'common/services/plasmaService.js'
 import { ethers } from 'ethers'
 import { Datetime } from 'common/utils'
+import { BlockchainParams } from 'common/blockchain'
 import { TransactionActionTypes, TransactionTypes } from 'common/constants'
 import Config from 'react-native-config'
 import { getMockStore } from '../../../helpers'
 import { plasmaActions } from 'common/actions'
-import { ContractAddress, Gas } from 'common/constants'
+import { Gas } from 'common/constants'
 
 jest.mock('common/services/plasmaService.js')
 jest.spyOn(global, 'requestAnimationFrame').mockImplementation(cb => cb())
@@ -27,8 +28,7 @@ const provider = ethers.getDefaultProvider(ETHEREUM_NETWORK)
 
 const mockDepositTxReceipt = {
   hash: 'any',
-  gasPrice: 'any',
-  gasUsed: 'any'
+  value: '10000'
 }
 
 const mockExitTxReceipt = {
@@ -101,21 +101,31 @@ describe('Test Plasma Actions', () => {
         ])
       })
   })
-
-  test('deposit with eth should dispatch actions as expected', () => {
-    const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
-    const token = {
-      balance: '0.001',
-      tokenSymbol: 'ETH',
-      tokenDecimal: 18,
-      contractAddress: ContractAddress.ETH_ADDRESS
-    }
+  test('deposit should dispatch actions as expected', () => {
     mockPlasmaService(deposit, mockDepositTxReceipt)
 
     const store = mockStore({})
 
+    const sendTransactionParams = BlockchainParams.createSendTransactionParams({
+      blockchainWallet: { privateKey: 'privateKey', address: '0x0' },
+      toAddress: '0x2',
+      amount: '1000000',
+      token: {
+        balance: '0.001',
+        tokenSymbol: 'EUR',
+        tokenDecimal: 18,
+        contractAddress: ERC20_VAULT_CONTRACT_ADDRESS
+      },
+      gas: 1,
+      gasPrice: 0.00003
+    })
+
+    const { token } = sendTransactionParams.smallestUnitAmount
+    const { from, to } = sendTransactionParams.addresses
+    const { gas, gasPrice } = sendTransactionParams.gasOptions
+
     return store
-      .dispatch(plasmaActions.deposit(wallet, token, { amount: 'any' }))
+      .dispatch(plasmaActions.deposit(sendTransactionParams))
       .then(() => {
         const actions = store.getActions()
         expect(actions).toStrictEqual([
@@ -124,47 +134,14 @@ describe('Test Plasma Actions', () => {
             type: 'CHILDCHAIN/DEPOSIT/SUCCESS',
             data: {
               ...mockDepositTxReceipt,
-              from: TEST_ADDRESS,
-              value: token.balance,
+              from,
+              to,
+              value: mockDepositTxReceipt.value,
               symbol: token.tokenSymbol,
               tokenDecimal: token.tokenDecimal,
               contractAddress: token.contractAddress,
-              actionType: 'CHILDCHAIN_DEPOSIT',
-              createdAt: actions[1].data.createdAt
-            }
-          },
-          { type: 'LOADING/CHILDCHAIN_DEPOSIT/IDLE' }
-        ])
-      })
-  })
-
-  test('depositErc20 should dispatch actions as expected', () => {
-    const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
-    const token = {
-      balance: '0.001',
-      tokenSymbol: 'EUR',
-      tokenDecimal: 18,
-      contractAddress: ERC20_VAULT_CONTRACT_ADDRESS
-    }
-    mockPlasmaService(deposit, mockDepositTxReceipt)
-
-    const store = mockStore({})
-
-    return store
-      .dispatch(plasmaActions.deposit(wallet, token, { amount: 'any' }))
-      .then(() => {
-        const actions = store.getActions()
-        expect(actions).toStrictEqual([
-          { type: 'CHILDCHAIN/DEPOSIT/INITIATED' },
-          {
-            type: 'CHILDCHAIN/DEPOSIT/SUCCESS',
-            data: {
-              ...mockDepositTxReceipt,
-              from: TEST_ADDRESS,
-              value: token.balance,
-              symbol: token.tokenSymbol,
-              tokenDecimal: token.tokenDecimal,
-              contractAddress: token.contractAddress,
+              gasUsed: gas,
+              gasPrice,
               actionType: 'CHILDCHAIN_DEPOSIT',
               createdAt: actions[1].data.createdAt
             }
@@ -175,24 +152,37 @@ describe('Test Plasma Actions', () => {
   })
 
   test('transfer should dispatch actions as expected', () => {
-    const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
-    const toAddress = TEST_ADDRESS
-    const token = {
-      balance: '0.001',
-      tokenSymbol: 'EUR',
-      tokenDecimal: 18,
-      contractAddress: ERC20_VAULT_CONTRACT_ADDRESS
+    const transferResponse = {
+      txhash: 'any',
+      value: '10000'
     }
-    const feeToken = token
+    mockPlasmaService(transfer, transferResponse)
 
-    mockPlasmaService(transfer, {
-      txhash: 'any'
+    const sendTransactionParams = BlockchainParams.createSendTransactionParams({
+      blockchainWallet: { privateKey: 'privateKey', address: '0x0' },
+      toAddress: '0x2',
+      amount: '1000000',
+      token: {
+        balance: '0.001',
+        tokenSymbol: 'EUR',
+        tokenDecimal: 18,
+        contractAddress: ERC20_VAULT_CONTRACT_ADDRESS
+      },
+      gas: 1,
+      gasPrice: 0.00003,
+      gasToken: {
+        contractAddress: ERC20_VAULT_CONTRACT_ADDRESS
+      }
     })
+
+    const { token } = sendTransactionParams.smallestUnitAmount
+    const { from, to } = sendTransactionParams.addresses
+    const { gas, gasPrice, gasToken } = sendTransactionParams.gasOptions
 
     const store = mockStore({})
 
     return store
-      .dispatch(plasmaActions.transfer(wallet, toAddress, token, feeToken))
+      .dispatch(plasmaActions.transfer(sendTransactionParams))
       .then(() => {
         const actions = store.getActions()
         expect(actions).toStrictEqual([
@@ -200,14 +190,15 @@ describe('Test Plasma Actions', () => {
           {
             data: {
               hash: 'any',
-              from: wallet.address,
-              value: token.balance,
+              from,
+              to,
+              value: transferResponse.value,
               symbol: token.tokenSymbol,
               tokenDecimal: token.tokenDecimal,
               contractAddress: token.contractAddress,
-              gasUsed: 1,
-              gasPrice: 1,
-              gasToken: feeToken,
+              gasUsed: gas,
+              gasPrice,
+              gasToken,
               actionType: TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN,
               createdAt: actions[1].data.createdAt
             },

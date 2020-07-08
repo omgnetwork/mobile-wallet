@@ -7,16 +7,16 @@ import {
   sendEthToken,
   fetchAssets
 } from 'common/services/ethereumService.js'
+import { BlockchainParams } from 'common/blockchain'
 import Config from 'react-native-config'
 
 jest.mock('common/services/ethereumService')
 jest.spyOn(global, 'requestAnimationFrame').mockImplementation(cb => cb())
 
-const { ETHEREUM_NETWORK, TEST_PRIVATE_KEY, TEST_ADDRESS } = Config
+const { ETHEREUM_NETWORK, TEST_ADDRESS } = Config
 const mockTxOptions = {
   hash: 'any',
-  from: 'any',
-  gasPrice: 'any'
+  value: '1000'
 }
 
 const mockStore = getMockStore()
@@ -26,32 +26,42 @@ const mockEthereumService = (method, resp) => {
 
 describe('Test Ethereum Actions', () => {
   test('transfer with erc20 should invoke sendErc20Token and dispatch expected actions to the store', () => {
-    const token = {
-      balance: '10',
-      tokenSymbol: 'OMG',
-      tokenDecimal: 18,
-      contractAddress: '0x1234'
-    }
-    const fee = { amount: '10', symbol: 'wei' }
-    const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
-    const toAddress = TEST_ADDRESS
     const store = mockStore({ unconfirmedTxs: [] })
     mockEthereumService(sendErc20Token, mockTxOptions)
-    const action = ethereumActions.transfer(wallet, toAddress, token, fee)
+
+    const sendTransactionParams = BlockchainParams.createSendTransactionParams({
+      blockchainWallet: { privateKey: 'privateKey', address: '0x0' },
+      toAddress: '0x2',
+      amount: '1000000',
+      token: {
+        balance: '10',
+        tokenSymbol: 'OMG',
+        tokenDecimal: 18,
+        contractAddress: '0x1234'
+      },
+      gas: 50000,
+      gasPrice: 100000
+    })
+
+    const { from, to } = sendTransactionParams.addresses
+    const { token } = sendTransactionParams.smallestUnitAmount
+    const { gas, gasPrice } = sendTransactionParams.gasOptions
+
+    const action = ethereumActions.transfer(sendTransactionParams)
     return store.dispatch(action).then(() => {
-      expect(sendErc20Token).toBeCalledWith(wallet, { token, fee, toAddress })
+      expect(sendErc20Token).toBeCalledWith(sendTransactionParams)
       const dispatchedActions = store.getActions()
       expect(dispatchedActions).toStrictEqual([
         { type: 'ROOTCHAIN/SEND_TOKEN/INITIATED' },
         {
           type: 'ROOTCHAIN/SEND_TOKEN/SUCCESS',
           data: {
-            ...mockTxOptions,
-            from: wallet.address,
-            to: toAddress,
-            value: token.balance,
-            gasUsed: null,
-            gasPrice: fee.amount,
+            hash: mockTxOptions.hash,
+            from,
+            to,
+            value: mockTxOptions.value,
+            gasUsed: gas,
+            gasPrice,
             actionType: 'ROOTCHAIN_SEND_TOKEN',
             symbol: token.tokenSymbol,
             createdAt: dispatchedActions[1].data.createdAt
@@ -63,20 +73,30 @@ describe('Test Ethereum Actions', () => {
   })
 
   test('transfer with eth should invoke sendEthToken and dispatch expected actions to the store', () => {
-    const token = {
-      balance: '10',
-      tokenSymbol: 'ETH',
-      tokenDecimal: 18,
-      contractAddress: ContractAddress.ETH_ADDRESS
-    }
-    const fee = { amount: '10', symbol: 'gwei' }
-    const wallet = new ethers.Wallet(TEST_PRIVATE_KEY)
-    const toAddress = TEST_ADDRESS
     const store = mockStore({ unconfirmedTxs: [] })
     mockEthereumService(sendEthToken, mockTxOptions)
-    const action = ethereumActions.transfer(wallet, toAddress, token, fee)
+
+    const sendTransactionParams = BlockchainParams.createSendTransactionParams({
+      blockchainWallet: { privateKey: 'privateKey', address: '0x0' },
+      toAddress: '0x2',
+      amount: '1000000',
+      token: {
+        balance: '10',
+        tokenSymbol: 'ETH',
+        tokenDecimal: 18,
+        contractAddress: ContractAddress.ETH_ADDRESS
+      },
+      gas: 50000,
+      gasPrice: 100000
+    })
+
+    const { from, to } = sendTransactionParams.addresses
+    const { token } = sendTransactionParams.smallestUnitAmount
+    const { gas, gasPrice } = sendTransactionParams.gasOptions
+
+    const action = ethereumActions.transfer(sendTransactionParams)
     return store.dispatch(action).then(() => {
-      expect(sendEthToken).toBeCalledWith(wallet, { token, fee, toAddress })
+      expect(sendEthToken).toBeCalledWith(sendTransactionParams)
       const dispatchedActions = store.getActions()
       expect(dispatchedActions).toStrictEqual([
         { type: 'ROOTCHAIN/SEND_TOKEN/INITIATED' },
@@ -84,11 +104,12 @@ describe('Test Ethereum Actions', () => {
           type: 'ROOTCHAIN/SEND_TOKEN/SUCCESS',
           data: {
             ...mockTxOptions,
-            from: wallet.address,
-            to: toAddress,
-            value: token.balance,
-            gasUsed: null,
-            gasPrice: fee.amount,
+            hash: mockTxOptions.hash,
+            from,
+            to,
+            value: mockTxOptions.value,
+            gasUsed: gas,
+            gasPrice,
             actionType: 'ROOTCHAIN_SEND_TOKEN',
             symbol: token.tokenSymbol,
             createdAt: dispatchedActions[1].data.createdAt

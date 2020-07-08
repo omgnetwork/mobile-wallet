@@ -8,7 +8,6 @@ import {
   Utxos
 } from 'common/blockchain'
 import Config from 'react-native-config'
-import { ContractAddress } from 'common/constants'
 
 export const fetchAssets = async (provider, address) => {
   try {
@@ -76,14 +75,14 @@ export const mergeUTXOs = (
   privateKey,
   maximumUtxosPerCurrency,
   listOfUtxos,
-  storeBlknum
+  updateBlknumCallback
 ) => {
   return Plasma.mergeListOfUtxos(
     address,
     privateKey,
     maximumUtxosPerCurrency,
     listOfUtxos,
-    storeBlknum
+    updateBlknumCallback
   )
 }
 
@@ -105,63 +104,34 @@ export const getFees = async tokens => {
   }
 }
 
-export const transfer = async (
-  fromBlockchainWallet,
-  toAddress,
-  token,
-  fee = { contractAddress: ContractAddress.ETH_ADDRESS, amount: 1 },
-  metadata
-) => {
-  try {
-    const receipt = await Plasma.transfer(
-      fromBlockchainWallet,
-      toAddress,
-      token,
-      fee,
-      metadata
-    )
-
-    return receipt
-  } catch (err) {
-    if (err.message === 'submit:client_error') {
-      throw new Error('Something went wrong on the childchain')
-    } else {
-      throw err
+export const transfer = async sendTransactionParams => {
+  const { token, amount } = sendTransactionParams.smallestUnitAmount
+  const { txhash } = await Plasma.transfer({
+    ...sendTransactionParams,
+    smallestUnitAmount: {
+      ...sendTransactionParams.smallestUnitAmount,
+      amount: Unit.convertToString(
+        amount,
+        token.tokenDecimal,
+        token.tokenDecimal,
+        16
+      )
     }
+  })
+
+  return {
+    hash: txhash,
+    value: Unit.convertToString(amount, token.tokenDecimal, 0)
   }
 }
 
-export const isRequireApproveErc20 = (from, amount, erc20Address) => {
-  return Plasma.isRequireApproveErc20(from, amount, erc20Address)
-}
+export const deposit = async sendTransactionParams => {
+  const { token, amount } = sendTransactionParams.smallestUnitAmount
+  const { hash } = await Plasma.deposit(sendTransactionParams)
 
-export const approveErc20Deposit = (
-  erc20Address,
-  amount,
-  from,
-  gasPrice,
-  privateKey
-) => {
-  const txOptions = { from, gasPrice, privateKey }
-  return Plasma.approveErc20Deposit(erc20Address, amount, txOptions)
-}
-
-export const deposit = async (address, privateKey, token, gasPrice) => {
-  const weiAmount = Unit.convertToString(token.balance, 0, token.tokenDecimal)
-
-  const { hash, gasUsed } = await Plasma.deposit(
-    address,
-    privateKey,
-    weiAmount,
-    token.contractAddress,
-    {
-      gasPrice
-    }
-  )
   return {
     hash,
-    gasPrice,
-    gasUsed
+    value: Unit.convertToString(amount, token.tokenDecimal, 0)
   }
 }
 
