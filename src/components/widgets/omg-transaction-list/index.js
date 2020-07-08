@@ -177,7 +177,7 @@ const mapStateToProps = (state, ownProps) => {
 
   switch (type) {
     case TransactionTypes.TYPE_DEPOSIT:
-      transactions = state.deposit.deposits
+      transactions = state.transaction.deposits
   }
 
   return { transactions }

@@ -2,6 +2,7 @@ import { ExitStatus, TransactionActionTypes } from 'common/constants'
 
 export const transactionReducer = (
   state = {
+    deposits: [],
     unconfirmedTxs: [],
     transactions: [],
     startedExitTxs: [],
@@ -20,6 +21,10 @@ export const transactionReducer = (
         unconfirmedTxs: [...state.unconfirmedTxs, action.data],
         feedbackCompleteTx: null
       }
+
+    case 'DEPOSITS/ALL/SUCCESS':
+      return { ...state, deposits: action.data.deposits }
+
     case 'TRANSACTION/UPDATE_MERGE_UTXOS_BLKNUM/OK': {
       const hasMergeTransaction = state.unconfirmedTxs.find(
         tx =>
@@ -115,6 +120,7 @@ export const transactionReducer = (
       }
     case 'TRANSACTION/ALL/SUCCESS':
       return { ...state, transactions: action.data.transactions }
+
     default:
       return state
   }

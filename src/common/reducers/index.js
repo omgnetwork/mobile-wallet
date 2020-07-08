@@ -9,7 +9,6 @@ import { settingReducer } from './settingReducer'
 import { persistReducer } from 'redux-persist'
 import { onboardingReducer } from './onboardingReducer'
 import { walletSwitcherReducer } from './walletSwitcherReducer'
-import { depositReducer } from './depositReducer'
 import { tokenReducer } from './tokenReducer'
 import Storage from '@react-native-community/async-storage'
 
@@ -29,7 +28,6 @@ export default combineReducers({
   wallets: walletsReducer,
   loading: loadingReducer,
   transaction: transactionReducer,
-  deposit: depositReducer,
   fee: feeReducer,
   gasOptions: gasReducer,
   tokens: tokenReducer,

@@ -43,6 +43,7 @@ const initialState = {
     anchoredComponents: {}
   },
   transaction: {
+    deposits: [],
     unconfirmedTxs: [],
     transactions: [],
     startedExitTxs: [],
