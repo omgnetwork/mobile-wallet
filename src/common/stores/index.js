@@ -7,6 +7,8 @@ import { persistStore, persistReducer, createTransform } from 'redux-persist'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import Storage from '@react-native-community/async-storage'
 
+import { ContractAddress } from 'common/constants'
+
 const reloadWalletsTransform = createTransform(
   inboundState => inboundState,
   outboundState => {
@@ -49,7 +51,8 @@ const initialState = {
   fee: {
     available: [],
     all: []
-  }
+  },
+  tokens: { [ContractAddress.ETH_ADDRESS]: ['Ether', 'ETH', 18] }
 }
 
 let store

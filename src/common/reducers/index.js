@@ -10,7 +10,7 @@ import { persistReducer } from 'redux-persist'
 import { onboardingReducer } from './onboardingReducer'
 import { walletSwitcherReducer } from './walletSwitcherReducer'
 import { depositReducer } from './depositReducer'
-
+import { tokenReducer } from './tokenReducer'
 import Storage from '@react-native-community/async-storage'
 
 const persistSettingConfig = {
@@ -32,6 +32,7 @@ export default combineReducers({
   deposit: depositReducer,
   fee: feeReducer,
   gasOptions: gasReducer,
+  tokens: tokenReducer,
   walletSwitcher: walletSwitcherReducer,
   onboarding: persistReducer(persistOnboardingConfig, onboardingReducer),
   setting: persistReducer(persistSettingConfig, settingReducer),
