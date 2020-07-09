@@ -41,7 +41,7 @@ export const getDeposits = async (
 
 const normalise = async (deposit, provider, tokens) => {
   const { amount, currency } = deposit.txoutputs[0]
-  const [tokenName, tokenSymbol, tokenDecimal] = await Token.getContractInfo(
+  const { tokenName, tokenSymbol, tokenDecimal } = await Token.getContractInfo(
     provider,
     currency,
     tokens

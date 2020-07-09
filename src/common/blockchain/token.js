@@ -6,6 +6,7 @@ import { Plasma as PlasmaClient } from 'common/clients'
 import { priceService } from 'common/services'
 import { store } from 'common/stores'
 import Config from 'react-native-config'
+import includes from 'lodash/includes'
 
 export const find = (contractAddress, tokens) => {
   return tokens.find(token => token.contractAddress === contractAddress)
@@ -124,7 +125,8 @@ export const getContractInfo = async (
   tokens
 ) => {
   const cachedInfo = tokens[tokenContractAddress]
-  const cachedUnknowns = cachedInfo && cachedInfo.includes('UNKNOWN')
+
+  const cachedUnknowns = cachedInfo && includes(cachedInfo, 'UNKNOWN')
 
   if (cachedInfo && !cachedUnknowns) {
     return cachedInfo
@@ -141,27 +143,23 @@ export const getContractInfo = async (
     provider
   )
 
-  let name, symbol, decimals
+  const pendingName = getName(contract, bytes32Contract).catch(
+    _err => 'UNKNOWN'
+  )
+  const pendingSymbol = getSymbol(contract, bytes32Contract).catch(
+    _err => 'UNKNOWN'
+  )
+  const pendingDecimal = getDecimals(contract, bytes32Contract).catch(
+    _err => 'UNKNOWN'
+  )
 
-  try {
-    name = await getName(contract, bytes32Contract)
-  } catch {
-    name = 'UNKNOWN'
-  }
+  const [tokenName, tokenSymbol, tokenDecimal] = await Promise.all([
+    pendingName,
+    pendingSymbol,
+    pendingDecimal
+  ])
 
-  try {
-    symbol = await getSymbol(contract, bytes32Contract)
-  } catch {
-    symbol = 'UNKNOWN'
-  }
-
-  try {
-    decimals = await getDecimals(contract)
-  } catch {
-    decimals = 'UNKNOWN'
-  }
-
-  const tokenContractInfo = [name, symbol, decimals]
+  const tokenContractInfo = { tokenName, tokenSymbol, tokenDecimal }
 
   tokenActions.addTokenContractInfo(store.dispatch, {
     tokenContractAddress,

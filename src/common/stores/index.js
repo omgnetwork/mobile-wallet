@@ -53,7 +53,13 @@ const initialState = {
     available: [],
     all: []
   },
-  tokens: { [ContractAddress.ETH_ADDRESS]: ['Ether', 'ETH', 18] }
+  tokens: {
+    [ContractAddress.ETH_ADDRESS]: {
+      tokenName: 'Ether',
+      tokenSymbol: 'ETH',
+      tokenDecimal: 18
+    }
+  }
 }
 
 let store
