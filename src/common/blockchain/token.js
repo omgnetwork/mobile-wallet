@@ -118,8 +118,11 @@ const getEthBalance = (provider, address) => {
   return provider.getBalance(address).then(balance => balance.toString(10))
 }
 
-export const getContractInfo = async (provider, tokenContractAddress) => {
-  const { tokens } = store.getState()
+export const getContractInfo = async (
+  provider,
+  tokenContractAddress,
+  tokens
+) => {
   const cachedInfo = tokens[tokenContractAddress]
   const cachedUnknowns = cachedInfo && cachedInfo.includes('UNKNOWN')
 

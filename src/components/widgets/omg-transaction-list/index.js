@@ -180,17 +180,23 @@ const mapStateToProps = (state, ownProps) => {
       transactions = state.transaction.deposits
   }
 
-  return { transactions }
+  return { transactions, tokens: state.tokens }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch, _ownProps) => {
+  return { dispatch }
+}
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { address, provider, type } = ownProps
+  const { tokens } = stateProps
+  const { dispatch } = dispatchProps
 
   let action
 
   switch (type) {
     case TransactionTypes.TYPE_DEPOSIT:
-      action = depositActions.fetchDepositHistory(provider, address, {
+      action = depositActions.fetchDepositHistory(provider, address, tokens, {
         page: 1,
         limit: 50
       })
@@ -200,10 +206,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     dispatch(action)
   }
 
-  return { dispatchTransactionFetch }
+  return { ...ownProps, ...stateProps, dispatchTransactionFetch }
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
+  mergeProps
 )(withNavigation(withTheme(OMGTransactionList)))

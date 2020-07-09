@@ -18,6 +18,7 @@ const WatcherInfo = axios.create({
 export const getDeposits = async (
   provider,
   address,
+  tokens,
   options = { limit: 50, page: 1 }
 ) => {
   const { limit, page } = options
@@ -31,18 +32,19 @@ export const getDeposits = async (
   const { data: deposits } = response
   const depositsNormalized = await Promise.all(
     deposits.map(deposit => {
-      const normalized = normalise(deposit, provider)
+      const normalized = normalise(deposit, provider, tokens)
       return normalized
     })
   )
   return depositsNormalized
 }
 
-const normalise = async (deposit, provider) => {
+const normalise = async (deposit, provider, tokens) => {
   const { amount, currency } = deposit.txoutputs[0]
   const [tokenName, tokenSymbol, tokenDecimal] = await Token.getContractInfo(
     provider,
-    currency
+    currency,
+    tokens
   )
 
   return {
