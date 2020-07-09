@@ -11,20 +11,21 @@ export const invalidateUnconfirmedTx = (dispatch, confirmedTx) => {
   })
 }
 
-export const invalidatePendingExitTx = (dispatch, confirmedTx) => {
-  return createAction(dispatch, {
-    type: 'TRANSACTION/INVALIDATE_PENDING_EXIT_TX',
-    operation: () => ({
-      confirmedTx
-    })
-  })
-}
-
 export const invalidateFeedbackCompleteTx = (dispatch, wallet) => {
   return createAction(dispatch, {
     type: 'TRANSACTION/INVALIDATE_FEEDBACK_COMPLETE_TX',
     operation: () => ({
       wallet
+    })
+  })
+}
+
+export const updateBlocksToWait = (dispatch, confirmedTx, blocksToWait) => {
+  return createAction(dispatch, {
+    type: 'TRANSACTION/UPDATE_BLOCKS_TO_WAIT',
+    operation: () => ({
+      confirmedTx,
+      blocksToWait
     })
   })
 }

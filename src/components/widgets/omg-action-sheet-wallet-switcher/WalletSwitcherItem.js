@@ -1,9 +1,8 @@
 import React from 'react'
 import { OMGIdenticon, OMGFontIcon, OMGText } from 'components/widgets'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { hexToRgb } from 'common/styles/colors'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { BlockchainNetworkType } from 'common/constants'
 
 const WalletSwitcherItem = ({

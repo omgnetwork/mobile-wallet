@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { View, ScrollView } from 'react-native'
 import { withTheme, Title } from 'react-native-paper'
 import {
-  OMGRadioButton,
   OMGTextInput,
   OMGButton,
   OMGText,
@@ -60,12 +59,6 @@ const Preview = ({ theme }) => {
         backgroundColor: theme.colors.black5
       }}>
       <ScrollView>
-        <OMGRadioButton
-          choices={['Keystore', 'Mnemonic', 'Private Key', 'Just 4th Button']}
-          onSelected={selectedIndex => {
-            console.log(`selected: ${selectedIndex}`)
-          }}
-        />
         <OMGBox style={{ marginVertical: 16 }}>
           <OMGText weight='normal'>Book</OMGText>
           <OMGText weight='regular'>Medium</OMGText>

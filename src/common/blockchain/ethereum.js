@@ -5,13 +5,13 @@ import Config from 'react-native-config'
 import BN from 'bn.js'
 import { TxDetails, Contract, Wait } from 'common/blockchain'
 
-export const sendEthToken = sendTransactionParams => {
-  const txDetails = TxDetails.getTransferEth(sendTransactionParams)
+export const sendEthToken = async sendTransactionParams => {
+  const txDetails = await TxDetails.getTransferEth(sendTransactionParams)
   return signSendTx(txDetails, sendTransactionParams.privateKey)
 }
 
 export const sendErc20Token = async sendTransactionParams => {
-  const txDetails = TxDetails.getTransferErc20(sendTransactionParams)
+  const txDetails = await TxDetails.getTransferErc20(sendTransactionParams)
   return signSendTx(txDetails, sendTransactionParams.privateKey)
 }
 

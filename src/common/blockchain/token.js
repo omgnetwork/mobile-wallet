@@ -1,5 +1,12 @@
 import { ethers } from 'ethers'
-import { ContractABI, BlockchainFormatter, Parser } from 'common/blockchain'
+import {
+  ContractABI,
+  BlockchainFormatter,
+  Parser,
+  TxDetails,
+  Ethereum,
+  Wait
+} from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
 import { Plasma as PlasmaClient } from 'common/clients'
 import { priceService } from 'common/services'
@@ -9,20 +16,32 @@ export const find = (contractAddress, tokens) => {
   return tokens.find(token => token.contractAddress === contractAddress)
 }
 
-export const hasExitQueue = tokenContractAddress => {
-  return PlasmaClient.RootChain.hasToken(tokenContractAddress)
+export const hasExitQueue = ({ smallestUnitAmount }) => {
+  const { token } = smallestUnitAmount
+  return PlasmaClient.RootChain.hasToken(token.contractAddress)
 }
 
-export const createExitQueue = async (tokenContractAddress, options) => {
-  try {
-    const receipt = await PlasmaClient.RootChain.addToken({
-      token: tokenContractAddress,
-      txOptions: options
-    })
-    return Promise.resolve(receipt)
-  } catch (err) {
-    return Promise.reject(err)
-  }
+export const createExitQueue = async ({
+  smallestUnitAmount,
+  gasOptions,
+  addresses,
+  privateKey
+}) => {
+  const txDetails = await TxDetails.getCreateExitQueue({
+    smallestUnitAmount,
+    gasOptions,
+    addresses
+  })
+
+  const { hash } = await Ethereum.signSendTx(txDetails, privateKey)
+
+  await Wait.waitForRootchainTransaction({
+    hash,
+    intervalMs: 3000,
+    confirmationThreshold: 1
+  })
+
+  return { hash }
 }
 
 export const all = (provider, contractAddresses, accountAddress) => {

@@ -55,7 +55,7 @@ const Balance = ({
       dispatchRefreshRootchain(wallet.address, false)
     }
 
-    if (!isEthereumNetwork && wallet.shouldRefreshChildchain) {
+    if (wallet.shouldRefreshChildchain) {
       setLoading(true)
       dispatchLoadOmiseGOAssets(provider, wallet)
       dispatchGetRecommendedGas()

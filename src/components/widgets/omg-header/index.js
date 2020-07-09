@@ -9,12 +9,12 @@ const OMGHeader = ({ theme, onPress, title }) => {
     <View style={styles.header}>
       <OMGFontIcon
         name='chevron-left'
-        size={Styles.getResponsiveSize(18, { small: 14, medium: 16 })}
+        size={18}
         color={theme.colors.white}
         style={styles.headerIcon}
         onPress={onPress}
       />
-      <OMGText style={styles.headerTitle(theme)}>{title}</OMGText>
+      <OMGText style={styles.title(theme)}>{title}</OMGText>
     </View>
   )
 }
@@ -23,19 +23,19 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: 16
+    paddingHorizontal: Styles.getResponsiveSize(16, { small: 8, medium: 8 }),
+    paddingVertical: Styles.getResponsiveSize(40, { small: 24, medium: 24 })
   },
-  headerIcon: {
-    padding: 8,
-    marginLeft: -8
-  },
-  headerTitle: theme => ({
+  title: theme => ({
+    flex: 1,
+    marginHorizontal: 16,
     fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
-    paddingVertical: 16,
-    color: theme.colors.white,
-    marginLeft: 8,
-    textTransform: 'uppercase'
-  })
+    textTransform: 'uppercase',
+    color: theme.colors.white
+  }),
+  headerIcon: {
+    padding: 8
+  }
 })
 
 export default withTheme(OMGHeader)

@@ -59,7 +59,7 @@ const ProcessExitTransactionTracker = ({
     } else {
       setStartedExitTxs([])
     }
-  }, [getConfirmedStartedExitTxs, setStartedExitTxs])
+  }, [getConfirmedStartedExitTxs])
 
   return null
 }

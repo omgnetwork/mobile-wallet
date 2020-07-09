@@ -20,7 +20,8 @@ const {
   TEST_PRIVATE_KEY,
   TEST_ADDRESS,
   ETHEREUM_NETWORK,
-  ERC20_VAULT_CONTRACT_ADDRESS
+  ERC20_VAULT_CONTRACT_ADDRESS,
+  PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
 } = Config
 
 const mockStore = getMockStore()
@@ -36,10 +37,7 @@ const mockExitTxReceipt = {
   exitId: 'any',
   blknum: 'any',
   flatFee: 'any',
-  to: 'any',
-  gasPrice: 'any',
-  gasUsed: 'any',
-  exitableAt: 'any'
+  value: 'any'
 }
 
 const mockPlasmaService = (method, resp) => {
@@ -153,7 +151,7 @@ describe('Test Plasma Actions', () => {
 
   test('transfer should dispatch actions as expected', () => {
     const transferResponse = {
-      txhash: 'any',
+      hash: 'any',
       value: '10000'
     }
     mockPlasmaService(transfer, transferResponse)
@@ -218,12 +216,20 @@ describe('Test Plasma Actions', () => {
       price: 'any',
       contractAddress: ERC20_VAULT_CONTRACT_ADDRESS
     }
-    const gasPrice = Gas.EXIT_GAS_PRICE
     mockPlasmaService(exit, mockExitTxReceipt)
+
+    const sendTransactionParams = BlockchainParams.createSendTransactionParams({
+      blockchainWallet: wallet,
+      toAddress: PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS,
+      token,
+      amount: '0.0001',
+      gas: 500000,
+      gasPrice: Gas.EXIT_GAS_PRICE
+    })
 
     const store = mockStore()
     return store
-      .dispatch(plasmaActions.exit(wallet, token, [], gasPrice))
+      .dispatch(plasmaActions.exit(sendTransactionParams))
       .then(() => {
         const actions = store.getActions()
         expect(actions).toStrictEqual([
@@ -231,18 +237,20 @@ describe('Test Plasma Actions', () => {
           {
             data: {
               ...mockExitTxReceipt,
+              to: PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS,
               actionType: 'CHILDCHAIN_EXIT',
               contractAddress: token.contractAddress,
               createdAt: actions[1].data.createdAt,
               from: wallet.address,
               tokenPrice: 'any',
-              gasPrice,
-              smallestValue: '1000000000000000',
+              gasPrice: sendTransactionParams.gasOptions.gasPrice,
+              gasUsed: sendTransactionParams.gasOptions.gas,
+              smallestValue: '100000000000000',
               symbol: token.tokenSymbol,
               timestamp: actions[1].data.timestamp,
               tokenDecimal: token.tokenDecimal,
               type: TransactionTypes.TYPE_EXIT,
-              value: token.balance
+              value: 'any'
             },
             type: 'CHILDCHAIN/EXIT/SUCCESS'
           },

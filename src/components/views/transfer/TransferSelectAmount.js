@@ -11,6 +11,7 @@ import {
   OMGButton,
   OMGDismissKeyboard
 } from 'components/widgets'
+import { Styles } from 'common/utils'
 
 const TransferSelectAmount = ({
   navigation,
@@ -58,7 +59,7 @@ const TransferSelectAmount = ({
 
   return (
     <OMGDismissKeyboard style={styles.container}>
-      <OMGText style={styles.title} weight='book'>
+      <OMGText style={styles.title} weight='regular'>
         Amount
       </OMGText>
       <OMGAmountInput
@@ -86,8 +87,9 @@ const createStyles = theme =>
       backgroundColor: theme.colors.black5
     },
     title: {
-      color: theme.colors.gray2,
-      lineHeight: 17
+      fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+      textTransform: 'uppercase',
+      color: theme.colors.gray2
     },
     amountInput: {
       marginTop: 26

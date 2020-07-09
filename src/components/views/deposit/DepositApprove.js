@@ -40,16 +40,22 @@ const DepositApprove = ({
   const feeToken = assets.find(
     token => token.contractAddress === feeRate.currency
   )
-  const sendTransactionParams = BlockchainParams.createSendTransactionParams({
-    blockchainWallet,
-    toAddress: address,
-    token,
-    amount,
-    gas: null,
-    gasPrice: feeRate.amount,
-    gasToken: feeToken
-  })
 
+  const [sendTransactionParams, setSendTransactionParams] = useState()
+
+  useEffect(() => {
+    setSendTransactionParams(
+      BlockchainParams.createSendTransactionParams({
+        blockchainWallet,
+        toAddress: address,
+        token,
+        amount,
+        gas: null,
+        gasPrice: feeRate.amount,
+        gasToken: feeToken
+      })
+    )
+  }, [blockchainWallet, address, feeRate, feeToken, token, amount])
   const [
     estimatedFee,
     estimatedFeeSymbol,
@@ -87,13 +93,18 @@ const DepositApprove = ({
     if (isFocused) {
       checkIfRequireApproveErc20()
     }
-  }, [isFocused])
+  }, [isFocused, sendTransactionParams])
 
   const handleApprovePressed = useCallback(() => {
     async function approve() {
       setApproving(true)
-      sendTransactionParams.gasOptions.gas = estimatedGasUsed
-      await ethereumService.approveErc20Deposit(sendTransactionParams)
+      await ethereumService.approveErc20Deposit({
+        ...sendTransactionParams,
+        gasOptions: {
+          ...sendTransactionParams.gasOptions,
+          gas: estimatedGasUsed
+        }
+      })
       setApproving(false)
       dispatchRefreshRootchain(wallet.address, true)
       navigation.navigate('TransferReview', {
@@ -105,7 +116,7 @@ const DepositApprove = ({
     }
 
     ExceptionReporter.reportWhenError(approve, _err => setApproving(false))
-  }, [feeRate, address, amount, token, estimatedGasUsed])
+  }, [feeRate, address, amount, token, estimatedGasUsed, sendTransactionParams])
 
   const onPressEditFee = useCallback(() => {
     navigation.navigate('TransferChooseGasFee')
@@ -114,17 +125,20 @@ const DepositApprove = ({
   const styles = createStyles(theme)
   const insufficientBalanceError = !sufficientBalance && minimumAmount > 0
   const hasError = insufficientBalanceError || gasEstimationError
-  const disableBtn = insufficientBalanceError || verifying
+  const disableBtn =
+    insufficientBalanceError ||
+    (!gasEstimationError && !estimatedGasUsed) ||
+    verifying
 
   return (
     <View style={styles.container}>
+      <OMGText style={styles.title} weight='regular'>
+        APPROVE {token.symbol} TOKEN
+      </OMGText>
       {verifying ? (
         <OMGEmpty loading={verifying} style={styles.emptyView} />
       ) : (
         <View>
-          <OMGText style={styles.title} weight='regular'>
-            APPROVE {token.symbol} TOKEN
-          </OMGText>
           <OMGText style={styles.description} weight='regular'>
             Please approve to move {amount} {token.tokenSymbol} from Ethereum to
             the OMG Network.
@@ -133,7 +147,7 @@ const DepositApprove = ({
             <OMGTokenIcon token={token} size={28} />
             <View style={styles.tokenDetailContainer}>
               <OMGText weight='regular' style={styles.textTokenDetail}>
-                Token Contract Address
+                {token.tokenSymbol}
               </OMGText>
               <OMGText
                 style={[styles.textTokenDetail, styles.smallMarginTop]}
@@ -147,7 +161,7 @@ const DepositApprove = ({
             title='Fee'
             loading={!estimatedFee}
             rightFirstLine={`${estimatedFee} ${estimatedFeeSymbol}`}
-            rightSecondLine={`${estimatedFeeUsd} USD`}
+            rightThirdLine={`${estimatedFeeUsd} USD`}
             onPress={onPressEditFee}
             style={[styles.paddingMedium, styles.mediumMarginTop]}
           />
@@ -172,7 +186,7 @@ const DepositApprove = ({
             : 'Approve'}
         </OMGButton>
         <OMGText style={styles.textEstimateTime(!disableBtn)} weight='regular'>
-          This process is usually takes about 15 - 30 seconds.
+          This process usually takes about 15 - 30 seconds.
         </OMGText>
       </View>
     </View>
@@ -192,8 +206,9 @@ const createStyles = theme =>
       paddingBottom: 32
     },
     title: {
-      fontSize: 14,
-      color: theme.colors.white
+      fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+      color: theme.colors.gray2,
+      textTransform: 'uppercase'
     },
     description: {
       color: theme.colors.gray6,

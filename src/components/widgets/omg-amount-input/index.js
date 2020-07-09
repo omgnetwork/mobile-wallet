@@ -12,12 +12,13 @@ const OMGAmountInput = ({
   inputRef,
   defaultValue,
   style,
+  editable,
   onChangeAmount,
   errorMessage,
   callback,
   showError
 }) => {
-  const inactiveUnderlineColor = hexToRgb(theme.colors.blue, 0.7)
+  const inactiveUnderlineColor = hexToRgb(theme.colors.blue, 0.3)
   const activeUnderlineColor = theme.colors.blue
   const [underlineColor, setUnderlineColor] = useState(inactiveUnderlineColor)
 
@@ -46,6 +47,7 @@ const OMGAmountInput = ({
           onChangeText={onChangeAmount}
           onBlur={onBlur}
           onFocus={onFocus}
+          editable={editable}
           hideUnderline={true}
           defaultValue={defaultValue}
           keyboardType='decimal-pad'
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: underlineColor,
     alignItems: 'center',
-    paddingVertical: Styles.getResponsiveSize(10, { small: 6, medium: 8 })
+    paddingVertical: Styles.getResponsiveSize(6, { small: 2, medium: 4 })
   }),
   logo: {
     width: Styles.getResponsiveSize(24, { small: 18, medium: 20 }),

@@ -74,7 +74,6 @@ const OMGActionSheetWalletSwitcher = ({
 const createStyles = _theme =>
   StyleSheet.create({
     container: {
-      paddingTop: 28,
       paddingBottom: 16,
       paddingHorizontal: 24,
       width: Dimensions.get('window').width,

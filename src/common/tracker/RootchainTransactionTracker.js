@@ -1,91 +1,48 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { TransactionActionTypes } from 'common/constants'
 import { useRootchainTracker } from 'common/hooks'
 import { Transaction } from 'common/blockchain'
 import { walletActions, transactionActions } from 'common/actions'
-import { notificationService } from 'common/services'
+
+const { TYPE_CHILDCHAIN_SEND_TOKEN } = TransactionActionTypes
 
 const RootchainTransactionTracker = ({
   wallet,
   unconfirmedTxs,
+  dispatchUpdateBlocksToWait,
   dispatchAddStartedExitTx,
   dispatchInvalidateUnconfirmedTx,
-  dispatchRefreshRootchain,
   dispatchRefreshAll
 }) => {
-  const primaryWallet = useRef(wallet)
-  const [
-    rootNotification,
-    setRootNotification,
-    setRootchainTxs
-  ] = useRootchainTracker(primaryWallet)
-  const invalidatedTxs = useRef([])
+  if (!wallet) return null
 
-  useEffect(() => {
-    if (rootNotification) {
-      const confirmedTx = rootNotification.confirmedTxs.slice(-1).pop()
-      const hasInvalidated = invalidatedTxs.current.includes(confirmedTx.hash)
-      if (!confirmedTx && hasInvalidated) {
-        return
-      }
-
-      if (Transaction.isUnconfirmStartedExit(confirmedTx)) {
-        dispatchAddStartedExitTx({
-          ...confirmedTx
-        })
-      }
-
-      dispatchInvalidateUnconfirmedTx(confirmedTx)
-      notificationService.sendNotification(rootNotification)
-      setRootNotification(null)
-      invalidatedTxs.current = [...invalidatedTxs.current, confirmedTx.hash]
-
-      switch (rootNotification.type) {
-        case 'rootchain':
-          return dispatchRefreshRootchain(primaryWallet.current.address)
-        case 'all':
-          return dispatchRefreshAll(primaryWallet.current.address)
-        default:
-          return dispatchRefreshAll(primaryWallet.current.address)
-      }
+  const cleanup = useCallback(tx => {
+    if (Transaction.isUnconfirmStartedExit(tx)) {
+      dispatchAddStartedExitTx(tx)
     }
-  }, [
-    rootNotification,
-    dispatchInvalidateUnconfirmedTx,
-    dispatchRefreshRootchain,
-    primaryWallet,
-    dispatchRefreshAll,
-    unconfirmedTxs,
-    dispatchAddStartedExitTx,
-    setRootNotification
-  ])
 
-  const filterTxs = useCallback(
-    filterFunc => unconfirmedTxs.filter(filterFunc),
-    [unconfirmedTxs]
+    dispatchInvalidateUnconfirmedTx(tx)
+    dispatchRefreshAll(wallet.address)
+  }, [])
+
+  const [setPendingTx] = useRootchainTracker(
+    wallet,
+    dispatchUpdateBlocksToWait,
+    cleanup
   )
 
-  const getRootTxs = useCallback(() => {
-    return filterTxs(
-      unconfirmedTx =>
-        unconfirmedTx.actionType !==
-        TransactionActionTypes.TYPE_CHILDCHAIN_SEND_TOKEN
-    )
-  }, [filterTxs])
-
   useEffect(() => {
-    primaryWallet.current = wallet
-  }, [wallet])
-
-  useEffect(() => {
-    if (primaryWallet.current) {
-      const rootTxs = getRootTxs()
-      setRootchainTxs(rootTxs)
-    } else {
-      setRootchainTxs([])
+    if (unconfirmedTxs.length === 0) {
+      return setPendingTx(null)
     }
-  }, [getRootTxs, unconfirmedTxs, primaryWallet, setRootchainTxs])
+
+    const pendingTx = unconfirmedTxs[0]
+
+    if (pendingTx.actionType !== TYPE_CHILDCHAIN_SEND_TOKEN) {
+      setPendingTx(pendingTx)
+    }
+  }, [unconfirmedTxs])
 
   return null
 }
@@ -103,10 +60,10 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
     transactionActions.addStartedExitTx(dispatch, tx),
   dispatchInvalidateUnconfirmedTx: confirmedTx =>
     transactionActions.invalidateUnconfirmedTx(dispatch, confirmedTx),
-  dispatchRefreshRootchain: address =>
-    walletActions.refreshRootchain(dispatch, address, true),
   dispatchRefreshAll: address =>
-    walletActions.refreshAll(dispatch, address, true)
+    walletActions.refreshAll(dispatch, address, true),
+  dispatchUpdateBlocksToWait: (tx, blocksToWait) =>
+    transactionActions.updateBlocksToWait(dispatch, tx, blocksToWait)
 })
 
 export default connect(
