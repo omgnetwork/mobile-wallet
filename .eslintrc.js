@@ -6,11 +6,11 @@ module.exports = {
       files: ['**/tests/**/*.js']
     }
   ],
-  plugins: ['react', 'react-native', '@typescript-eslint'],
+  plugins: ['react', 'react-native'],
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
-    'plugin:prettier/recommended',
+    'plugin:prettier/recommended'
   ],
   rules: {
     'react/prop-types': 'off',
@@ -37,16 +37,5 @@ module.exports = {
     react: {
       version: 'detect'
     }
-  },
-  overrides: [
-    {
-      files: ["**/*.ts", "**/*.tsx"], 
-      extends:["plugin:@typescript-eslint/recommended"],
-      parser: "@typescript-eslint/parser",
-      rules: {
-        "@typescript-eslint/no-inferrable-types": [0]
-      }
-    }
-  ]
+  }
 }
-

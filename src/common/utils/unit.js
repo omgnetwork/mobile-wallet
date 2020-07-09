@@ -10,23 +10,20 @@ import BigNumber from 'bignumber.js'
  *
  * > convert(1_000_000_000, 18, 9)
  * > 1
+ *
+ * @param {BN|BigDecimal|Number|String} amount
+ * @param {Number|String} fromUnit
+ * @param {Number|String} toUnit
  */
 
-/* Supported only units being used in the app */
-
-type unit = 'ether' | 'gwei' | 'wei'
-
+// Supported only units being used in the app
 const unitMap = {
   ether: 0,
   gwei: 9,
   wei: 18
 }
 
-export const convert = (
-  amount: BigNumber | number | string,
-  fromUnit: number | unit,
-  toUnit: number | unit
-): BigNumber => {
+export const convert = (amount, fromUnit, toUnit) => {
   const stringAmount = amount.toString(10).replace(',', '.')
   const from =
     typeof fromUnit === 'string' ? unitMap[fromUnit.toLowerCase()] : fromUnit
@@ -44,11 +41,6 @@ export const convert = (
   return new BigNumber(stringAmount).times(multiplier)
 }
 
-export const convertToString = (
-  amount: BigNumber | number | string,
-  fromUnit: number | unit,
-  toUnit: number | unit,
-  base: number = 10
-): string => {
+export const convertToString = (amount, fromUnit, toUnit, base = 10) => {
   return convert(amount, fromUnit, toUnit).toString(base)
 }
