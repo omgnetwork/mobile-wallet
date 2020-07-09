@@ -1,5 +1,4 @@
 import { Plasma, web3 } from 'common/clients'
-import { Gas } from 'common/constants'
 import { Mapper } from 'common/utils'
 import BN from 'bn.js'
 import {
@@ -8,7 +7,8 @@ import {
   OmgUtil,
   Utxos,
   TxDetails,
-  Ethereum
+  Ethereum,
+  Wait
 } from 'common/blockchain'
 
 export const getBalances = address => {
@@ -63,17 +63,10 @@ export const mergeListOfUtxos = async (
   return Promise.all(pendingMergeUtxos)
 }
 
-export const standardExit = (exitData, blockchainWallet, options) => {
-  return Plasma.RootChain.startStandardExit({
-    utxoPos: exitData.utxo_pos,
-    outputTx: exitData.txbytes,
-    inclusionProof: exitData.proof,
-    txOptions: {
-      privateKey: blockchainWallet.privateKey,
-      from: blockchainWallet.address,
-      gasPrice: options.gasPrice || Gas.EXIT_GAS_PRICE
-    }
-  })
+export const standardExit = async sendTransactionParams => {
+  const txDetails = await TxDetails.getExit(sendTransactionParams)
+  const { privateKey } = sendTransactionParams
+  return Ethereum.signSendTx(txDetails, privateKey)
 }
 
 export const getStandardExitBond = async () => {
@@ -94,11 +87,37 @@ export const getErrorReason = async hash => {
   }
 }
 
-export const getStandardExitId = (utxoToExit, exitData) => {
+export const exit = async sendTransactionParams => {
+  const { addresses, smallestUnitAmount } = sendTransactionParams
+  const { blknum } = await Utxos.split(sendTransactionParams)
+  const { from } = addresses
+  const { token } = smallestUnitAmount
+
+  await Wait.waitChildChainBlknum(from, blknum)
+
+  const utxoToExit = await Utxos.get(from, {
+    currency: token.contractAddress
+  }).then(latestUtxos => latestUtxos.find(utxo => utxo.blknum === blknum))
+
+  sendTransactionParams.smallestUnitAmount.utxo = utxoToExit
+
+  const { hash } = await standardExit(sendTransactionParams)
+  const exitId = await getStandardExitId(sendTransactionParams)
+
+  return {
+    hash,
+    exitId,
+    blknum: utxoToExit.blknum
+  }
+}
+
+export const getStandardExitId = async ({ smallestUnitAmount }) => {
+  const { utxo } = smallestUnitAmount
+  const exitData = await Plasma.ChildChain.getExitData(utxo)
   return Plasma.RootChain.getStandardExitId({
     txBytes: exitData.txbytes,
     utxoPos: exitData.utxo_pos,
-    isDeposit: utxoToExit.blknum % 1000 !== 0
+    isDeposit: utxo.blknum % 1000 !== 0
   })
 }
 
@@ -118,20 +137,6 @@ export const processExits = (contractAddress, maxExitsToProcess, txOptions) => {
   })
 }
 
-export const getExitData = utxo => {
-  const { amount, blknum, currency, oindex, owner, txindex, utxo_pos } = utxo
-  const params = {
-    amount,
-    blknum,
-    currency,
-    oindex,
-    owner,
-    txindex,
-    utxo_pos
-  }
-  return Plasma.ChildChain.getExitData(params)
-}
-
 export const getExitQueue = async tokenContractAddress => {
   const queue = await Plasma.RootChain.getExitQueue(tokenContractAddress)
   return {
@@ -144,7 +149,12 @@ export const getExitQueue = async tokenContractAddress => {
 }
 
 export const getFees = () => {
-  return Plasma.ChildChain.getFees().then(response => {
-    return response['1']
-  })
+  return Plasma.ChildChain.getFees()
+    .then(response => response['1'])
+    .then(all =>
+      all.map(fee => ({
+        ...fee,
+        amount: fee.amount.toString(10)
+      }))
+    )
 }

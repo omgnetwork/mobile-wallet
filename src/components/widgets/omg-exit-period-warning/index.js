@@ -13,12 +13,14 @@ const OMGExitPeriodWarning = ({ theme, style }) => {
           name='attention'
           color={theme.colors.white}
         />
-        <OMGText style={{ ...styles.headerText, ...styles.text(theme) }}>
+        <OMGText
+          style={[styles.headerText, styles.text(theme)]}
+          weight='regular'>
           A withdrawal will take two weeks to process.
         </OMGText>
       </View>
       <View style={styles.message}>
-        <OMGText style={{ ...styles.messageText, ...styles.text(theme) }}>
+        <OMGText style={[styles.messageText, styles.text(theme)]}>
           The withdrawal period is key to the security architecture of the OMG
           Network.
         </OMGText>
@@ -29,10 +31,12 @@ const OMGExitPeriodWarning = ({ theme, style }) => {
 
 const styles = StyleSheet.create({
   container: theme => ({
-    padding: 16,
+    paddingHorizontal: 20,
+    paddingVertical: 24,
     backgroundColor: theme.colors.primary,
     alignItems: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    borderRadius: 8
   }),
   header: {
     flexDirection: 'row',
@@ -43,19 +47,16 @@ const styles = StyleSheet.create({
   },
 
   headerText: {
-    fontSize: Styles.getResponsiveSize(20, { small: 16, medium: 20 })
+    fontSize: Styles.getResponsiveSize(20, { small: 16, medium: 20 }),
+    marginLeft: 16
   },
   messageText: {
     fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 14 })
   },
   text: theme => ({
     letterSpacing: -0.48,
-    color: theme.colors.white,
-    marginLeft: Styles.getResponsiveSize(18, { small: 8, medium: 12 }),
-    marginRight: Styles.getResponsiveSize(18, { small: 8, medium: 12 })
+    color: theme.colors.white
   })
 })
-
-OMGExitPeriodWarning.prp
 
 export default withTheme(OMGExitPeriodWarning)

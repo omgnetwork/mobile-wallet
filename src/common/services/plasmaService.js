@@ -1,13 +1,11 @@
-import { Datetime, Mapper, Unit } from 'common/utils'
+import { Datetime, Mapper, Unit, BigNumber } from 'common/utils'
 import {
   BlockchainFormatter,
   Plasma,
   Token,
-  Wait,
   Transaction,
   Utxos
 } from 'common/blockchain'
-import Config from 'react-native-config'
 
 export const fetchAssets = async (provider, address) => {
   try {
@@ -94,8 +92,25 @@ export const getFees = async tokens => {
       return token ? [{ ...fee, ...token }] : []
     })
 
+    const sortedByAvailability = (a, b) => {
+      const smallestUnitBalanceA = Unit.convertToString(
+        a.balance,
+        0,
+        a.tokenDecimal
+      )
+      const smallestUnitBalanceB = Unit.convertToString(
+        b.balance,
+        0,
+        b.tokenDecimal
+      )
+      const balancePerAmountA = BigNumber.divide(smallestUnitBalanceA, a.amount)
+      const balancePerAmountB = BigNumber.divide(smallestUnitBalanceB, b.amount)
+
+      return BigNumber.minus(balancePerAmountB, balancePerAmountA)
+    }
+
     return {
-      available,
+      available: available.sort(sortedByAvailability),
       all,
       updatedAt: all[0] ? all[0].updated_at : null
     }
@@ -135,59 +150,26 @@ export const deposit = async sendTransactionParams => {
   }
 }
 
-export const exit = async (blockchainWallet, token, utxos, gasPrice) => {
-  const hasExitQueue = await Token.hasExitQueue(token.contractAddress)
-  const { address, privateKey } = blockchainWallet
-  if (!hasExitQueue) {
-    await Token.createExitQueue(token.contractAddress, {
-      from: address,
-      privateKey,
-      gasPrice
-    })
-  }
+export const hasExitQueue = sendTransactionParams =>
+  Token.hasExitQueue(sendTransactionParams)
 
-  let utxoToExit
-  if (utxos.length === 1) {
-    utxoToExit = utxos[0]
-  } else {
-    const { blknum } = await Utxos.merge(address, privateKey, utxos)
-    await Wait.waitChildChainBlknum(address, blknum)
-    utxoToExit = await Utxos.get(address, {
-      currency: token.contractAddress
-    }).then(latestUtxos => latestUtxos.find(utxo => utxo.blknum === blknum))
-  }
+export const createExitQueue = sendTransactionParams =>
+  Token.createExitQueue(sendTransactionParams)
 
-  const exitData = await Plasma.getExitData(utxoToExit)
-
-  const {
-    transactionHash: hash,
-    blockNumber: startedExitBlkNum,
-    gasUsed
-  } = await Plasma.standardExit(exitData, blockchainWallet, { gasPrice })
-  const exitId = await Plasma.getStandardExitId(utxoToExit, exitData)
+export const exit = async sendTransactionParams => {
+  const { amount, token } = sendTransactionParams.smallestUnitAmount
+  const { from, to } = sendTransactionParams.addresses
+  const { hash, exitId, blknum } = await Plasma.exit(sendTransactionParams)
   const standardExitBond = await Plasma.getStandardExitBond()
-
-  console.log('standard exit hash', hash)
-  await Wait.waitForRootchainTransaction({
-    hash,
-    intervalMs: 1000,
-    confirmationThreshold: 1
-  })
-
-  const { scheduledFinalizationTime: exitableAt } = await Plasma.getExitTime(
-    startedExitBlkNum,
-    utxoToExit.blknum
-  )
 
   return {
     hash,
+    from,
+    to,
     exitId,
-    exitableAt,
-    blknum: utxoToExit.blknum,
-    to: Config.PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS,
-    flatFee: standardExitBond,
-    gasPrice,
-    gasUsed
+    blknum,
+    value: Unit.convertToString(amount, token.tokenDecimal, 0),
+    flatFee: standardExitBond
   }
 }
 

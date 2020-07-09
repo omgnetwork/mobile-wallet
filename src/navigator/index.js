@@ -12,6 +12,7 @@ import TransactionHistoryNavigator from './transaction-history'
 import createWelcomeNavigator from './welcome'
 import WarpPortal from './warp-portal'
 import * as Views from 'components/views'
+import { TransitionPresets } from 'react-navigation-stack'
 
 const MainDrawerNavigator = createMainDrawerNavigator()
 
@@ -110,7 +111,11 @@ export const AppNavigator = createStackNavigator(
   {
     initialRouteName: 'Main',
     initialRouteKey: 'Root',
-    headerMode: 'none'
+    headerMode: 'none',
+    defaultNavigationOptions: {
+      ...TransitionPresets.SlideFromRightIOS,
+      cardStyle: { opacity: 1, backgroundColor: 'transparent' }
+    }
   }
 )
 export const WarpPortalNavigator = WarpPortal

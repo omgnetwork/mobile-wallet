@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import { ethereumActions } from 'common/actions'
@@ -6,6 +6,7 @@ import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { OMGEmpty, OMGFeeSelect, OMGText } from 'components/widgets'
 import { Styles } from 'common/utils'
+import { useLoading } from 'common/hooks'
 
 const ExitSelectFee = ({
   theme,
@@ -15,36 +16,38 @@ const ExitSelectFee = ({
   navigation
 }) => {
   const token = navigation.getParam('token')
-  const utxos = navigation.getParam('utxos')
-  const [loadingFees, setLoadingFees] = useState(false)
+  const amount = navigation.getParam('amount')
+  const utxo = navigation.getParam('utxo')
+  const feeUtxo = navigation.getParam('feeUtxo')
+  const feeToken = navigation.getParam('feeToken')
 
-  useEffect(() => {
-    if (loading.action === 'CHILDCHAIN_FEES') {
-      setLoadingFees(loading.show)
-    }
-  }, [loading.action, loading.show])
+  const [loadingFees] = useLoading(loading, 'ROOTCHAIN_GET_RECOMMENDED_GAS')
 
   useEffect(() => {
     dispatchGetRecommendedGas()
   }, [dispatchGetRecommendedGas])
 
   const navigate = useCallback(
-    fee => {
-      navigation.navigate('ExitForm', {
-        fee,
-        utxos,
-        token
+    feeRate => {
+      navigation.navigate('ExitAddQueue', {
+        feeRate,
+        amount,
+        token,
+        utxo,
+        feeUtxo,
+        feeToken
       })
     },
-    [navigation, token, utxos]
+    [navigation, token, amount]
   )
 
   return (
     <View style={styles.container(theme)}>
-      <OMGText style={styles.headerTitle(theme)} weight='regular'>
+      <OMGText style={styles.title(theme)} weight='regular'>
         Select Transaction Fee
       </OMGText>
       <FlatList
+        style={styles.list}
         data={gasOptions || []}
         keyExtractor={item => item.speed}
         ItemSeparatorComponent={() => <Divider theme={theme} />}
@@ -72,20 +75,21 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     flexDirection: 'column',
-    paddingHorizontal: 16,
-    paddingVertical: Styles.getResponsiveSize(16, { small: 8, medium: 12 }),
+    paddingHorizontal: 26,
     backgroundColor: theme.colors.black5
   }),
-  headerTitle: theme => ({
+  title: theme => ({
     fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     color: theme.colors.gray2,
-    marginTop: 8,
     textTransform: 'uppercase'
   }),
   divider: theme => ({
     backgroundColor: theme.colors.black2,
     height: 1
   }),
+  list: {
+    marginTop: 16
+  },
   emptyContainer: {
     flexGrow: 1,
     justifyContent: 'center'

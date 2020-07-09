@@ -5,7 +5,7 @@ import { StyleSheet, StatusBar } from 'react-native'
 import { withNavigationFocus, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { useProgressiveFeedback } from 'common/hooks'
-import { Alerter } from 'common/utils'
+import { Alerter, Styles } from 'common/utils'
 import Balance from './Balance'
 import { OMGBottomSheet, OMGActionSheetMenus } from 'components/widgets'
 import { transactionActions } from 'common/actions'
@@ -142,7 +142,10 @@ const styles = StyleSheet.create({
         : theme.colors.primary
   }),
   bottomSheet: insets => ({
-    paddingBottom: insets.bottom
+    paddingBottom: Math.max(
+      insets.bottom,
+      Styles.getResponsiveSize(24, { small: 16, medium: 16 })
+    )
   })
 })
 

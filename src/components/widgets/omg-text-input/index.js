@@ -22,10 +22,10 @@ const OMGTextInput = ({
   onSubmitEditing,
   selectionColor,
   onBlur,
-  disabled,
+  editable = true,
   theme
 }) => {
-  const inactiveUnderlineColor = hexToRgb(theme.colors.blue, 0.7)
+  const inactiveUnderlineColor = hexToRgb(theme.colors.blue, 0.5)
   const activeUnderlineColor = theme.colors.blue
 
   const [underlineColor, setUnderlineColor] = useState(inactiveUnderlineColor)
@@ -44,7 +44,7 @@ const OMGTextInput = ({
           inputRef.current = text
         }
       }}
-      underlineColorAndroid={hideUnderline ? 'transparent' : underlineColor}
+      underlineColorAndroid={'transparent'}
       onBlur={() => {
         setUnderlineColor(inactiveUnderlineColor)
         onBlur?.()
@@ -59,7 +59,7 @@ const OMGTextInput = ({
       onSubmitEditing={onSubmitEditing}
       returnKeyType={returnKeyType || 'done'}
       numberOfLines={numberOfLines}
-      editable={disabled === undefined ? true : !disabled}
+      editable={editable}
       multiline={numberOfLines > 1}
       defaultValue={defaultValue}
       value={value}
@@ -81,11 +81,10 @@ const OMGTextInput = ({
 const styles = StyleSheet.create({
   textInput: (underlineColor, hideUnderline) => ({
     fontFamily: 'MessinaSansMono-Book',
-    paddingVertical: Platform.OS === 'ios' ? 8 : 0,
+    paddingVertical: 8,
     marginLeft: Platform.OS === 'ios' ? 0 : -4,
     borderBottomWidth: hideUnderline ? 0 : 1,
     borderColor: underlineColor,
-    paddingBottom: hideUnderline ? 8 : 16,
     letterSpacing: -0.64,
     fontSize: 16,
     lineHeight: 19

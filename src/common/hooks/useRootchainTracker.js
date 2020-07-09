@@ -1,105 +1,108 @@
 import Config from 'react-native-config'
 import { useEffect, useCallback, useState } from 'react'
 import { NotificationMessages, TransactionActionTypes } from 'common/constants'
-import { Wait } from 'common/blockchain'
+import { Wait, Plasma } from 'common/blockchain'
+import { notificationService } from 'common/services'
 
-const getConfirmationsThreshold = tx => {
-  if (tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT) {
-    return Config.CHILDCHAIN_DEPOSIT_CONFIRMATION_BLOCKS
-  } else if (tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_EXIT) {
-    return Config.CHILDCHAIN_EXIT_CONFIRMATION_BLOCKS
-  } else {
-    return Config.ROOTCHAIN_TRANSFER_CONFIRMATION_BLOCKS
+const {
+  TYPE_CHILDCHAIN_DEPOSIT,
+  TYPE_CHILDCHAIN_EXIT,
+  TYPE_CHILDCHAIN_PROCESS_EXIT
+} = TransactionActionTypes
+
+const { sendNotification } = notificationService
+
+const getConfirmationsThreshold = actionType => {
+  switch (actionType) {
+    case TYPE_CHILDCHAIN_DEPOSIT:
+      return Config.CHILDCHAIN_DEPOSIT_CONFIRMATION_BLOCKS
+    case TYPE_CHILDCHAIN_EXIT:
+      return Config.CHILDCHAIN_EXIT_CONFIRMATION_BLOCKS
+    default:
+      return Config.ROOTCHAIN_TRANSFER_CONFIRMATION_BLOCKS
   }
 }
 
-const useRootchainTracker = wallet => {
-  const [pendingRootchainTxs, setUnconfirmedRootchainTxs] = useState([])
-  const [notification, setNotification] = useState(null)
+const useRootchainTracker = (
+  { name: walletName },
+  dispatchUpdateBlocksToWait,
+  cleanup
+) => {
+  const [pendingTx, setPendingTx] = useState(null)
 
   const buildNotification = useCallback(
-    confirmedTx => {
-      if (
-        confirmedTx.actionType ===
-        TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT
-      ) {
-        return {
-          ...NotificationMessages.NOTIFY_TRANSACTION_DEPOSITED(
-            wallet.current.name,
-            confirmedTx.value,
-            confirmedTx.symbol
-          ),
-          type: 'all',
-          confirmedTxs: [confirmedTx]
-        }
-      } else if (
-        confirmedTx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_EXIT
-      ) {
-        return {
-          ...NotificationMessages.NOTIFY_TRANSACTION_START_STANDARD_EXITED(
-            wallet.current.name,
-            confirmedTx.value,
-            confirmedTx.symbol
-          ),
-          type: 'childchain',
-          confirmedTxs: [confirmedTx]
-        }
-      } else if (
-        confirmedTx.actionType ===
-        TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT
-      ) {
-        return {
-          ...NotificationMessages.NOTIFY_TRANSACTION_PROCESSED_EXIT(
-            wallet.current.name,
-            confirmedTx.value,
-            confirmedTx.symbol
-          ),
-          type: 'childchain',
-          confirmedTxs: [confirmedTx]
-        }
-      } else {
-        return {
-          ...NotificationMessages.NOTIFY_TRANSACTION_SENT_ETH_NETWORK(
-            wallet.current.name,
-            confirmedTx.value,
-            confirmedTx.symbol
-          ),
-          type: 'rootchain',
-          confirmedTxs: [confirmedTx]
-        }
+    async ({ actionType, value, symbol }) => {
+      switch (actionType) {
+        case TYPE_CHILDCHAIN_DEPOSIT:
+          return NotificationMessages.NOTIFY_TRANSACTION_DEPOSITED(
+            walletName,
+            value,
+            symbol
+          )
+        case TYPE_CHILDCHAIN_EXIT:
+          return NotificationMessages.NOTIFY_TRANSACTION_START_STANDARD_EXITED(
+            walletName,
+            value,
+            symbol
+          )
+        case TYPE_CHILDCHAIN_PROCESS_EXIT:
+          return NotificationMessages.NOTIFY_TRANSACTION_PROCESSED_EXIT(
+            walletName,
+            value,
+            symbol
+          )
+        default:
+          return NotificationMessages.NOTIFY_TRANSACTION_SENT_ETH_NETWORK(
+            walletName,
+            value,
+            symbol
+          )
       }
     },
-    [wallet]
+    [walletName]
   )
 
-  const track = useCallback(async () => {
-    const latestPendingTx = pendingRootchainTxs.slice(-1).pop()
-    const receipt = await Wait.waitForRootchainTransaction({
-      hash: latestPendingTx.hash,
-      intervalMs: 3000,
-      confirmationThreshold: getConfirmationsThreshold(latestPendingTx),
-      onCountdown: remaining =>
-        console.log(`Confirmation is remaining by ${remaining} blocks`)
-    })
-    if (receipt) {
-      const notificationTxPayload = {
-        ...latestPendingTx,
-        rootchainBlockNumber: receipt.blockNumber,
-        gasUsed: receipt.gasUsed
-      }
-      const payload = buildNotification(notificationTxPayload)
-      setNotification(payload)
-      setUnconfirmedRootchainTxs(pendingRootchainTxs.slice(0, -1))
+  const waitForConfirmation = useCallback(
+    ({ hash, actionType }) => {
+      return Wait.waitForBlockConfirmation({
+        hash,
+        intervalMs: 5000,
+        blocksToWait: getConfirmationsThreshold(actionType),
+        onCountdown: remaining => {
+          console.log(`Confirmation is remaining by ${remaining} blocks`)
+          dispatchUpdateBlocksToWait({ hash }, remaining)
+        }
+      })
+    },
+    [buildNotification]
+  )
+
+  const addExitTimeIfNeeded = useCallback(async (tx, receipt) => {
+    if (tx.actionType === TransactionActionTypes.TYPE_CHILDCHAIN_EXIT) {
+      const {
+        scheduledFinalizationTime: exitableAt
+      } = await Plasma.getExitTime(receipt.blockNumber, tx.blknum)
+      return { ...tx, exitableAt, gasUsed: receipt.gasUsed }
+    } else {
+      return tx
     }
-  }, [buildNotification, pendingRootchainTxs])
+  }, [])
 
   useEffect(() => {
-    if (pendingRootchainTxs.length) {
-      track()
-    }
-  }, [pendingRootchainTxs, track])
+    if (pendingTx) {
+      const { waitForReceipt, cancel } = waitForConfirmation(pendingTx)
 
-  return [notification, setNotification, setUnconfirmedRootchainTxs]
+      waitForReceipt
+        .then(receipt => addExitTimeIfNeeded(pendingTx, receipt))
+        .then(buildNotification)
+        .then(sendNotification)
+        .then(() => cleanup(pendingTx))
+
+      return cancel
+    }
+  }, [pendingTx?.hash])
+
+  return [setPendingTx]
 }
 
 export default useRootchainTracker

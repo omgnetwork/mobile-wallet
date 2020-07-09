@@ -1,9 +1,9 @@
 import { ContractAddress } from 'common/constants'
 import { Plasma, web3 } from 'common/clients'
-import { ContractABI, Ethereum } from 'common/blockchain'
+import { ContractABI, Ethereum, Contract } from 'common/blockchain'
 import { Gas } from 'common/constants'
 
-export const getTransferEth = ({
+export const getTransferEth = async ({
   addresses,
   smallestUnitAmount,
   gasOptions
@@ -21,7 +21,7 @@ export const getTransferEth = ({
   }
 }
 
-export const getTransferErc20 = ({
+export const getTransferErc20 = async ({
   addresses,
   smallestUnitAmount,
   gasOptions
@@ -91,8 +91,52 @@ export const getApproveErc20 = async ({
   return {
     from,
     to: token.contractAddress,
+    data: erc20Contract.methods.approve(erc20VaultAddress, amount).encodeABI(),
     gas: gas || Gas.DEPOSIT_APPROVED_ERC20_GAS_USED,
-    gasPrice,
-    data: erc20Contract.methods.approve(erc20VaultAddress, amount).encodeABI()
+    gasPrice
+  }
+}
+
+export const getExit = async ({
+  smallestUnitAmount,
+  addresses,
+  gasOptions
+}) => {
+  const { from } = addresses
+  const { utxo } = smallestUnitAmount
+  const { gas, gasPrice } = gasOptions
+  const { utxo_pos, txbytes, proof } = await Plasma.ChildChain.getExitData(utxo)
+  const { contract, address, bonds } = await Contract.getPaymentExitGame()
+  return {
+    from,
+    to: address,
+    value: bonds.standardExit,
+    data: contract.methods
+      .startStandardExit([utxo_pos.toString(), txbytes, proof])
+      .encodeABI(),
+    gas: gas || Gas.EXIT_ESTIMATED_GAS_USED,
+    gasPrice
+  }
+}
+
+export const getCreateExitQueue = async ({
+  addresses,
+  smallestUnitAmount,
+  gasOptions
+}) => {
+  const { from } = addresses
+  const { token } = smallestUnitAmount
+  const { gas, gasPrice } = gasOptions
+  const contract = Plasma.RootChain.plasmaContract
+  const vaultId = token.contractAddress === ContractAddress.ETH_ADDRESS ? 1 : 2
+
+  return {
+    from,
+    to: Plasma.RootChain.plasmaContractAddress,
+    data: contract.methods
+      .addExitQueue(vaultId, token.contractAddress)
+      .encodeABI(),
+    gas: gas || Gas.ADD_EXIT_QUEUE_GAS_USED,
+    gasPrice
   }
 }

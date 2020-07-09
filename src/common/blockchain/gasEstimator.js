@@ -1,20 +1,33 @@
 import { Gas } from 'common/constants'
-import {
-  TxDetails,
-  Plasma,
-  Transaction,
-  Contract,
-  Ethereum
-} from 'common/blockchain'
+import { TxDetails, Contract, Ethereum } from 'common/blockchain'
 import { web3 } from 'common/clients'
 
+const OVER_ESTIMATED_RATIO = 1.1
+
+export const estimateTransferChildchain = async () => 1
+
+export const estimateTransferETH = async () => Gas.MINIMUM_GAS_USED
+
 export const estimateTransferErc20 = sendTransactionParams => {
-  const txDetails = TxDetails.getTransferErc20(sendTransactionParams)
-  return web3EstimateGas(txDetails)
+  return TxDetails.getTransferErc20(sendTransactionParams).then(estimateGas)
 }
 
-export const estimateTransferETH = () => {
-  return Promise.resolve(Gas.MINIMUM_GAS_USED)
+export const estimateDeposit = sendTransactionParams => {
+  return TxDetails.getDeposit(sendTransactionParams)
+    .then(estimateGas)
+    .then(overEstimated)
+}
+
+export const estimateExit = sendTransactionParams => {
+  return TxDetails.getExit(sendTransactionParams)
+    .then(estimateGas)
+    .then(overEstimated)
+}
+
+export const estimateCreateExitQueue = sendTransactionParams => {
+  return TxDetails.getCreateExitQueue(sendTransactionParams)
+    .then(estimateGas)
+    .then(overEstimated)
 }
 
 export const estimateApproveErc20 = async sendTransactionParams => {
@@ -26,51 +39,16 @@ export const estimateApproveErc20 = async sendTransactionParams => {
     return 0
   }
 
-  const approveErc20Tx = await TxDetails.getApproveErc20(sendTransactionParams)
   const allowance = await Contract.getErc20Allowance(sendTransactionParams)
-  const estimatedErc20ApprovalGas = await web3EstimateGas(approveErc20Tx)
+  const txDetails = await TxDetails.getApproveErc20(sendTransactionParams)
+  const estimatedErc20ApprovalGas = await estimateGas(txDetails)
 
   return allowance !== '0'
     ? estimatedErc20ApprovalGas * 2
     : estimatedErc20ApprovalGas
 }
 
-export const estimateDeposit = async sendTransactionParams => {
-  const depositTxOptions = await TxDetails.getDeposit(sendTransactionParams)
-
-  // Increase the gas estimation a bit to avoid transaction reverted because the gas limit is too low.
-  return web3EstimateGas(depositTxOptions).then(gas => parseInt(gas * 1.1))
-}
-
-export const estimateExit = async (
-  blockchainWallet,
-  utxos,
-  includeExitBond = false
-) => {
-  const sampleUtxoToExit = utxos[0]
-  const exitTx = await Plasma.getExitData(sampleUtxoToExit)
-  const from = blockchainWallet.address
-  const gas = Gas.EXIT_ESTIMATED_GAS_USED
-  const gasPrice = Gas.EXIT_GAS_PRICE
-  const txDetails = await Transaction.getExitDetails(exitTx, {
-    from,
-    gas,
-    gasPrice
-  })
-  const bondFee = txDetails.value / gasPrice
-  try {
-    const exitGas = await web3EstimateGas(txDetails)
-    if (includeExitBond) {
-      return exitGas + bondFee
-    } else {
-      return exitGas
-    }
-  } catch (err) {
-    return Gas.EXIT_ESTIMATED_GAS_USED
-  }
-}
-
-export const web3EstimateGas = txDetails => {
+export const estimateGas = txDetails => {
   return new Promise((resolve, reject) => {
     web3.eth.estimateGas(txDetails, (err, result) => {
       if (err) return reject(err)
@@ -79,6 +57,4 @@ export const web3EstimateGas = txDetails => {
   })
 }
 
-export const estimateTransferChildchain = () => {
-  return Promise.resolve(1)
-}
+const overEstimated = gas => parseInt(gas * OVER_ESTIMATED_RATIO)

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import {
@@ -8,7 +8,7 @@ import {
 } from 'common/hooks'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
-import { BigNumber } from 'common/utils'
+import { BigNumber, Styles } from 'common/utils'
 import { OMGEditItem, OMGText, OMGButton } from 'components/widgets'
 import { ContractAddress } from 'common/constants'
 import { plasmaActions, ethereumActions } from 'common/actions'
@@ -43,15 +43,21 @@ const TransferReview = ({
   const feeToken = assets.find(
     token => token.contractAddress === feeRate.currency
   )
-  const sendTransactionParams = BlockchainParams.createSendTransactionParams({
-    blockchainWallet,
-    toAddress,
-    token,
-    amount,
-    gas: null,
-    gasPrice: feeRate.amount,
-    gasToken: feeToken
-  })
+  const [sendTransactionParams, setSendTransactionParams] = useState()
+
+  useEffect(() => {
+    setSendTransactionParams(
+      BlockchainParams.createSendTransactionParams({
+        blockchainWallet,
+        toAddress,
+        token,
+        amount,
+        gas: null,
+        gasPrice: feeRate.amount,
+        gasToken: feeToken
+      })
+    )
+  }, [blockchainWallet, toAddress, token, amount, feeRate, feeToken])
 
   const [
     estimatedFee,
@@ -83,14 +89,20 @@ const TransferReview = ({
   }, [transactionType, navigation])
 
   const onSubmit = useCallback(() => {
-    sendTransactionParams.gasOptions.gas = estimatedGasUsed
+    const withGasSendTransactionParams = {
+      ...sendTransactionParams,
+      gasOptions: {
+        ...sendTransactionParams.gasOptions,
+        gas: estimatedGasUsed
+      }
+    }
     switch (transactionType) {
       case TYPE_TRANSFER_CHILDCHAIN:
-        return plasmaTransfer(sendTransactionParams)
+        return plasmaTransfer(withGasSendTransactionParams)
       case TYPE_TRANSFER_ROOTCHAIN:
-        return ethereumTransfer(sendTransactionParams)
+        return ethereumTransfer(withGasSendTransactionParams)
       case TYPE_DEPOSIT:
-        return depositTransfer(sendTransactionParams)
+        return depositTransfer(withGasSendTransactionParams)
     }
   }, [
     ethereumTransfer,
@@ -120,13 +132,13 @@ const TransferReview = ({
 
   return (
     <View style={styles.container}>
-      <OMGText style={styles.title} weight='book'>
+      <OMGText style={styles.title} weight='regular'>
         REVIEW
       </OMGText>
       <OMGEditItem
         title='Amount'
         rightFirstLine={`${amount} ${token.tokenSymbol}`}
-        rightSecondLine={`${amountUsd} USD`}
+        rightThirdLine={`${amountUsd} USD`}
         onPress={onPressEditAmount}
         style={[styles.marginMedium, styles.paddingMedium]}
       />
@@ -134,7 +146,7 @@ const TransferReview = ({
         title='Estimated Fee'
         loading={!estimatedFee}
         rightFirstLine={`${estimatedFee} ${estimatedFeeSymbol}`}
-        rightSecondLine={`${estimatedFeeUsd} USD`}
+        rightThirdLine={`${estimatedFeeUsd} USD`}
         onPress={onPressEditFee}
         style={[styles.marginMedium, styles.paddingMedium]}
       />
@@ -143,7 +155,7 @@ const TransferReview = ({
         rightFirstLine={
           transactionType === TYPE_DEPOSIT ? 'OMG Network' : 'Address'
         }
-        rightSecondLine={toAddress}
+        rightThirdLine={toAddress}
         editable={transactionType !== TYPE_DEPOSIT}
         onPress={onPressEditAddress}
         style={[styles.marginMedium, styles.paddingMedium]}
@@ -166,13 +178,6 @@ const TransferReview = ({
             ? 'Sending...'
             : 'Confirm Transaction'}
         </OMGButton>
-        <OMGText
-          style={styles.textEstimateTime(
-            sufficientBalance && transactionType === TYPE_DEPOSIT
-          )}
-          weight='regular'>
-          This process is usually takes about 15 - 30 seconds.
-        </OMGText>
       </View>
     </View>
   )
@@ -187,8 +192,9 @@ const createStyles = theme =>
       backgroundColor: theme.colors.black5
     },
     title: {
+      fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
       color: theme.colors.gray2,
-      lineHeight: 17
+      textTransform: 'uppercase'
     },
     errorMsg: {
       color: theme.colors.red,

@@ -6,6 +6,7 @@ import { StyleSheet, View } from 'react-native'
 import { plasmaActions } from 'common/actions'
 import { OMGListPlasmaFee, OMGText } from 'components/widgets'
 import { Token } from 'common/blockchain'
+import { Styles } from 'common/utils'
 
 const TransferChoosePlasmaFee = ({
   theme,
@@ -66,8 +67,8 @@ const TransferChoosePlasmaFee = ({
 
   return (
     <View style={styles.container}>
-      <OMGText style={styles.title} weight='book'>
-        SELECT TOKEN TO PAY FEE
+      <OMGText style={styles.title} weight='regular'>
+        Amount
       </OMGText>
       <OMGListPlasmaFee
         fees={fees}
@@ -90,8 +91,9 @@ const createStyles = theme =>
       backgroundColor: theme.colors.black5
     },
     title: {
-      color: theme.colors.gray2,
-      lineHeight: 17
+      fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+      textTransform: 'uppercase',
+      color: theme.colors.gray2
     },
     list: {
       marginTop: 26

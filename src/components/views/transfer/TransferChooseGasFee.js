@@ -7,6 +7,7 @@ import { ethereumActions } from 'common/actions'
 import { OMGListGasFee, OMGText } from 'components/widgets'
 import { ContractAddress, BlockchainNetworkType } from 'common/constants'
 import { getType, TYPE_DEPOSIT } from 'components/views/transfer/transferHelper'
+import { Styles } from 'common/utils'
 
 const TransferChooseGasFee = ({
   theme,
@@ -88,8 +89,9 @@ const createStyles = theme =>
       backgroundColor: theme.colors.black5
     },
     title: {
-      color: theme.colors.gray2,
-      lineHeight: 17
+      fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
+      textTransform: 'uppercase',
+      color: theme.colors.gray2
     },
     list: {
       marginTop: 4

@@ -53,6 +53,7 @@ const OMGAssetList = ({
             onRefresh={onRefresh}
             refreshing={loading}
             keyExtractor={keyExtractor}
+            showsVerticalScrollIndicator={false}
             ListEmptyComponent={
               <OMGEmpty {...getEmptyStatePayload()} style={styles.emptyState} />
             }

@@ -2,8 +2,8 @@ import React, { useCallback, useState, useEffect } from 'react'
 import { withTheme } from 'react-native-paper'
 import { View, StyleSheet, Platform, KeyboardAvoidingView } from 'react-native'
 import { Validator } from 'common/blockchain'
-import { Header } from 'react-navigation-stack'
 import { Dimensions } from 'common/utils'
+import { useHeaderHeight } from 'react-navigation-stack'
 import { withNavigation } from 'react-navigation'
 import {
   OMGAddressInput,
@@ -34,12 +34,14 @@ const TransferSelectAddress = ({ theme, navigation }) => {
 
   const keyboardAvoidingBehavior = Platform.OS === 'ios' ? 'padding' : null
   const statusBarHeight = Dimensions.getStatusBarHeight()
+  const headerHeight = useHeaderHeight()
+
   return (
     <OMGDismissKeyboard style={styles.container}>
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior={keyboardAvoidingBehavior}
-        keyboardVerticalOffset={Header.HEIGHT + statusBarHeight}>
+        keyboardVerticalOffset={headerHeight + statusBarHeight}>
         <OMGText style={styles.title} weight='book'>
           SEND TO
         </OMGText>

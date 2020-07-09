@@ -6,23 +6,40 @@ import { Styles } from 'common/utils'
 
 const OMGEditItem = ({
   title,
+  subtitle,
   theme,
   rightFirstLine,
   rightSecondLine,
+  rightThirdLine,
+  firstLineEllipsizeMode = 'middle',
+  secondLineEllipsizeMode = 'middle',
+  thirdLineEllipsizeMode = 'middle',
+  error,
   editable = true,
+  textStyle = {},
   style,
   loading,
   onPress
 }) => {
   return (
     <View style={[styles.container(theme), style]}>
-      <View style={[styles.column, styles.stretch]}>
-        <OMGText style={[styles.textWhite(theme), styles.textBig]}>
+      <View style={styles.column}>
+        <OMGText style={[styles.textWhite(theme), styles.textBig, textStyle]}>
           {title}
         </OMGText>
+        {subtitle && (
+          <OMGText
+            style={[
+              styles.textGray(theme),
+              styles.textSmall,
+              styles.smallTextMargin
+            ]}>
+            {subtitle}
+          </OMGText>
+        )}
         {editable && (
           <TouchableOpacity
-            style={[styles.row, styles.textMargin]}
+            style={[styles.row, styles.smallTextMargin]}
             onPress={onPress}>
             <OMGText
               style={[
@@ -36,24 +53,51 @@ const OMGEditItem = ({
           </TouchableOpacity>
         )}
       </View>
-      <View style={[styles.column, styles.alignRight, styles.textSingleLine]}>
-        {loading ? (
-          <OMGEmpty loading={loading} style={styles.alignRight} />
-        ) : (
+      <View style={[styles.column]}>
+        {loading && <OMGEmpty loading={loading} style={styles.alignRight} />}
+        {!loading && (
           <>
-            <OMGText style={[styles.textWhite(theme), styles.textBig]}>
-              {rightFirstLine}
-            </OMGText>
-            <OMGText
-              numberOfLines={1}
-              ellipsizeMode='tail'
-              style={[
-                styles.textGray(theme),
-                styles.textSmall,
-                styles.textMargin
-              ]}>
-              {rightSecondLine}
-            </OMGText>
+            {rightFirstLine && (
+              <OMGText
+                numberOfLines={1}
+                ellipsizeMode={firstLineEllipsizeMode}
+                style={[
+                  styles.textFirstLine(theme, error),
+                  styles.textBig,
+                  styles.alignRight,
+                  textStyle
+                ]}>
+                {error ? 'Estimation Failed' : rightFirstLine}
+              </OMGText>
+            )}
+            {rightSecondLine && (
+              <OMGText
+                numberOfLines={1}
+                ellipsizeMode={secondLineEllipsizeMode}
+                style={[
+                  styles.textWhite(theme),
+                  styles.textBig,
+                  styles.smallTextMargin,
+                  styles.alignRight,
+                  textStyle
+                ]}>
+                {!error && rightSecondLine}
+              </OMGText>
+            )}
+            {rightThirdLine && (
+              <OMGText
+                numberOfLines={1}
+                ellipsizeMode={thirdLineEllipsizeMode}
+                style={[
+                  styles.textGray(theme),
+                  styles.textSmall,
+                  styles.smallTextMargin,
+                  styles.alignRight,
+                  textStyle
+                ]}>
+                {!error && rightThirdLine}
+              </OMGText>
+            )}
           </>
         )}
       </View>
@@ -64,18 +108,19 @@ const OMGEditItem = ({
 const styles = StyleSheet.create({
   container: theme => ({
     flexDirection: 'row',
-    backgroundColor: theme.colors.gray7
+    backgroundColor: theme.colors.gray7,
+    borderRadius: 8
   }),
   column: {
-    flexDirection: 'column'
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  stretch: {
+    flexDirection: 'column',
     flex: 1
   },
+  row: {
+    flexDirection: 'row'
+  },
+  textFirstLine: (theme, error) => ({
+    color: error ? theme.colors.gray2 : theme.colors.white
+  }),
   textWhite: theme => ({
     color: theme.colors.white
   }),
@@ -94,14 +139,11 @@ const styles = StyleSheet.create({
     letterSpacing: -0.64
   },
   alignRight: {
-    marginLeft: 'auto',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+    textAlign: 'right'
   },
-  textMargin: {
-    marginTop: 10
-  },
-  textSingleLine: {
-    flex: 1
+  smallTextMargin: {
+    marginTop: 4
   },
   smallMarginRight: {
     marginRight: 4

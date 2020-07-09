@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, SafeAreaView } from 'react-native'
-import { OMGStatusBar, OMGHeader } from 'components/widgets'
+import { OMGFontIcon, OMGText, OMGStatusBar } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 
@@ -14,7 +14,17 @@ const CreateWallet = ({ theme, navigation }) => {
         backgroundColor={theme.colors.black5}
       />
       <View style={styles.contentContainer(theme)}>
-        <OMGHeader title='Create Wallet' onPress={() => navigation.goBack()} />
+        <View style={styles.header}>
+          <OMGFontIcon
+            name='chevron-left'
+            size={18}
+            color={theme.colors.white}
+            style={styles.headerIcon}
+            onPress={() => navigation.goBack()}
+          />
+          <OMGText style={styles.headerTitle(theme)}>Create Wallet</OMGText>
+        </View>
+
         <CreateWalletNavigator navigation={navigation} />
       </View>
     </SafeAreaView>
@@ -30,6 +40,22 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: theme.colors.black5
+  }),
+  header: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 16
+  },
+  headerIcon: {
+    padding: 8,
+    marginLeft: -8
+  },
+  headerTitle: theme => ({
+    fontSize: 18,
+    paddingVertical: 24,
+    color: theme.colors.white,
+    marginLeft: 8,
+    textTransform: 'uppercase'
   })
 })
 

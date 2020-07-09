@@ -68,6 +68,20 @@ export const transactionReducer = (
           unconfirmedTx => unconfirmedTx.hash !== action.data.confirmedTx.hash
         )
       }
+    case 'TRANSACTION/UPDATE_BLOCKS_TO_WAIT/OK':
+      return {
+        ...state,
+        unconfirmedTxs: state.unconfirmedTxs.map(unconfirmedTx => {
+          if (unconfirmedTx.hash === action.data.confirmedTx.hash) {
+            return {
+              ...unconfirmedTx,
+              blocksToWait: action.data.blocksToWait
+            }
+          } else {
+            return unconfirmedTx
+          }
+        })
+      }
     case 'WALLET/DELETE_ALL/OK':
     case 'SETTING/SET_PRIMARY_WALLET/OK':
       return {

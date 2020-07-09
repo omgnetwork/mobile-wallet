@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import Clipboard from '@react-native-community/clipboard'
-import { SafeAreaView, withNavigation } from 'react-navigation'
+import { SafeAreaView, withNavigationFocus } from 'react-navigation'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { walletSwitcherActions } from 'common/actions'
@@ -36,9 +36,9 @@ const OMGDrawerContent = ({
 
   const closeDrawerAndNavigate = (destination, params = {}) => {
     navigation.navigate(destination, params)
-    requestAnimationFrame(() => {
+    setTimeout(() => {
       navigation.closeDrawer()
-    })
+    }, 500)
   }
 
   const openIntercom = () => {
@@ -272,4 +272,4 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNavigation(withTheme(OMGDrawerContent)))
+)(withNavigationFocus(withTheme(OMGDrawerContent)))
