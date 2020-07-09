@@ -65,7 +65,7 @@ const ExitSelectAmount = ({
         key => tokenMap[key].tokenSymbol
       )
       setErrorMsg(
-        `Deposit at least one of accepted fees to proceed. Accepted fees are ${tokenSymbols.join(
+        `Deposit at least one of accepted fee currencies to proceed. Accepted fee currencies are ${tokenSymbols.join(
           ', '
         )}.`
       )

@@ -59,13 +59,13 @@ const useProgressiveFeedback = (
         case TransactionActionTypes.TYPE_CHILDCHAIN_DEPOSIT:
           return pending
             ? blocksToWait
-              ? `Confirmation is remaining by ${blocksToWait} blocks`
+              ? `${blocksToWait} blocks remaining until confirmation`
               : 'Please wait'
             : 'Your funds are now on the OMG Network!'
         case TransactionActionTypes.TYPE_CHILDCHAIN_EXIT:
           return pending
             ? blocksToWait
-              ? `Confirmation is remaining by ${blocksToWait} blocks`
+              ? `${blocksToWait} blocks remaining until confirmation`
               : 'Please wait'
             : 'Your withdrawal is pending. We will notify you once it finalizes.'
         case TransactionActionTypes.TYPE_CHILDCHAIN_PROCESS_EXIT:
