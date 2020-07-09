@@ -23,7 +23,8 @@ import {
   BlockchainFormatter,
   BlockchainParams
 } from 'common/blockchain'
-import { Styles, Formatter, Unit } from 'common/utils'
+import { Styles, Formatter, Unit, BigNumber } from 'common/utils'
+import { ContractAddress } from 'common/constants'
 
 const ExitReview = ({
   theme,
@@ -81,10 +82,15 @@ const ExitReview = ({
     sendTransactionParams
   })
 
+  const splitFee =
+    feeToken.contractAddress === ContractAddress.ETH_ADDRESS
+      ? Unit.convertToString(feeToken.amount, feeToken.tokenDecimal, 0)
+      : '0'
+
   const [sufficientBalance, minimumAmount] = useCheckBalanceAvailability({
     sendTransactionParams,
     estimatedFee,
-    fixedCost: exitBond
+    fixedCost: BigNumber.plus(exitBond, splitFee)
   })
 
   const [loadingBalance] = useLoading(loading, 'ROOTCHAIN_FETCH_ASSETS')
@@ -160,7 +166,7 @@ const ExitReview = ({
               <OMGText style={styles.errorMsg(theme)} weight='regular'>
                 {insufficientBalanceError
                   ? `Require at least ${minimumAmount} ${gasToken.tokenSymbol} to proceed.`
-                  : `The transaction might be failed.`}
+                  : `The transaction might fail.`}
               </OMGText>
             )}
             <OMGButton
