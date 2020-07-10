@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { withNavigation, ScrollView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Animated, StyleSheet, View } from 'react-native'
@@ -6,12 +6,24 @@ import { Dimensions } from 'common/utils'
 
 const width = Dimensions.windowWidth
 
-const OMGDotViewPager = ({ theme, children }) => {
+const OMGDotViewPager = ({ theme, children, onPageChanged }) => {
   const scrollX = new Animated.Value(0)
   const position = Animated.divide(scrollX, width)
+
+  let currentPage = 0
   const handleScroll = event => {
     Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }])(event)
+    const { contentOffset, contentSize } = event.nativeEvent
+    const totalChildrenViews = children.length
+    const childrenViewWidth = parseInt(contentSize.width / totalChildrenViews)
+    const onFinishScrolling = contentOffset.x % childrenViewWidth === 0
+    const page = parseInt(contentOffset.x / childrenViewWidth)
+    if (onFinishScrolling && currentPage !== page) {
+      currentPage = page
+      onPageChanged(page)
+    }
   }
+
   return (
     <View style={styles.container}>
       <ScrollView
