@@ -6,8 +6,6 @@ const X_HEIGHT = 812
 const XSMAX_WIDTH = 414
 const XSMAX_HEIGHT = 896
 
-const { height: W_HEIGHT, width: W_WIDTH } = Dimensions.get('window')
-
 export let isIPhoneX = false
 
 export const windowWidth = Math.round(Dimensions.get('window').width)
@@ -20,6 +18,8 @@ export const bottomBarHeight = Styles.getResponsiveSize(88, {
   small: 72,
   medium: 80
 })
+
+const { height: W_HEIGHT, width: W_WIDTH } = Dimensions.get('window')
 
 if (Platform.OS === 'ios' && !Platform.isPad && !Platform.isTVOS) {
   isIPhoneX =
