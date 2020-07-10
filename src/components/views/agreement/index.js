@@ -3,10 +3,10 @@ import { View, ScrollView, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { OMGText, OMGButton, OMGStatusBar } from 'components/widgets'
-import { OnboardingDisclaimer } from './assets'
+import { OnboardingAgreement } from './assets'
 import { Styles } from 'common/utils'
 
-const Disclaimer = ({ navigation, theme }) => {
+const Agreement = ({ navigation, theme }) => {
   const destination = navigation.getParam('destination')
   const handleAcceptPressed = useCallback(() => {
     navigation.navigate(destination)
@@ -28,7 +28,7 @@ const Disclaimer = ({ navigation, theme }) => {
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}>
         <View style={styles.headerContainer}>
-          <OnboardingDisclaimer
+          <OnboardingAgreement
             width={Styles.getResponsiveSize(140, { small: 99, medium: 120 })}
             height={Styles.getResponsiveSize(116, { small: 83, medium: 99 })}
             style={styles.image}
@@ -125,4 +125,4 @@ const createStyles = theme =>
     }
   })
 
-export default withNavigation(withTheme(Disclaimer))
+export default withNavigation(withTheme(Agreement))

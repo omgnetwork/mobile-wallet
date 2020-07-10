@@ -44,12 +44,12 @@ const Welcome = ({ navigation, theme }) => {
   const [showButtons, setShowButtons] = useState(false)
 
   const navigateCreateWallet = () => {
-    navigation.navigate('Disclaimer', {
+    navigation.navigate('Agreement', {
       destination: 'WelcomeCreateWallet'
     })
   }
   const navigateImportWallet = () => {
-    navigation.navigate('Disclaimer', {
+    navigation.navigate('Agreement', {
       destination: 'WelcomeImportWallet'
     })
   }
