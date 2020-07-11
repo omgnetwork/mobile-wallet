@@ -3,7 +3,7 @@ export const tokenReducer = (state = {}, action) => {
     case 'TOKEN/ADD/OK':
       return {
         ...state,
-        [action.data.tokenContractAddress]: action.data.tokenContractInfo
+        ...action.data
       }
     default:
       return state

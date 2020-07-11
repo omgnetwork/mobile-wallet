@@ -138,19 +138,7 @@ const getEthBalance = (provider, address) => {
   return provider.getBalance(address).then(balance => balance.toString(10))
 }
 
-export const getContractInfo = async (
-  provider,
-  tokenContractAddress,
-  tokens
-) => {
-  const cachedInfo = tokens[tokenContractAddress]
-
-  const cachedUnknowns = cachedInfo && includes(cachedInfo, 'UNKNOWN')
-
-  if (cachedInfo && !cachedUnknowns) {
-    return cachedInfo
-  }
-
+export const getContractInfo = async (provider, tokenContractAddress) => {
   const contract = new ethers.Contract(
     tokenContractAddress,
     ContractABI.erc20Abi(),
@@ -179,11 +167,6 @@ export const getContractInfo = async (
   ])
 
   const tokenContractInfo = { tokenName, tokenSymbol, tokenDecimal }
-
-  tokenActions.addTokenContractInfo(store.dispatch, {
-    tokenContractAddress,
-    tokenContractInfo
-  })
 
   return tokenContractInfo
 }
