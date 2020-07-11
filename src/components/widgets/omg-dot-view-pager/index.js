@@ -31,7 +31,7 @@ const OMGDotViewPager = ({
     const { contentOffset } = event.nativeEvent
 
     const { x } = contentOffset
-    onLastPage(x === offsets[offsets.length - 1])
+    onLastPage(x >= offsets[offsets.length - 1])
 
     if (x % windowWidth === 0) {
       const _page = parseInt(x / windowWidth)
