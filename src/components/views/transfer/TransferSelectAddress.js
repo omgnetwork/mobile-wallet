@@ -1,10 +1,10 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState, useRef, useEffect } from 'react'
 import { withTheme } from 'react-native-paper'
 import { View, StyleSheet, Platform, KeyboardAvoidingView } from 'react-native'
 import { Validator } from 'common/blockchain'
 import { Dimensions } from 'common/utils'
 import { useHeaderHeight } from 'react-navigation-stack'
-import { withNavigation } from 'react-navigation'
+import { withNavigationFocus } from 'react-navigation'
 import {
   OMGAddressInput,
   OMGText,
@@ -12,10 +12,11 @@ import {
   OMGDismissKeyboard
 } from 'components/widgets'
 
-const TransferSelectAddress = ({ theme, navigation }) => {
+const TransferSelectAddress = ({ theme, navigation, isFocused }) => {
   const styles = createStyles(theme)
   const [disabled, setDisabled] = useState(true)
   const [address, setAddress] = useState(null)
+  const focusRef = useRef()
 
   useEffect(() => {
     if (address) {
@@ -23,6 +24,12 @@ const TransferSelectAddress = ({ theme, navigation }) => {
       setDisabled(!valid)
     }
   }, [address, setDisabled])
+
+  useEffect(() => {
+    if (isFocused) {
+      focusRef.current?.focus()
+    }
+  }, [isFocused])
 
   const onSubmit = useCallback(() => {
     navigation.navigate('TransferSelectToken', { address: address })
@@ -41,13 +48,14 @@ const TransferSelectAddress = ({ theme, navigation }) => {
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior={keyboardAvoidingBehavior}
-        keyboardVerticalOffset={headerHeight + statusBarHeight}>
+        keyboardVerticalOffset={headerHeight + statusBarHeight + 48}>
         <OMGText style={styles.title} weight='book'>
           SEND TO
         </OMGText>
         <OMGAddressInput
           address={address}
           setAddress={setAddress}
+          focusRef={focusRef}
           style={styles.addressInput}
           onPressScanQR={onPressScanQR}
         />
@@ -86,4 +94,4 @@ const createStyles = theme =>
     }
   })
 
-export default withNavigation(withTheme(TransferSelectAddress))
+export default withNavigationFocus(withTheme(TransferSelectAddress))
