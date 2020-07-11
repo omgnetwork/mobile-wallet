@@ -86,12 +86,14 @@ const CreateWalletMnemonicConfirm = ({
     )
   })
 
+  const imageSize = Styles.getResponsiveSize(80, { small: 48, medium: 64 })
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
         contentContainerStyle={styles.contentContainer}
         bounces={false}>
-        <BackupMnemonicImage width={80} height={80} />
+        <BackupMnemonicImage width={imageSize} height={imageSize} />
         <OMGText weight='semi-bold' style={styles.title}>
           Confirm Mnemonic Phrase
         </OMGText>
