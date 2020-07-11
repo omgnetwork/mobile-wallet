@@ -15,6 +15,8 @@ const OMGTextInput = ({
   maxLength,
   onChangeText,
   value,
+  mono = true,
+  multiline,
   inputRef,
   onFocus,
   focusRef,
@@ -60,14 +62,14 @@ const OMGTextInput = ({
       returnKeyType={returnKeyType || 'done'}
       numberOfLines={numberOfLines}
       editable={editable}
-      multiline={numberOfLines > 1}
+      multiline={multiline || numberOfLines > 1}
       defaultValue={defaultValue}
       value={value}
       textAlignVertical={lines > 1 ? 'top' : 'center'}
       keyboardType={keyboardType}
       selectionColor={selectionColor || theme.colors.white}
       style={{
-        ...styles.textInput(underlineColor, hideUnderline),
+        ...styles.textInput(underlineColor, hideUnderline, mono),
         ...style,
         minHeight: Math.max(
           20,
@@ -79,9 +81,9 @@ const OMGTextInput = ({
 }
 
 const styles = StyleSheet.create({
-  textInput: (underlineColor, hideUnderline) => ({
-    fontFamily: 'MessinaSansMono-Book',
-    paddingVertical: 8,
+  textInput: (underlineColor, hideUnderline, mono) => ({
+    fontFamily: mono ? 'MessinaSansMono-Book' : 'MessinaSans-Regular',
+    paddingVertical: 16,
     marginLeft: Platform.OS === 'ios' ? 0 : -4,
     borderBottomWidth: hideUnderline ? 0 : 1,
     borderColor: underlineColor,
