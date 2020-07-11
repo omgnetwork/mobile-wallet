@@ -52,7 +52,10 @@ export const createAsyncActionWithTokenCaching = ({
         const result = await doAsyncAction()
         if (result) {
           dispatch({ type: `${actionType}/SUCCESS`, data: result })
-          dispatch({ type: 'TOKEN/ADD/OK', data: result.tokenInfoToCache })
+          dispatch({
+            type: 'TOKEN/UPDATE_CACHE',
+            data: result.tokenInfoToCache
+          })
         }
       } catch (err) {
         console.log(err)
