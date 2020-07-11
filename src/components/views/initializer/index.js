@@ -51,10 +51,10 @@ const Initializer = ({
     }
 
     ExceptionReporter.reportWhenError(init)
-    init()
   }, [])
 
   useEffect(() => {
+    let timeoutId
     if (!ready) {
       return
     } else if (wallets.length === 0) {
@@ -62,12 +62,14 @@ const Initializer = ({
     } else if (wallet && provider && blockchainWallet) {
       navigation.navigate('MainContent')
     } else if (shouldGetBlockchainWallet(wallet, blockchainWallet, provider)) {
-      setTimeout(() => {
+      timeoutId = setTimeout(() => {
         dispatchSetBlockchainWallet(wallet, provider)
       }, loadingDuration)
     } else if (shouldSetPrimaryWallet(wallet, wallets)) {
       dispatchSetPrimaryWallet(wallets[0], primaryWalletNetwork)
     }
+
+    return clearTimeout(timeoutId)
   }, [
     blockchainWallet,
     dispatchSetBlockchainWallet,
