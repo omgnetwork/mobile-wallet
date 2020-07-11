@@ -1,5 +1,5 @@
 import { Dimensions, StatusBar, Platform } from 'react-native'
-import * as Styles from './styles'
+
 const X_WIDTH = 375
 const X_HEIGHT = 812
 
@@ -13,11 +13,6 @@ export const windowHeight =
   Platform.OS === 'android'
     ? Math.round(Dimensions.get('window').height - StatusBar.currentHeight)
     : Math.round(Dimensions.get('window').height)
-
-export const bottomBarHeight = Styles.getResponsiveSize(88, {
-  small: 72,
-  medium: 80
-})
 
 const { height: W_HEIGHT, width: W_WIDTH } = Dimensions.get('window')
 

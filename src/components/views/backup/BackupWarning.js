@@ -127,12 +127,11 @@ const createStyles = theme =>
     },
     container: {
       flex: 1,
-      paddingHorizontal: 16,
-      paddingBottom: 16,
-      backgroundColor: theme.colors.black3
+      paddingHorizontal: 26,
+      paddingBottom: 48,
+      backgroundColor: theme.colors.black5
     },
     scrollViewContainer: {
-      paddingTop: Styles.getResponsiveSize(32, { small: 24, medium: 28 }),
       paddingBottom: 16,
       paddingHorizontal: 16
     },

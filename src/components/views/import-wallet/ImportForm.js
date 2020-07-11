@@ -85,7 +85,7 @@ const ImportForm = ({
           Seed Phrase
         </OMGText>
         <OMGTextInput
-          style={styles.textInput(theme)}
+          style={{ ...styles.textInput(theme), ...styles.marginTop }}
           focusRef={focusRef}
           inputRef={mnemonicRef}
           multiline={true}
@@ -94,7 +94,7 @@ const ImportForm = ({
           placeholder='Your seed phrase'
         />
         {showErrorMnemonic && (
-          <OMGText style={styles.errorText(theme)}>
+          <OMGText weight='regular' style={styles.errorText(theme)}>
             {errorMnemonicMessage}
           </OMGText>
         )}
@@ -112,7 +112,9 @@ const ImportForm = ({
           editable={!shouldDisableConfirmBtn}
         />
         {showErrorName && (
-          <OMGText style={styles.errorText(theme)}>{errorNameMessage}</OMGText>
+          <OMGText weight='regular' style={styles.errorText(theme)}>
+            {errorNameMessage}
+          </OMGText>
         )}
         <View style={styles.marginButtom} />
         <View style={styles.buttonContainer}>
@@ -145,7 +147,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white
   }),
   marginTop: {
-    marginTop: 24
+    marginTop: 16
   },
   marginButtom: {
     marginBottom: 16
