@@ -56,13 +56,13 @@ const Agreement = ({ navigation, theme }) => {
           textStyle={styles.confirmButtonText}
           textweight='regular'
           onPress={handleAcceptPressed}>
-          I UNDERSTAND AND ACCEPT
+          ACCEPT
         </OMGButton>
         <OMGButton
           style={styles.declineButton}
           textStyle={styles.declineButtonText}
-          onPress={handleDeclinePressed}
-          textweight='regular'>
+          textweight='regular'
+          onPress={handleDeclinePressed}>
           DECLINE
         </OMGButton>
       </View>
@@ -74,7 +74,7 @@ const createStyles = theme =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme.colors.black5,
+      backgroundColor: theme.colors.white,
       flexDirection: 'column',
       paddingHorizontal: Styles.getResponsiveSize(30, { small: 16, medium: 24 })
     },
@@ -82,14 +82,15 @@ const createStyles = theme =>
       marginTop: Styles.getResponsiveSize(24, { small: 16, medium: 16 })
     },
     headerContainer: {
-      alignItems: 'center'
+      alignItems: 'center',
+      paddingVertical: 16
     },
     headerText: {
-      color: theme.colors.white,
+      color: theme.colors.black5,
       textAlign: 'center',
       opacity: 0.8,
       fontSize: Styles.getResponsiveSize(28, { small: 20, medium: 24 }),
-      marginTop: Styles.getResponsiveSize(20, { small: 12, medium: 16 })
+      marginTop: Styles.getResponsiveSize(30, { small: 20, medium: 24 })
     },
     scrollContainer: {
       flexGrow: 1,
@@ -102,29 +103,31 @@ const createStyles = theme =>
       paddingVertical: 16
     },
     contentText1: {
-      color: theme.colors.gray6,
+      color: theme.colors.black5,
       fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
       lineHeight: Styles.getResponsiveSize(28, { small: 20, medium: 24 })
     },
     contentText2: {
-      color: theme.colors.gray6,
+      color: theme.colors.black5,
       fontSize: Styles.getResponsiveSize(18, { small: 14, medium: 16 }),
       marginTop: 10,
       lineHeight: Styles.getResponsiveSize(28, { small: 20, medium: 24 })
     },
     confirmButton: {
+      width: 180,
       backgroundColor: theme.colors.primary,
-      borderRadius: theme.roundness
+      borderRadius: 22
     },
     confirmButtonText: {
       color: theme.colors.white
     },
     declineButton: {
+      width: 280,
       backgroundColor: 'transparent',
-      marginTop: 8
+      marginTop: 16
     },
     declineButtonText: {
-      color: theme.colors.white
+      color: theme.colors.black5
     }
   })
 
