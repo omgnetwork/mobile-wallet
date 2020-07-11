@@ -1,5 +1,4 @@
 import { ethers } from 'ethers'
-import { tokenActions } from 'common/actions'
 import {
   ContractABI,
   BlockchainFormatter,
@@ -11,9 +10,7 @@ import {
 import { ContractAddress } from 'common/constants'
 import { Plasma as PlasmaClient } from 'common/clients'
 import { priceService } from 'common/services'
-import { store } from 'common/stores'
 import Config from 'react-native-config'
-import includes from 'lodash/includes'
 
 export const find = (contractAddress, tokens) => {
   return tokens.find(token => token.contractAddress === contractAddress)
