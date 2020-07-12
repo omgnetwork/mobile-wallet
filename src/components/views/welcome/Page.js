@@ -1,16 +1,19 @@
 import React from 'react'
 import { withNavigation } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { View, StyleSheet, Dimensions } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { OMGText } from 'components/widgets'
 import * as WelcomeImages from './assets'
-import { Styles } from 'common/utils'
+import { Styles, Dimensions } from 'common/utils'
+
+const { windowHeight, windowWidth } = Dimensions
+
 const Page = ({ theme, textTitle, textContent, image }) => {
   const WelcomeImage = WelcomeImages[image]
 
   return (
     <View style={styles.container}>
-      <WelcomeImage width='90%' height='40%' />
+      <WelcomeImage width={windowWidth * 0.9} height={windowHeight * 0.25} />
       <OMGText style={[styles.text(theme), styles.header]} weight='bold'>
         {textTitle}
       </OMGText>
@@ -30,7 +33,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    width: Dimensions.get('window').width,
+    width: windowWidth,
     paddingHorizontal: 30,
     marginBottom: 16
   },
