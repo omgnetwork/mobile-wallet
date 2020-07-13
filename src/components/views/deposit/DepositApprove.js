@@ -182,7 +182,7 @@ const DepositApprove = ({
             ? 'Checking if approval required...'
             : approving
             ? 'Waiting for approval...'
-            : 'Approved'}
+            : 'Approve'}
         </OMGButton>
         <OMGText style={styles.textEstimateTime(!disableBtn)} weight='regular'>
           This process usually takes about 15 - 30 seconds.
