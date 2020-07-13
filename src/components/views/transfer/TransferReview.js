@@ -8,7 +8,7 @@ import {
 } from 'common/hooks'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
-import { BigNumber, Styles } from 'common/utils'
+import { Styles } from 'common/utils'
 import { OMGEditItem, OMGText, OMGButton } from 'components/widgets'
 import { ContractAddress } from 'common/constants'
 import { plasmaActions, ethereumActions } from 'common/actions'
@@ -39,7 +39,6 @@ const TransferReview = ({
   const feeRate = navigation.getParam('feeRate')
   const transactionType = getType(toAddress, primaryWalletNetwork)
   const assets = getAssets(transactionType, wallet)
-  const amountUsd = BigNumber.multiply(amount, token.price)
   const feeToken = assets.find(
     token => token.contractAddress === feeRate.currency
   )
@@ -62,7 +61,7 @@ const TransferReview = ({
   const [
     estimatedFee,
     estimatedFeeSymbol,
-    estimatedFeeUsd,
+    _estimatedFeeUsd,
     estimatedGasUsed,
     gasEstimationError
   ] = useEstimatedFee({

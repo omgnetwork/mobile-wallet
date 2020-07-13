@@ -59,7 +59,7 @@ const DepositApprove = ({
   const [
     estimatedFee,
     estimatedFeeSymbol,
-    estimatedFeeUsd,
+    _estimatedFeeUsd,
     estimatedGasUsed,
     gasEstimationError
   ] = useEstimatedFee({

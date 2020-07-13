@@ -20,15 +20,13 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
     value,
     symbol,
     contractAddress,
-    tokenPrice,
     gasUsed,
     gasPrice,
     maxExitsToProcess
   } = navigation.getParam('transaction')
   const tokenValue = BlockchainFormatter.formatTokenBalance(value)
-  const tokenPriceUsd = BlockchainFormatter.formatTokenPrice(value, tokenPrice)
   const gasFee = BlockchainFormatter.formatGasFee(gasUsed, gasPrice)
-  const [gasFeeUsd, setGasFeeUsd] = useState(0)
+  const [_gasFeeUsd, setGasFeeUsd] = useState(0)
 
   useEffect(() => {
     async function calculateGasFeeUsd() {

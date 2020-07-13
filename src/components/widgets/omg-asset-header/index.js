@@ -10,7 +10,6 @@ import { BlockchainNetworkType } from 'common/constants'
 
 const OMGAssetHeader = ({
   theme,
-  amount,
   type,
   network,
   onPressSidebarMenu,

@@ -8,7 +8,7 @@ import { priceService } from 'common/services'
 
 const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
   const [errorReason, setErrorReason] = useState(null)
-  const [feePrice, setFeePrice] = useState(null)
+  const [_feePrice, setFeePrice] = useState(null)
   const tokens = primaryWallet.childchainAssets
   const textExactDatetime = Formatter.formatTimeStamp(
     tx.timestamp,

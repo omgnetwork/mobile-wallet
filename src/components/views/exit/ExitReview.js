@@ -18,11 +18,7 @@ import {
   OMGEditItem,
   OMGExitFee
 } from 'components/widgets'
-import {
-  Plasma,
-  BlockchainFormatter,
-  BlockchainParams
-} from 'common/blockchain'
+import { Plasma, BlockchainParams } from 'common/blockchain'
 import { Styles, Formatter, Unit, BigNumber } from 'common/utils'
 import { ContractAddress } from 'common/constants'
 
