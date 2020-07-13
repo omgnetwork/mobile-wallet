@@ -30,7 +30,8 @@
     "build-ios": "npm run ios-archive && npm run ios-export && mkdir -p artifacts && cp ios/build/Apps/PlasmaWallet.ipa artifacts/",
     "ios-archive": "xcodebuild archive -archivePath ios/PlasmaWallet/PlasmaWallet.xcarchive -workspace ios/PlasmaWallet.xcworkspace -scheme PlasmaWallet",
     "ios-export": "xcodebuild -exportArchive -archivePath ios/PlasmaWallet/PlasmaWallet.xcarchive -exportOptionsPlist ios/PlasmaWallet/ExportOptions.plist -exportPath ios/build",
-    "postinstall": "./polyfill.sh && npx jetify && node ignoreRequireCycle.js"
+    "postinstall": "./polyfill.sh && npx jetify && node ignoreRequireCycle.js",
+    "postversion": "react-native-version"
   },
   "rnpm": {
     "assets": [
@@ -131,6 +132,7 @@
     "metro-react-native-babel-transformer": "^0.57.0",
     "prettier": "^2.0.5",
     "react-native-clean-project": "^3.3.0",
+    "react-native-version": "^4.0.0",
     "react-test-renderer": "16.11.0",
     "react-transform-hmr": "^1.0.4",
     "redux-devtools-extension": "^2.13.8",
