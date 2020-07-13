@@ -1,6 +1,7 @@
 import React, { useState, Fragment, useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
+import { capitalize } from 'lodash'
 import { useLoading } from 'common/hooks'
 import { plasmaActions, walletActions } from 'common/actions'
 import { withTheme } from 'react-native-paper'
@@ -124,7 +125,7 @@ const Balance = ({
         onPressSend={onPressSend}
         onPressReceive={onPressReceive}
         onPressScan={onPressScan}
-        network={Config.OMISEGO_NETWORK}
+        network={capitalize(Config.ETHEREUM_NETWORK)}
         anchoredRef={blockchainLabelRef}
       />
       <OMGAssetList

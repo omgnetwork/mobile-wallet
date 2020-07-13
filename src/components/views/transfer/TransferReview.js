@@ -161,8 +161,8 @@ const TransferReview = ({
         {hasError && (
           <OMGText style={styles.errorMsg} weight='regular'>
             {insufficientBalanceError
-              ? `Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`
-              : `The transaction might be failed.`}
+              ? `Requires at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`
+              : `The transaction might fail.`}
           </OMGText>
         )}
         <OMGButton
@@ -173,7 +173,7 @@ const TransferReview = ({
             ? 'Checking Balance...'
             : loading.show
             ? 'Sending...'
-            : 'Confirm Transaction'}
+            : 'Transaction Confirmed'}
         </OMGButton>
       </View>
     </View>

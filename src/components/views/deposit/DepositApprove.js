@@ -170,8 +170,8 @@ const DepositApprove = ({
         {hasError && (
           <OMGText style={styles.errorMsg} weight='regular'>
             {insufficientBalanceError
-              ? `Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`
-              : `The transaction might be failed.`}
+              ? `Requires at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`
+              : `The transaction might fail.`}
           </OMGText>
         )}
         <OMGButton
@@ -179,10 +179,10 @@ const DepositApprove = ({
           loading={approving}
           disabled={disableBtn}>
           {verifying
-            ? 'Checking if require approval..'
+            ? 'Checking if approval required...'
             : approving
             ? 'Waiting for approval...'
-            : 'Approve'}
+            : 'Approved'}
         </OMGButton>
         <OMGText style={styles.textEstimateTime(!disableBtn)} weight='regular'>
           This process usually takes about 15 - 30 seconds.
