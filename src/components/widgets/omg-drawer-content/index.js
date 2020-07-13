@@ -114,7 +114,7 @@ const OMGDrawerContent = ({
             disabled={true}
             onPress={() =>
               closeDrawerAndNavigate('TransactionHistoryFilter', {
-                title: 'Exit',
+                title: 'Withdrawals',
                 types: [
                   TransactionTypes.TYPE_EXIT,
                   TransactionTypes.TYPE_PROCESS_EXIT
