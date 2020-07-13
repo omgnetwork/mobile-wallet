@@ -111,7 +111,7 @@ const OMGDrawerContent = ({
           <View style={styles.divider(theme)} />
           <DrawerMenuItem
             title='Withdrawals'
-            disabled={false}
+            disabled={true}
             onPress={() =>
               closeDrawerAndNavigate('TransactionHistoryFilter', {
                 title: 'Withdrawals',
