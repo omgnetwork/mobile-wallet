@@ -49,7 +49,7 @@ const TransferChoosePlasmaFee = ({
     }
 
     updateEmptyMsg()
-  }, [fees, primaryWallet.address, provider, supportedFees])
+  }, [fees, primaryWallet, provider, supportedFees])
 
   const styles = createStyles(theme)
 
