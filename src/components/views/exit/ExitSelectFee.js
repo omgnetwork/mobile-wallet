@@ -44,7 +44,7 @@ const ExitSelectFee = ({
   return (
     <View style={styles.container(theme)}>
       <OMGText style={styles.title(theme)} weight='regular'>
-        Select Transaction Fee
+        Select Gas Rate
       </OMGText>
       <FlatList
         style={styles.list}
