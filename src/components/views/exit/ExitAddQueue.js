@@ -183,7 +183,7 @@ const ExitAddQueue = ({
         {!verifying && !creating && hasError && (
           <OMGText style={styles.errorMsg} weight='regular'>
             {insufficientBalanceError &&
-              `Require at least ${minimumAmount} ${gasToken.tokenSymbol} to proceed.`}
+              `Requires at least ${minimumAmount} ${gasToken.tokenSymbol} to proceed.`}
           </OMGText>
         )}
         <OMGButton
@@ -193,8 +193,8 @@ const ExitAddQueue = ({
           {verifying
             ? 'Verifying..'
             : creating
-            ? 'Waiting queue creation...'
-            : 'Create a Queue'}
+            ? 'Waiting for queue creation...'
+            : 'Created a Queue'}
         </OMGButton>
         <OMGText style={styles.textEstimateTime(!disableBtn)} weight='regular'>
           This process usually takes about 15 - 30 seconds.

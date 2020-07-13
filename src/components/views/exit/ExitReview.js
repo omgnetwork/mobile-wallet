@@ -159,7 +159,7 @@ const ExitReview = ({
             {hasError && (
               <OMGText style={styles.errorMsg(theme)} weight='regular'>
                 {insufficientBalanceError
-                  ? `Require at least ${minimumAmount} ${gasToken.tokenSymbol} to proceed.`
+                  ? `Requires at least ${minimumAmount} ${gasToken.tokenSymbol} to proceed.`
                   : `The transaction might fail.`}
               </OMGText>
             )}
