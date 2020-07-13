@@ -173,7 +173,7 @@ const TransferReview = ({
             ? 'Checking Balance...'
             : loading.show
             ? 'Sending...'
-            : 'Transaction Confirmed'}
+            : 'Confirm Transaction'}
         </OMGButton>
       </View>
     </View>
