@@ -194,7 +194,7 @@ const ExitAddQueue = ({
             ? 'Verifying..'
             : creating
             ? 'Waiting for queue creation...'
-            : 'Created a Queue'}
+            : 'Create a Queue'}
         </OMGButton>
         <OMGText style={styles.textEstimateTime(!disableBtn)} weight='regular'>
           This process usually takes about 15 - 30 seconds.

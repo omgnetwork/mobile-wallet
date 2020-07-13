@@ -68,7 +68,7 @@ const TransferChoosePlasmaFee = ({
   return (
     <View style={styles.container}>
       <OMGText style={styles.title} weight='regular'>
-        Amount
+        Fee
       </OMGText>
       <OMGListPlasmaFee
         fees={fees}
