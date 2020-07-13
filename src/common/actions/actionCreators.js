@@ -3,7 +3,8 @@ import { ExceptionReporter } from 'common/reporter'
 export const createAsyncAction = ({
   operation: doAsyncAction,
   type: actionType,
-  isBackgroundTask: isBackgroundTask
+  isBackgroundTask,
+  reportError = true
 }) => {
   return dispatch => {
     const actionStartStatus = isBackgroundTask ? 'LISTENING' : 'INITIATED'
@@ -17,7 +18,9 @@ export const createAsyncAction = ({
       } catch (err) {
         console.log(err)
         dispatch({ type: `${actionType}/FAILED`, err })
-        ExceptionReporter.send(err)
+        if (reportError) {
+          ExceptionReporter.send(err)
+        }
       }
       const actionName = actionType.replace('/', '_')
       dispatch({ type: `LOADING/${actionName}/IDLE` })
@@ -27,7 +30,7 @@ export const createAsyncAction = ({
 
 export const createAction = (
   dispatch,
-  { operation: doAction, type: actionType }
+  { operation: doAction, type: actionType, reportError = true }
 ) => {
   try {
     const result = doAction()
@@ -35,6 +38,8 @@ export const createAction = (
   } catch (err) {
     console.log(err)
     dispatch({ type: `${actionType}/ERROR`, data: err })
-    ExceptionReporter.send(err)
+    if (reportError) {
+      ExceptionReporter.send(err)
+    }
   }
 }
