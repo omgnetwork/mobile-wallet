@@ -51,7 +51,6 @@ import OMGStatusBar from './omg-status-bar'
 import OMGText from './omg-text'
 import OMGTextChip from './omg-text-chip'
 import OMGTextInput from './omg-text-input'
-import OMGTextInputBox from './omg-text-input-box'
 import OMGTokenFee from './omg-token-fee'
 import OMGTokenIcon from './omg-token-icon'
 import OMGTokenInput from './omg-token-input'
@@ -119,7 +118,6 @@ export {
   OMGText,
   OMGTextChip,
   OMGTextInput,
-  OMGTextInputBox,
   OMGTokenFee,
   OMGTokenIcon,
   OMGTokenInput,

@@ -51,7 +51,6 @@ const Initializer = ({
     }
 
     ExceptionReporter.reportWhenError(init)
-    init()
   }, [])
 
   useEffect(() => {

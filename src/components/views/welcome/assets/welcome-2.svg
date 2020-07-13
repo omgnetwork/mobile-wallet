@@ -1,24 +1,300 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="94px" height="92px" viewBox="0 0 94 92" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
-    <title>Group 4</title>
-    <desc>Created with Sketch.</desc>
-    <g id="Onboard_ONOV-2019" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Onboard_Network" transform="translate(-29.000000, -172.000000)">
-            <g id="Group-4" transform="translate(30.000000, 173.000000)">
-                <g id="Group-3-Copy" transform="translate(46.000000, 45.000000) scale(-1, -1) translate(-46.000000, -45.000000) " stroke="#FFFFFF" stroke-linecap="round" stroke-width="2">
-                    <line x1="76.875" y1="75.625" x2="64.75" y2="64.25" id="Line-Copy-2"></line>
-                    <path d="M31.3125,29.9375 L20.3029862,19.5469951 M12.5439408,12.2242012 L0.1875,0.5625" id="Shape"></path>
-                    <line x1="91.8056051" y1="89.667007" x2="85.4375" y2="83.5" id="Line-Copy-3"></line>
-                </g>
-                <g id="Group-3" transform="translate(20.000000, 20.000000)">
-                    <rect id="Rectangle" fill="#FFFFFF" x="0" y="0" width="50" height="50" rx="25"></rect>
-                    <g id="Group-6" transform="translate(20.000000, 17.000000)">
-                        <circle id="Oval" fill="#04070D" cx="5.5" cy="5.5" r="5.5"></circle>
-                        <line x1="5.5" y1="7" x2="5.5" y2="16" id="Line-2" stroke="#04070D" stroke-width="4" stroke-linecap="round"></line>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 150 142.7"  xml:space="preserve" style="enable-background:new 0 0 150 142.7;" >
+<style type="text/css">
+	.st0{opacity:0.8;}
+	.st1{opacity:0.48;}
+	.st2{clip-path:url(#SVGID_2_);}
+	.st3{fill:#585869;}
+	.st4{fill:none;}
+	.st5{opacity:0.6;fill:#101010;enable-background:new    ;}
+	.st6{opacity:0.15;}
+	.st7{fill:url(#SVGID_3_);}
+	.st8{fill:url(#SVGID_4_);}
+	.st9{clip-path:url(#SVGID_6_);}
+	.st10{fill:#4463FF;}
+	.st11{fill:url(#SVGID_7_);}
+	.st12{fill:url(#SVGID_8_);}
+	.st13{fill:url(#SVGID_9_);}
+	.st14{fill:url(#SVGID_10_);}
+	.st15{fill:url(#SVGID_11_);}
+	.st16{fill:url(#SVGID_12_);}
+	.st17{fill:url(#SVGID_13_);}
+	.st18{fill:#E8E8E8;}
+	.st19{fill:#101010;}
+	.st20{fill:#26A07B;}
+	.st21{fill:none;stroke:#FFFFFF;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;}
+	.st22{fill:#DDA710;}
+	.st23{fill:none;stroke:#FFFFFF;stroke-width:0.5;stroke-linejoin:round;}
+	.st24{fill:#FFFFFF;}
+</style>
+<title>2_Intro-2_1</title>
+<g id="Layer_2_1_">
+	<g id="Intro">
+		<g class="st0" style="opacity:0.8;" >
+			<g class="st1" style="opacity:0.48;" >
+				<g>
+					<defs>
+						<path id="SVGID_1_" d="M0.6,132.8h72.6c19.1,0,34.5-15.5,34.5-34.5V41.8c0-19.1-15.5-34.5-34.5-34.5H36.4v25.1h33.7
+							c6.9,0,12.6,5.6,12.6,12.6c0,0,0,0,0,0v50.2c0,6.9-5.6,12.6-12.5,12.6h0H0.6V132.8z"/>
+					</defs>
+					<clipPath id="SVGID_2_">
+						<use xlink:href="#SVGID_1_" style="overflow:visible;" />
+					</clipPath>
+					<g class="st2" style="clip-path:url(#SVGID_2_);" >
+						<rect x="20.6" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="15.2" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="25.9" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="31.2" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="36.5" y="32.7" class="st3" width="0.6" height="101.1" style="fill:#585869;" />
+						<rect x="47.2" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="52.5" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="57.8" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="63.1" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="68.4" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="73.6" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="78.9" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="84.2" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="89.7" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="95" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="100.3" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="105.5" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="110.8" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="116.3" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="121.6" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="41.8" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="4.7" y="133.4" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="0.6" y="128.1" class="st3" width="137.6" height="0.6" style="fill:#585869;" />
+						<rect x="0.6" y="122.8" class="st3" width="137.6" height="0.6" style="fill:#585869;" />
+						<rect x="0.6" y="117.6" class="st3" width="137.6" height="0.6" style="fill:#585869;" />
+						<rect x="0.6" y="112.3" class="st3" width="137.6" height="0.6" style="fill:#585869;" />
+						<rect x="4.7" y="106.8" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="4.7" y="101.5" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="4.7" y="96.2" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="4.7" y="90.9" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="4.7" y="85.7" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="4.7" y="80.4" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="4.7" y="75.1" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="4.7" y="69.8" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="4.7" y="64.3" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="4.7" y="59" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="4.7" y="53.8" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="4.7" y="48.5" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="4.7" y="43.2" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="4.7" y="37.7" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="4.7" y="32.4" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="14.4" y="27.1" class="st3" width="123.8" height="0.6" style="fill:#585869;" />
+						<rect x="14.4" y="21.8" class="st3" width="123.8" height="0.6" style="fill:#585869;" />
+						<rect x="14.4" y="16.4" class="st3" width="123.8" height="0.6" style="fill:#585869;" />
+						<rect x="14.4" y="11.1" class="st3" width="123.8" height="0.6" style="fill:#585869;" />
+						<rect x="4.7" y="5.5" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="4.7" y="0.2" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+						<rect x="9.7" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+						<rect x="4.5" y="0.3" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+					</g>
+				</g>
+			</g>
+			<path class="st4" d="M13.8,132.8h59.4c19.1,0,34.5-15.5,34.5-34.5V41.8c0-19.1-15.5-34.5-34.5-34.5c0,0,0,0,0,0H36.4" style="fill:none;" />
+			<path class="st4" d="M36.4,32.4h33.7C77,32.4,82.6,38,82.6,45c0,0,0,0,0,0v50.2c0,6.9-5.6,12.5-12.5,12.5H13.8" style="fill:none;" />
+		</g>
+		<path class="st5" d="M69.9,45v50.2c0,6.9,5.6,12.6,12.5,12.6h0h34.3v-6.3H82.4c-3.5,0-6.3-2.8-6.3-6.3V45c0-3.5,2.8-6.3,6.3-6.3
+			h56.9v-6.3H82.4C75.5,32.4,69.9,38.1,69.9,45C69.9,45,69.9,45,69.9,45z" style="opacity:0.6;fill:#101010;enable-background:new;" />
+		<g class="st6" style="opacity:0.15;" >
+
+				<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="56.9121" y1="65.35" x2="56.9121" y2="42.67" gradientTransform="matrix(1 0 0 -1 57.84 151.02)">
+				<stop  offset="0" style="stop-color:#585869;" />
+				<stop  offset="1" style="stop-color:#E8E8E8;" />
+			</linearGradient>
+			<path class="st7" d="M117.2,108.3h-0.7c-0.2,0-0.3-0.1-0.3-0.3c0-0.2,0.1-0.3,0.3-0.3h0.7c3.3,0,6-2.7,6-6v-9.5c0-3.3-2.7-6-6-6
+				h-11.2c-0.2,0-0.3-0.1-0.4-0.3c0-0.2,0.1-0.3,0.3-0.4c0,0,0.1,0,0.1,0h11.2c3.6,0,6.6,3,6.6,6.6v9.5
+				C123.9,105.3,120.9,108.3,117.2,108.3C117.3,108.3,117.3,108.3,117.2,108.3z" style="fill:url(#SVGID_3_);" />
+
+				<linearGradient id="SVGID_4_" gradientUnits="userSpaceOnUse" x1="70.0349" y1="89.21" x2="70.0349" y2="18.16" gradientTransform="matrix(1 0 0 -1 57.84 151.02)">
+				<stop  offset="0" style="stop-color:#585869;" />
+				<stop  offset="1" style="stop-color:#E8E8E8;" />
+			</linearGradient>
+			<path class="st8" d="M124.6,132.9h-7.9c-0.2,0-0.3-0.1-0.3-0.3c0-0.2,0.1-0.3,0.3-0.3l0,0h7.9c13.7,0,24.8-11,24.8-24.7V87.1
+				c0-13.7-11.1-24.7-24.8-24.7h-18.5c-0.2,0-0.3-0.1-0.3-0.3s0.1-0.3,0.3-0.3c0,0,0,0,0,0h18.5c14,0,25.4,11.3,25.4,25.3v20.4
+				C150,121.5,138.6,132.9,124.6,132.9z" style="fill:url(#SVGID_4_);" />
+		</g>
+		<g>
+			<defs>
+				<path id="SVGID_5_" d="M47.6,78.6H25.8c-13.9,0-25.1-11.2-25.1-25.1V33c0-13.8,11.2-25.8,25.1-25.8h42.9v24.9H33.1
+					c-3.5,0-6.3,2.8-6.3,6.3l0,0v9.5c0,3.5,2.8,6.3,6.3,6.3h14.5V78.6z"/>
+			</defs>
+			<clipPath id="SVGID_6_">
+				<use xlink:href="#SVGID_5_" style="overflow:visible;" />
+			</clipPath>
+			<g class="st9" style="clip-path:url(#SVGID_6_);" >
+				<rect x="-37.8" y="0.2" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+				<rect x="-43.3" y="0.2" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+				<rect x="-32.5" y="0.2" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+				<rect x="-27.3" y="0.2" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+				<rect x="-22" y="32.6" class="st3" width="0.6" height="101.1" style="fill:#585869;" />
+				<rect x="-11.2" y="0.2" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+				<rect x="-5.9" y="0.2" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+				<rect x="-0.7" y="0.2" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+				<rect x="4.6" y="64.4" class="st3" width="0.6" height="69.3" style="fill:#585869;" />
+				<rect x="4.6" y="0.2" class="st3" width="0.6" height="59" style="fill:#585869;" />
+				<rect x="9.9" y="54.2" class="st10" width="0.6" height="79.5" style="fill:#4463FF;" />
+				<rect x="9.9" y="0.2" class="st3" width="0.6" height="54" style="fill:#585869;" />
+
+					<linearGradient id="SVGID_7_" gradientUnits="userSpaceOnUse" x1="15.1802" y1="39.84" x2="15.8102" y2="39.84" gradientTransform="matrix(1 0 0 -1 0 144)">
+					<stop  offset="0" style="stop-color:#585869;" />
+					<stop  offset="1" style="stop-color:#4463FF;stop-opacity:0.7;" />
+				</linearGradient>
+				<rect x="15.2" y="74.6" class="st11" width="0.6" height="59.1" style="fill:url(#SVGID_7_);" />
+				<rect x="15.2" y="70.1" class="st10" width="0.6" height="4.6" style="fill:#4463FF;" />
+				<rect x="15.2" y="59.2" class="st10" width="0.6" height="10.8" style="fill:#4463FF;" />
+				<rect x="15.2" y="0.2" class="st3" width="0.6" height="48.5" style="fill:#585869;" />
+				<rect x="20.5" y="59.2" class="st10" width="0.6" height="19.4" style="fill:#4463FF;" />
+				<rect x="20.5" y="0.2" class="st3" width="0.6" height="59" style="fill:#585869;" />
+				<rect x="25.7" y="70" class="st10" width="0.6" height="63.7" style="fill:#4463FF;" />
+				<rect x="25.7" y="59.2" class="st10" width="0.6" height="11.2" style="fill:#4463FF;" />
+				<rect x="25.7" y="0.2" class="st3" width="0.6" height="48.6" style="fill:#585869;" />
+				<rect x="31.2" y="64.8" class="st10" width="0.6" height="68.9" style="fill:#4463FF;" />
+				<rect x="31.2" y="58.8" class="st10" width="0.6" height="6" style="fill:#4463FF;" />
+				<rect x="31.2" y="53.9" class="st10" width="0.6" height="4.9" style="fill:#4463FF;" />
+
+					<linearGradient id="SVGID_8_" gradientUnits="userSpaceOnUse" x1="31.5452" y1="143.82" x2="31.5452" y2="90.07" gradientTransform="matrix(1 0 0 -1 0 144)">
+					<stop  offset="0" style="stop-color:#585869;" />
+					<stop  offset="1" style="stop-color:#4463FF;stop-opacity:0.7;" />
+				</linearGradient>
+				<rect x="31.2" y="0.2" class="st12" width="0.6" height="53.8" style="fill:url(#SVGID_8_);" />
+				<rect x="36.5" y="59.3" class="st10" width="0.6" height="74.4" style="fill:#4463FF;" />
+				<rect x="36.5" y="0.2" class="st3" width="0.6" height="54.4" style="fill:#585869;" />
+				<rect x="41.8" y="78.7" class="st3" width="0.6" height="55" style="fill:#585869;" />
+				<rect x="41.8" y="64.5" class="st10" width="0.6" height="14.2" style="fill:#4463FF;" />
+				<rect x="41.8" y="54.6" class="st10" width="0.6" height="9.9" style="fill:#4463FF;" />
+				<rect x="41.8" y="0.2" class="st3" width="0.6" height="54.4" style="fill:#585869;" />
+				<rect x="52.4" y="0.2" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+				<rect x="47.2" y="0.2" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+				<rect x="57.9" y="0.2" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+				<rect x="63.1" y="0.2" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+				<rect x="-16.7" y="0.2" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+				<rect x="-53.8" y="133.2" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+				<rect x="-57.8" y="127.9" class="st3" width="137.6" height="0.6" style="fill:#585869;" />
+				<rect x="-57.8" y="122.7" class="st3" width="137.6" height="0.6" style="fill:#585869;" />
+				<rect x="-57.8" y="117.4" class="st3" width="137.6" height="0.6" style="fill:#585869;" />
+				<rect x="-57.8" y="112.1" class="st3" width="137.6" height="0.6" style="fill:#585869;" />
+				<rect x="-53.8" y="106.6" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+				<rect x="-53.8" y="101.3" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+				<rect x="-53.8" y="96.1" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+				<rect x="-53.8" y="90.8" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+				<rect x="-53.8" y="85.5" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+				<rect x="-53.8" y="80.2" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+				<rect x="13.1" y="74.9" class="st10" width="31.6" height="0.6" style="fill:#4463FF;" />
+				<rect x="10" y="69.7" class="st10" width="21.5" height="0.6" style="fill:#4463FF;" />
+				<rect x="31.5" y="64.2" class="st10" width="13.2" height="0.6" style="fill:#4463FF;" />
+				<rect x="-53.8" y="64.2" class="st10" width="85.3" height="0.6" style="fill:#4463FF;" />
+				<rect x="1.5" y="58.9" class="st10" width="43.2" height="0.6" style="fill:#4463FF;" />
+
+					<linearGradient id="SVGID_9_" gradientUnits="userSpaceOnUse" x1="31.5402" y1="90.065" x2="44.8602" y2="90.065" gradientTransform="matrix(1 0 0 -1 0 144)">
+					<stop  offset="0" style="stop-color:#585869;" />
+					<stop  offset="0.55" style="stop-color:#57586E;" />
+					<stop  offset="1" style="stop-color:#4463FF;" />
+				</linearGradient>
+				<rect x="31.5" y="53.6" class="st13" width="13.3" height="0.6" style="fill:url(#SVGID_9_);" />
+				<rect x="21.4" y="53.6" class="st10" width="10.1" height="0.6" style="fill:#4463FF;" />
+				<rect x="0.6" y="53.6" class="st10" width="20.8" height="0.6" style="fill:#4463FF;" />
+				<rect x="-53.8" y="48.3" class="st10" width="133.5" height="0.6" style="fill:#4463FF;" />
+
+					<linearGradient id="SVGID_10_" gradientUnits="userSpaceOnUse" x1="-53.7898" y1="100.655" x2="79.7402" y2="100.655" gradientTransform="matrix(1 0 0 -1 0 144)">
+					<stop  offset="0" style="stop-color:#585869;" />
+					<stop  offset="1" style="stop-color:#4463FF;stop-opacity:0.7;" />
+				</linearGradient>
+				<rect x="-53.8" y="43" class="st14" width="133.5" height="0.6" style="fill:url(#SVGID_10_);" />
+				<rect x="-53.8" y="37.5" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+
+					<linearGradient id="SVGID_11_" gradientUnits="userSpaceOnUse" x1="-53.7898" y1="111.425" x2="79.7402" y2="111.425" gradientTransform="matrix(1 0 0 -1 0 144)">
+					<stop  offset="0" style="stop-color:#585869;" />
+					<stop  offset="1" style="stop-color:#4463FF;stop-opacity:0.7;" />
+				</linearGradient>
+				<rect x="-53.8" y="32.3" class="st15" width="133.5" height="0.6" style="fill:url(#SVGID_11_);" />
+				<rect x="-44.1" y="27" class="st3" width="123.8" height="0.6" style="fill:#585869;" />
+				<rect x="-44.1" y="21.7" class="st3" width="123.8" height="0.6" style="fill:#585869;" />
+				<rect x="-44.1" y="16.2" class="st3" width="123.8" height="0.6" style="fill:#585869;" />
+				<rect x="-44.1" y="10.9" class="st3" width="123.8" height="0.6" style="fill:#585869;" />
+				<rect x="-53.8" y="5.3" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+				<rect x="-53.8" class="st3" width="133.5" height="0.6" style="fill:#585869;" />
+				<rect x="-48.7" y="0.2" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+				<rect x="-54" y="0.2" class="st3" width="0.6" height="133.5" style="fill:#585869;" />
+			</g>
+		</g>
+
+			<linearGradient id="SVGID_12_" gradientUnits="userSpaceOnUse" x1="-20.6548" y1="119.53" x2="-20.6548" y2="96.215" gradientTransform="matrix(1 0 0 -1 57.84 151.02)">
+			<stop  offset="0" style="stop-color:#585869;" />
+			<stop  offset="1" style="stop-color:#4463FF;" />
+		</linearGradient>
+		<path class="st16" d="M44.9,54.8H33.1c-3.8,0-6.9-3.1-6.9-6.9v-9.5c0-3.8,3.1-6.9,6.9-6.9h14.5c0.3,0,0.6,0.3,0.6,0.6l0,0
+			c0,0.3-0.3,0.6-0.6,0.6l0,0H33.1c-3.1,0-5.6,2.5-5.6,5.6v9.5c0,3.1,2.5,5.6,5.6,5.7h11.8c0.3,0,0.7,0.2,0.7,0.5
+			c0,0.3-0.2,0.7-0.5,0.7C45,54.8,44.9,54.8,44.9,54.8z" style="fill:url(#SVGID_12_);" />
+
+			<linearGradient id="SVGID_13_" gradientUnits="userSpaceOnUse" x1="-18.5799" y1="71.74" x2="-18.5799" y2="144" gradientTransform="matrix(1 0 0 -1 57.84 151.02)">
+			<stop  offset="0" style="stop-color:#4463FF;" />
+			<stop  offset="1" style="stop-color:#585869;" />
+		</linearGradient>
+		<path class="st17" d="M44.7,79.3H25.8C11.5,79.3,0,67.8,0,53.5V33C0,18.7,11.5,7.1,25.7,7h52.2c0.3,0,0.6,0.3,0.6,0.6
+			c0,0.3-0.3,0.6-0.6,0.6H25.7C12.2,8.4,1.2,19.4,1.3,33v20.5c0,13.5,11,24.5,24.5,24.5h18.9c0.3,0,0.6,0.3,0.6,0.6
+			C45.3,79,45,79.3,44.7,79.3z" style="fill:url(#SVGID_13_);" />
+		<path class="st18" d="M94.9,132.8H79.3c-19.1,0-34.5-15.5-34.5-34.5V41.8c0-19.1,15.5-34.5,34.5-34.5c0,0,0,0,0,0h70.4v25.1H82.4
+			c-6.9,0-12.6,5.6-12.6,12.5c0,0,0,0,0,0v50.2c0,6.9,5.6,12.5,12.5,12.5h12.5V132.8z" style="fill:#E8E8E8;" />
+		<path class="st10" d="M55.6,93.5h3.8c1.7,0,3.1,1.4,3.1,3.1v3.8c0,1.7-1.4,3.1-3.1,3.1h-3.8c-1.7,0-3.1-1.4-3.1-3.1v-3.8
+			C52.4,94.9,53.8,93.5,55.6,93.5z" style="fill:#4463FF;" />
+		<path class="st10" d="M62.5,96.8v-0.5h-2.9v-2.9h-0.5v2.9h-3.3v-2.9h-0.5v2.9h-2.8v0.5h2.8v3.3h-2.8v0.5h2.8v2.9h0.5v-2.9h3.3v2.9
+			h0.5v-2.9h2.9v-0.5h-2.9v-3.3H62.5z M59.1,100.1h-3.3v-3.3h3.3V100.1z" style="fill:#4463FF;" />
+		<path class="st10" d="M55.6,36h3.8c1.7,0,3.1,1.4,3.1,3.1v3.8c0,1.7-1.4,3.1-3.1,3.1h-3.8c-1.7,0-3.1-1.4-3.1-3.1v-3.8
+			C52.4,37.4,53.8,36,55.6,36z" style="fill:#4463FF;" />
+		<path class="st10" d="M62.5,39.4v-0.5h-2.9V36h-0.5v2.9h-3.3V36h-0.5v2.9h-2.8v0.5h2.8v3.3h-2.8v0.5h2.8V46h0.5v-2.8h3.3V46h0.5
+			v-2.8h2.9v-0.5h-2.9v-3.3L62.5,39.4z M59.1,42.7h-3.3v-3.3h3.3V42.7z" style="fill:#4463FF;" />
+		<path class="st10" d="M55.6,64.6h3.8c1.7,0,3.1,1.4,3.1,3.1v3.8c0,1.7-1.4,3.1-3.1,3.1h-3.8c-1.7,0-3.1-1.4-3.1-3.1v-3.8
+			C52.4,66,53.8,64.6,55.6,64.6z" style="fill:#4463FF;" />
+		<path class="st10" d="M62.5,68v-0.5h-2.9v-2.9h-0.5v2.9h-3.3v-2.9h-0.5v2.9H37.2V68h18.1v3.3H37.2v0.5h18.1v2.9h0.5v-2.9h3.3v2.9
+			h0.5v-2.9h2.9v-0.5h-2.9V68H62.5z M59.1,71.2h-3.3V68h3.3V71.2z" style="fill:#4463FF;" />
+		<path class="st10" d="M96.4,14.7h3.8c1.7,0,3.1,1.4,3.1,3.1v3.8c0,1.7-1.4,3.1-3.1,3.1h-3.8c-1.7,0-3.1-1.4-3.1-3.1v-3.8
+			C93.3,16.1,94.7,14.7,96.4,14.7z" style="fill:#4463FF;" />
+		<path class="st10" d="M103.3,18v-0.5h-2.9v-2.9h-0.5v2.9h-3.3v-2.9h-0.5v2.9h-2.8V18h2.8v3.3h-2.8v0.5h2.8v2.9h0.5v-2.9h3.3v2.9
+			h0.5v-2.9h2.9v-0.5h-2.9V18H103.3z M99.9,21.3h-3.3V18h3.3V21.3z" style="fill:#4463FF;" />
+		<path class="st10" d="M122.3,14.7h3.8c1.7,0,3.1,1.4,3.1,3.1v3.8c0,1.7-1.4,3.1-3.1,3.1h-3.8c-1.7,0-3.1-1.4-3.1-3.1v-3.8
+			C119.2,16.1,120.6,14.7,122.3,14.7z" style="fill:#4463FF;" />
+		<path class="st10" d="M129.3,18v-0.5h-2.9v-2.9h-0.5v2.9h-3.3v-2.9H122v2.9h-2.8V18h2.8v3.3h-2.8v0.5h2.8v2.9h0.5v-2.9h3.3v2.9
+			h0.5v-2.9h2.9v-0.5h-2.9V18H129.3z M125.8,21.3h-3.3V18h3.3V21.3z" style="fill:#4463FF;" />
+		<path class="st10" d="M76.2,18.1l1.6,3.4c0.7,1.6,0.1,3.4-1.5,4.2l-3.4,1.6c-1.6,0.7-3.4,0.1-4.2-1.5l-1.6-3.4
+			c-0.7-1.6-0.1-3.4,1.5-4.2l3.4-1.6C73.6,15.9,75.5,16.6,76.2,18.1z" style="fill:#4463FF;" />
+		<path class="st10" d="M76.1,25.8l0.5-0.2L75.3,23l2.6-1.2l-0.2-0.5l-2.6,1.2l-1.4-3l2.6-1.2l-0.2-0.5L73.5,19l-1.2-2.5l-0.5,0.2
+			l1.2,2.5l-3,1.4l-1.2-2.5l-0.5,0.2l1.2,2.5L67,22.1l0.2,0.5l2.6-1.2l1.4,3l-2.6,1.2l0.2,0.5l2.6-1.2l1.2,2.6l0.5-0.2l-1.2-2.6
+			l3-1.4L76.1,25.8z M71.6,24.1l-1.4-3l3-1.4l1.4,3L71.6,24.1z" style="fill:#4463FF;" />
+		<path class="st10" d="M67.1,117.8l1.6-3.4c0.7-1.6,2.6-2.3,4.2-1.5l3.4,1.6c1.6,0.7,2.3,2.6,1.5,4.2l-1.6,3.4
+			c-0.7,1.6-2.6,2.3-4.2,1.5l-3.4-1.6C67.1,121.2,66.4,119.3,67.1,117.8z" style="fill:#4463FF;" />
+		<path class="st10" d="M74.8,116.9l-3-1.4l1.2-2.6l-0.5-0.2l-1.2,2.6l-2.6-1.2l-0.2,0.4l2.6,1.2l-1.4,3l-2.6-1.2L67,118l2.6,1.2
+			l-1.2,2.5l0.5,0.2l1.1-2.5l3,1.4l-1.2,2.5l0.5,0.2l1.2-2.6l2.6,1.2l0.2-0.5l-2.6-1.2l1.4-3l2.6,1.2l0.2-0.4l-2.6-1.2l1.2-2.6
+			l-0.5-0.2L74.8,116.9z M74.6,117.4l-1.4,3l-3-1.4l1.4-3L74.6,117.4z" style="fill:#4463FF;" />
+		<path class="st10" d="M55.8,67.4h-0.6v-5.2c0-1.6-1.3-2.8-2.8-2.8h-7.6v-0.6h7.6c1.9,0,3.5,1.5,3.5,3.5V67.4z" style="fill:#4463FF;" />
+		<path class="st10" d="M62.1,67.4h-1.3v-7.3c0-3-2.4-5.4-5.4-5.4H44.1v-1.2h11.3c3.7,0,6.6,3,6.6,6.6V67.4z" style="fill:#4463FF;" />
+		<path class="st10" d="M52.4,79.4h-7.6v-1.3h7.6c1.4,0,2.5-1.1,2.5-2.5v-5.2h1.3v5.2C56.2,77.7,54.5,79.4,52.4,79.4z" style="fill:#4463FF;" />
+		<path class="st10" d="M50.2,67.4h-0.6v-0.8c0-1-0.8-1.8-1.8-1.8h-3v-0.6h3c1.3,0,2.4,1.1,2.4,2.4c0,0,0,0,0,0V67.4z" style="fill:#4463FF;" />
+		<path class="st10" d="M47.7,75.6h-3v-0.6h3c1,0,1.8-0.8,1.8-1.8v-1.4h0.6v1.4C50.1,74.5,49.1,75.6,47.7,75.6z" style="fill:#4463FF;" />
+		<circle class="st19" cx="115.3" cy="103.7" r="7.3" style="fill:#101010;" />
+		<circle class="st20" cx="132.7" cy="119" r="7.3" style="fill:#26A07B;" />
+		<path class="st21" d="M133.6,118.9v0.5H132v-0.5 M132,123.1v-3c-1,0-3.1-0.2-3.1-0.9s2.1-0.8,3.1-0.8v-0.8h-2.2V116h5.9v1.5h-2.1
+			v0.8c1,0,3.1,0.3,3.1,0.8s-2.5,0.9-3.1,0.9v3L132,123.1z" style="fill:none;stroke:#FFFFFF;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;" />
+		<circle class="st22" cx="115.2" cy="135.4" r="7.3" style="fill:#DDA710;" />
+
+			<rect x="111.9" y="132.1" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -62.0015 121.1202)" class="st21" width="6.5" height="6.5" style="fill:none;stroke:#FFFFFF;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;" />
+		<path class="st23" d="M110.8,135.4l4.4,2.3l4.6-2.3" style="fill:none;stroke:#FFFFFF;stroke-width:0.5;stroke-linejoin:round;" />
+		<path class="st23" d="M112.7,135.2h1.7l0.8-0.8l0.8,0.8h1.7l-2.5-2.5L112.7,135.2z" style="fill:none;stroke:#FFFFFF;stroke-width:0.5;stroke-linejoin:round;" />
+		<path class="st24" d="M115.3,96.4c-4,0-7.3,3.3-7.3,7.3c0,4,3.3,7.3,7.3,7.3c4,0,7.3-3.3,7.3-7.3c0,0,0,0,0,0
+			C122.6,99.7,119.4,96.4,115.3,96.4C115.3,96.4,115.3,96.4,115.3,96.4z M115.3,110.4c-3.7,0-6.7-3-6.7-6.7s3-6.7,6.7-6.7
+			s6.7,3,6.7,6.7c0,0,0,0,0,0C122,107.4,119,110.4,115.3,110.4L115.3,110.4z" style="fill:#FFFFFF;" />
+		<polygon class="st24" points="115.2,104.6 114.2,102 113.4,102 113.4,105.4 114,105.4 114,103 114.9,105.4 115.5,105.4 116.4,103
+			116.4,105.4 117,105.4 117,102 116.2,102 		" style="fill:#FFFFFF;" />
+		<path class="st24" d="M111.2,101.9c-1,0-1.9,0.8-1.9,1.8c0,1,0.8,1.9,1.8,1.9c1,0,1.9-0.8,1.9-1.8c0,0,0,0,0-0.1
+			c0.1-0.9-0.7-1.8-1.6-1.8C111.3,101.9,111.3,101.9,111.2,101.9z M111.2,104.9c-0.7,0.1-1.3-0.4-1.3-1.1s0.4-1.3,1.1-1.3
+			s1.3,0.4,1.3,1.1c0,0,0,0.1,0,0.1c0.1,0.6-0.3,1.1-0.9,1.2C111.3,104.9,111.3,104.9,111.2,104.9L111.2,104.9z" style="fill:#FFFFFF;" />
+		<path class="st24" d="M119.1,104.2h1c0,0.5-0.4,0.8-0.9,0.8c0,0,0,0,0,0c-0.7,0-1.1-0.5-1.1-1.2s0.3-1.2,1-1.2
+			c0.4,0,0.8,0.2,0.9,0.6h0.7c-0.1-0.8-0.8-1.3-1.5-1.2c-0.9,0-1.7,0.7-1.7,1.6c0,0.1,0,0.1,0,0.2c-0.1,0.9,0.6,1.7,1.5,1.8
+			c0,0,0.1,0,0.1,0c0.4,0,0.8-0.2,1-0.5v0.4h0.6v-1.9H119L119.1,104.2z" style="fill:#FFFFFF;" />
+	</g>
+</g>
 </svg>

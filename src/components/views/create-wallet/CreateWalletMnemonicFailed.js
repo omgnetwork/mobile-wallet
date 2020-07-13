@@ -8,11 +8,11 @@ import { OMGButton, OMGText } from 'components/widgets'
 const CreateWalletMnemonicFailed = ({ theme, navigation }) => {
   return (
     <SafeAreaView style={styles.container(theme)}>
-      <BackupMnemonicError width={80} height={80} style={styles.image} />
-      <OMGText weight='mono-semi-bold' style={styles.title(theme)}>
+      <BackupMnemonicError width={80} height={80} />
+      <OMGText weight='semi-bold' style={styles.title(theme)}>
         Incorrect order
       </OMGText>
-      <OMGText style={styles.description(theme)}>
+      <OMGText weight='regular' style={styles.description(theme)}>
         You selected Mnemonic Phrase in wrong order
       </OMGText>
       <View style={styles.buttonContainer}>
@@ -26,12 +26,9 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     paddingHorizontal: 16,
-    paddingBottom: 16,
-    backgroundColor: theme.colors.black3
+    paddingBottom: 24,
+    backgroundColor: theme.colors.black5
   }),
-  image: {
-    marginTop: 32
-  },
   title: theme => ({
     color: theme.colors.white,
     marginTop: 30,

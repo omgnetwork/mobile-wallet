@@ -6,7 +6,10 @@ export default createStackNavigator(
   {
     ImportWalletForm: Views.ImportWalletForm,
     ImportWalletSuccess: {
-      screen: Views.ImportWalletSuccess
+      screen: Views.ImportWalletSuccess,
+      navigationOptions: {
+        gesturesEnabled: false
+      }
     }
   },
   {
