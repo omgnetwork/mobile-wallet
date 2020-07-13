@@ -23,7 +23,8 @@ export const setBlockchainWallet = (wallet, provider) => {
 
   return createAsyncAction({
     operation: asyncAction,
-    type: 'SETTING/SET_BLOCKCHAIN_WALLET'
+    type: 'SETTING/SET_BLOCKCHAIN_WALLET',
+    reportError: false
   })
 }
 
