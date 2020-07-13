@@ -18,11 +18,7 @@ import {
   OMGEditItem,
   OMGExitFee
 } from 'components/widgets'
-import {
-  Plasma,
-  BlockchainFormatter,
-  BlockchainParams
-} from 'common/blockchain'
+import { Plasma, BlockchainParams } from 'common/blockchain'
 import { Styles, Formatter, Unit, BigNumber } from 'common/utils'
 import { ContractAddress } from 'common/constants'
 
@@ -136,7 +132,6 @@ const ExitReview = ({
   const hasError = insufficientBalanceError || gasEstimationError
   const btnLoading = minimumAmount === 0 || isLoading || loadingExit
 
-  const exitFee = BlockchainFormatter.formatTokenPrice(exitAmount, token.price)
   return (
     <View style={styles.container(theme)}>
       <ScrollView contentContainerStyle={styles.scrollView}>
@@ -147,7 +142,6 @@ const ExitReview = ({
           <OMGEditItem
             title='Amount'
             rightFirstLine={`${exitAmount} ${token.tokenSymbol}`}
-            rightThirdLine={`${exitFee} USD`}
             onPress={navigateEditAmount}
             style={[styles.marginMedium, styles.paddingMedium]}
           />

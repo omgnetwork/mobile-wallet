@@ -59,7 +59,7 @@ const DepositApprove = ({
   const [
     estimatedFee,
     estimatedFeeSymbol,
-    estimatedFeeUsd,
+    _estimatedFeeUsd,
     estimatedGasUsed,
     gasEstimationError
   ] = useEstimatedFee({
@@ -161,7 +161,6 @@ const DepositApprove = ({
             title='Fee'
             loading={!estimatedFee}
             rightFirstLine={`${estimatedFee} ${estimatedFeeSymbol}`}
-            rightThirdLine={`${estimatedFeeUsd} USD`}
             onPress={onPressEditFee}
             style={[styles.paddingMedium, styles.mediumMarginTop]}
           />

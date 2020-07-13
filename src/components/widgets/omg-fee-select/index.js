@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import OMGText from '../omg-text'
 import OMGFontIcon from '../omg-font-icon'
 import { withTheme } from 'react-native-paper'
-import { Formatter, Styles } from 'common/utils'
+import { Styles } from 'common/utils'
 
 const OMGFeeSelect = ({ style, onPress, fee, theme }) => {
   return (
@@ -23,9 +23,6 @@ const OMGFeeSelect = ({ style, onPress, fee, theme }) => {
           numberOfLines={1}>
           {fee.displayAmount} {fee.symbol}
         </OMGText>
-        <OMGText style={styles.feePrice(theme)}>
-          ${formatFeePrice(fee.displayAmount, fee.price)}/transfer
-        </OMGText>
       </View>
       <View style={styles.sectionSelect}>
         <OMGFontIcon
@@ -36,14 +33,6 @@ const OMGFeeSelect = ({ style, onPress, fee, theme }) => {
       </View>
     </TouchableOpacity>
   )
-}
-
-const formatFeePrice = (amount, price) => {
-  const parsedAmount = parseFloat(amount)
-  const tokenPrice = parsedAmount * price
-  return Formatter.format(tokenPrice, {
-    maxDecimal: 2
-  })
 }
 
 const styles = StyleSheet.create({

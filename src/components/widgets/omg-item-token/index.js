@@ -10,7 +10,6 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
   const shadowOpacity = useRef(new Animated.Value(0))
   const balanceOpacity = useRef(new Animated.Value(1.0))
   const balance = BlockchainFormatter.formatTokenBalance(token.balance, 6)
-  const price = BlockchainFormatter.formatTokenPrice(token.balance, token.price)
 
   return (
     <Animated.View
@@ -34,7 +33,6 @@ const OMGItemToken = ({ token, style, onPress, theme }) => {
           numberOfLines={1}>
           {balance}
         </OMGText>
-        <OMGText style={styles.fiatValue(theme)}>{price} USD</OMGText>
       </Animated.View>
     </Animated.View>
   )
@@ -70,11 +68,6 @@ const styles = StyleSheet.create({
     maxWidth: 100,
     fontSize: Styles.getResponsiveSize(16, { medium: 14, small: 12 }),
     color: theme.colors.white
-  }),
-  fiatValue: theme => ({
-    textAlign: 'right',
-    color: theme.colors.gray2,
-    fontSize: 10
   })
 })
 
