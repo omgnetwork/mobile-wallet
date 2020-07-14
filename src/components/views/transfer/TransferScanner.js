@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import { View, StyleSheet, Animated, TouchableOpacity } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  Animated,
+  TouchableOpacity,
+  Linking
+} from 'react-native'
 import { connect } from 'react-redux'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
@@ -8,7 +14,8 @@ import {
   OMGText,
   OMGFontIcon,
   OMGQRScanner,
-  OMGEmpty
+  OMGEmpty,
+  OMGButton
 } from 'components/widgets'
 import CloseIcon from './assets/close-icon.svg'
 import QRIcon from './assets/qr-icon.svg'
@@ -75,6 +82,10 @@ const TransferScanner = ({
     }
   }, [hasAssets])
 
+  const openPermissionSetting = useCallback(() => {
+    Linking.openSettings()
+  }, [])
+
   useEffect(() => {
     setShouldDisableSending(unconfirmedTx || !hasAssets)
   }, [hasAssets, isRootchain, unconfirmedTx])
@@ -125,9 +136,16 @@ const TransferScanner = ({
               renderUnconfirmedTx={unconfirmedTxComponent}
               renderEmptyComponent={emptyComponent}
               notAuthorizedView={
-                <OMGText style={styles.notAuthorizedView}>
-                  Enable the camera permission to scan a QR code.
-                </OMGText>
+                <View style={styles.unauthorizedViewContainer}>
+                  <OMGText style={styles.notAuthorizedView} weight='regular'>
+                    Enable the camera permission to scan a QR code.
+                  </OMGText>
+                  <OMGButton
+                    style={styles.btnSetting}
+                    onPress={openPermissionSetting}>
+                    Go To Setting
+                  </OMGButton>
+                </View>
               }
             />
           </View>
@@ -206,7 +224,8 @@ const styles = StyleSheet.create({
     fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 12 })
   }),
   notAuthorizedView: {
-    textAlign: 'center'
+    textAlign: 'center',
+    color: 'white'
   },
   scannerView: theme => ({
     backgroundColor: theme.colors.black3,
@@ -240,6 +259,13 @@ const styles = StyleSheet.create({
   },
   cameraContainer: {
     flex: Styles.getResponsiveSize(0.4, { small: 0.64, medium: 0.5 })
+  },
+  unauthorizedViewContainer: {
+    flexDirection: 'column'
+  },
+  btnSetting: {
+    marginTop: 16,
+    width: 200
   }
 })
 
