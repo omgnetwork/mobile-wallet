@@ -17,6 +17,7 @@ const OMGQRScanner = props => {
     cameraRef,
     renderUnconfirmedTx,
     renderEmptyComponent,
+    notAuthorizedView,
     unconfirmedTx,
     wallet,
     theme
@@ -84,6 +85,7 @@ const OMGQRScanner = props => {
       containerStyle={{ width: size, height: size }}
       reactivate={reactivate}
       onRead={handleOnRead}
+      notAuthorizedView={notAuthorizedView}
       pendingAuthorizationView={
         <View>
           <OMGText style={styles.loadingText(theme)}>Loading...</OMGText>
