@@ -85,6 +85,7 @@ const OMGQRScanner = props => {
       containerStyle={{ width: size, height: size }}
       reactivate={reactivate}
       onRead={handleOnRead}
+      checkAndroid6Permissions={true}
       notAuthorizedView={notAuthorizedView}
       pendingAuthorizationView={
         <View>
