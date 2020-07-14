@@ -32,7 +32,7 @@ const OMGDrawerContent = ({
   const handleCopyClick = useCallback(() => {
     Clipboard.setString(primaryWallet.address)
     Alerter.show(Alert.SUCCESS_COPIED_ADDRESS)
-  }, [primaryWallet.address])
+  }, [primaryWallet])
 
   const closeDrawerAndNavigate = (destination, params = {}) => {
     navigation.navigate(destination, params)
@@ -61,7 +61,7 @@ const OMGDrawerContent = ({
         <View style={styles.headerContainer(theme)}>
           <OMGIdenticon
             style={styles.logo}
-            hash={primaryWallet.address}
+            hash={primaryWallet?.address}
             size={36}
           />
           <OMGText style={styles.textWalletName(theme)} weight='book'>
@@ -72,7 +72,7 @@ const OMGDrawerContent = ({
               style={styles.hashText(theme)}
               ellipsizeMode='middle'
               numberOfLines={1}>
-              {primaryWallet.address}
+              {primaryWallet?.address}
             </OMGText>
             <TouchableOpacity onPress={handleCopyClick}>
               <OMGFontIcon
