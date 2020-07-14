@@ -85,7 +85,7 @@ const ImportForm = ({
           Seed Phrase
         </OMGText>
         <OMGTextInput
-          style={{ ...styles.textInput(theme), ...styles.marginTop }}
+          style={styles.textInput(theme)}
           focusRef={focusRef}
           inputRef={mnemonicRef}
           multiline={true}

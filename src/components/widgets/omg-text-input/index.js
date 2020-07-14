@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TextInput, StyleSheet, Platform } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { hexToRgb } from 'common/styles/colors'
@@ -32,6 +32,14 @@ const OMGTextInput = ({
 
   const [underlineColor, setUnderlineColor] = useState(inactiveUnderlineColor)
   const numberOfLines = lines ? lines : 1
+
+  const [hackedWidthAndroid, setHackedWidthAndroid] = useState('99%')
+  useEffect(() => {
+    setTimeout(() => {
+      setHackedWidthAndroid('100%')
+    }, 100)
+  }, [])
+
   return (
     <TextInput
       placeholder={placeholder}
@@ -69,7 +77,12 @@ const OMGTextInput = ({
       keyboardType={keyboardType}
       selectionColor={selectionColor || theme.colors.white}
       style={{
-        ...styles.textInput(underlineColor, hideUnderline, mono),
+        ...styles.textInput(
+          underlineColor,
+          hideUnderline,
+          mono,
+          hackedWidthAndroid
+        ),
         ...style,
         minHeight: Math.max(
           20,
@@ -81,7 +94,8 @@ const OMGTextInput = ({
 }
 
 const styles = StyleSheet.create({
-  textInput: (underlineColor, hideUnderline, mono) => ({
+  textInput: (underlineColor, hideUnderline, mono, hackedWidthAndroid) => ({
+    width: hackedWidthAndroid,
     fontFamily: mono ? 'MessinaSansMono-Book' : 'MessinaSans-Regular',
     paddingVertical: 16,
     marginLeft: Platform.OS === 'ios' ? 0 : -4,

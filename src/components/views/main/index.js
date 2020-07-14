@@ -18,7 +18,7 @@ const MainContainer = ({
       <OMGActionSheetWalletSwitcher
         isVisible={walletSwitcherVisible}
         wallets={wallets}
-        primaryWalletAddress={primaryWallet.address}
+        primaryWalletAddress={primaryWallet?.address}
       />
     </View>
   )

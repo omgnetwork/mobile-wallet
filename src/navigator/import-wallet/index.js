@@ -8,7 +8,7 @@ export default createStackNavigator(
     ImportWalletSuccess: {
       screen: Views.ImportWalletSuccess,
       navigationOptions: {
-        gesturesEnabled: false
+        gestureEnabled: false
       }
     }
   },
