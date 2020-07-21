@@ -69,8 +69,74 @@ const correctEthereumAddresses = async (env = process.env) => {
   return true
 }
 
+const parseEtherscanNetwork = etherscanUrl => {
+  if (etherscanUrl === 'https://etherscan.io/') {
+    return 'mainnet'
+  }
+  const networkMatch = etherscanUrl.match(/https:\/\/(.*)\.etherscan.io/)
+  if (!networkMatch) {
+    console.error(
+      "Could not parse network from Etherscan URL string. Required format is https://etherscan.io' (mainnet) or 'https://<network>.etherscan.io/'"
+    )
+    return null
+  }
+  return networkMatch[1]
+}
+
+const parseEtherscanApiNetwork = etherscanUrl => {
+  if (etherscanUrl === 'https://api.etherscan.io/api/') {
+    return 'mainnet'
+  }
+  const networkMatch = etherscanUrl.match(/https:\/\/api-(.*)\.etherscan.io/)
+  if (!networkMatch) {
+    console.error(
+      "Could not parse network from Etherscan API URL string. Required format is https://api.etherscan.io/api' (mainnet) or 'https://api-<network>.etherscan.io/'"
+    )
+    return null
+  }
+  return networkMatch[1]
+}
+
+const getWatcherNetwork = async () => {
+  try {
+    const watcherConfig = await axios.get(
+      process.env.WATCHER_URL + '/configuration.get'
+    )
+    return watcherConfig['data']['data']['network'].toLowerCase()
+  } catch {
+    console.error('Could not connect to given Watcher URL.')
+    return null
+  }
+}
+
+const areMatching = networks => {
+  if (_.includes(networks, null)) return false
+
+  const allMatching = Object.values(networks).every(
+    (value, _index, array) => value === array[0]
+  )
+
+  if (!allMatching) {
+    console.error('Non-matching networks in environment variables:', networks)
+    return false
+  }
+  return true
+}
+
+const matchingNetworks = async (env = process.env) => {
+  const { ETHEREUM_NETWORK, ETHERSCAN_URL, ETHERSCAN_API_URL } = env
+  const networks = {
+    watcherNetwork: await getWatcherNetwork(),
+    providerNetwork: ETHEREUM_NETWORK,
+    etherscanNetwork: parseEtherscanNetwork(ETHERSCAN_URL),
+    etherscanApiNetwork: parseEtherscanApiNetwork(ETHERSCAN_API_URL)
+  }
+
+  return areMatching(networks)
+}
+
 const runEnvironmentVariableChecks = async (
-  checks = [urlsCorrectlyPrefixed, correctEthereumAddresses]
+  checks = [urlsCorrectlyPrefixed, correctEthereumAddresses, matchingNetworks]
 ) => {
   for (const check of checks) {
     const pass = await check()
