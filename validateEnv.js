@@ -1,6 +1,29 @@
 const axios = require('axios')
 const _ = require('lodash')
+const { parse, warn } = require('./env-check/helpers')
 require('dotenv').config()
+
+const getWatcherEthereumContractAddresses = async (env = process.env) => {
+  try {
+    const watcherConfig = await axios.post(env.WATCHER_URL + '/status.get', {})
+    return watcherConfig['data']['data']['contract_addr']
+  } catch {
+    console.error('Could not connect to given Watcher URL.')
+    return null
+  }
+}
+
+const getWatcherNetwork = async () => {
+  try {
+    const watcherConfig = await axios.get(
+      process.env.WATCHER_URL + '/configuration.get'
+    )
+    return watcherConfig['data']['data']['network'].toLowerCase()
+  } catch {
+    console.error('Could not connect to given Watcher URL.')
+    return null
+  }
+}
 
 const urlsCorrectlyPrefixed = (
   env = process.env,
@@ -22,32 +45,16 @@ const urlsCorrectlyPrefixed = (
   return true
 }
 
-const getWatcherEthereumContractAddresses = async (env = process.env) => {
-  try {
-    const watcherConfig = await axios.post(env.WATCHER_URL + '/status.get', {})
-    return watcherConfig['data']['data']['contract_addr']
-  } catch {
-    console.error('Could not connect to given Watcher URL.')
-    return null
-  }
-}
-
-const addressWarn = addressType => {
-  console.warn(
-    `Given ${addressType} contract address does not match given Watcher configuration`
-  )
-}
-
 const correctEthereumAddresses = async (env = process.env) => {
   const watcherConfig = await getWatcherEthereumContractAddresses()
 
   if (watcherConfig['erc20_vault'] !== env.ERC20_VAULT_CONTRACT_ADDRESS) {
-    addressWarn('ERC20')
+    warn.address('ERC20 VAULT', watcherConfig['erc20_vault'])
     return false
   }
 
   if (watcherConfig['eth_vault'] !== env.ETH_VAULT_CONTRACT_ADDRESS) {
-    addressWarn('ETH')
+    warn.address('ETH VAULT', watcherConfig['eth_vault'])
     return false
   }
 
@@ -55,58 +62,18 @@ const correctEthereumAddresses = async (env = process.env) => {
     watcherConfig['payment_exit_game'] !==
     env.PLASMA_PAYMENT_EXIT_GAME_CONTRACT_ADDRESS
   ) {
-    addressWarn('EXIT GAME')
+    warn.address('EXIT GAME', watcherConfig['payment_exit_game'])
     return false
   }
 
   if (
     watcherConfig['plasma_framework'] !== env.PLASMA_FRAMEWORK_CONTRACT_ADDRESS
   ) {
-    addressWarn('PLASMA_FRAMEWORK')
+    warn.address('PLASMA_FRAMEWORK', watcherConfig['plasma_framework'])
     return false
   }
 
   return true
-}
-
-const parseEtherscanNetwork = etherscanUrl => {
-  if (etherscanUrl === 'https://etherscan.io/') {
-    return 'mainnet'
-  }
-  const networkMatch = etherscanUrl.match(/https:\/\/(.*)\.etherscan.io/)
-  if (!networkMatch) {
-    console.error(
-      "Could not parse network from Etherscan URL string. Required format is https://etherscan.io' (mainnet) or 'https://<network>.etherscan.io/'"
-    )
-    return null
-  }
-  return networkMatch[1]
-}
-
-const parseEtherscanApiNetwork = etherscanUrl => {
-  if (etherscanUrl === 'https://api.etherscan.io/api/') {
-    return 'mainnet'
-  }
-  const networkMatch = etherscanUrl.match(/https:\/\/api-(.*)\.etherscan.io/)
-  if (!networkMatch) {
-    console.error(
-      "Could not parse network from Etherscan API URL string. Required format is https://api.etherscan.io/api' (mainnet) or 'https://api-<network>.etherscan.io/'"
-    )
-    return null
-  }
-  return networkMatch[1]
-}
-
-const getWatcherNetwork = async () => {
-  try {
-    const watcherConfig = await axios.get(
-      process.env.WATCHER_URL + '/configuration.get'
-    )
-    return watcherConfig['data']['data']['network'].toLowerCase()
-  } catch {
-    console.error('Could not connect to given Watcher URL.')
-    return null
-  }
 }
 
 const areMatching = networks => {
@@ -126,17 +93,17 @@ const areMatching = networks => {
 const matchingNetworks = async (env = process.env) => {
   const { ETHEREUM_NETWORK, ETHERSCAN_URL, ETHERSCAN_API_URL } = env
   const networks = {
-    watcherNetwork: await getWatcherNetwork(),
     providerNetwork: ETHEREUM_NETWORK,
-    etherscanNetwork: parseEtherscanNetwork(ETHERSCAN_URL),
-    etherscanApiNetwork: parseEtherscanApiNetwork(ETHERSCAN_API_URL)
+    etherscanNetwork: parse.etherscanNetwork(ETHERSCAN_URL),
+    etherscanApiNetwork: parse.etherscanApiNetwork(ETHERSCAN_API_URL),
+    watcherNetwork: await getWatcherNetwork()
   }
 
   return areMatching(networks)
 }
 
 const runEnvironmentVariableChecks = async (
-  checks = [urlsCorrectlyPrefixed, correctEthereumAddresses, matchingNetworks]
+  checks = [urlsCorrectlyPrefixed, matchingNetworks, correctEthereumAddresses]
 ) => {
   for (const check of checks) {
     const pass = await check()
