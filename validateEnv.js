@@ -6,7 +6,6 @@ require('dotenv').config()
 const getWatcherEthereumContractAddresses = async (env = process.env) => {
   try {
     const watcherConfig = await axios.post(env.WATCHER_URL + '/status.get', {})
-    console.log(watcherConfig)
     return watcherConfig['data']['data']['contract_addr']
   } catch {
     console.error('Could not connect to given Watcher URL.')
