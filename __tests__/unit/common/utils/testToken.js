@@ -2,11 +2,7 @@ import { Token } from 'common/blockchain'
 import { ethers } from 'ethers'
 import Config from '../../../config'
 
-const {
-  TEST_ERC20_TOKEN_CONTRACT_ADDRESS,
-  TEST_TOKENS,
-  ETHEREUM_NETWORK
-} = Config
+const { TEST_TOKENS, ETHEREUM_NETWORK } = Config
 
 const testWalletAddress = '0x4522fb44C2aB359e76eCc75C22C9409690F12241'
 const [ETH, DAI, OMG, KCK, HYP] = TEST_TOKENS
@@ -14,11 +10,7 @@ const [ETH, DAI, OMG, KCK, HYP] = TEST_TOKENS
 describe('Test Token Util', () => {
   it('Token.get should return {name, symbol, decimals, price, balance, contractAddress}', () => {
     const testProvider = ethers.getDefaultProvider(ETHEREUM_NETWORK)
-    const pendingDetails = Token.get(
-      testProvider,
-      TEST_ERC20_TOKEN_CONTRACT_ADDRESS,
-      testWalletAddress
-    )
+    const pendingDetails = Token.get(testProvider, DAI, testWalletAddress)
 
     return Promise.all(pendingDetails).then(
       ([name, symbol, decimals, price, balance, contractAddress]) => {
