@@ -1,4 +1,4 @@
-import { ethers } from 'ethers'
+import { web3 } from 'common/clients'
 import { ContractABI, BlockchainFormatter, Parser } from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
 import { Plasma as PlasmaClient } from 'common/clients'
@@ -61,15 +61,15 @@ export const get = (provider, contractAddress, accountAddress) => {
       Promise.resolve(contractAddress)
     ]
   } else {
-    const contract = new ethers.Contract(
-      contractAddress,
+    const contract = new web3.eth.Contract(
       ContractABI.erc20Abi(),
-      provider
-    )
-    const bytes32Contract = new ethers.Contract(
       contractAddress,
+      { from: accountAddress }
+    )
+    const bytes32Contract = new web3.eth.Contract(
       ContractABI.bytes32Erc20Abi(),
-      provider
+      contractAddress,
+      { from: accountAddress }
     )
     return [
       getName(contract, bytes32Contract),
@@ -83,19 +83,29 @@ export const get = (provider, contractAddress, accountAddress) => {
 }
 
 const getName = (contract, alternativeContract) => {
-  return contract
+  return contract.methods
     .name()
-    .catch(_ => alternativeContract.name().then(Parser.parseBytes32))
+    .call()
+    .catch(_ =>
+      alternativeContract.methods.name().call().then(Parser.parseBytes32)
+    )
 }
 
 const getSymbol = (contract, alternativeContract) => {
-  return contract
+  return contract.methods
     .symbol()
-    .catch(_ => alternativeContract.symbol().then(Parser.parseBytes32))
+    .call()
+    .catch(_ =>
+      alternativeContract.methods.symbol().call().then(Parser.parseBytes32)
+    )
 }
 
 const getDecimals = contract => {
-  return contract.decimals()
+  return contract.methods.decimals().call().then(parseInt)
+}
+
+export const getContractAddressChecksum = contractAddress => {
+  return web3.utils.toChecksumAddress(contractAddress)
 }
 
 export const getContractAddressChecksum = contractAddress => {
@@ -107,8 +117,9 @@ export const getPrice = (contractAddress, chainNetwork) => {
 }
 
 const getBalance = (contract, accountAddress) => {
-  return contract
+  return contract.methods
     .balanceOf(accountAddress)
+    .call({ from: accountAddress })
     .then(balance => balance.toString(10))
 }
 
