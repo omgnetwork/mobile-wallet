@@ -1,4 +1,4 @@
-import web3 from 'web3'
+import { web3 } from 'common/clients'
 import {
   ContractABI,
   BlockchainFormatter,
@@ -82,11 +82,13 @@ export const get = (provider, contractAddress, accountAddress) => {
   } else {
     const contract = new web3.eth.Contract(
       ContractABI.erc20Abi(),
-      contractAddress
+      contractAddress,
+      { from: accountAddress }
     )
     const bytes32Contract = new web3.eth.Contract(
       ContractABI.bytes32Erc20Abi(),
-      contractAddress
+      contractAddress,
+      { from: accountAddress }
     )
     return [
       getName(contract, bytes32Contract),
@@ -102,29 +104,23 @@ export const get = (provider, contractAddress, accountAddress) => {
 const getName = (contract, alternativeContract) => {
   return contract.methods
     .name()
-    .call({ from: contract.address })
+    .call()
     .catch(_ =>
-      alternativeContract.methods
-        .name()
-        .call({ from: contract.address })
-        .then(Parser.parseBytes32)
+      alternativeContract.methods.name().call().then(Parser.parseBytes32)
     )
 }
 
 const getSymbol = (contract, alternativeContract) => {
   return contract.methods
     .symbol()
-    .call({ from: contract.address })
+    .call()
     .catch(_ =>
-      alternativeContract.methods
-        .symbol()
-        .call({ from: contract.address })
-        .then(Parser.parseBytes32)
+      alternativeContract.methods.symbol().call().then(Parser.parseBytes32)
     )
 }
 
 const getDecimals = contract => {
-  return contract.methods.decimals().call({ from: contract.address })
+  return contract.methods.decimals().call().then(parseInt)
 }
 
 export const getContractAddressChecksum = contractAddress => {
@@ -136,8 +132,9 @@ export const getPrice = (contractAddress, chainNetwork) => {
 }
 
 const getBalance = (contract, accountAddress) => {
-  return contract
+  return contract.methods
     .balanceOf(accountAddress)
+    .call({ from: accountAddress })
     .then(balance => balance.toString(10))
 }
 
