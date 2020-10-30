@@ -11,7 +11,7 @@ export const getErc20Allowance = async ({ smallestUnitAmount, addresses }) => {
   )
   const { address: erc20VaultAddress } = await Plasma.RootChain.getErc20Vault()
 
-  return erc20Contract.methods.allowance(from, erc20VaultAddress).call()
+  return erc20Contract.methods.allowance(from, erc20VaultAddress).call({ from })
 }
 
 export const getPaymentExitGame = () => {
