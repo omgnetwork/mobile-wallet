@@ -6,10 +6,10 @@ import { priceService } from 'common/services'
 import Config from 'react-native-config'
 
 export const find = (contractAddress, tokens) => {
-  return tokens.find(token => token.contractAddress === contractAddress)
+  return tokens.find((token) => token.contractAddress === contractAddress)
 }
 
-export const hasExitQueue = tokenContractAddress => {
+export const hasExitQueue = (tokenContractAddress) => {
   return PlasmaClient.RootChain.hasToken(tokenContractAddress)
 }
 
@@ -26,10 +26,10 @@ export const createExitQueue = async (tokenContractAddress, options) => {
 }
 
 export const all = (provider, contractAddresses, accountAddress) => {
-  const pendingTokenDetails = contractAddresses.map(contractAddress =>
+  const pendingTokenDetails = contractAddresses.map((contractAddress) =>
     Promise.all(get(provider, contractAddress, accountAddress))
   )
-  return Promise.all(pendingTokenDetails).then(tokens =>
+  return Promise.all(pendingTokenDetails).then((tokens) =>
     tokens.reduce(
       (
         tokenMap,
@@ -86,7 +86,7 @@ const getName = (contract, alternativeContract) => {
   return contract.methods
     .name()
     .call()
-    .catch(_ =>
+    .catch(() =>
       alternativeContract.methods.name().call().then(Parser.parseBytes32)
     )
 }
@@ -95,21 +95,17 @@ const getSymbol = (contract, alternativeContract) => {
   return contract.methods
     .symbol()
     .call()
-    .catch(_ =>
+    .catch(() =>
       alternativeContract.methods.symbol().call().then(Parser.parseBytes32)
     )
 }
 
-const getDecimals = contract => {
+const getDecimals = (contract) => {
   return contract.methods.decimals().call().then(parseInt)
 }
 
-export const getContractAddressChecksum = contractAddress => {
+export const getContractAddressChecksum = (contractAddress) => {
   return web3.utils.toChecksumAddress(contractAddress)
-}
-
-export const getContractAddressChecksum = contractAddress => {
-  return ethers.utils.getAddress(contractAddress)
 }
 
 export const getPrice = (contractAddress, chainNetwork) => {
@@ -120,9 +116,9 @@ const getBalance = (contract, accountAddress) => {
   return contract.methods
     .balanceOf(accountAddress)
     .call({ from: accountAddress })
-    .then(balance => balance.toString(10))
+    .then((balance) => balance.toString(10))
 }
 
 const getEthBalance = (provider, address) => {
-  return provider.getBalance(address).then(balance => balance.toString(10))
+  return provider.getBalance(address).then((balance) => balance.toString(10))
 }
