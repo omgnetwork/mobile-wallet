@@ -19,8 +19,8 @@ export const fetchAssets = async (provider, address) => {
     ])
 
     const tokenContractAddresses = getTokenContractAddresses(balances)
-    const tokenMap = await Token.all(provider, tokenContractAddresses, address)
-    const childchainAssets = balances.map(balance => {
+    const tokenMap = await Token.all(tokenContractAddresses, address)
+    const childchainAssets = balances.map((balance) => {
       const token = tokenMap[balance.currency]
       return {
         ...token,
@@ -44,19 +44,19 @@ export const fetchAssets = async (provider, address) => {
   }
 }
 
-const getTokenContractAddresses = balances => {
+const getTokenContractAddresses = (balances) => {
   const currencies = balances.map(Mapper.mapAssetCurrency)
   return Array.from(new Set(currencies))
 }
 
-const getUtxoPos = utxos =>
+const getUtxoPos = (utxos) =>
   (utxos.length && utxos[0].utxo_pos.toString(10)) || '0'
 
 export const getTxs = (address, options) => {
   return new Promise(async (resolve, reject) => {
     try {
       const transactions = await Transaction.all(address, options)
-      const currentWatcherTxs = transactions.map(tx => ({
+      const currentWatcherTxs = transactions.map((tx) => ({
         ...tx,
         hash: tx.txhash
       }))
@@ -68,7 +68,7 @@ export const getTxs = (address, options) => {
   })
 }
 
-export const getTx = hash => {
+export const getTx = (hash) => {
   return new Promise(async (resolve, reject) => {
     try {
       const transaction = await Transaction.get(hash)
@@ -98,12 +98,14 @@ export const mergeUTXOs = (
   )
 }
 
-export const getFees = async tokens => {
+export const getFees = async (tokens) => {
   try {
-    const currencies = tokens.map(token => token.contractAddress)
-    const fees = await Plasma.getFees(currencies).then(feeTokens => {
-      return feeTokens.map(feeToken => {
-        const token = tokens.find(t => t.contractAddress === feeToken.currency)
+    const currencies = tokens.map((token) => token.contractAddress)
+    const fees = await Plasma.getFees(currencies).then((feeTokens) => {
+      return feeTokens.map((feeToken) => {
+        const token = tokens.find(
+          (t) => t.contractAddress === feeToken.currency
+        )
         return {
           ...feeToken,
           ...token
@@ -185,7 +187,9 @@ export const exit = (blockchainWallet, token, utxos, gasPrice) => {
         await Wait.waitChildChainBlknum(address, blknum)
         utxoToExit = await Utxos.get(address, {
           currency: token.contractAddress
-        }).then(latestUtxos => latestUtxos.find(utxo => utxo.blknum === blknum))
+        }).then((latestUtxos) =>
+          latestUtxos.find((utxo) => utxo.blknum === blknum)
+        )
       }
 
       const exitData = await Plasma.getExitData(utxoToExit)

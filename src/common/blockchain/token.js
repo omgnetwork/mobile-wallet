@@ -1,4 +1,4 @@
-import { web3 } from 'common/clients'
+import Web3 from 'web3'
 import { ContractABI, BlockchainFormatter, Parser } from 'common/blockchain'
 import { ContractAddress } from 'common/constants'
 import { Plasma as PlasmaClient } from 'common/clients'
@@ -25,9 +25,9 @@ export const createExitQueue = async (tokenContractAddress, options) => {
   }
 }
 
-export const all = (provider, contractAddresses, accountAddress) => {
+export const all = (contractAddresses, accountAddress) => {
   const pendingTokenDetails = contractAddresses.map((contractAddress) =>
-    Promise.all(get(provider, contractAddress, accountAddress))
+    Promise.all(get(Config.WEB3_HTTP_PROVIDER, contractAddress, accountAddress))
   )
   return Promise.all(pendingTokenDetails).then((tokens) =>
     tokens.reduce(
@@ -51,6 +51,8 @@ export const all = (provider, contractAddresses, accountAddress) => {
 }
 
 export const get = (provider, contractAddress, accountAddress) => {
+  const _provider = new Web3.providers.HttpProvider(provider)
+  const web3 = new Web3(_provider, null)
   if (contractAddress === ContractAddress.ETH_ADDRESS) {
     return [
       Promise.resolve('Ether'),
@@ -105,7 +107,7 @@ const getDecimals = (contract) => {
 }
 
 export const getContractAddressChecksum = (contractAddress) => {
-  return web3.utils.toChecksumAddress(contractAddress)
+  return Web3.utils.toChecksumAddress(contractAddress)
 }
 
 export const getPrice = (contractAddress, chainNetwork) => {
@@ -120,5 +122,8 @@ const getBalance = (contract, accountAddress) => {
 }
 
 const getEthBalance = (provider, address) => {
-  return provider.getBalance(address).then((balance) => balance.toString(10))
+  const _provider = new Web3.providers.HttpProvider(provider)
+  return new Web3(_provider).eth
+    .getBalance(address)
+    .then((balance) => balance.toString(10))
 }

@@ -3,7 +3,7 @@ import { Token, Plasma, Transaction } from 'common/blockchain'
 import { BigNumber } from 'common/utils'
 import { Mapper } from 'common/utils'
 
-export const getPlasmaTx = oldTransaction => {
+export const getPlasmaTx = (oldTransaction) => {
   return new Promise(async (resolve, reject) => {
     try {
       const transaction = await plasmaService.getTx(oldTransaction.hash)
@@ -55,15 +55,15 @@ export const getTxs = (address, provider, options) => {
       const pristineChildchainTxs = excludeSplittedTxs(childchainTxs)
 
       const currencies = pristineChildchainTxs.map(
-        tx => Mapper.mapInputTransfer(tx).currency
+        (tx) => Mapper.mapInputTransfer(tx).currency
       )
 
       const contractAddresses = Array.from(new Set(currencies))
 
-      const tokenMap = await Token.all(provider, contractAddresses, address)
+      const tokenMap = await Token.all(contractAddresses, address)
 
       const tokens = Object.keys(tokenMap).map(
-        contractAddress => tokenMap[contractAddress]
+        (contractAddress) => tokenMap[contractAddress]
       )
 
       const transactions = await Promise.all([
@@ -89,18 +89,18 @@ export const getTxs = (address, provider, options) => {
   })
 }
 
-export const getExitTxs = async address => {
+export const getExitTxs = async (address) => {
   const { unprocessed, processed } = await Transaction.allExits(address)
   return {
-    unprocessed: unprocessed.map(u => u.transactionHash),
-    processed: processed.map(p => p.transactionHash)
+    unprocessed: unprocessed.map((u) => u.transactionHash),
+    processed: processed.map((p) => p.transactionHash)
   }
 }
 
-const excludeSplittedTxs = txs => {
-  return txs.filter(tx => {
-    const inputAddresses = tx.inputs.map(input => input.owner)
-    const outputAddresses = tx.outputs.map(output => output.owner)
+const excludeSplittedTxs = (txs) => {
+  return txs.filter((tx) => {
+    const inputAddresses = tx.inputs.map((input) => input.owner)
+    const outputAddresses = tx.outputs.map((output) => output.owner)
     return new Set([...inputAddresses, ...outputAddresses]).size > 1
   })
 }
@@ -116,7 +116,7 @@ const mergeTxs = async (txs, address, tokens, standardExitBondSize) => {
     childchainTxs
   } = txs
 
-  rootchainErc20Txs.forEach(tx => {
+  rootchainErc20Txs.forEach((tx) => {
     if (erc20Map[tx.hash]) {
       // If we found duplicate transaction hash, meaning that this transaction contains multiple transfer.
       // Therefore, we need to aggregate all transacted values.
@@ -129,7 +129,7 @@ const mergeTxs = async (txs, address, tokens, standardExitBondSize) => {
     }
   })
 
-  rootchainInternalTxs.forEach(tx => {
+  rootchainInternalTxs.forEach((tx) => {
     const { value, hash, isError } = tx
 
     // Failed transaction will already be included in the rootchainTxs
@@ -158,11 +158,11 @@ const mergeTxs = async (txs, address, tokens, standardExitBondSize) => {
   })
 
   const excludedInternalRootchainTxs = rootchainTxs.filter(
-    tx => !internalTxMap[tx.hash]
+    (tx) => !internalTxMap[tx.hash]
   )
 
   // Contains every transactions except incoming erc20 transactions
-  const mappedRootchainTxs = excludedInternalRootchainTxs.map(tx => {
+  const mappedRootchainTxs = excludedInternalRootchainTxs.map((tx) => {
     const erc20Tx = erc20Map[tx.hash]
     delete erc20Map[tx.hash]
     if (erc20Tx) {
@@ -180,17 +180,17 @@ const mergeTxs = async (txs, address, tokens, standardExitBondSize) => {
   })
 
   // Contains successfully process exit transaction.
-  const mappedInternalTxs = Object.keys(internalTxMap).map(hash => {
+  const mappedInternalTxs = Object.keys(internalTxMap).map((hash) => {
     const internalTx = internalTxMap[hash]
     return Mapper.mapRootchainEthTx(internalTx, address, standardExitBondSize)
   })
 
   // Contains all received erc20 transactions
-  const mappedReceivedErc20Txs = Object.keys(erc20Map).map(key =>
+  const mappedReceivedErc20Txs = Object.keys(erc20Map).map((key) =>
     Mapper.mapRootchainErc20Tx(erc20Map[key], address)
   )
 
-  const mappedChildchainTxs = childchainTxs.map(tx =>
+  const mappedChildchainTxs = childchainTxs.map((tx) =>
     Mapper.mapChildchainTx(tx, tokens, address)
   )
 

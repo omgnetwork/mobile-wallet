@@ -1,20 +1,22 @@
 import { ethers } from 'ethers'
 import Config from '../../../config'
-import { Gas } from 'common/constants'
 import { GasEstimator } from 'common/blockchain'
 
-const { TEST_PRIVATE_KEY, TEST_ADDRESS, TEST_TOKENS, ETHEREUM_NETWORK } = Config
-
-const [_, _DAI, OMG] = TEST_TOKENS
+const {
+  TEST_PRIVATE_KEY,
+  TEST_ADDRESS,
+  ETHEREUM_NETWORK,
+  TEST_ERC20_TOKEN_CONTRACT_ADDRESS
+} = Config
 
 describe('Test Gas Estimator', () => {
-  it.skip('test estimate gas when sending erc20 token', () => {
-    const provider = ethers.getDefaultProvider('homestead')
+  it('test estimate gas when sending erc20 token', () => {
+    const provider = ethers.getDefaultProvider(ETHEREUM_NETWORK)
     const wallet = new ethers.Wallet(TEST_PRIVATE_KEY, provider)
     const to = TEST_ADDRESS
     const token = {
-      contractAddress: OMG,
-      balance: '1',
+      contractAddress: TEST_ERC20_TOKEN_CONTRACT_ADDRESS,
+      balance: '0.001',
       tokenDecimal: 18
     }
 

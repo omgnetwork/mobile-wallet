@@ -14,6 +14,7 @@ export const estimateTransferErc20 = (wallet, to, token) => {
   const contract = new Ethereum.getContract(token.contractAddress, abi, wallet)
   const amount = Parser.parseUnits(token.balance, token.tokenDecimal)
   const gasOptions = {
+    from: wallet.address,
     gasLimit: Gas.LOW_LIMIT,
     gasPrice: Parser.parseUnits(Gas.LOW_TRANSFER_GAS_PRICE, 'wei')
   }
@@ -90,7 +91,7 @@ export const estimateExit = async (
   }
 }
 
-export const web3EstimateGas = txDetails => {
+export const web3EstimateGas = (txDetails) => {
   return new Promise((resolve, reject) => {
     web3.eth.estimateGas(txDetails, (err, result) => {
       if (err) {
