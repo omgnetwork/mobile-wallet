@@ -8,7 +8,7 @@ const [ETH, DAI, OMG, KCK, HYP] = TEST_TOKENS
 
 describe('Test Token Util', () => {
   it('Token.get should return {name, symbol, decimals, price, balance, contractAddress}', () => {
-    const pendingDetails = Token.get(WEB3_HTTP_PROVIDER, DAI, testWalletAddress)
+    const pendingDetails = Token.get(DAI, testWalletAddress)
 
     return Promise.all(pendingDetails).then(
       ([name, symbol, decimals, price, balance, contractAddress]) => {
@@ -24,7 +24,7 @@ describe('Test Token Util', () => {
 
   it('Token.all should return [contractAddress: {tokenName, tokenSymbol, tokenDecimal, price, balance}]', () => {
     return Token.all([ETH, DAI, OMG, KCK, HYP], testWalletAddress).then(
-      (result) => {
+      result => {
         expect(result).toStrictEqual({
           '0x0000000000000000000000000000000000000000': {
             tokenName: 'Ether',

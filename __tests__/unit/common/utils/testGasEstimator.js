@@ -22,7 +22,7 @@ describe('Test Gas Estimator', () => {
 
     const pendingGasUsed = GasEstimator.estimateTransferErc20(wallet, to, token)
 
-    return pendingGasUsed.then((gasUsed) => {
+    return pendingGasUsed.then(gasUsed => {
       expect(gasUsed.toString(10)).toBeDefined()
     })
   }, 15000)
