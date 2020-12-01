@@ -1,10 +1,10 @@
 # Plasma Wallet
 
-A mobile application to manage your funds on the Ethereum and OMG networks. 
+A mobile application to manage your funds on the Ethereum and OMG networks.
 
 ## Requirements
 
-- Node 10.13.0
+- Node 10.22.0
 - Ruby 2.6.6 and Bundler 2.1.4
 
 \* _The version of Ruby is intended to match the version declared on the CircleCI macOS executor._
@@ -26,7 +26,7 @@ Run `npm install`
 
 ## Environment
 
-4. Create an `.env` file and add your configuration
+Create `.env` file and add your configuration
 
 ```env
 CHILDCHAIN_DEPOSIT_CONFIRMATION_BLOCKS=12
@@ -48,10 +48,6 @@ BLOCK_EXPLORER_URL=<BLOCK_EXPLORER_URL>
 SENTRY_DSN=<SENTRY_DSN>
 SENTRY_ENVIRONMENT=sandbox-abcdef12-rinkeby-01
 EXIT_PERIOD=<EXIT_PERIOD>
-
-# For running test
-MW_TEST_FUND_ADDRESS=<TEST_FUND_ADDRESS>
-MW_TEST_FUND_PRIVATE_KEY=<TEST_FUND_PRIVATE_KEY>
 ```
 
 ### For iOS
@@ -87,7 +83,9 @@ From files on the [drive](https://drive.google.com/drive/folders/1MMak_4mg5IZ-mv
 
 ## Testing
 
-Run test with `npm run test`
+1. Copy `__mock__/react-native-config.example.js` to `__mock__/react-native-config.js` and fill the missing values
+
+2. Run test with `npm run test`
 
 ## Developer Notes
 
