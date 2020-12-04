@@ -39,6 +39,8 @@ workflows:
           requires:
             - proxy-server-build
       - proxy-server-publish:
+          context:
+          - production-docker-push
           requires:
             - proxy-server-test
       - proxy-server-deploy:
@@ -167,12 +169,11 @@ jobs:
       - setup_remote_docker
       - run: |
           export SHORT_GIT_HASH=$(echo $CIRCLE_SHA1 | cut -c -7)
-          export PROXY_SERVER_DOCKER_TAG=$(echo $PROXY_SERVER_DOCKER_REPO_URL:$SHORT_GIT_HASH)
-          echo $PROXY_SERVER_GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+          export PROXY_SERVER_DOCKER_TAG="gcr.io/omisego-production/mobile-wallet-proxy:$SHORT_GIT_HASH"
+          echo $PRODUCTION_DOCKER_GCLOUD_KEY | gcloud auth activate-service-account --key-file=-
           gcloud auth configure-docker
           cd proxy-server
-          docker build -t $PROXY_SERVER_DOCKER_IMAGE_NAME .
-          docker tag $PROXY_SERVER_DOCKER_IMAGE_NAME $PROXY_SERVER_DOCKER_TAG
+          docker build -t $PROXY_SERVER_DOCKER_TAG .
           docker push $PROXY_SERVER_DOCKER_TAG
 
   proxy-server-deploy:
@@ -181,7 +182,7 @@ jobs:
     steps:
       - run: |
           export SHORT_GIT_HASH=$(echo $CIRCLE_SHA1 | cut -c -7)
-          export PROXY_SERVER_DOCKER_TAG=$(echo $PROXY_SERVER_DOCKER_REPO_URL:$SHORT_GIT_HASH)
+          export PROXY_SERVER_DOCKER_TAG=$(echo gcr.io/omisego-production/mobile-wallet-proxy:$SHORT_GIT_HASH)
           echo $PROXY_SERVER_GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
           gcloud auth configure-docker
           gcloud beta container clusters get-credentials $PROXY_SERVER_GCP_CLUSTER_DEVELOPMENT --region $PROXY_SERVER_GCP_REGION --project $PROXY_SERVER_GCP_PROJECT
