@@ -32,7 +32,6 @@ const TransferChoosePlasmaFee = ({
         setLoadingReason(true)
         const contactAddresses = supportedFees.map(fee => fee.currency)
         const tokenMap = await Token.all(
-          provider,
           contactAddresses,
           primaryWallet.address
         )
