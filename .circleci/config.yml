@@ -15,14 +15,14 @@ workflows:
           requires:
             - mobile-wallet-build
       - mobile-wallet-environment-validation:
-          requires: 
+          requires:
             - mobile-wallet-build
-      - fastlane-to-testflight: 
+      - fastlane-to-testflight:
           requires:
             - mobile-wallet-build
           filters:
             branches:
-              only: 
+              only:
                 - v2.5
                 - master
 
@@ -58,6 +58,7 @@ jobs:
       - run:
           name: Run mobile-wallet tests with JUnit as reporter
           command: |
+            echo "$TEST_ENV" | base64 --decode > __mocks__/react-native-config.js
             npm run test-unit --ci --runInBand --reporters=default --reporters=jest-junit --reporters=jest-html-reporters
           environment:
             JEST_SUITE_NAME: 'results.xml'

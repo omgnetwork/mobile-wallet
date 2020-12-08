@@ -3,9 +3,10 @@
   "version": "2.0.0",
   "private": true,
   "engines": {
-    "node": "10.13.0"
+    "node": "10.22.0"
   },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "start": "react-native start",
     "clean": "react-native clean-project-auto",
     "clean-start": "react-native start -- --reset-cache",
@@ -189,5 +190,11 @@
     "stream": "stream-browserify",
     "vm": "vm-browserify",
     "tls": false
+  },
+  "resolutions": {
+    "elliptic": "^6.5.3",
+    "yargs-parse": "^18.1.2",
+    "minimist": "^1.2.3",
+    "bl": "^1.2.3"
   }
 }
