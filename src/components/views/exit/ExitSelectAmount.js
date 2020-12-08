@@ -56,11 +56,7 @@ const ExitSelectAmount = ({
 
     if (!fee || BigNumber.compare(smallestUnitFeeBalance, fee.amount) < 0) {
       const contactAddresses = all.map(({ currency }) => currency)
-      const tokenMap = await Token.all(
-        provider,
-        contactAddresses,
-        primaryWallet.address
-      )
+      const tokenMap = await Token.all(contactAddresses, primaryWallet.address)
       const tokenSymbols = Object.keys(tokenMap).map(
         key => tokenMap[key].tokenSymbol
       )

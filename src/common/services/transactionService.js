@@ -51,7 +51,8 @@ export const getTxs = async (address, provider, options) => {
 
   const contractAddresses = Array.from(new Set(currencies))
 
-  const tokenMap = await Token.all(provider, contractAddresses, address)
+
+  const tokenMap = await Token.all(contractAddresses, address)
 
   const tokens = Object.keys(tokenMap).map(
     contractAddress => tokenMap[contractAddress]
