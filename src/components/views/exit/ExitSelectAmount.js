@@ -13,13 +13,7 @@ import {
 import { Styles, Unit, BigNumber } from 'common/utils'
 import { plasmaService } from 'common/services'
 
-const ExitSelectAmount = ({
-  navigation,
-  theme,
-  isFocused,
-  primaryWallet,
-  provider
-}) => {
+const ExitSelectAmount = ({ navigation, theme, isFocused, primaryWallet }) => {
   const token = navigation.getParam('token')
   const ref = useRef(0)
   const focusRef = useRef(null)
