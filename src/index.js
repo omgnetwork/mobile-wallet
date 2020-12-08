@@ -26,7 +26,8 @@ YellowBox.ignoreWarnings([
   'setBackgroundColor',
   'useNativeDriver',
   'Animated.event',
-  'getNode'
+  'getNode',
+  'No stops in gradient'
 ])
 
 const App = () => {

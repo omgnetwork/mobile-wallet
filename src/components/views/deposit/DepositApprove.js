@@ -59,7 +59,7 @@ const DepositApprove = ({
   const [
     estimatedFee,
     estimatedFeeSymbol,
-    estimatedFeeUsd,
+    _estimatedFeeUsd,
     estimatedGasUsed,
     gasEstimationError
   ] = useEstimatedFee({
@@ -161,7 +161,6 @@ const DepositApprove = ({
             title='Fee'
             loading={!estimatedFee}
             rightFirstLine={`${estimatedFee} ${estimatedFeeSymbol}`}
-            rightThirdLine={`${estimatedFeeUsd} USD`}
             onPress={onPressEditFee}
             style={[styles.paddingMedium, styles.mediumMarginTop]}
           />
@@ -171,8 +170,8 @@ const DepositApprove = ({
         {hasError && (
           <OMGText style={styles.errorMsg} weight='regular'>
             {insufficientBalanceError
-              ? `Require at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`
-              : `The transaction might be failed.`}
+              ? `Requires at least ${minimumAmount} ${feeToken.tokenSymbol} to proceed.`
+              : `The transaction might fail.`}
           </OMGText>
         )}
         <OMGButton
@@ -180,7 +179,7 @@ const DepositApprove = ({
           loading={approving}
           disabled={disableBtn}>
           {verifying
-            ? 'Checking if require approval..'
+            ? 'Checking if approval required...'
             : approving
             ? 'Waiting for approval...'
             : 'Approve'}

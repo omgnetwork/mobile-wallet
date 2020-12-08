@@ -86,16 +86,18 @@ const CreateWalletMnemonicConfirm = ({
     )
   })
 
+  const imageSize = Styles.getResponsiveSize(80, { small: 48, medium: 64 })
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
         contentContainerStyle={styles.contentContainer}
         bounces={false}>
-        <BackupMnemonicImage width={80} height={80} style={styles.image} />
-        <OMGText weight='mono-semi-bold' style={styles.title}>
+        <BackupMnemonicImage width={imageSize} height={imageSize} />
+        <OMGText weight='semi-bold' style={styles.title}>
           Confirm Mnemonic Phrase
         </OMGText>
-        <OMGText style={styles.description}>
+        <OMGText weight='regular' style={styles.description}>
           Please select the words below in the correct order.
         </OMGText>
         <OMGMnemonicConfirmBox
@@ -121,13 +123,12 @@ const createStyles = theme =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme.colors.black3
+      paddingBottom: 16,
+      backgroundColor: theme.colors.black5
     },
     contentContainer: {
+      flexGrow: 1,
       paddingHorizontal: 16
-    },
-    image: {
-      marginTop: Styles.getResponsiveSize(32, { small: 16, medium: 16 })
     },
     title: {
       color: theme.colors.white,

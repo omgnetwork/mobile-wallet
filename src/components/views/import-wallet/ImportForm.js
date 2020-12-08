@@ -4,13 +4,13 @@ import { View, StyleSheet } from 'react-native'
 import { walletActions } from 'common/actions'
 import {
   OMGText,
-  OMGTextInputBox,
+  OMGTextInput,
   OMGButton,
   OMGKeyboardShift
 } from 'components/widgets'
 import { useLoading } from 'common/hooks'
 import { withTheme } from 'react-native-paper'
-import { withNavigation } from 'react-navigation'
+import { withNavigationFocus } from 'react-navigation'
 import { Validator } from 'common/blockchain'
 import { Styles } from 'common/utils'
 
@@ -20,10 +20,12 @@ const ImportForm = ({
   provider,
   wallets,
   navigation,
-  theme
+  theme,
+  isFocused
 }) => {
-  const mnemonicRef = useRef(null)
-  const walletNameRef = useRef(null)
+  const mnemonicRef = useRef()
+  const walletNameRef = useRef()
+  const focusRef = useRef()
   const [showErrorMnemonic, setShowErrorMnemonic] = useState(false)
   const [showErrorName, setShowErrorName] = useState(false)
   const [shouldDisableConfirmBtn, _] = useLoading(loading, 'WALLET_IMPORT')
@@ -33,6 +35,7 @@ const ImportForm = ({
 
   const importWallet = useCallback(() => {
     let isValid = true
+
     if (!Validator.isValidMnemonic(mnemonicRef.current)) {
       setShowErrorMnemonic(true)
       isValid = false
@@ -66,37 +69,54 @@ const ImportForm = ({
     }
   }, [loading, loading.action, loading.success, navigation, wallets])
 
+  useEffect(() => {
+    if (isFocused) {
+      focusRef.current?.focus()
+    }
+  }, [isFocused])
+
   return (
-    <View style={styles.mnemonicContainer(theme)}>
+    <View style={styles.container(theme)}>
       <OMGKeyboardShift
         extraHeight={24}
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={styles.contentContainer}
         androidEnabled={true}>
-        <OMGText style={styles.textBoxTitle(theme)} weight='mono-semi-bold'>
-          Mnemonic Phrase
+        <OMGText style={styles.textBoxTitle(theme)} weight='semi-bold'>
+          Seed Phrase
         </OMGText>
-        <OMGTextInputBox
-          style={styles.textBox(theme)}
+        <OMGTextInput
+          style={styles.textInput(theme)}
+          focusRef={focusRef}
           inputRef={mnemonicRef}
-          showError={showErrorMnemonic}
-          errorMessage={errorMnemonicMessage}
-          disabled={loading.show}
-          lines={3}
-          placeholder='Enter mnemonic...'
+          multiline={true}
+          mono={false}
+          editable={!loading.show}
+          placeholder='Your seed phrase'
         />
-        <OMGText style={styles.textBoxTitle(theme)} weight='mono-semi-bold'>
+        {showErrorMnemonic && (
+          <OMGText weight='regular' style={styles.errorText(theme)}>
+            {errorMnemonicMessage}
+          </OMGText>
+        )}
+        <OMGText
+          style={[styles.textBoxTitle(theme), styles.marginTop]}
+          weight='semi-bold'>
           Wallet Name
         </OMGText>
-        <OMGTextInputBox
-          placeholder='Your wallet name'
-          style={styles.textBox(theme)}
+        <OMGTextInput
+          style={styles.textInput(theme)}
           inputRef={walletNameRef}
-          showError={showErrorName}
-          errorMessage={errorNameMessage}
+          placeholder='Your wallet name'
+          mono={false}
           maxLength={20}
-          disabled={shouldDisableConfirmBtn}
+          editable={!shouldDisableConfirmBtn}
         />
-        <View style={styles.mgButtom} />
+        {showErrorName && (
+          <OMGText weight='regular' style={styles.errorText(theme)}>
+            {errorNameMessage}
+          </OMGText>
+        )}
+        <View style={styles.marginButtom} />
         <View style={styles.buttonContainer}>
           <OMGButton loading={shouldDisableConfirmBtn} onPress={importWallet}>
             Import
@@ -108,27 +128,38 @@ const ImportForm = ({
 }
 
 const styles = StyleSheet.create({
-  textBox: theme => ({
-    marginTop: 16,
-    backgroundColor: theme.colors.black3
+  container: theme => ({
+    flex: 1,
+    paddingHorizontal: 26,
+    paddingBottom: 48,
+    backgroundColor: theme.colors.black5
+  }),
+  contentContainer: {
+    flexGrow: 1
+  },
+  textInput: theme => ({
+    marginTop: 8,
+    color: theme.colors.white,
+    fontSize: Styles.getResponsiveSize(16, { small: 14, medium: 16 })
   }),
   textBoxTitle: theme => ({
-    marginTop: 16,
-    fontSize: Styles.getResponsiveSize(14, { small: 12, medium: 12 }),
+    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
     color: theme.colors.white
   }),
-  mgButtom: {
+  marginTop: {
+    marginTop: 16
+  },
+  marginButtom: {
     marginBottom: 16
   },
-  mnemonicContainer: theme => ({
-    flex: 1,
-    paddingHorizontal: 16,
-    backgroundColor: theme.colors.black3
-  }),
   buttonContainer: {
     marginTop: 'auto',
     marginBottom: 16
-  }
+  },
+  errorText: theme => ({
+    color: theme.colors.red,
+    marginTop: 8
+  })
 })
 
 const mapStateToProps = (state, _ownProps) => ({
@@ -146,4 +177,4 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNavigation(withTheme(ImportForm)))
+)(withNavigationFocus(withTheme(ImportForm)))

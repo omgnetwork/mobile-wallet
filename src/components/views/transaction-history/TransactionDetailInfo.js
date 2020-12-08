@@ -8,7 +8,7 @@ import { priceService } from 'common/services'
 
 const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
   const [errorReason, setErrorReason] = useState(null)
-  const [feePrice, setFeePrice] = useState(null)
+  const [_feePrice, setFeePrice] = useState(null)
   const tokens = primaryWallet.childchainAssets
   const textExactDatetime = Formatter.formatTimeStamp(
     tx.timestamp,
@@ -77,9 +77,6 @@ const TransactionDetailInfo = ({ theme, tx, style, primaryWallet }) => {
         <View style={styles.infoItemContent}>
           <OMGText style={styles.infoItemValue(theme)}>
             {feeAmount} {getFeeTokenSymbol()}
-          </OMGText>
-          <OMGText style={styles.infoItemValueLighter(theme)}>
-            {feePrice} USD
           </OMGText>
         </View>
       </View>
@@ -214,13 +211,6 @@ const styles = StyleSheet.create({
     letterSpacing: -0.64,
     marginTop: 4,
     color: theme.colors.white
-  }),
-  infoItemValueLighter: theme => ({
-    fontSize: Styles.getResponsiveSize(16, { small: 12, medium: 14 }),
-    marginLeft: 'auto',
-    letterSpacing: -0.64,
-    marginTop: 4,
-    color: theme.colors.gray6
   }),
   divider: theme => ({
     backgroundColor: theme.colors.gray5,

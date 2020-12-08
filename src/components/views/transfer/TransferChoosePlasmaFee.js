@@ -49,7 +49,7 @@ const TransferChoosePlasmaFee = ({
     }
 
     updateEmptyMsg()
-  }, [fees, primaryWallet.address, provider, supportedFees])
+  }, [fees, primaryWallet, provider, supportedFees])
 
   const styles = createStyles(theme)
 
@@ -68,7 +68,7 @@ const TransferChoosePlasmaFee = ({
   return (
     <View style={styles.container}>
       <OMGText style={styles.title} weight='regular'>
-        Amount
+        Fee
       </OMGText>
       <OMGListPlasmaFee
         fees={fees}

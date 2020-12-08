@@ -58,7 +58,7 @@ const ExitAddQueue = ({
   const [
     estimatedFee,
     estimatedFeeSymbol,
-    estimatedFeeUsd,
+    _estimatedFeeUsd,
     estimatedGasUsed,
     gasEstimationError
   ] = useEstimatedFee({
@@ -174,7 +174,6 @@ const ExitAddQueue = ({
             error={gasEstimationError}
             loading={!gasEstimationError && !estimatedFee}
             rightFirstLine={`${estimatedFee} ${estimatedFeeSymbol}`}
-            rightThirdLine={`${estimatedFeeUsd} USD`}
             onPress={onPressEditFee}
             style={[styles.paddingMedium, styles.mediumMarginTop]}
           />
@@ -184,7 +183,7 @@ const ExitAddQueue = ({
         {!verifying && !creating && hasError && (
           <OMGText style={styles.errorMsg} weight='regular'>
             {insufficientBalanceError &&
-              `Require at least ${minimumAmount} ${gasToken.tokenSymbol} to proceed.`}
+              `Requires at least ${minimumAmount} ${gasToken.tokenSymbol} to proceed.`}
           </OMGText>
         )}
         <OMGButton
@@ -194,7 +193,7 @@ const ExitAddQueue = ({
           {verifying
             ? 'Verifying..'
             : creating
-            ? 'Waiting queue creation...'
+            ? 'Waiting for queue creation...'
             : 'Create a Queue'}
         </OMGButton>
         <OMGText style={styles.textEstimateTime(!disableBtn)} weight='regular'>

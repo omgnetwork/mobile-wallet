@@ -1,6 +1,6 @@
 import React from 'react'
-import { View, StyleSheet, SafeAreaView } from 'react-native'
-import { OMGFontIcon, OMGText, OMGStatusBar } from 'components/widgets'
+import { StyleSheet, SafeAreaView } from 'react-native'
+import { OMGStatusBar, OMGHeader } from 'components/widgets'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 
@@ -13,20 +13,8 @@ const ImportWallet = ({ theme, navigation }) => {
         barStyle={'light-content'}
         backgroundColor={theme.colors.black5}
       />
-      <View style={styles.contentContainer(theme)}>
-        <View style={styles.header}>
-          <OMGFontIcon
-            name='chevron-left'
-            size={18}
-            color={theme.colors.white}
-            style={styles.headerIcon}
-            onPress={() => navigation.goBack()}
-          />
-          <OMGText style={styles.headerTitle(theme)}>Import Wallet</OMGText>
-        </View>
-
-        <ImportWalletNavigator navigation={navigation} />
-      </View>
+      <OMGHeader title='Import Wallet' onPress={() => navigation.goBack()} />
+      <ImportWalletNavigator navigation={navigation} />
     </SafeAreaView>
   )
 }
@@ -35,27 +23,6 @@ const styles = StyleSheet.create({
   container: theme => ({
     flex: 1,
     backgroundColor: theme.colors.black5
-  }),
-  contentContainer: theme => ({
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: theme.colors.black5
-  }),
-  header: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingHorizontal: 16,
-    paddingVertical: 16
-  },
-  headerIcon: {
-    padding: 8,
-    marginLeft: -8
-  },
-  headerTitle: theme => ({
-    fontSize: 18,
-    color: theme.colors.white,
-    marginLeft: 8,
-    textTransform: 'uppercase'
   })
 })
 

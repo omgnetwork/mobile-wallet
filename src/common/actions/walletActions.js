@@ -29,7 +29,8 @@ export const importByMnemonic = (wallets, mnemonic, provider, name) => {
 
   return createAsyncAction({
     operation: asyncAction,
-    type: 'WALLET/IMPORT'
+    type: 'WALLET/IMPORT',
+    reportError: false
   })
 }
 

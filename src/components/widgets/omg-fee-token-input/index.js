@@ -21,7 +21,7 @@ const OMGFeeTokenInput = ({ theme, feeToken, style, onPress, loading }) => {
         </OMGText>
       )
     } else {
-      const { tokenSymbol, tokenDecimal, amount, price } = feeToken
+      const { tokenSymbol, tokenDecimal, amount } = feeToken
       const displayAmount = BlockchainFormatter.formatTokenBalanceFromSmallestUnit(
         amount,
         tokenDecimal,
@@ -41,9 +41,6 @@ const OMGFeeTokenInput = ({ theme, feeToken, style, onPress, loading }) => {
             <View style={styles.rightVerticalContainer}>
               <OMGText style={styles.amount(theme)}>
                 {displayAmount} {tokenSymbol}
-              </OMGText>
-              <OMGText style={styles.usd(theme)}>
-                {BlockchainFormatter.formatTokenPrice(displayAmount, price)} USD
               </OMGText>
             </View>
 
@@ -100,12 +97,6 @@ const styles = StyleSheet.create({
       medium: -0.48
     }),
     flex: 1
-  }),
-  usd: theme => ({
-    fontSize: Styles.getResponsiveSize(12, { small: 10, medium: 10 }),
-    marginTop: 2,
-    letterSpacing: -0.48,
-    color: theme.colors.gray6
   }),
   rightContainer: {
     flexDirection: 'row',

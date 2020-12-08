@@ -1,4 +1,4 @@
-import { settingActions } from 'common/actions'
+import { settingActions, walletActions } from 'common/actions'
 import { store } from 'common/stores'
 import { HeadlessProcessExit } from 'components/headless'
 import React, { useRef, useEffect, useState } from 'react'
@@ -21,6 +21,8 @@ const Initializer = ({
   primaryWalletNetwork,
   dispatchSetPrimaryWallet,
   dispatchSetBlockchainWallet,
+  dispatchDeleteAllWallet,
+  loading,
   provider,
   navigation,
   wallets
@@ -31,6 +33,13 @@ const Initializer = ({
     Animated.sequence([Move.To(move.current, 123), Move.To(move.current, 0)])
   )
   const loadingDuration = 1000 + Math.random() * 1000
+
+  useEffect(() => {
+    if (loading.action === 'SETTING_SET_BLOCKCHAIN_WALLET' && loading.failed) {
+      dispatchDeleteAllWallet()
+      navigation.navigate('Welcome')
+    }
+  }, [loading])
 
   useEffect(() => {
     async function init() {
@@ -51,7 +60,6 @@ const Initializer = ({
     }
 
     ExceptionReporter.reportWhenError(init)
-    init()
   }, [])
 
   useEffect(() => {
@@ -162,7 +170,8 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
   dispatchSetBlockchainWallet: (wallet, provider) =>
     dispatch(settingActions.setBlockchainWallet(wallet, provider)),
   dispatchSetPrimaryWallet: (wallet, network) =>
-    settingActions.setPrimaryWallet(dispatch, wallet.address, network)
+    settingActions.setPrimaryWallet(dispatch, wallet.address, network),
+  dispatchDeleteAllWallet: () => walletActions.clear(dispatch)
 })
 
 export default connect(

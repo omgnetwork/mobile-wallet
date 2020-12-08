@@ -27,12 +27,6 @@ const OMGExitFee = ({
   )
   const totalGasIncludedSplitFee =
     totalGas && BigNumber.plus(totalGas, splitFee)
-  const totalGasUsd =
-    totalGas && BlockchainFormatter.formatTokenPrice(totalGas, gasToken.price)
-  const splitFeeUsd = BlockchainFormatter.formatTokenPrice(
-    splitFee,
-    feeToken.price
-  )
 
   const handleClickHyperlink = useCallback(() => {
     Linking.openURL('https://docs.omg.network/exitbonds')
@@ -57,10 +51,6 @@ const OMGExitFee = ({
             feeToken.tokenSymbol
           }`
         }
-        rightThirdLine={`${
-          totalGasUsd &&
-          BlockchainFormatter.formatTotalPrice(totalGasUsd, splitFeeUsd)
-        } USD`}
       />
       <View style={[styles.divider, styles.marginMedium]} />
       <OMGEditItem
@@ -74,13 +64,6 @@ const OMGExitFee = ({
           transactionFee &&
           BlockchainFormatter.formatTokenBalance(transactionFee)
         } ETH`}
-        rightThirdLine={`${
-          transactionFee &&
-          `${BlockchainFormatter.formatTokenPrice(
-            transactionFee,
-            gasToken.price
-          )} USD`
-        }`}
         textStyle={styles.editItemTextTitle}
       />
       <OMGEditItem
@@ -92,7 +75,6 @@ const OMGExitFee = ({
         rightFirstLine={`${
           splitFee && BlockchainFormatter.formatTokenBalance(splitFee)
         } ${feeToken.tokenSymbol}`}
-        rightThirdLine={`${splitFeeUsd} USD`}
         textStyle={styles.editItemTextTitle}
       />
       <OMGEditItem
@@ -102,10 +84,6 @@ const OMGExitFee = ({
         style={styles.marginMedium}
         loading={!exitBond}
         rightFirstLine={`${exitBond} ETH`}
-        rightThirdLine={`${
-          exitBond &&
-          BlockchainFormatter.formatTokenPrice(exitBond, gasToken.price)
-        } USD`}
         textStyle={styles.editItemTextTitle}
       />
       <TouchableOpacity

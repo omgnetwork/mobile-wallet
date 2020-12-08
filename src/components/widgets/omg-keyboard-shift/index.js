@@ -284,6 +284,7 @@ class KeyboardShiftAndroid extends React.Component {
         ref={this.setRef}
         onLayout={this.onLayout}
         automaticallyAdjustContentInsets={false}
+        removeClippedSubviews={false}
         scrollEventThrottle={16}
         onScroll={this.onScroll}
         onScrollEndDrag={this.onScrollEndDrag}

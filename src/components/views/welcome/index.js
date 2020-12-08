@@ -1,25 +1,31 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { withNavigation, SafeAreaView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
-import { Image, View, StyleSheet } from 'react-native'
-import CardMenu from './CardMenu'
-import { OMGDotViewPager, OMGStatusBar } from 'components/widgets'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import {
+  OMGDotViewPager,
+  OMGStatusBar,
+  OMGText,
+  OMGButton
+} from 'components/widgets'
+import { ArrowRight } from './assets'
 import Page from './Page'
 
 const PageItems = [
   {
-    title: 'Welcome to\nthe Plasma Wallet',
-    content: 'Official gateway to the OmiseGo network.',
+    title: 'the OMG Network is a Hi-way for your transactions',
+    content: 'The network help you avoid congestion on Ethereum network',
     image: 'Welcome1'
   },
   {
-    title: 'Plasma makes blockchain faster, affordable, and more secure',
+    title: 'Shift route to the OMG Network, enjoy more perks on Fee.',
+    content: 'Transfer cheaper with more token options to pay fee.',
     image: 'Welcome2'
   },
   {
-    title: "Learn to transact on OmiseGO's Plasma Scaling Solution",
+    title: 'Experience the OMG Network',
     content:
-      'Set up and manage wallets, review your activity, move ETH, and more',
+      'Specially developed for the OMG Network, our open-source Plasma Wallet is an educational tool that lets you make real Plasma transactions.',
     image: 'Welcome3'
   }
 ].map((item, index) => {
@@ -34,16 +40,30 @@ const PageItems = [
 })
 
 const Welcome = ({ navigation, theme }) => {
+  const [currentPage, setCurrentPage] = useState(0)
+  const [showButtons, setShowButtons] = useState(false)
+
   const navigateCreateWallet = () => {
-    navigation.navigate('Disclaimer', {
+    navigation.navigate('Agreement', {
       destination: 'WelcomeCreateWallet'
     })
   }
   const navigateImportWallet = () => {
-    navigation.navigate('Disclaimer', {
+    navigation.navigate('Agreement', {
       destination: 'WelcomeImportWallet'
     })
   }
+  const onLastPage = useCallback(isLastPage => {
+    setShowButtons(isLastPage)
+  }, [])
+
+  const handleOnNextPressed = useCallback(() => {
+    setCurrentPage(currentPage + 1)
+  }, [currentPage])
+
+  const handleOnPressSkip = useCallback(() => {
+    setCurrentPage(2)
+  }, [currentPage])
 
   return (
     <SafeAreaView style={styles.container(theme)}>
@@ -51,27 +71,39 @@ const Welcome = ({ navigation, theme }) => {
         barStyle={'light-content'}
         backgroundColor={theme.colors.black}
       />
-      <Image
-        style={styles.logo}
-        source={require('../../../../assets/omisego-logo.png')}
-      />
-      <View style={styles.scroll}>
-        <OMGDotViewPager>{PageItems}</OMGDotViewPager>
-      </View>
-      <CardMenu
-        style={styles.cardMenu}
-        color={theme.colors.primary}
-        header='Sync Your Wallet'
-        description='Use own Ethereum Address with this wallet'
-        onPress={navigateImportWallet}
-      />
-      <CardMenu
-        style={styles.cardMenu}
-        color={theme.colors.black}
-        header='Create New Wallet'
-        description='Create wallet for the new Ethereum Address'
-        onPress={navigateCreateWallet}
-      />
+      <OMGDotViewPager
+        page={currentPage}
+        onLastPage={onLastPage}
+        onPageChanged={setCurrentPage}
+        style={styles.scroll}>
+        {PageItems}
+      </OMGDotViewPager>
+      {!showButtons ? (
+        <View style={styles.pageNavigationContainer}>
+          <TouchableOpacity style={styles.btnSkip} onPress={handleOnPressSkip}>
+            <OMGText weight='regular' style={styles.text(theme)}>
+              SKIP
+            </OMGText>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.btnNext(theme)}
+            onPress={handleOnNextPressed}>
+            <ArrowRight />
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.buttonContainer}>
+          <OMGButton
+            onPress={navigateImportWallet}
+            style={styles.btnImport(theme)}
+            textStyle={styles.btnImportText(theme)}>
+            Use Existing Wallet
+          </OMGButton>
+          <OMGButton style={styles.btnCreate} onPress={navigateCreateWallet}>
+            Create New Wallet
+          </OMGButton>
+        </View>
+      )}
     </SafeAreaView>
   )
 }
@@ -81,22 +113,50 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: theme.colors.black,
-    justifyContent: 'space-around'
+    paddingBottom: 18
   }),
-  logo: {
-    width: 130,
-    height: 44,
-    marginTop: 16,
-    marginLeft: 30
-  },
-  cardMenu: {
+  scroll: {
     flex: 3
   },
-  scroll: {
-    flex: 10,
+  pageNavigationContainer: {
+    flex: 1,
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingHorizontal: 30
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'column',
     justifyContent: 'center',
-    paddingBottom: 20
+    paddingHorizontal: 30
+  },
+  text: theme => ({
+    color: theme.colors.white,
+    fontSize: 18,
+    lineHeight: 22
+  }),
+  btnSkip: {
+    marginBottom: 18
+  },
+  btnNext: theme => ({
+    width: 60,
+    height: 60,
+    alightItems: 'center',
+    justifyContent: 'center',
+    paddingLeft: 16,
+    borderRadius: 30,
+    backgroundColor: theme.colors.primary,
+    padding: 8
+  }),
+  btnImport: theme => ({
+    backgroundColor: theme.colors.primary
+  }),
+  btnImportText: theme => ({
+    color: theme.colors.white
+  }),
+  btnCreate: {
+    marginTop: 24
   }
 })
 

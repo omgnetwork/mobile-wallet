@@ -20,15 +20,13 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
     value,
     symbol,
     contractAddress,
-    tokenPrice,
     gasUsed,
     gasPrice,
     maxExitsToProcess
   } = navigation.getParam('transaction')
   const tokenValue = BlockchainFormatter.formatTokenBalance(value)
-  const tokenPriceUsd = BlockchainFormatter.formatTokenPrice(value, tokenPrice)
   const gasFee = BlockchainFormatter.formatGasFee(gasUsed, gasPrice)
-  const [gasFeeUsd, setGasFeeUsd] = useState(0)
+  const [_gasFeeUsd, setGasFeeUsd] = useState(0)
 
   useEffect(() => {
     async function calculateGasFeeUsd() {
@@ -77,9 +75,6 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
               <OMGText style={styles.sentDetailFirstline(theme)}>
                 {tokenValue} {symbol}
               </OMGText>
-              <OMGText style={styles.sentDetailSecondline(theme)}>
-                {tokenPriceUsd} USD
-              </OMGText>
             </View>
           </View>
           <View style={[styles.sentDetailRow, styles.marginSmall]}>
@@ -95,9 +90,6 @@ const ProcessExitPending = ({ theme, navigation, wallet }) => {
             <View style={styles.sentDetail}>
               <OMGText style={styles.sentDetailFirstline(theme)}>
                 {gasFee} ETH
-              </OMGText>
-              <OMGText style={styles.sentDetailSecondline(theme)}>
-                {gasFeeUsd} USD
               </OMGText>
             </View>
           </View>

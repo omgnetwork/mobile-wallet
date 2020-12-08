@@ -52,16 +52,14 @@ const createStyles = theme =>
   StyleSheet.create({
     container: {
       flex: 1,
-      paddingHorizontal: 16,
-      paddingBottom: 16,
-      backgroundColor: theme.colors.black3
+      paddingHorizontal: 26,
+      paddingBottom: 48,
+      backgroundColor: theme.colors.black5
     },
     scrollView: {
       paddingBottom: 16
     },
-    image: {
-      marginTop: Styles.getResponsiveSize(32, { small: 16, medium: 16 })
-    },
+    image: {},
     title: {
       color: theme.colors.white,
       marginTop: Styles.getResponsiveSize(30, { small: 16, medium: 20 }),

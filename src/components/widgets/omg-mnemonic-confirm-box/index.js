@@ -17,14 +17,14 @@ const OMGMnemonicConfirmBox = ({ theme, phrases, onRemovePhrase, style }) => {
 
 const styles = StyleSheet.create({
   container: theme => ({
-    backgroundColor: theme.colors.black3,
+    backgroundColor: theme.colors.black5,
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingTop: 8,
     paddingBottom: 16,
     minHeight: 48,
-    borderLeftColor: theme.colors.black3,
-    borderRightColor: theme.colors.black3,
+    borderLeftColor: theme.colors.black5,
+    borderRightColor: theme.colors.black5,
     borderTopColor: theme.colors.gray5,
     borderBottomColor: theme.colors.gray5,
     borderWidth: 1
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   chip: theme => ({
     marginRight: 8,
     marginTop: 8,
-    backgroundColor: theme.colors.gray4
+    backgroundColor: theme.colors.primary
   })
 })
 

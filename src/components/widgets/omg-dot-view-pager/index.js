@@ -1,22 +1,51 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { withNavigation, ScrollView } from 'react-navigation'
 import { withTheme } from 'react-native-paper'
 import { Animated, StyleSheet, View } from 'react-native'
 import { Dimensions } from 'common/utils'
 
-const width = Dimensions.windowWidth
-
-const OMGDotViewPager = ({ theme, children }) => {
+const OMGDotViewPager = ({
+  theme,
+  children,
+  onLastPage = () => null,
+  onPageChanged = () => null,
+  page,
+  style
+}) => {
+  const { windowWidth } = Dimensions
   const scrollX = new Animated.Value(0)
-  const position = Animated.divide(scrollX, width)
+  const position = Animated.divide(scrollX, windowWidth)
+  const offsets = [0, windowWidth, windowWidth * 2]
+  const scrollView = useRef()
+
+  // scroll to the given page
+  useEffect(() => {
+    const offset = offsets[page]
+    if (scrollView.current) {
+      scrollView.current.scrollTo({ x: offset })
+    }
+  }, [page])
+
   const handleScroll = event => {
     Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }])(event)
+    const { contentOffset } = event.nativeEvent
+
+    const { x } = contentOffset
+    const roundedX = Math.round(x)
+    onLastPage(roundedX >= offsets[offsets.length - 1])
+
+    if (roundedX % windowWidth === 0) {
+      const _page = parseInt(roundedX / windowWidth)
+      onPageChanged(_page)
+    }
   }
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <ScrollView
         horizontal={true}
         pagingEnabled={true}
+        ref={scroll => (scrollView.current = scroll)}
         showsHorizontalScrollIndicator={false}
         onScroll={handleScroll}
         scrollEventThrottle={8}>
@@ -42,16 +71,16 @@ const OMGDotViewPager = ({ theme, children }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    alignItems: 'center'
+  },
   scrollDots: {
-    flexDirection: 'row',
-    marginLeft: 30,
-    marginBottom: 10
+    flexDirection: 'row'
   },
   dot: theme => ({
     height: 10,
     width: 10,
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.primary,
     marginRight: 16,
     borderRadius: 5
   })
