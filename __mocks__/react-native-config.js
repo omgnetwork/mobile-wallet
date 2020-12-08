@@ -5,18 +5,16 @@ export default {
   CHILDCHAIN_EXIT_CONFIRMATION_BLOCKS: 12,
   ROOTCHAIN_TRANSFER_CONFIRMATION_BLOCKS: 1,
   ETHERSCAN_API_KEY: 'VCKWHFAA6M5AR8SFVXC43DEMEA8JN2H3WZ',
-  ETHERSCAN_API_URL: 'https://api-ropsten.etherscan.io/api/',
-  ETHERSCAN_URL: 'https://ropsten.etherscan.io/',
-  ETHEREUM_NETWORK: 'ropsten',
-  OMISEGO_NETWORK: 'lumpini',
-  WEB3_HTTP_PROVIDER: 'https://dev-a69c763-mwproxy-ropsten-01.omg.network/api',
+  ETHERSCAN_API_URL: 'https://etherscan.io/api/',
+  ETHERSCAN_URL: 'https://etherscan.io/',
+  ETHEREUM_NETWORK: 'mainnet',
+  WEB3_HTTP_PROVIDER: 'https://mwproxy.mainnet.v1.omg.network/api',
   PLASMA_FRAMEWORK_CONTRACT_ADDRESS:
-    '0x1499442e7ee8c7cf2ae33f5e096d1a5b9c013cff',
-  ETH_VAULT_CONTRACT_ADDRESS: '0xe637769f388f309e1cca8dd679a95a7b64a5bd06',
-  ERC20_VAULT_CONTRACT_ADDRESS: '0x3fa3ae3aa4348f98da81511a6a2ca5a228fa2c8a',
-  WATCHER_URL: 'https://dev-a69c763-watcher-info-ropsten-01.omg.network/',
-  BLOCK_EXPLORER_URL:
-    'https://dev-a69c763-blockexplorer-ropsten-01.omg.network/',
+    '0x0d4c1222f5e839a911e2053860e45f18921d72ac',
+  ETH_VAULT_CONTRACT_ADDRESS: '0x3eed23ea148d356a72ca695dbce2fceb40a32ce0',
+  ERC20_VAULT_CONTRACT_ADDRESS: '0x070cb1270a4b2ba53c81cef89d0fd584ed4f430b',
+  WATCHER_URL: 'https://watcher-info.mainnet.v1.omg.network/',
+  BLOCK_EXPLORER_URL: 'https://blockexplorer.mainnet.v1.omg.network/',
   EXIT_PERIOD: 300000,
 
   // For Testing
@@ -25,5 +23,5 @@ export default {
   TEST_ADDRESS: process.env.MW_TEST_ADDRESS,
   TEST_PRIVATE_KEY: process.env.MW_TEST_PRIVATE_KEY,
   TEST_ERC20_TOKEN_CONTRACT_ADDRESS:
-    '0x11b7592274b344a6be0ace7e5d5df4348473e2fa'
+    '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07'
 }

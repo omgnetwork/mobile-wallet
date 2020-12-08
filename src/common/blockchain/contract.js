@@ -5,7 +5,9 @@ export const allowanceTokenForTransfer = async (
   address,
   erc20VaultAddress
 ) => {
-  return erc20Contract.methods.allowance(address, erc20VaultAddress).call()
+  return erc20Contract.methods
+    .allowance(address, erc20VaultAddress)
+    .call({ from: address })
 }
 
 export const getPaymentExitGame = () => {

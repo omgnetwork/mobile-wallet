@@ -11,17 +11,16 @@ export const fetchAssets = async (provider, address, lastBlockNumber) => {
     )
 
     const tokenContractAddresses = Array.from(
-      new Set(txHistory.map(tx => tx.contractAddress))
+      new Set(txHistory.map((tx) => tx.contractAddress))
     )
 
     const tokens = await Token.all(
-      provider,
       [ContractAddress.ETH_ADDRESS, ...tokenContractAddresses],
       address
     )
 
     const rootchainAssets = mapTokensToRootchainAssets(tokens).filter(
-      token => token.balance !== '0.0'
+      (token) => token.balance !== '0.0'
     )
 
     const updatedBlock = getUpdatedBlock(txHistory)
@@ -39,11 +38,11 @@ export const fetchAssets = async (provider, address, lastBlockNumber) => {
   }
 }
 
-const mapTokensToRootchainAssets = tokens => {
-  return Object.keys(tokens).map(contractAddress => tokens[contractAddress])
+const mapTokensToRootchainAssets = (tokens) => {
+  return Object.keys(tokens).map((contractAddress) => tokens[contractAddress])
 }
 
-const getUpdatedBlock = txHistory => {
+const getUpdatedBlock = (txHistory) => {
   return (txHistory.length && txHistory.slice(-1).pop().blockNumber) || 0
 }
 

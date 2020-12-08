@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "fix": "eslint . --fix",
     "dependency-audit": "audit-ci --moderate",
-    "ios": "react-native run-ios --simulator='iPhone 11'",
+    "ios": "react-native run-ios --simulator='iPhone X'",
     "android": "react-native run-android",
     "ios-mainnet": "ENVFILE=.env.mainnet react-native run-ios --simulator='iPhone 7'",
     "android-mainnet": "ENVFILE=.env.mainnet react-native run-android",
@@ -25,7 +25,7 @@
     "build-ios": "npm run ios-archive && npm run ios-export && mkdir -p artifacts && cp ios/build/Apps/PlasmaWallet.ipa artifacts/",
     "ios-archive": "xcodebuild archive -archivePath ios/PlasmaWallet/PlasmaWallet.xcarchive -workspace ios/PlasmaWallet.xcworkspace -scheme PlasmaWallet",
     "ios-export": "xcodebuild -exportArchive -archivePath ios/PlasmaWallet/PlasmaWallet.xcarchive -exportOptionsPlist ios/PlasmaWallet/ExportOptions.plist -exportPath ios/build",
-    "postinstall": "./polyfill.sh && npx jetify && node ignoreRequireCycle.js"
+    "postinstall": "./polyfill.sh && npx jetify"
   },
   "rnpm": {
     "assets": [
@@ -33,7 +33,7 @@
     ]
   },
   "dependencies": {
-    "@omisego/react-native-omg-js": "^4.0.0-0.4.7",
+    "@omisego/react-native-omg-js": "^4.1.1-1.0.4",
     "@react-native-community/async-storage": "^1.6.1",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/push-notification-ios": "^1.0.2",
@@ -50,7 +50,7 @@
     "fast-text-encoding": "^1.0.0",
     "hermesvm": "^0.1.1",
     "jdenticon": "^2.2.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.20",
     "metro-minify-terser": "^0.56.0",
     "moment": "^2.24.0",
     "react": "16.11.0",
@@ -185,5 +185,10 @@
     "stream": "stream-browserify",
     "vm": "vm-browserify",
     "tls": false
+  },
+  "resolutions": {
+    "elliptic": "^6.5.3",
+    "yargs-parse": "^18.1.2",
+    "minimist": "^1.2.3"
   }
 }
