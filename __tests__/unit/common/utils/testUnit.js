@@ -27,13 +27,4 @@ describe('Test Unit', () => {
     expect(Unit.convertToString('100', 18, 18)).toBe('100')
     expect(Unit.convertToString('100', 0, 0)).toBe('100')
   })
-
-  test('convert ether unit', () => {
-    expect(Unit.convertToString(1, 'ether', 'wei')).toBe('1000000000000000000')
-    expect(Unit.convertToString(1, 'gwei', 'wei')).toBe('1000000000')
-    expect(Unit.convertToString('1000000000000000000', 'wei', 'ether')).toBe(
-      '1'
-    )
-    expect(Unit.convertToString('1000000000', 'wei', 'gwei')).toBe('1')
-  })
 })

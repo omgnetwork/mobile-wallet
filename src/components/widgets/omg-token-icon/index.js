@@ -59,7 +59,7 @@ const OMGTokenIcon = ({ token, theme, style, size }) => {
         onLoad={() => {
           setIsError(false)
         }}
-        onError={err => {
+        onError={() => {
           if (!isEth) setIsError(true)
         }}
       />
