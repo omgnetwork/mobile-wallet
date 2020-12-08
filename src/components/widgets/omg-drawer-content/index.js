@@ -84,9 +84,9 @@ const OMGDrawerContent = ({
           </View>
           <DrawerMenuItem
             title='Transactions'
-            disabled={true}
+            disabled={false}
             onPress={() =>
-              closeDrawerAndNavigate('TransactionHistoryFilter', {
+              closeDrawerAndNavigate('TransactionHistory', {
                 title: 'Transactions',
                 types: [
                   TransactionTypes.TYPE_ALL,

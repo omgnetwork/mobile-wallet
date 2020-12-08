@@ -11,7 +11,7 @@ export const fetchDepositHistory = (provider, address, tokenCache, options) => {
     const { tokenInfo, tokenInfoToCache } = await getTokenInfo(
       tokenCache,
       allDepositTokens,
-      provider
+      address
     )
 
     const deposits = rawDeposits.map(deposit =>
@@ -27,7 +27,7 @@ export const fetchDepositHistory = (provider, address, tokenCache, options) => {
   })
 }
 
-const getTokenInfo = async (tokenCache, tokensToQuery, provider) => {
+const getTokenInfo = async (tokenCache, tokensToQuery, address) => {
   const tokenInfoToCache = {}
   const filteredTokenCache = _.pickBy(
     tokenCache,
@@ -38,7 +38,7 @@ const getTokenInfo = async (tokenCache, tokensToQuery, provider) => {
 
   await Promise.all(
     isNotCached.map(async currency => {
-      const info = await Token.getContractInfo(provider, currency)
+      const info = await Token.getContractInfo(currency, address)
       tokenInfoToCache[currency] = info
     })
   )

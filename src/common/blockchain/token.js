@@ -147,16 +147,18 @@ const getEthBalance = address => {
     .then(balance => balance.toString(10))
 }
 
-export const getContractInfo = async (provider, tokenContractAddress) => {
-  const contract = new ethers.Contract(
-    tokenContractAddress,
-    ContractABI.erc20Abi(),
-    provider
-  )
-  const bytes32Contract = new ethers.Contract(
-    tokenContractAddress,
+export const getContractInfo = async (tokenContractAddress, accountAddress) => {
+  const provider = new Web3.providers.HttpProvider(Config.WEB3_HTTP_PROVIDER)
+  const web3 = new Web3(provider, null)
+  const bytes32Contract = new web3.eth.Contract(
     ContractABI.bytes32Erc20Abi(),
-    provider
+    tokenContractAddress,
+    { from: accountAddress }
+  )
+  const contract = new web3.eth.Contract(
+    ContractABI.erc20Abi(),
+    tokenContractAddress,
+    { from: accountAddress }
   )
 
   const pendingName = getName(contract, bytes32Contract).catch(

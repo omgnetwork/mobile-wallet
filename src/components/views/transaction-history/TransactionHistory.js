@@ -46,6 +46,7 @@ const TransactionHistory = ({
   )
 
   useEffect(() => {
+    console.log('HELLO')
     if (loading.action === 'TRANSACTION_ALL' && !loading.show) {
       setFetching(false)
       setFetched(true)
