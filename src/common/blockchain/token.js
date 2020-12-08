@@ -1,4 +1,4 @@
-import { ethers } from 'ethers'
+import Web3 from 'web3'
 import {
   ContractABI,
   BlockchainFormatter,
@@ -44,9 +44,9 @@ export const createExitQueue = async ({
   return { hash }
 }
 
-export const all = (provider, contractAddresses, accountAddress) => {
+export const all = (contractAddresses, accountAddress) => {
   const pendingTokenDetails = contractAddresses.map(contractAddress =>
-    Promise.all(get(provider, contractAddress, accountAddress))
+    Promise.all(get(contractAddress, accountAddress))
   )
   return Promise.all(pendingTokenDetails).then(tokens =>
     tokens.reduce(
@@ -69,26 +69,28 @@ export const all = (provider, contractAddresses, accountAddress) => {
   )
 }
 
-export const get = (provider, contractAddress, accountAddress) => {
+export const get = (contractAddress, accountAddress) => {
+  const provider = new Web3.providers.HttpProvider(Config.WEB3_HTTP_PROVIDER)
+  const web3 = new Web3(provider, null)
   if (contractAddress === ContractAddress.ETH_ADDRESS) {
     return [
       Promise.resolve('Ether'),
       Promise.resolve('ETH'),
       Promise.resolve(18),
       getPrice(contractAddress, Config.ETHEREUM_NETWORK),
-      getEthBalance(provider, accountAddress),
+      getEthBalance(accountAddress),
       Promise.resolve(contractAddress)
     ]
   } else {
-    const contract = new ethers.Contract(
-      contractAddress,
+    const contract = new web3.eth.Contract(
       ContractABI.erc20Abi(),
-      provider
-    )
-    const bytes32Contract = new ethers.Contract(
       contractAddress,
+      { from: accountAddress }
+    )
+    const bytes32Contract = new web3.eth.Contract(
       ContractABI.bytes32Erc20Abi(),
-      provider
+      contractAddress,
+      { from: accountAddress }
     )
     return [
       getName(contract, bytes32Contract),
@@ -102,23 +104,29 @@ export const get = (provider, contractAddress, accountAddress) => {
 }
 
 const getName = (contract, alternativeContract) => {
-  return contract
+  return contract.methods
     .name()
-    .catch(_ => alternativeContract.name().then(Parser.parseBytes32))
+    .call()
+    .catch(_ =>
+      alternativeContract.methods.name().call().then(Parser.parseBytes32)
+    )
 }
 
 const getSymbol = (contract, alternativeContract) => {
-  return contract
+  return contract.methods
     .symbol()
-    .catch(_ => alternativeContract.symbol().then(Parser.parseBytes32))
+    .call()
+    .catch(_ =>
+      alternativeContract.methods.symbol().call().then(Parser.parseBytes32)
+    )
 }
 
 const getDecimals = contract => {
-  return contract.decimals()
+  return contract.methods.decimals().call()
 }
 
 export const getContractAddressChecksum = contractAddress => {
-  return ethers.utils.getAddress(contractAddress)
+  return Web3.utils.toChecksumAddress(contractAddress)
 }
 
 export const getPrice = (contractAddress, chainNetwork) => {
@@ -126,11 +134,15 @@ export const getPrice = (contractAddress, chainNetwork) => {
 }
 
 const getBalance = (contract, accountAddress) => {
-  return contract
+  return contract.methods
     .balanceOf(accountAddress)
+    .call({ from: accountAddress })
     .then(balance => balance.toString(10))
 }
 
-const getEthBalance = (provider, address) => {
-  return provider.getBalance(address).then(balance => balance.toString(10))
+const getEthBalance = address => {
+  const provider = new Web3.providers.HttpProvider(Config.WEB3_HTTP_PROVIDER)
+  return new Web3(provider).eth
+    .getBalance(address)
+    .then(balance => balance.toString(10))
 }

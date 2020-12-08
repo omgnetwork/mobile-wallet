@@ -15,7 +15,6 @@ export const fetchAssets = async (provider, address, lastBlockNumber) => {
     )
 
     const tokens = await Token.all(
-      provider,
       [ContractAddress.ETH_ADDRESS, ...tokenContractAddresses],
       address
     )

@@ -15,7 +15,7 @@ export const fetchAssets = async (provider, address) => {
     ])
 
     const tokenContractAddresses = getTokenContractAddresses(balances)
-    const tokenMap = await Token.all(provider, tokenContractAddresses, address)
+    const tokenMap = await Token.all(tokenContractAddresses, address)
     const childchainAssets = balances.map(balance => {
       const token = tokenMap[balance.currency]
       return {
