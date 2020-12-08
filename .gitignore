@@ -70,7 +70,7 @@ test-results/*
 # ENV
 .env
 .env.*
-__mock__/react-native-config.js
+__mocks__/react-native-config.js
 
 # Google Services
 google-services.json
