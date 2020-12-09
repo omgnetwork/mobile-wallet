@@ -18,7 +18,7 @@ export const createAsyncAction = ({
       } catch (err) {
         console.log(err)
         dispatch({ type: `${actionType}/FAILED`, err })
-        if (reportError) {
+        if (reportError && !err.skipSentry) {
           ExceptionReporter.send(err)
         }
       }
@@ -38,7 +38,7 @@ export const createAction = (
   } catch (err) {
     console.log(err)
     dispatch({ type: `${actionType}/ERROR`, data: err })
-    if (reportError) {
+    if (reportError && !err.skipSentry) {
       ExceptionReporter.send(err)
     }
   }
