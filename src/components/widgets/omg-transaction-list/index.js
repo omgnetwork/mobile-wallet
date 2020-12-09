@@ -180,7 +180,7 @@ const mapStateToProps = (state, ownProps) => {
       transactions = state.transaction.deposits
   }
 
-  return { transactions, tokens: state.tokens }
+  return { tokens: state.tokens }
 }
 
 const mapDispatchToProps = (dispatch, _ownProps) => {
@@ -196,14 +196,14 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
 
   switch (type) {
     case TransactionTypes.TYPE_DEPOSIT:
-      action = depositActions.fetchDepositHistory(provider, address, tokens, {
+      action = depositActions.fetchDepositHistory(address, tokens, {
         page: 1,
         limit: 50
       })
   }
 
   const dispatchTransactionFetch = () => {
-    dispatch(action)
+    if (type === TransactionTypes.TYPE_DEPOSIT) dispatch(action)
   }
 
   return { ...ownProps, ...stateProps, dispatchTransactionFetch }

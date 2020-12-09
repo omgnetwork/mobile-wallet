@@ -1,19 +1,57 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { OMGText, OMGTransactionList } from 'components/widgets'
-
-import { Styles } from 'common/utils'
+import { TransactionTypes } from 'common/constants'
+import { Mapper, Styles } from 'common/utils'
 
 const OMGTransactionFilter = ({
   address,
   loading,
   provider,
+  transactions,
+  startedExitTxs,
   style,
   theme,
   types
 }) => {
+  const [filteredTxs, setFilterTxs] = useState([])
   const [activeType, setActiveType] = useState(types[0])
+
+  useEffect(() => {
+    const selectedTxs = selectTransactionsByType(
+      activeType,
+      transactions,
+      startedExitTxs
+    )
+    setFilterTxs(selectedTxs)
+  }, [activeType, startedExitTxs, transactions])
+
+  const selectTransactionsByType = (type, transactions, startedExitTxs) => {
+    switch (type) {
+      case TransactionTypes.TYPE_ALL:
+        return transactions.filter(tx =>
+          [
+            TransactionTypes.TYPE_FAILED,
+            TransactionTypes.TYPE_RECEIVED,
+            TransactionTypes.TYPE_SENT
+          ].includes(tx.type)
+        )
+      case TransactionTypes.TYPE_EXIT:
+        return startedExitTxs.map(Mapper.mapStartedExitTx)
+      case TransactionTypes.TYPE_PROCESS_EXIT:
+        return transactions.filter(tx =>
+          [
+            TransactionTypes.TYPE_EXIT,
+            TransactionTypes.TYPE_PROCESS_EXIT
+          ].includes(tx.type)
+        )
+      default:
+        return transactions.filter(tx => {
+          return tx.type === type
+        })
+    }
+  }
 
   const renderTypeOptions = useCallback(() => {
     return types.map(type => {
@@ -43,6 +81,7 @@ const OMGTransactionFilter = ({
 
   return (
     <OMGTransactionList
+      transactions={filteredTxs}
       loading={loading.show}
       address={address}
       provider={provider}

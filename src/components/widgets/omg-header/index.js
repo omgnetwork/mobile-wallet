@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: Styles.getResponsiveSize(16, { small: 8, medium: 8 }),
-    paddingVertical: Styles.getResponsiveSize(40, { small: 24, medium: 24 })
+    paddingVertical: Styles.getResponsiveSize(24, { small: 24, medium: 24 })
   },
   title: theme => ({
     flex: 1,
