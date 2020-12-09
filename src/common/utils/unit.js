@@ -16,27 +16,12 @@ import BigNumber from 'bignumber.js'
  * @param {Number|String} toUnit
  */
 
-// Supported only units being used in the app
-const unitMap = {
-  ether: 0,
-  gwei: 9,
-  wei: 18
-}
-
 export const convert = (amount, fromUnit, toUnit) => {
   const stringAmount = amount.toString(10).replace(',', '.')
-  const from =
-    typeof fromUnit === 'string' ? unitMap[fromUnit.toLowerCase()] : fromUnit
-  const to = typeof toUnit === 'string' ? unitMap[toUnit.toLowerCase()] : toUnit
 
-  if (from !== 0 && !from) {
-    throw new Error(`Unsupported unit ${fromUnit}`)
-  }
-  if (to !== 0 && !to) {
-    throw new Error(`Unsupported unit ${toUnit}`)
-  }
-
-  const multiplier = new BigNumber(10).exponentiatedBy(to - from)
+  const multiplier = new BigNumber(10).exponentiatedBy(
+    Number(toUnit) - Number(fromUnit)
+  )
 
   return new BigNumber(stringAmount).times(multiplier)
 }
