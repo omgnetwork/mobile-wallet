@@ -12,7 +12,7 @@ import io.intercom.android.sdk.Intercom;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
 import network.omisego.plasmawallet.schedule.TaskSchedulerPackage;
 import network.omisego.plasmawallet.security.SecureEncryptPackage;
-
+import com.bitgo.randombytes.RandomBytesPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -30,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
       packages.add(new RNFirebaseAnalyticsPackage());
       packages.add(new TaskSchedulerPackage());
       packages.add(new SecureEncryptPackage());
+      packages.add(new RandomBytesPackage());
       return packages;
     }
 
