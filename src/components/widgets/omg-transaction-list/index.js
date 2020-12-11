@@ -170,16 +170,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state, ownProps) => {
-  const { type } = ownProps
-
-  let transactions
-
-  switch (type) {
-    case TransactionTypes.TYPE_DEPOSIT:
-      transactions = state.transaction.deposits
-  }
-
+const mapStateToProps = (state, _ownProps) => {
   return { tokens: state.tokens }
 }
 
@@ -188,7 +179,7 @@ const mapDispatchToProps = (dispatch, _ownProps) => {
 }
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { address, provider, type } = ownProps
+  const { address, type } = ownProps
   const { tokens } = stateProps
   const { dispatch } = dispatchProps
 

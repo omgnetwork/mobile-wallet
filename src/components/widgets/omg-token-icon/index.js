@@ -16,8 +16,8 @@ const OMGTokenIcon = ({ token, theme, style, size }) => {
   const [iconUri, setIconUri] = useState(null)
 
   useEffect(() => {
-    const erc20Uri = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${contractAddressChecksum}/logo.png`
-    const ethUri = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png`
+    const erc20Uri = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${contractAddressChecksum}/logo.png?raw=true`
+    const ethUri = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png?raw=true`
     const uri = isEth ? ethUri : erc20Uri
     setIconUri(uri)
   }, [token, isEth, contractAddressChecksum])
@@ -56,7 +56,9 @@ const OMGTokenIcon = ({ token, theme, style, size }) => {
                 uri: iconUri
               }
         }
-        onLoad={() => setIsError(false)}
+        onLoad={() => {
+          setIsError(false)
+        }}
         onError={() => {
           if (!isEth) setIsError(true)
         }}

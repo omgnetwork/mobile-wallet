@@ -74,13 +74,18 @@ export const createFee = (
 })
 
 export const createBody = (address, utxos, payments, fee, metadata) => {
-  return OmgUtil.transaction.createTransactionBody({
-    fromAddress: address,
-    fromUtxos: utxos,
-    payments,
-    fee,
-    metadata
-  })
+  try {
+    return OmgUtil.transaction.createTransactionBody({
+      fromAddress: address,
+      fromUtxos: utxos,
+      payments,
+      fee,
+      metadata
+    })
+  } catch (err) {
+    err.skipSentry = true
+    throw err
+  }
 }
 
 export const getTypedData = tx => {
