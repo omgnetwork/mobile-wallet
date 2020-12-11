@@ -3,7 +3,6 @@ import { View, StyleSheet, FlatList } from 'react-native'
 import { withTheme } from 'react-native-paper'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
-
 import {
   OMGEmpty,
   OMGItemTransaction,
