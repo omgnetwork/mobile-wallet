@@ -84,9 +84,9 @@ const OMGDrawerContent = ({
           </View>
           <DrawerMenuItem
             title='Transactions'
-            disabled={true}
+            disabled={false}
             onPress={() =>
-              closeDrawerAndNavigate('TransactionHistoryFilter', {
+              closeDrawerAndNavigate('TransactionHistory', {
                 title: 'Transactions',
                 types: [
                   TransactionTypes.TYPE_ALL,
@@ -100,7 +100,7 @@ const OMGDrawerContent = ({
           <View style={styles.divider(theme)} />
           <DrawerMenuItem
             title='Deposits'
-            disabled={true}
+            disabled={false}
             onPress={() =>
               closeDrawerAndNavigate('TransactionHistoryFilter', {
                 title: 'Deposit',
@@ -111,7 +111,7 @@ const OMGDrawerContent = ({
           <View style={styles.divider(theme)} />
           <DrawerMenuItem
             title='Withdrawals'
-            disabled={true}
+            disabled={false}
             onPress={() =>
               closeDrawerAndNavigate('TransactionHistoryFilter', {
                 title: 'Withdrawals',

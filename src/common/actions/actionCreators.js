@@ -43,3 +43,32 @@ export const createAction = (
     }
   }
 }
+
+export const createAsyncActionWithTokenCaching = ({
+  operation: doAsyncAction,
+  type: actionType,
+  isBackgroundTask: isBackgroundTask
+}) => {
+  return dispatch => {
+    const actionStartStatus = isBackgroundTask ? 'LISTENING' : 'INITIATED'
+    dispatch({ type: `${actionType}/${actionStartStatus}` })
+    return requestAnimationFrame(async () => {
+      try {
+        const result = await doAsyncAction()
+        if (result) {
+          dispatch({ type: `${actionType}/SUCCESS`, data: result })
+          dispatch({
+            type: 'TOKEN/UPDATE_CACHE',
+            data: result.tokenInfoToCache
+          })
+        }
+      } catch (err) {
+        console.log(err)
+        dispatch({ type: `${actionType}/FAILED`, err })
+        ExceptionReporter.send(err)
+      }
+      const actionName = actionType.replace('/', '_')
+      dispatch({ type: `LOADING/${actionName}/IDLE` })
+    })
+  }
+}

@@ -119,7 +119,7 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (5.8.0):
     - GoogleUtilities/Logger
-  - Intercom (6.0.1)
+  - Intercom (6.0.2)
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
     - nanopb/encode (= 0.3.9011)
@@ -409,9 +409,9 @@ PODS:
     - React
   - RNVectorIcons (6.6.0):
     - React
-  - Sentry (5.1.2):
-    - Sentry/Core (= 5.1.2)
-  - Sentry/Core (5.1.2)
+  - Sentry (5.1.10):
+    - Sentry/Core (= 5.1.10)
+  - Sentry/Core (5.1.10)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -639,7 +639,7 @@ SPEC CHECKSUMS:
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   GoogleAppMeasurement: ffe513e90551844a739e7bcbb1d2aca1c28a4338
   GoogleUtilities: 04fce34bcd5620c1ee76fb79172105c74a4df335
-  Intercom: f63e30d10c658b4f5817f5693e5ee2fa070b5803
+  Intercom: 523417d82ed1a8c635cc7f97b266eb8bd0bd9d85
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   OpenSSL-Universal: 8b48cc0d10c1b2923617dfe5c178aa9ed2689355
   RCTRequired: cec6a34b3ac8a9915c37e7e4ad3aa74726ce4035
@@ -683,7 +683,7 @@ SPEC CHECKSUMS:
   RNSentry: c4bdecef182912b8d8bb5b626f45da314f047dbd
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
-  Sentry: 7ee9a34a2c075a5e9306a1501d61c93a4b5c2333
+  Sentry: 8715e88b813bde9ad37aead365d5b04ac7302153
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

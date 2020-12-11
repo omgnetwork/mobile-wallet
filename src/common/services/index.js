@@ -5,6 +5,7 @@ import * as ethereumService from './ethereumService'
 import * as notificationService from './notificationService'
 import * as plasmaService from './plasmaService'
 import * as transactionService from './transactionService'
+import * as depositService from './depositService'
 
 export {
   walletService,
@@ -13,5 +14,6 @@ export {
   ethereumService,
   notificationService,
   plasmaService,
-  transactionService
+  transactionService,
+  depositService
 }
