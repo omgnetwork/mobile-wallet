@@ -26,12 +26,7 @@ const ExitSelectAmount = ({ navigation, theme, isFocused, primaryWallet }) => {
 
   useEffect(() => {
     if (isFocused) {
-      try {
-        console.log('fetch utxos')
-        fetchUtxos()
-      } catch (e) {
-        console.log(e)
-      }
+      fetchUtxos()
     }
   }, [fetchUtxos])
 
@@ -45,18 +40,13 @@ const ExitSelectAmount = ({ navigation, theme, isFocused, primaryWallet }) => {
     const selectedUtxo = utxos.find(
       utxo => utxo.currency === token.contractAddress
     )
-    console.log('fee', fee)
     const selectedFeeUtxo = utxos.find(utxo => utxo.currency === fee?.currency)
     setUtxo(selectedUtxo)
     setFeeUtxo(selectedFeeUtxo)
     setFeeToken(fee)
 
-    console.log(selectedFeeUtxo)
-
     const smallestUnitFeeBalance =
       fee && Unit.convertToString(fee.balance, 0, fee.tokenDecimal)
-
-    console.log('smallestUnitFeeBalance', smallestUnitFeeBalance)
 
     if (!fee || BigNumber.compare(smallestUnitFeeBalance, fee.amount) < 0) {
       const contactAddresses = all.map(({ currency }) => currency)
@@ -73,8 +63,6 @@ const ExitSelectAmount = ({ navigation, theme, isFocused, primaryWallet }) => {
     } else {
       focusRef.current?.focus()
     }
-
-    console.log('dsadsa')
 
     setLoading(false)
   }, [primaryWallet.address, token.contractAddress])
